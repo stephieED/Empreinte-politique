@@ -1,0 +1,110 @@
+name: Déploiement GitHub Pages (web/UI_finale)
+
+# Construit web/UI_finale (Vite) et publie dist/ sur GitHub Pages via le
+# mode de déploiement "Actions" (pas de branche gh-pages committée). Le
+# domaine personnalisé (empreinte-politique.fr, configuré dans Settings >
+# Pages) est préservé via web/UI_finale/public/CNAME, copié tel quel dans
+# dist/ par Vite au build — sans lui, un déploiement via Actions peut
+# réinitialiser le domaine personnalisé.
+#
+# DÉCLENCHEURS — les données du site sont figées AU BUILD (npm run build =
+# sync-data + vite build : web/UI_finale/scripts/sync-data.mjs copie
+# pivot_data/ + raw_data/candidats.json dans public/data/, embarqué dans
+# dist/). Un run de génération qui met à jour les données n'est donc publié
+# que par un nouveau build. Deux chemins mènent ici, complémentaires (#416,
+# cf. docs/decisions/deploy-pages-declencheur-donnees.md) :
+#   1. push sur main touchant les chemins listés ci-dessous — couvre les
+#      commits humains (merge de PR) qui modifient l'UI ou les données ;
+#   2. workflow_dispatch déclenché explicitement par le job merge-and-pivot
+#      de generate-data.yml après un push de données réussi.
+#
+# Le point 2 est né (#416) de ce que le point 1 ne pouvait PAS voir passer le
+# commit du bot : le push se faisait avec le GITHUB_TOKEN, qui n'émet aucun
+# événement `push` (protection anti-boucle). Depuis #508, ce push se fait sous
+# une clé de déploiement et émet bien un événement — les deux chemins se
+# déclenchent donc tous les deux sur un commit de données, et la concurrence
+# `pages` ci-dessous les sérialise. Le point 2 est conservé délibérément :
+# il est le seul des deux qui ne dépende pas de l'identité qui pousse. Voir
+# docs/decisions/push-donnees-cle-de-deploiement-508.md.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/UI_finale/**'
+      - 'pivot_data/**'
+      - 'raw_data/candidats.json'
+      - '.github/workflows/deploy-pages.yml'
+  workflow_dispatch:
+
+# contents: read suffit au niveau workflow (le job build ne fait que checkout
+# + build). Les permissions de déploiement Pages sont accordées au seul job
+# qui en a besoin, plus bas — un job qui exécute `npm ci` sur des dépendances
+# tierces ne doit pas porter id-token: write.
+permissions:
+  contents: read
+
+# Un seul déploiement Pages à la fois ; ne pas annuler un déploiement déjà en
+# cours (un déploiement partiel ne doit jamais rester en ligne).
+#
+# Pas de groupe distinct pour les runs de données (#416) : `pages` +
+# cancel-in-progress: false sérialise déjà un run de données et un changement
+# d'UI, qui ne peuvent donc pas se marcher dessus. Deux groupes séparés
+# feraient l'inverse — ils autoriseraient deux déploiements concurrents vers
+# le même site.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # ~35 s observées avant #329 ; la projection de lignée (`vue-lignee.mjs`,
+    # qui relit les profils et les quatre index d'amendements) y ajoute une
+    # minute — `sync-data` complet : 59 s et 1,2 Gio de RSS, mesurés en local le
+    # 11/09/2026. La marge reste large. Explicite plutôt que le défaut de
+    # 360 min, par cohérence avec generate-data.yml.
+    timeout-minutes: 10
+    # pages: read — requis par actions/configure-pages, qui lit la
+    # configuration Pages du dépôt via l'API. Pas de pages: write ici : ce job
+    # ne déploie rien, il produit un artifact.
+    permissions:
+      contents: read
+      pages: read
+    defaults:
+      run:
+        working-directory: web/UI_finale
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: web/UI_finale/package-lock.json
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: web/UI_finale/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Seul job à déployer : pages: write (publication) et id-token: write
+    # (OIDC exigé par actions/deploy-pages). Pas de contents: — ce job ne
+    # checkoute pas le dépôt.
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

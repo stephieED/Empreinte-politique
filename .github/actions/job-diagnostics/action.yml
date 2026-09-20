@@ -1,0 +1,92 @@
+name: Diagnostic de job (annulation / échec)
+description: >
+  Écrit dans $GITHUB_STEP_SUMMARY le bloc de diagnostic d'un job annulé de façon
+  externe ou en échec applicatif.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Factorisation retenue par #412 (sous-issue 1/6 de #342) : les deux blocs
+# étaient recopiés à l'identique dans les 6 jobs d'extraction (~145 lignes).
+#
+# SÉMANTIQUE PRÉSERVÉE À L'IDENTIQUE : les conditions `if: cancelled()` et
+# `if: failure()` restent portées par le *step appelant*, pas par cette action.
+# `cancelled()` / `failure()` évalués à l'intérieur d'une action composite
+# porteraient sur l'état des steps de l'action elle-même, pas sur celui du job —
+# ce qui ne serait pas le même test. L'appel type est donc :
+#
+#     - name: Diagnostic — job annulé (signal externe)
+#       if: cancelled()
+#       uses: ./.github/actions/job-diagnostics
+#       with:
+#         kind: cancelled
+#         scope: candidat `${{ matrix.slug }}`   # facultatif
+#
+# Action locale : suppose le actions/checkout du job déjà fait. Un job annulé
+# AVANT la fin de son checkout n'aura donc pas ce résumé — angle mort résiduel,
+# assumé : la même annulation précoce laissait déjà un log sans information
+# exploitable, et le cas majoritaire (préemption en cours d'extraction, #228)
+# est couvert.
+# ─────────────────────────────────────────────────────────────────────────────
+
+inputs:
+  kind:
+    description: >
+      `cancelled` (signal d'annulation externe) ou `failure` (échec
+      applicatif). Doit correspondre au `if:` du step appelant.
+    required: true
+  scope:
+    description: >
+      Mention facultative de la tranche concernée, insérée entre parenthèses
+      dans le titre — par ex. "candidat `jean-dupont`" ou "shard 3". Vide pour
+      un job non shardé.
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Résumé de diagnostic
+      shell: bash
+      env:
+        KIND: ${{ inputs.kind }}
+        SCOPE: ${{ inputs.scope }}
+      run: |
+        set -euo pipefail
+
+        SUFFIX=""
+        [[ -n "$SCOPE" ]] && SUFFIX=" ($SCOPE)"
+
+        case "$KIND" in
+          cancelled)
+            # JOB_START_EPOCH est posé par ./.github/actions/bootstrap-extraction ;
+            # le repli sur `date +%s` (elapsed 0) évite un résumé cassé si un job
+            # appelle cette action sans ce préambule.
+            ELAPSED_MIN=$(( ($(date +%s) - ${JOB_START_EPOCH:-$(date +%s)}) / 60 ))
+            {
+              echo "### ⚠️ Job annulé — signal d'annulation externe${SUFFIX}"
+              echo ""
+              echo "Ce job a été annulé de façon externe (signal \`cancelled()\` reçu,"
+              echo "pas un timeout ni une erreur applicative) après ~${ELAPSED_MIN} min."
+              if [[ -n "$SCOPE" ]]; then
+                echo ""
+                echo "Grâce au découpage en shards (#344 pour extract-an, #394 pour"
+                echo "extract-roster-groupes), les autres shards ne sont pas affectés."
+              fi
+              echo ""
+              echo "Piste de diagnostic : vérifier les quotas/limites GitHub Actions du"
+              echo "compte plutôt que les logs applicatifs de ce job (cf. #221)."
+            } >> "$GITHUB_STEP_SUMMARY"
+            ;;
+          failure)
+            {
+              echo "### ❌ Job en échec${SUFFIX}"
+              echo ""
+              echo "Voir la checklist de diagnostic dans #217 (ou la section"
+              echo "correspondante de \`docs/technical_decisions.md\` si archivée"
+              echo "depuis)."
+            } >> "$GITHUB_STEP_SUMMARY"
+            ;;
+          *)
+            echo "::error::job-diagnostics : input \`kind\` invalide ('$KIND') — attendu 'cancelled' ou 'failure'."
+            exit 1
+            ;;
+        esac

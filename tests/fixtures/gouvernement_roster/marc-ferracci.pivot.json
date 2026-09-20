@@ -1,0 +1,90 @@
+{
+  "schema_version": "1",
+  "id": "nosdeputes:marc-ferracci",
+  "nom": "Marc Ferracci",
+  "identite": {
+    "source_url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795884"
+  },
+  "mandats": [
+    {
+      "label": "Ministère auprès du ministre de l’économie, des finances et de la souveraineté industrielle et numérique, chargé de l’industrie et de l’énergie",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "Ministre",
+      "debut": "2024-12-24",
+      "fin": "2025-09-09",
+      "actif": false,
+      "source_url": null,
+      "position_dans_hemicycle": null,
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Ministère délégué auprès du ministre de l'économie, des finances et de l'industrie, chargé de l’industrie",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "Ministre délégué",
+      "debut": "2024-09-22",
+      "fin": "2024-12-13",
+      "actif": false,
+      "source_url": null,
+      "position_dans_hemicycle": null,
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Mandat parlementaire (Ensemble pour la République)",
+      "categorie": "mandat_electif",
+      "fonction": "mandat",
+      "debut": "2024-07-07",
+      "fin": null,
+      "actif": true,
+      "source_url": null,
+      "position_dans_hemicycle": null,
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Gouvernement (BAYROU)",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "membre",
+      "debut": "2024-12-24",
+      "fin": "2025-09-09",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+      "position_dans_hemicycle": "gouvernement",
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Gouvernement (BARNIER)",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "membre",
+      "debut": "2024-09-22",
+      "fin": "2024-12-13",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+      "position_dans_hemicycle": "gouvernement",
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Gouvernement (BAYROU)",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "membre",
+      "debut": "2024-12-24",
+      "fin": null,
+      "actif": true,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+      "position_dans_hemicycle": "gouvernement",
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    }
+  ],
+  "meta": {
+    "fixture": {
+      "source": "pivot_data/profiles/marc-ferracci.pivot.json",
+      "ref": "3a8455a575358e8586fcee74481ab63462979519",
+      "extrait_le": "2026-08-20",
+      "reduction": "Champs conservés : ceux que gouvernement_roster lit — id, nom, identite.source_url, mandats[]. mandats[] restreint aux catégories ['fonction_gouvernementale', 'mandat_electif'], dans l'ordre de la source (jamais retrié)."
+    }
+  }
+}

@@ -1,0 +1,257 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  Fixture FIGÉE, RÉDUCTION VERBATIM de CRSANR5L17S2026O1N187.xml (archive
+  data.assemblee-nationale.fr, législature 17, téléchargée le 26/08/2026).
+  Aucun tag, aucun attribut, aucune valeur n'a été écrit à la main : la
+  réduction n'a fait que SUPPRIMER des frères — c'est la règle que #510 a
+  imposée, après que deux fixtures inventées ont validé le parseur contre sa
+  propre hypothèse pendant toute la vie du projet.
+
+  Elle porte les traits que le parcours doit gérer :
+    - des <point> FRÈRES de nivpoint 1, 2 et 3 (la hiérarchie du sommaire n'est
+      pas l'imbrication XML) ;
+    - des <point> IMBRIQUÉS de nivpoint 4, jamais titrés, qui héritent du titre
+      de leur ancêtre ;
+    - le titre du point dans <point><texte> — <titreStruct> n'existe pas sous
+      <contenu> : 0 occurrence sur les 162 073 points des législatures 15/16/17 ;
+    - les code_grammaire qui portent un sujet (TITRE_TEXTE_DISCUSSION, QG_1_1)
+      et ceux qui n'en portent pas (DISC_ARTICLES_*, SOUS_TITRE_TEXTE_DISCUSSION) ;
+    - l'identifiant d'orateur publié NU, avec son préfixe dans id_acteur ;
+    - un <metadonnees><sommaire>, dont l'intitulé est le <point><texte> du point
+      qu'il référence (12 035 jointures sur 12 038 mesurées).
+-->
+<compteRendu xmlns="http://schemas.assemblee-nationale.fr/referentiel">
+  <uid>CRSANR5L17S2026O1N187</uid>
+  <seanceRef>RUANR5L17S2026IDS30420</seanceRef>
+  <sessionRef>SCR5A2026O1</sessionRef>
+  <metadonnees>
+    <dateSeance>20260331150000000</dateSeance>
+    <dateSeanceJour>mardi 31 mars 2026</dateSeanceJour>
+    <numSeanceJour>1</numSeanceJour>
+    <numSeance>187</numSeance>
+    <typeAssemblee>AN</typeAssemblee>
+    <legislature>17</legislature>
+    <session>Session ordinaire 2025 -2026</session>
+    <nomFichierJo>20260187</nomFichierJo>
+    <validite>valide</validite>
+    <etat>complet</etat>
+    <diffusion>public</diffusion>
+    <version>avant_JO</version>
+    <environnement>PROD</environnement>
+    <heureGeneration>2026-04-09T10:21:30.000+02:00</heureGeneration>
+    <sommaire>
+      <presidentSeance id_syceron="4049538">Présidence de Mme Yaël Braun-Pivet</presidentSeance>
+      <sommaire1 valeur_pts_odj="1">
+        <titreStruct id_syceron="4049542">
+          <intitule>Questions au gouvernement</intitule>
+          <sousIntitule>0</sousIntitule>
+        </titreStruct>
+        <sommaire2>
+          <titreStruct id_syceron="4049544">
+            <intitule>Racisme envers les nouveaux élus</intitule>
+          </titreStruct>
+        </sommaire2>
+      </sommaire1>
+    </sommaire>
+  </metadonnees>
+  <contenu>
+    <quantiemes>
+      <journee>Première séance du mardi 31 mars 2026</journee>
+      <session>Session ordinaire 2025 -2026</session>
+    </quantiemes>
+    <ouvertureSeance nivpoint="1" valeur_ptsodj="0" ordinal_prise="1" id_preparation="2902784" ordre_absolu_seance="1" code_grammaire="OUV_SEAN_1_1" code_style="Présidence" code_parole="" sommaire="1" id_syceron="4049538" valeur="">
+      <orateurs />
+      <texte>Présidence de Mme Yaël Braun-Pivet</texte>
+      <paragraphe valeur_ptsodj="0" ordinal_prise="1" id_preparation="2902785" ordre_absolu_seance="2" id_acteur="PA721908" id_mandat="PM843467" id_nomination_oe="0" id_nomination_op="PM845400" code_grammaire="OUV_SEAN_2_1" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="4049539" valeur="" roledebat="president">
+        <orateurs>
+          <orateur>
+            <nom>Mme la présidente</nom>
+            <id>721908</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="981.30">La séance est ouverte.</texte>
+      </paragraphe>
+      <paragraphe valeur_ptsodj="0" ordinal_prise="1" id_preparation="2902786" ordre_absolu_seance="3" code_grammaire="OUV_SEAN_2_2" code_style="Info Italiques" code_parole="" sommaire="0" id_syceron="4049540" valeur="">
+        <orateurs />
+        <texte>
+          <italique>(La séance est ouverte à quinze heures.)</italique>
+        </texte>
+      </paragraphe>
+    </ouvertureSeance>
+    <point nivpoint="1" valeur_ptsodj="1" ordinal_prise="1" id_preparation="2902788" ordre_absolu_seance="5" code_grammaire="TITRE_TEXTE_DISCUSSION" code_style="Titre" code_parole="" sommaire="1" id_syceron="4049542" valeur="">
+      <orateurs />
+      <texte>Questions au gouvernement</texte>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="1" id_preparation="2902789" ordre_absolu_seance="6" id_acteur="PA721908" id_mandat="PM843467" id_nomination_oe="0" id_nomination_op="PM845400" code_grammaire="ODJ_APPEL_DISCUSSION" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="4049543" valeur="" roledebat="president">
+        <orateurs>
+          <orateur>
+            <nom>Mme la présidente</nom>
+            <id>721908</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="985.15">L’ordre du jour appelle les questions au gouvernement.</texte>
+      </paragraphe>
+    </point>
+    <point nivpoint="2" valeur_ptsodj="1" ordinal_prise="1" id_preparation="2902790" ordre_absolu_seance="7" code_grammaire="QG_1_1" code_style="Sous-tit_p_cap" code_parole="" sommaire="1" id_syceron="4049544" valeur="">
+      <orateurs />
+      <texte>Racisme envers les nouveaux élus</texte>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="1" id_preparation="2902791" ordre_absolu_seance="8" id_acteur="PA721908" id_mandat="PM843467" id_nomination_oe="0" id_nomination_op="PM845400" code_grammaire="PAROLE_GENERIQUE" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="4049545" valeur="">
+        <orateurs>
+          <orateur>
+            <nom>Mme la présidente</nom>
+            <id>721908</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="989.04">La parole est à M. Steevy Gustave.</texte>
+      </paragraphe>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="1" id_preparation="2902792" ordre_absolu_seance="9" id_acteur="PA842013" id_mandat="PM843563" id_nomination_oe="-1" id_nomination_op="-1" code_grammaire="PAROLE_GENERIQUE" code_style="NORMAL" code_parole="" sommaire="1" id_syceron="4049546" valeur="">
+        <orateurs>
+          <orateur>
+            <nom>M. Steevy Gustave</nom>
+            <id>842013</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="1000.70">« Nègre je suis, nègre je resterai », écrivait Aimé Césaire, député de la République française. Ces mots sont des mots de dignité. Ils nous rappellent qu’on peut être noir et français, qu’on peut venir d’un quartier populaire et diriger une ville, et qu’en République, ce n’est pas l’origine qui compte, mais le suffrage universel.<italique> (Applaudissements sur les bancs des groupes EcoS, EPR, LFI-NFP, SOC, Dem et LIOT.)</italique>
+          <br />En démocratie, on combat un élu sur ses idées ou sur son bilan. Mais quand on attaque un élu pour sa couleur de peau ou son origine, ce n’est plus de la politique, c’est du racisme ; et quand cela vise des élus noirs qui accèdent à des responsabilités, il faut le dire clairement : c’est de la négrophobie.<italique> (Mêmes mouvements.)</italique>
+          <br />Pendant longtemps, la République n’a pas ressemblé à tout son peuple. Aujourd’hui, les choses changent. Des enfants d’ouvriers, des enfants d’immigrés, des enfants des quartiers populaires deviennent maires, adjoints, députés. Ce qui dérange encore certains, ce n’est pas ce que nous faisons, c’est simplement le fait que nous soyons là. On parle souvent des enfants de la République, mais les enfants de la République ont des visages. Ils ont des prénoms. Ces prénoms racontent la France : Bally, Chahidati, Annah, Leslie, Yahaya, Marieme, Mohamed, Kwami, Aly, Melissa, Adama, Bassi, Abdelkader, Idir, Landry. Ces femmes et ces hommes ont été élus par le peuple français. Leur légitimité ne se discute pas ; elle se respecte.<italique> (Mêmes mouvements.)</italique>
+          <br />Que compte faire le gouvernement pour lutter contre le racisme, la désinformation et toutes les tentatives de faire passer des élus pour illégitimes à cause de leur origine ou de leur couleur de peau ? Le gouvernement compte-t-il saisir l’Arcom lorsque des médias laissent se diffuser des propos racistes ou diffamatoires contre des élus de la République ? Quelles mesures comptez-vous prendre pour mieux accompagner et protéger les élus victimes de haine et de menaces ?<italique> (Les députés des groupes EcoS, LFI-NFP, SOC et GDR se lèvent et applaudissent. – Plusieurs députés des groupes EPR, Dem</italique>
+          <italique> et</italique>
+          <italique> LIOT applaudissent également.)</italique>
+        </texte>
+      </paragraphe>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="1" id_preparation="2902796" ordre_absolu_seance="13" id_acteur="PA721908" id_mandat="PM843467" id_nomination_oe="0" id_nomination_op="PM845400" code_grammaire="PAROLE_GENERIQUE" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="4049550" valeur="">
+        <orateurs>
+          <orateur>
+            <nom>Mme la présidente</nom>
+            <id>721908</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="1094.71">La parole est à M. le ministre de l’intérieur.</texte>
+      </paragraphe>
+    </point>
+    <point nivpoint="1" valeur_ptsodj="3" ordinal_prise="7" id_preparation="2903112" ordre_absolu_seance="361" code_grammaire="TITRE_TEXTE_DISCUSSION" code_style="Titre" code_parole="" sommaire="1" id_syceron="4050031" valeur=" (n[[o]] 2250 rectifié)">
+      <orateurs />
+      <texte>Lutte contre les fraudes sociales et fiscales</texte>
+    </point>
+    <point nivpoint="2" valeur_ptsodj="3" ordinal_prise="7" id_preparation="2903113" ordre_absolu_seance="362" code_grammaire="SOUS_TITRE_TEXTE_DISCUSSION" code_style="Sous-tit_info" code_parole="" sommaire="1" id_syceron="4050032" valeur="">
+      <orateurs />
+      <texte>Suite de la discussion d’un projet de loi</texte>
+      <paragraphe valeur_ptsodj="3" ordinal_prise="7" id_preparation="2903114" ordre_absolu_seance="363" id_acteur="PA795310" id_mandat="PM840453" id_nomination_oe="0" id_nomination_op="PM873243" code_grammaire="ODJ_APPEL_DISCUSSION" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="4050033" valeur=" (n[[os]] 2115, 2250 rectifié)" roledebat="president">
+        <orateurs>
+          <orateur>
+            <nom>Mme la présidente</nom>
+            <id>795310</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="6382.92">L’ordre du jour appelle la suite de la discussion du projet de loi relatif à la lutte contre les fraudes sociales et fiscales (n<exposant>os</exposant> 2115, 2250 rectifié).<br />Je vous informe que la conférence des présidents a décidé ce matin que les prises de parole sur chaque amendement seraient désormais limitées à un orateur pour et à un orateur contre, et que les temps de parole sur les amendements seraient limités à une minute. Je le répéterai autant de fois que nécessaire.</texte>
+      </paragraphe>
+    </point>
+    <point nivpoint="2" valeur_ptsodj="3" ordinal_prise="7" id_preparation="2903123" ordre_absolu_seance="371" code_grammaire="DISC_ARTICLES_1_1" code_style="Sous-tit_p_cap" code_parole="" sommaire="1" id_syceron="4050042" valeur=" (n[[o]] 2250)" bibard=" (n[[o]] 2250)" art="" adt="" ssadt="">
+      <orateurs />
+      <texte>Discussion des articles<italique> (suite)</italique>
+      </texte>
+      <paragraphe valeur_ptsodj="3" ordinal_prise="7" id_preparation="2903124" ordre_absolu_seance="372" id_acteur="PA795310" id_mandat="PM840453" id_nomination_oe="0" id_nomination_op="PM873243" code_grammaire="DISC_ARTICLES_2_1" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="4050043" valeur="" bibard=" (n[[o]] 2250)" art="" adt="" ssadt="" roledebat="president">
+        <orateurs>
+          <orateur>
+            <nom>Mme la présidente</nom>
+            <id>795310</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="6505.81">Hier soir, l’Assemblée a poursuivi la discussion des articles du projet de loi, s’arrêtant à l’amendement n<exposant>o</exposant> 751 portant article additionnel à l’article 9 <italique> duodecies</italique>.</texte>
+      </paragraphe>
+    </point>
+    <point nivpoint="3" valeur_ptsodj="3" ordinal_prise="7" id_preparation="2903136" ordre_absolu_seance="383" code_grammaire="DISC_ARTICLES_2_4" code_style="Sous-titre bdc" code_parole="" sommaire="1" id_syceron="4050055" valeur=" 9 terdecies" bibard=" (n[[o]] 2250)" art=" 9 terdecies" adt="" ssadt="">
+      <orateurs />
+      <texte>Article 9 <italique> terdecies</italique>
+      </texte>
+      <paragraphe valeur_ptsodj="3" ordinal_prise="7" id_preparation="2903137" ordre_absolu_seance="384" id_acteur="PA795310" id_mandat="PM840453" id_nomination_oe="0" id_nomination_op="PM873243" code_grammaire="PAROLE_GENERIQUE" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="4050056" valeur="">
+        <orateurs>
+          <orateur>
+            <nom>Mme la présidente</nom>
+            <id>795310</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="6696.09">La parole est à M. Louis Boyard.</texte>
+      </paragraphe>
+      <paragraphe valeur_ptsodj="3" ordinal_prise="7" id_preparation="2903138" ordre_absolu_seance="385" id_acteur="PA795318" id_mandat="PM843689" id_nomination_oe="-1" id_nomination_op="-1" code_grammaire="PAROLE_GENERIQUE" code_style="NORMAL" code_parole="" sommaire="1" id_syceron="4050057" valeur="">
+        <orateurs>
+          <orateur>
+            <nom>M. Louis Boyard</nom>
+            <id>795318</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="6716.05">Madame la présidente, le temps de parole est-il également limité à une minute pour les orateurs inscrits sur l’article ?</texte>
+      </paragraphe>
+      <point nivpoint="4" structure="Oui" valeur_ptsodj="3" ordinal_prise="7" id_preparation="2903145" ordre_absolu_seance="391" id_acteur="PA795310" id_mandat="PM840453" id_nomination_oe="0" id_nomination_op="PM873243" orateur="" code_grammaire="DISC_ARTICLES_3_1" code_parole="" sommaire="1" id_syceron="4050064" valeur=" 494" bibard=" (n[[o]] 2250)" art=" 9 terdecies" adt=" 494" ssadt="">
+        <interExtraction nom_orateur="M. Daniel Labaronne" qualite="rapporteur pour avis" id_acteur="PA719798" id_nomination_oe="-1" id_nomination_op="-9270283" id_mandat="PM842753">
+          <paragraphe valeur_ptsodj="3" ordinal_prise="7" id_preparation="2903145" ordre_absolu_seance="391" id_acteur="PA795310" id_mandat="PM840453" id_nomination_oe="0" id_nomination_op="PM873243" code_grammaire="DISC_ARTICLES_3_1" code_style="NORMAL" code_parole="" sommaire="1" id_syceron="4050064" valeur=" 494" bibard=" (n[[o]] 2250)" art=" 9 terdecies" adt=" 494" ssadt="" roledebat="president">
+            <orateurs>
+              <orateur>
+                <nom>Mme la présidente</nom>
+                <id>795310</id>
+                <qualite />
+              </orateur>
+            </orateurs>
+            <texte stime="6745.54">La parole est à M. le rapporteur pour avis, pour soutenir l’amendement n<exposant>o</exposant> 494, visant à supprimer l’article 9 <italique> terdecies</italique> et sur lequel je suis saisie d’une demande de scrutin public par le groupe Ensemble pour la République.<br /> Le scrutin est annoncé dans l’enceinte de l’Assemblée nationale.</texte>
+          </paragraphe>
+          <paragraphe valeur_ptsodj="3" ordinal_prise="7" id_preparation="2903146" ordre_absolu_seance="392" id_acteur="PA719798" id_mandat="PM842753" id_nomination_oe="-1" id_nomination_op="-9270283" code_grammaire="DISC_ARTICLES_3_4_1" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="4050065" valeur="" bibard=" (n[[o]] 2250)" art=" 9 terdecies" adt=" 494" ssadt="">
+            <orateurs>
+              <orateur>
+                <nom>M. Daniel Labaronne</nom>
+                <id>719798</id>
+                <qualite>rapporteur pour avis</qualite>
+              </orateur>
+            </orateurs>
+            <texte stime="6750.96">L’article 9 <italique> terdecies</italique> crée une obligation déclarative pour les acquisitions de biens immobiliers en France par des personnes morales étrangères. Or le nouveau règlement européen antiblanchiment prévoit déjà que les entités et les constructions juridiques étrangères faisant l’acquisition de biens immobiliers en France déclarent leurs bénéficiaires effectifs. Un lourd travail de développement est donc en cours pour créer l’infrastructure de collecte de ces données et les registres qui conserveront la liste des bénéficiaires effectifs. Il convient de ne pas modifier encore le dispositif existant afin de ne pas perturber le déploiement de cette infrastructure. C’est pourquoi je propose de supprimer l’article.</texte>
+          </paragraphe>
+        </interExtraction>
+        <paragraphe valeur_ptsodj="3" ordinal_prise="7" id_preparation="2903148" ordre_absolu_seance="393" id_acteur="PA795310" id_mandat="PM840453" id_nomination_oe="0" id_nomination_op="PM873243" code_grammaire="PAROLE_GENERIQUE" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="4050067" valeur="">
+          <orateurs>
+            <orateur>
+              <nom>Mme la présidente</nom>
+              <id>795310</id>
+              <qualite />
+            </orateur>
+          </orateurs>
+          <texte stime="6752.35">Quel est l’avis du gouvernement ?</texte>
+        </paragraphe>
+      </point>
+    </point>
+    <finSeance>
+      <point nivpoint="1" valeur_ptsodj="4" ordinal_prise="20" id_preparation="2903846" ordre_absolu_seance="1236" code_grammaire="FIN_SEAN_1_2" code_style="Titre" code_parole="" sommaire="1" id_syceron="4051573" valeur="">
+        <orateurs />
+        <texte>Ordre du jour de la prochaine séance</texte>
+        <paragraphe valeur_ptsodj="4" ordinal_prise="20" id_preparation="2903847" ordre_absolu_seance="1237" id_acteur="PA795310" id_mandat="PM840453" id_nomination_oe="0" id_nomination_op="PM873243" code_grammaire="FIN_SEAN_2_1" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="4051574" valeur="" roledebat="president">
+          <orateurs>
+            <orateur>
+              <nom>Mme la présidente</nom>
+              <id>795310</id>
+              <qualite />
+            </orateur>
+          </orateurs>
+          <texte stime="18794.56">Prochaine séance, ce soir, à vingt et une heures trente :<br /> Suite de la discussion du projet de loi relatif à la lutte contre les fraudes sociales et fiscales.<br /> La séance est levée.</texte>
+        </paragraphe>
+        <paragraphe valeur_ptsodj="4" ordinal_prise="20" id_preparation="2903848" ordre_absolu_seance="1238" code_grammaire="FIN_SEAN_2_4" code_style="Info Italiques" code_parole="" sommaire="0" id_syceron="4051575" valeur="">
+          <orateurs />
+          <texte>
+            <italique>(La séance est levée à vingt heures.)</italique>
+          </texte>
+        </paragraphe>
+        <paragraphe valeur_ptsodj="4" ordinal_prise="20" id_preparation="2903849" ordre_absolu_seance="1239" code_grammaire="FIN_SEAN_2_5" code_style="Signature droite" code_parole="" sommaire="0" id_syceron="4051576" valeur="">
+          <orateurs />
+          <texte>
+            <italique>Le directeur des comptes rendus<br /> Serge Ezdra</italique>
+          </texte>
+        </paragraphe>
+      </point>
+    </finSeance>
+  </contenu>
+</compteRendu>

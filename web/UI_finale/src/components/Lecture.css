@@ -1,0 +1,197 @@
+/*
+ * Fondations de lecture (#326) — la forme des six règles.
+ *
+ * Tout vient des tokens de `src/index.css` : aucune valeur de couleur en dur
+ * ici, hormis les couleurs de vote, qui arrivent en style inline depuis
+ * `utils/lecture.js` parce qu'elles sont de la donnée, pas de la décoration.
+ */
+
+/* ── Position de vote ─────────────────────────────────────────────────────── */
+.lec-position {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.lec-position-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: 0 0 8px;
+  background: currentColor;
+}
+
+/* `non_votant` et toute valeur inconnue : la forme, jamais la teinte. */
+.lec-position--contour {
+  color: var(--muted);
+  background: transparent;
+  border: 1px dashed var(--border-strong);
+}
+
+.lec-position--contour .lec-position-dot {
+  background: transparent;
+  border: 1px dashed var(--muted);
+}
+
+/* ── Ratio ────────────────────────────────────────────────────────────────── */
+.lec-ratio-line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+.lec-ratio-num {
+  font-size: 26px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.lec-ratio-den,
+.lec-ratio-nd {
+  font-size: 14px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.lec-ratio-nd {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.lec-ratio--nd {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+}
+
+.lec-caveat {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ── Troncature ───────────────────────────────────────────────────────────── */
+.lec-troncature {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Liste vide ───────────────────────────────────────────────────────────── */
+.lec-vide {
+  border: 1px solid var(--border-strong);
+  border-radius: 18px;
+  padding: 18px 20px;
+  background: var(--card);
+}
+
+.lec-vide--inconnue {
+  border-style: dashed;
+}
+
+.lec-vide-titre {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.lec-vide-message {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.lec-vide-source {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ── Badge de source ──────────────────────────────────────────────────────── */
+.lec-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.lec-badge--verifie {
+  background: var(--dark);
+  color: var(--bg);
+}
+
+/* Le jaune signal ne passe qu'ici : sur fond encre, il est à 16:1 ; sur fond
+   clair il tombe à 1,05:1 et ne doit jamais porter de texte (DESIGN_SYSTEM §2). */
+.lec-badge-tick {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.lec-badge--absent {
+  background: transparent;
+  color: var(--muted);
+  border: 1px dashed var(--border-strong);
+}
+
+/* ── Niveaux de lecture ───────────────────────────────────────────────────── */
+.lec-niveaux {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.lec-niveau {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 7px 15px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lec-niveau:hover {
+  box-shadow: 0 4px 14px rgba(20, 15, 40, 0.1);
+}
+
+.lec-niveau:focus-visible {
+  outline: 2px solid var(--dark);
+  outline-offset: 2px;
+}
+
+.lec-niveau--actif {
+  background: var(--dark);
+  border-color: var(--dark);
+  color: var(--bg);
+}
+
+.lec-niveau-duree {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lec-niveau {
+    transition: none;
+  }
+}
+

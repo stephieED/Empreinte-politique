@@ -1,0 +1,172 @@
+/* La page de couverture reprend la carcasse des pages statiques (bannière,
+   fil d'Ariane, cartes) et l'élargit : la frise a besoin de largeur, et une
+   colonne de 900 px l'écrasait. */
+.cv-main {
+  max-width: 1180px;
+}
+
+.cv-card {
+  padding-bottom: 24px;
+}
+
+.cv-sous {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0 0 16px;
+  max-width: 78ch;
+}
+
+.cv-note {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 12px 0 0;
+  max-width: 78ch;
+}
+
+.cv-etat {
+  font-size: 14px;
+  color: var(--muted);
+  padding: 24px 0;
+}
+
+.cv-renvoi {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 20px;
+}
+
+/* Le tableau défile dans sa propre boîte : la page, elle, ne défile jamais
+   latéralement. */
+.cv-tableau {
+  overflow-x: auto;
+}
+
+.cv-grille {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.cv-grille th {
+  text-align: left;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  padding: 0 14px 9px 0;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.cv-grille td {
+  padding: 13px 14px 13px 0;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  font-variant-numeric: tabular-nums;
+}
+
+.cv-grille tr:last-child td {
+  border-bottom: 0;
+}
+
+.cv-liste {
+  font-weight: 700;
+}
+
+.cv-liste small {
+  display: block;
+  font-weight: 500;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+.cv-jauge {
+  display: block;
+  width: 68px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  margin-top: 6px;
+}
+
+.cv-jauge i {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--ink);
+}
+
+/* Le jaune marque ce qui manque DE NOTRE FAIT — jamais un jugement sur la
+   personne nommée. Le filet d'encre le rend lisible sur blanc (le jaune seul
+   est à 1,05:1 contre --ink). */
+.cv-trou {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: var(--accent);
+  box-shadow: inset 0 0 0 1.5px #a9c400;
+  color: var(--ink);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.cv-aucun {
+  color: var(--muted);
+}
+
+@media (max-width: 720px) {
+  .cv-main {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+/* La rangée du logo est collée (#951) : une ancre (`/sources#frise`) poserait
+   le titre de la section sous elle. */
+.cv-card {
+  scroll-margin-top: 96px;
+}
+
+/* Les mandats hors couverture, sous la frise (#951) — le style de l'accueil. */
+.cv-hc {
+  margin-top: 16px;
+}
+
+.static-card .cv-hc-titre {
+  font-size: 12.5px;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+.cv-hc dl {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.cv-hc dt {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.cv-hc dd {
+  margin: 1px 0 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.cv-hc a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
+}
+
+.cv-hc a:hover {
+  text-decoration-color: currentcolor;
+}

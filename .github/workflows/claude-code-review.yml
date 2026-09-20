@@ -1,0 +1,137 @@
+name: Claude Code Review
+
+# On-demand only: comment "/claude-review" on a PR to trigger a review.
+# (Not on every pull_request event anymore — that was reviewing every single PR.)
+# Trigger phrase deliberately does not contain "@claude" so it doesn't also
+# fire claude.yml's interactive @claude-mention handler.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# Modèle de menace, et ce qui diverge de claude.yml (#415)
+#
+# Mode **automation** : le prompt est fixe (`prompt:` ci-dessous), pas le texte
+# du commentaire déclencheur, et l'action tourne avec le `GITHUB_TOKEN` par
+# défaut, scopé par le bloc `permissions:` en lecture seule. Aucune écriture sur
+# le dépôt n'est possible depuis ce run — d'où l'absence de `WORKFLOW_PAT` et de
+# `--allowed-tools` restrictif, volontaire : le plugin de review a besoin de ses
+# outils, et la surface d'écriture est déjà nulle.
+#
+# Ce qui **n'est pas** une divergence assumée, et a été aligné en #415 : le
+# sandbox. Le token OAuth Claude est présent ici comme dans claude.yml, et ce
+# workflow lit du contenu de PR potentiellement hostile (diff, titre,
+# description d'une PR de fork) — une injection réussie pouvait l'exfiltrer vers
+# un domaine arbitraire. L'allowlist réseau ci-dessous ferme ce chemin. Elle est
+# volontairement identique à celle de claude.yml : toute modification doit être
+# répercutée dans les deux fichiers.
+#
+# Garde d'auteur : pré-filtre pour ne pas démarrer un runner sur le commentaire
+# d'un inconnu (dépôt public) ; la vérification qui fait foi — l'acteur a-t-il
+# le droit d'écriture — est faite par l'action elle-même. Voir l'en-tête de
+# claude.yml et `docs/decisions/workflows-claude-securite.md`.
+#
+# Réserve non levée : `plugin_marketplaces` n'est pas épinglé (aucune syntaxe de
+# révision n'existe côté action ni côté `claude plugin marketplace add`).
+# Argumentaire du refus : même section de technical_decisions.md.
+# ─────────────────────────────────────────────────────────────────────────────
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  claude-review:
+    if: |
+      github.event.issue.pull_request != null &&
+      contains(github.event.comment.body, '/claude-review') &&
+      contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    # Sans ce bloc, N commentaires `/claude-review` sur la même PR produisaient N
+    # runs parallèles sur le même diff. cancel-in-progress: true (et non false
+    # comme dans claude.yml) : une review n'écrit rien qu'un run annulé perdrait,
+    # et un second `/claude-review` veut la review de l'état le plus récent de la
+    # PR, pas deux fois la même.
+    concurrency:
+      group: claude-review-${{ github.event.issue.number }}
+      cancel-in-progress: true
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      # Mêmes étapes de préparation que claude.yml : bubblewrap/socat pour le
+      # sandbox Bash, et le contournement AppArmor d'Ubuntu 24.04+ qui empêche
+      # sinon bubblewrap de créer ses espaces de noms utilisateur.
+      # https://code.claude.com/docs/en/sandboxing#set-up-linux-and-wsl2
+      - name: Installer les dépendances du sandbox (bubblewrap, socat)
+        run: sudo apt-get update && sudo apt-get install -y bubblewrap socat
+
+      - name: Autoriser bubblewrap à créer des espaces de noms utilisateur (AppArmor)
+        run: |
+          if [ "$(sysctl -n kernel.apparmor_restrict_unprivileged_userns 2>/dev/null || echo 0)" = "1" ]; then
+            sudo tee /etc/apparmor.d/bwrap > /dev/null <<'EOF'
+          abi <abi/4.0>,
+          include <tunables/global>
+
+          profile bwrap /usr/bin/bwrap flags=(unconfined) {
+            userns,
+            include if exists <local/bwrap>
+          }
+          EOF
+            sudo systemctl reload apparmor
+          fi
+
+      - name: Run Claude Code Review
+        id: claude-review
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
+          plugins: 'code-review@claude-code-plugins'
+          prompt: '/code-review:code-review ${{ github.repository }}/pull/${{ github.event.issue.number }}'
+          # Allowlist réseau identique à celle de claude.yml — la garder
+          # synchronisée. L'installation du marketplace et du plugin a lieu dans
+          # les étapes de l'action, avant Claude : elle n'est pas soumise au
+          # sandbox, qui ne couvre que les commandes Bash lancées par Claude.
+          settings: |
+            {
+              "sandbox": {
+                "enabled": true,
+                "failIfUnavailable": true,
+                "allowUnsandboxedCommands": false,
+                "network": {
+                  "allowedDomains": [
+                    "github.com",
+                    "api.github.com",
+                    "*.githubusercontent.com",
+                    "objects.githubusercontent.com",
+                    "pypi.org",
+                    "files.pythonhosted.org",
+                    "registry.npmjs.org",
+                    "www.nosdeputes.fr",
+                    "2017-2022.nosdeputes.fr",
+                    "2012-2017.nosdeputes.fr",
+                    "2007-2012.nosdeputes.fr",
+                    "www.nossenateurs.fr",
+                    "archive.nossenateurs.fr",
+                    "data.assemblee-nationale.fr",
+                    "questions.assemblee-nationale.fr",
+                    "schemas.assemblee-nationale.fr",
+                    "www.assemblee-nationale.fr",
+                    "data.europarl.europa.eu",
+                    "www.europarl.europa.eu",
+                    "parltrack.org",
+                    "fr.wikipedia.org",
+                    "query.wikidata.org"
+                  ]
+                }
+              }
+            }
+          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
+          # or https://code.claude.com/docs/en/cli-reference for available options

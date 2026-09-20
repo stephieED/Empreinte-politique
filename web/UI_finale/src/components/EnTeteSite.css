@@ -1,0 +1,55 @@
+/* La rangée du logo, collée en haut (#951). Voir l'en-tête d'EnTeteSite.jsx. */
+
+.entete-site {
+  --entete-hauteur: 80px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  height: var(--entete-hauteur);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-right: 40px;
+  /* OPAQUE : la page défile dessous (#324, vérifié en capture). */
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Le logo garde sa gouttière de 40 px et sa hauteur de 80 px (Brand.css) ; la
+   rangée porte le filet, le logo n'en porte pas un second. */
+.entete-site > .brand {
+  margin-top: 0;
+  border-bottom: 0;
+  flex: none;
+}
+
+.entete-site-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+@media (max-width: 720px) {
+  .entete-site {
+    padding-right: 16px;
+    gap: 8px;
+  }
+
+  .entete-site-actions {
+    gap: 8px;
+  }
+}
+
+/* Sous 480 px le logo n'est plus que le symbole (Brand.css) : le lockup n'impose
+   plus ses 58 px, la rangée tombe à 56. */
+@media (max-width: 480px) {
+  .entete-site {
+    --entete-hauteur: 56px;
+  }
+
+  .entete-site > .brand {
+    height: 56px;
+    padding-inline: 16px;
+  }
+}

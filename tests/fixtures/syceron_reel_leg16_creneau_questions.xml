@@ -1,0 +1,304 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  Fixture FIGÉE, RÉDUCTION VERBATIM de CRSANR5L16S2024O1N228.xml (archive
+  data.assemblee-nationale.fr, législature 16, séance du 05/06/2024).
+  Aucun tag, aucun attribut, aucune valeur n'a été écrit à la main : la
+  réduction n'a fait que SUPPRIMER des frères — règle imposée par #510.
+
+  Elle porte les deux moitiés du critère structurel de #710 :
+
+    - un <point> TITRE_TEXTE_DISCUSSION titré « Questions au Premier ministre »
+      sous lequel la source range des <point> QPM_1_1 : c'est un CRÉNEAU de
+      séance, son titre n'est jamais un sujet, et le paragraphe qu'il porte en
+      propre (l'appel de l'ordre du jour par la présidence) sort avec
+      sujet = None ;
+    - le QPM_1_1 « Parcoursup », qui porte le sujet réel de la question — le
+      code manquait au vocabulaire du parseur, d'où 629 paragraphes hérités du
+      titre du créneau sur les législatures 16 et 17 ;
+    - en contrôle, un TITRE_TEXTE_DISCUSSION sous lequel AUCUN point de question
+      n'est rangé (« Accroître le financement des entreprises… ») : il garde son
+      titre pour sujet. Le critère est positif des deux côtés.
+
+  Les huit autres QPM_1_1 de la séance et les quatre autres textes en discussion
+  ont été supprimés, ainsi que les entrées de <sommaire> qui les référençaient.
+-->
+<compteRendu xmlns="http://schemas.assemblee-nationale.fr/referentiel">
+  <uid>CRSANR5L16S2024O1N228</uid>
+  <seanceRef>RUANR5L16S2024IDS28421</seanceRef>
+  <sessionRef>SCR5A2024O1</sessionRef>
+  <metadonnees>
+    <dateSeance>20240605140000000</dateSeance>
+    <dateSeanceJour>mercredi 05 juin 2024</dateSeanceJour>
+    <numSeanceJour>1</numSeanceJour>
+    <numSeance>228</numSeance>
+    <typeAssemblee>AN</typeAssemblee>
+    <legislature>16</legislature>
+    <session>Session ordinaire 2023-2024</session>
+    <nomFichierJo>20240228</nomFichierJo>
+    <validite>valide</validite>
+    <etat>complet</etat>
+    <diffusion>public</diffusion>
+    <version>avant_JO</version>
+    <environnement>PROD</environnement>
+    <heureGeneration>2024-06-20T17:22:09.000+02:00</heureGeneration>
+    <sommaire>
+      <presidentSeance id_syceron="3498656">Présidence de Mme Yaël Braun-Pivet</presidentSeance>
+      <sommaire1 valeur_pts_odj="1">
+        <titreStruct id_syceron="3498660">
+          <intitule>Questions au Premier ministre</intitule>
+          <sousIntitule>0</sousIntitule>
+        </titreStruct>
+        <sommaire2>
+          <titreStruct id_syceron="3498663">
+            <intitule>Réchauffement climatique</intitule>
+          </titreStruct>
+          <para id_syceron="3498665">Mme Anne Stambach-Terrenoir</para>
+          <para id_syceron="3498677">M. Gabriel Attal, Premier ministre</para>
+          <para id_syceron="3498693">Mme Anne Stambach-Terrenoir</para>
+        </sommaire2>
+        </sommaire1>
+      <sommaire1 valeur_pts_odj="2">
+        <titreStruct id_syceron="3498405">
+          <intitule>Accroître le financement des entreprises et l’attractivité de la France</intitule>
+          <sousIntitule>0</sousIntitule>
+        </titreStruct>
+        <para id_syceron="3498406" />
+        <sommaire2>
+          <titreStruct id_syceron="3498408">
+            <intitule>Présentation</intitule>
+          </titreStruct>
+          <para id_syceron="3498410">M. Alexandre Holroyd, rapporteur de la commission mixte paritaire</para>
+          <para id_syceron="3498534">Mme Marina Ferrari, secrétaire d’État chargée du numérique</para>
+          <para id_syceron="3498545">M. Éric Coquerel, vice-président de la commission mixte paritaire</para>
+        </sommaire2>
+        <sommaire2>
+          <titreStruct id_syceron="3498554">
+            <intitule>Discussion générale</intitule>
+          </titreStruct>
+          <para id_syceron="3498556">M. Daniel Labaronne</para>
+          <para id_syceron="3498566">M. Kévin Mauvieux</para>
+          <para id_syceron="3498581">Mme Marianne Maximi</para>
+          <para id_syceron="3498975">Mme Marie-Christine Dalloz</para>
+          <para id_syceron="3498988">M. Mohamed Laqhila</para>
+          <para id_syceron="3498998">M. Charles de Courson</para>
+          <para id_syceron="3499010">M. Philippe Brun</para>
+          <para id_syceron="3499573">M. Jean-Marc Tellier</para>
+          <para id_syceron="3499579">Mme Félicie Gérard</para>
+          <para id_syceron="3499584">Mme Eva Sas</para>
+        </sommaire2>
+        <sommaire2>
+          <titreStruct id_syceron="3499918">
+            <intitule>Texte de la commission mixte paritaire</intitule>
+          </titreStruct>
+          <para>Amendements n<sup>os</sup> <lienAdt id_syceron="3499920"> 1, 2</lienAdt></para>
+        </sommaire2>
+        <sommaire2>
+          <titreStruct id_syceron="3499929">
+            <intitule>Vote sur l’ensemble</intitule>
+          </titreStruct>
+          <sommaire3>
+            <titreStruct id_syceron="3499934">
+              <intitule>
+                <italique>Suspension et reprise de la séance</italique>
+              </intitule>
+            </titreStruct>
+          </sommaire3>
+        </sommaire2>
+      </sommaire1>
+      </sommaire>
+  </metadonnees>
+  <contenu>
+    <point nivpoint="1" valeur_ptsodj="1" ordinal_prise="1" id_preparation="2530549" ordre_absolu_seance="5" code_grammaire="TITRE_TEXTE_DISCUSSION" code_style="Titre" code_parole="" sommaire="1" id_syceron="3498660" valeur="">
+      <orateurs />
+      <texte>Questions au Premier ministre</texte>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="1" id_preparation="2530550" ordre_absolu_seance="6" id_acteur="PA721908" id_mandat="PM797568" id_nomination_oe="0" id_nomination_op="PM800479" code_grammaire="ODJ_APPEL_DISCUSSION" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="3498661" valeur="" roledebat="president">
+        <orateurs>
+          <orateur>
+            <nom>Mme la présidente</nom>
+            <id>721908</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="794.82">L’ordre du jour appelle les questions au Premier ministre.</texte>
+      </paragraphe>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="1" id_preparation="2530551" ordre_absolu_seance="7" id_acteur="PA718850" id_mandat="PM796203" id_nomination_oe="-1" id_nomination_op="-1" code_grammaire="INTERRUPTION_1_10" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="3498662" valeur="">
+        <orateurs>
+          <orateur>
+            <nom>M. Pierre Cordier</nom>
+            <id>718850</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="797.30">C’est la fin de vie des questions au Premier ministre ! <italique>(Sourires.)</italique></texte>
+      </paragraphe>
+    </point>
+    <point nivpoint="2" valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530735" ordre_absolu_seance="283" code_grammaire="QPM_1_1" code_style="Sous-tit_p_cap" code_parole="" sommaire="1" id_syceron="3499124" valeur="">
+      <orateurs />
+      <texte>Parcoursup</texte>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530736" ordre_absolu_seance="284" id_acteur="PA721908" id_mandat="PM797568" id_nomination_oe="0" id_nomination_op="PM800479" code_grammaire="PAROLE_GENERIQUE" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="3499055" valeur="">
+        <orateurs>
+          <orateur>
+            <nom>Mme la présidente</nom>
+            <id>721908</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="3711.49">La parole est à Mme Véronique de Montchalin.</texte>
+      </paragraphe>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530737" ordre_absolu_seance="285" id_acteur="PA719376" id_mandat="PM835641" id_nomination_oe="-1" id_nomination_op="-1" code_grammaire="PAROLE_GENERIQUE" code_style="NORMAL" code_parole="" sommaire="1" id_syceron="3499056" valeur="">
+        <orateurs>
+          <orateur>
+            <nom>Mme Véronique de Montchalin</nom>
+            <id>719376</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="3718.29">Depuis le 30 mai les résultats d’admission de la campagne 2024 sont publiés en continu sur la plateforme Parcoursup et comme chaque année depuis sa mise en place, la plateforme subit des critiques à cette occasion. Force est toutefois de constater que 945 500 candidats ont confirmé au moins un vœu d’orientation dans l’enseignement supérieur au cours de la phase principale d’admission, soit une progression de 3,1 %, en accord avec la progression de la démographie lycéenne.<br />En outre, à l’issue de la campagne 2023, 95 % des néobacheliers avaient reçu au moins une proposition d’admission et 83 % en avaient accepté une.<br />Si nous ne pouvons que nous réjouir pour nos jeunes étudiants de cette nette amélioration dans l’usage de Parcoursup et de ses performances, une interrogation demeure quant à la distinction entre les filières dites sélectives et non-sélectives.<br />Les formations de type classes préparatoires, BTS, IUT et autres, sont identifiées comme sélectives, alors que les licences universitaires ne le sont pas.<br />En réalité, la frontière semble plus ténue entre un IUT théoriquement sélectif attirant peu et une filière universitaire très demandée pour laquelle la sélection risque de se faire en raison du manque de places. Quand bien même l’université est censée garantir une place à chaque candidat, certaines licences recevant un nombre important de candidatures ne sont pas en mesure de le faire et deviennent <italique>de facto</italique> sélectives.<br />Une évolution de la procédure est-elle envisagée, qui donnerait aux candidats une meilleure visibilité quant à leurs chances d’accéder à des formations devenues sélectives ? <italique>(Applaudissements sur les bancs des groupes RE, Dem et HOR.)</italique></texte>
+      </paragraphe>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530743" ordre_absolu_seance="291" id_acteur="PA721908" id_mandat="PM797568" id_nomination_oe="0" id_nomination_op="PM800479" code_grammaire="PAROLE_GENERIQUE" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="3499062" valeur="">
+        <orateurs>
+          <orateur>
+            <nom>Mme la présidente</nom>
+            <id>721908</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="3847.27">La parole est à M. le Premier ministre.</texte>
+      </paragraphe>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530744" ordre_absolu_seance="292" id_acteur="PA722190" id_mandat="-1" id_nomination_oe="PM833697" id_nomination_op="-1" code_grammaire="PAROLE_GENERIQUE" code_style="NORMAL" code_parole="" sommaire="1" id_syceron="3499063" valeur="">
+        <orateurs>
+          <orateur>
+            <nom>M. Gabriel Attal</nom>
+            <id>722190</id>
+            <qualite>Premier ministre</qualite>
+          </orateur>
+        </orateurs>
+        <texte stime="3856.47">Je connais votre engagement de longue date – et même votre attachement – en faveur de notre jeunesse, de notre école et de notre enseignement supérieur.<br />Chacun sait que les choix pour le supérieur, donc pour leur avenir, sont un des moments clé de la vie des lycéens. Il est important pour les jeunes et leurs familles mais peut aussi être source d’inquiétude et d’angoisse. À ces familles, nous devions fournir un système simple, clair et, quand bien même il demeure toujours un peu d’inquiétude, le moins anxiogène possible ;…</texte>
+      </paragraphe>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530746" ordre_absolu_seance="294" id_acteur="PA795406" id_mandat="PM797466" id_nomination_oe="-1" id_nomination_op="-1" code_grammaire="INTERRUPTION_1_10" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="3499065" valeur="">
+        <orateurs>
+          <orateur>
+            <nom>Mme Isabelle Périgault</nom>
+            <id>795406</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="3877.86">Mais non, cela ne fonctionne pas !</texte>
+      </paragraphe>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530747" ordre_absolu_seance="295" id_acteur="PA722190" id_mandat="-1" id_nomination_oe="PM833697" id_nomination_op="-1" code_grammaire="PAROLE_GENERIQUE" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="3499066" valeur="">
+        <orateurs>
+          <orateur>
+            <nom>M. Gabriel Attal</nom>
+            <id>722190</id>
+            <qualite>Premier ministre</qualite>
+          </orateur>
+        </orateurs>
+        <texte stime="3895.40">…un système juste, transparent, qui garantisse les chances de chacun et offre des solutions à tous ceux qui souhaitent poursuivre leurs études.<br />En tant qu’« usager », lorsque j’ai obtenu mon bac, je me souviens qu’APB – admission postbac –, qui a précédé Parcoursup, consistait en un tirage au sort.</texte>
+      </paragraphe>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530749" ordre_absolu_seance="297" id_acteur="PA795406" id_mandat="PM797466" id_nomination_oe="-1" id_nomination_op="-1" code_grammaire="INTERRUPTION_1_10" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="3499068" valeur="">
+        <orateurs>
+          <orateur>
+            <nom>Mme Isabelle Périgault</nom>
+            <id>795406</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="3904.47">Il y avait d’autres choses avant APB !</texte>
+      </paragraphe>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530750" ordre_absolu_seance="298" id_acteur="PA722190" id_mandat="-1" id_nomination_oe="PM833697" id_nomination_op="-1" code_grammaire="PAROLE_GENERIQUE" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="3499069" valeur="">
+        <orateurs>
+          <orateur>
+            <nom>M. Gabriel Attal</nom>
+            <id>722190</id>
+            <qualite>Premier ministre</qualite>
+          </orateur>
+        </orateurs>
+        <texte stime="3913.96">Or il n’y a rien de plus angoissant que de dépendre d’un tirage au sort pour accéder à la filière que l’on souhaite. <italique>(Mme Danielle Brulebois applaudit.) </italique>Il est totalement antiméritocratique qu’une affectation à une filière se fasse par tirage au sort. Parcoursup a donc été instauré.<br />Évidemment, tout n’a pas été parfait au départ et tout n’est pas encore parfait. Mais nous avons appris vite et je crois que nous avons su nous adapter avec méthode, en écoutant les lycéens et leurs familles.<br />La procédure était très longue et nous l’avons réduite. Cette année, elle a duré 44 jours, contre 108 jours en 2018 – 108 jours ! Les familles nous demandaient de pouvoir davantage anticiper. Nous les avons entendues et un site d’entraînement a été ouvert début mai, afin que chacun puisse se familiariser au fonctionnement de Parcoursup.<br />Je suis heureux, d’abord pour les jeunes et leurs familles, que les affectations par Parcoursup se soient déroulées sans difficulté cette année : 945 000 candidats étaient inscrits, soit 30 000 de plus que l’année dernière. Près de 80 % des lycéens ont déjà reçu une proposition : c’est bien mieux qu’en 2023.<br />J’adresse mes félicitations aux lycéens qui sont sur le point de faire leurs choix et que soutiennent leurs professeurs, dont je salue la mobilisation au service de leurs élèves. À celles et ceux qui n’ont pas encore reçu de proposition d’admission, je dis « ne paniquez pas, nous sommes au début de la procédure ». Il reste encore plus d’un mois. Tous les matins, jusqu’au 10 juillet, les dossiers des candidats seront mis à jour en fonction de l’évolution des listes. Si un élève n’a pas d’offre aujourd’hui, il est tout à fait possible qu’il en reçoive une dans les jours qui viennent.<br />Nous ne laissons aucun élève sur le bord de la route.</texte>
+      </paragraphe>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530757" ordre_absolu_seance="304" id_acteur="PA795406" id_mandat="PM797466" id_nomination_oe="-1" id_nomination_op="-1" code_grammaire="INTERRUPTION_1_10" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="3499076" valeur="">
+        <orateurs>
+          <orateur>
+            <nom>Mme Isabelle Périgault</nom>
+            <id>795406</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="4010.09">C’est faux !</texte>
+      </paragraphe>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530758" ordre_absolu_seance="305" id_acteur="PA722190" id_mandat="-1" id_nomination_oe="PM833697" id_nomination_op="-1" code_grammaire="PAROLE_GENERIQUE" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="3499077" valeur="">
+        <orateurs>
+          <orateur>
+            <nom>M. Gabriel Attal</nom>
+            <id>722190</id>
+            <qualite>Premier ministre</qualite>
+          </orateur>
+        </orateurs>
+        <texte stime="4029.99">Pour ceux qui n’auraient été admis à aucun de leurs vœux, une procédure complémentaire sera ouverte dès le 11 juin. Ils bénéficieront d’un accompagnement spécifique. Les équipes de Parcoursup prendront contact avec eux, par mail ou par téléphone, pour trouver des solutions à leur situation.<br />Vous m’avez interrogé spécifiquement sur la sélectivité de certaines filières. C’est le cas des IUT ou encore d’écoles d’ingénieur universitaires et c’est la force de Parcoursup de proposer un éventail de possibilités et d’accompagner les lycéens.<br />Je réitère que Parcoursup est une avancée par rapport à la situation antérieure, dans laquelle les jeunes étaient tirés au sort, car le dispositif offre une plus grande transparence, notamment en ce qui concerne les critères d’analyse des dossiers ; permet une plus grande égalité en promouvant les élèves boursiers ou inscrits dans Les cordées de la réussite et en reconduisant les aides à la mobilité s’élevant à 500 euros ; accorde enfin une plus grande liberté à des élèves qui ont pu choisir parmi 24 000 formations, dont 10 000 sous forme d’apprentissages.<br />Nous restons non seulement vigilants et lucides, mais aussi à l’écoute des angoisses et des inquiétudes. Surtout, nous restons mobilisés dans cette campagne 2024 pour la réussite de tous les candidats inscrits sur Parcoursup.</texte>
+      </paragraphe>
+      <paragraphe valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530762" ordre_absolu_seance="309" id_acteur="PA721908" id_mandat="PM797568" id_nomination_oe="-1" id_nomination_op="PM800479" code_grammaire="QPM_1_50" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="3502461" valeur="" roledebat="president">
+        <orateurs>
+          <orateur>
+            <nom>Mme la présidente</nom>
+            <id>721908</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="4099.85">Nous avons terminé les questions au Premier ministre.</texte>
+      </paragraphe>
+      <point nivpoint="99" valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530762" ordre_absolu_seance="310" code_grammaire="SUSP_SEAN_PRES_1" code_style="Suspension rappel" code_parole="" sommaire="1" id_syceron="3499081" valeur="">
+        <orateurs />
+        <texte>
+          <italique>Suspension et reprise de la séance</italique>
+        </texte>
+        <paragraphe valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530763" ordre_absolu_seance="311" id_acteur="PA719874" id_mandat="PM796674" id_nomination_oe="0" id_nomination_op="PM801149" code_grammaire="SUSP_SEAN_PRES_2" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="3499082" valeur="" roledebat="president">
+          <orateurs>
+            <orateur>
+              <nom>Mme la présidente</nom>
+              <id>719874</id>
+              <qualite />
+            </orateur>
+          </orateurs>
+          <texte stime="4102.40">La séance est suspendue.</texte>
+        </paragraphe>
+        <paragraphe valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530764" ordre_absolu_seance="312" code_grammaire="SUSP_SEAN_PRES_3" code_style="Info Italiques" code_parole="" sommaire="0" id_syceron="3499083" valeur="">
+          <orateurs />
+          <texte>
+            <italique>(La séance, suspendue à quatorze heures cinquante-cinq, est reprise à quinze heures quinze, sous la présidence de Mme Élodie Jacquier-Laforge.)</italique>
+          </texte>
+        </paragraphe>
+        <changementPresidence nivpoint="100" valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530765" ordre_absolu_seance="313" code_grammaire="SUSP_SEAN_PRES_1_2" code_style="Présidence" code_parole="" sommaire="1" id_syceron="3499084" valeur="">
+          <orateurs />
+          <texte>Présidence de Mme Élodie Jacquier-Laforge<br />vice-présidente</texte>
+          <paragraphe valeur_ptsodj="1" ordinal_prise="4" id_preparation="2530766" ordre_absolu_seance="314" id_acteur="PA719874" id_mandat="PM796674" id_nomination_oe="0" id_nomination_op="PM801149" code_grammaire="SUSP_SEAN_PRES_2_1" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="3499085" valeur="" roledebat="president">
+            <orateurs>
+              <orateur>
+                <nom>Mme la présidente</nom>
+                <id>719874</id>
+                <qualite />
+              </orateur>
+            </orateurs>
+            <texte stime="5173.37">La séance est reprise.</texte>
+          </paragraphe>
+        </changementPresidence>
+      </point>
+    </point>
+    <point nivpoint="1" valeur_ptsodj="2" ordinal_prise="5" id_preparation="2530538" ordre_absolu_seance="316" code_grammaire="TITRE_TEXTE_DISCUSSION" code_style="Titre" code_parole="" sommaire="1" id_syceron="3498405" valeur=" (n[[o]] 2662)">
+      <orateurs />
+      <texte>Accroître le financement des entreprises et l’attractivité de la France</texte>
+    </point>
+    <point nivpoint="2" valeur_ptsodj="2" ordinal_prise="5" id_preparation="2530539" ordre_absolu_seance="317" code_grammaire="SOUS_TITRE_TEXTE_DISCUSSION" code_style="Sous-tit_info" code_parole="" sommaire="1" id_syceron="3498406" valeur="">
+      <orateurs />
+      <texte>Commission mixte paritaire</texte>
+      <paragraphe valeur_ptsodj="2" ordinal_prise="5" id_preparation="2530540" ordre_absolu_seance="318" id_acteur="PA719874" id_mandat="PM796674" id_nomination_oe="0" id_nomination_op="PM801149" code_grammaire="ODJ_APPEL_DISCUSSION" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="3498407" valeur=" (n[[os]] 2662 rectifié)" roledebat="president">
+        <orateurs>
+          <orateur>
+            <nom>Mme la présidente</nom>
+            <id>719874</id>
+            <qualite />
+          </orateur>
+        </orateurs>
+        <texte stime="5179.94">L’ordre du jour appelle la discussion, sur le rapport de la commission mixte paritaire, de la proposition de loi visant à accroître le financement des entreprises et l’attractivité de la France (n<exposant>o</exposant> 2662 rectifié).</texte>
+      </paragraphe>
+    </point>
+    </contenu>
+</compteRendu>

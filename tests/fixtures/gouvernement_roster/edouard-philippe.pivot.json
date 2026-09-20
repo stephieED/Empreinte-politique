@@ -1,0 +1,90 @@
+{
+  "schema_version": "1",
+  "id": "nosdeputes:edouard-philippe",
+  "nom": "Édouard Philippe",
+  "identite": {
+    "source_url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA345619"
+  },
+  "mandats": [
+    {
+      "label": "Premier ministre",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "Premier ministre",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": null,
+      "position_dans_hemicycle": null,
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Premier ministre",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "Premier ministre",
+      "debut": "2017-06-20",
+      "fin": "2020-07-06",
+      "actif": false,
+      "source_url": null,
+      "position_dans_hemicycle": null,
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Mandat parlementaire (Les Républicains)",
+      "categorie": "mandat_electif",
+      "fonction": "mandat",
+      "debut": "2012-06-20",
+      "fin": "2017-06-15",
+      "actif": false,
+      "source_url": null,
+      "position_dans_hemicycle": null,
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Gouvernement (PHILIPPE 2)",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "membre",
+      "debut": "2017-06-20",
+      "fin": "2020-07-06",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+      "position_dans_hemicycle": "gouvernement",
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Gouvernement (PHILIPPE)",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "membre",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+      "position_dans_hemicycle": "gouvernement",
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Mandat parlementaire (Les républicains)",
+      "categorie": "mandat_electif",
+      "fonction": "mandat",
+      "debut": "2012-06-20",
+      "fin": "2017-06-15",
+      "actif": false,
+      "source_url": null,
+      "position_dans_hemicycle": null,
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    }
+  ],
+  "meta": {
+    "fixture": {
+      "source": "pivot_data/profiles/edouard-philippe.pivot.json",
+      "ref": "a19519e2a0a375686600f766c662e23038de6e2c",
+      "extrait_le": "2026-08-20",
+      "reduction": "Champs conservés : ceux que gouvernement_roster lit — id, nom, identite.source_url, mandats[]. mandats[] restreint aux catégories ['fonction_gouvernementale', 'mandat_electif'], dans l'ordre de la source (jamais retrié)."
+    }
+  }
+}

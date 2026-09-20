@@ -1,0 +1,450 @@
+/* Les écarts au groupe (#328). Les teintes de position viennent de `VOTE_STYLE`
+   (utils/lecture.js), posées en style par le composant : une couleur écrite
+   deux fois est une couleur qui divergera. */
+
+.eg-carte {
+  /* La marge vient de `.cp-carte`. */
+}
+
+
+.eg-sous {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 6px 0 0;
+  max-width: 76ch;
+}
+
+.eg-bloc {
+  padding-top: 22px;
+  margin-top: 22px;
+  border-top: 1px solid var(--border);
+}
+/* Le filet SÉPARE deux blocs ; au-dessus du premier il ne séparait plus rien
+   depuis le retrait du titre « Ses divergences », et ouvrait un vide en haut de
+   la carte. Le premier titre se pose comme tous les autres. */
+.eg-bloc:first-child {
+  padding-top: 0;
+  margin-top: 0;
+  border-top: 0;
+}
+
+
+.eg-bloc-tete {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+/* MÊME TITRE DE BLOC QUE PARTOUT AILLEURS SUR LA FICHE — 15 px, 800, encre.
+   Ces deux-là étaient en 13 px capitales grises, la forme des ÉTIQUETTES : deux
+   titres de même rang portaient deux formes, et le rang se lisait faux. */
+.eg-bloc h4 {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* La ligne des groupes va EN HAUT À DROITE : elle nomme le référentiel de toute
+   la section — sans ces groupes-là, aucun des chiffres en dessous n'existe.
+   Reléguée sous eux, elle se lisait comme une précision de bas de page. */
+.eg-groupes {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 0;
+  text-align: right;
+}
+
+.eg-groupes > span:first-child {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.eg-groupes b {
+  color: var(--ink);
+}
+
+.eg-dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 18px;
+  margin: 0;
+  font-size: 13.5px;
+}
+
+.eg-dl dt {
+  color: var(--muted);
+}
+
+.eg-dl dt b {
+  color: var(--ink);
+}
+
+.eg-dl dt em {
+  display: block;
+  font-style: normal;
+  font-size: 11.5px;
+  /* `--border-strong` est la couleur d'un FILET (#e7e4df) : posée sur du texte,
+     elle donne un contraste de 1,3:1 sur blanc — illisible. */
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.eg-dl dt em a {
+  color: var(--muted);
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 2px;
+}
+
+.eg-dl dt em a:hover {
+  color: var(--ink);
+  text-decoration-color: currentcolor;
+}
+
+.eg-dl dd {
+  margin: 0;
+  font-weight: 700;
+  text-align: right;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.eg-dl dd.eg-fort {
+  color: var(--ink);
+}
+
+.eg-dit {
+  font-size: 13.5px;
+  margin: 10px 0 0;
+  line-height: 1.5;
+  max-width: 78ch;
+}
+
+/* ── La bande ──────────────────────────────────────────────────────────────
+ *
+ * TROIS RANGS DE HAUTEUR FIXE. C'est ce qui permet à une étiquette de tomber en
+ * face de son rang, et c'est aussi ce qui garde la figure lisible : le rang des
+ * points ne grandit jamais, seul celui des barres respire.
+ */
+.eg-zone {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 14px;
+  margin-top: 26px;
+  height: 78px;
+}
+
+.eg-etiq {
+  display: grid;
+  grid-template-rows: 20px 1fr 8px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: right;
+  color: var(--muted);
+  max-width: 152px;
+}
+
+.eg-etiq span {
+  align-self: center;
+  line-height: 1.25;
+}
+
+.eg-bande {
+  display: flex;
+  align-items: stretch;
+  gap: 1px;
+  height: 100%;
+}
+
+.eg-col {
+  flex: 1 1 0;
+  min-width: 2px;
+  display: grid;
+  grid-template-rows: 20px 1fr 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+button.eg-col {
+  cursor: pointer;
+}
+
+button.eg-col:hover .eg-lui {
+  transform: scale(1.2);
+}
+
+button.eg-col:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* Rang 1 — sa position. Neutre par défaut : colorer les 172 repères mettait la
+   même emphase sur ce qui se répète et sur ce qui est rare, et la teinte
+   cessait d'être un signal pour devenir une texture. */
+.eg-lui {
+  grid-row: 1;
+  align-self: center;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border-strong);
+}
+
+/* La divergence garde un signal de FORME en plus de la couleur : sur un rang de
+   172 repères, un point cerclé se trouve plus vite qu'un désaccord de teinte —
+   et le fait reste lisible pour qui distingue mal les couleurs. */
+.eg-col--ecart .eg-lui {
+  width: 10px;
+  height: 10px;
+  justify-self: center;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.5px var(--ink), 0 0 0 3.5px var(--card);
+}
+
+/* Rang 2 — les membres qui n'ont pas suivi. En encre neutre, parce que c'est un
+   NOMBRE et pas une position ; et rare, donc la barre ressort. */
+.eg-part {
+  grid-row: 2;
+  width: 100%;
+  background: var(--ink);
+  border-radius: 1px 1px 0 0;
+  align-self: end;
+}
+
+/* Rang 3 — ce qu'a voté son groupe, une teinte par scrutin. */
+.eg-socle {
+  grid-row: 3;
+  width: 100%;
+  height: 5px;
+  border-radius: 1px;
+  align-self: end;
+}
+
+.eg-axe {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+  margin: 8px 0 0;
+  padding-left: 166px;
+}
+
+.eg-cles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+  margin-top: 16px;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.eg-cles-quoi {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.eg-cle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.eg-cle i {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  display: block;
+  flex: none;
+}
+
+.eg-cle-socle {
+  width: 14px !important;
+  height: 5px !important;
+  border-radius: 1px !important;
+  background: var(--abstention);
+}
+
+.eg-cle-part {
+  width: 6px !important;
+  height: 14px !important;
+  border-radius: 1px !important;
+  background: var(--ink);
+}
+
+.eg-cle-point {
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  background: var(--contre);
+  box-shadow: 0 0 0 1.5px var(--ink);
+}
+
+/* Les trois entrées de rang ne s'affichent QUE là où la gouttière ne tient pas.
+   Le même texte, jamais rendu deux fois. */
+.eg-cles .eg-cle--rang {
+  display: none;
+}
+
+/* ── Les lignes ────────────────────────────────────────────────────────────── */
+.eg-lignes {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 16px;
+}
+
+.eg-lg {
+  display: grid;
+  grid-template-columns: 86px 1fr 210px;
+  gap: 0 18px;
+  align-items: center;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.eg-lg:last-child {
+  border-bottom: 0;
+}
+
+.eg-lg-date {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.eg-lg-titre {
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.eg-lg-titre a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 2px;
+}
+
+.eg-lg-titre a:hover {
+  text-decoration-color: currentcolor;
+}
+
+.eg-lg-lit {
+  font-size: 11.5px;
+  font-weight: 800;
+  margin: 3px 0 0;
+  line-height: 1.4;
+}
+
+.eg-lg-lit span {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.eg-lg-puces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 7px;
+}
+
+.eg-puce {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--muted);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.eg-puce--alerte {
+  border-color: #e53420;
+  color: #e53420;
+  font-weight: 700;
+}
+
+.eg-rang {
+  display: flex;
+  height: 18px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--border);
+}
+
+.eg-rang > span {
+  display: block;
+  height: 100%;
+}
+
+.eg-rang-absent {
+  background: #dcd9d3;
+}
+
+/* ── Les vides ─────────────────────────────────────────────────────────────── */
+.eg-vide h3 {
+  font-size: 14px;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+.eg-vide p {
+  font-size: 13.5px;
+  color: var(--muted);
+  margin: 0;
+  max-width: 76ch;
+}
+
+.eg-vide b {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+@media (max-width: 720px) {
+  /* Sous 720 px, 172 colonnes et 152 px d'étiquettes ne rentrent pas ensemble.
+     Les étiquettes redeviennent une légende sous la figure, et la bande défile
+     dans son propre conteneur plutôt que de pousser la page. */
+  .eg-etiq {
+    display: none;
+  }
+
+  .eg-zone {
+    grid-template-columns: 1fr;
+    overflow-x: auto;
+  }
+
+  .eg-bande {
+    min-width: 460px;
+  }
+
+  .eg-axe {
+    padding-left: 0;
+  }
+
+  .eg-cles .eg-cle--rang {
+    display: inline-flex;
+  }
+
+  .eg-lg {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .eg-groupes {
+    text-align: left;
+  }
+}

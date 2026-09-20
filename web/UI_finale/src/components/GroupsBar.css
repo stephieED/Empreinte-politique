@@ -1,0 +1,94 @@
+.gb-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gb-bar-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  padding-left: 2px;
+}
+
+/* Même resserrement que `.cb-chip` : sans avatar, la marge gauche de 6 px et
+   la gouttière de 8 px n'ont plus rien à loger. */
+.gb-chip {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1.5px solid transparent;
+  box-shadow: 0 2px 8px rgba(20, 15, 40, 0.06);
+  cursor: pointer;
+  font: 600 13px 'Manrope', sans-serif;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.gb-chip:hover {
+  box-shadow: 0 4px 14px rgba(20, 15, 40, 0.1);
+}
+
+.gb-chip:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* UNE FICHE GELÉE SE DIT, ELLE NE SE CACHE PAS.
+   Les deux groupes du Sénat sont publiés et ne portent aucun scrutin : la
+   collecte y est suspendue depuis le 24/08/2026, et le Sénat est hors du
+   périmètre éditorial. La pastille reste cliquable, lisible et sélectionnable —
+   c'est un fait sur CE QUE LA FICHE MONTRE, jamais un rang entre des groupes
+   (§2 règle 1), et l'infobulle l'écrit en toutes lettres. Même traitement que
+   les candidats sans mandat, parce que c'est la même nature de fait. */
+.gb-chip--gelee {
+  color: #6f6b78;
+  box-shadow: none;
+  border-color: var(--border-strong);
+}
+.gb-chip--gelee:hover {
+  box-shadow: 0 4px 14px rgba(20, 15, 40, 0.1);
+}
+.gb-chip--gelee.active {
+  color: var(--ink);
+  border-color: var(--dark);
+}
+
+.gb-chip.active {
+  background: var(--dark);
+  border-color: var(--dark);
+  color: #ffffff;
+}
+
+
+
+.gb-skeleton {
+  width: 140px;
+  height: 34px;
+  background: linear-gradient(90deg, #ebe9e5 25%, #f5f3ef 37%, #ebe9e5 63%);
+  background-size: 400% 100%;
+  animation: gb-shine 1.4s ease infinite;
+  box-shadow: none;
+}
+
+@keyframes gb-shine {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gb-empty {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+  padding: 8px 2px;
+}

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atlas augmenté — CONTRECHAMP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    :root { --ink:#173b52; --paper:#e9f1ee; --surface:#f8faf6; --grid:#94afa6; --coral:#ed684f; --mint:#b8f5d2; --blue:#5085d8; --muted:#58736b; }
+    html { scroll-behavior: smooth; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:"DM Mono",monospace; }
+    button,select,a { color:inherit; font:inherit; }
+    button { cursor:pointer; }
+    .topbar { position:sticky; z-index:20; top:0; display:grid; grid-template-columns:auto minmax(180px,1fr) auto; align-items:center; gap:1rem; padding:.7rem 1rem; border-bottom:1px solid var(--grid); background:rgba(239,246,243,.96); backdrop-filter:blur(12px); }
+    .topbar a { font-size:.62rem; text-decoration:none; }
+    .candidate-select { min-width:0; width:min(420px,100%); justify-self:center; padding:.55rem .8rem; border:1px solid var(--grid); border-radius:0; background:var(--surface); }
+    .express-trigger { padding:.55rem .75rem; border:1px solid var(--ink); background:var(--mint); font-size:.62rem; }
+    .empty { min-height:calc(100vh - 55px); display:grid; place-items:center; padding:2rem; text-align:center; }
+    .empty h1 { max-width:9ch; margin:0 auto 1rem; font:700 clamp(3rem,9vw,8rem)/.82 "Bricolage Grotesque",sans-serif; }
+    .empty p { max-width:55ch; margin:auto; font-size:.72rem; line-height:1.7; }
+    .shell { min-height:calc(100vh - 55px); display:grid; grid-template-columns:minmax(230px,27vw) 1fr; }
+    .sidebar { position:sticky; top:55px; height:calc(100vh - 55px); z-index:5; display:flex; flex-direction:column; padding:1.2rem; border-right:1px solid var(--grid); background:rgba(239,246,243,.94); }
+    .brand { font:700 clamp(1.6rem,3vw,3rem)/.85 "Bricolage Grotesque",sans-serif; }
+    .person { margin-top:auto; }
+    .person .eyebrow,.map-head,.detail-kicker { font-size:.56rem; text-transform:uppercase; }
+    .person h1 { max-width:9ch; margin:.5rem 0; font:700 clamp(2rem,4vw,4.3rem)/.84 "Bricolage Grotesque",sans-serif; }
+    .person p { font-size:.62rem; line-height:1.6; }
+    .stats { display:grid; grid-template-columns:1fr 1fr; gap:1px; margin-top:1rem; border:1px solid var(--grid); background:var(--grid); }
+    .stat { padding:.7rem; background:var(--paper); }
+    .stat b { display:block; font-size:1.25rem; }
+    .map { position:relative; min-height:calc(100vh - 55px); overflow:hidden; background-image:linear-gradient(rgba(98,137,126,.22) 1px,transparent 1px),linear-gradient(90deg,rgba(98,137,126,.22) 1px,transparent 1px); background-size:40px 40px; }
+    .map::before,.map::after { content:""; position:absolute; border:1px solid var(--grid); border-radius:46% 54% 61% 39%; transform:rotate(-8deg); pointer-events:none; }
+    .map::before { inset:8% 9%; }.map::after { inset:20% 22%; transform:rotate(13deg); }
+    .map-head { position:absolute; z-index:3; top:1rem; left:1rem; right:1rem; display:flex; justify-content:space-between; }
+    .regions { position:absolute; inset:3.5rem 1rem 9rem; }
+    .route { position:absolute; z-index:1; inset:22% 17% 18%; border:2px dashed var(--coral); border-radius:50%; transform:rotate(8deg); pointer-events:none; }
+    .region { position:absolute; z-index:3; left:var(--x); top:var(--y); width:clamp(80px,calc(74px + var(--weight) * 1px),162px); aspect-ratio:1; padding:.5rem; border:1px solid var(--ink); border-radius:50%; background:rgba(233,241,238,.94); transform:translate(-50%,-50%); transition:transform .2s,background .2s; text-align:center; }
+    .region:hover,.region.active { z-index:4; transform:translate(-50%,-50%) scale(1.1); background:var(--mint); }
+    .region b { display:block; font:600 clamp(.68rem,1.3vw,1rem) "Bricolage Grotesque",sans-serif; }
+    .region small { font-size:.49rem; }
+    .detail { position:absolute; z-index:6; right:1rem; bottom:1rem; width:min(430px,calc(100% - 2rem)); padding:1rem; border:1px solid var(--ink); background:var(--surface); box-shadow:7px 7px 0 var(--ink); }
+    .detail h2 { margin:.45rem 0; font:600 1.7rem "Bricolage Grotesque",sans-serif; }
+    .detail-summary { font:600 .78rem "Instrument Sans",sans-serif; }
+    .evidence { display:grid; gap:.35rem; margin:.7rem 0 0; padding:0; list-style:none; }
+    .evidence li { padding-top:.35rem; border-top:1px solid var(--grid); font-size:.58rem; line-height:1.45; }
+    .evidence a { text-decoration:none; }
+    .evidence a:hover { text-decoration:underline; }
+    .detail-actions { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.7rem; }
+    .detail-actions button { padding:.5rem .65rem; border:1px solid var(--ink); background:transparent; font-size:.55rem; }
+    .detail-actions button:first-child { color:white; background:var(--ink); }
+    .layer { padding:clamp(1rem,4vw,4rem); border-top:1px solid var(--grid); background:var(--surface); }
+    .layer[hidden] { display:none; }
+    .layer-head { display:flex; justify-content:space-between; align-items:end; gap:1rem; margin-bottom:1.5rem; }
+    .layer h2 { max-width:10ch; margin:0; font:700 clamp(2.5rem,6vw,6rem)/.85 "Bricolage Grotesque",sans-serif; }
+    .layer-close { width:2.7rem; height:2.7rem; border:1px solid var(--ink); border-radius:50%; background:transparent; }
+    .trace-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; border:1px solid var(--grid); background:var(--grid); }
+    .trace { min-height:170px; padding:1rem; background:var(--paper); }
+    .trace b { display:block; margin:.4rem 0; font:600 1.1rem "Instrument Sans",sans-serif; }
+    .trace small { font-size:.54rem; line-height:1.5; }
+    .trace a { display:inline-block; margin-top:.7rem; font-size:.55rem; }
+    .express { position:fixed; z-index:50; inset:0; display:none; color:#10110f; background:#ef503c; }
+    .express.open { display:block; }
+    .express-close { position:absolute; z-index:3; top:1rem; right:1rem; width:3rem; height:3rem; border:1px solid; border-radius:50%; background:#f7f3e8; font-size:1.2rem; }
+    .express-scene { position:absolute; inset:0; display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:5vw; padding:clamp(2rem,7vw,7rem); opacity:0; pointer-events:none; transform:translateY(2rem); transition:opacity .35s,transform .4s; }
+    .express-scene.active { opacity:1; pointer-events:auto; transform:none; }
+    .express-scene:nth-child(2) { background:#e8ff74; }.express-scene:nth-child(3) { color:white; background:#173b52; }.express-scene:nth-child(4) { background:#b8f5d2; }
+    .express-question { margin:0; font:600 clamp(2.4rem,6vw,6rem)/.9 "Bricolage Grotesque",sans-serif; }
+    .express-answer { text-align:right; }
+    .express-answer b { display:block; font:700 clamp(5rem,13vw,13rem)/.72 "Bricolage Grotesque",sans-serif; }
+    .express-answer span { font-size:.62rem; }
+    .express-nav { position:absolute; z-index:3; right:1rem; bottom:1rem; display:flex; gap:.4rem; }
+    .express-nav button { width:3rem; height:3rem; border:1px solid; border-radius:50%; background:#f7f3e8; }
+    .express-progress { position:absolute; z-index:3; left:1rem; bottom:1rem; width:min(45vw,420px); height:3px; background:rgba(0,0,0,.2); }
+    .express-progress i { display:block; width:25%; height:100%; background:currentColor; transition:width .3s; }
+    body.modal-open { overflow:hidden; }
+    @media(max-width:760px){.topbar{grid-template-columns:auto 1fr}.express-trigger{grid-column:1/-1;width:100%}.shell{grid-template-columns:1fr}.sidebar{position:relative;top:auto;height:auto;min-height:42vh;border-right:0;border-bottom:1px solid var(--grid)}.person{margin-top:3rem}.map{min-height:760px}.regions{inset:3.5rem .5rem 15rem}.region{width:calc(68px + var(--weight) * .45px)}.detail{bottom:1rem}.trace-grid{grid-template-columns:1fr}.express-scene{grid-template-columns:1fr;align-content:center}.express-answer{text-align:left}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.region,.express-scene{transition:none}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a href="../">← Laboratoire</a>
+    <select id="candidate-select" class="candidate-select" aria-label="Choisir un candidat"><option>Chargement…</option></select>
+    <button id="express-trigger" class="express-trigger" type="button" disabled>Résumé express ▶</button>
+  </header>
+  <main id="app"><section class="empty"><div><h1>Atlas parlementaire.</h1><p>Choisissez un candidat pour cartographier ses traces publiques. La surface des régions représente un volume documentaire, jamais une valeur ou un score politique.</p></div></section></main>
+  <div id="express" class="express" role="dialog" aria-modal="true" aria-label="Résumé express" aria-hidden="true">
+    <button class="express-close" type="button" aria-label="Fermer">×</button>
+    <div id="express-scenes"></div>
+    <div class="express-progress"><i></i></div>
+    <nav class="express-nav" aria-label="Navigation du résumé"><button type="button" data-express-dir="-1" aria-label="Précédent">←</button><button type="button" data-express-dir="1" aria-label="Suivant">→</button></nav>
+  </div>
+  <script>
+    const CANDIDATES_URL = "../../raw_data/candidats.json";
+    const PROFILE_URL = (slug) => `../../raw_data/profiles/${slug}.json`;
+    const THEMES = [
+      ["sante","Santé",["santé","hopital","hôpital","malad","soin","medec","médec"]],
+      ["environnement","Environnement",["climat","environ","biodivers","energie","énergie","carbone","pollution","écologi"]],
+      ["economie","Économie",["budget","fiscal","impôt","impot","entreprise","travail","emploi","financ"]],
+      ["education","Éducation",["éduc","ecole","école","universit","apprentiss","scolair"]],
+      ["securite","Sécurité",["sécurit","police","défense","defense","terror","justice pénale","violence"]],
+      ["institutions","Institutions",["constitution","assemblée","assemblee","sénat","senat","scrutin","loi organique","collectivités"]],
+      ["europe_international","Europe / International",["europe","union européenne","international","onu","otan","étrang","afrique"]],
+      ["social","Social",["retraite","logement","social","pauvret","solidarit","égalité","salaire"]],
+    ];
+    const POSITIONS = [[18,22],[72,19],[45,42],[77,57],[21,61],[52,72],[86,79],[12,84]];
+    const state = { candidates:[], meta:null, profile:null, theme:"institutions", layer:null, expressIndex:0 };
+    const app = document.getElementById("app");
+    const select = document.getElementById("candidate-select");
+    const express = document.getElementById("express");
+    const expressTrigger = document.getElementById("express-trigger");
+
+    function escapeHtml(value){return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[char]);}
+    function toDate(value){const date=new Date(value);return Number.isNaN(date.getTime())?"date inconnue":date.toLocaleDateString("fr-FR");}
+    function labelFor(key){return THEMES.find(theme=>theme[0]===key)?.[1]||"Institutions";}
+    function classify(...values){const text=values.flat().filter(Boolean).join(" ").toLowerCase();return THEMES.find(theme=>theme[2].some(word=>text.includes(word)))?.[0]||"institutions";}
+    function enrich(profile){return {...profile,votes:(profile.votes||[]).map(item=>({...item,_theme:classify(item.titre,item.position)})),dossiers_legislatifs:(profile.dossiers_legislatifs||[]).map(item=>({...item,_theme:classify(item.titre)})),interventions:(profile.interventions||[]).map(item=>({...item,_theme:classify(item.sujet,item.texte,item.mots_cles)}))};}
+    function themeFacts(key){const profile=state.profile;return {votes:profile.votes.filter(item=>item._theme===key),texts:profile.dossiers_legislatifs.filter(item=>item._theme===key),words:profile.interventions.filter(item=>item._theme===key)};}
+    function themeTotals(){return THEMES.map(([key,label])=>{const facts=themeFacts(key);return {key,label,facts,total:facts.votes.length+facts.texts.length+facts.words.length};}).sort((a,b)=>b.total-a.total);}
+    function sourceFor(item,type){if(item.url_source||item.url||item.url_detail||item.url_institution)return item.url_source||item.url||item.url_detail||item.url_institution;if(type==="vote"&&item.numero_scrutin){const legislature=String(state.profile.votes_source||"").match(/l[ée]gislature\s*(\d+)/i)?.[1]||state.profile.dossiers_legislatifs.find(entry=>entry.legislature)?.legislature;return legislature?`https://www.assemblee-nationale.fr/dyn/${legislature}/scrutins/${item.numero_scrutin}`:state.profile.source;}return state.profile.source||"";}
+    function tenure(){const mandates=(state.profile.mandats||[]).filter(item=>item.categorie==="mandat_electif");const starts=mandates.map(item=>Date.parse(item.debut)).filter(Number.isFinite);if(!starts.length)return null;const active=mandates.some(item=>item.actif);const ends=mandates.map(item=>Date.parse(item.fin)).filter(Number.isFinite);const end=active||!ends.length?Date.now():Math.max(...ends);return Math.max(0,Math.round((end-Math.min(...starts))/(365.25*86400000)*10)/10);}
+    function responsibilities(){return new Set((state.profile.mandats||[]).filter(item=>["commission","extra_parlementaire","groupe_amitie"].includes(item.categorie)).map(item=>item.label||"Non précisée")).size;}
+    function finalVoteProfile(){const pattern=/^l[’']ensemble\s+(?:du|de la)\s+(.*?)\s*(?:\(([^)]*)\))?\.?$/i;const ranks={"lecture définitive":4,"texte de la commission mixte paritaire":3,"nouvelle lecture":2,"deuxième lecture":2,"première lecture":1};const groups=new Map();state.profile.votes.forEach(vote=>{const match=pattern.exec((vote.titre||"").trim());if(!match)return;const rank=ranks[(match[2]||"").toLowerCase()]||1;const current=groups.get(match[1].toLowerCase());if(!current||rank>current.rank||Date.parse(vote.date)>Date.parse(current.vote.date))groups.set(match[1].toLowerCase(),{rank,vote});});let pour=0;groups.forEach(({vote})=>{if(String(vote.position).toLowerCase().includes("pour"))pour++;});return {total:groups.size,pour,pct:groups.size?Math.round(pour/groups.size*100):null};}
+    function recentEvidence(facts){return [...facts.votes.map(item=>({item,type:"vote",date:item.date,label:"Vote"})),...facts.texts.map(item=>({item,type:"text",date:item.date_max||item.date_min,label:"Texte"})),...facts.words.map(item=>({item,type:"word",date:item.date||item.created_at,label:"Parole"}))].sort((a,b)=>Date.parse(b.date||0)-Date.parse(a.date||0)).slice(0,3);}
+    function titleOf(entry){return entry.item.titre||entry.item.sujet||entry.item.texte?.slice(0,100)||"Trace sans intitulé";}
+    function renderDetail(key){state.theme=key;document.querySelectorAll(".region").forEach(button=>button.classList.toggle("active",button.dataset.theme===key));const facts=themeFacts(key);const evidence=recentEvidence(facts);document.querySelector(".detail").innerHTML=`<span class="detail-kicker">${escapeHtml(labelFor(key))} · ${facts.votes.length+facts.texts.length+facts.words.length} traces</span><h2>${escapeHtml(labelFor(key))}</h2><p class="detail-summary">${facts.votes.length} votes · ${facts.texts.length} textes · ${facts.words.length} prises de parole</p><ul class="evidence">${evidence.length?evidence.map(entry=>{const source=sourceFor(entry.item,entry.type);return `<li>${escapeHtml(entry.label)} · ${escapeHtml(toDate(entry.date))}<br>${source?`<a href="${escapeHtml(source)}" target="_blank" rel="noopener">${escapeHtml(titleOf(entry))} ↗</a>`:escapeHtml(titleOf(entry))}</li>`;}).join(""):"<li>Aucune trace retrouvée dans cette région.</li>"}</ul><div class="detail-actions"><button type="button" data-open-layer="${escapeHtml(key)}">Explorer la région</button><button type="button" data-express-open>Résumé express</button></div>`;bindDynamic();}
+    function renderMap(){const profile=state.profile;const totals=themeTotals();const max=Math.max(...totals.map(item=>item.total),1);state.theme=totals[0]?.key||"institutions";app.innerHTML=`<div class="shell"><aside class="sidebar"><div class="brand">CONTRE<br>CHAMP</div><div class="person"><span class="eyebrow">Atlas parlementaire / données publiques</span><h1>${escapeHtml(profile.identite?.nom_complet||state.meta.nom)}</h1><p>${escapeHtml(state.meta.parti||profile.identite?.groupe_nom||"Affiliation non renseignée")}</p><p>La surface traduit le volume de traces disponibles, pas leur importance politique.</p><div class="stats"><div class="stat"><b>${profile.votes.length}</b><small>votes</small></div><div class="stat"><b>${profile.dossiers_legislatifs.length}</b><small>textes</small></div><div class="stat"><b>${profile.interventions.length}</b><small>paroles</small></div><div class="stat"><b>${(profile.mandats||[]).length}</b><small>mandats</small></div></div></div></aside><div><section class="map"><div class="map-head"><span>Territoire d’activité</span><span>${totals.reduce((sum,item)=>sum+item.total,0)} traces classées</span></div><div class="regions"><div class="route"></div>${totals.map((item,index)=>`<button class="region ${item.key===state.theme?"active":""}" style="--x:${POSITIONS[index][0]}%;--y:${POSITIONS[index][1]}%;--weight:${Math.round(item.total/max*80)}" data-theme="${item.key}"><b>${escapeHtml(item.label)}</b><small>${item.total} traces</small></button>`).join("")}</div><article class="detail" aria-live="polite"></article></section><section id="layer" class="layer" hidden></section></div></div>`;document.querySelectorAll(".region").forEach(button=>button.addEventListener("click",()=>renderDetail(button.dataset.theme)));renderDetail(state.theme);}
+    function renderLayer(key){const facts=themeFacts(key);const traces=recentEvidence(facts).concat([...facts.votes.slice(0,4).map(item=>({item,type:"vote",date:item.date,label:"Vote"})),...facts.texts.slice(0,4).map(item=>({item,type:"text",date:item.date_max||item.date_min,label:"Texte"})),...facts.words.slice(0,4).map(item=>({item,type:"word",date:item.date||item.created_at,label:"Parole"}))]).filter((entry,index,array)=>array.findIndex(other=>other.item===entry.item)===index).slice(0,12);const layer=document.getElementById("layer");layer.hidden=false;layer.innerHTML=`<div class="layer-head"><div><span class="detail-kicker">Couche documentaire</span><h2>${escapeHtml(labelFor(key))}</h2></div><button class="layer-close" type="button" aria-label="Fermer">×</button></div><div class="trace-grid">${traces.length?traces.map(entry=>{const source=sourceFor(entry.item,entry.type);return `<article class="trace"><small>${escapeHtml(entry.label)} · ${escapeHtml(toDate(entry.date))}</small><b>${escapeHtml(titleOf(entry))}</b>${source?`<a href="${escapeHtml(source)}" target="_blank" rel="noopener">Source ↗</a>`:"<small>Source directe indisponible</small>"}</article>`;}).join(""):'<article class="trace">Aucune trace disponible.</article>'}</div>`;layer.querySelector(".layer-close").addEventListener("click",()=>{layer.hidden=true;document.querySelector(".map").scrollIntoView();});layer.scrollIntoView();}
+    function expressData(){const vote=finalVoteProfile();const dominant=themeTotals()[0];return [{question:"Depuis combien de temps exerce-t-il un mandat parlementaire ?",value:tenure()===null?"N/D":`${tenure()} ans`,note:"Durée cumulée du mandat, pas mesure de l’implication."},{question:"Quelles responsabilités institutionnelles a-t-il occupées ?",value:String(responsibilities()),note:"Responsabilités distinctes, hors réaffectations administratives."},{question:"Comment vote-t-il sur les textes entiers ?",value:vote.pct===null?"N/D":`${vote.pct}%`,note:vote.total?`${vote.pour} votes « pour » sur ${vote.total} textes finaux.`:"Aucun vote final retrouvé."},{question:"Quel thème apparaît le plus souvent dans ses traces ?",value:dominant?dominant.label:"N/D",note:dominant?`${dominant.total} traces classées. Une fréquence documentaire, pas une priorité déclarée.`:"Thème non déterminé."}];}
+    function renderExpress(){document.getElementById("express-scenes").innerHTML=expressData().map((item,index)=>`<section class="express-scene ${index===state.expressIndex?"active":""}"><h2 class="express-question">${escapeHtml(item.question)}</h2><div class="express-answer"><b>${escapeHtml(item.value)}</b><span>${escapeHtml(item.note)}</span></div></section>`).join("");document.querySelector(".express-progress i").style.width=`${(state.expressIndex+1)*25}%`;}
+    function openExpress(){state.expressIndex=0;renderExpress();express.classList.add("open");express.setAttribute("aria-hidden","false");document.body.classList.add("modal-open");document.querySelector(".express-close").focus();}
+    function closeExpress(){express.classList.remove("open");express.setAttribute("aria-hidden","true");document.body.classList.remove("modal-open");expressTrigger.focus();}
+    function moveExpress(direction){state.expressIndex=(state.expressIndex+direction+4)%4;renderExpress();}
+    function bindDynamic(){document.querySelector("[data-open-layer]")?.addEventListener("click",event=>renderLayer(event.currentTarget.dataset.openLayer));document.querySelector("[data-express-open]")?.addEventListener("click",openExpress);}
+    async function loadCandidate(slug){if(!slug)return;app.innerHTML='<section class="empty"><p>Cartographie en cours…</p></section>';try{const response=await fetch(PROFILE_URL(slug),{cache:"no-store"});if(!response.ok)throw new Error(`HTTP ${response.status}`);state.meta=state.candidates.find(item=>item.slug===slug);state.profile=enrich(await response.json());expressTrigger.disabled=false;renderMap();document.title=`Atlas augmenté — ${state.meta.nom}`;}catch(error){app.innerHTML=`<section class="empty"><p>Profil indisponible (${escapeHtml(error.message)}).</p></section>`;expressTrigger.disabled=true;}}
+    async function init(){try{const response=await fetch(CANDIDATES_URL,{cache:"no-store"});if(!response.ok)throw new Error(`HTTP ${response.status}`);state.candidates=(await response.json()).candidats||[];select.innerHTML='<option value="">Choisir un candidat</option>'+state.candidates.map(item=>`<option value="${escapeHtml(item.slug||"")}" ${item.slug?"":"disabled"}>${escapeHtml(item.nom)}${item.slug?"":" — données indisponibles"}</option>`).join("");select.addEventListener("change",()=>loadCandidate(select.value));}catch(error){select.innerHTML='<option>Liste indisponible</option>';app.innerHTML=`<section class="empty"><p>Impossible de charger les candidats (${escapeHtml(error.message)}).</p></section>`;}}
+    expressTrigger.addEventListener("click",openExpress);document.querySelector(".express-close").addEventListener("click",closeExpress);document.querySelectorAll("[data-express-dir]").forEach(button=>button.addEventListener("click",()=>moveExpress(Number(button.dataset.expressDir))));document.addEventListener("keydown",event=>{if(!express.classList.contains("open"))return;if(event.key==="Escape")closeExpress();if(event.key==="ArrowRight")moveExpress(1);if(event.key==="ArrowLeft")moveExpress(-1);});init();
+  </script>
+</body>
+</html>

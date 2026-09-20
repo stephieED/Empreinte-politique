@@ -1,0 +1,68 @@
+{
+  "volumetrie": {
+    "nb_profils": 752,
+    "nb_echantillon": 60,
+    "extrapole": true,
+    "octets_total": 8486249896,
+    "octets_median": 5848922,
+    "octets_moyen": 11284906,
+    "octets_max": 54177307,
+    "fichier_max": "patrick-hetzel.json",
+    "octets_compact_total": 5540811897,
+    "octets_gzip_total": 225300568,
+    "poids_par_champ": {
+      "amendements:co_signataires": 3737857793,
+      "amendements": 5006993982,
+      "votes": 526326639,
+      "interventions": 1473
+    }
+  },
+  "leviers": [
+    {
+      "nom": "Fichiers gzippés (.json.gz)",
+      "gain_octets": 8260949328,
+      "perte": false,
+      "note": "blob binaire : git ne peut plus déltifier, mesurer l'effet sur .git"
+    },
+    {
+      "nom": "Externaliser `amendements` hors du profil",
+      "gain_octets": 5006993982,
+      "perte": false,
+      "note": "la donnée reste disponible dans un index dédié (modèle #392)"
+    },
+    {
+      "nom": "Externaliser `amendements:co_signataires` hors du profil",
+      "gain_octets": 3737857793,
+      "perte": false,
+      "note": "la donnée reste disponible dans un index dédié (modèle #392)"
+    },
+    {
+      "nom": "JSON compact (sans indentation)",
+      "gain_octets": 2945437999,
+      "perte": false,
+      "note": "aucune décision éditoriale, aucun champ touché"
+    },
+    {
+      "nom": "Externaliser `votes` hors du profil",
+      "gain_octets": 526326639,
+      "perte": false,
+      "note": "la donnée reste disponible dans un index dédié (modèle #392)"
+    },
+    {
+      "nom": "Externaliser `interventions` hors du profil",
+      "gain_octets": 1473,
+      "perte": false,
+      "note": "la donnée reste disponible dans un index dédié (modèle #392)"
+    }
+  ],
+  "projection": {
+    "cible": 752,
+    "facteur_duplication": 1.0,
+    "octets_projetes": 8486249896,
+    "go_projetes": 7.9,
+    "depasse_seuil_push": true,
+    "depasse_seuil_depot": true,
+    "profils_avant_seuil_depot": 475
+  },
+  "erreurs_lecture": []
+}

@@ -1,0 +1,153 @@
+{
+  "schema_version": "1",
+  "type_document": "profil_groupe",
+  "groupe_id": "AN:LFI",
+  "groupe_sigle": "LFI",
+  "groupe_nom": "La France insoumise",
+  "chambre": "AN",
+  "legislature": "17",
+  "periode": {
+    "debut": "2024-07-18",
+    "fin": null,
+    "actif": true
+  },
+  "historique_noms": [],
+  "membres": [
+    {
+      "membre_id": "nosdeputes:alice-dupont",
+      "nom": "Alice Dupont",
+      "debut_dans_groupe": "2024-07-18",
+      "fin_dans_groupe": null,
+      "actif": true
+    },
+    {
+      "membre_id": "nosdeputes:bob-martin",
+      "nom": "Bob Martin",
+      "debut_dans_groupe": "2024-07-18",
+      "fin_dans_groupe": null,
+      "actif": true
+    }
+  ],
+  "effectif": {
+    "actuel": 2,
+    "min_historique": 2,
+    "max_historique": 3
+  },
+  "cohesion_votes": [
+    {
+      "numero_scrutin": "101",
+      "date": "2024-09-01",
+      "texte": "Texte A",
+      "sort": "adopte",
+      "membres_eligibles": 2,
+      "position_majoritaire": "pour",
+      "pour": 2,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 0,
+      "excuses": 0,
+      "taux_participation": 1.0,
+      "taux_coherence": 1.0,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": true
+    },
+    {
+      "numero_scrutin": "102",
+      "date": "2024-09-15",
+      "texte": "Texte B",
+      "sort": "rejete",
+      "membres_eligibles": 2,
+      "position_majoritaire": "contre",
+      "pour": 0,
+      "contre": 1,
+      "abstention": 1,
+      "non_votant": 0,
+      "absents": 0,
+      "excuses": 0,
+      "taux_participation": 1.0,
+      "taux_coherence": 0.5,
+      "taux_coherence_hors_absents": 0.5,
+      "quorum_atteint": true
+    }
+  ],
+  "tags_thematiques_agreges": [
+    {
+      "tag": "budget",
+      "nb_membres_porteurs": 2,
+      "poids_relatif": 1.0
+    },
+    {
+      "tag": "sante",
+      "nb_membres_porteurs": 1,
+      "poids_relatif": 0.5
+    }
+  ],
+  "mandats_agreges": [],
+  "amendements_agreges": {
+    "nb_amendements": 10,
+    "nb_adoptes": 2,
+    "nb_rejetes": 6,
+    "nb_irrecevables": 1,
+    "nb_retires_ou_tombes": 1,
+    "taux_adoption": 0.2,
+    "par_type_deposant": {
+      "depute": {
+        "nb_amendements": 8,
+        "nb_adoptes": 1,
+        "nb_rejetes": 6,
+        "nb_irrecevables": 1,
+        "nb_retires_ou_tombes": 0,
+        "taux_adoption": 0.125
+      },
+      "gouvernement": {
+        "nb_amendements": 1,
+        "nb_adoptes": 1,
+        "nb_rejetes": 0,
+        "nb_irrecevables": 0,
+        "nb_retires_ou_tombes": 0,
+        "taux_adoption": 1.0
+      },
+      "commission_rapporteur": {
+        "nb_amendements": 1,
+        "nb_adoptes": 0,
+        "nb_rejetes": 0,
+        "nb_irrecevables": 0,
+        "nb_retires_ou_tombes": 1,
+        "taux_adoption": 0.0
+      },
+      "inconnu": {
+        "nb_amendements": 0,
+        "nb_adoptes": 0,
+        "nb_rejetes": 0,
+        "nb_irrecevables": 0,
+        "nb_retires_ou_tombes": 0,
+        "taux_adoption": null
+      }
+    }
+  },
+  "sources": [
+    {
+      "type": "nosdeputes",
+      "url": "https://www.nosdeputes.fr/groupe/LFI",
+      "synchro_le": "2026-08-01T10:00:00+00:00"
+    }
+  ],
+  "meta": {
+    "schema_version": "1",
+    "genere_le": "2026-08-01T10:00:00+00:00",
+    "licence_donnees": "ODbL",
+    "profils_sources": [
+      "nosdeputes:alice-dupont",
+      "nosdeputes:bob-martin"
+    ],
+    "seuil_quorum": 0.5,
+    "warnings": [
+      "couverture_roster : profils disponibles inferieurs au roster reel."
+    ],
+    "couverture_roster": {
+      "roster_total": 5,
+      "profils_disponibles": 2
+    }
+  }
+}

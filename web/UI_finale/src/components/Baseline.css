@@ -1,0 +1,43 @@
+/* La baseline (#1026). Voir l'en-tête de Baseline.jsx.
+   Les valeurs de forme sont portées par les deux hôtes — le bandeau de
+   l'accueil et le pied de page — qui n'ont ni le même fond ni la même échelle ;
+   ce fichier ne tient que ce qui vaut pour les deux. */
+.baseline {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.baseline-mention {
+  white-space: nowrap;
+}
+
+.baseline-puce {
+  padding: 0 8px;
+  color: var(--muted);
+}
+
+/* Sur le bandeau sombre de l'accueil, la puce prend l'accent — 16,01:1 sur
+   l'encre, le seul fond où le jaune signal passe le contraste AA
+   (DESIGN_SYSTEM §2). Sur fond clair il reste à 1,05:1, donc au gris. */
+.baseline--bandeau {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #f4f3f0;
+}
+
+.baseline--bandeau .baseline-puce {
+  color: var(--accent);
+}
+
+.baseline--pied {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.baseline--pied .baseline-puce {
+  padding: 0 6px;
+}

@@ -1,0 +1,7 @@
+requests>=2.31
+# Importé explicitement par candidate_profile.py depuis #443 : le téléchargement
+# des archives AN lit resp.raw et doit attraper urllib3.exceptions.HTTPError,
+# que requests ne réemballe pas hors de iter_content().
+urllib3==2.7.0
+beautifulsoup4>=4.12
+zstandard>=0.22

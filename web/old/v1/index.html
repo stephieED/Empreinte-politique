@@ -1,0 +1,1514 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiche candidat — Présidentielle 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Palette éditoriale — justifiée par le sujet */
+    --bg: #F4EFE4;          /* Parchemin — fond de page, évoque les archives */
+    --surface: #FFFDF8;     /* Blanc chaud — panneaux de contenu */
+    --text: #1A2332;        /* Encre — texte principal, procès-verbal */
+    --muted: #7A6652;       /* Sépia — secondaire, labels, dates */
+    --line: #DDD5C5;        /* Lin chaud — bordures discrètes */
+    --deep: #1A2332;        /* = Encre (compatibilité interne) */
+    --accent: #7A6652;      /* = Sépia (liens discrets, neutralité) */
+    --accent-soft: #EDE8DC; /* Parchemin clair — état actif des filtres */
+    /* Couleurs sémantiques de vote — jamais décoratives */
+    --vert: #27744F;        /* Vert quorum — vote POUR / présence */
+    --rouge: #C0392B;       /* Rouge scrutin — vote CONTRE / absence */
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.45;
+  }
+  button { font: inherit; }
+
+  .page { max-width: 1040px; margin: 0 auto; padding: 1rem 0.9rem 5rem; }
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 0.9rem;
+    margin-bottom: 0.8rem;
+  }
+
+  h1, h2, h3 { margin: 0 0 0.55rem; color: var(--deep); line-height: 1.2; font-family: 'Libre Baskerville', Georgia, serif; }
+  h1 { font-size: 1.35rem; }
+  h2 { font-size: 1.05rem; }
+  h3 { font-size: 0.98rem; }
+  p { margin: 0.35rem 0; }
+  .small { font-size: 0.88rem; color: var(--muted); }
+  .muted { color: var(--muted); }
+  .empty { color: var(--muted); font-style: italic; }
+  /* Références vérifiables : signal visuel "coordonnée de source primaire" */
+  .source-ref {
+    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: -0.01em;
+  }
+
+  .section-kicker {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: 0 0 0.4rem;
+  }
+
+  /* Carrousel d'avatars — remplace le menu déroulant de sélection */
+  .avatar-carousel {
+    display: flex;
+    gap: 0.6rem;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding: 0.15rem 0.1rem 0.35rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  .avatar-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.28rem;
+    flex-shrink: 0;
+    width: 64px;
+    scroll-snap-align: start;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--text);
+  }
+  .avatar-chip-circle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--line);
+    background: linear-gradient(145deg, var(--accent-soft), var(--line));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.92rem;
+    font-family: 'Libre Baskerville', Georgia, serif;
+    color: var(--deep);
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .avatar-chip-circle img { width: 100%; height: 100%; object-fit: cover; }
+  .avatar-chip.active .avatar-chip-circle { border-color: var(--accent); transform: scale(1.06); }
+  .avatar-chip:disabled { opacity: 0.4; cursor: not-allowed; }
+  .avatar-chip-name {
+    font-size: 0.7rem;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 64px;
+  }
+  .avatar-chip.active .avatar-chip-name { color: var(--deep); font-weight: 600; }
+
+  /* Variante compacte pour la sélection de comparaison (multi-sélection) */
+  .avatar-chip--mini .avatar-chip-circle { width: 40px; height: 40px; font-size: 0.76rem; }
+  .avatar-chip--mini .avatar-chip-name { max-width: 52px; }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 62px 1fr;
+    gap: 0.7rem;
+    align-items: center;
+  }
+  .avatar {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: linear-gradient(145deg, var(--accent-soft), var(--line));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Libre Baskerville', Georgia, serif;
+    color: var(--deep);
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.25rem; }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg);
+    padding: 0.13rem 0.56rem;
+    font-size: 0.8rem;
+    color: var(--deep);
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.55rem;
+    margin-top: 0.65rem;
+  }
+
+  /* Cartes KPI en flip 3D : recto = pictogramme + chiffre, verso = l'explication/limite */
+  .kpi-flip {
+    perspective: 1000px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+  }
+  .kpi-flip-inner {
+    position: relative;
+    min-height: 132px;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+  }
+  .kpi-flip.flipped .kpi-flip-inner,
+  .kpi-flip:focus-visible .kpi-flip-inner { transform: rotateY(180deg); }
+  @media (hover: hover) {
+    .kpi-flip:hover .kpi-flip-inner { transform: rotateY(180deg); }
+  }
+  .kpi-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0.6rem;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+  }
+  .kpi-face--back { transform: rotateY(180deg); overflow-y: auto; justify-content: center; }
+  .kpi-icon { color: var(--accent); margin-bottom: 0.2rem; }
+  .kpi-icon svg { display: block; }
+  /* Valeur chiffrée en monospace : signal "donnée vérifiable, pas décorative" */
+  .kpi-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--deep);
+    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  }
+  .kpi-label { font-size: 0.78rem; color: var(--muted); margin-top: auto; }
+  .kpi-face--back .kpi-back-text { font-size: 0.8rem; color: var(--text); margin: 0 0 0.4rem; }
+  .kpi-face--back .kpi-back-link {
+    align-self: flex-start;
+    font-size: 0.78rem;
+    color: var(--accent);
+    background: none;
+    border: none;
+    padding: 0;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .trust-line {
+    margin-top: 0.5rem;
+    border-top: 1px dashed var(--line);
+    padding-top: 0.48rem;
+    font-size: 0.84rem;
+    color: var(--muted);
+  }
+
+  /* Répartition thématique — histogramme horizontal */
+  .theme-dist { margin-top: 0.85rem; }
+  .theme-dist-title { font-size: 0.84rem; color: var(--muted); margin: 0 0 0.45rem; }
+  .theme-dist-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.38rem; }
+  .theme-dist-label { width: 110px; flex-shrink: 0; font-size: 0.82rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .theme-dist-bar-wrap { flex: 1; background: var(--line); border-radius: 3px; height: 7px; overflow: hidden; }
+  .theme-dist-bar { height: 100%; background: var(--deep); border-radius: 3px; }
+  .theme-dist-count { width: 36px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--muted); }
+
+  /* Profil de vote — répartition, jamais un score unique */
+  .vote-profile-bar { display: flex; height: 10px; border-radius: 4px; overflow: hidden; margin-top: 0.4rem; background: var(--line); }
+  .vote-profile-seg--pour { background: var(--vert); }
+  .vote-profile-seg--contre { background: var(--rouge); }
+  .vote-profile-seg--abstention { background: var(--muted); }
+  .vote-profile-seg--absent { background: var(--line); }
+  .vote-profile-legend { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 0.4rem; font-size: 0.78rem; color: var(--muted); }
+  .vote-profile-legend .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.28rem; vertical-align: middle; }
+
+  /* Panneaux glissants (swipe) — remplace la navigation par ancres empilées */
+  .panel-indicator {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    margin: 0.6rem 0;
+  }
+  .panel-dot {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 999px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--muted);
+    padding: 0;
+    font-size: 0.95rem;
+  }
+  .panel-dot.active { background: var(--accent-soft); border-color: var(--accent); color: var(--deep); }
+  .swipe-deck {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+    scrollbar-width: none;
+  }
+  .swipe-deck::-webkit-scrollbar { display: none; }
+  .swipe-panel {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    min-width: 100%;
+    padding-right: 0.1rem;
+  }
+  .swipe-hint { text-align: center; font-size: 0.74rem; color: var(--muted); margin: 0.1rem 0 0.5rem; }
+
+  .themes-row {
+    display: flex;
+    gap: 0.4rem;
+    overflow-x: auto;
+    padding-bottom: 0.2rem;
+  }
+  .theme-pill {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 999px;
+    padding: 0.22rem 0.58rem;
+    font-size: 0.83rem;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .theme-pill.active {
+    background: var(--accent-soft);
+    border-color: #C4B8A4;
+    color: var(--deep);
+    font-weight: 600;
+  }
+
+  .rows { display: grid; gap: 0.55rem; }
+  .row-item {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface);
+    padding: 0.65rem;
+  }
+  .row-item p { margin: 0.18rem 0; }
+
+  /* Bande de scrutin — élément signature.
+     Barre verticale gauche de 4 px : la colonne de couleurs formée
+     en vue liste donne un bilan visuel immédiat sans lire les libellés. */
+  .vote-card { border-left-width: 4px; }
+  .vote-card--pour       { border-left-color: var(--vert); }
+  .vote-card--contre     { border-left-color: var(--rouge); }
+  .vote-card--abstention { border-left-color: var(--muted); border-left-style: dashed; }
+  .vote-card--absent     { border-left-color: var(--line); }
+
+  /* Badges de position — couleur réservée au sens, jamais décorative */
+  .vote-badge {
+    display: inline-block;
+    border-radius: 4px;
+    padding: 0.12rem 0.45rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
+    margin-left: 0.3rem;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    background: var(--bg);
+  }
+  .vote-badge.pour {
+    background: #EAF5EE;
+    border-color: var(--vert);
+    color: var(--vert);
+    font-weight: 600;
+  }
+  .vote-badge.contre {
+    background: #FAEAEA;
+    border-color: var(--rouge);
+    color: var(--rouge);
+    font-weight: 600;
+  }
+  .vote-badge.abstention {
+    background: var(--bg);
+    border-color: var(--muted);
+    border-style: dashed;
+    color: var(--muted);
+  }
+  .vote-badge.absent {
+    background: var(--bg);
+    border-color: var(--line);
+    color: var(--muted);
+  }
+
+  .votes-table-wrap { display: none; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td {
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    font-size: 0.84rem;
+    padding: 0.5rem 0.45rem;
+    vertical-align: top;
+  }
+  th { color: var(--deep); font-family: 'Libre Baskerville', Georgia, serif; }
+
+  details.inline-help {
+    display: inline-block;
+    margin-left: 0.35rem;
+    vertical-align: middle;
+  }
+  details.inline-help summary {
+    list-style: none;
+    cursor: pointer;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    color: var(--deep);
+    user-select: none;
+  }
+  details.inline-help summary::-webkit-details-marker { display: none; }
+  details.inline-help p {
+    margin-top: 0.45rem;
+    margin-bottom: 0;
+    font-size: 0.82rem;
+    color: var(--muted);
+    max-width: 320px;
+  }
+
+  .absence-grid {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: 1fr;
+  }
+  .absence-box {
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    padding: 0.58rem;
+    background: var(--bg);
+  }
+  .absence-box ul { margin: 0.3rem 0 0; padding-left: 1rem; }
+
+  .inter-controls {
+    display: flex;
+    gap: 0.45rem;
+    margin-bottom: 0.45rem;
+    flex-wrap: wrap;
+  }
+  .ghost-btn {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 9px;
+    padding: 0.28rem 0.58rem;
+    font-size: 0.84rem;
+    cursor: pointer;
+  }
+  .ghost-btn.active-choice {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--deep);
+    font-weight: 600;
+  }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.52rem;
+    margin-top: 0.5rem;
+  }
+  .compare-card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0.6rem;
+    background: var(--surface);
+  }
+
+  a.link { color: var(--accent); text-decoration: none; }
+  a.link:hover { text-decoration: underline; }
+
+  @media (min-width: 760px) {
+    .page { padding: 1.15rem 1.15rem 4rem; }
+    h1 { font-size: 1.6rem; }
+    .panel { padding: 1rem; }
+    .hero { grid-template-columns: 76px 1fr; }
+    .avatar { width: 76px; height: 76px; }
+    .votes-cards { display: none; }
+    .votes-table-wrap { display: block; }
+    .absence-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .compare-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .summary-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .theme-dist-label { width: 140px; }
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+    <section class="panel">
+      <h1>Fiches factuelles des candidats</h1>
+      <p class="section-kicker">Choisir un candidat</p>
+      <div id="candidat-carousel" class="avatar-carousel" role="tablist" aria-label="Choisir un candidat"></div>
+    </section>
+
+    <div id="candidat-root"></div>
+  </main>
+
+  <script>
+    const CANDIDATS_URL = "../../raw_data/candidats.json";
+    const PROFILE_URL = (slug) => `../../raw_data/profiles/${slug}.json`;
+    const THEME_OPTIONS = [
+      { key: "all", label: "Tous les thèmes" },
+      { key: "sante", label: "Santé", icon: "🩺" },
+      { key: "environnement", label: "Environnement", icon: "🌱" },
+      { key: "economie", label: "Économie", icon: "💶" },
+      { key: "education", label: "Éducation", icon: "🎓" },
+      { key: "securite", label: "Sécurité", icon: "🛡️" },
+      { key: "institutions", label: "Institutions", icon: "🏛️" },
+      { key: "europe_international", label: "Europe / International", icon: "🌍" },
+      { key: "social", label: "Social", icon: "🤝" },
+    ];
+
+    const THEME_RULES = {
+      sante: ["santé", "hopital", "hôpital", "malad", "soin", "medec", "médec", "cancer"],
+      environnement: ["climat", "environ", "biodivers", "energie", "énergie", "carbone", "pollution", "écologi"],
+      economie: ["budget", "fiscal", "impôt", "impot", "entreprise", "travail", "emploi", "financ"],
+      education: ["éduc", "ecole", "école", "universit", "apprentiss", "scolair"],
+      securite: ["sécurit", "police", "défense", "defense", "terror", "justice pénale", "violence"],
+      institutions: ["constitution", "assemblée", "assemblee", "sénat", "senat", "scrutin", "loi organique", "collectivités"],
+      europe_international: ["europe", "union européenne", "ue", "international", "onu", "otan", "étrang", "maghreb", "afrique"],
+      social: ["retraite", "logement", "social", "pauvret", "solidarit", "sécurité sociale", "égalité", "salaire"],
+    };
+    const DEFAULT_THEME = "institutions";
+    const MAX_COMPARE_CANDIDATES = 2;
+    const TITLE_TRUNCATE_LENGTH = 120;
+    // On garde 3 caractères de marge pour ajouter des points de suspension sans allonger visuellement la ligne.
+    const TITLE_TRUNCATE_SLICE = TITLE_TRUNCATE_LENGTH - 3;
+    const INTERVENTION_TEXT_PREVIEW_LENGTH = 200;
+    const NON_VOTING_PATTERN = /non[ _-]?vot/;
+    const DEFENDED_THRESHOLD = 600;
+    const CARRIED_THRESHOLD = 250;
+    const REPORTED_THRESHOLD = 80;
+
+    // Ordre des panneaux du carrousel glissant (remplace la pile d'accordéons)
+    const PANEL_ORDER = ["mandats", "textes", "votes", "absences", "interventions", "compare"];
+    const PANEL_META = {
+      mandats: { label: "Mandats", icon: "🏛️" },
+      textes: { label: "Textes", icon: "📄" },
+      votes: { label: "Votes", icon: "🗳️" },
+      absences: { label: "Silences", icon: "🌫️" },
+      interventions: { label: "Paroles", icon: "💬" },
+      compare: { label: "Comparer", icon: "⚖️" },
+    };
+
+    // Pictogrammes des cartes KPI (SVG inline, sans dépendance externe)
+    const KPI_ICONS = {
+      anciennete: '<svg viewBox="0 0 20 20" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h10M5 17h10M6 3c0 4 3 5 4 6 1-1 4-2 4-6M6 17c0-4 3-5 4-6 1 1 4 2 4 6"/></svg>',
+      responsabilites: '<svg viewBox="0 0 20 20" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17h14M4 17V9l6-4 6 4v8M8 17v-5h4v5"/></svg>',
+      vote: '<svg viewBox="0 0 20 20" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h14v9H3z"/><path d="M7 8V5a3 3 0 0 1 6 0v3M10 11v3"/></svg>',
+      theme: '<svg viewBox="0 0 20 20" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6l6 6-6 6-6-6z"/><circle cx="7" cy="7" r="1" fill="currentColor" stroke="none"/></svg>',
+    };
+
+    const state = {
+      candidats: [],
+      currentSlug: "",
+      currentMeta: null,
+      currentProfile: null,
+      selectedTheme: "all",
+      votesSort: "recent",
+      interventionsMode: "all",
+      interventionsVisible: 6,
+      compareTheme: "sante",
+      compareSlugs: ["", ""],
+      compareProfiles: {},
+      availableCompareCandidates: [],
+      activePanelIndex: 0,
+      flippedKpis: new Set(),
+    };
+
+    function setDocumentTitle(label) {
+      document.title = label ? `Fiche candidat — ${label}` : "Fiches factuelles des candidats";
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? "").replace(/[&<>"']/g, (c) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      })[c]);
+    }
+
+    function toDateMs(value) {
+      if (!value) return 0;
+      const t = Date.parse(value);
+      return Number.isNaN(t) ? 0 : t;
+    }
+
+    function formatIsoDate(value) {
+      if (!value) return "non renseignée";
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return value;
+      return d.toLocaleDateString("fr-FR");
+    }
+
+    function shortName(name) {
+      if (!name) return "?";
+      return name
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part.charAt(0).toUpperCase())
+        .join("");
+    }
+
+    function simplifyTitle(text) {
+      const raw = String(text || "").trim();
+      if (!raw) return "Intitulé non renseigné";
+      const cleaned = raw.replace(/^(la|le|les)\s+/i, "");
+      return cleaned.length > TITLE_TRUNCATE_LENGTH ? `${cleaned.slice(0, TITLE_TRUNCATE_SLICE).trim()}…` : cleaned;
+    }
+
+    function normalizedText(...parts) {
+      return parts
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+    }
+
+    function detectThemeFromText(text) {
+      const t = String(text || "").toLowerCase();
+      for (const [theme, needles] of Object.entries(THEME_RULES)) {
+        if (needles.some((needle) => t.includes(needle))) return theme;
+      }
+      return DEFAULT_THEME;
+    }
+
+    function themeLabel(themeKey) {
+      return THEME_OPTIONS.find((t) => t.key === themeKey)?.label || "Institutions";
+    }
+
+    function voteLabelAndClass(position) {
+      const p = String(position || "").toLowerCase();
+      if (p.includes("pour")) return { label: "Pour", cls: "pour" };
+      if (p.includes("contre")) return { label: "Contre", cls: "contre" };
+      if (p.includes("abst")) return { label: "Abstention", cls: "abstention" };
+      if (NON_VOTING_PATTERN.test(p) || p.includes("absent")) {
+        return { label: "Absent / non votant", cls: "absent" };
+      }
+      return { label: "Position non précisée", cls: "absent" };
+    }
+
+    // --- KPI de synthèse (voir analyse KPI : ancienneté, responsabilités, profil de vote, thème dominant) ---
+
+    const MS_PER_YEAR = 365.25 * 24 * 3600 * 1000;
+    const RESPONSIBILITY_CATEGORIES = ["commission", "extra_parlementaire", "groupe_amitie"];
+    const ROLE_PRIORITY = [
+      "président", "présidente", "co-président", "co-présidente",
+      "vice-président", "vice-présidente", "rapporteur", "co-rapporteur", "rapporteure",
+    ];
+    const CATEGORIE_LABELS_FR = {
+      commission: "Commission / mission",
+      extra_parlementaire: "Engagement extra-parlementaire",
+      groupe_amitie: "Groupe d'amitié",
+    };
+
+    // KPI 1 — Ancienneté et statut du mandat : ne mesure pas l'implication, seulement la durée.
+    function computeMandateTenure(profile) {
+      const electifs = (profile.mandats || []).filter((m) => m.categorie === "mandat_electif");
+      const debuts = electifs.map((m) => toDateMs(m.debut)).filter(Boolean);
+      if (!debuts.length) return null;
+      const debutMin = Math.min(...debuts);
+      const enCours = electifs.some((m) => m.actif);
+      const fins = electifs.map((m) => toDateMs(m.fin)).filter(Boolean);
+      const refEnd = enCours || !fins.length ? Date.now() : Math.max(...fins);
+      const annees = Math.max(0, Math.round(((refEnd - debutMin) / MS_PER_YEAR) * 10) / 10);
+      return { debutIso: new Date(debutMin).toISOString().slice(0, 10), annees, enCours };
+    }
+
+    // KPI 2 — Responsabilités institutionnelles : dédupliquées par intitulé pour ne pas
+    // gonfler le chiffre avec des réaffectations administratives internes (churn de commissions).
+    function bestRoleType(types) {
+      for (const kw of ROLE_PRIORITY) {
+        const match = types.find((t) => (t || "").toLowerCase().includes(kw));
+        if (match) return match;
+      }
+      return types[0] || "membre";
+    }
+
+    function dedupeResponsibilities(profile) {
+      const relevant = (profile.mandats || []).filter((m) => RESPONSIBILITY_CATEGORIES.includes(m.categorie));
+      const byLabel = new Map();
+      for (const m of relevant) {
+        const key = m.label || "Responsabilité non précisée";
+        if (!byLabel.has(key)) {
+          byLabel.set(key, { label: key, categorie: m.categorie, types: [], debuts: [], fins: [], actif: false });
+        }
+        const entry = byLabel.get(key);
+        entry.types.push(m.type);
+        if (m.debut) entry.debuts.push(toDateMs(m.debut));
+        if (m.fin) entry.fins.push(toDateMs(m.fin));
+        if (m.actif) entry.actif = true;
+      }
+      return [...byLabel.values()]
+        .map((e) => ({
+          label: e.label,
+          categorie: e.categorie,
+          type: bestRoleType(e.types),
+          debut: e.debuts.length ? new Date(Math.min(...e.debuts)).toISOString().slice(0, 10) : null,
+          fin: e.actif ? null : (e.fins.length ? new Date(Math.max(...e.fins)).toISOString().slice(0, 10) : null),
+          actif: e.actif,
+        }))
+        .sort((a, b) => (b.debut || "").localeCompare(a.debut || ""));
+    }
+
+    function computeResponsibilitiesSummary(profile) {
+      const items = dedupeResponsibilities(profile);
+      const notable = items.filter((r) => ROLE_PRIORITY.some((kw) => r.type.toLowerCase().includes(kw)));
+      return { distinctCount: items.length, notableCount: notable.length };
+    }
+
+    // KPI 3 — Profil de vote synthétique : une répartition, jamais un score isolé.
+    // Restreint aux votes portant sur "l'ensemble" du texte (pas les amendements/articles isolés,
+    // où un "contre" reflète souvent un désaccord technique ponctuel plutôt qu'une opposition de
+    // principe), et dédupliqué sur la lecture la plus avancée quand un même texte a été voté à
+    // plusieurs stades (première lecture, nouvelle lecture, CMP, lecture définitive...).
+    // Limite qui subsiste : un vote sur l'ensemble agrège quand même des motivations plurielles,
+    // et le regroupement des lectures d'un même texte repose sur une similarité de titre (fragile
+    // si le libellé change entre chambres). Les absences restent un segment à part (absence de
+    // donnée ≠ absence d'activité réelle).
+    const ENSEMBLE_VOTE_PATTERN = /^l[’']ensemble\s+(?:du|de la)\s+(.*?)\s*(?:\(([^)]*)\))?\.?$/i;
+    const READING_STAGE_RANK = {
+      "lecture définitive": 4,
+      "texte de la commission mixte paritaire": 3,
+      "texte de la commission paritaire": 3,
+      "nouvelle lecture": 2,
+      "deuxième lecture": 2,
+      "première lecture": 1,
+      "premiere lecture": 1,
+    };
+
+    function readingStageRank(stage) {
+      if (!stage) return 1;
+      return READING_STAGE_RANK[stage.trim().toLowerCase()] ?? 1;
+    }
+
+    function parseEnsembleVote(titre) {
+      const m = ENSEMBLE_VOTE_PATTERN.exec((titre || "").trim());
+      if (!m) return null;
+      return { key: m[1].trim().toLowerCase(), stage: m[2] || null, rank: readingStageRank(m[2]) };
+    }
+
+    function computeFinalTextVoteProfile(profile) {
+      const votes = profile.votes || [];
+      const groups = new Map();
+      let totalLectures = 0;
+      for (const v of votes) {
+        const parsed = parseEnsembleVote(v.titre);
+        if (!parsed) continue;
+        totalLectures += 1;
+        const current = groups.get(parsed.key);
+        if (
+          !current ||
+          parsed.rank > current.rank ||
+          (parsed.rank === current.rank && toDateMs(v.date) > toDateMs(current.vote.date))
+        ) {
+          groups.set(parsed.key, { rank: parsed.rank, vote: v });
+        }
+      }
+      const counts = { pour: 0, contre: 0, abstention: 0, absent: 0 };
+      for (const { vote } of groups.values()) {
+        const cls = voteLabelAndClass(vote.position).cls;
+        counts[cls] = (counts[cls] || 0) + 1;
+      }
+      return { totalTextes: groups.size, totalLectures, counts };
+    }
+
+    function renderResponsabilites(profile) {
+      const items = dedupeResponsibilities(profile);
+      if (!items.length) {
+        return `<p class="empty">Aucune responsabilité institutionnelle (commission, mission, engagement) retrouvée dans les données disponibles.</p>`;
+      }
+      return `<div class="rows">${items.map((r) => `
+        <article class="row-item">
+          <p><strong>${escapeHtml(r.label)}</strong></p>
+          <p class="small">${escapeHtml(r.type || "membre")} • ${escapeHtml(CATEGORIE_LABELS_FR[r.categorie] || r.categorie)} • depuis le ${escapeHtml(formatIsoDate(r.debut))}${r.fin ? ` → ${escapeHtml(formatIsoDate(r.fin))}` : (r.actif ? " → en cours" : "")}</p>
+        </article>
+      `).join("")}</div>`;
+    }
+
+    function withTheme(profile) {
+      const votes = (profile.votes || []).map((v) => ({
+        ...v,
+        _theme: detectThemeFromText(normalizedText(v.titre, v.position)),
+      }));
+      const dossiers = (profile.dossiers_legislatifs || []).map((d) => ({
+        ...d,
+        _theme: detectThemeFromText(normalizedText(d.titre)),
+      }));
+      const interventions = (profile.interventions || []).map((i) => ({
+        ...i,
+        _theme: detectThemeFromText(normalizedText(i.sujet, i.texte, ...(i.mots_cles || []))),
+      }));
+      return { ...profile, votes, dossiers_legislatifs: dossiers, interventions };
+    }
+
+    function inTheme(item, selectedTheme) {
+      return selectedTheme === "all" ? true : item._theme === selectedTheme;
+    }
+
+    function roleFromDossier(dossier) {
+      const n = Number(dossier.nb_interventions || 0);
+      // Seuils UX internes (observés sur les profils existants) :
+      // >=600 interventions => implication très forte ; >=250 => forte ; >=80 => moyenne ; sinon faible.
+      if (n >= DEFENDED_THRESHOLD) return "a défendu";
+      if (n >= CARRIED_THRESHOLD) return "a porté";
+      if (n >= REPORTED_THRESHOLD) return "a rapporté";
+      return "a cosigné";
+    }
+
+    function sourceLinkHtml(url, label = "Source officielle") {
+      if (!url) return `<span class="small">${escapeHtml(label)} indisponible</span>`;
+      return `<a class="link" href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(label)}</a>`;
+    }
+
+    function compareFactsForTheme(profile, theme) {
+      const votes = (profile.votes || []).filter((v) => v._theme === theme);
+      const textes = (profile.dossiers_legislatifs || []).filter((d) => d._theme === theme);
+      const interventions = (profile.interventions || []).filter((i) => i._theme === theme);
+      const absents = votes.filter((v) => voteLabelAndClass(v.position).cls === "absent");
+      return { votes, textes, interventions, absents };
+    }
+
+    function renderThemePills() {
+      return `
+        <div class="themes-row" aria-label="Filtre des thèmes">
+          ${THEME_OPTIONS.map((t) => `
+            <button type="button" class="theme-pill ${state.selectedTheme === t.key ? "active" : ""}" data-theme="${t.key}">
+              ${t.icon || ""} ${escapeHtml(t.label)}
+            </button>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function renderHeader(meta, profile) {
+      const nom = profile?.identite?.nom_complet || meta?.nom || profile?.slug || "Candidat";
+      const parti = meta?.parti || profile?.identite?.groupe_nom || profile?.identite?.groupe_sigle || "Affiliation non renseignée";
+      const statut = meta?.statut || "statut non renseigné";
+      const photo = profile?.mandat_europeen?.photo || "";
+      const updatedAt = profile?.meta?.genere_le || null;
+
+      // KPI 1 — Ancienneté et statut du mandat
+      const tenure = computeMandateTenure(profile);
+
+      // KPI 2 — Responsabilités institutionnelles occupées (dédupliquées, hors churn administratif)
+      const responsibilities = computeResponsibilitiesSummary(profile);
+
+      // KPI 3 — Profil de vote synthétique, restreint aux votes sur l'ensemble du texte (dernière lecture connue)
+      const voteProfile = computeFinalTextVoteProfile(profile);
+      const voteProfilePct = (key) => (voteProfile.totalTextes > 0 ? Math.round((voteProfile.counts[key] / voteProfile.totalTextes) * 100) : 0);
+
+      // Répartition thématique des votes pour histogramme horizontal (sert aussi de base au KPI 4)
+      const themeCountMap = {};
+      for (const v of (profile.votes || [])) {
+        themeCountMap[v._theme] = (themeCountMap[v._theme] || 0) + 1;
+      }
+      const sortedThemeDist = Object.entries(themeCountMap)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+      const maxThemeCount = sortedThemeDist[0]?.[1] || 1;
+
+      const themeDistHtml = sortedThemeDist.length ? `
+        <div class="theme-dist">
+          <p class="theme-dist-title">Répartition des votes par thème</p>
+          ${sortedThemeDist.map(([theme, count]) => `
+            <div class="theme-dist-row">
+              <span class="theme-dist-label">${escapeHtml(themeLabel(theme))}</span>
+              <div class="theme-dist-bar-wrap" title="${escapeHtml(themeLabel(theme))} — ${count} vote(s)">
+                <div class="theme-dist-bar" style="width:${Math.round((count / maxThemeCount) * 100)}%"></div>
+              </div>
+              <span class="theme-dist-count">${count}</span>
+            </div>
+          `).join("")}
+        </div>
+      ` : "";
+
+      return `
+        <section id="resume" class="panel">
+          <div class="hero">
+            <div class="avatar">${photo ? `<img src="${escapeHtml(photo)}" alt="Photo de ${escapeHtml(nom)}">` : escapeHtml(shortName(nom))}</div>
+            <div>
+              <h2>${escapeHtml(nom)}</h2>
+              <div class="tags">
+                <span class="tag">${escapeHtml(parti)}</span>
+                <span class="tag">${escapeHtml(statut)}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-grid">
+            <div class="kpi-flip ${state.flippedKpis.has("anciennete") ? "flipped" : ""}" tabindex="0" role="button" aria-pressed="${state.flippedKpis.has("anciennete")}" data-kpi="anciennete" aria-label="Ancienneté du mandat, appuyer pour l'explication">
+              <div class="kpi-flip-inner">
+                <div class="kpi-face kpi-face--front">
+                  <div class="kpi-icon">${KPI_ICONS.anciennete}</div>
+                  <div class="kpi-value">${tenure ? `${tenure.annees}\u00a0${tenure.annees <= 1 ? "an" : "ans"}` : "N/D"}</div>
+                  <div class="kpi-label">Ancienneté du mandat</div>
+                </div>
+                <div class="kpi-face kpi-face--back">
+                  <p class="kpi-back-text">${tenure ? (tenure.enCours ? `En cours depuis le ${escapeHtml(formatIsoDate(tenure.debutIso))}.` : `Terminé, débuté le ${escapeHtml(formatIsoDate(tenure.debutIso))}.`) : "Mandat électif non renseigné."} Mesure la durée, pas l'implication.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="kpi-flip ${state.flippedKpis.has("responsabilites") ? "flipped" : ""}" tabindex="0" role="button" aria-pressed="${state.flippedKpis.has("responsabilites")}" data-kpi="responsabilites" aria-label="Responsabilités occupées, appuyer pour l'explication">
+              <div class="kpi-flip-inner">
+                <div class="kpi-face kpi-face--front">
+                  <div class="kpi-icon">${KPI_ICONS.responsabilites}</div>
+                  <div class="kpi-value">${responsibilities.distinctCount}</div>
+                  <div class="kpi-label">Responsabilités occupées</div>
+                </div>
+                <div class="kpi-face kpi-face--back">
+                  <p class="kpi-back-text">${responsibilities.notableCount ? `dont ${responsibilities.notableCount} en tant que président(e)/rapporteur(e).` : "Aucune présidence/rapport identifié."} Commissions et engagements distincts, hors réaffectations internes.</p>
+                  <button type="button" class="kpi-back-link" data-goto-panel="mandats">Voir le détail →</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="kpi-flip ${state.flippedKpis.has("vote") ? "flipped" : ""}" tabindex="0" role="button" aria-pressed="${state.flippedKpis.has("vote")}" data-kpi="vote" aria-label="Profil de vote, appuyer pour l'explication">
+              <div class="kpi-flip-inner">
+                <div class="kpi-face kpi-face--front">
+                  <div class="kpi-icon">${KPI_ICONS.vote}</div>
+                  <div class="kpi-value">${voteProfile.totalTextes > 0 ? `${voteProfilePct("pour")}\u00a0%` : "N/D"}</div>
+                  <div class="kpi-label">Profil de vote — part de "pour"</div>
+                </div>
+                <div class="kpi-face kpi-face--back">
+                  ${voteProfile.totalTextes > 0 ? `
+                    <div class="vote-profile-bar" role="img" aria-label="Répartition : ${voteProfilePct("pour")}% pour, ${voteProfilePct("contre")}% contre, ${voteProfilePct("abstention")}% abstention, ${voteProfilePct("absent")}% sans trace">
+                      <div class="vote-profile-seg--pour" style="width:${voteProfilePct("pour")}%"></div>
+                      <div class="vote-profile-seg--contre" style="width:${voteProfilePct("contre")}%"></div>
+                      <div class="vote-profile-seg--abstention" style="width:${voteProfilePct("abstention")}%"></div>
+                      <div class="vote-profile-seg--absent" style="width:${voteProfilePct("absent")}%"></div>
+                    </div>
+                    <div class="vote-profile-legend">
+                      <span><span class="dot" style="background:var(--vert)"></span>Pour ${voteProfilePct("pour")}%</span>
+                      <span><span class="dot" style="background:var(--rouge)"></span>Contre ${voteProfilePct("contre")}%</span>
+                      <span><span class="dot" style="background:var(--muted)"></span>Abst. ${voteProfilePct("abstention")}%</span>
+                      <span><span class="dot" style="background:var(--line)"></span>Sans trace ${voteProfilePct("absent")}%</span>
+                    </div>
+                    <p class="kpi-back-text">${voteProfile.totalTextes} texte(s) sur leur vote final (${voteProfile.totalLectures} lecture(s) recensée(s)). Pas un score de performance.</p>
+                  ` : `<p class="kpi-back-text">Aucun vote sur l'ensemble d'un texte retrouvé dans les données disponibles.</p>`}
+                  <button type="button" class="kpi-back-link" data-goto-panel="votes">Voir le détail →</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="kpi-flip ${state.flippedKpis.has("theme") ? "flipped" : ""}" tabindex="0" role="button" aria-pressed="${state.flippedKpis.has("theme")}" data-kpi="theme" aria-label="Thème dominant, appuyer pour l'explication">
+              <div class="kpi-flip-inner">
+                <div class="kpi-face kpi-face--front">
+                  <div class="kpi-icon">${KPI_ICONS.theme}</div>
+                  <div class="kpi-value">${sortedThemeDist.length ? escapeHtml(themeLabel(sortedThemeDist[0][0])) : "N/D"}</div>
+                  <div class="kpi-label">Thème dominant</div>
+                </div>
+                <div class="kpi-face kpi-face--back">
+                  <p class="kpi-back-text">${sortedThemeDist.length ? `${sortedThemeDist[0][1]} vote(s) sur ce thème.` : "Thème non déterminé."} Classification par mots-clés : une tendance, pas un classement exhaustif.</p>
+                  <button type="button" class="kpi-back-link" data-goto-panel="votes">Voir le détail →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          ${themeDistHtml}
+
+          <div class="trust-line">
+            Données sourcées • Mise à jour le ${escapeHtml(formatIsoDate(updatedAt))} •
+            <a class="link" href="../../README.md" target="_blank" rel="noopener">Voir la méthode</a>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderTextes(profile) {
+      const items = (profile.dossiers_legislatifs || []).filter((d) => inTheme(d, state.selectedTheme));
+      if (!items.length) {
+        return `<p class="empty">${state.selectedTheme === "all" ? "Aucun texte porté retrouvé dans les données disponibles." : "Aucun texte porté retrouvé sur ce thème."}</p>`;
+      }
+      const sorted = [...items].sort((a, b) => Number(b.nb_interventions || 0) - Number(a.nb_interventions || 0));
+      return `<div class="rows">${sorted.map((d) => `
+        <article class="row-item">
+          <p><strong>${escapeHtml(simplifyTitle(d.titre))}</strong></p>
+          <p class="small">${escapeHtml(roleFromDossier(d))} • ${escapeHtml(themeLabel(d._theme))} • ${escapeHtml(formatIsoDate(d.date_min))}${d.date_max ? ` → ${escapeHtml(formatIsoDate(d.date_max))}` : ""}</p>
+          <p class="small">Rôle dérivé du niveau d'activité observé sur ce texte.
+            <details class="inline-help"><summary aria-label="Aide">?</summary><p>“Texte porté” = texte où la personne apparaît activement dans les données, selon le nombre d'interventions enregistrées.</p></details>
+          </p>
+          <p>${sourceLinkHtml(d.url_institution || d.url_source)}</p>
+        </article>
+      `).join("")}</div>`;
+    }
+
+    function applyVoteSort(votes) {
+      const arr = votes.map((v) => ({ ...v, _shortTitleKey: simplifyTitle(v.titre).toLowerCase() }));
+      if (state.votesSort === "recent") {
+        arr.sort((a, b) => toDateMs(b.date) - toDateMs(a.date));
+      } else if (state.votesSort === "theme") {
+        arr.sort((a, b) => themeLabel(a._theme).localeCompare(themeLabel(b._theme), "fr"));
+      } else if (state.votesSort === "cited") {
+        const freq = new Map();
+        for (const v of arr) {
+          const key = v._shortTitleKey;
+          freq.set(key, (freq.get(key) || 0) + 1);
+        }
+        arr.sort((a, b) => {
+          const da = freq.get(a._shortTitleKey) || 0;
+          const db = freq.get(b._shortTitleKey) || 0;
+          return db - da || toDateMs(b.date) - toDateMs(a.date);
+        });
+      }
+      return arr;
+    }
+
+    function renderVotes(profile) {
+      const items = applyVoteSort((profile.votes || []).filter((v) => inTheme(v, state.selectedTheme)));
+      if (!items.length) {
+        return `<p class="empty">${state.selectedTheme === "all" ? "Aucune donnée de vote trouvée dans cette fiche." : "Aucune donnée de vote trouvée sur ce thème."}</p>`;
+      }
+
+      const cards = `
+        <div class="votes-cards rows">
+          ${items.map((v) => {
+            const badge = voteLabelAndClass(v.position);
+            return `
+              <article class="row-item vote-card vote-card--${badge.cls}">
+                <p><strong>${escapeHtml(simplifyTitle(v.titre))}</strong></p>
+                <p class="small"><span class="source-ref">${escapeHtml(formatIsoDate(v.date))}</span> • ${escapeHtml(themeLabel(v._theme))}
+                  <span class="vote-badge ${badge.cls}">${escapeHtml(badge.label)}</span>
+                </p>
+                <details>
+                  <summary class="small">Voir le libellé officiel complet</summary>
+                  <p class="small">${escapeHtml(v.titre || "Libellé non renseigné")}</p>
+                </details>
+                <p class="small"><span class="source-ref">${escapeHtml(profile.votes_source || "Source de vote non précisée")}</span>
+                  <details class="inline-help"><summary aria-label="Aide">?</summary><p>“Vote officiel” = résultat nominatif publié par l’institution parlementaire.</p></details>
+                </p>
+              </article>
+            `;
+          }).join("")}
+        </div>
+      `;
+
+      const rows = items.map((v) => {
+        const badge = voteLabelAndClass(v.position);
+        return `
+          <tr>
+            <td>
+              <strong>${escapeHtml(simplifyTitle(v.titre))}</strong>
+              <details><summary class="small">Libellé officiel complet</summary><div class="small">${escapeHtml(v.titre || "")}</div></details>
+            </td>
+            <td>${escapeHtml(themeLabel(v._theme))}</td>
+            <td>${escapeHtml(formatIsoDate(v.date))}</td>
+            <td><span class="vote-badge ${badge.cls}">${escapeHtml(badge.label)}</span></td>
+            <td class="small">${escapeHtml(profile.votes_source || "Source de vote non précisée")}</td>
+          </tr>
+        `;
+      }).join("");
+
+      return `
+        <div class="inter-controls">
+          <button type="button" class="ghost-btn ${state.votesSort === "recent" ? "active-choice" : ""}" data-votes-sort="recent">Récent</button>
+          <button type="button" class="ghost-btn ${state.votesSort === "cited" ? "active-choice" : ""}" data-votes-sort="cited">Fréquent</button>
+          <button type="button" class="ghost-btn ${state.votesSort === "theme" ? "active-choice" : ""}" data-votes-sort="theme">Thème</button>
+        </div>
+        ${cards}
+        <div class="votes-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Sujet</th>
+                <th>Thème</th>
+                <th>Date</th>
+                <th>Position</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderAbsences(profile) {
+      const votes = (profile.votes || []).filter((v) => inTheme(v, state.selectedTheme));
+      const textes = (profile.dossiers_legislatifs || []).filter((d) => inTheme(d, state.selectedTheme));
+      const inters = (profile.interventions || []).filter((i) => inTheme(i, state.selectedTheme));
+
+      const absVotes = votes.filter((v) => voteLabelAndClass(v.position).cls === "absent");
+      const themeUniverse = THEME_OPTIONS.filter((t) => t.key !== "all").map((t) => t.key);
+
+      let noTextThemes = [];
+      let noInterThemes = [];
+      if (state.selectedTheme === "all") {
+        const textThemes = new Set((profile.dossiers_legislatifs || []).map((d) => d._theme));
+        const interThemes = new Set((profile.interventions || []).map((i) => i._theme));
+        noTextThemes = themeUniverse.filter((t) => !textThemes.has(t));
+        noInterThemes = themeUniverse.filter((t) => !interThemes.has(t));
+      }
+
+      return `
+        <div class="absence-grid">
+          <div class="absence-box">
+            <strong>Textes non retrouvés</strong>
+            ${state.selectedTheme === "all"
+              ? (noTextThemes.length
+                ? `<ul>${noTextThemes.map((t) => `<li>${escapeHtml(themeLabel(t))}</li>`).join("")}</ul>`
+                : `<p class="small">Au moins un texte est retrouvé dans chaque thème de la grille actuelle.</p>`)
+              : (textes.length
+                ? `<p class="small">Des textes sont retrouvés sur ce thème.</p>`
+                : `<p class="small">Aucun texte porté retrouvé sur ce thème.</p>`)}
+          </div>
+
+          <div class="absence-box">
+            <strong>Prises de parole non retrouvées</strong>
+            ${state.selectedTheme === "all"
+              ? (noInterThemes.length
+                ? `<ul>${noInterThemes.map((t) => `<li>${escapeHtml(themeLabel(t))}</li>`).join("")}</ul>`
+                : `<p class="small">Au moins une prise de parole est retrouvée dans chaque thème de la grille actuelle.</p>`)
+              : (inters.length
+                ? `<p class="small">Des prises de parole sont retrouvées sur ce thème.</p>`
+                : `<p class="small">Aucune prise de parole retrouvée sur ce thème dans les données actuellement disponibles.</p>`)}
+          </div>
+
+          <div class="absence-box">
+            <strong>Votes sans participation</strong>
+            ${votes.length
+              ? (absVotes.length
+                ? `<p class="small">${absVotes.length} vote(s) indiquent “n’a pas pris part au vote” / non votant sur le périmètre affiché.</p>`
+                : `<p class="small">Aucun vote affiché n’indique une absence de participation.</p>`)
+              : `<p class="small">Aucune donnée de vote trouvée.</p>`}
+            <details class="inline-help"><summary aria-label="Aide">?</summary><p>“N’a pas pris part au vote” décrit une absence de participation à ce scrutin, pas une prise de position.</p></details>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderInterventions(profile) {
+      let items = (profile.interventions || []).filter((i) => inTheme(i, state.selectedTheme));
+      if (state.interventionsMode === "short") {
+        items = items.filter((i) => i.format === "reaction_courte");
+      } else if (state.interventionsMode === "long") {
+        items = items.filter((i) => i.format === "prise_de_parole_developpee");
+      }
+
+      if (!items.length) {
+        return `<p class="empty">${state.selectedTheme === "all" ? "Aucune prise de parole trouvée." : "Aucune prise de parole retrouvée sur ce thème dans les données actuellement disponibles."}</p>`;
+      }
+
+      const sorted = [...items].sort((a, b) => toDateMs(b.date || b.created_at) - toDateMs(a.date || a.created_at));
+      const visible = sorted.slice(0, state.interventionsVisible);
+
+      return `
+        <div class="inter-controls">
+          <button type="button" class="ghost-btn ${state.interventionsMode === "all" ? "active-choice" : ""}" data-inter-mode="all">Toutes</button>
+          <button type="button" class="ghost-btn ${state.interventionsMode === "short" ? "active-choice" : ""}" data-inter-mode="short">Réactions courtes</button>
+          <button type="button" class="ghost-btn ${state.interventionsMode === "long" ? "active-choice" : ""}" data-inter-mode="long">Prises de parole longues</button>
+        </div>
+
+        <div class="rows">
+          ${visible.map((i) => `
+            <article class="row-item">
+              <p><strong>${escapeHtml(i.sujet || "Prise de parole")}</strong></p>
+              <p class="small">${escapeHtml(formatIsoDate(i.date || i.created_at))} • ${escapeHtml(themeLabel(i._theme))} ${i.fonction ? `• en tant que ${escapeHtml(i.fonction)}` : ""}</p>
+              ${i.texte ? `<p>${escapeHtml(String(i.texte).slice(0, INTERVENTION_TEXT_PREVIEW_LENGTH))}${String(i.texte).length > INTERVENTION_TEXT_PREVIEW_LENGTH ? "…" : ""}</p>` : `<p class="small">Extrait non disponible.</p>`}
+              <p>${sourceLinkHtml(i.url_detail || i.url)}</p>
+            </article>
+          `).join("")}
+        </div>
+
+        ${sorted.length > visible.length ? `<p><button type="button" id="see-more-interventions" class="ghost-btn">Voir plus d’extraits</button></p>` : ""}
+      `;
+    }
+
+    async function loadProfile(slug) {
+      if (!slug) return null;
+      const resp = await fetch(PROFILE_URL(slug), { cache: "no-store" });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      return withTheme(await resp.json());
+    }
+
+    async function ensureCompareProfile(slug) {
+      if (!slug) return null;
+      if (state.compareProfiles[slug]) return state.compareProfiles[slug];
+      try {
+        state.compareProfiles[slug] = await loadProfile(slug);
+      } catch {
+        state.compareProfiles[slug] = null;
+      }
+      return state.compareProfiles[slug];
+    }
+
+    function renderCompareSection(profile) {
+      const baseTheme = state.selectedTheme === "all" ? state.compareTheme : state.selectedTheme;
+      const availableCandidates = state.availableCompareCandidates;
+
+      const activeProfiles = [{ slug: state.currentSlug, profile, meta: state.currentMeta }];
+      for (const slug of state.compareSlugs.filter(Boolean)) {
+        const p = state.compareProfiles[slug];
+        const m = state.candidats.find((c) => c.slug === slug);
+        if (p && m) activeProfiles.push({ slug, profile: p, meta: m });
+      }
+
+      return `
+        <section id="compare" class="panel">
+          <h2>Comparer</h2>
+          <p class="section-kicker">Thème de comparaison</p>
+          <div class="themes-row" aria-label="Thème de comparaison">
+            ${THEME_OPTIONS.filter((t) => t.key !== "all").map((t) => `
+              <button type="button" class="theme-pill ${baseTheme === t.key ? "active" : ""}" data-compare-theme="${t.key}">${t.icon || ""} ${escapeHtml(t.label)}</button>
+            `).join("")}
+          </div>
+
+          <p class="section-kicker">Candidats à comparer (2 max)</p>
+          <div class="avatar-carousel" role="group" aria-label="Choisir jusqu'à deux candidats à comparer">
+            ${availableCandidates.map((c) => `
+              <button type="button" class="avatar-chip avatar-chip--mini ${state.compareSlugs.includes(c.slug) ? "active" : ""}" data-compare-toggle="${escapeHtml(c.slug)}">
+                <span class="avatar-chip-circle">${escapeHtml(shortName(c.nom))}</span>
+                <span class="avatar-chip-name">${escapeHtml(c.nom.split(/\s+/).slice(-1)[0])}</span>
+              </button>
+            `).join("")}
+          </div>
+
+          <div class="compare-grid">
+            ${activeProfiles.map(({ profile: p, meta: m }) => {
+              const facts = compareFactsForTheme(p, baseTheme);
+              const sampleVotes = facts.votes.slice(0, 3).map((v) => {
+                const vb = voteLabelAndClass(v.position);
+                return `<li>${escapeHtml(simplifyTitle(v.titre))} — <span class="vote-badge ${vb.cls}">${escapeHtml(vb.label)}</span></li>`;
+              }).join("");
+              return `
+                <article class="compare-card">
+                  <h3>${escapeHtml(p.identite?.nom_complet || m?.nom || p.slug)}</h3>
+                  <p class="small">${escapeHtml(themeLabel(baseTheme))}</p>
+                  <ul class="small" style="padding-left:1rem; margin:0.35rem 0;">
+                    <li>${facts.votes.length} vote(s) retrouvés</li>
+                    <li>${facts.textes.length} texte(s) porté(s)/rapporté(s)</li>
+                    <li>${facts.interventions.length} prise(s) de parole</li>
+                    <li>${facts.absents.length} vote(s) sans participation</li>
+                  </ul>
+                  ${sampleVotes ? `<details><summary class="small">3 votes clés</summary><ul class="small" style="padding-left:1rem;">${sampleVotes}</ul></details>` : `<p class="small">Aucun vote clé trouvé sur ce thème.</p>`}
+                </article>
+              `;
+            }).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderPage() {
+      const root = document.getElementById("candidat-root");
+      const profile = state.currentProfile;
+      const meta = state.currentMeta;
+
+      if (!profile || !meta) {
+        root.innerHTML = "";
+        return;
+      }
+
+      root.innerHTML = `
+        ${renderHeader(meta, profile)}
+
+        <section class="panel">
+          <p class="section-kicker">Filtrer par thème</p>
+          ${renderThemePills()}
+        </section>
+
+        ${renderPanelIndicator()}
+        <div class="swipe-deck" id="swipe-deck">
+          <div class="swipe-panel">
+            <section class="panel">
+              <h2>${PANEL_META.mandats.icon} Responsabilités & mandats <span class="source-ref">(${dedupeResponsibilities(profile).length})</span></h2>
+              <div id="mandats">${renderResponsabilites(profile)}</div>
+            </section>
+          </div>
+
+          <div class="swipe-panel">
+            <section class="panel">
+              <h2>${PANEL_META.textes.icon} Textes portés <span class="source-ref">(${(profile.dossiers_legislatifs || []).length})</span></h2>
+              <div id="textes">${renderTextes(profile)}</div>
+            </section>
+          </div>
+
+          <div class="swipe-panel">
+            <section class="panel">
+              <h2>${PANEL_META.votes.icon} Votes enregistrés <span class="source-ref">(${(profile.votes || []).length})</span></h2>
+              <div id="votes">${renderVotes(profile)}</div>
+            </section>
+          </div>
+
+          <div class="swipe-panel">
+            <section class="panel">
+              <h2>${PANEL_META.absences.icon} Absences et silences</h2>
+              <div id="absences">${renderAbsences(profile)}</div>
+            </section>
+          </div>
+
+          <div class="swipe-panel">
+            <section class="panel">
+              <h2>${PANEL_META.interventions.icon} Prises de parole <span class="source-ref">(${(profile.interventions || []).length})</span></h2>
+              <div id="interventions">${renderInterventions(profile)}</div>
+            </section>
+          </div>
+
+          <div class="swipe-panel">${renderCompareSection(profile)}</div>
+        </div>
+        <p class="swipe-hint">← Glissez ou touchez les icônes pour changer de section →</p>
+      `;
+
+      setDocumentTitle(profile.identite?.nom_complet || meta.nom);
+      bindRenderedEvents();
+    }
+
+    function renderPanelIndicator() {
+      return `
+        <div class="panel-indicator" role="tablist" aria-label="Sections du dossier">
+          ${PANEL_ORDER.map((id, i) => `
+            <button type="button" class="panel-dot ${state.activePanelIndex === i ? "active" : ""}" data-panel-index="${i}" title="${escapeHtml(PANEL_META[id].label)}" aria-label="${escapeHtml(PANEL_META[id].label)}">${PANEL_META[id].icon}</button>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function toggleKpiFlip(el) {
+      const id = el.dataset.kpi;
+      const flipped = el.classList.toggle("flipped");
+      el.setAttribute("aria-pressed", String(flipped));
+      if (flipped) state.flippedKpis.add(id); else state.flippedKpis.delete(id);
+    }
+
+    function setActivePanel(index, { scroll = false } = {}) {
+      if (index < 0 || index >= PANEL_ORDER.length) return;
+      state.activePanelIndex = index;
+      document.querySelectorAll(".panel-dot").forEach((dot, i) => {
+        dot.classList.toggle("active", i === index);
+      });
+      if (scroll) {
+        const deck = document.getElementById("swipe-deck");
+        if (deck) deck.scrollTo({ left: index * deck.clientWidth, behavior: "smooth" });
+      }
+    }
+
+    function scrollToPanel(id) {
+      setActivePanel(PANEL_ORDER.indexOf(id), { scroll: true });
+    }
+
+    function bindRenderedEvents() {
+      document.querySelectorAll("[data-theme]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.selectedTheme = btn.dataset.theme;
+          if (state.selectedTheme !== "all") state.compareTheme = state.selectedTheme;
+          renderPage();
+        });
+      });
+
+      document.querySelectorAll("[data-compare-theme]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.compareTheme = btn.dataset.compareTheme;
+          renderPage();
+        });
+      });
+
+      document.querySelectorAll("[data-votes-sort]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.votesSort = btn.dataset.votesSort;
+          renderPage();
+        });
+      });
+
+      document.querySelectorAll("[data-inter-mode]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.interventionsMode = btn.dataset.interMode;
+          state.interventionsVisible = 6;
+          renderPage();
+        });
+      });
+
+      const moreBtn = document.getElementById("see-more-interventions");
+      if (moreBtn) {
+        moreBtn.addEventListener("click", () => {
+          state.interventionsVisible += 6;
+          renderPage();
+        });
+      }
+
+      document.querySelectorAll("[data-compare-toggle]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const slug = btn.dataset.compareToggle;
+          const idx = state.compareSlugs.indexOf(slug);
+          if (idx !== -1) {
+            state.compareSlugs[idx] = "";
+          } else {
+            const emptyIdx = state.compareSlugs.indexOf("");
+            state.compareSlugs[emptyIdx !== -1 ? emptyIdx : 0] = slug;
+          }
+          await refreshCompareProfiles();
+          renderPage();
+        });
+      });
+
+      // Cartes KPI en flip 3D : clic/tap pour basculer (le survol suffit sur desktop)
+      document.querySelectorAll(".kpi-flip").forEach((el) => {
+        el.addEventListener("click", (e) => {
+          if (e.target.closest(".kpi-back-link")) return;
+          toggleKpiFlip(el);
+        });
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            toggleKpiFlip(el);
+          }
+        });
+      });
+      document.querySelectorAll(".kpi-back-link").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          scrollToPanel(btn.dataset.gotoPanel);
+        });
+      });
+
+      // Carrousel de panneaux glissants : conserve la position active après un re-rendu
+      const deck = document.getElementById("swipe-deck");
+      if (deck) {
+        deck.scrollLeft = state.activePanelIndex * deck.clientWidth;
+        let scrollRaf = null;
+        deck.addEventListener("scroll", () => {
+          if (scrollRaf) cancelAnimationFrame(scrollRaf);
+          scrollRaf = requestAnimationFrame(() => {
+            const index = Math.round(deck.scrollLeft / Math.max(deck.clientWidth, 1));
+            setActivePanel(index);
+          });
+        });
+      }
+      document.querySelectorAll(".panel-dot").forEach((dot) => {
+        dot.addEventListener("click", () => {
+          setActivePanel(Number(dot.dataset.panelIndex), { scroll: true });
+        });
+      });
+    }
+
+    async function refreshCompareProfiles() {
+      // Dédoublonnage utile si la même personne est choisie deux fois pour la comparaison.
+      const slugs = [...new Set(state.compareSlugs.filter(Boolean))].slice(0, MAX_COMPARE_CANDIDATES);
+      state.compareSlugs = [slugs[0] || "", slugs[1] || ""];
+      await Promise.all(slugs.map((slug) => ensureCompareProfile(slug)));
+    }
+
+    function updateActiveAvatarChip() {
+      document.querySelectorAll("#candidat-carousel .avatar-chip").forEach((chip) => {
+        const isActive = chip.dataset.slug === state.currentSlug;
+        chip.classList.toggle("active", isActive);
+        chip.setAttribute("aria-selected", String(isActive));
+      });
+    }
+
+    async function selectCandidate(slug) {
+      state.currentSlug = slug;
+      state.currentMeta = state.candidats.find((c) => c.slug === slug) || null;
+      state.currentProfile = null;
+      state.selectedTheme = "all";
+      state.votesSort = "recent";
+      state.interventionsMode = "all";
+      state.interventionsVisible = 6;
+      state.compareSlugs = ["", ""];
+      state.compareProfiles = {};
+      state.activePanelIndex = 0;
+      state.flippedKpis = new Set();
+
+      updateActiveAvatarChip();
+
+      const root = document.getElementById("candidat-root");
+      if (!slug || !state.currentMeta) {
+        root.innerHTML = "";
+        setDocumentTitle("");
+        return;
+      }
+      state.availableCompareCandidates = state.candidats.filter((c) => c.slug && c.slug !== slug);
+
+      root.innerHTML = `<section class="panel"><p class="empty" role="status" aria-live="polite">Chargement de la fiche de ${escapeHtml(state.currentMeta.nom)}…</p></section>`;
+      try {
+        state.currentProfile = await loadProfile(slug);
+        renderPage();
+      } catch (err) {
+        root.innerHTML = `
+          <section class="panel">
+            <p class="empty">Données non disponibles pour ce candidat (${escapeHtml(err.message)}).</p>
+            <p class="small">Aucune donnée trouvée pour le moment. Cette fiche sera affichée dès que les données seront disponibles.</p>
+          </section>
+        `;
+        setDocumentTitle(state.currentMeta?.nom || "");
+      }
+    }
+
+    function candidateLastName(nom) {
+      const parts = String(nom || "").split(/\s+/).filter(Boolean);
+      return parts.length ? parts[parts.length - 1] : "?";
+    }
+
+    async function init() {
+      const carousel = document.getElementById("candidat-carousel");
+
+      try {
+        const resp = await fetch(CANDIDATS_URL, { cache: "no-store" });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const data = await resp.json();
+        state.candidats = data.candidats || [];
+
+        carousel.innerHTML = state.candidats.map((c) => `
+          <button type="button" class="avatar-chip" data-slug="${escapeHtml(c.slug || "")}" role="tab" aria-selected="false" ${c.slug ? "" : "disabled"} title="${c.slug ? escapeHtml(c.nom) : `${escapeHtml(c.nom)} (pas de données parlementaires)`}">
+            <span class="avatar-chip-circle">${escapeHtml(shortName(c.nom))}</span>
+            <span class="avatar-chip-name">${escapeHtml(candidateLastName(c.nom))}</span>
+          </button>
+        `).join("");
+
+        carousel.querySelectorAll(".avatar-chip[data-slug]:not(:disabled)").forEach((chip) => {
+          chip.addEventListener("click", () => selectCandidate(chip.dataset.slug));
+        });
+      } catch (err) {
+        document.getElementById("candidat-root").innerHTML = `
+          <section class="panel"><p class="empty">Impossible de charger la liste des candidats (${escapeHtml(err.message)}).</p></section>
+        `;
+        return;
+      }
+
+      window.addEventListener("resize", () => {
+        const deck = document.getElementById("swipe-deck");
+        if (deck) deck.scrollLeft = state.activePanelIndex * deck.clientWidth;
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>

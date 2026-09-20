@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  Fixture FIGÉE, RÉDUCTION VERBATIM de CRSANR5L17S2026O1N015.xml (archive
+  data.assemblee-nationale.fr, législature 17, téléchargée le 26/08/2026).
+  Aucun tag, aucun attribut, aucune valeur écrit à la main.
+
+  Elle porte l'unique cas de la 17e législature — 2 625 sur les trois archives —
+  où la source CONTREDIT le préfixage de #510 : le <paragraphe> porte
+  id_acteur="PA0", l'orateur collectif, alors que <orateur><id> porte un
+  identifiant positif. Sur les trois archives, 2 524 de ces paragraphes ont un
+  <nom> qui cite DEUX orateurs quand <orateur><id> n'en porte qu'un ; celui-ci
+  est une interruption que la source neutralise sans le dire. Dans les deux cas
+  préfixer l'identifiant présent fabriquerait une prise de parole (§2 règle 2).
+-->
+<compteRendu xmlns="http://schemas.assemblee-nationale.fr/referentiel">
+  <uid>CRSANR5L17S2026O1N015</uid>
+  <seanceRef>RUANR5L17S2026IDS29866</seanceRef>
+  <sessionRef>SCR5A2026O1</sessionRef>
+  <metadonnees>
+    <dateSeance>20251027150000000</dateSeance>
+    <dateSeanceJour>lundi 27 octobre 2025</dateSeanceJour>
+    <numSeanceJour>2</numSeanceJour>
+    <numSeance>15</numSeance>
+    <typeAssemblee>AN</typeAssemblee>
+    <legislature>17</legislature>
+    <session>Session ordinaire 2025 -2026</session>
+    <nomFichierJo>20250015</nomFichierJo>
+    <validite>valide</validite>
+    <etat>complet</etat>
+    <diffusion>public</diffusion>
+    <version>avant_JO</version>
+    <environnement>PROD</environnement>
+    <heureGeneration>2025-11-03T11:31:19.000+01:00</heureGeneration>
+  </metadonnees>
+  <contenu>
+    <point nivpoint="3" valeur_ptsodj="1" ordinal_prise="11" id_preparation="2767916" ordre_absolu_seance="531" code_grammaire="DISC_ARTICLES_2_4" code_style="Sous-titre bdc" code_parole="" sommaire="1" id_syceron="3862893" type_debat="PLF" valeur=" 11" bibard="" art=" 11" adt="" ssadt="">
+      <orateurs />
+      <texte>Article 11<italique> (appelé par priorité - suite)</italique>
+      </texte>
+      <point nivpoint="4" structure="Oui" valeur_ptsodj="1" ordinal_prise="12" id_preparation="2768025" ordre_absolu_seance="573" id_acteur="PA795270" id_mandat="PM858399" id_nomination_oe="0" id_nomination_op="PM873245" orateur="" code_grammaire="DISC_ARTICLES_3_1" code_parole="" sommaire="1" id_syceron="3863472" valeur=" 3337" bibard="" art=" 11" adt=" 3337" ssadt="">
+        <paragraphe valeur_ptsodj="1" ordinal_prise="13" id_preparation="2768354" ordre_absolu_seance="643" id_acteur="PA0" id_mandat="-1" id_nomination_oe="-1" id_nomination_op="-1" code_grammaire="INTERRUPTION_1_10" code_style="NORMAL" code_parole="" sommaire="0" id_syceron="3863911" type_debat="PLF" valeur="M. Jean-Paul Lecoq;;Null;;335612">
+          <orateurs>
+            <orateur>
+              <nom>M. Jean-Paul Lecoq</nom>
+              <id>335612</id>
+              <qualite />
+            </orateur>
+          </orateurs>
+          <texte stime="12193.28">C’est sûr !</texte>
+        </paragraphe>
+      </point>
+    </point>
+  </contenu>
+</compteRendu>

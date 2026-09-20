@@ -1,0 +1,606 @@
+/*
+ * La fiche de gouvernement (#330). Les jetons viennent d'`index.css` et de la
+ * fiche candidat : la fiche de gouvernement n'invente aucune couleur.
+ */
+
+.gvp-main {
+  --gouv: #85510d;
+  --gouv-wash: #f3eee7;
+  --gouv-line: #e0d4c2;
+  --texte-2: #6e6a78;
+  --gris-absence: #c4c0b9;
+
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 28px 24px 72px;
+}
+
+.gvp-breadcrumb {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+/* Mêmes valeurs que `.cp-entete` / `.cp-sourcil` / `.cp-qui` sur la fiche
+   candidat : une fiche ne s'ouvre pas d'une autre voix que sa voisine. */
+.gvp-entete { padding-bottom: 8px; }
+
+.gvp-sourcil {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.gvp-entete h1 {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 8px 0 0;
+  line-height: 1.06;
+}
+
+.gvp-qui {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin: 9px 0 12px;
+  font-size: 15px;
+  color: var(--texte-2);
+}
+
+/* ── Sections ───────────────────────────────────────────────────────────── */
+
+.gvp-section { margin-top: 40px; }
+
+.gvp-section-tete {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.gvp-section-numero {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.gvp-section-trait {
+  flex: 1;
+  height: 1px;
+  background: var(--border-strong);
+}
+
+.gvp-section-titre {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.018em;
+}
+
+/* Le surlignage tient au texte, pas à la ligne : sur le `h2`, bloc de la
+   largeur de la colonne, la bande jaune se lirait comme un fond de section.
+   Même geste que sur la fiche candidat. */
+.gvp-section-titre > span {
+  background: linear-gradient(transparent 62%, var(--accent) 62%);
+  padding: 0 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.gvp-section-critere {
+  font-size: 13px;
+  color: var(--texte-2);
+  max-width: 108ch;
+  margin-top: 8px;
+  line-height: 1.55;
+}
+
+.gvp-carte {
+  margin-top: 16px;
+  padding: 22px 24px;
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+}
+
+.gvp-note {
+  font-size: 12.5px;
+  color: var(--texte-2);
+  line-height: 1.55;
+  max-width: 100ch;
+  margin-top: 14px;
+}
+
+/* Pied de section et renvoi en méthodologie : mêmes valeurs que
+   `.lp-section-pied` / `.lp-methodo` sur la fiche de lignée — une fiche ne
+   parle pas d'une autre voix que sa voisine. */
+.gvp-section-pied {
+  margin-top: 14px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--texte-2);
+  max-width: 100ch;
+}
+
+.gvp-methodo {
+  margin-top: 8px;
+  font-size: 12.5px;
+}
+
+.gvp-methodo a {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
+}
+
+.gvp-methodo a:hover { text-decoration-color: currentcolor; }
+
+.gvp-vide {
+  font-size: 13.5px;
+  color: var(--texte-2);
+  line-height: 1.6;
+  max-width: 100ch;
+}
+
+.gvp-avertissement {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--gouv-wash);
+  border: 1px solid var(--gouv-line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  max-width: 100ch;
+}
+
+.gvp-nd {
+  font-style: italic;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* ── 01 · En bref ───────────────────────────────────────────────────────── */
+
+.gvp-frise {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.gvp-frise-nom {
+  font-size: 13px;
+  font-weight: 800;
+  fill: var(--ink);
+}
+
+.gvp-frise-annee {
+  font-size: 11px;
+  fill: var(--muted);
+}
+
+.gvp-faits {
+  display: grid;
+  margin-top: 20px;
+}
+
+.gvp-fait {
+  display: grid;
+  grid-template-columns: minmax(120px, 168px) 1fr;
+  gap: 16px;
+  padding: 11px 0;
+  border-top: 1px solid var(--border);
+  align-items: baseline;
+}
+
+.gvp-fait:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.gvp-fait-cle {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.gvp-fait-corps { display: grid; gap: 3px; }
+
+/* Tout en gras ne met rien en valeur : le texte qui relie reste en texte
+   courant, et seuls les noms et les nombres passent en appui. */
+.gvp-fait-valeur {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--texte-2);
+  line-height: 1.5;
+}
+
+.gvp-fort { font-weight: 700; color: var(--ink); }
+
+.gvp-nombre {
+  font-weight: 800;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.gvp-fait-sous {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.gvp-lien {
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.gvp-lien:hover { color: var(--gouv); }
+
+/* ── 02 · Qui le composait ──────────────────────────────────────────────── */
+
+/* Des colonnes construites en JS, et non une grille : dans une grille, ouvrir
+   une carte étire toute la rangée, donc les cartes des autres colonnes. */
+.gvp-orga {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.gvp-colonne {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gvp-pole {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  padding: 9px 11px;
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-top: 2px solid var(--gouv);
+  border-radius: 8px;
+}
+
+.gvp-pole--absent {
+  border-top-color: var(--gris-absence);
+  background: var(--bg);
+}
+
+.gvp-pole--cliquable { cursor: pointer; }
+.gvp-pole--cliquable:hover { border-color: var(--gouv-line); }
+
+.gvp-pole-portefeuille {
+  font-size: 11.5px;
+  color: var(--texte-2);
+  line-height: 1.35;
+}
+
+.gvp-pole-titulaire {
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* Une passation est un changement DE TITULAIRE À UNE DATE : la flèche le dit,
+   la date situe le changement. « X, puis Y » se lisait comme une hiérarchie. */
+.gvp-passation { color: var(--gouv); font-weight: 700; }
+
+.gvp-depuis {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--texte-2);
+  white-space: nowrap;
+}
+
+.gvp-bascule {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: none;
+  padding: 2px 0 0;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--gouv);
+  cursor: pointer;
+}
+
+.gvp-bascule:hover { text-decoration: underline; }
+.gvp-chevron { font-size: 10px; }
+
+.gvp-tiroir {
+  display: grid;
+  gap: 3px;
+  border-top: 1px solid var(--border);
+  padding-top: 6px;
+}
+
+.gvp-tiroir[hidden] { display: none; }
+
+.gvp-enfant { font-size: 12px; line-height: 1.4; }
+.gvp-enfant-nom { font-weight: 600; }
+.gvp-enfant-charge { color: var(--texte-2); }
+
+/* ── 03 · Sur quoi ils ont pris la parole ──────────────────────────────── */
+
+/* Mêmes valeurs que `.lp-sujet` sur la fiche de lignée : un sujet, son compte
+   de membres, et la barre qui rapporte l'un à l'autre. */
+.gvp-sujet-bloc { border-top: 1px solid var(--border); }
+.gvp-sujet-bloc:first-child { border-top: 0; }
+
+.gvp-sujet {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 76px;
+  gap: 2px 14px;
+  padding: 8px 0;
+  width: 100%;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.gvp-sujet:hover .gvp-sujet-lib { color: var(--gouv); }
+.gvp-sujet:focus-visible { outline: 2px solid var(--dark); outline-offset: 2px; }
+
+/* Le détail d'un sujet : qui a parlé, quand, et le lien vers le compte rendu.
+   Jamais le verbatim — les membres de gouvernement sont collectés en mode
+   réduit au thème, et leurs interventions n'ont pas de texte. */
+.gvp-interventions {
+  display: grid;
+  gap: 2px;
+  padding: 6px 0 12px 18px;
+  border-left: 2px solid var(--gouv-line);
+  margin-left: 4px;
+}
+
+/* Quatre colonnes : qui · en qualité de quoi · quand · combien. En flex, un
+   intitulé de portefeuille long — « Secrétariat d'État auprès du ministre des
+   armées et du ministre de l'éducation nationale… » — repoussait le compte à
+   la ligne suivante, et la liste devenait illisible. */
+.gvp-intervention {
+  display: grid;
+  grid-template-columns: minmax(140px, 180px) minmax(0, 1.4fr) minmax(0, 200px) minmax(0, 220px);
+  align-items: baseline;
+  gap: 4px 14px;
+  font-size: 12.5px;
+  color: var(--texte-2);
+  padding: 3px 0;
+}
+
+.gvp-intervention-date {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+
+
+.gvp-intervention-membre { font-weight: 700; color: var(--ink); }
+.gvp-intervention-type { color: var(--texte-2); }
+
+.gvp-intervention-qualite {
+  color: var(--gouv);
+  font-size: 12px;
+  max-width: 46ch;
+}
+
+.gvp-attente { font-size: 12.5px; color: var(--muted); padding: 4px 0; }
+
+.gvp-sujet-lib { font-size: 13.5px; font-weight: 600; }
+
+.gvp-sujet-n {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  text-align: right;
+  align-self: center;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  color: var(--texte-2);
+}
+
+.gvp-sujet-n b { font-size: 16px; font-weight: 800; color: var(--ink); }
+
+.gvp-sujet-barre {
+  grid-column: 1;
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.gvp-sujet-barre i {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+  border-radius: 3px;
+}
+
+/* ── 04 · Ce qu'on n'a pas pu lire ─────────────────────────────────────── */
+
+.gvp-limites { display: grid; }
+
+.gvp-limite {
+  display: grid;
+  grid-template-columns: minmax(120px, 190px) 1fr;
+  gap: 16px;
+  padding: 11px 0;
+  border-top: 1px solid var(--border);
+}
+
+.gvp-limite:first-child { border-top: 0; padding-top: 0; }
+
+.gvp-limite dt {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.gvp-limite dd {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--texte-2);
+  max-width: 96ch;
+}
+
+/* ── 03 · Ce qu'il a fait déposer ───────────────────────────────────────── */
+
+.gvp-brin { cursor: pointer; }
+.gvp-brin:focus-visible { outline: 2px solid var(--dark); }
+
+.gvp-invite {
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--texte-2);
+}
+
+.gvp-selection { margin-top: 18px; }
+
+.gvp-selection-tete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--texte-2);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.gvp-raz {
+  margin-left: auto;
+  border: 1px solid var(--border-strong);
+  background: var(--card);
+  border-radius: 8px;
+  padding: 5px 11px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--texte-2);
+  cursor: pointer;
+}
+
+.gvp-raz:hover { color: var(--ink); }
+.gvp-raz:focus-visible { outline: 2px solid var(--dark); outline-offset: 2px; }
+
+.gvp-flux svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.gvp-flux-etiquette {
+  font-size: 12px;
+  fill: var(--ink);
+}
+
+.gvp-liste { display: grid; margin-top: 22px; }
+
+.gvp-texte {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 14px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+}
+
+.gvp-texte-date {
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.gvp-texte-corps { display: grid; gap: 6px; }
+
+.gvp-texte-titre { font-size: 13.5px; line-height: 1.45; }
+
+.gvp-texte-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--texte-2);
+}
+
+.gvp-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.gvp-pastille {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: none;
+}
+
+/* Le 49.3 n'a pas de teinte : un fait de procédure ne prend pas la couleur
+   d'une issue de vote (§2 règle 4). */
+.gvp-pastille--procedure {
+  border: 1px solid var(--ink);
+  background: var(--card);
+  border-radius: 2px;
+}
+
+.gvp-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.gvp-plus {
+  justify-self: start;
+  margin-top: 14px;
+  padding: 7px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--texte-2);
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.gvp-plus:hover { color: var(--ink); }
+
+.gvp-bascule:focus-visible,
+.gvp-plus:focus-visible,
+.gvp-lien:focus-visible,
+.gvp-source:focus-visible {
+  outline: 2px solid var(--dark);
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .gvp-main { padding: 20px 16px 56px; }
+  .gvp-entete h1 { font-size: 26px; }
+  .gvp-intervention { grid-template-columns: 1fr; gap: 2px; }
+  .gvp-fait,
+  .gvp-limite,
+  .gvp-texte { grid-template-columns: 1fr; gap: 4px; }
+  .gvp-orga { flex-direction: column; }
+}

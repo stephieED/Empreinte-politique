@@ -1,0 +1,91 @@
+{
+  "schema_version": "1",
+  "type_document": "profil_groupe",
+  "groupe_id": "AN:LFI",
+  "groupe_sigle": "LFI",
+  "groupe_nom": "La France insoumise (doublon)",
+  "chambre": "AN",
+  "legislature": "17",
+  "periode": {
+    "debut": null,
+    "fin": null,
+    "actif": true
+  },
+  "historique_noms": [],
+  "membres": [
+    {
+      "membre_id": "nosdeputes:zoe-lefevre",
+      "nom": "Zoe Lefevre",
+      "debut_dans_groupe": "2024-07-18",
+      "fin_dans_groupe": null,
+      "actif": true
+    }
+  ],
+  "effectif": {
+    "actuel": 1,
+    "min_historique": null,
+    "max_historique": null
+  },
+  "cohesion_votes": [],
+  "tags_thematiques_agreges": [],
+  "mandats_agreges": [],
+  "amendements_agreges": {
+    "nb_amendements": 0,
+    "nb_adoptes": 0,
+    "nb_rejetes": 0,
+    "nb_irrecevables": 0,
+    "nb_retires_ou_tombes": 0,
+    "taux_adoption": null,
+    "par_type_deposant": {
+      "commission_rapporteur": {
+        "nb_amendements": 0,
+        "nb_adoptes": 0,
+        "nb_rejetes": 0,
+        "nb_irrecevables": 0,
+        "nb_retires_ou_tombes": 0,
+        "taux_adoption": null
+      },
+      "depute": {
+        "nb_amendements": 0,
+        "nb_adoptes": 0,
+        "nb_rejetes": 0,
+        "nb_irrecevables": 0,
+        "nb_retires_ou_tombes": 0,
+        "taux_adoption": null
+      },
+      "gouvernement": {
+        "nb_amendements": 0,
+        "nb_adoptes": 0,
+        "nb_rejetes": 0,
+        "nb_irrecevables": 0,
+        "nb_retires_ou_tombes": 0,
+        "taux_adoption": null
+      },
+      "inconnu": {
+        "nb_amendements": 0,
+        "nb_adoptes": 0,
+        "nb_rejetes": 0,
+        "nb_irrecevables": 0,
+        "nb_retires_ou_tombes": 0,
+        "taux_adoption": null
+      }
+    }
+  },
+  "sources": [
+    {
+      "type": "nosdeputes",
+      "url": "https://www.nosdeputes.fr/groupe/LFI",
+      "synchro_le": "2026-07-01T10:00:00+00:00"
+    }
+  ],
+  "meta": {
+    "schema_version": "1",
+    "genere_le": "2026-08-01T10:00:00+00:00",
+    "licence_donnees": "ODbL",
+    "profils_sources": [
+      "nosdeputes:zoe-lefevre"
+    ],
+    "seuil_quorum": 0.5,
+    "warnings": []
+  }
+}

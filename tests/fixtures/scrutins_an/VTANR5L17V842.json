@@ -1,0 +1,84 @@
+{
+ "@xmlns": "http://schemas.assemblee-nationale.fr/referentiel",
+ "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+ "uid": "VTANR5L17V842",
+ "numero": "842",
+ "organeRef": "PO838901",
+ "legislature": "17",
+ "sessionRef": "SCR5A2025O1",
+ "seanceRef": "RUANR5L17S2025IDS29062",
+ "dateScrutin": "2025-02-19",
+ "quantiemeJourSeance": "1",
+ "typeVote": {
+  "codeTypeVote": "MOC",
+  "libelleTypeVote": "motion de censure",
+  "typeMajorite": "Majorité requise pour une motion de censure"
+ },
+ "sort": {
+  "code": "rejeté",
+  "libelle": "L'Assemblée nationale n'a pas adopté"
+ },
+ "titre": "la motion de censure, déposée en application de l'article 49, alinéa 2, de la Constitution, par M. Boris Vallaud et 65 députés.",
+ "demandeur": {
+  "texte": null,
+  "referenceLegislative": null
+ },
+ "objet": {
+  "libelle": "la motion de censure, déposée en application de l'article 49, alinéa 2, de la Constitution, par M. Boris Vallaud et 65 députés.",
+  "dossierLegislatif": null,
+  "referenceLegislative": null
+ },
+ "modePublicationDesVotes": "DecompteNominatif",
+ "syntheseVote": {
+  "nombreVotants": "181",
+  "suffragesExprimes": "181",
+  "nbrSuffragesRequis": "289",
+  "annonce": "L'Assemblée nationale n'a pas adopté",
+  "decompte": {
+   "nonVotants": "1",
+   "pour": "181",
+   "contre": "0",
+   "abstentions": "0",
+   "nonVotantsVolontaires": "0"
+  }
+ },
+ "ventilationVotes": {
+  "organe": {
+   "organeRef": "PO838901",
+   "groupes": {
+    "groupe": [
+     {
+      "organeRef": "PO845413",
+      "nombreMembresGroupe": "71",
+      "vote": {
+       "positionMajoritaire": "pour",
+       "decompteVoix": {
+        "nonVotants": "0",
+        "pour": "68",
+        "contre": "0",
+        "abstentions": "0",
+        "nonVotantsVolontaires": "0"
+       },
+       "decompteNominatif": {
+        "nonVotants": null,
+        "pours": {
+         "votant": [
+          {
+           "acteurRef": "PA793262",
+           "mandatRef": "PM842438",
+           "parDelegation": "false",
+           "numPlace": "571"
+          }
+         ]
+        },
+        "contres": null,
+        "abstentions": null
+       }
+      }
+     }
+    ]
+   }
+  }
+ },
+ "lieuVote": "Salons"
+}

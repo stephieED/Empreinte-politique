@@ -1,0 +1,144 @@
+/* La barre des pages du site (#951). Voir l'en-tête de NavigationSite.jsx. */
+
+.nav-site {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.nav-site-lien {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 4px 0;
+  white-space: nowrap;
+}
+
+.nav-site-lien:hover {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+/* Le jaune souligne, il ne colore jamais le texte (DESIGN_SYSTEM §2). */
+.nav-site-lien--courante {
+  color: var(--ink);
+  font-weight: 800;
+  box-shadow: inset 0 -3px 0 var(--accent);
+}
+
+.nav-site-lien:focus-visible,
+.nav-site-menu-lien:focus-visible,
+.nav-site-menu-bouton:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.nav-site-menu {
+  position: relative;
+  display: none;
+}
+
+.nav-site-menu-bouton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  border: 1px solid var(--border-strong);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 5px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.nav-site-menu-bouton:hover {
+  border-color: var(--muted);
+}
+
+.nav-site-menu-icone {
+  position: relative;
+  width: 13px;
+  height: 9px;
+  border-top: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  box-sizing: border-box;
+}
+
+.nav-site-menu-icone::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 1.5px;
+  border-top: 2px solid currentColor;
+}
+
+.nav-site-menu-liste {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 10;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(23, 20, 31, 0.14);
+}
+
+/* `display: flex` l'emporte sur le `[hidden]` du navigateur (#324). */
+.nav-site-menu-liste[hidden] {
+  display: none;
+}
+
+.nav-site-menu-lien {
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.nav-site-menu-lien:hover {
+  background: var(--bg);
+  text-decoration: none;
+}
+
+.nav-site-menu-lien--courante,
+.nav-site-menu-lien--courante:hover {
+  background: var(--accent);
+}
+
+/* L'outil qui remplace l'onglet courant (#1025) garde la barre pour lui seul
+   sous 720 px : les liens passent dans « Menu », l'outil reste à l'écran. */
+.nav-site-outil {
+  display: inline-flex;
+}
+
+@media (max-width: 720px) {
+  .nav-site-lien {
+    display: none;
+  }
+
+  /* La barre ne porte plus que l'outil, et passe À DROITE du bouton « Menu » :
+     un seul élément rendu, deux mises en page. */
+  .nav-site:not(:has(.nav-site-outil)) {
+    display: none;
+  }
+
+  .nav-site {
+    order: 2;
+  }
+
+  .nav-site-menu {
+    display: block;
+    order: 1;
+  }
+}

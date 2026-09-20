@@ -1,0 +1,76 @@
+{
+ "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+ "uid": "VTANR5L14V292",
+ "numero": "292",
+ "organeRef": "PO644420",
+ "legislature": "14",
+ "sessionRef": "SCR5A2013O1",
+ "seanceRef": "RUANR5L14S2013IDS16946",
+ "dateScrutin": "2013-03-20",
+ "quantiemeJourSeance": "1",
+ "typeVote": {
+  "codeTypeVote": "MOC",
+  "libelleTypeVote": "motion de censure",
+  "typeMajorite": "majorité des membres composants composant l'Assemblée"
+ },
+ "sort": {
+  "code": "rejeté",
+  "libelle": "L'Assemblée nationale n'a pas adopté"
+ },
+ "titre": "la motion de censure déposée en application de l'article 49, alinéa 2 de la Constitution par M. Christian Jacob et 144 membres de l'Assemblée.",
+ "demandeur": {
+  "texte": "Conférence des présidents",
+  "referenceLegislative": null
+ },
+ "objet": {
+  "libelle": "la motion de censure déposée en application de l'article 49, alinéa 2 de la Constitution par M. Christian Jacob et 144 membres de l'Assemblée.",
+  "referenceLegislative": null
+ },
+ "modePublicationDesVotes": "DecompteNominatif",
+ "syntheseVote": {
+  "nombreVotants": "228",
+  "suffragesExprimes": "228",
+  "nbrSuffragesRequis": "287",
+  "annonce": "L'Assemblée nationale n'a pas adopté",
+  "decompte": {
+   "pour": "228",
+   "contre": "0",
+   "abstentions": "0",
+   "nonVotants": "1"
+  }
+ },
+ "ventilationVotes": {
+  "organe": {
+   "organeRef": "PO644420",
+   "groupes": {
+    "groupe": [
+     {
+      "organeRef": "PO656006",
+      "nombreMembresGroupe": "195",
+      "vote": {
+       "positionMajoritaire": "pour",
+       "decompteVoix": {
+        "pour": "195",
+        "contre": "0",
+        "abstention": "0"
+       },
+       "decompteNominatif": {
+        "nonVotants": "0",
+        "pour": {
+         "votant": [
+          {
+           "acteurRef": "PA346",
+           "mandatRef": "PM645086"
+          }
+         ]
+        },
+        "contre": null,
+        "abstentions": null
+       }
+      }
+     }
+    ]
+   }
+  }
+ }
+}

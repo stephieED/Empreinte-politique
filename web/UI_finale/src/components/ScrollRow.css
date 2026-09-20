@@ -1,0 +1,34 @@
+.scroll-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  touch-action: pan-x;
+  cursor: grab;
+  padding: 2px 0 10px;
+  scrollbar-width: none;
+}
+
+/* Repliée : plus rien ne défile, donc ni curseur de préhension, ni capture du
+   geste tactile, ni débordement à masquer. */
+.scroll-row--replie {
+  flex-wrap: wrap;
+  overflow: visible;
+  touch-action: auto;
+  cursor: default;
+  row-gap: 8px;
+}
+
+.scroll-row::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-row.is-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+}
+
+.scroll-row.is-dragging * {
+  user-select: none;
+}

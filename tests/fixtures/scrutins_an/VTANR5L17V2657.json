@@ -1,0 +1,84 @@
+{
+ "@xmlns": "http://schemas.assemblee-nationale.fr/referentiel",
+ "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+ "uid": "VTANR5L17V2657",
+ "numero": "2657",
+ "organeRef": "PO838901",
+ "legislature": "17",
+ "sessionRef": "SCR5A2025O1",
+ "seanceRef": "RUANR5L17S2025IDS29580",
+ "dateScrutin": "2025-06-24",
+ "quantiemeJourSeance": "1",
+ "typeVote": {
+  "codeTypeVote": "SPO",
+  "libelleTypeVote": "scrutin public ordinaire",
+  "typeMajorite": "Majorité absolue des suffrages exprimés"
+ },
+ "sort": {
+  "code": "adopté",
+  "libelle": "l'Assemblée nationale a adopté"
+ },
+ "titre": "l'article 22 (examen prioritaire) du projet de loi de programmation pour la refondation de Mayotte (première lecture).",
+ "demandeur": {
+  "texte": "Présidente du groupe \"Rassemblement National\"",
+  "referenceLegislative": null
+ },
+ "objet": {
+  "libelle": "l'article 22 (examen prioritaire) du projet de loi de programmation pour la refondation de Mayotte (première lecture).",
+  "dossierLegislatif": null,
+  "referenceLegislative": null
+ },
+ "modePublicationDesVotes": "DecompteNominatif",
+ "syntheseVote": {
+  "nombreVotants": "144",
+  "suffragesExprimes": "144",
+  "nbrSuffragesRequis": "73",
+  "annonce": "l'Assemblée nationale a adopté",
+  "decompte": {
+   "nonVotants": "2",
+   "pour": "121",
+   "contre": "23",
+   "abstentions": "0",
+   "nonVotantsVolontaires": "0"
+  }
+ },
+ "ventilationVotes": {
+  "organe": {
+   "organeRef": "PO838901",
+   "groupes": {
+    "groupe": [
+     {
+      "organeRef": "PO845401",
+      "nombreMembresGroupe": "123",
+      "vote": {
+       "positionMajoritaire": "pour",
+       "decompteVoix": {
+        "nonVotants": "0",
+        "pour": "54",
+        "contre": "0",
+        "abstentions": "0",
+        "nonVotantsVolontaires": "0"
+       },
+       "decompteNominatif": {
+        "nonVotants": null,
+        "pours": {
+         "votant": [
+          {
+           "acteurRef": "PA842279",
+           "mandatRef": "PM843779",
+           "parDelegation": "false",
+           "numPlace": "026"
+          }
+         ]
+        },
+        "contres": null,
+        "abstentions": null
+       }
+      }
+     }
+    ]
+   }
+  }
+ },
+ "lieuVote": "Hémicycle"
+}

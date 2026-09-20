@@ -1,0 +1,195 @@
+{
+  "schema_version": "correspondance-acteurs-an-v2",
+  "genere_le": "2026-08-26T14:31:35+0000",
+  "source_referentiel": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+  "correspondances": {
+    "adrien-quatennens": {
+      "acteur_ref": "PA720422",
+      "etat_civil": {
+        "civilite": "M.",
+        "prenom": "Adrien",
+        "nom": "Quatennens",
+        "nom_complet": "Adrien Quatennens",
+        "date_naissance": "1990-05-23"
+      },
+      "ecart": null,
+      "motif": null,
+      "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA720422",
+      "verifie_le": "2026-08-26"
+    },
+    "alexandra-martin": {
+      "acteur_ref": "PA793342",
+      "etat_civil": {
+        "civilite": "Mme",
+        "prenom": "Alexandra",
+        "nom": "Martin (Alpes-Maritimes)",
+        "nom_complet": "Alexandra Martin (Alpes-Maritimes)",
+        "date_naissance": "1968-10-25"
+      },
+      "ecart": "homonymie",
+      "motif": "Homonymie réelle : deux députées en exercice portent ce nom, et l'AN ne les distingue que par le département inscrit dans l'état civil lui-même. Celle-ci est « Alexandra Martin (Alpes-Maritimes) », née le 25/10/1968 à Nice, groupe DR, 8e circonscription des Alpes-Maritimes (06), courriel AN alexandra.martin@assemblee-nationale.fr. La correspondance par nom ne peut pas trancher — et ne trouve d'ailleurs aucune clé « alexandra martin », les deux fiches portant leur département.",
+      "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793342",
+      "verifie_le": "2026-08-26"
+    },
+    "alexandra-martin-1": {
+      "acteur_ref": "PA793944",
+      "etat_civil": {
+        "civilite": "Mme",
+        "prenom": "Alexandra",
+        "nom": "Martin (Gironde)",
+        "nom_complet": "Alexandra Martin (Gironde)",
+        "date_naissance": "1976-07-28"
+      },
+      "ecart": "homonymie",
+      "motif": "L'autre « Alexandra Martin » : « Alexandra Martin (Gironde) », née le 28/07/1976 à Bordeaux, groupe EPR, 1re circonscription de la Gironde (33), courriel AN alexandra.martin.gironde@assemblee-nationale.fr — l'AN a elle-même dû suffixer l'adresse. Le `-1` du slug est le suffixe que NosDéputés donne au second homonyme : il ne porte aucune information institutionnelle et ne doit jamais servir à trancher.",
+      "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793944",
+      "verifie_le": "2026-08-26"
+    },
+    "christelle-d-intorni": {
+      "acteur_ref": "PA793322",
+      "etat_civil": {
+        "civilite": "Mme",
+        "prenom": "Christelle",
+        "nom": "D'Intorni",
+        "nom_complet": "Christelle D'Intorni",
+        "date_naissance": "1985-05-02"
+      },
+      "ecart": "apostrophe",
+      "motif": "L'AN publie « Christelle D'Intorni » ; le slug NosDéputés remplace l'apostrophe par un tiret, que la normalisation transforme ensuite en espace. La clé du slug vaut « christelle d intorni », celle du référentiel « christelle d'intorni » : elles ne se rencontrent jamais. Née le 02/05/1985 à Nice, groupe UDR, 5e circonscription des Alpes-Maritimes (06).",
+      "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793322",
+      "verifie_le": "2026-08-26"
+    },
+    "christelle-petex-levet": {
+      "acteur_ref": "PA721442",
+      "etat_civil": {
+        "civilite": "Mme",
+        "prenom": "Christelle",
+        "nom": "Petex",
+        "nom_complet": "Christelle Petex",
+        "date_naissance": "1980-09-02"
+      },
+      "ecart": "nom_divergent",
+      "motif": "L'AN publie l'état civil « Christelle Petex » ; NosDéputés a construit le slug sur le nom d'usage « Petex-Levet », que l'AN emploie elle-même dans le courriel de la députée (christelle.petex-levet@assemblee-nationale.fr) et dans son site déclaré (christelle-petexlevet.fr). Née le 02/09/1980 à Annecy, groupe DR, 3e circonscription de la Haute-Savoie (74).",
+      "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA721442",
+      "verifie_le": "2026-08-26"
+    },
+    "claire-pitollat": {
+      "acteur_ref": "PA718910",
+      "etat_civil": {
+        "civilite": "Mme",
+        "prenom": "Claire",
+        "nom": "Colomb-Pitollat",
+        "nom_complet": "Claire Colomb-Pitollat",
+        "date_naissance": "1979-09-17"
+      },
+      "ecart": "nom_divergent",
+      "motif": "L'AN publie « Claire Colomb-Pitollat » ; le slug NosDéputés a été créé sous « Pitollat », forme que l'AN conserve dans le courriel de la députée (Claire.Pitollat@assemblee-nationale.fr) et dans son site déclaré. Née le 17/09/1979 à Marseille, groupe RE, 2e circonscription des Bouches-du-Rhône (13).",
+      "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA718910",
+      "verifie_le": "2026-08-26"
+    },
+    "elue-derivee": {
+      "identifiants": {
+        "an": "PA800001",
+        "senat": null,
+        "europarl": null,
+        "hatvp": null
+      },
+      "etat_civil": {
+        "civilite": "Mme",
+        "prenom": null,
+        "nom": null,
+        "nom_complet": "Élue Dérivée",
+        "date_naissance": null
+      },
+      "ecart": null,
+      "motif": null,
+      "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA800001",
+      "verifie_le": "2026-09-02",
+      "origine": "derivee"
+    },
+    "emmanuel-tache-de-la-pagerie": {
+      "acteur_ref": "PA793382",
+      "etat_civil": {
+        "civilite": "M.",
+        "prenom": "Emmanuel",
+        "nom": "Taché",
+        "nom_complet": "Emmanuel Taché",
+        "date_naissance": "1975-02-20"
+      },
+      "ecart": "nom_divergent",
+      "motif": "L'AN publie « Emmanuel Taché », sans la particule ; NosDéputés a construit le slug sur « Taché de la Pagerie », forme reprise par la page Facebook déclarée à l'AN (emmanuel.delapagerie). Né le 20/02/1975 à Montreuil, groupe RN, 16e circonscription des Bouches-du-Rhône (13).",
+      "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793382",
+      "verifie_le": "2026-08-26"
+    },
+    "guillaume-gouffier-cha": {
+      "acteur_ref": "PA721296",
+      "etat_civil": {
+        "civilite": "M.",
+        "prenom": "Guillaume",
+        "nom": "Gouffier Valente",
+        "nom_complet": "Guillaume Gouffier Valente",
+        "date_naissance": "1986-02-01"
+      },
+      "ecart": "nom_divergent",
+      "motif": "Changement de nom en cours de carrière : le slug NosDéputés a été créé sous « Gouffier-Cha » (15e législature), l'AN publie aujourd'hui « Guillaume Gouffier Valente ». Le lien entre les deux est déclaré par l'AN elle-même, qui référence encore le site guillaume.gouffier-cha.fr et la page FB GouffierChaLegislatives sur la fiche « Gouffier Valente ». Né le 01/02/1986 à Beauvais, groupe EPR, 6e circonscription du Val-de-Marne (94). L'`acteur_ref` n'a pas bougé — un changement de nom ne change jamais l'uid AMO30 — mais la correspondance par nom, elle, ne retombe plus sur ses pieds : c'est le cas d'école qui justifie la table.",
+      "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA721296",
+      "verifie_le": "2026-08-26"
+    },
+    "jean-luc-melenchon": {
+      "acteur_ref": "PA2150",
+      "etat_civil": {
+        "civilite": "M.",
+        "prenom": "Jean-Luc",
+        "nom": "Mélenchon",
+        "nom_complet": "Jean-Luc Mélenchon",
+        "date_naissance": "1951-08-19"
+      },
+      "ecart": null,
+      "motif": null,
+      "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA2150",
+      "verifie_le": "2026-08-26"
+    },
+    "jordan-bardella": {
+      "acteur_ref": null,
+      "etat_civil": {
+        "civilite": null,
+        "prenom": "Jordan",
+        "nom": "Bardella",
+        "nom_complet": "Jordan Bardella",
+        "date_naissance": null
+      },
+      "ecart": "hors_an",
+      "motif": "Député européen, jamais élu à l'Assemblée nationale : aucun acteur d'AMO30 ne lui correspond. Ce n'est pas une correspondance manquante, c'est un fait vérifié — son profil publié porte `chambre: \"PE\"`, `chambres: [\"PE\"]` et sa seule source est le Parlement européen. Déclaré ici plutôt qu'absent de la table : un trou muet est ce qui a produit #510 et #501. L'état civil est celui du profil publié ; civilité et date de naissance restent `null` faute de source primaire collectée (AGENTS.md §2 règle 5), l'AN n'en publiant aucune.",
+      "preuve": "https://www.europarl.europa.eu/meps/fr/131580",
+      "verifie_le": "2026-08-26"
+    },
+    "loic-prud-homme": {
+      "acteur_ref": "PA719578",
+      "etat_civil": {
+        "civilite": "M.",
+        "prenom": "Loïc",
+        "nom": "Prud'homme",
+        "nom_complet": "Loïc Prud'homme",
+        "date_naissance": "1969-08-19"
+      },
+      "ecart": "apostrophe",
+      "motif": "L'AN publie « Loïc Prud'homme » ; le slug NosDéputés remplace l'apostrophe par un tiret. Même mécanique que `christelle-d-intorni`. Né le 19/08/1969 à Bègles, groupe LFI-NFP, 3e circonscription de la Gironde (33).",
+      "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA719578",
+      "verifie_le": "2026-08-26"
+    },
+    "sabrina-agresti-roubache": {
+      "acteur_ref": "PA793278",
+      "etat_civil": {
+        "civilite": "Mme",
+        "prenom": "Sabrina",
+        "nom": "Roubache",
+        "nom_complet": "Sabrina Roubache",
+        "date_naissance": "1976-10-13"
+      },
+      "ecart": "nom_divergent",
+      "motif": "L'AN publie l'état civil « Sabrina Roubache » ; NosDéputés a construit le slug sur le nom d'usage « Agresti-Roubache », que l'AN emploie dans le courriel de la députée (sabrina.agrestiroubache@assemblee-nationale.fr). Née le 13/10/1976 à Marseille, groupe RE, 1re circonscription des Bouches-du-Rhône (13) ; mandat clos le 20/08/2023 (entrée au gouvernement).",
+      "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793278",
+      "verifie_le": "2026-08-26"
+    }
+  }
+}

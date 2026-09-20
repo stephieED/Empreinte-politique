@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CONTRECHAMP — Laboratoire visuel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=DM+Mono:wght@400&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    :root { --ink:#16201c; --paper:#f3f4f0; --line:#c7cdc8; --blue:#315cfa; --mint:#bdffd9; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:"Instrument Sans",sans-serif; }
+    header { min-height:52vh; display:flex; flex-direction:column; justify-content:space-between; padding:clamp(1.2rem,4vw,4rem); border-bottom:1px solid var(--line); background:linear-gradient(135deg,#e8ece8 0 58%,var(--mint) 58%); }
+    .eyebrow,.label { font:0.68rem "DM Mono",monospace; text-transform:uppercase; }
+    h1 { max-width:10ch; margin:4rem 0 0; font:700 clamp(3.2rem,10vw,9rem)/.82 "Bricolage Grotesque",sans-serif; letter-spacing:0; }
+    header p { max-width:48ch; margin:2rem 0 0 auto; font-size:clamp(1rem,1.8vw,1.3rem); }
+    section { padding:clamp(1.2rem,4vw,4rem); border-bottom:1px solid var(--line); }
+    section > h2 { margin:0 0 1.5rem; font:600 clamp(1.8rem,4vw,3.4rem) "Bricolage Grotesque",sans-serif; }
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); }
+    .grid.explore { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    a { color:inherit; text-decoration:none; }
+    .card { position:relative; min-height:300px; display:flex; flex-direction:column; justify-content:space-between; padding:1.2rem; overflow:hidden; background:#fafbf8; transition:transform .2s ease,background .2s ease; }
+    .card:hover,.card:focus-visible { z-index:2; transform:translateY(-5px); background:white; outline:2px solid var(--ink); }
+    .card strong { position:relative; z-index:2; max-width:8ch; font:700 clamp(1.8rem,3.5vw,3.5rem)/.9 "Bricolage Grotesque",sans-serif; }
+    .card small { position:relative; z-index:2; max-width:36ch; font-size:.78rem; }
+    .card::after { content:"↗"; position:absolute; right:1rem; top:1rem; font-size:1.5rem; }
+    .v1 { background:#f5bb35; }.v2 { color:white;background:#1b416a; }.v3 { background:#dfff00; }.geology { background:repeating-linear-gradient(160deg,#d5b47a 0 15px,#7d5435 16px 17px); }
+    .atlas { color:#173c56;background:repeating-linear-gradient(0deg,#e5f0ed 0 31px,#8cb0a6 32px); }
+    .kinetic { background:#ef503d; }.matter { color:white;background:radial-gradient(circle at 70% 35%,#ef7258 0 17%,transparent 18%),radial-gradient(circle at 55% 55%,#63a7ff 0 25%,transparent 26%),#175d56; }
+    .quiet { background:#f1efe7; }.quiet strong { font-weight:500; }
+    .secondary { display:flex; flex-wrap:wrap; gap:.7rem; }
+    .secondary a { padding:.7rem 1rem; border:1px solid var(--line); border-radius:999px; background:white; }
+    footer { display:flex; justify-content:space-between; gap:1rem; padding:1.2rem; font:0.62rem "DM Mono",monospace; }
+    @media(max-width:760px){.grid,.grid.explore{grid-template-columns:1fr}.card{min-height:240px}header{min-height:65vh}}
+  </style>
+</head>
+<body>
+  <header><span class="eyebrow">CONTRECHAMP / Laboratoire visuel</span><h1>Identités en chantier.</h1><p>Une entrée unique pour conserver les versions historiques et explorer plusieurs langages visuels autour des mêmes traces parlementaires.</p></header>
+  <main>
+    <section><span class="label">Archives conservées</span><h2>Des versions successives</h2><div class="grid">
+      <a class="card v1" href="v1/"><strong>V1 Stories</strong><small>Carrousel de candidats, cartes KPI et panneaux horizontaux.</small></a>
+      <a class="card v2" href="v2/"><strong>V2 Le Bulletin</strong><small>Cockpit civique mobile, tickets et navigation fixe.</small></a>
+      <a class="card v3" href="v3/"><strong>V3 Empreinte politique</strong><small>Version de référence actuelle : candidats, groupes et narration éditoriale.</small></a>
+      <a class="card quiet" href="v4/"><strong>V4 Empreinte politique</strong><small>Version professionnelle de V3 : hiérarchie visuelle renforcée, interface plus sobre.</small></a>
+      <a class="card quiet" href="v6/"><strong>V6 Archéologie</strong><small>Fiche candidat pensée comme une fouille : objets, provenances et strates.</small></a>
+      <a class="card geology" href="v5/"><strong>V5 Strates</strong><small>Une fiche-candidat en coupe stratigraphique, entre archives et nuancier de terrain.</small></a>
+      <a class="card quiet" href="v7/"><strong>V7 Structure porteuse</strong><small>Lecture architecturale des responsabilités exercées : plan de charge et coupe axonométrique.</small></a>
+    </div></section>
+    <section><span class="label">Nouvelle identité</span><h2>L’Atlas implémenté</h2><div class="grid explore">
+      <a class="card atlas" href="atlas-augmente/"><strong>Atlas augmenté</strong><small>Un territoire politique alimenté par les profils réels, du panorama jusqu’à la preuve.</small></a>
+      <a class="card matter" href="matiere-politique/"><strong>Matière politique</strong><small>Une empreinte générative construite par les volumes d’activité.</small></a>
+    </div></section>
+    <section><span class="label">Études absorbées</span><h2>Le résumé dynamique</h2><div class="secondary"><a href="logo-propositions/">Planche logos</a><a href="scene-cinetique/">Étude cinétique</a><a href="interface-essentielle/">Étude essentielle</a><a href="revue-civique/">Revue civique</a><a href="moodboard/">Moodboard initial</a></div></section>
+  </main>
+  <footer><span>CONTRECHAMP — Politique en clair</span><span>30.07.2026</span></footer>
+</body>
+</html>

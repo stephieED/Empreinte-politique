@@ -1,0 +1,85 @@
+{
+ "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+ "uid": "VTANR5L14V1",
+ "numero": "1",
+ "organeRef": "PO644420",
+ "legislature": "14",
+ "sessionRef": "SCR5A2012E1",
+ "seanceRef": "RUANR5L14S2012IDS16433",
+ "dateScrutin": "2012-07-03",
+ "quantiemeJourSeance": "1",
+ "typeVote": {
+  "codeTypeVote": "SAT",
+  "libelleTypeVote": "scrutin à la tribune",
+  "typeMajorite": "majorité absolue des suffrages exprimés"
+ },
+ "sort": {
+  "code": "adopté",
+  "libelle": "l'Assemblée nationale a adopté"
+ },
+ "titre": "la déclaration de politique générale du gouvernement de Jean-Marc Ayrault (application de l'article 49, alinéa premier de la Constitution).",
+ "demandeur": {
+  "texte": "Conférence des présidents",
+  "referenceLegislative": null
+ },
+ "objet": {
+  "libelle": "la déclaration de politique générale du gouvernement de Jean-Marc Ayrault (application de l'article 49, alinéa premier de la Constitution).",
+  "referenceLegislative": null
+ },
+ "modePublicationDesVotes": "DecompteNominatif",
+ "syntheseVote": {
+  "nombreVotants": "544",
+  "suffragesExprimes": "527",
+  "nbrSuffragesRequis": "264",
+  "annonce": "l'Assemblée nationale a adopté",
+  "decompte": {
+   "pour": "302",
+   "contre": "225",
+   "abstentions": "17",
+   "nonVotants": "26"
+  }
+ },
+ "ventilationVotes": {
+  "organe": {
+   "organeRef": "PO644420",
+   "groupes": {
+    "groupe": [
+     {
+      "organeRef": "PO656002",
+      "nombreMembresGroupe": "294",
+      "vote": {
+       "positionMajoritaire": "pour",
+       "decompteVoix": {
+        "pour": "267",
+        "contre": "0",
+        "abstention": "0",
+        "nonVotant": "24"
+       },
+       "decompteNominatif": {
+        "nonVotants": {
+         "votant": [
+          {
+           "acteurRef": "PA328",
+           "mandatRef": "PM645184",
+           "causePositionVote": "MG"
+          }
+         ]
+        },
+        "pour": {
+         "votant": [
+          {
+           "acteurRef": "PA356",
+           "mandatRef": "PM645358"
+          }
+         ]
+        },
+        "contre": null,
+        "abstentions": null
+       }
+      }
+     }
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicons (light only — pas de prefers-color-scheme) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/brand/empreinte-favicon-32-light.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/brand/empreinte-favicon-16-light.png" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- PWA manifest -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#14151A" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- LE TITRE ET LA DESCRIPTION DE L'ACCUEIL (#969, forme C). Chaque autre
+         adresse publiée reçoit les siens au build, écrits par
+         `scripts/pages-par-adresse.mjs` dans une copie de ce fichier : les
+         balises ci-dessous y sont REMPLACÉES, et le build échoue si l'une
+         manque. Les pages sans description propre gardent celle-ci. -->
+    <title>Présidentielle 2027 : les parcours politiques des candidats, sourcés</title>
+    <meta name="description" content="Mandats, votes et textes des candidats déclarés, par candidat, par groupe ou par gouvernement. Des faits sourcés, sans note ni classement." />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Empreinte politique" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:url" content="https://empreinte-politique.fr/" />
+    <meta property="og:title" content="Présidentielle 2027 : les parcours politiques des candidats, sourcés" />
+    <meta property="og:description" content="Mandats, votes et textes des candidats déclarés, par candidat, par groupe ou par gouvernement. Des faits sourcés, sans note ni classement." />
+    <!-- URL ABSOLUE, et pas par confort : Facebook et LinkedIn refusent une
+         `og:image` relative et rendent alors une carte sans visuel. -->
+    <meta property="og:image" content="https://empreinte-politique.fr/brand/empreinte-open-graph-1200x630-light.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Le logotype Empreinte politique sur fond sombre, et l'adresse empreinte-politique.fr." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Présidentielle 2027 : les parcours politiques des candidats, sourcés" />
+    <meta name="twitter:description" content="Mandats, votes et textes des candidats déclarés, par candidat, par groupe ou par gouvernement. Des faits sourcés, sans note ni classement." />
+    <meta name="twitter:image" content="https://empreinte-politique.fr/brand/empreinte-open-graph-1200x630-light.png" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

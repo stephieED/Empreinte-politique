@@ -1,0 +1,181 @@
+/* La navigation par période, partagée par « Ce qu'il a voté » et « Ce qu'il a
+   dit » (#328). Ces règles vivaient dans `VotesParPeriode.css` sous le préfixe
+   `vp-` ; elles en sortent parce qu'elles ne sont plus à une section. */
+
+.np {
+  display: contents;
+}
+
+.np-nav {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.np-fleche {
+  font: inherit;
+  cursor: pointer;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 9px 13px;
+  display: grid;
+  gap: 1px;
+  text-align: left;
+  min-width: 150px;
+  max-width: 230px;
+}
+
+.np-fleche:hover:not(:disabled) {
+  border-color: var(--ink);
+}
+
+.np-fleche:disabled {
+  opacity: 0.32;
+  cursor: default;
+}
+
+.np-fleche--suivant {
+  text-align: right;
+}
+
+.np-fleche-quoi {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.np-fleche-lib {
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.np-fleche:disabled .np-fleche-lib {
+  font-weight: 600;
+  font-style: italic;
+}
+
+.np-rail {
+  display: flex;
+  gap: 3px;
+  align-items: stretch;
+  height: 38px;
+}
+
+.np-rail-seg {
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid var(--border-strong);
+  background: var(--card);
+  border-radius: 6px;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  min-width: 14px;
+}
+
+.np-rail-seg:hover {
+  border-color: var(--muted);
+}
+
+.np-rail-seg[aria-current='true'] {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+/* Toutes les périodes retenues : le rail entier est plein. Ce n'est pas une
+   sélection multiple déguisée — c'est l'état « aucune période n'est isolée ». */
+.np-rail--tout .np-rail-seg {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+/* Une période sans aucun repère publié : le trait pointillé le dit avant le
+   titre, et sans le combler. */
+.np-rail-seg--absent {
+  border-style: dashed;
+}
+
+.np-rail-an {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+.np-rail-seg[aria-current='true'] .np-rail-an,
+.np-rail--tout .np-rail-an {
+  color: var(--bg);
+}
+
+.np-fleche:focus-visible,
+.np-rail-seg:focus-visible,
+.np-tout:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.np-position {
+  font-size: 11.5px;
+  color: var(--muted);
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 18px;
+}
+
+.np-tout {
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 700;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 8px;
+}
+
+/* Sous 720px, le rail passe pleine largeur au-dessus : ses années devenaient
+   illisibles et ses segments intouchables. Les deux flèches se partagent la
+   ligne du dessous, et il gagne en hauteur — c'est une cible tactile. */
+@media (max-width: 720px) {
+  .np-nav {
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+  }
+
+  .np-fleche {
+    min-width: 0;
+    max-width: none;
+    padding: 9px 11px;
+  }
+
+  .np-rail {
+    grid-column: 1 / -1;
+    order: -1;
+    height: 44px;
+    gap: 4px;
+  }
+
+  .np-rail-seg {
+    min-width: 18px;
+  }
+
+  .np-rail-an {
+    font-size: 11.5px;
+  }
+}

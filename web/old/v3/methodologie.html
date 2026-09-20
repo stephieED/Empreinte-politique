@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Empreinte politique — Méthode éditoriale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;600&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --paper: #f2efe7; --ink: #171717; --red: #c0392b; --yellow: #f0c929; --line: #9b978d; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font: 1rem/1.65 "Space Grotesk", sans-serif; }
+    header, main { width: min(920px, calc(100% - 2rem)); margin: auto; }
+    header { padding: 4rem 0 2rem; border-bottom: 4px solid var(--ink); }
+    h1, h2 { font-family: "Archivo Black", sans-serif; letter-spacing: 0; line-height: 1.05; }
+    h1 { margin: 0; font-size: clamp(2.4rem, 8vw, 5.5rem); }
+    h2 { margin: 0 0 .75rem; font-size: 1.35rem; }
+    .baseline, .label { font-family: "IBM Plex Mono", monospace; text-transform: uppercase; }
+    .baseline { margin-top: .5rem; color: var(--red); }
+    main { padding: 2rem 0 5rem; }
+    section { display: grid; grid-template-columns: minmax(150px, 1fr) 3fr; gap: 2rem; padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
+    section p { margin: 0 0 .75rem; }
+    code { font-family: "IBM Plex Mono", monospace; background: #fff; padding: .1rem .3rem; }
+    a { color: var(--ink); text-decoration-thickness: 2px; }
+    .note { border-left: 8px solid var(--yellow); padding-left: 1rem; }
+    @media (max-width: 680px) { header { padding-top: 2rem; } section { grid-template-columns: 1fr; gap: .4rem; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="label">Empreinte politique / En clair</div>
+    <h1>Méthode éditoriale</h1>
+    <p class="baseline">Des faits sourcés, sans note de performance.</p>
+  </header>
+  <main>
+    <p class="back-link"><a href="index.html">← Retour à l'accueil</a></p>
+    <section>
+      <h2>Textes portés</h2>
+      <div><p>Un texte est affiché seulement si le pivot fournit un rôle factuel parmi <code>auteur</code>, <code>rapporteur</code> ou <code>co-rapporteur</code>, et un stade attestant qu’il a réellement été débattu.</p><p>Les stades retenus commencent à <code>examine_commission</code>, puis incluent l’inscription à l’ordre du jour, la discussion en séance, l’adoption et la promulgation. Un dépôt seul, un rôle inconnu ou un volume d’interventions ne suffisent pas.</p></div>
+    </section>
+    <section>
+      <h2>Amendements</h2>
+      <div><p>Les issues sont publiées en comptes bruts : adoptés, rejetés, retirés, tombés, irrecevables et non soutenus.</p><p>Aucun taux d’adoption isolé n’est présenté. Ces issues dépendent du texte, de la procédure, de la recevabilité et du rôle du déposant; elles ne constituent pas une mesure d’efficacité.</p></div>
+    </section>
+    <section>
+      <h2>Votes de texte</h2>
+      <div><p>L’univers retenu comprend tous les scrutins publics disponibles, ordinaires et solennels, portant sur l’ensemble d’un texte. Pour un même texte, seule la lecture la plus avancée connue est conservée dans la synthèse.</p><p>Les votes sur des articles ou amendements sont exclus de cette synthèse. Le choix de ne pas limiter aux seuls scrutins solennels évite d’écarter des votes publics sur des textes entiers; le périmètre est affiché avec le résultat.</p></div>
+    </section>
+    <section>
+      <h2>49.3 et censure</h2>
+      <div><p>Un texte adopté sans vote après engagement de responsabilité au titre de l’article 49.3 est signalé comme fait de procédure, jamais comme position de vote du candidat.</p><p>Une motion de censure est un scrutin distinct. Elle est présentée séparément et reliée au texte concerné lorsque <code>texte_lie_id</code> est disponible.</p></div>
+    </section>
+    <section>
+      <h2>Présence</h2>
+      <div class="note"><p>Empreinte politique ne publie aucun taux individuel d’assiduité, de présence ou d’absence. Un scrutin manqué ne décrit ni l’ensemble du travail parlementaire ni les motifs de non-participation.</p><p>Les périodes d’incompatibilité liées à une fonction gouvernementale sont signalées comme faits institutionnels et ne sont pas assimilées à des absences.</p></div>
+    </section>
+    <section>
+      <h2>Groupes</h2>
+      <div><p>Les ratios de participation ou de cohésion ne sont montrés que scrutin par scrutin, avec le nombre de membres éligibles et la fraction utilisée. Sans numérateur, dénominateur ou couverture suffisante, la valeur publique est <code>N/D</code>.</p><p>Les écarts individuels au groupe restent des données de contrôle interne et ne sont pas publiés.</p></div>
+    </section>
+    <section>
+      <h2>Ordre des catégories</h2>
+      <div><p><code>position_dans_hemicycle</code> n'est utilisée que lorsqu'elle possède une source primaire. Elle permet de ventiler systématiquement les textes portés et les amendements en trois lots : <strong>Majorité</strong>, <strong>Opposition</strong> et <strong>Non distingué</strong> (éléments à cheval sur les deux périodes, ou dont la date ne correspond à aucune période sourcée). Ce troisième lot est toujours affiché séparément : l'absence de donnée sourcée reste visible, conformément à la règle 6.</p><p>Les KPI affichés en haut du panneau "Textes" permettent de filtrer la liste détaillée en cliquant sur la colonne souhaitée (Majorité, Opposition, Non distingué) ou sur un segment d'issue d'amendement. Un bouton "Réinitialiser" apparaît dès qu'un filtre est actif. Sans position sourcée, les colonnes Majorité et Opposition affichent un état vide explicite et tous les éléments sont classés en "Non distingué".</p></div>
+    </section>
+    <section>
+      <h2>Responsabilités</h2>
+      <div><p>Les responsabilités sont dédupliquées par intitulé. Les fonctions de présidence ou de rapport peuvent servir à ordonner le détail, mais <code>notableCount</code> reste interne et n’est jamais publié comme total ou score.</p></div>
+    </section>
+    <section>
+      <h2>Limites et sources</h2>
+      <div><p>L’absence de donnée reste une absence de donnée, jamais un zéro. Chaque fait sensible doit remonter à une source primaire; les classifications thématiques par mots-clés sont des aides de lecture, pas des positions déclarées.</p><p><a href="index.html">Retour aux profils</a></p></div>
+    </section>
+  </main>
+</body>
+</html>

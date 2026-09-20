@@ -1,0 +1,68 @@
+{
+  "volumetrie": {
+    "nb_profils": 209,
+    "nb_echantillon": 60,
+    "extrapole": true,
+    "octets_total": 1601204911,
+    "octets_median": 8503210,
+    "octets_moyen": 7661267,
+    "octets_max": 26880665,
+    "fichier_max": "christophe-bentz.pivot.json",
+    "octets_compact_total": 1601204911,
+    "octets_gzip_total": 55826600,
+    "poids_par_champ": {
+      "amendements:co_signataires": 1091181720,
+      "amendements": 1352125502,
+      "votes": 243935718,
+      "interventions": 413
+    }
+  },
+  "leviers": [
+    {
+      "nom": "Fichiers gzippés (.json.gz)",
+      "gain_octets": 1545378311,
+      "perte": false,
+      "note": "blob binaire : git ne peut plus déltifier, mesurer l'effet sur .git"
+    },
+    {
+      "nom": "Externaliser `amendements` hors du profil",
+      "gain_octets": 1352125502,
+      "perte": false,
+      "note": "la donnée reste disponible dans un index dédié (modèle #392)"
+    },
+    {
+      "nom": "Externaliser `amendements:co_signataires` hors du profil",
+      "gain_octets": 1091181720,
+      "perte": false,
+      "note": "la donnée reste disponible dans un index dédié (modèle #392)"
+    },
+    {
+      "nom": "Externaliser `votes` hors du profil",
+      "gain_octets": 243935718,
+      "perte": false,
+      "note": "la donnée reste disponible dans un index dédié (modèle #392)"
+    },
+    {
+      "nom": "Externaliser `interventions` hors du profil",
+      "gain_octets": 413,
+      "perte": false,
+      "note": "la donnée reste disponible dans un index dédié (modèle #392)"
+    },
+    {
+      "nom": "JSON compact (sans indentation)",
+      "gain_octets": 0,
+      "perte": false,
+      "note": "aucune décision éditoriale, aucun champ touché"
+    }
+  ],
+  "projection": {
+    "cible": 752,
+    "facteur_duplication": 1.0,
+    "octets_projetes": 5761273172,
+    "go_projetes": 5.37,
+    "depasse_seuil_push": true,
+    "depasse_seuil_depot": true,
+    "profils_avant_seuil_depot": 700
+  },
+  "erreurs_lecture": []
+}

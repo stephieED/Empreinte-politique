@@ -1,0 +1,15 @@
+# Dépendances de développement = dépendances d'exécution + outillage de test.
+#
+# Extrait par #473, qui a introduit le job CI exécutant la suite : sans ce
+# fichier, ce job aurait dû écrire `pip install -r requirements.txt pytest`,
+# c'est-à-dire une version de pytest décidée dans un YAML et qui aurait dérivé
+# de celle des postes de développement sans que rien ne le signale.
+#
+# `-r requirements.txt` plutôt qu'une recopie : les dépendances d'exécution
+# n'ont qu'une seule déclaration, et la suite importe bien le code de `src/`,
+# donc tout ce que `src/` importe.
+-r requirements.txt
+
+# Version réellement installée dans .venv/ et utilisée pour mesurer la suite
+# (1 632 tests en 11,2 s au 20/08/2026) — épinglée au `==`, AGENTS.md §8.
+pytest==9.1.1

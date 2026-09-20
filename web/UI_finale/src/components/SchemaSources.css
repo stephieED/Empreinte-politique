@@ -1,0 +1,259 @@
+/* Le flux des sources (#951). Les teintes sont celles de la frise
+   (`CandidateProfile.css`, `FriseCouverture.css`) : le lecteur apprend le code
+   une fois, et le retrouve ici. */
+.ss {
+  --ss-an: #803060;
+  --ss-gouv: #85510d;
+  --ss-pe: #003399;
+  --ss-senat: #169e9e;
+  --ss-local: #9a958d;
+  --ss-candidat: #17141f;
+  --ss-retiree: #8b8794;
+  --ss-fiche-lien: #cfcbc4;
+  margin-bottom: 18px;
+}
+
+.ss-defile {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ss-svg {
+  display: block;
+  font-family: inherit;
+}
+
+.ss-svg text {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.ss-svg .ss-entete {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  fill: var(--muted);
+}
+
+.ss-hachure-fond { fill: var(--card); }
+.ss-hachure-trait { fill: var(--ss-retiree); }
+
+/* Les traits : aucune épaisseur ne porte de quantité. */
+.ss-lien {
+  fill: none;
+  stroke-width: 2.2;
+  opacity: 0.55;
+  transition: opacity 0.15s;
+}
+
+.ss-lien--an { stroke: var(--ss-an); }
+.ss-lien--gouv { stroke: var(--ss-gouv); }
+.ss-lien--pe { stroke: var(--ss-pe); }
+.ss-lien--senat { stroke: var(--ss-senat); }
+.ss-lien--local { stroke: var(--ss-local); }
+.ss-lien--candidat { stroke: var(--ss-candidat); }
+.ss-lien--retiree { stroke: var(--ss-retiree); }
+.ss-lien--citee,
+.ss-lien--retiree { stroke-dasharray: 5 4; }
+
+.ss-lien--fiche {
+  stroke: var(--ss-fiche-lien);
+  stroke-width: 2;
+  opacity: 1;
+}
+
+.ss-noeud {
+  cursor: default;
+  outline: none;
+  transition: opacity 0.15s;
+}
+
+.ss-noeud:focus-visible rect:first-child {
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+/* Le pavé d'une source : plein si collectée, tireté si citée, blanc à hachure
+   si plus interrogée. Le texte reste lisible dans les trois cas. */
+.ss-source--collectee .ss-pave { stroke: none; }
+.ss-source--collectee text { fill: #fff; font-weight: 700; }
+.ss-source--citee .ss-pave,
+.ss-source--retiree .ss-pave { fill: var(--card); stroke-width: 1.5; }
+.ss-source--citee .ss-pave { stroke-dasharray: 4 3; }
+.ss-source--citee text,
+.ss-source--retiree text { font-weight: 700; }
+
+.ss-source--an .ss-pave { fill: var(--ss-an); stroke: var(--ss-an); }
+.ss-source--gouv .ss-pave { fill: var(--ss-gouv); stroke: var(--ss-gouv); }
+.ss-source--pe .ss-pave { fill: var(--ss-pe); stroke: var(--ss-pe); }
+.ss-source--senat .ss-pave { fill: var(--ss-senat); stroke: var(--ss-senat); }
+.ss-source--local .ss-pave { fill: var(--ss-local); stroke: var(--ss-local); }
+.ss-source--candidat .ss-pave { fill: var(--ss-candidat); stroke: var(--ss-candidat); }
+.ss-source--retiree .ss-pave { stroke: var(--ss-retiree); }
+.ss-source--citee .ss-pave,
+.ss-source--retiree .ss-pave { fill: var(--card); }
+
+.ss-donnee rect {
+  fill: var(--bg);
+  stroke: var(--border-strong);
+}
+
+.ss-fiche rect { fill: var(--dark); }
+.ss-svg .ss-fiche text { fill: #fff; font-weight: 700; }
+
+/* Survol : le trajet allumé, le reste estompé. */
+.ss-lien.ss-estompe { opacity: 0.08; }
+.ss-lien.ss-vif { opacity: 0.95; }
+.ss-noeud.ss-estompe { opacity: 0.35; }
+
+.ss-legende {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.ss-legende li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ss-cle {
+  width: 16px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.ss-cle--an { background: var(--ss-an); }
+.ss-cle--senat { background: var(--ss-senat); }
+.ss-cle--pe { background: var(--ss-pe); }
+.ss-cle--gouv { background: var(--ss-gouv); }
+.ss-cle--local { background: var(--ss-local); }
+.ss-cle--candidat { background: var(--ss-candidat); }
+.ss-cle--citee { background: var(--card); border: 1.5px dashed var(--ink); }
+.ss-cle--retiree {
+  background: repeating-linear-gradient(45deg, var(--ss-retiree) 0 2px, var(--card) 2px 5px);
+  border: 1px solid var(--ss-retiree);
+}
+
+/* Une source se clique : un lien à la souris, un bouton au doigt. */
+.ss-source { cursor: pointer; }
+.ss-source:hover .ss-pave { filter: brightness(1.12); }
+.ss-source--citee:hover .ss-pave,
+.ss-source--retiree:hover .ss-pave { fill: var(--bg); filter: none; }
+.ss-source:focus-visible .ss-pave { stroke: var(--ink); stroke-width: 2.5; }
+
+/* ── Les informations d'une source : infobulle (souris) ou bande (doigt) ── */
+.ss-scene {
+  position: relative;
+  width: 880px;
+}
+
+.ss-detail {
+  position: absolute;
+  z-index: 2;
+  box-sizing: border-box;
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  padding: 14px 18px 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.ss-detail-titre {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.ss-detail-liste {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.ss-detail-liste dt {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.ss-detail-liste dd {
+  margin: 0;
+}
+
+.ss-detail--bulle {
+  width: 360px;
+  pointer-events: none;
+  box-shadow: 0 10px 30px rgba(23, 20, 31, 0.14);
+}
+
+/* Dans la moitié basse, l'infobulle monte au lieu de descendre : sinon elle
+   sort du cadre, qui défile. */
+.ss-detail--haut {
+  transform: translateY(-100%);
+}
+
+/* La bande tient toute la largeur de la figure ; ses rubriques se rangent en
+   colonnes quand la place le permet. */
+.ss-detail--bande {
+  background: var(--bg);
+}
+
+.ss-detail--bande .ss-detail-liste {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px 22px;
+}
+
+.ss-detail-lien {
+  display: inline-block;
+  margin-top: 12px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.ss-detail-fermer {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid var(--border-strong);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 3px 11px;
+  cursor: pointer;
+}
+
+.ss-source--ouverte .ss-pave {
+  stroke: var(--ink) !important;
+  stroke-width: 2.5;
+}
+
+.ss-svg .ss-marque { font-size: 12px; font-weight: 700; opacity: 0.75; }
+.ss-source--collectee .ss-marque { fill: #fff; }
+
+/* À VENIR (#951) : pointillé serré, texte adouci — la source n'existe pas
+   encore, et son trait ne mène à rien qui soit publié. */
+.ss-source--a-venir .ss-pave {
+  fill: var(--card);
+  stroke: var(--ss-candidat);
+  stroke-width: 1.5;
+  stroke-dasharray: 1.5 3;
+}
+.ss-svg .ss-source--a-venir text { font-weight: 700; fill: var(--muted); }
+.ss-lien--a-venir { stroke-dasharray: 1.5 4; stroke-linecap: round; }
+.ss-cle--a-venir { background: var(--card); border: 1.5px dotted var(--ink); }

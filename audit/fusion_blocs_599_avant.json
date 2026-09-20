@@ -1,0 +1,541 @@
+{
+  "mesure": "#599 — blocs structurés pris au dernier écrivain",
+  "epic": "#598",
+  "genere_le": "2026-08-30T10:27:05+00:00",
+  "repertoires": {
+    "bruts": "raw_data/profiles",
+    "pivots": "pivot_data/profiles"
+  },
+  "fichiers_illisibles": [],
+  "hors_defaut": [
+    "david-lisnard",
+    "jordan-bardella",
+    "marine-tondelier",
+    "nathalie-arthaud"
+  ],
+  "mesure_1_identite": {
+    "population_bruts": 481,
+    "population_pivots": 481,
+    "population_mesuree": 477,
+    "hors_defaut_attendu": {},
+    "constats": {
+      "brut_squelette_minimal": [
+        {
+          "slug": "jean-luc-melenchon",
+          "listes_non_vides": {
+            "votes": 1016,
+            "mandats": 63,
+            "interventions": 3933,
+            "dossiers_legislatifs": 33
+          }
+        }
+      ]
+    },
+    "profils_touches": [
+      "jean-luc-melenchon"
+    ],
+    "nb_profils_touches": 1
+  },
+  "mesure_2_warnings": {
+    "population_bruts": 481,
+    "population_mesuree": 477,
+    "dernier_run": "2026-08-29",
+    "nb_non_regeneres_par_le_dernier_run": 19,
+    "non_regeneres_par_le_dernier_run": [
+      "catherine-belrhiti",
+      "catherine-deroche",
+      "catherine-dumas",
+      "catherine-procaccia",
+      "charles-guene",
+      "claude-raynal",
+      "dominique-de-legge",
+      "eric-dolige",
+      "evelyne-renaud-garabedian",
+      "gerard-larcher",
+      "hussein-bourgi",
+      "jean-jacques-panunzi",
+      "jean-pierre-bansard",
+      "jean-raymond-hugonet",
+      "joel-bigot",
+      "marie-christine-chauvin",
+      "thierry-cozic",
+      "viviane-malet",
+      "yannick-vaugrenard"
+    ],
+    "hors_defaut_attendu": {},
+    "constats": {
+      "collecte_ecartee_absente": [
+        {
+          "slug": "jean-luc-melenchon",
+          "cles_meta": [
+            "genere_le",
+            "licence_donnees",
+            "synchro_sources",
+            "warnings"
+          ]
+        }
+      ],
+      "warnings_reduits_au_chemin_minimal": [
+        {
+          "slug": "jean-luc-melenchon",
+          "warnings_publies": [
+            "aucun mandat français connu (slug absent du référentiel Assemblée nationale, ou identité introuvable)"
+          ],
+          "listes_non_vides": {
+            "votes": 1016,
+            "mandats": 63,
+            "interventions": 3933,
+            "dossiers_legislatifs": 33
+          }
+        }
+      ]
+    },
+    "warnings_du_brut_non_publies_au_pivot": [
+      {
+        "slug": "jordan-bardella",
+        "warnings": [
+          "aucun mandat français connu (slug absent du référentiel Assemblée nationale, ou identité introuvable)"
+        ]
+      }
+    ],
+    "profils_touches": [
+      "jean-luc-melenchon"
+    ],
+    "nb_profils_touches": 1
+  },
+  "mesure_3_synchro": {
+    "population_bruts": 481,
+    "population_porteuse_de_synchro_sources": 477,
+    "dernier_run": "2026-08-29",
+    "seuil_ecart_jours": 0.5,
+    "anterieure_au_genere_le": [
+      {
+        "slug": "alexandra-martin",
+        "genere_le": "2026-08-29T16:57:58+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "nosdeputes": 4.8
+        },
+        "synchro_publiee": {
+          "nosdeputes": "2026-08-24T21:41:22+0000"
+        },
+        "sources_encore_ecrites": [],
+        "sources_retirees": [
+          "nosdeputes"
+        ]
+      },
+      {
+        "slug": "alexandra-martin-1",
+        "genere_le": "2026-08-29T16:57:46+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "nosdeputes": 4.8
+        },
+        "synchro_publiee": {
+          "nosdeputes": "2026-08-24T21:44:22+0000"
+        },
+        "sources_encore_ecrites": [],
+        "sources_retirees": [
+          "nosdeputes"
+        ]
+      },
+      {
+        "slug": "bruno-retailleau",
+        "genere_le": "2026-08-29T16:42:37+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "assemblee_nationale_syceron": 0.9,
+          "nosdeputes": 8.91
+        },
+        "synchro_publiee": {
+          "assemblee_nationale_syceron": "2026-08-28T19:05:03+0000",
+          "nosdeputes": "2026-08-20T18:55:03+0000"
+        },
+        "sources_encore_ecrites": [
+          "assemblee_nationale_syceron"
+        ],
+        "sources_retirees": [
+          "nosdeputes"
+        ]
+      },
+      {
+        "slug": "christelle-d-intorni",
+        "genere_le": "2026-08-29T16:58:04+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "nosdeputes": 4.8
+        },
+        "synchro_publiee": {
+          "nosdeputes": "2026-08-24T21:41:11+0000"
+        },
+        "sources_encore_ecrites": [],
+        "sources_retirees": [
+          "nosdeputes"
+        ]
+      },
+      {
+        "slug": "christelle-petex-levet",
+        "genere_le": "2026-08-29T16:58:04+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "nosdeputes": 4.8
+        },
+        "synchro_publiee": {
+          "nosdeputes": "2026-08-24T21:44:40+0000"
+        },
+        "sources_encore_ecrites": [],
+        "sources_retirees": [
+          "nosdeputes"
+        ]
+      },
+      {
+        "slug": "claire-pitollat",
+        "genere_le": "2026-08-29T17:01:22+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "nosdeputes": 9.78
+        },
+        "synchro_publiee": {
+          "nosdeputes": "2026-08-19T22:13:56+0000"
+        },
+        "sources_encore_ecrites": [],
+        "sources_retirees": [
+          "nosdeputes"
+        ]
+      },
+      {
+        "slug": "edouard-philippe",
+        "genere_le": "2026-08-29T16:33:56+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "assemblee_nationale_syceron": 0.9
+        },
+        "synchro_publiee": {
+          "assemblee_nationale_syceron": "2026-08-28T18:55:29+0000"
+        },
+        "sources_encore_ecrites": [
+          "assemblee_nationale_syceron"
+        ],
+        "sources_retirees": []
+      },
+      {
+        "slug": "emmanuel-tache-de-la-pagerie",
+        "genere_le": "2026-08-29T16:57:47+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "nosdeputes": 9.79
+        },
+        "synchro_publiee": {
+          "nosdeputes": "2026-08-19T22:00:52+0000"
+        },
+        "sources_encore_ecrites": [],
+        "sources_retirees": [
+          "nosdeputes"
+        ]
+      },
+      {
+        "slug": "gabriel-attal",
+        "genere_le": "2026-08-29T17:01:25+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "assemblee_nationale_questions": 0.99,
+          "assemblee_nationale_syceron": 0.99
+        },
+        "synchro_publiee": {
+          "assemblee_nationale_questions": "2026-08-28T17:22:44+0000",
+          "assemblee_nationale_syceron": "2026-08-28T17:22:42+0000"
+        },
+        "sources_encore_ecrites": [
+          "assemblee_nationale_questions",
+          "assemblee_nationale_syceron"
+        ],
+        "sources_retirees": []
+      },
+      {
+        "slug": "guillaume-gouffier-cha",
+        "genere_le": "2026-08-29T16:57:44+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "nosdeputes": 9.79
+        },
+        "synchro_publiee": {
+          "nosdeputes": "2026-08-19T22:07:07+0000"
+        },
+        "sources_encore_ecrites": [],
+        "sources_retirees": [
+          "nosdeputes"
+        ]
+      },
+      {
+        "slug": "jean-luc-melenchon",
+        "genere_le": "2026-08-29T16:16:17+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "assemblee_nationale": 9.9,
+          "assemblee_nationale_questions": 1.93,
+          "assemblee_nationale_syceron": 1.84,
+          "nosdeputes": 9.79
+        },
+        "synchro_publiee": {
+          "assemblee_nationale": "2026-08-19T18:43:46+0000",
+          "assemblee_nationale_questions": "2026-08-27T17:55:16+0000",
+          "assemblee_nationale_syceron": "2026-08-27T20:00:49+0000",
+          "nosdeputes": "2026-08-19T21:13:30+0000"
+        },
+        "sources_encore_ecrites": [
+          "assemblee_nationale",
+          "assemblee_nationale_questions",
+          "assemblee_nationale_syceron"
+        ],
+        "sources_retirees": [
+          "nosdeputes"
+        ]
+      },
+      {
+        "slug": "jerome-guedj",
+        "genere_le": "2026-08-29T16:57:32+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "assemblee_nationale_questions": 0.99,
+          "assemblee_nationale_syceron": 0.99
+        },
+        "synchro_publiee": {
+          "assemblee_nationale_questions": "2026-08-28T17:12:59+0000",
+          "assemblee_nationale_syceron": "2026-08-28T17:12:58+0000"
+        },
+        "sources_encore_ecrites": [
+          "assemblee_nationale_questions",
+          "assemblee_nationale_syceron"
+        ],
+        "sources_retirees": []
+      },
+      {
+        "slug": "laurent-wauquiez",
+        "genere_le": "2026-08-29T16:45:50+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "assemblee_nationale_questions": 0.9,
+          "assemblee_nationale_syceron": 0.9
+        },
+        "synchro_publiee": {
+          "assemblee_nationale_questions": "2026-08-28T19:08:11+0000",
+          "assemblee_nationale_syceron": "2026-08-28T19:08:10+0000"
+        },
+        "sources_encore_ecrites": [
+          "assemblee_nationale_questions",
+          "assemblee_nationale_syceron"
+        ],
+        "sources_retirees": []
+      },
+      {
+        "slug": "loic-prud-homme",
+        "genere_le": "2026-08-29T17:01:49+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "nosdeputes": 4.8
+        },
+        "synchro_publiee": {
+          "nosdeputes": "2026-08-24T21:44:22+0000"
+        },
+        "sources_encore_ecrites": [],
+        "sources_retirees": [
+          "nosdeputes"
+        ]
+      },
+      {
+        "slug": "marine-le-pen",
+        "genere_le": "2026-08-29T16:57:49+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "assemblee_nationale_questions": 1.94,
+          "assemblee_nationale_syceron": 1.94
+        },
+        "synchro_publiee": {
+          "assemblee_nationale_questions": "2026-08-27T18:21:01+0000",
+          "assemblee_nationale_syceron": "2026-08-27T18:20:23+0000"
+        },
+        "sources_encore_ecrites": [
+          "assemblee_nationale_questions",
+          "assemblee_nationale_syceron"
+        ],
+        "sources_retirees": []
+      },
+      {
+        "slug": "sabrina-agresti-roubache",
+        "genere_le": "2026-08-29T16:57:30+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "nosdeputes": 9.78
+        },
+        "synchro_publiee": {
+          "nosdeputes": "2026-08-19T22:14:10+0000"
+        },
+        "sources_encore_ecrites": [],
+        "sources_retirees": [
+          "nosdeputes"
+        ]
+      }
+    ],
+    "nb_anterieure_au_genere_le": 16,
+    "dont_source_encore_ecrite": [
+      {
+        "slug": "bruno-retailleau",
+        "genere_le": "2026-08-29T16:42:37+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "assemblee_nationale_syceron": 0.9,
+          "nosdeputes": 8.91
+        },
+        "synchro_publiee": {
+          "assemblee_nationale_syceron": "2026-08-28T19:05:03+0000",
+          "nosdeputes": "2026-08-20T18:55:03+0000"
+        },
+        "sources_encore_ecrites": [
+          "assemblee_nationale_syceron"
+        ],
+        "sources_retirees": [
+          "nosdeputes"
+        ]
+      },
+      {
+        "slug": "edouard-philippe",
+        "genere_le": "2026-08-29T16:33:56+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "assemblee_nationale_syceron": 0.9
+        },
+        "synchro_publiee": {
+          "assemblee_nationale_syceron": "2026-08-28T18:55:29+0000"
+        },
+        "sources_encore_ecrites": [
+          "assemblee_nationale_syceron"
+        ],
+        "sources_retirees": []
+      },
+      {
+        "slug": "gabriel-attal",
+        "genere_le": "2026-08-29T17:01:25+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "assemblee_nationale_questions": 0.99,
+          "assemblee_nationale_syceron": 0.99
+        },
+        "synchro_publiee": {
+          "assemblee_nationale_questions": "2026-08-28T17:22:44+0000",
+          "assemblee_nationale_syceron": "2026-08-28T17:22:42+0000"
+        },
+        "sources_encore_ecrites": [
+          "assemblee_nationale_questions",
+          "assemblee_nationale_syceron"
+        ],
+        "sources_retirees": []
+      },
+      {
+        "slug": "jean-luc-melenchon",
+        "genere_le": "2026-08-29T16:16:17+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "assemblee_nationale": 9.9,
+          "assemblee_nationale_questions": 1.93,
+          "assemblee_nationale_syceron": 1.84,
+          "nosdeputes": 9.79
+        },
+        "synchro_publiee": {
+          "assemblee_nationale": "2026-08-19T18:43:46+0000",
+          "assemblee_nationale_questions": "2026-08-27T17:55:16+0000",
+          "assemblee_nationale_syceron": "2026-08-27T20:00:49+0000",
+          "nosdeputes": "2026-08-19T21:13:30+0000"
+        },
+        "sources_encore_ecrites": [
+          "assemblee_nationale",
+          "assemblee_nationale_questions",
+          "assemblee_nationale_syceron"
+        ],
+        "sources_retirees": [
+          "nosdeputes"
+        ]
+      },
+      {
+        "slug": "jerome-guedj",
+        "genere_le": "2026-08-29T16:57:32+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "assemblee_nationale_questions": 0.99,
+          "assemblee_nationale_syceron": 0.99
+        },
+        "synchro_publiee": {
+          "assemblee_nationale_questions": "2026-08-28T17:12:59+0000",
+          "assemblee_nationale_syceron": "2026-08-28T17:12:58+0000"
+        },
+        "sources_encore_ecrites": [
+          "assemblee_nationale_questions",
+          "assemblee_nationale_syceron"
+        ],
+        "sources_retirees": []
+      },
+      {
+        "slug": "laurent-wauquiez",
+        "genere_le": "2026-08-29T16:45:50+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "assemblee_nationale_questions": 0.9,
+          "assemblee_nationale_syceron": 0.9
+        },
+        "synchro_publiee": {
+          "assemblee_nationale_questions": "2026-08-28T19:08:11+0000",
+          "assemblee_nationale_syceron": "2026-08-28T19:08:10+0000"
+        },
+        "sources_encore_ecrites": [
+          "assemblee_nationale_questions",
+          "assemblee_nationale_syceron"
+        ],
+        "sources_retirees": []
+      },
+      {
+        "slug": "marine-le-pen",
+        "genere_le": "2026-08-29T16:57:49+0000",
+        "regenere_par_le_dernier_run": true,
+        "ecarts_jours": {
+          "assemblee_nationale_questions": 1.94,
+          "assemblee_nationale_syceron": 1.94
+        },
+        "synchro_publiee": {
+          "assemblee_nationale_questions": "2026-08-27T18:21:01+0000",
+          "assemblee_nationale_syceron": "2026-08-27T18:20:23+0000"
+        },
+        "sources_encore_ecrites": [
+          "assemblee_nationale_questions",
+          "assemblee_nationale_syceron"
+        ],
+        "sources_retirees": []
+      }
+    ],
+    "nb_dont_source_encore_ecrite": 7,
+    "dont_source_retiree_seulement": [
+      "alexandra-martin",
+      "alexandra-martin-1",
+      "christelle-d-intorni",
+      "christelle-petex-levet",
+      "claire-pitollat",
+      "emmanuel-tache-de-la-pagerie",
+      "guillaume-gouffier-cha",
+      "loic-prud-homme",
+      "sabrina-agresti-roubache"
+    ],
+    "nb_dont_source_retiree_seulement": 9,
+    "meta_sans_synchro_sources": [],
+    "nb_meta_sans_synchro_sources": 0,
+    "profils_par_source": {
+      "assemblee_nationale": 1,
+      "assemblee_nationale_questions": 5,
+      "assemblee_nationale_syceron": 7,
+      "nosdeputes": 11
+    },
+    "retard_max_jours_par_source": {
+      "assemblee_nationale": 9.9,
+      "assemblee_nationale_questions": 1.94,
+      "assemblee_nationale_syceron": 1.94,
+      "nosdeputes": 9.79
+    }
+  }
+}

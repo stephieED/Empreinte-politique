@@ -1,0 +1,85 @@
+{
+  "schema_version": "1",
+  "type_document": "profil_groupe",
+  "groupe_id": "Senat:SOC",
+  "groupe_sigle": "SOC",
+  "groupe_nom": "Socialiste, Ecologiste et Republicain",
+  "chambre": "Senat",
+  "legislature": null,
+  "periode": {
+    "debut": "2023-01-10",
+    "fin": null,
+    "actif": true
+  },
+  "historique_noms": [],
+  "membres": [
+    {
+      "membre_id": "nossenateurs:claire-petit",
+      "nom": "Claire Petit",
+      "debut_dans_groupe": "2023-01-10",
+      "fin_dans_groupe": null,
+      "actif": true
+    }
+  ],
+  "effectif": {
+    "actuel": 1,
+    "min_historique": null,
+    "max_historique": null
+  },
+  "cohesion_votes": [],
+  "tags_thematiques_agreges": [],
+  "mandats_agreges": [],
+  "amendements_agreges": {
+    "nb_amendements": 0,
+    "nb_adoptes": 0,
+    "nb_rejetes": 0,
+    "nb_irrecevables": 0,
+    "nb_retires_ou_tombes": 0,
+    "taux_adoption": null,
+    "par_type_deposant": {
+      "commission_rapporteur": {
+        "nb_amendements": 0,
+        "nb_adoptes": 0,
+        "nb_rejetes": 0,
+        "nb_irrecevables": 0,
+        "nb_retires_ou_tombes": 0,
+        "taux_adoption": null
+      },
+      "depute": {
+        "nb_amendements": 0,
+        "nb_adoptes": 0,
+        "nb_rejetes": 0,
+        "nb_irrecevables": 0,
+        "nb_retires_ou_tombes": 0,
+        "taux_adoption": null
+      },
+      "gouvernement": {
+        "nb_amendements": 0,
+        "nb_adoptes": 0,
+        "nb_rejetes": 0,
+        "nb_irrecevables": 0,
+        "nb_retires_ou_tombes": 0,
+        "taux_adoption": null
+      },
+      "inconnu": {
+        "nb_amendements": 0,
+        "nb_adoptes": 0,
+        "nb_rejetes": 0,
+        "nb_irrecevables": 0,
+        "nb_retires_ou_tombes": 0,
+        "taux_adoption": null
+      }
+    }
+  },
+  "sources": [],
+  "meta": {
+    "schema_version": "1",
+    "genere_le": "2026-08-01T10:00:00+00:00",
+    "licence_donnees": "ODbL",
+    "profils_sources": [
+      "nossenateurs:claire-petit"
+    ],
+    "seuil_quorum": 0.5,
+    "warnings": []
+  }
+}

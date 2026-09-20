@@ -1,0 +1,53 @@
+:root {
+  --bg: #f7f6f4;
+  --ink: #17141f;
+  --dark: #14151a;
+  --accent: #dfff00;
+  /* Cyan signal : hors palette éditoriale, réservé aux bandeaux d'état du
+     projet. Ne jamais l'employer pour du contenu — c'est ce qui le rend
+     immédiatement lisible comme « ceci n'est pas de la donnée ».
+     Contraste avec --ink : 11,8:1 (AAA). */
+  --notice: #00e5ff;
+  --muted: #8b8794;
+  --border: #f0eeeb;
+  --border-strong: #e7e4df;
+  --card: #ffffff;
+
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Manrope', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+a {
+  color: var(--dark);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+}

@@ -1,0 +1,70 @@
+name: Bootstrap extraction
+description: >
+  Préambule commun aux jobs d'extraction de generate-data.yml : horodatage de
+  démarrage (lu par job-diagnostics), relevé mémoire du runner, installation de
+  Python et des dépendances.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Factorisation retenue par #412 (sous-issue 1/6 de #342) : le même préambule
+# était recopié dans les 6 jobs d'extraction. Une seule indirection, aucun
+# changement de sémantique — les steps ci-dessous s'exécutent dans le job
+# appelant, et JOB_START_EPOCH écrit dans $GITHUB_ENV depuis une action
+# composite reste visible dans les steps suivants du job.
+#
+# Cette action est locale (`uses: ./.github/actions/…`) : le job appelant DOIT
+# avoir fait son actions/checkout avant de l'appeler.
+#
+# Ce qui n'est PAS ici, volontairement : `actions/checkout` (préalable à
+# l'action elle-même), la « Semaine ISO courante », le « Nettoyage complet
+# (cold_start) », `actions/cache` et les MERGE_FLAG/INTERV_FLAG/MAX_PAGES_FLAG —
+# verdicts « garder dupliqué » de #412 §3, chacun pour une raison propre (clé de
+# cache variable par job, corps divergent, ou couplage au grep de logs de
+# retry-generate-data.yml).
+# ─────────────────────────────────────────────────────────────────────────────
+
+inputs:
+  python-version:
+    description: Version de Python installée par actions/setup-python.
+    required: false
+    default: '3.12'
+  requirements:
+    description: Fichier de dépendances passé à pip install -r.
+    required: false
+    default: requirements.txt
+
+runs:
+  using: composite
+  steps:
+    # Base de calcul du « après ~N min » des résumés de job-diagnostics.
+    - name: Horodatage de démarrage (diagnostic annulation/échec)
+      shell: bash
+      run: echo "JOB_START_EPOCH=$(date +%s)" >> "$GITHUB_ENV"
+
+    # Mémoire disponible sur le runner au démarrage (diagnostic OOM, voir
+    # docs/decisions/oom-lecture-amendements-par-candidat.md) : un
+    # runner ubuntu-latest standard n'a que ~7 Gio de RAM, le même ordre de
+    # grandeur que la législature amendements 16 une fois désérialisée (mesuré
+    # ~4,35 Gio en local) — un OOM côté runner hébergé n'apparaît jamais comme
+    # tel dans les logs GitHub Actions (pas de journalctl -k accessible),
+    # seulement comme un `shutdown signal` générique. Ce print ne capture que
+    # l'état de départ (rien ne s'exécute après un OOM qui tue le runner
+    # lui-même, angle mort déjà documenté en #228) — il sert surtout à
+    # confirmer/infirmer la RAM totale réellement disponible.
+    #
+    # Appliqué à TOUS les jobs d'extraction depuis #412, et plus seulement à
+    # extract-an/extract-roster-groupes : extract-amendements-an est le job qui
+    # manipule les plus gros volumes (archives ~1,2 Gio, index désérialisés) et
+    # était pourtant le seul de cette catégorie sans ce relevé (#412 §2.6). Le
+    # coût est d'une ligne de log, l'uniformité vaut mieux qu'une liste de jobs
+    # à tenir à jour.
+    - name: Diagnostic mémoire runner (OOM)
+      shell: bash
+      run: free -h
+
+    - uses: actions/setup-python@v6
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Installation des dépendances
+      shell: bash
+      run: pip install -r "${{ inputs.requirements }}"

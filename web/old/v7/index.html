@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Structure porteuse — CONTRECHAMP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --blue:#1a3a6b; --paper:#f7f8f4; --ink:#101820; --line:#6c83a6; --alert:#c9362b; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--blue); background:var(--paper); font-family:"IBM Plex Mono",monospace; }
+    a { color:inherit; }
+    .sheet { min-height:100vh; padding:clamp(1rem,3vw,3rem); background-image:linear-gradient(rgba(26,58,107,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(26,58,107,.13) 1px,transparent 1px),linear-gradient(rgba(26,58,107,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(26,58,107,.05) 1px,transparent 1px); background-size:32px 32px,32px 32px,8px 8px,8px 8px; }
+    .topline, .title-row, .section-head, .footer { display:flex; justify-content:space-between; gap:1rem; }
+    .topline { padding-bottom:.7rem; border-bottom:1px solid var(--blue); font-size:.62rem; letter-spacing:.08em; }
+    .topline a { text-decoration:none; }
+    .topline a:hover { text-decoration:underline; }
+    .title-row { align-items:end; padding:clamp(2rem,7vw,6rem) 0 1.5rem; border-bottom:3px solid var(--blue); }
+    h1, h2, h3, p { margin:0; }
+    h1, h2, h3 { font-family:"Space Grotesk",sans-serif; text-transform:uppercase; }
+    h1 { max-width:9ch; font-size:clamp(3rem,9vw,9rem); line-height:.78; letter-spacing:-.08em; }
+    .subtitle, .section-code, .dimension, .note { font-size:.62rem; line-height:1.55; letter-spacing:.04em; text-transform:uppercase; }
+    .subtitle { max-width:31ch; padding-bottom:.3rem; text-align:right; }
+    .hero { display:grid; grid-template-columns:minmax(16rem,.8fr) minmax(25rem,1.4fr); gap:clamp(1.5rem,5vw,6rem); padding:clamp(1.5rem,4vw,4rem) 0; border-bottom:1px solid var(--blue); }
+    .identity { display:grid; align-content:start; gap:1.1rem; }
+    .identity h2 { font-size:clamp(2.2rem,4vw,4.5rem); line-height:.83; letter-spacing:-.06em; }
+    .identity p { max-width:34ch; font-size:.76rem; line-height:1.65; }
+    .stamp { width:max-content; padding:.35rem .5rem; border:1px solid var(--blue); font-size:.58rem; letter-spacing:.06em; }
+    .legend { display:grid; gap:.55rem; padding-top:1rem; border-top:1px solid var(--blue); font-size:.62rem; }
+    .key { display:flex; align-items:center; gap:.6rem; }
+    .key i { display:block; width:2.5rem; border-top:3px solid var(--blue); }
+    .key.decorative i { border-top:1px dashed var(--blue); }
+    .key.alert { color:var(--alert); }.key.alert i { border-color:var(--alert); }
+    .drawing { position:relative; min-height:420px; overflow:hidden; border:1px solid var(--blue); background:rgba(247,248,244,.76); }
+    .drawing::before { content:"AXONOMÉTRIE / RESPONSABILITÉS CUMULÉES"; position:absolute; top:.8rem; left:.8rem; font-size:.55rem; letter-spacing:.08em; }
+    .drawing svg { width:100%; height:100%; min-height:420px; }
+    .drawing text { fill:var(--blue); font:10px "IBM Plex Mono",monospace; }
+    .drawing .struct { fill:rgba(26,58,107,.11); stroke:var(--blue); stroke-width:3; }
+    .drawing .support { fill:none; stroke:var(--blue); stroke-width:2; }
+    .drawing .decor { fill:none; stroke:var(--blue); stroke-width:1; stroke-dasharray:5 4; }
+    .drawing .load { fill:none; stroke:var(--blue); stroke-width:1.4; marker-end:url(#arrow); }
+    .drawing .alarm { fill:none; stroke:var(--alert); stroke-width:2; marker-end:url(#red-arrow); }
+    .drawing .hatch { stroke:var(--blue); stroke-width:1; opacity:.5; }
+    .drawing .axis { stroke:var(--line); stroke-width:1; stroke-dasharray:3 5; }
+    .register { display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(2rem,5vw,6rem); padding:clamp(2rem,5vw,5rem) 0; border-bottom:1px solid var(--blue); }
+    .section-head { align-items:baseline; margin-bottom:1.25rem; }
+    h3 { font-size:clamp(1.6rem,3vw,3rem); letter-spacing:-.06em; line-height:.85; }
+    .members { border-top:3px solid var(--blue); }
+    .member { position:relative; display:grid; grid-template-columns:minmax(8rem,1fr) 1.3fr auto; gap:1rem; align-items:center; min-height:5.5rem; padding:1rem 0; border-bottom:1px solid var(--blue); }
+    .member::after { content:""; position:absolute; right:0; bottom:-1px; width:var(--weight); max-width:55%; border-bottom:3px solid var(--blue); }
+    .member.decorative::after { border-bottom:1px dashed var(--blue); }
+    .member strong { font:600 .86rem/1.1 "Space Grotesk",sans-serif; text-transform:uppercase; }
+    .member span { font-size:.62rem; line-height:1.5; }
+    .weight { min-width:4.5rem; text-align:right; font-size:.72rem; font-weight:500; }
+    .load-arrow { position:absolute; right:0; top:-.15rem; width:var(--weight); max-width:55%; height:1rem; border-right:1px solid var(--blue); }
+    .load-arrow::after { content:"↓"; position:absolute; right:-.35rem; top:.45rem; font-size:.8rem; }
+    .decorative .load-arrow { display:none; }
+    .reading { display:grid; align-content:start; gap:1.2rem; }
+    .reading > p { font-size:.75rem; line-height:1.65; }
+    .fact { padding:1rem; border:1px solid var(--blue); background:rgba(247,248,244,.72); }
+    .fact .dimension { margin-bottom:.55rem; }
+    .fact b { display:block; font:600 1.25rem/1.1 "Space Grotesk",sans-serif; text-transform:uppercase; }
+    .fact p { margin-top:.4rem; font-size:.62rem; line-height:1.55; }
+    .warning { color:var(--alert); border-color:var(--alert); }
+    .warning b { color:var(--alert); }
+    .sources { padding:clamp(2rem,5vw,5rem) 0 1rem; }
+    .source-list { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; margin-top:1rem; border:1px solid var(--blue); background:var(--blue); }
+    .source { min-height:7rem; padding:1rem; background:var(--paper); }
+    .source b { display:block; margin-bottom:.55rem; font:600 .8rem "Space Grotesk",sans-serif; text-transform:uppercase; }
+    .source p { font-size:.58rem; line-height:1.55; }
+    .footer { padding-top:1rem; border-top:1px solid var(--blue); font-size:.55rem; letter-spacing:.04em; }
+    @media (max-width:700px) {
+      .topline { font-size:.52rem; }.title-row { display:block; }.subtitle { margin-top:1.5rem; text-align:left; }
+      .hero, .register { grid-template-columns:1fr; gap:2rem; }.drawing, .drawing svg { min-height:340px; }
+      .member { grid-template-columns:1fr auto; gap:.5rem; padding-right:.4rem; }.member span { grid-column:1/-1; }.weight { grid-column:2; grid-row:1; }
+      .source-list { grid-template-columns:1fr; }.footer { display:block; }.footer span { display:block; margin-bottom:.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <header class="topline">
+      <a href="../">← CONTRECHAMP / LABORATOIRE</a>
+      <span>FICHE 07.27 · PLAN DE CHARGE</span>
+      <span>ÉCHELLE 1:1 000</span>
+    </header>
+
+    <section class="title-row" aria-labelledby="page-title">
+      <h1 id="page-title">Structure<br>porteuse</h1>
+      <p class="subtitle">Une lecture architecturale des responsabilités exercées. Maquette avec données fictives, sans évaluation politique.</p>
+    </section>
+
+    <section class="hero" aria-labelledby="candidate-name">
+      <article class="identity">
+        <p class="section-code">A.00 / IDENTIFICATION</p>
+        <h2 id="candidate-name">Camille<br>Moreau</h2>
+        <p>Députée fictive de la 4<sup>e</sup> circonscription de l’Isère · XVI<sup>e</sup> législature · Groupe fictif « Écologie et territoires ».</p>
+        <span class="stamp">JEU DE DONNÉES DE DÉMONSTRATION</span>
+        <div class="legend" aria-label="Légende du plan">
+          <span class="key"><i></i> Élément structurel · responsabilité avec effet institutionnel</span>
+          <span class="key decorative"><i></i> Élément décoratif · distinction ou groupe sans pouvoir décisionnel direct</span>
+          <span class="key alert"><i></i> Point de vigilance · procédure en cours, non assimilée à un vote</span>
+        </div>
+      </article>
+
+      <figure class="drawing" aria-label="Coupe axonométrique des responsabilités empilées">
+        <svg viewBox="0 0 650 430" aria-hidden="true">
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#1a3a6b" stroke-width="1.2"/></marker>
+            <marker id="red-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#c9362b" stroke-width="1.2"/></marker>
+          </defs>
+          <path class="axis" d="M65 336H603M93 85V381M205 67V381M317 51V381M429 36V381"/>
+          <text x="58" y="354">0</text><text x="196" y="397">01</text><text x="308" y="397">02</text><text x="420" y="397">03</text>
+          <path class="struct" d="M142 295L381 223L525 279L286 351Z"/>
+          <path class="struct" d="M142 295V332L286 388V351Z"/><path class="struct" d="M286 351V388L525 316V279Z"/>
+          <path class="hatch" d="M160 303l48 19m-20-38l49 19m-20-38l49 19m-20-38l49 19m-20-38l49 19m-20-38l49 19m-20-38l49 19"/>
+          <text x="292" y="310">DÉPUTATION · 42%</text>
+          <path class="struct" d="M178 210L383 148L506 196L301 258Z"/>
+          <path class="struct" d="M178 210V245L301 293V258Z"/><path class="struct" d="M301 258V293L506 231V196Z"/>
+          <path class="hatch" d="M195 218l42 17m-17-36l42 17m-17-36l42 17m-17-36l42 17m-17-36l42 17m-17-36l42 17"/>
+          <text x="301" y="220">COMMISSION · 31%</text>
+          <path class="struct" d="M216 134L388 82L490 122L318 174Z"/>
+          <path class="struct" d="M216 134V168L318 208V174Z"/><path class="struct" d="M318 174V208L490 156V122Z"/>
+          <text x="315" y="145">RAPPORTEURE · 19%</text>
+          <path class="decor" d="M254 86L391 45L472 77L335 118Z"/><path class="decor" d="M254 86V106L335 138V118Z"/><path class="decor" d="M335 118V138L472 97V77Z"/>
+          <text x="334" y="91">GROUPE D’AMITIÉ · 8%</text>
+          <path class="support" d="M157 335L157 385m126-27v42m228-95v43"/>
+          <path class="load" d="M545 103V172"/><text x="552" y="113">charge 19%</text>
+          <path class="load" d="M548 180V261"/><text x="555" y="190">charge 31%</text>
+          <path class="load" d="M548 269V347"/><text x="555" y="279">charge 42%</text>
+          <path class="alarm" d="M99 154L179 154"/><text x="36" y="143" fill="#c9362b">PROCÉDURE</text><text x="36" y="155" fill="#c9362b">49.3 · FACTUELLE</text>
+        </svg>
+      </figure>
+    </section>
+
+    <section class="register" aria-labelledby="register-title">
+      <div>
+        <div class="section-head"><p class="section-code">B.01 / REGISTRE DES ÉLÉMENTS</p><span class="dimension">PORTÉE RELATIVE</span></div>
+        <h3 id="register-title">Charges<br>institutionnelles</h3>
+        <div class="members">
+          <article class="member" style="--weight:42%">
+            <span class="load-arrow"></span><strong>Députée</strong><span>Assemblée nationale · législature en cours · 2024—</span><span class="weight">42 %</span>
+          </article>
+          <article class="member" style="--weight:31%">
+            <span class="load-arrow"></span><strong>Commission</strong><span>Membre, développement durable · 2024—</span><span class="weight">31 %</span>
+          </article>
+          <article class="member" style="--weight:19%">
+            <span class="load-arrow"></span><strong>Rapporteure</strong><span>Projet fictif sur la rénovation énergétique · 2025</span><span class="weight">19 %</span>
+          </article>
+          <article class="member decorative" style="--weight:8%">
+            <strong>Groupe d’amitié</strong><span>France—Danemark · activité de représentation</span><span class="weight">8 %</span>
+          </article>
+        </div>
+      </div>
+
+      <aside class="reading" aria-labelledby="reading-title">
+        <p class="section-code">B.02 / NOTE DE LECTURE</p>
+        <h3 id="reading-title">Ce que le plan mesure</h3>
+        <p>Les pourcentages répartissent uniquement le poids institutionnel fictif des mandats présentés ici. Ils ne mesurent ni performance, ni assiduité, ni position politique.</p>
+        <article class="fact"><p class="dimension">TRAVÉE / VOTES DOCUMENTÉS</p><b>24 scrutins</b><p>Votes individuels fictifs rattachés à un scrutin et à sa source primaire.</p></article>
+        <article class="fact"><p class="dimension">NIVEAU / TEXTES PORTÉS</p><b>3 dossiers</b><p>Textes examinés au moins en commission dans ce jeu de démonstration.</p></article>
+        <article class="fact warning"><p class="dimension">ALERTE / PROCÉDURE</p><b>1 fait distinct</b><p>Le recours au 49.3 est présenté comme une procédure, jamais comme une position de vote.</p></article>
+      </aside>
+    </section>
+
+    <section class="sources" aria-labelledby="sources-title">
+      <div class="section-head"><h3 id="sources-title">Cartouche<br>des sources</h3><p class="note">EMPLACEMENTS DE SOURCES · MAQUETTE</p></div>
+      <div class="source-list">
+        <article class="source"><b>S.01 / Mandat</b><p>Fiche institutionnelle de l’Assemblée nationale<br>URL primaire à raccorder</p></article>
+        <article class="source"><b>S.02 / Scrutins</b><p>Dossier et scrutin public de l’Assemblée nationale<br>URL primaire à raccorder</p></article>
+        <article class="source"><b>S.03 / Dossier</b><p>Page de procédure législative et rapport<br>URL primaire à raccorder</p></article>
+      </div>
+    </section>
+
+    <footer class="footer"><span>CONTRECHAMP / ÉTUDE V7 — STRUCTURE PORTEUSE</span><span>375 PX ↔ 1440 PX · SANS OMBRE PORTÉE</span></footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,78 @@
+/* La page /a-propos (#1032). Voir l'en-tête d'AboutPage.jsx.
+   Les cotes du bandeau reprennent celles du bandeau de l'accueil (landing.css)
+   et la coque celles des pages statiques (StaticPage.css) : la page n'introduit
+   aucune valeur qui lui soit propre. */
+
+.apropos-main {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Le bandeau d'encre, aux cotes de celui de l'accueil — mais SANS gouttière à
+   lui : `.static-main` porte déjà 40 px de chaque côté (20 px sous 680 px). Une
+   marge de 40 px ajoutée ici rendait le bandeau 740 px de large quand les
+   cartes en dessous en faisaient 820 : deux largeurs sur une même page, mesuré
+   le 18/09/2026 à 1 440 px. */
+.apropos-bandeau {
+  margin: 0 0 26px;
+  padding: 34px 40px 30px;
+  border-radius: 24px;
+  background: var(--ink);
+  color: #f4f3f0;
+}
+
+/* Le surtitre est sur fond d'encre : le gris des pages claires (`--muted`,
+   4,8:1 sur le fond clair) n'y passe pas. Celui-ci rend 7,1:1 sur l'encre. */
+.apropos-eyebrow {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: #a8a4ad;
+}
+
+.apropos-bandeau h1 {
+  margin: 0 0 18px;
+  max-width: 24em;
+  font-size: clamp(26px, 3.4vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.14;
+  text-wrap: balance;
+}
+
+/* 40em à 16 px : la mesure de lecture, la même que les intros des pages
+   statiques. Le manifeste fait quatre paragraphes, c'est sa limite sur un fond
+   sombre — au-delà, la lecture en clair sur sombre fatigue. */
+.apropos-bandeau p {
+  margin: 0 0 12px;
+  max-width: 40em;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #ddd9e2;
+}
+
+.apropos-baseline {
+  margin-top: 18px;
+}
+
+.apropos-liens {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.apropos-liens a {
+  color: var(--ink);
+}
+
+/* Le seuil est celui des pages statiques, 680 px, et non les 720 px du bandeau
+   du site : c'est la gouttière de `.static-main` qui change ici. */
+@media (max-width: 680px) {
+  .apropos-bandeau {
+    margin: 0 0 20px;
+    padding: 22px 18px 20px;
+    border-radius: 18px;
+  }
+}

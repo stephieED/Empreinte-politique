@@ -1,0 +1,34 @@
+{
+  "schema_version": "1",
+  "type_document": "profil_gouvernement",
+  "gouvernement_id": "gouvernement:LECORNU",
+  "nom": "Gouvernement Lecornu (bis, doublon volontaire)",
+  "premier_ministre": null,
+  "periode": {
+    "debut": "2025-09-09",
+    "fin": null,
+    "actif": true
+  },
+  "membres": [],
+  "textes": [],
+  "comptages": {
+    "par_statut": {
+      "adopte": 0,
+      "adopte_49_3": 0,
+      "adopte_cmp": 0,
+      "depose": 0,
+      "navette_en_cours": 0,
+      "promulgue": 0,
+      "rejete": 0,
+      "rejete_49_3": 0,
+      "retire": 0
+    }
+  },
+  "sources": [],
+  "meta": {
+    "schema_version": "1",
+    "genere_le": "2026-08-01T10:00:00+00:00",
+    "licence_donnees": "",
+    "warnings": []
+  }
+}

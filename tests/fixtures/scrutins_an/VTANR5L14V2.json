@@ -1,0 +1,78 @@
+{
+ "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+ "uid": "VTANR5L14V2",
+ "numero": "2",
+ "organeRef": "PO644420",
+ "legislature": "14",
+ "sessionRef": "SCR5A2012E1",
+ "seanceRef": "RUANR5L14S2012IDS16440",
+ "dateScrutin": "2012-07-17",
+ "quantiemeJourSeance": "1",
+ "typeVote": {
+  "codeTypeVote": "SPO",
+  "libelleTypeVote": "scrutin public ordinaire",
+  "typeMajorite": "majorité absolue des suffrages exprimés"
+ },
+ "sort": {
+  "code": "adopté",
+  "libelle": "l'Assemblée nationale a adopté"
+ },
+ "titre": "l'article 1er du projet de loi de finances rectificative pour 2012 (abrogation de la TVA dite sociale).",
+ "demandeur": {
+  "texte": "Président du groupe de l'union pour un mouvement populaire",
+  "referenceLegislative": null
+ },
+ "objet": {
+  "libelle": "l'article 1er du projet de loi de finances rectificative pour 2012 (abrogation de la TVA dite sociale).",
+  "referenceLegislative": null
+ },
+ "modePublicationDesVotes": "DecompteDissidentsPositionGroupe",
+ "syntheseVote": {
+  "nombreVotants": "110",
+  "suffragesExprimes": "109",
+  "nbrSuffragesRequis": "55",
+  "annonce": "l'Assemblée nationale a adopté",
+  "decompte": {
+   "pour": "61",
+   "contre": "48",
+   "abstentions": "1",
+   "nonVotants": "27"
+  }
+ },
+ "ventilationVotes": {
+  "organe": {
+   "organeRef": "PO644420",
+   "groupes": {
+    "groupe": [
+     {
+      "organeRef": "PO656002",
+      "nombreMembresGroupe": "295",
+      "vote": {
+       "positionMajoritaire": "pour",
+       "decompteVoix": {
+        "pour": "57",
+        "contre": "0",
+        "abstention": "0",
+        "nonVotant": "25"
+       },
+       "decompteNominatif": {
+        "nonVotants": {
+         "votant": [
+          {
+           "acteurRef": "PA328",
+           "mandatRef": "PM645184",
+           "causePositionVote": "MG"
+          }
+         ]
+        },
+        "pour": null,
+        "contre": null,
+        "abstentions": null
+       }
+      }
+     }
+    ]
+   }
+  }
+ }
+}

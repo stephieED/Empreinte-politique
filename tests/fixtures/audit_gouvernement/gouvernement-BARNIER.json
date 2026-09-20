@@ -1,0 +1,69 @@
+{
+  "schema_version": "1",
+  "type_document": "profil_gouvernement",
+  "gouvernement_id": "gouvernement:BARNIER",
+  "nom": "Gouvernement Barnier",
+  "premier_ministre": null,
+  "periode": {
+    "debut": "2024-09-05",
+    "fin": "2024-12-05",
+    "actif": false
+  },
+  "membres": [
+    {
+      "membre_id": "nosdeputes:x-y",
+      "nom": "X Y",
+      "portefeuille": null,
+      "debut": "2024-09-05",
+      "fin": "2024-12-05",
+      "actif": false,
+      "source_url": null
+    }
+  ],
+  "textes": [
+    {
+      "dossier_id": "DLR5L17N50123",
+      "titre": "Projet de loi de financement de la sécurité sociale 2025",
+      "statut": "rejete_49_3",
+      "chambre_depot_initial": "AN",
+      "date_depot": "2024-11-01",
+      "date_dernier_evenement": "2024-12-04",
+      "sort_49_3": true,
+      "source_url": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA643210",
+          "membre_id": "nosdeputes:x-y"
+        }
+      ]
+    }
+  ],
+  "comptages": {
+    "par_statut": {
+      "adopte": 0,
+      "adopte_49_3": 0,
+      "adopte_cmp": 0,
+      "depose": 0,
+      "navette_en_cours": 0,
+      "promulgue": 0,
+      "rejete": 0,
+      "rejete_49_3": 1,
+      "retire": 0
+    }
+  },
+  "sources": [
+    {
+      "type": "assemblee_nationale",
+      "url": "https://data.assemblee-nationale.fr/...",
+      "synchro_le": "2025-01-01T10:00:00+00:00"
+    }
+  ],
+  "meta": {
+    "schema_version": "1",
+    "genere_le": "2025-01-01T10:00:00+00:00",
+    "licence_donnees": "",
+    "warnings": [
+      "couverture_ministerielle : portefeuille non confirme."
+    ]
+  }
+}

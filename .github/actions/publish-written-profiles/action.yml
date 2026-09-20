@@ -1,0 +1,178 @@
+name: Publication des profils écrits par ce job
+description: >
+  Recopie dans un répertoire de staging les seuls profils bruts que ce job a
+  réellement écrits, listés par le manifeste de `generate_all_profiles.py
+  --manifest-out`. C'est ce répertoire, et non `raw_data/profiles/`, que le job
+  doit uploader.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# #450 — invariant rétabli : UN ARTIFACT = LA CONTRIBUTION D'UN JOB.
+#
+# Chaque job d'extraction commence par un `actions/checkout` : `raw_data/profiles/`
+# y contient les ~209 profils committés, dont la plupart que ce job ne touchera
+# jamais. Uploader le répertoire entier publiait donc, à côté de la tranche
+# fraîche, une copie PÉRIMÉE de tous les autres profils. Deux dégâts distincts,
+# tous deux mesurés sur le run 32277443716 (19/08/2026, sha 698a882) :
+#
+# 1. RÉINJECTION. `merge_raw_dirs` fusionne les répertoires sources
+#    additivement, slug par slug. Une version fraîche venue du roster + une
+#    version périmée venue de Sénat/UE donnent leur UNION, jamais un
+#    remplacement : `--no-merge` fait correctement son travail dans le job
+#    d'extraction et se fait défaire à la fusion. Sur `antoine-armand`,
+#    3 335 amendements = 1 289 périmés + 2 046 corrigés, les deux versions de
+#    chaque entrée cohabitant. Aucune correction de clé ne peut aboutir tant que
+#    ceci tient, et le volume enfle à chaque run (+107 000 entrées sur celui-là).
+#
+# 2. COLLISION ENTRE SHARDS. Les 8 artifacts du roster arrivent par
+#    `pattern` + `merge-multiple`, qui les aplatit dans un seul dossier : à nom
+#    de fichier égal, un seul survit. Comme chaque shard publiait TOUS les
+#    profils, les 8 entraient en collision sur chacun des 752 noms. Résultat
+#    mesuré : sur les 205 profils régénérés par les 8 shards, seuls les 28 du
+#    shard 6 ont atteint le commit — le travail réseau des 7 autres shards
+#    (177 profils) a été écrasé silencieusement. Quel shard l'emporte n'est
+#    décidé nulle part dans ce dépôt : c'est l'ordre d'extraction concurrent de
+#    `download-artifact`.
+#
+# La correction traite les deux d'un coup, et par construction plutôt que par
+# arbitrage : des shards qui ne publient que leur propre tranche produisent des
+# jeux de fichiers DISJOINTS — il ne reste ni baseline périmée à réinjecter, ni
+# nom en collision à départager.
+#
+# Ce qui n'a PAS besoin d'être transporté : la baseline. `merge-and-pivot` fait
+# son propre checkout et n'écrit que les slugs présents dans les artifacts
+# (`merge_raw_dirs` boucle sur les fichiers sources) ; tout profil qu'aucun job
+# n'a touché conserve sa version committée sans passer par un artifact.
+#
+# À appeler avec `if: always()`, comme l'upload qui suit : le manifeste est
+# écrit au fil de l'eau, donc un job préempté publie quand même le préfixe
+# qu'il avait produit (#443 — ne jamais jeter un préfixe valide).
+# ─────────────────────────────────────────────────────────────────────────────
+
+inputs:
+  manifest:
+    description: >
+      Fichier passé à `--manifest-out` : un nom de fichier de profil par ligne,
+      relatif à `source-dir`.
+    required: true
+  source-dir:
+    description: Répertoire où le job a écrit ses profils.
+    required: false
+    default: raw_data/profiles
+  staging-dir:
+    description: >
+      Répertoire de staging à uploader. Vidé puis rempli par cette action ; le
+      `path:` de l'upload doit pointer ici, jamais sur `source-dir`.
+    required: false
+    default: _publish/profiles
+  champs:
+    description: >
+      Les champs que ce job a RÉELLEMENT collectés, séparés par des espaces
+      (#997). Fournis, la contribution publiée y est réduite : tout le reste
+      est de la baseline recopiée du checkout, et depuis que la fusion fait
+      gagner la source la plus récente, cette copie périmée écrase du neuf.
+      Absent : le profil entier part, comportement d'avant — c'est ce qu'il
+      faut pour un job de collecte complète (AN, roster), qui n'a pas de
+      baseline à reposer.
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Copie des profils écrits vers le staging
+      shell: bash
+      env:
+        MANIFEST: ${{ inputs.manifest }}
+        SOURCE_DIR: ${{ inputs.source-dir }}
+        STAGING_DIR: ${{ inputs.staging-dir }}
+      run: |
+        set -euo pipefail
+
+        rm -rf "$STAGING_DIR"
+        mkdir -p "$STAGING_DIR"
+
+        # Manifeste absent = l'extraction n'a pas atteint sa première écriture
+        # (échec du pip install, préemption précoce...). On publie un artifact
+        # vide plutôt que de retomber sur `source-dir` : ce repli republierait
+        # exactement la baseline périmée que #450 supprime.
+        if [[ ! -f "$MANIFEST" ]]; then
+          echo "::warning::Manifeste absent ($MANIFEST) — artifact vide. Le job n'a écrit aucun profil."
+          exit 0
+        fi
+
+        COPIES=0
+        TRANCHES=0
+        MANQUANTS=0
+        # UN PROFIL N'EST PLUS UN FICHIER (#580). Le manifeste liste toujours
+        # le SOCLE `<slug>.json` — le nom qui porte le slug, et la clé de
+        # `merge_raw_dirs` — mais les amendements vivent désormais à côté, dans
+        # `<slug>/<legislature>.json`. Copier le seul socle publierait un profil
+        # amputé de 96,7 % de son poids : `merge_raw_dirs` le relirait sans ses
+        # tranches et `charger_profil_brut` refuserait, bruyamment (« tranche
+        # annoncée mais absente ») — le shard n'aurait rien publié.
+        #
+        # Les tranches partent donc avec leur socle, dans le même staging et
+        # sous la même arborescence relative. Les jeux de fichiers restent
+        # DISJOINTS entre shards, l'invariant de #450 : un slug n'est écrit que
+        # par le shard qui le traite, donc son répertoire de tranches non plus.
+        #
+        # `sort -u` : un slug peut apparaître deux fois si --resume a relancé un
+        # candidat déjà consigné. Copier deux fois serait sans conséquence, mais
+        # le décompte servirait alors de faux indicateur de couverture.
+        while IFS= read -r NOM; do
+          [[ -z "$NOM" ]] && continue
+          if [[ -f "$SOURCE_DIR/$NOM" ]]; then
+            cp "$SOURCE_DIR/$NOM" "$STAGING_DIR/$NOM"
+            COPIES=$((COPIES + 1))
+
+            SLUG="${NOM%.json}"
+            if [[ "$SLUG" != "$NOM" && -d "$SOURCE_DIR/$SLUG" ]]; then
+              mkdir -p "$STAGING_DIR/$SLUG"
+              N=0
+              for TRANCHE in "$SOURCE_DIR/$SLUG"/*.json; do
+                [[ -f "$TRANCHE" ]] || continue
+                cp "$TRANCHE" "$STAGING_DIR/$SLUG/"
+                N=$((N + 1))
+              done
+              TRANCHES=$((TRANCHES + N))
+              # Un répertoire de tranches vide n'est pas « un profil sans
+              # amendement » : celui-là n'aurait pas de répertoire du tout.
+              if [[ "$N" -eq 0 ]]; then
+                echo "::warning::Répertoire de tranches vide pour $SLUG — profil publié sans ses amendements."
+              fi
+            fi
+          else
+            MANQUANTS=$((MANQUANTS + 1))
+            echo "::warning::Profil listé au manifeste mais absent du disque : $SOURCE_DIR/$NOM"
+          fi
+        done < <(sort -u "$MANIFEST")
+
+        echo "Publication : $COPIES profil(s) écrits par ce job, $TRANCHES tranche(s) de législature → $STAGING_DIR"
+        {
+          echo "### 📤 Profils publiés par ce job"
+          echo ""
+          echo "- écrits et publiés : **$COPIES**"
+          echo "- tranches de législature publiées (#580) : **$TRANCHES**"
+          [[ "$MANQUANTS" -gt 0 ]] && echo "- listés au manifeste mais absents du disque : **$MANQUANTS**"
+          echo ""
+          echo "L'artifact ne contient que la contribution de ce job (#450) : la"
+          echo "baseline committée reste dans le checkout de \`merge-and-pivot\`."
+        } >> "$GITHUB_STEP_SUMMARY"
+
+    # #997 — et la contribution ne porte que les CHAMPS collectés.
+    #
+    # Mesuré sur le run 35430469408, artifact contre baseline : la contribution
+    # réelle de `extract-mandats-locaux` est `mandats_locaux` et rien d'autre
+    # (33 profils), celle de `extract-senat` est `mandat_senatorial` (2). Le
+    # reste partait avec, figé au run précédent — et depuis que la fusion fait
+    # gagner la source la plus récente, il écrasait les stades que l'extraction
+    # AN venait de corriger.
+    - name: Réduire la contribution aux champs collectés
+      if: ${{ inputs.champs != '' }}
+      shell: bash
+      env:
+        STAGING_DIR: ${{ inputs.staging-dir }}
+        CHAMPS: ${{ inputs.champs }}
+      run: |
+        set -euo pipefail
+        python3 scripts/projeter_contribution.py "$STAGING_DIR" $CHAMPS

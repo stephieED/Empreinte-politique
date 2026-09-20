@@ -1,0 +1,53 @@
+{
+  "schema_version": "amendements-v1",
+  "legislature": "14",
+  "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
+  "amendements": {
+    "an:AMANR5L14SEA644420BTC4431P0D1N12": {
+      "texte_vise": "PRJLANR5L14BTC4431",
+      "sort": "rejeté",
+      "base_juridique_irrecevabilite": null,
+      "premier_signataire": "an:PA330240",
+      "type_deposant": "depute",
+      "date": "2017-02-02",
+      "numero": "12",
+      "source_url": null
+    },
+    "an:AMANR5L14SEA644420BTC4431P0D1N13": {
+      "texte_vise": "PRJLANR5L14BTC4431",
+      "sort": "rejeté",
+      "base_juridique_irrecevabilite": null,
+      "premier_signataire": "an:PA330240",
+      "type_deposant": "depute",
+      "date": "2017-02-02",
+      "numero": "13",
+      "source_url": null
+    },
+    "an:AMANR5L14SEA644420BTC4431P0D1N14": {
+      "texte_vise": "PRJLANR5L14BTC4431",
+      "sort": "rejeté",
+      "base_juridique_irrecevabilite": null,
+      "premier_signataire": "an:PA330240",
+      "type_deposant": "depute",
+      "date": "2017-02-02",
+      "numero": "14 (Rect)",
+      "source_url": null
+    },
+    "an:AMANR5L14SEA644420BTC4431P0D1N15": {
+      "texte_vise": "PRJLANR5L14BTC4431",
+      "sort": "adopté",
+      "base_juridique_irrecevabilite": null,
+      "premier_signataire": "an:PA267785",
+      "type_deposant": "depute",
+      "date": "2017-02-02",
+      "numero": "15",
+      "source_url": null
+    }
+  },
+  "meta_fixture": {
+    "source": "pivot_data/amendements/14.json",
+    "ref": "01ffa7fefbedf9b239bbada38a38d7ad014d3e81",
+    "extrait_le": "2026-08-20",
+    "reduction": "Réduction aux 4 amendements que les profils de cette fixture référencent réellement, entrées intégrales. Le shardage par législature est conservé : c'est lui qui expose l'index à une publication partielle (#431)."
+  }
+}

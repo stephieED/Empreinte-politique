@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strates — CONTRECHAMP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --ink:#33291f; --paper:#e9dfc9; --silt:#c7ae82; --ochre:#b0782f; --sienna:#8b4729; --slate:#525b5b; --clay:#a56542; --line:#584634; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background-color:var(--paper); background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.11'/%3E%3C/svg%3E"); font-family:"Source Sans 3",sans-serif; }
+    a { color:inherit; text-decoration-thickness:1px; text-underline-offset:3px; }
+    .page { width:min(1380px,100%); margin:auto; padding:clamp(1rem,3vw,3.2rem); }
+    .masthead { display:flex; justify-content:space-between; gap:1rem; padding-bottom:1rem; border-bottom:2px solid var(--ink); font-size:.76rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    .masthead a { text-decoration:none; }
+    .intro { display:grid; grid-template-columns:1fr auto; gap:2rem; align-items:end; padding:clamp(2rem,5vw,5rem) 0 2rem; }
+    .kicker,.smallcaps { margin:0; color:#654d35; font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,h3 { font-family:"Roboto Slab",serif; }
+    h1 { max-width:12ch; margin:.45rem 0 0; font-size:clamp(2.75rem,6.7vw,6.7rem); line-height:.88; letter-spacing:-.055em; }
+    .intro-note { max-width:26ch; margin:0; padding-left:1rem; border-left:1px solid var(--line); font-size:1rem; line-height:1.35; }
+    .profile { display:grid; grid-template-columns:minmax(210px,.75fr) minmax(460px,2fr) minmax(180px,.6fr); gap:clamp(1rem,3vw,3rem); align-items:start; border-top:1px solid var(--line); padding-top:1.2rem; }
+    .identity h2 { margin:.35rem 0; font-size:clamp(1.7rem,2.8vw,3rem); line-height:.95; }
+    .identity p { margin:.7rem 0 0; font-size:1rem; line-height:1.4; }
+    .identity dl { margin:2rem 0 0; border-top:1px solid var(--line); }
+    .identity div { display:grid; grid-template-columns:5.5rem 1fr; gap:.5rem; padding:.55rem 0; border-bottom:1px solid rgba(88,70,52,.55); font-size:.85rem; }
+    dt { font-weight:700; text-transform:uppercase; font-size:.68rem; letter-spacing:.06em; }
+    dd { margin:0; }
+    .section-title { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; margin-bottom:.8rem; }
+    .section-title h2 { margin:0; font-size:1.1rem; }
+    .section-title span { font-size:.72rem; }
+    .cut { display:grid; grid-template-columns:4.4rem 1fr; border:1px solid var(--ink); background:#d5c39f; }
+    .scale { position:relative; border-right:1px solid var(--ink); }
+    .scale span { position:absolute; right:.55rem; font-size:.68rem; line-height:1; }
+    .scale span::after { content:""; position:absolute; top:50%; left:calc(100% + .55rem); width:11px; border-top:1px solid var(--ink); }
+    .year-2024 { top:1.2%; }.year-2022 { top:25%; }.year-2017 { top:55%; }.year-2012 { top:79%; }.year-2002 { bottom:1.2%; }
+    .strata { min-width:0; }
+    .stratum { position:relative; display:grid; grid-template-columns:minmax(100px,23%) 1fr auto; gap:1rem; align-items:center; min-height:var(--height); padding:.8rem 1rem; border-bottom:1px solid var(--ink); }
+    .stratum:last-child { border:0; }
+    .stratum::before { content:""; position:absolute; inset:0; z-index:0; opacity:.65; pointer-events:none; }
+    .stratum > * { position:relative; z-index:1; }
+    .mandat { --height:8.3rem; background:#d5b47a; }.mandat::before { background-image:repeating-linear-gradient(160deg,transparent 0 9px,rgba(51,41,31,.25) 10px 11px); }
+    .texte { --height:6.2rem; background:#b46c45; color:#251c16; }.texte::before { background-image:repeating-linear-gradient(0deg,transparent 0 7px,rgba(51,41,31,.26) 8px 9px); }
+    .vote { --height:4.6rem; background:#7b8581; color:#161b1a; }.vote::before { background-image:repeating-linear-gradient(45deg,transparent 0 5px,rgba(255,255,255,.34) 6px 7px),repeating-linear-gradient(-45deg,transparent 0 5px,rgba(51,41,31,.25) 6px 7px); }
+    .parole { --height:5rem; background:#c9b88f; }.parole::before { background-image:radial-gradient(var(--ink) .75px,transparent .9px); background-size:8px 8px; }
+    .dates { align-self:stretch; display:flex; align-items:center; font-size:.74rem; font-weight:700; letter-spacing:.04em; }
+    .stratum h3 { margin:0; font-size:clamp(.9rem,1.45vw,1.2rem); line-height:1.1; }
+    .stratum p { margin:.28rem 0 0; font-size:.82rem; line-height:1.25; }
+    .source { align-self:end; font-size:.7rem; font-weight:700; white-space:nowrap; }
+    .legend { border-top:2px solid var(--ink); }
+    .legend h2 { margin:.7rem 0 1rem; font-size:1.2rem; }
+    .swatch { display:grid; grid-template-columns:2.5rem 1fr; gap:.65rem; align-items:center; padding:.6rem 0; border-top:1px solid var(--line); font-size:.75rem; line-height:1.2; }
+    .sample { height:2.1rem; border:1px solid var(--ink); }
+    .sample.m { background:repeating-linear-gradient(160deg,#d5b47a 0 9px,#76512d 10px 11px); }.sample.t { background:repeating-linear-gradient(0deg,#b46c45 0 7px,#503124 8px 9px); }.sample.v { background:repeating-linear-gradient(45deg,#7b8581 0 5px,#eee4ce 6px 7px),repeating-linear-gradient(-45deg,transparent 0 5px,#393f3d 6px 7px); }.sample.p { background-image:radial-gradient(#594535 .75px,transparent .9px); background-size:8px 8px; background-color:#c9b88f; }
+    .legend b { display:block; font-size:.75rem; }.legend em { display:block; margin-top:.15rem; color:#634b37; font-size:.68rem; font-style:normal; }
+    .method { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line); font-size:.78rem; line-height:1.35; }
+    .method strong { font-family:"Roboto Slab",serif; }
+    @media (max-width:760px) { .page { padding:1rem; }.intro { grid-template-columns:1fr; gap:1.25rem; padding:2.5rem 0 1.5rem; }.intro-note { padding-left:0; border-left:0; border-top:1px solid var(--line); padding-top:.7rem; }.profile { grid-template-columns:1fr; }.identity dl { margin-top:1.2rem; }.legend { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:1rem; }.legend h2 { grid-column:1/-1; }.cut { grid-template-columns:3.4rem 1fr; }.stratum { grid-template-columns:1fr auto; gap:.4rem .8rem; padding:.65rem .75rem; }.dates { grid-column:1/-1; align-self:auto; font-size:.67rem; }.stratum p { font-size:.77rem; }.source { font-size:.65rem; }.masthead { font-size:.64rem; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="masthead"><a href="../">← CONTRECHAMP / LABORATOIRE</a><span>Planche 05 · archives publiques</span></header>
+    <section class="intro"><div><p class="kicker">Fiche candidat · coupe chronologique</p><h1>Une carrière, lue par strates.</h1></div><p class="intro-note">Chaque couche documente un fait institutionnel daté. Ni score, ni classement : seulement des traces et leurs sources.</p></section>
+    <section class="profile">
+      <aside class="identity"><p class="smallcaps">Sujet de la coupe</p><h2>Clémentine Autain</h2><p>Députée de la Seine-Saint-Denis · Groupe Écologiste et Social</p><dl><div><dt>Née en</dt><dd>1973 · Saint-Cloud</dd></div><div><dt>Échelle</dt><dd>2002 — 2026</dd></div><div><dt>Lecture</dt><dd>Du plus récent au plus ancien</dd></div><div><dt>Archive</dt><dd>Assemblée nationale</dd></div></dl></aside>
+      <section class="timeline" aria-labelledby="cut-title">
+        <div class="section-title"><h2 id="cut-title">Coupe stratigraphique</h2><span>Profondeur = temps écoulé</span></div>
+        <div class="cut">
+          <div class="scale" aria-label="Échelle des années"><span class="year-2024">2024</span><span class="year-2022">2022</span><span class="year-2017">2017</span><span class="year-2012">2012</span><span class="year-2002">2002</span></div>
+          <div class="strata">
+            <article class="stratum mandat"><div class="dates">2024 — en cours</div><div><h3>Députée, 11e circonscription de Seine-Saint-Denis</h3><p>Mandat électif · XVIIe législature</p></div><a class="source" href="https://www.assemblee-nationale.fr/dyn/deputes/PA605036" target="_blank" rel="noopener">SOURCE ↗</a></article>
+            <article class="stratum texte"><div class="dates">2024</div><div><h3>Proposition de loi sur l’encadrement des loyers</h3><p>Texte porté · dépôt enregistré</p></div><a class="source" href="https://www.assemblee-nationale.fr/" target="_blank" rel="noopener">DOSSIER ↗</a></article>
+            <article class="stratum vote"><div class="dates">2023</div><div><h3>Scrutin public sur le projet de loi de finances</h3><p>Vote · position individuelle documentée</p></div><a class="source" href="https://www.assemblee-nationale.fr/dyn/16/scrutins" target="_blank" rel="noopener">SCRUTIN ↗</a></article>
+            <article class="stratum parole"><div class="dates">2022</div><div><h3>Intervention en séance publique</h3><p>Prise de parole · logement et pouvoir d’achat</p></div><a class="source" href="https://www.assemblee-nationale.fr/dyn/16/comptes-rendus" target="_blank" rel="noopener">COMPTE RENDU ↗</a></article>
+            <article class="stratum mandat"><div class="dates">2017 — 2024</div><div><h3>Députée, 11e circonscription de Seine-Saint-Denis</h3><p>Mandat électif · XVe et XVIe législatures</p></div><a class="source" href="https://www.assemblee-nationale.fr/dyn/deputes/PA605036" target="_blank" rel="noopener">SOURCE ↗</a></article>
+            <article class="stratum mandat"><div class="dates">2008 — 2017</div><div><h3>Conseillère régionale d’Île-de-France</h3><p>Mandat électif · assemblée régionale</p></div><a class="source" href="https://www.iledefrance.fr/" target="_blank" rel="noopener">ARCHIVE ↗</a></article>
+          </div>
+        </div>
+      </section>
+      <aside class="legend"><h2>Nuancier de terrain</h2><div class="swatch"><i class="sample m"></i><div><b>10YR 6/6 · ocre jaune</b><em>Mandat électif · grès hachuré</em></div></div><div class="swatch"><i class="sample t"></i><div><b>5YR 4/6 · terre de Sienne</b><em>Texte porté · argile litée</em></div></div><div class="swatch"><i class="sample v"></i><div><b>5Y 4/1 · gris ardoise</b><em>Vote · calcaire croisé</em></div></div><div class="swatch"><i class="sample p"></i><div><b>10YR 7/3 · brun clair</b><em>Parole · limon ponctué</em></div></div></aside>
+    </section>
+    <footer class="method"><strong>Convention de lecture.</strong> Les codes Munsell sont des repères chromatiques de cette planche. Les hachures distinguent la nature documentaire des faits ; elles n’expriment ni jugement ni intensité politique.</footer>
+  </main>
+</body>
+</html>

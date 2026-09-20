@@ -1,0 +1,2065 @@
+/*
+ * Fiche candidat — lot 2 de la refonte #324 (issue #328).
+ *
+ * Charte : web/UI_finale/DESIGN_SYSTEM.md. Manrope seule, encre #14151A, blanc
+ * cassé #F7F6F4, jaune signal #DFFF00 JAMAIS en texte sur fond clair (contraste
+ * 1,05:1, échec AA) — il ne sert ici que d'aplat non textuel et de liseré.
+ * Rayons : 14-16px pour un item, 18px pour une carte, pilulier pour ce qui se
+ * choisit ou s'étiquette.
+ *
+ * Le site est en thème clair déclaré (`index.css` : `color-scheme: light`) : il
+ * n'y a pas de jeton de thème sombre à tenir en trois états, contrairement à la
+ * maquette, qui vivait dans un lecteur d'artifact bi-thème.
+ */
+
+/*
+ * LES TROIS BANCS ONT UNE TEINTE, ET ELLE EST DÉCLARÉE ICI, UNE FOIS (#328).
+ *
+ * Elle était écrite en littéral à trois endroits — la frise, les colonnes
+ * d'« En bref », le fond de piste — au point qu'un test existait pour vérifier
+ * qu'elles n'avaient pas divergé. Une valeur qu'un test doit surveiller pour
+ * rester unique est une valeur qui n'aurait pas dû être copiée : même leçon
+ * que les teintes de stades de `teintes-des-stades-en-bref-328`.
+ *
+ * Le bleu et le bronze ne décorent pas : ils disent DE QUEL BANC relève ce
+ * qu'on lit, et ils sont désormais lus par la frise, par les colonnes
+ * appariées et par les blocs de « Les fonctions exercées ».
+ */
+/* LES QUATRE INSTITUTIONS, ET POURQUOI TROIS SEULEMENT ONT UNE TEINTE.
+ *
+ * Une seule des quatre a une couleur officielle réutilisable : l'Union
+ * européenne : le Reflex Blue de son emblème, porté par `--pe`. Le bleu France
+ * du DSFR est réservé par la loi aux services `.gouv.fr` ; le rouge du Sénat
+ * est celui du vote « contre ».
+ *
+ * Une fois ce bleu pris, le cercle des teintes ne loge plus trois institutions
+ * SANS PARENTÉ : retirées les familles qui portent déjà un sens — vert « pour »,
+ * rouge « contre », jaune d'emphase — il ne reste que deux arcs, le chaud et le
+ * magenta. Zéro combinaison sur les 32 teintes compatibles mesurées. Deux
+ * teintes voisines ne sont pas « distinctes » parce que leur ΔE passe : elles se
+ * lisent comme une famille, donc comme une hiérarchie entre deux institutions de
+ * même rang.
+ *
+ * LE SÉNAT A RETROUVÉ SA TEINTE, LA SARCELLE, LE 16/09/2026. Il avait pris
+ * l'encre des absences tant que sa collecte était hors périmètre (#528) ; ses
+ * appartenances sont collectées depuis #885, et la sarcelle réservée pour ce jour
+ * a été retenue malgré ses 67° d'écart au bleu de l'Union
+ * (`frise-segments-pleins-et-senat-885` §4). L'encre des absences passe aux
+ * mandats locaux, qui ne sont pas une institution.
+ *
+ * Mesuré au validateur de la compétence `dataviz` (OKLab) : ΔE 10,7 sous
+ * protanopie, 21,0 en vision normale, 72° d'écart minimum entre les trois. Le
+ * seul contrôle en échec porte sur le bleu de l'Union lui-même, plus sombre que
+ * la bande de clarté — c'est la couleur officielle, elle ne se négocie pas.
+ * → docs/decisions/teintes-des-institutions-328.md
+ */
+.cp-main {
+  --parl: #803060;
+  --parl-wash: #f2eaef;
+  --parl-line: #dfcbd7;
+  --parl-pale: #ece0e7;
+  /* Assombri pour porter du texte : la frise écrit dans ses segments, et le
+     blanc sur l'ocre d'avant rendait 4,41:1 — sous le seuil AA. À 6,60:1 il
+     passe, et les cinq contrôles de palette tiennent (ΔE 10,7 / 15,3). */
+  --gouv: #85510d;
+  --gouv-wash: #f3eee7;
+  --gouv-line: #e0d4c2;
+  --gouv-pale: #ede5db;
+  --pe: #003399;
+  --pe-wash: #e6ebf5;
+  --pe-line: #bfcce6;
+  --pe-pale: #d9e0f0;
+  /* L'ENCRE DES ABSENCES, déclarée une seule fois : les cellules que la
+     collecte ne remplit pas, et les mandats locaux, qui ne sont pas une
+     institution (#922). Le gris leur passe du Sénat le 15/09/2026, avec son
+     sens (`frise-segments-pleins-et-senat-885` §4). */
+  --neutre: #9a958d;
+  --local: var(--neutre);
+  /* LA SARCELLE DU SÉNAT, réservée le 11/09/2026 « pour le jour où sa collecte
+     sera rebranchée » et retenue le 15/09 malgré ses 67° d'écart au bleu de
+     l'Union : sous daltonisme, Europe/Sénat est la paire la plus séparée des six
+     (ΔE 33,0 / 29,7 / 29,5). Les appartenances sont collectées depuis #885.
+     Texte en encre, jamais en blanc : 5,55:1 contre 3,27:1. */
+  --senat: #169e9e;
+  --senat-wash: #eff8f8;
+  --senat-line: #c7e8e8;
+  --senat-pale: #e3f3f3;
+  /* La barre de sortie d'une porte de la cascade (#328). Hors rampe d'encre :
+     elle ne marque aucune étape ATTEINTE, elle constate qu'aucun acte au-delà
+     n'est enregistré à la date du corpus. Un gris, donc, et pas un cran. */
+  --ter-sortie: #a9a4b0;
+
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  max-width: 1100px;
+  padding: 32px 40px 64px;
+}
+
+@media (max-width: 720px) {
+  .cp-main {
+    padding: 24px 18px 48px;
+  }
+}
+
+.cp-num {
+  font-variant-numeric: tabular-nums;
+}
+
+.cp-breadcrumb {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.cp-breadcrumb strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ── En-tête ─────────────────────────────────────────────────────────────── */
+.cp-entete {
+  padding-bottom: 8px;
+}
+
+.cp-sourcil {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.cp-entete h1 {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 8px 0 0;
+  line-height: 1.06;
+}
+
+/* UNE SEULE LIGNE, ET LA SOURCE AU BOUT.
+   La laisse de 72 caractères coupait « Consultant · Groupe Ensemble pour la
+   République · Renaissance. Né le 16 mars 1989 à Clamart (Hauts-de-Seine). » en
+   deux, alors que l'en-tête a toute la largeur de la page. Elle est levée ; le
+   texte et son badge s'alignent sur la même base, et ne repassent à la ligne
+   que si la fenêtre les y force. */
+.cp-qui {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin: 9px 0 12px;
+  font-size: 15px;
+  color: #6e6a78;
+}
+
+/* ── L'essentiel ─────────────────────────────────────────────────────────── */
+/* ── « Les grands chiffres » (#328) ──────────────────────────────────────────
+ *
+ * Bleu contre bronze. C'est le seul couple qui survive au daltonisme
+ * rouge-vert, le plus répandu, et ni l'un ni l'autre ne se lit comme positif ou
+ * négatif : ce sont deux métiers, pas deux notes. Le vert et le rouge sont pris
+ * par les positions de vote (`DESIGN_SYSTEM` §2), le jaune signal est réservé à
+ * la sélection, à l'action et à la source vérifiée (§3) — il n'apparaît nulle
+ * part ici, ni filet ni décor.
+ */
+.cp-gc {
+  --neutre-wash: #edebe7;
+  --rail: #efede9;
+  --gc-ombre: rgba(20, 21, 26, 0.13);
+  margin-bottom: 34px;
+}
+
+/* PAS DE MODE NUIT — et ce bloc en portait un fragment (#328, `bf886cda`).
+ * `src/index.css` déclare `color-scheme: light`, aucun script ne pose jamais
+ * `data-theme`, et `.cp-gc` était le seul sélecteur de tout `src/` à porter une
+ * media query de préférence sombre : douze variables qui ne rendaient rien,
+ * mesurées au pixel près identiques sous les deux préférences système. Le lot
+ * institutionnel devait les doubler pour `--pe` et `--senat` ; il les retire.
+ * Un mode nuit se décide pour la fiche entière ou ne se décide pas — il ne se
+ * laisse pas sur un bloc.
+ * → docs/decisions/bloc-sombre-mort-retire-328.md
+ */
+
+/* ── La poignée d'un pli — UNE seule forme, deux emplois ─────────────────────
+ *
+ * « Ce que cette personne a engagé, en chiffres. » et « Détails du parcours »
+ * sont deux plis de même nature. Leur donner deux tailles faisait crier l'un
+ * plus fort que l'autre sans que rien ne le justifie (relevé à l'écran le
+ * 03/09/2026). Une classe, donc, et non deux qui divergeraient.
+ *
+ * **Les deux sont fermés par défaut.** Le bloc s'ouvre sur la frise seule : elle
+ * est ce que le lecteur voit sans effort, les chiffres et le détail sont ce
+ * qu'il déplie s'il veut. C'est la §7 de la décision — le bloc ne doit pas
+ * s'imposer avant qu'on ait choisi de le lire — appliquée à ses deux moitiés
+ * plutôt qu'à l'ensemble.
+ */
+.cp-pli {
+  border-top: 1px solid var(--border-strong);
+  margin-top: 20px;
+}
+
+.cp-poignee {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14.5px;
+  font-weight: 700;
+  padding: 14px 0 2px;
+}
+
+.cp-poignee::-webkit-details-marker {
+  display: none;
+}
+
+.cp-poignee:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Le « + » est dessiné, pas écrit : une barre verticale qui disparaît à
+ * l'ouverture, donc « − ». Deux glyphes différents changeraient de chasse et
+ * feraient sauter la ligne. */
+.cp-poignee-plus {
+  position: relative;
+  flex: none;
+  width: 17px;
+  height: 17px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 5px;
+}
+
+.cp-poignee-plus::before,
+.cp-poignee-plus::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 1.5px;
+  background: var(--muted);
+  transform: translate(-50%, -50%);
+}
+
+.cp-poignee-plus::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+  transition: opacity 0.12s ease;
+}
+
+.cp-pli[open] .cp-poignee-plus::after {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cp-poignee-plus::after {
+    transition: none;
+  }
+}
+
+/* Dans la frise, le pli sépare le détail daté du reste : filet plus discret. */
+.cp-frise .cp-pli {
+  border-top-color: var(--border);
+  margin-top: 16px;
+}
+
+.cp-frise .cp-roles {
+  margin-top: 10px;
+}
+
+.cp-gc-carte {
+  /* La marge vient de `.cp-carte`. */
+}
+
+/* La frise du bloc est CELLE DU PARCOURS (`.cp-frise`), pas une copie : les 24
+ * sélecteurs qui la redessinaient ici — pistes, rail, segments, étiquettes,
+ * légende — sont retirés avec elle. `.cp-gc-frise` ne fait plus que l'espacer.
+ */
+.cp-gc-frise {
+  margin-bottom: 4px;
+}
+
+.cp-gc-frise .cp-frise {
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+/* ── Les colonnes appariées ───────────────────────────────────────────────── */
+
+/* LE TABLEAU : une colonne de libellés à gauche, une colonne par institution.
+   Le rang était répété au-dessus de chaque colonne — deux fois avec deux
+   institutions, quatre fois avec les quatre qu'une carrière peut traverser. */
+.cp-gc-duo {
+  display: grid;
+  --gc-libelle: minmax(88px, 128px);
+  grid-template-columns: var(--gc-libelle) 1fr;
+  column-gap: 32px;
+  margin-top: 4px;
+}
+
+.cp-gc-duo--deux {
+  grid-template-columns: var(--gc-libelle) repeat(2, 1fr);
+}
+
+.cp-gc-duo--trois {
+  grid-template-columns: var(--gc-libelle) repeat(3, 1fr);
+}
+
+.cp-gc-duo--quatre {
+  grid-template-columns: var(--gc-libelle) repeat(4, 1fr);
+}
+
+/* LES PUCES D'INSTITUTION — le vocabulaire des barres de sélection de la fiche :
+   un pilulier, la teinte de l'institution allumée, l'encre sourde éteinte. Elles
+   ne filtrent pas une donnée, elles rangent une colonne : une institution
+   repliée reste nommée, et se rouvre d'un clic. */
+.cp-gc-puces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 2px;
+}
+
+.cp-gc-puce {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: 700 11.5px 'Manrope', system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  border: 1px solid var(--tt, var(--border));
+  background: var(--tw, transparent);
+  color: var(--tt, var(--ink));
+}
+
+.cp-gc-puce i {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--tt, var(--border));
+}
+
+.cp-gc-puce[aria-pressed='false'] {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--muted);
+}
+
+.cp-gc-puce[aria-pressed='false'] i {
+  background: var(--border);
+}
+
+.cp-gc-puce--parlement { --tt: var(--parl); --tw: var(--parl-wash); }
+.cp-gc-puce--senat { --tt: var(--senat); --tw: var(--senat-wash); }
+.cp-gc-puce--pe { --tt: var(--pe); --tw: var(--pe-wash); }
+.cp-gc-puce--gouvernement { --tt: var(--gouv); --tw: var(--gouv-wash); }
+
+/* Le coin haut-gauche du tableau ne porte rien : au-dessus des libellés de rang,
+   un titre dirait « rang », ce que la colonne montre déjà. */
+.cp-gc-coin {
+  border: 0;
+}
+
+.cp-gc-tete-col {
+  padding: 14px 0 12px;
+}
+
+.cp-gc-bandeau {
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  margin-bottom: 12px;
+}
+
+.cp-gc-tete-col--parlement .cp-gc-bandeau { background: var(--parl); }
+.cp-gc-tete-col--senat .cp-gc-bandeau { background: var(--senat); }
+.cp-gc-tete-col--pe .cp-gc-bandeau { background: var(--pe); }
+.cp-gc-tete-col--gouvernement .cp-gc-bandeau { background: var(--gouv); }
+
+.cp-gc-col-nom {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 3px 10px 3px 8px;
+  border-radius: 999px;
+}
+
+.cp-gc-col-nom i {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+}
+
+.cp-gc-tete-col--parlement .cp-gc-col-nom { color: var(--parl); background: var(--parl-wash); }
+.cp-gc-tete-col--parlement .cp-gc-col-nom i { background: var(--parl); }
+.cp-gc-tete-col--senat .cp-gc-col-nom { color: var(--senat); background: var(--senat-wash); }
+.cp-gc-tete-col--senat .cp-gc-col-nom i { background: var(--senat); }
+.cp-gc-tete-col--pe .cp-gc-col-nom { color: var(--pe); background: var(--pe-wash); }
+.cp-gc-tete-col--pe .cp-gc-col-nom i { background: var(--pe); }
+.cp-gc-tete-col--gouvernement .cp-gc-col-nom { color: var(--gouv); background: var(--gouv-wash); }
+.cp-gc-tete-col--gouvernement .cp-gc-col-nom i { background: var(--gouv); }
+
+/* LE FILET COURT SUR TOUTE LA LIGNE : il est porté par le libellé ET par
+   chaque cellule, sinon il s'arrête au bout de la première colonne. */
+.cp-gc-rang {
+  border-top: 1px solid var(--border);
+  /* LE NOM DU RANG SE LIT, il ne s'excuse pas. En gris sourd et en 10,5 px il
+     passait derrière les chiffres, alors qu'il est la seule chose qui dise de
+     quoi ils sont le compte — et depuis qu'il n'est plus écrit qu'une fois,
+     à gauche, il porte toute la ligne. Encre pleine, un cran plus grand. */
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0;
+  padding: 18px 0 2px;
+}
+
+.cp-gc-cell {
+  border-top: 1px solid var(--border);
+  padding: 12px 0 14px;
+
+  /* La famille de teintes de la colonne. Déclarée ICI, sur la cellule, et non
+     déduite du voisinage dans la grille — voir le bloc des stades plus bas. */
+  --t1: var(--parl-wash);
+  --t2: var(--parl-pale);
+  --t3: var(--parl-line);
+  --t4: var(--parl);
+  --t5: var(--parl);
+}
+
+.cp-gc-cell--senat {
+  --t1: var(--senat-wash);
+  --t2: var(--senat-pale);
+  --t3: var(--senat-line);
+  --t4: var(--senat);
+  --t5: var(--senat);
+}
+
+.cp-gc-cell--pe {
+  --t1: var(--pe-wash);
+  --t2: var(--pe-pale);
+  --t3: var(--pe-line);
+  --t4: var(--pe);
+  --t5: var(--pe);
+}
+
+.cp-gc-cell--gouvernement {
+  --t1: var(--gouv-wash);
+  --t2: var(--gouv-pale);
+  --t3: var(--gouv-line);
+  --t4: var(--gouv);
+  --t5: var(--gouv);
+}
+
+/* **Seuls les nombres sont en gros.** Mettre l'objet à la même échelle que le
+ * chiffre faisait lire le titre du texte comme la mesure. */
+/* LA PHRASE, PAS LE GRAND CHIFFRE (maquette « En bref », 11/09/2026) : le
+   nombre en gras au corps du texte, l'objet à la suite dans la même encre. */
+.cp-gc-n {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.cp-gc-n b {
+  font-weight: 800;
+}
+
+.cp-gc-n small {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.cp-gc-q {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  margin: 4px 0 0;
+}
+
+.cp-gc-d {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 6px 0 0;
+  /* Ce qui SE DIT sans se crier : la part écartée par le seuil de publication,
+     les textes portés à un autre titre. Bornée en largeur — une phrase qui
+     traverse une colonne de tableau se relit deux fois. */
+  max-width: 44ch;
+}
+
+/* Un tiret est un FAIT sur le métier — « un ministre ne dépose pas
+ * d'amendement » — jamais une liste vide, qui est un fait sur la collecte. */
+.cp-gc-absent {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+  padding-top: 4px;
+}
+
+.cp-gc-absent span {
+  font-weight: 800;
+  margin-right: 4px;
+}
+
+.cp-gc-barre {
+  display: flex;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 9px 0 7px;
+  background: var(--rail);
+  max-width: 560px;
+}
+
+/*
+ * La teinte d'un stade est déclarée UNE fois, sur la classe du stade, et lue
+ * deux fois : par le segment de barre, qui la prend en FOND, et par la pastille
+ * de la légende, qui la prend en PASTILLE. La légende ne la prend jamais en
+ * fond — c'était le défaut : les `<em>` de légende portaient la classe du
+ * segment, donc `background: var(--parl)` (#3f5166) passait derrière un texte
+ * `var(--muted)` (#8b8794), soit 1,9:1. « 15 promulgué » était illisible.
+ *
+ * La FAMILLE de teintes vient de la colonne, pas du stade : à l'Assemblée le
+ * bleu, au gouvernement le brun. Seul `promulgue` basculait, et par un
+ * sélecteur de frères qui débordait — d'où une barre brune dans la colonne de
+ * l'Assemblée, et une barre à deux familles dans celle du gouvernement.
+ *
+ * Cinq stades, cinq degrés, et la rampe MONTE : `examine_commission` était plus
+ * foncé qu'`inscrit_ordre_jour`, et identique à `discute_seance` — deux
+ * segments voisins de la même couleur ne se distinguent pas. Un stade plus
+ * avancé n'est pas « mieux » (§2 règle 1) : c'est l'ordre que la source publie,
+ * et la rampe le suit.
+ */
+.cp-gc-stade--examine_commission { --teinte: var(--t1); }
+.cp-gc-stade--inscrit_ordre_jour { --teinte: var(--t2); }
+.cp-gc-stade--discute_seance { --teinte: var(--t3); }
+.cp-gc-stade--adopte { --teinte: var(--t4); --voile: 0.65; }
+.cp-gc-stade--promulgue { --teinte: var(--t5); }
+
+.cp-gc-part {
+  display: block;
+  height: 8px;
+  background: var(--teinte, var(--neutre));
+  opacity: var(--voile, 1);
+}
+
+.cp-gc-barre-leg {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.cp-gc-barre-leg b { color: var(--ink); font-weight: 700; }
+
+.cp-gc-barre-leg em {
+  font-style: normal;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* La pastille porte la teinte, le libellé garde `--muted` : c'est la pastille
+   qui identifie le segment, pas la couleur du texte. `currentColor` les rendait
+   toutes grises, donc identiques — la légende n'identifiait rien. */
+.cp-gc-barre-leg em::before {
+  content: '';
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--teinte, currentColor);
+  opacity: var(--voile, 0.9);
+}
+
+/* Une colonne seule prend toute la largeur : un gabarit à deux colonnes dont
+ * l'une est vide ferait lire un manque là où il n'y a qu'un seul métier. */
+/* ── Sous 720 px : le tableau défile, la frise passe en liste ────────────────
+ *
+ * Mesuré sur un écran de 375 px, avec les données publiées de `gabriel-attal`,
+ * et arbitré sur maquette le 03/09/2026.
+ *
+ * LE TABLEAU DÉFILE plutôt que de s'empiler. Empilé, chaque titre de rang se
+ * lisait deux fois de suite — 10 titres pour 5 rangs — et les deux en-têtes de
+ * rôle restaient en haut, séparés de leurs cellules par tout le tableau : plus
+ * aucune cellule ne disait à quel rôle elle appartenait. En défilement,
+ * l'en-tête ne quitte jamais sa colonne, et **l'appariement survit** — deux
+ * objets de même nature restent sur la même ligne, ce qui est la raison d'être
+ * du bloc. Les onglets par rôle ont été écartés pour cela : ils ne montrent
+ * jamais les deux ensemble.
+ *
+ * Le coût est assumé et se voit : 230 px × 2 plus 44 px de gouttière font
+ * 504 px pour ~347 px utiles, donc il en manque toujours un tiers.
+ */
+@media (max-width: 720px) {
+  .cp-gc-duo--deux,
+  .cp-gc-duo--trois,
+  .cp-gc-duo--quatre {
+    overflow-x: auto;
+    padding-bottom: 8px;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+
+    /* L'OMBRE DE DÉFILEMENT, en CSS pur (patron de Roman Komarov) : deux
+     * calques `local` qui suivent le contenu masquent deux calques `scroll`
+     * fixés aux bords. L'ombre n'apparaît donc QUE s'il reste du contenu de ce
+     * côté — jamais au bout de la course, et jamais quand rien ne dépasse.
+     * Sans ce signal, la colonne « Au gouvernement » n'existe pas pour le
+     * lecteur ; avec un dégradé permanent, elle mentirait une fois arrivé. */
+    background:
+      linear-gradient(to right, var(--card) 40%, transparent) left / 44px 100% no-repeat local,
+      linear-gradient(to left, var(--card) 40%, transparent) right / 44px 100% no-repeat local,
+      linear-gradient(to right, var(--gc-ombre), transparent) left / 22px 100% no-repeat scroll,
+      linear-gradient(to left, var(--gc-ombre), transparent) right / 22px 100% no-repeat scroll;
+  }
+
+  .cp-gc-duo--deux { grid-template-columns: var(--gc-libelle) repeat(2, minmax(210px, 1fr)); }
+  .cp-gc-duo--trois { grid-template-columns: var(--gc-libelle) repeat(3, minmax(210px, 1fr)); }
+  .cp-gc-duo--quatre { grid-template-columns: var(--gc-libelle) repeat(4, minmax(210px, 1fr)); }
+
+  /* La colonne des libellés reste visible pendant le défilement : sans elle,
+     un chiffre isolé ne dit plus de quoi il est le compte. */
+  .cp-gc-rang {
+    position: sticky;
+    left: 0;
+    background: var(--card);
+    z-index: 1;
+  }
+
+  .cp-gc-duo--deux > *,
+  .cp-gc-duo--trois > *,
+  .cp-gc-duo--quatre > * {
+    scroll-snap-align: start;
+  }
+
+  .cp-gc-barre {
+    max-width: 100%;
+  }
+}
+
+/* Les 25 sélecteurs de « L'essentiel » sont retirés avec sa vue (#328) : aucun
+ * n'est plus référencé par le composant, et du CSS mort se maintient tout seul
+ * pendant des mois avant qu'on ose y toucher.
+ */
+.cp-section {
+  margin-top: 44px;
+}
+
+.cp-section-bande {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.cp-section-numero {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.cp-section-trait {
+  flex: 1;
+  height: 1px;
+  background: var(--border-strong);
+}
+
+.cp-section-titre {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.018em;
+}
+
+/* LE SURLIGNAGE TIENT AU TEXTE, PAS À LA LIGNE. Le dégradé est posé sur un
+   `span` interne : sur le `h2`, bloc de la largeur de la colonne, la bande
+   jaune courrait jusqu'au bord et se lirait comme un fond de section.
+   Le jaune ne porte JAMAIS le texte (contraste 1,05:1 avec --ink) : il ne
+   couvre que le tiers bas des lettres, qui restent lues sur le fond de page.
+   Même geste que le titre de /couverture. */
+.cp-section-titre > span {
+  background: linear-gradient(transparent 62%, var(--accent) 62%);
+  padding: 0 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.cp-section-critere {
+  font-size: 13px;
+  color: #6e6a78;
+  /* 78ch bridait le critère à 619 px quand la colonne en offre 1 020, et
+     coupait en deux la phrase la plus longue de la fiche — « Ses interventions
+     par période politique, puis par nature et par sujet. Le verbatim est celui
+     du compte rendu. », 109 signes. Un critère est une ligne de service, pas du
+     texte courant : il a le droit d'aller au bout. Mesuré le 13/09/2026 — il
+     lui faut 834 px, la colonne en a 1 020. */
+  max-width: 108ch;
+  margin-top: 8px;
+  line-height: 1.55;
+}
+
+.cp-section-corps {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cp-carte {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 1px 10px rgba(20, 15, 40, 0.05);
+  /* LA MARGE INTÉRIEURE EST ICI, ET NULLE PART AILLEURS. Sept enveloppes la
+     redéclaraient — 26, 24, 22, 20, 18, 16 et 0 px en haut ; 26, 24 et 20 à
+     gauche —, et `.cp-carte` n'en portait aucune : douze cartes sur dix-neuf
+     n'avaient d'autre marge que celle que leur premier enfant voulait bien
+     porter. Deux exceptions restent, et elles sont NOMMÉES : une carte qui ne
+     contient que des rangs pleine largeur (`--rangs`), une figure qui touche
+     ses bords (`--nu`). */
+  padding: 22px 26px;
+}
+
+/* Les rangs portent leur propre marge et leur filet doit courir d'un bord à
+   l'autre : la carte s'efface devant eux. */
+.cp-carte--rangs {
+  padding: 0;
+}
+
+/* Une figure qui va au bord — la frise des paroles. */
+.cp-carte--nu {
+  padding: 0;
+}
+
+/* UNE LISTE VIDE N'EST PAS UNE CARTE DANS UNE CARTE. `lec-vide` dessine son
+   propre cadre ; posée dans `cp-carte`, elle rendait deux bordures, deux rayons
+   et deux marges emboîtées. Dans une carte, elle n'est plus que son texte. */
+.cp-carte > .lec-vide {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: none;
+}
+
+.cp-bloc {
+  /* La marge vient de `.cp-carte`. */
+}
+
+.cp-note {
+  padding: 16px 20px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 14px;
+  background: #fbfaf8;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink);
+  /* PAS DE `max-width` : une note qualifie la figure au-dessus d'elle, et une
+     note plus étroite que sa figure se lit comme un autre bloc. La longueur de
+     ligne se règle par la brièveté du texte, pas par une laisse. */
+}
+
+.cp-note em {
+  font-style: normal;
+  color: #6e6a78;
+}
+
+/* ── § 1 — la frise ──────────────────────────────────────────────────────── */
+.cp-frise {
+  /* La marge vient de `.cp-carte`. */
+}
+
+.cp-reperes {
+  position: relative;
+  margin-bottom: 2px;
+}
+
+.cp-repere {
+  position: absolute;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cp-repere b {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+  font-size: 10.5px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.cp-repere i {
+  display: block;
+  width: 1px;
+  flex: 1;
+  background: var(--border-strong);
+}
+
+/* La hauteur vient du NOMBRE DE LIGNES, en ligne : une bande de 46 px répartie
+   sur quatre pistes donne 11 px par segment, où aucun texte ne tient. */
+.cp-bande {
+  position: relative;
+  background: var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/*
+ * Un segment de bande. La TEINTE porte l'institution, et le segment ÉCRIT ce
+ * qu'il est quand il en a la place — groupe et position pour un siège, le
+ * portefeuille pour un ministère. L'étiquette se dégrade plutôt que de déborder
+ * (`etiquetteSegment`), et la liste datée dessous nomme tout, toujours.
+ *
+ * L'encre suit la teinte : blanc sur les trois foncées, encre sur le neutre et
+ * sur le jaune du chef de gouvernement. Mesuré — blanc sur `--gouv` rendait
+ * 4,41:1 avant que la teinte soit assombrie, il rend 6,60:1.
+ */
+.cp-fs {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
+  min-width: 5px;
+  overflow: hidden;
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: #fff;
+}
+
+.cp-fs--local,
+.cp-fs--senat,
+.cp-fs--mission {
+  color: var(--ink);
+}
+
+.cp-fs--parlement {
+  background: var(--parl);
+}
+
+.cp-fs--senat {
+  background: var(--senat);
+}
+
+.cp-fs--pe {
+  background: var(--pe);
+}
+
+.cp-fs--local {
+  background: var(--local);
+}
+
+.cp-fs--gouvernement {
+  background: var(--gouv);
+}
+
+/* LE CHEF DU GOUVERNEMENT EST UN MEMBRE DU GOUVERNEMENT, ET LA TEINTE LE DIT.
+   Un aplat jaune en faisait une institution de plus ; il prend le brun du
+   gouvernement, quadrillé de jaune (arbitré sur maquette le 16/09/2026, maille
+   de 9 px, traits de 1,5 px).
+
+   Le contour jaune essayé d'abord ne se voyait pas : `--accent` est presque
+   aussi clair que le fond blanc, et 2 px de jaune sur un segment de huit mois
+   disparaissaient. Sur le brun, c'est le fond sombre qui donne son contraste au
+   jaune. La maille large plutôt que la fine : elle se lit sur un segment court,
+   et gêne moins un libellé blanc posé dessus. */
+.cp-fs--chef {
+  background-color: var(--gouv);
+  background-image:
+    linear-gradient(to right, var(--accent) 1.5px, transparent 1.5px),
+    linear-gradient(to bottom, var(--accent) 1.5px, transparent 1.5px);
+  background-size: 9px 9px;
+}
+
+.cp-fs--mission {
+  background: var(--card);
+  border: 1.5px dashed var(--gouv);
+}
+
+/* Les années sont POSÉES sur l'axe, pas réparties : une graduation doit tomber
+   sous ce qu'elle date. Les deux extrêmes se rabattent vers l'intérieur pour ne
+   pas déborder de la carte. */
+.cp-axe {
+  position: relative;
+  height: 14px;
+  margin-top: 7px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.cp-axe span {
+  position: absolute;
+  transform: translateX(-50%);
+  font-variant-numeric: tabular-nums;
+}
+
+.cp-axe span:first-child {
+  transform: none;
+}
+
+.cp-axe span:last-child {
+  transform: translateX(-100%);
+}
+
+/* NI TITRE, NI FILET. « Légende » nommait ce que la forme dit déjà — des pavés
+   de couleur suivis d'un intitulé ne se lisent pas autrement —, et le filet
+   séparait la légende de la frise qu'elle sert : deux choses qui vont ensemble
+   n'ont pas à être coupées. */
+.cp-legende {
+  margin-top: 14px;
+}
+
+.cp-legende-grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 9px 18px;
+}
+
+/* Le renvoi d'une entrée de légende vers le pied de section : collé au libellé,
+   sans décaler la ligne. */
+.cp-legende-renvoi {
+  margin-left: 1px;
+  font-size: 0.8em;
+  line-height: 0;
+}
+
+.cp-legende-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #6e6a78;
+}
+
+.cp-legende-pave {
+  position: relative;
+  width: 34px;
+  height: 17px;
+  border-radius: 3px;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+
+.cp-roles {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--border);
+}
+
+.cp-role {
+  display: grid;
+  grid-template-columns: 19px 190px 1fr;
+  gap: 14px;
+  align-items: baseline;
+  padding: 8px 0;
+  font-size: 13px;
+}
+
+.cp-role-numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #f7f6f4;
+  font-size: 10.5px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.cp-role-dates {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.cp-role-intitule b {
+  font-weight: 700;
+}
+
+.cp-role-detail {
+  color: var(--muted);
+}
+
+/*
+ * La position déclarée : une pilule dont la BORDURE reprend le motif de la
+ * frise, pour que les deux se lisent ensemble sans jamais employer de teinte
+ * politique.
+ */
+.cp-position {
+  display: inline-flex;
+  margin-left: 8px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid var(--border-strong);
+  color: #6e6a78;
+  vertical-align: middle;
+}
+
+.cp-position--plein {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.cp-position--diagonales {
+  border-style: dashed;
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.cp-position--points {
+  border-style: dotted;
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.cp-position--rayures {
+  border-color: var(--gouv);
+  color: var(--gouv);
+}
+
+.cp-position--fines-rayures {
+  border-style: dotted;
+  color: var(--muted);
+}
+
+/* ── § 1 — les fonctions exercées ────────────────────────────────────────── */
+.cp-fonctions-bloc {
+  padding: 20px 26px;
+  border-top: 1px solid var(--border);
+}
+
+.cp-fonctions-bloc:first-child {
+  border-top: 0;
+}
+
+.cp-fonctions-titre {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.cp-puces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.cp-puce {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: #fbfaf8;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.cp-puce b {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.cp-cles {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 9px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6e6a78;
+}
+
+.cp-cle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cp-cle i {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  display: block;
+}
+
+.cp-cle b {
+  font-weight: 800;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Lignes génériques ───────────────────────────────────────────────────── */
+.cp-ligne {
+  display: grid;
+  grid-template-columns: 200px 1fr auto;
+  gap: 18px;
+  align-items: baseline;
+  padding: 16px 26px;
+  border-top: 1px solid var(--border);
+}
+
+.cp-ligne:first-child {
+  border-top: 0;
+}
+
+.cp-ligne-cle {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.cp-ligne-cle .cp-position {
+  margin-left: 0;
+  display: flex;
+  width: fit-content;
+  margin-top: 6px;
+}
+
+.cp-ligne-titre {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.cp-ligne-nombre {
+  font-size: 15px;
+  font-weight: 800;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.cp-ligne-nombre span {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.cp-ligne--couverture .cp-ligne-corps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cp-etat {
+  font-size: 12.5px;
+  color: #6e6a78;
+  line-height: 1.5;
+}
+
+.cp-etat b {
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.cp-etat em {
+  display: block;
+  font-style: normal;
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+/* ── § 3 — les blocs d'irrecevabilité ────────────────────────────────────── */
+.cp-blocs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 720px) {
+  .cp-blocs {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cp-bloc-nombre {
+  display: block;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.cp-bloc-cle {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+.cp-bloc-texte {
+  margin-top: 9px;
+  font-size: 12.5px;
+  color: #6e6a78;
+  line-height: 1.55;
+}
+
+.cp-textes {
+}
+
+/* ── § 2 — les gouvernements ─────────────────────────────────────────────── */
+.cp-gouv {
+  /* Un RANG dans une carte, pas une carte : son filet court d'un bord à
+     l'autre, donc il porte sa propre marge — au même fer que la carte. */
+  padding: 22px 26px;
+  border-top: 1px solid var(--border);
+}
+
+.cp-gouv:first-child {
+  border-top: 0;
+}
+
+.cp-gouv-tete {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: baseline;
+}
+
+.cp-gouv-nom {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.cp-gouv-periode {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ── § 4 — les mesures ───────────────────────────────────────────────────── */
+.cp-mesures {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+}
+
+.cp-mesure {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: baseline;
+  padding: 9px 0;
+  border-top: 1px solid var(--border);
+  font-size: 13.5px;
+}
+
+.cp-mesure:first-child {
+  border-top: 0;
+}
+
+.cp-mesure b {
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.cp-etiquette {
+  display: inline-flex;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid var(--border-strong);
+  color: #6e6a78;
+  margin-bottom: 9px;
+}
+
+.cp-etiquette--pleine {
+  border-color: var(--ink);
+  border-width: 2px;
+  border-radius: 6px;
+  color: var(--ink);
+}
+
+.cp-regles--votes {
+  margin: 0 0 18px;
+}
+
+.cp-regles {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.cp-regle {
+  display: inline-flex;
+  padding: 4px 11px;
+  border-radius: 999px;
+  border: 1px dashed var(--border-strong);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #6e6a78;
+}
+
+/* ── § 6 — les écarts ────────────────────────────────────────────────────── */
+.cp-ecart {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 18px;
+  align-items: center;
+  padding: 18px 26px;
+  border-top: 1px solid var(--border);
+}
+
+.cp-ecart:first-child {
+  border-top: 0;
+}
+
+.cp-ecart-meta {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  margin: 6px 0 8px;
+}
+
+.cp-ecart-positions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cp-ecart-ligne {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.cp-ecart-ligne > span:first-child {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+@media (max-width: 760px) {
+  .cp-ligne,
+  .cp-ecart,
+  .cp-role {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .cp-ligne-nombre {
+    text-align: left;
+  }
+}
+
+/* ── Pied ────────────────────────────────────────────────────────────────── */
+.cp-pied {
+  margin-top: 44px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-strong);
+  font-size: 12.5px;
+  color: var(--muted);
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* ── § 1 — les fonctions exercées, révision du 03/09/2026 (#328) ───────────────
+ *
+ * La section a perdu sa frise et sa liste datée — toutes deux vivent dans
+ * « En bref » — et ne porte plus que ce que personne d'autre ne montre. Les
+ * classes `.cp-fonctions-bloc`, `.cp-fonctions-titre`, `.cp-puces` et `.cp-puce`
+ * sont conservées telles quelles ; ce qui suit est ce que la nouvelle lecture
+ * demande en plus.
+ */
+.cp-fonctions-liste {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.cp-fonctions-item {
+  display: grid;
+  grid-template-columns: 104px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  font-size: 13px;
+}
+
+/*
+ * La marque de ce qui ressort : un filet d'encre et le lavis des puces. SANS
+ * TEINTE, et ce n'est pas un oubli — aucune couleur n'était libre. Le jaune
+ * signal est pris par la sélection, l'action et le badge de source ; le vert et
+ * le rouge par les positions de vote (DESIGN_SYSTEM §2) ; le bleu et le bronze
+ * par les institutions dans la frise. En introduire une quatrième aurait dilué
+ * les trois autres, et la charte pose que le jaune n'indique jamais un jugement.
+ *
+ * C'est aussi ce qui la rend lisible en niveaux de gris et sous daltonisme sans
+ * la doubler d'un pictogramme : elle ne repose sur aucune perception chromatique.
+ *
+ * DEUX ÉTATS, jamais une graduation : une ligne porte la marque ou non, et les
+ * deux autres ne sont jamais hiérarchisées entre elles.
+ */
+.cp-fonctions-item--marquee {
+  margin: 0 -26px;
+  padding: 10px 26px 12px 23px;
+  border-left: 3px solid var(--ink);
+  background: #fbfaf8;
+}
+
+.cp-fonctions-duree {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.cp-fonctions-objet { min-width: 0; }
+
+/* La coupe se fait sur DEUX lignes — une seule perdait trop d'intitulé — donc en
+ * HAUTEUR. Pas de `-webkit-line-clamp` : il peint ses propres points de
+ * suspension, et on en aurait deux avec le bouton. */
+.cp-fonctions-ligne {
+  display: block;
+  line-height: 1.45;
+  max-height: 2.9em;
+  overflow: hidden;
+}
+
+.cp-fonctions-ligne[data-deplie] {
+  max-height: none;
+  overflow: visible;
+}
+
+/* Le rôle est le fait qui distingue la ligne : « Président » d'un groupe
+ * d'études n'est pas une précision, c'est ce qu'on est venu lire. Il prend donc
+ * l'encre et le gras, là où une teinte sourde le faisait passer inaperçu. */
+.cp-fonctions-role {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.cp-fonctions-plus {
+  display: block;
+  margin-top: 1px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.cp-fonctions-plus:hover { color: var(--ink); }
+
+.cp-fonctions-plus:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+.cp-pli--fonctions {
+  margin-top: 14px;
+  border-top-color: var(--border);
+}
+
+.cp-pli--fonctions .cp-poignee {
+  font-size: 13px;
+  padding: 12px 0 2px;
+}
+
+/* Le pied de section : la règle de lecture y est documentée, et le lien mène à
+ * la méthodologie pour qui veut le détail. Pas de `max-width` — il s'aligne sur
+ * la carte qui le précède, sinon les deux bords gauches se répondent et le bord
+ * droit part tout seul. */
+.cp-section-pied {
+  margin-top: 14px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: #6e6a78;
+}
+
+.cp-section-pied a {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* « En bref » est un titre de section : même écart au corps que les autres. */
+.cp-gc .cp-section-titre { margin-bottom: 16px; }
+
+@media (max-width: 720px) {
+  .cp-fonctions-item {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
+
+/* ── § 1 — le banc de chaque catégorie de fonction (#328) ────────────────── */
+/*
+ * LE BANC NE PREND PAS LE BORD GAUCHE : IL EST DÉJÀ PRIS.
+ *
+ * Un filet de banc à gauche du bloc se superposait au filet d'encre de la
+ * MARQUE, qui signale la fonction dépassant la moitié du temps de mandat. Deux
+ * traits verticaux à trois pixels l'un de l'autre se lisent comme un seul, et
+ * la ligne marquée — qui déborde volontairement jusqu'au bord de la carte —
+ * passait par-dessus le filet du banc. Deux faits de nature différente, un seul
+ * bord : le bord revient à la marque, qui est le seul des deux à qualifier UNE
+ * ligne.
+ *
+ * Le banc se dit donc par la PASTILLE et par la couleur du titre du bloc. Ce
+ * n'est pas un repli : le titre gagne au change, `--muted` valant 3,51:1 sur
+ * blanc quand le bleu vaut 8,14:1 et le bronze 4,90:1 — sous le seuil AA avant,
+ * au-dessus après.
+ */
+.cp-fonctions-bloc--parlement {
+  --teinte-banc: var(--parl);
+}
+
+.cp-fonctions-bloc--gouvernement {
+  --teinte-banc: var(--gouv);
+}
+
+/* LA CHAMBRE PORTE LA TEINTE, PAS LE SEUL BANC (#328, 13/09/2026). Une
+   commission du Parlement européen se peignait de la teinte de l'Assemblée : le
+   banc était écrit en dur, et ces deux blocs n'existaient pas. Ce sont les
+   mêmes valeurs que la frise, jamais un second jeu. */
+.cp-fonctions-bloc--pe {
+  --teinte-banc: var(--pe);
+}
+
+.cp-fonctions-bloc--senat {
+  --teinte-banc: var(--senat);
+}
+
+/* La mission n'est ni l'un ni l'autre : un⋅e parlementaire en mission auprès
+   d'un ministère reste parlementaire. La frise la rend en contour tireté ; la
+   pastille la reprend en tireté, pour qu'elle se distingue aussi par la FORME
+   et pas par la seule teinte. */
+.cp-fonctions-bloc--mission {
+  --teinte-banc: var(--gouv);
+}
+
+.cp-fonctions-bloc--parlement .cp-fonctions-titre,
+.cp-fonctions-bloc--pe .cp-fonctions-titre,
+.cp-fonctions-bloc--senat .cp-fonctions-titre,
+.cp-fonctions-bloc--gouvernement .cp-fonctions-titre,
+.cp-fonctions-bloc--mission .cp-fonctions-titre {
+  color: var(--teinte-banc);
+}
+
+.cp-fonctions-titre::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 7px;
+  border-radius: 2px;
+  background: var(--teinte-banc);
+  vertical-align: 1px;
+}
+
+.cp-fonctions-bloc--mission .cp-fonctions-titre::before {
+  background: var(--card);
+  border: 1.5px dashed var(--gouv);
+}
+
+/* ── La chute : dépôts par année, empilés par matière (#328, section 2) ─────
+ *
+ * Le SVG porte la géométrie, le CSS ne porte que les teintes de l'interface —
+ * la teinte d'une matière vient de `utils/matiere.js`, en attribut `fill`,
+ * parce qu'elle dépend de la donnée et non de l'état de l'interface. */
+.cp-chute { margin-top: 14px; }
+.cp-chute-svg { display: block; width: 100%; height: auto; }
+.cp-chute-grille { stroke: var(--border-soft, #f0eeeb); stroke-width: 1; }
+.cp-chute-palier { stroke: var(--border, #e7e4df); stroke-width: 1; }
+.cp-chute-part { stroke: #fff; stroke-width: 0.5; cursor: pointer; }
+/* Le voile écarte sans effacer : la marche garde sa place dans l'escalier et
+   perd sa teinte. Déclaré après l'attribut `fill`, il gagne. */
+.cp-chute-part--voile { fill: #e9e6e1; }
+.cp-chute-total { fill: #14151a; }
+.cp-chute-axe { font-size: 11px; fill: var(--muted, #8b8794); text-anchor: end; }
+.cp-chute-axe--an { text-anchor: middle; }
+.cp-chute-total-nb { font-size: 11.5px; font-weight: 800; fill: var(--ink, #17141f); text-anchor: middle; }
+.cp-chute-mesure { margin-bottom: 2px; }
+.cp-chute-choix {
+  font: inherit; font-size: 12px; cursor: pointer; border: 1px solid transparent;
+  background: none; color: inherit; border-radius: 999px; padding: 3px 10px;
+}
+.cp-chute-choix:hover { border-color: var(--border, #e7e4df); }
+.cp-chute-choix[aria-pressed='true'] {
+  border-color: var(--ink, #17141f); background: var(--border-soft, #f0eeeb);
+  color: var(--ink, #17141f); font-weight: 700;
+}
+.cp-cle--cliquable { cursor: pointer; border: 1px solid transparent; background: none; font: inherit; }
+.cp-cle--cliquable:hover { border-color: var(--border, #e7e4df); border-radius: 999px; }
+.cp-cle--cliquable[aria-pressed='true'] {
+  border-color: var(--ink, #17141f); background: var(--border-soft, #f0eeeb);
+  border-radius: 999px; font-weight: 700;
+}
+.cp-chute-liste { margin-top: 14px; }
+.cp-chute-liste-tete {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  padding: 10px 0 8px; border-bottom: 1px solid var(--border, #e7e4df); font-size: 12.5px;
+}
+.cp-chute-liste-quoi { font-weight: 800; }
+.cp-chute-raz {
+  border: 1px solid var(--border, #e7e4df); background: none; color: var(--muted, #8b8794);
+  cursor: pointer; font: inherit; font-size: 11.5px; border-radius: 999px; padding: 2px 10px;
+}
+.cp-chute-raz:hover { color: var(--ink, #17141f); border-color: var(--ink, #17141f); }
+.cp-chute-liste ul { list-style: none; margin: 0; padding: 0; }
+.cp-chute-liste li { padding: 9px 0; border-bottom: 1px solid var(--border-soft, #f0eeeb); }
+.cp-chute-titre { font-weight: 700; font-size: 13px; display: block; }
+.cp-chute-fait { font-size: 12px; color: var(--muted, #8b8794); }
+/* Le vert du fait acquis : c'est la MÊME encre que « adopté » des positions de
+   vote, et pour la même raison — un fait de la source, jamais un jugement. */
+.cp-chute-oui { color: #007a45; font-weight: 800; }
+
+/* ── La cascade procédurale des textes portés (#328) ───────────────────────
+ *
+ * Les rubans portent leur teinte de matière en attribut : la palette est
+ * catégorielle et calculée par `teinteMatiere`, pas déclarée ici. Ce que la
+ * feuille tient, c'est l'ENCRE DES ÉTAPES — une rampe, du plus clair au plus
+ * foncé dans l'ordre que la source publie. Ce n'est pas une échelle de valeur :
+ * un texte promulgué n'est pas « mieux » qu'un texte en commission (§2 règle 1),
+ * la rampe ne fait que rendre les quatre barres distinguables entre elles.
+ */
+.cp-ter { margin-top: 14px; }
+.cp-ter-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.cp-ter-vide, .cp-ter-invite { margin: 10px 0 0; }
+
+.cp-ter-svg path[stroke], .cp-ter-svg rect, .cp-ter-etape { cursor: pointer; }
+.cp-ter-issue { fill: var(--ter-sortie); }
+/* Le voile ÉTEINT ce qui ne croise pas la sélection ; il ne l'efface pas —
+   un texte hors sélection reste un texte tracé. */
+.cp-ter-voile { opacity: 0.22; }
+
+.cp-ter-nom {
+  font-size: 11.5px; fill: var(--ink, #17141f); text-anchor: end;
+  font-family: 'Manrope', system-ui, sans-serif;
+}
+.cp-ter-tirant { fill: none; stroke: var(--border, #e7e4df); stroke-width: 1; }
+.cp-ter-etape {
+  font-size: 11.5px; fill: var(--muted, #8b8794);
+  font-family: 'Manrope', system-ui, sans-serif;
+}
+.cp-ter-etape--fin { text-anchor: end; }
+.cp-ter-etape--issue { font-size: 10.5px; }
+.cp-ter-n { fill: var(--ink, #17141f); font-weight: 800; }
+.cp-ter-etape:hover, .cp-ter-etape:hover .cp-ter-n { fill: var(--ink, #17141f); }
+
+.cp-ter-liste { margin-top: 14px; }
+.cp-ter-liste-tete {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  padding: 10px 0 8px; border-bottom: 1px solid var(--border, #e7e4df); font-size: 12.5px;
+}
+.cp-ter-liste-quoi { font-weight: 800; }
+.cp-ter-liste ul { list-style: none; margin: 0; padding: 0; }
+.cp-ter-liste li {
+  display: grid; grid-template-columns: 1fr auto; gap: 2px 14px;
+  padding: 9px 0; border-bottom: 1px solid var(--border-soft, #f0eeeb);
+}
+.cp-ter-titre { font-weight: 700; font-size: 13px; }
+.cp-ter-titre a {
+  color: inherit; text-decoration: underline; text-decoration-color: var(--border, #e7e4df);
+  text-underline-offset: 2px;
+}
+.cp-ter-titre a:hover { text-decoration-color: currentcolor; }
+.cp-ter-pastille {
+  font-size: 11.5px; color: var(--muted, #8b8794); text-align: right; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.cp-ter-pastille::before {
+  content: ''; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--pastille, #8b8794); flex: none;
+}
+.cp-ter-fait { font-size: 12px; color: var(--muted, #8b8794); grid-column: 1 / -1; }
+
+/* ── Le sort d'un texte porté, et le 49.3 (#743 dans la fiche) ─────────────
+ *
+ * Le sort est écrit SOUS le titre, en second registre : la pastille de droite
+ * garde le stade. Deux faits distincts, deux places distinctes — les confondre
+ * typographiquement les ferait lire comme un seul.
+ */
+.cp-ter-sort {
+  grid-column: 1 / -1; font-size: 12px; color: var(--muted, #8b8794);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.cp-ter-sort::before {
+  content: ''; width: 14px; height: 1px; background: var(--border, #e7e4df); flex: none;
+}
+/* Le 49.3 sort de l'encre grise : c'est le seul sort qui n'est pas une issue de
+   vote, et §2 règle 4 veut qu'il se distingue de toutes les autres. Il ne prend
+   pour autant aucune teinte de position (ni vert, ni rouge) — il n'en est pas
+   une. Encre pleine et bordure, comme la marque procédurale de la fiche de
+   gouvernement. */
+.cp-ter-sort--493 { color: var(--ink, #17141f); font-weight: 700; }
+
+.cp-ter-493 {
+  margin: 10px 0 0; font-size: 12.5px; color: var(--muted, #8b8794);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; max-width: 78ch;
+}
+.cp-ter-493 b { color: var(--ink, #17141f); font-weight: 800; }
+.cp-ter-493-bouton {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--border, #e7e4df); border-radius: 999px;
+  background: none; color: var(--ink, #17141f); cursor: pointer;
+  font: inherit; font-size: 12.5px; padding: 3px 12px 3px 4px;
+}
+.cp-ter-493-bouton:hover { border-color: var(--ink, #17141f); }
+.cp-ter-493-bouton[aria-pressed='true'] {
+  border-color: var(--ink, #17141f); background: var(--bg, #f7f6f4);
+}
+.cp-ter-493-marque {
+  background: var(--ink, #17141f); color: #fff; border-radius: 999px;
+  font-size: 10.5px; font-weight: 800; letter-spacing: 0.02em; padding: 2px 8px;
+}
+
+/* Le renvoi vers la méthodologie, une fois par section (#328). La fiche garde
+   la limite en deux mots, le paragraphe vit là-bas — DESIGN_SYSTEM §7 règle 2.
+   Même traitement que `.vp-methodo` et `.pp-methodo` : un lien qui se voit sans
+   crier, sous la figure et jamais au-dessus. */
+.cp-methodo {
+  margin: 14px 0 0;
+  font-size: 12.5px;
+}
+
+.cp-methodo a {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
+}
+
+.cp-methodo a:hover {
+  text-decoration-color: currentcolor;
+}
+
+/* ── Les corrections de lecture du 10/09 ──────────────────────────────────── */
+
+/* Le 49.3 : la qualification suit le fait dans le même bouton, en second plan.
+   Elle tenait en trois lignes de paragraphe à côté — le « pourquoi » vit en
+   méthodologie, la fiche garde le fait et ce qu'il est. */
+.cp-ter-493-quoi {
+  margin-left: 6px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* Ce qui restait en trois `cp-bloc` — la forme des GRANDS CHIFFRES — tient sous
+   la légende de la cascade, à la taille d'une légende. */
+/* LE COMMUTATEUR DES DEUX VERSANTS (#901). Le jaune signal marque la
+   sélection — c'est son emploi posé par `DESIGN_SYSTEM.md` §3, celui de la
+   barre des candidats et des puces de position. Aucun état par la seule
+   graisse : `aria-pressed` porte l'état, la teinte le montre. */
+.cp-bascule {
+  display: inline-flex;
+  gap: 2px;
+  margin: 14px 0 2px;
+  padding: 3px;
+  border: 1px solid var(--border-strong, #e7e4df);
+  border-radius: 999px;
+  background: var(--bg);
+}
+
+.cp-bascule-bouton {
+  border: 0;
+  border-radius: 999px;
+  padding: 6px 14px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cp-bascule-bouton b {
+  font-weight: 800;
+}
+
+.cp-bascule-bouton[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+.cp-bascule-bouton:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.cp-chute-mentions {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* La liste ouverte au clic sur la cascade se range par institution : les
+   en-têtes reprennent `cp-gc-tete-col--*` — mêmes teintes, mêmes étiquettes que
+   « ce que cette personne a engagé, en chiffres ». Sous 720 px les deux colonnes
+   s'empilent : un titre de dossier ne tient pas dans une demi-largeur mobile. */
+.cp-ter-cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 32px;
+}
+.cp-ter-cols--deux {
+  grid-template-columns: 1fr 1fr;
+}
+.cp-ter-cols > ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cp-ter-col-nb {
+  margin-left: 8px;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 720px) {
+  .cp-ter-cols--deux {
+    grid-template-columns: 1fr;
+  }
+  /* Empilées, les deux listes ont besoin que leur en-tête reprenne la main. */
+  .cp-ter-cols > ul {
+    margin-bottom: 18px;
+  }
+}
+
+
+/* La règle de repli, en tête de la carte des votes : un dénominateur, pas un
+   titre — même graisse que les libellés d'échelle, au-dessus de la navigation. */
+.vp-regle {
+  margin: 0 0 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ── LES MATIÈRES, DEUX MESURES ET LEUR RAPPORT ──────────────────────────────
+   Six colonnes, un nombre par colonne : empilés dans une même cellule,
+   « 26 775 » et « 59 » se lisaient « 26 77559 » — et se copiaient ainsi.
+   Le ratio est AU MILIEU, entre les deux mesures qu'il relie. */
+.cp-mat {
+  display: grid;
+  gap: 4px;
+  margin-top: 14px;
+}
+.cp-mr {
+  display: grid;
+  /* La colonne des noms monte à 290 px, et la barre qui la suit rend la place
+     (1.2fr → 0.9fr) : les commissions du Parlement européen s'écrivent en
+     entier — « Environment, Public Health and Food Safety » fait 41 signes, là
+     où « Finances » en fait 8 — et la troncature qui coupait quatre noms sur
+     dix-neuf disparaît. La colonne ne s'élargit qu'autant que son contenu le
+     demande : côté français, les intitulés courts la laissent à 120 px. */
+  grid-template-columns: minmax(120px, 290px) minmax(0, 0.9fr) 74px 74px minmax(0, 0.5fr) 78px;
+  gap: 12px;
+  align-items: center;
+  font-size: 12.5px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 3px 0;
+  color: inherit;
+  font-family: inherit;
+}
+.cp-mr--cliquable {
+  cursor: pointer;
+  border-radius: 4px;
+}
+.cp-mr--cliquable:hover .cp-mr-lib,
+.cp-mr--cliquable[aria-pressed='true'] .cp-mr-lib {
+  color: var(--ink);
+  font-weight: 700;
+}
+.cp-mr--cliquable:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+.cp-mr--tete {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #b6b1bd;
+  padding-bottom: 2px;
+}
+.cp-mr-lib {
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cp-mr-rail {
+  height: 14px;
+  border-radius: 2px;
+  background: var(--border);
+  overflow: hidden;
+}
+.cp-mr--tete .cp-mr-rail,
+.cp-mr--nd span:nth-child(5) {
+  background: none;
+}
+.cp-mr-rail i {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+}
+.cp-mr-n {
+  text-align: right;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.cp-mr-n--textes {
+  color: #b6b1bd;
+}
+.cp-mr--nd .cp-mr-lib {
+  font-style: italic;
+}
+
+@media (max-width: 720px) {
+  .cp-mr {
+    grid-template-columns: 1fr 64px 64px 64px;
+    gap: 8px;
+  }
+  /* Les deux rails sautent : à 320 px, une barre de 12 px ne dit rien que le
+     nombre à côté ne dise mieux. */
+  .cp-mr-rail {
+    display: none;
+  }
+}
+
+/* Les deux sous-parties de « ce qu'on n'a pas pu lire ». La première est en
+   rangs pleine largeur, donc son intitulé reprend le fer des rangs. */
+.cp-rangs-tete {
+  padding: 20px 26px 14px;
+}
+
+.cp-signal {
+  margin-top: 14px;
+}
+.cp-signal-dl {
+  display: grid;
+  grid-template-columns: minmax(140px, 220px) minmax(0, 1fr);
+  gap: 10px 20px;
+  margin: 16px 0 0;
+  font-size: 13px;
+}
+.cp-signal-dl dt {
+  font-weight: 700;
+  color: var(--ink);
+}
+.cp-signal-dl dd {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+@media (max-width: 720px) {
+  .cp-signal-dl {
+    grid-template-columns: 1fr;
+    gap: 3px 0;
+  }
+  .cp-signal-dl dd {
+    margin-bottom: 10px;
+  }
+}
+
+/* ── Le filtre par nature des textes européens (#901) ──
+   Des puces sous le commutateur : la sélection passe à l'encre, pour ne pas
+   rivaliser avec le jaune du commutateur au-dessus. */
+.cp-natures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 4px;
+}
+
+.cp-nature {
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong, #e7e4df);
+  background: var(--card, #fff);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.cp-nature b {
+  font-weight: 800;
+  margin-left: 4px;
+}
+
+.cp-nature[aria-pressed='true'] {
+  background: var(--dark, #14151a);
+  border-color: var(--dark, #14151a);
+  color: #fff;
+}
+
+.cp-nature:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}

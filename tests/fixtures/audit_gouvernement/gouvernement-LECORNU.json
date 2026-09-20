@@ -1,0 +1,80 @@
+{
+  "schema_version": "1",
+  "type_document": "profil_gouvernement",
+  "gouvernement_id": "gouvernement:LECORNU",
+  "nom": "Gouvernement Lecornu",
+  "premier_ministre": {
+    "nom": "Sébastien Lecornu",
+    "acteur_ref": "PA607469",
+    "source_url": "https://www.assemblee-nationale.fr/dyn/premier-ministre"
+  },
+  "periode": {
+    "debut": "2025-09-09",
+    "fin": null,
+    "actif": true
+  },
+  "membres": [
+    {
+      "membre_id": "nosdeputes:bruno-le-maire",
+      "nom": "Bruno Le Maire",
+      "portefeuille": "Économie",
+      "debut": "2025-09-09",
+      "fin": null,
+      "actif": true,
+      "source_url": "https://example.org/nomination-bruno"
+    },
+    {
+      "membre_id": "nosdeputes:claire-petit",
+      "nom": "Claire Petit",
+      "portefeuille": null,
+      "debut": "2025-09-09",
+      "fin": null,
+      "actif": true,
+      "source_url": null
+    }
+  ],
+  "textes": [
+    {
+      "dossier_id": "DLR5L17N50588",
+      "titre": "Projet de loi de financement de la sécurité sociale 2025",
+      "statut": "adopte_49_3",
+      "chambre_depot_initial": "AN",
+      "date_depot": "2024-10-10",
+      "date_dernier_evenement": "2024-12-04",
+      "sort_49_3": true,
+      "source_url": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA643210",
+          "membre_id": "nosdeputes:bruno-le-maire"
+        }
+      ]
+    }
+  ],
+  "comptages": {
+    "par_statut": {
+      "adopte": 0,
+      "adopte_49_3": 1,
+      "adopte_cmp": 0,
+      "depose": 0,
+      "navette_en_cours": 0,
+      "promulgue": 0,
+      "rejete": 0,
+      "rejete_49_3": 0,
+      "retire": 0
+    }
+  },
+  "sources": [
+    {
+      "type": "assemblee_nationale",
+      "url": "https://data.assemblee-nationale.fr/...",
+      "synchro_le": "2026-08-01T10:00:00+00:00"
+    }
+  ],
+  "meta": {
+    "schema_version": "1",
+    "genere_le": "2026-08-01T10:00:00+00:00",
+    "licence_donnees": "",
+    "warnings": []
+  }
+}

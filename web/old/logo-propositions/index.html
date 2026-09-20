@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Empreinte — Étude de logos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --ink:#14151a; --paper:#f7f6f4; --signal:#dfff00; --line:#c9c9c7; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:400 15px/1.5 Manrope,sans-serif; }
+    a { color:inherit; }
+    .wrap { width:min(1440px,calc(100% - 40px)); margin:auto; }
+    header { display:grid; grid-template-columns:1fr auto; gap:2rem; padding:24px 0 52px; border-bottom:1px solid var(--ink); }
+    .back,.eyebrow,.number { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+    .back { text-decoration:none; }
+    .back:hover { text-decoration:underline; }
+    h1 { max-width:12ch; margin:56px 0 0; font-size:clamp(42px,8vw,104px); line-height:.88; letter-spacing:-.07em; }
+    .intro { max-width:50ch; align-self:end; margin:0; font-size:clamp(16px,2vw,22px); line-height:1.4; }
+    .note { padding:12px 0; border-bottom:1px solid var(--line); font-size:12px; }
+    .board { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); border-left:1px solid var(--line); }
+    article { min-height:500px; display:grid; grid-template-columns:70px 1fr; gap:18px; padding:24px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .number { color:#6d6d70; }
+    .proposal { display:flex; flex-direction:column; min-width:0; }
+    .lockup { min-height:190px; display:flex; align-items:center; gap:18px; }
+    .lockup--black { background:var(--ink); color:var(--paper); padding:20px 22px; border:1px solid var(--ink); }
+    .lockup--black .wordmark,
+    .lockup--black .wordmark small { color:var(--paper); }
+    .lockup--black .symbol { background:transparent; }
+    .symbol { flex:none; width:100px; height:100px; display:grid; place-items:center; background:var(--ink); }
+    svg { display:block; width:100%; height:100%; }
+    .wordmark { font-size:clamp(28px,3.2vw,48px); font-weight:800; line-height:.92; letter-spacing:-.07em; }
+    .wordmark small { display:block; margin-top:8px; font-size:12px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; }
+    h2 { margin:18px 0 8px; font-size:20px; letter-spacing:-.04em; }
+    p { max-width:60ch; margin:0; }
+    .uses { display:flex; align-items:end; gap:12px; margin-top:auto; padding-top:20px; }
+    .app { width:46px; height:46px; display:grid; place-items:center; border-radius:12px; background:var(--ink); }
+    .app svg { width:34px; height:34px; }
+    .motion { font-size:12px; color:#505057; }
+    footer { padding:22px 0 42px; font-size:12px; }
+    @media (max-width:780px) { header,.board { grid-template-columns:1fr; } header { padding-bottom:32px; } h1 { margin-top:38px; } article { min-height:440px; } .lockup { min-height:150px; } }
+    @media (max-width:480px) { .wrap { width:min(100% - 24px,1440px); } article { grid-template-columns:42px 1fr; padding:16px 0 16px 12px; } .lockup { gap:12px; } .symbol { width:74px; height:74px; } .wordmark { font-size:29px; } }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <div><a class="back" href="../">← Contrechamp / laboratoire visuel</a><h1>Empreinte,<br>en huit marques.</h1></div>
+    <p class="intro">Une planche pour une app de CV politiques factuels et sourcés. Chaque piste est pensée comme un système vivant dans l’interface, pas comme une icône décorative.</p>
+  </header>
+  <main class="wrap">
+    <p class="note">Étude / 08.08.2026 — encre <b>#14151A</b>, papier <b>#F7F6F4</b>, signal <b>#DFFF00</b> · Manrope uniquement</p>
+    <section class="board" aria-label="Huit propositions de logo">
+      <article>
+        <span class="number">01</span><div class="proposal">
+          <div class="lockup"><div class="symbol"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 28h60v44H20z" fill="none" stroke="#f7f6f4" stroke-width="7"/><path d="M32 50h36" stroke="#dfff00" stroke-width="7"/><circle cx="32" cy="50" r="7" fill="#dfff00"/></svg></div><div class="wordmark">Empreinte<small>Registre ouvert</small></div></div>
+          <h2>Le registre actif</h2><p>Une ligne de dossier traversée par un point de preuve. Le trait peut se remplir à mesure qu’une source est vérifiée, donnant à la marque une grammaire naturelle de progression et de traçabilité.</p>
+          <div class="uses"><div class="app"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 28h60v44H20z" fill="none" stroke="#f7f6f4" stroke-width="7"/><path d="M32 50h36" stroke="#dfff00" stroke-width="7"/><circle cx="32" cy="50" r="7" fill="#dfff00"/></svg></div><span class="motion">État : ligne qui se complète</span></div>
+        </div>
+      </article>
+      <article>
+        <span class="number">02</span><div class="proposal">
+          <div class="lockup"><div class="symbol"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M17 74C27 40 39 25 50 25s23 15 33 49" fill="none" stroke="#f7f6f4" stroke-width="7"/><circle cx="27" cy="62" r="5" fill="#dfff00"/><circle cx="40" cy="43" r="5" fill="#dfff00"/><circle cx="60" cy="43" r="5" fill="#dfff00"/><circle cx="73" cy="62" r="5" fill="#dfff00"/></svg></div><div class="wordmark">Empreinte<small>L’arc civique</small></div></div>
+          <h2>L’arc civique</h2><p>Un hémicycle réduit à une courbe de données : plusieurs voix, une structure lisible. Les points signal peuvent s’allumer, se regrouper ou changer de densité dans les vues de groupes et de votes.</p>
+          <div class="uses"><div class="app"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M17 74C27 40 39 25 50 25s23 15 33 49" fill="none" stroke="#f7f6f4" stroke-width="7"/><circle cx="27" cy="62" r="5" fill="#dfff00"/><circle cx="40" cy="43" r="5" fill="#dfff00"/><circle cx="60" cy="43" r="5" fill="#dfff00"/><circle cx="73" cy="62" r="5" fill="#dfff00"/></svg></div><span class="motion">État : sièges qui s’allument</span></div>
+        </div>
+      </article>
+      <article>
+        <span class="number">03</span><div class="proposal">
+          <div class="lockup"><div class="symbol"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 28v44h60" fill="none" stroke="#f7f6f4" stroke-width="7"/><path d="M29 62 45 47l13 8 16-25" fill="none" stroke="#dfff00" stroke-width="8"/><circle cx="74" cy="30" r="6" fill="#dfff00"/></svg></div><div class="wordmark">Empreinte<small>La trajectoire</small></div></div>
+          <h2>La trajectoire</h2><p>Une donnée devient un parcours, avec un point d’arrivée net. Cette marque porte le récit chronologique d’un mandat et peut tracer les étapes d’un dossier sans suggérer une performance ou un classement.</p>
+          <div class="uses"><div class="app"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 28v44h60" fill="none" stroke="#f7f6f4" stroke-width="7"/><path d="M29 62 45 47l13 8 16-25" fill="none" stroke="#dfff00" stroke-width="8"/><circle cx="74" cy="30" r="6" fill="#dfff00"/></svg></div><span class="motion">État : tracé étape par étape</span></div>
+        </div>
+      </article>
+      <article>
+        <span class="number">04</span><div class="proposal">
+          <div class="lockup"><div class="symbol"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M25 19h50v62H25z" fill="none" stroke="#f7f6f4" stroke-width="7"/><path d="M38 39h24M38 52h24M38 65h13" stroke="#f7f6f4" stroke-width="6"/><path d="m61 66 7 7 14-17" fill="none" stroke="#dfff00" stroke-width="7"/></svg></div><div class="wordmark">Empreinte<small>Le dossier probant</small></div></div>
+          <h2>Le dossier probant</h2><p>La forme d’un dossier se distingue par sa coupe et son signal de validation — jamais une coche générique autonome. Elle affirme une méthode : un fait est montré parce qu’il est relié à sa source.</p>
+          <div class="uses"><div class="app"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M25 19h50v62H25z" fill="none" stroke="#f7f6f4" stroke-width="7"/><path d="M38 39h24M38 52h24M38 65h13" stroke="#f7f6f4" stroke-width="6"/><path d="m61 66 7 7 14-17" fill="none" stroke="#dfff00" stroke-width="7"/></svg></div><span class="motion">État : sources validées</span></div>
+        </div>
+      </article>
+      <article>
+        <span class="number">05</span><div class="proposal">
+          <div class="lockup"><div class="symbol"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M24 27h52v46H24z" fill="none" stroke="#f7f6f4" stroke-width="7"/><path d="M24 39h52M39 27v46" stroke="#f7f6f4" stroke-width="6"/><rect x="43" y="43" width="29" height="26" fill="#dfff00"/></svg></div><div class="wordmark">Empreinte<small>La case source</small></div></div>
+          <h2>La case source</h2><p>Une grille éditoriale où une cellule devient active : le fait trouvé dans le vaste ensemble. La marque installe un langage de cartes, filtres, tables et sélections, très produit sans devenir fintech.</p>
+          <div class="uses"><div class="app"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M24 27h52v46H24z" fill="none" stroke="#f7f6f4" stroke-width="7"/><path d="M24 39h52M39 27v46" stroke="#f7f6f4" stroke-width="6"/><rect x="43" y="43" width="29" height="26" fill="#dfff00"/></svg></div><span class="motion">État : cellule sélectionnée</span></div>
+        </div>
+      </article>
+      <article>
+        <span class="number">06</span><div class="proposal">
+          <div class="lockup"><div class="symbol"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 68 50 25l30 43" fill="none" stroke="#f7f6f4" stroke-width="7"/><path d="M31 68 50 41l19 27" fill="none" stroke="#dfff00" stroke-width="7"/><circle cx="50" cy="25" r="7" fill="#dfff00"/></svg></div><div class="wordmark">Empreinte<small>Le point commun</small></div></div>
+          <h2>Le point commun</h2><p>Des lignes indépendantes convergent vers une même pièce vérifiable. C’est la métaphore d’une information croisée, d’un vote collectif ou d’une voix individuelle située dans un ensemble.</p>
+          <div class="uses"><div class="app"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 68 50 25l30 43" fill="none" stroke="#f7f6f4" stroke-width="7"/><path d="M31 68 50 41l19 27" fill="none" stroke="#dfff00" stroke-width="7"/><circle cx="50" cy="25" r="7" fill="#dfff00"/></svg></div><span class="motion">État : lignes qui convergent</span></div>
+        </div>
+      </article>
+      <article>
+        <span class="number">07</span><div class="proposal">
+          <div class="lockup lockup--black"><div class="symbol"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M22 70c0-24 12-40 28-40s28 16 28 40" fill="none" stroke="#f7f6f4" stroke-width="7"/><path d="M32 70c0-14 8-24 18-24s18 10 18 24" fill="none" stroke="#dfff00" stroke-width="7"/><path d="M17 74h66" stroke="#f7f6f4" stroke-width="7"/></svg></div><div class="wordmark">Empreinte<small>politique</small></div></div>
+          <h2>Politique</h2><p>Deux arcs et une base composent un espace de parole sans dessiner une institution littérale. Sa symétrie donne un emblème mémorable, capable d’organiser les états « intervention », « texte » et « vote ».</p>
+          <div class="uses"><div class="app"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M22 70c0-24 12-40 28-40s28 16 28 40" fill="none" stroke="#f7f6f4" stroke-width="7"/><path d="M32 70c0-14 8-24 18-24s18 10 18 24" fill="none" stroke="#dfff00" stroke-width="7"/><path d="M17 74h66" stroke="#f7f6f4" stroke-width="7"/></svg></div><span class="motion">État : arc intérieur actif</span></div>
+        </div>
+      </article>
+      <article>
+        <span class="number">08</span><div class="proposal">
+          <div class="lockup"><div class="symbol"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M19 29h62M19 50h62M19 71h62" stroke="#f7f6f4" stroke-width="7"/><path d="M42 20v60" stroke="#dfff00" stroke-width="9"/><circle cx="42" cy="50" r="9" fill="#dfff00"/></svg></div><div class="wordmark">Empreinte<small>Le marqueur</small></div></div>
+          <h2>Le marqueur</h2><p>Un curseur vertical pose une position précise dans un registre horizontal. Minimal mais propriétaire, il exprime la consultation active : retrouver un fait, naviguer dans le temps, garder la preuve à portée de vue.</p>
+          <div class="uses"><div class="app"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M19 29h62M19 50h62M19 71h62" stroke="#f7f6f4" stroke-width="7"/><path d="M42 20v60" stroke="#dfff00" stroke-width="9"/><circle cx="42" cy="50" r="9" fill="#dfff00"/></svg></div><span class="motion">État : curseur qui navigue</span></div>
+        </div>
+      </article>
+    </section>
+  </main>
+  <footer class="wrap">Empreinte politique · Étude d’identité — les huit symboles sont aussi conçus comme icônes d’application.</footer>
+</body>
+</html>

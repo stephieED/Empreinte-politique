@@ -1,0 +1,173 @@
+.static-page {
+  width: 100%;
+  max-width: 1600px;
+}
+
+.static-main {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 40px 64px;
+}
+
+.static-banner {
+  background: var(--dark);
+  box-shadow: 0 2px 16px rgba(20, 15, 40, 0.07);
+  padding: 28px;
+  margin-bottom: 8px;
+  clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 0 100%);
+}
+
+.static-banner-tag {
+  display: inline-block;
+  border-radius: 2px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1.5px solid #ffffff;
+  color: #ffffff;
+  margin-bottom: 14px;
+}
+
+.static-banner h1 {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.static-banner p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.static-updated {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 20px 2px 0;
+}
+
+.static-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+/* ── Le titre de famille (#328) ──────────────────────────────────────────────
+ *
+ * Il RANGE les cartes qui le suivent, il n'en est pas une : ni fond, ni ombre,
+ * ni rayon — sinon deux objets de même apparence porteraient deux niveaux de
+ * lecture. Le filet sous le titre est ce qui le rattache au bloc, et la marge
+ * haute est ce qui l'en détache du bloc précédent.
+ *
+ * `margin-top` compense le `gap: 14px` du conteneur : 26px d'écart réel au-
+ * dessus, 14px en dessous, pour que le titre appartienne visuellement à ce qui
+ * suit. Un titre à équidistance des deux blocs n'appartient à aucun. */
+.static-famille {
+  margin: 12px 2px 0;
+}
+
+.static-famille:first-child {
+  margin-top: 0;
+}
+
+.static-famille h2 {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border-strong);
+}
+
+/* La famille VIDE : la fiche de gouvernement n'a pas de méthode publiée, et la
+   page le dit plutôt que de laisser un titre sans suite. */
+.static-famille p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 10px 0 0;
+}
+
+.static-card {
+  border-radius: 18px;
+  background: var(--card);
+  box-shadow: 0 2px 12px rgba(20, 15, 40, 0.06);
+  padding: 24px 28px;
+}
+
+.static-card h2 {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.static-card h3 {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 20px 0 8px;
+}
+
+.static-card h3:first-child {
+  margin-top: 0;
+}
+
+.static-card p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.static-card p:last-child {
+  margin-bottom: 0;
+}
+
+.static-card p.static-note {
+  font-size: 12px;
+  color: var(--muted);
+  border-left: 2px solid var(--border-strong);
+  padding-left: 10px;
+}
+
+.static-card code {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.9em;
+  background: var(--bg);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+
+.static-card a {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+@media (max-width: 680px) {
+  .static-main {
+    padding: 24px 20px 48px;
+  }
+
+  .static-card {
+    padding: 20px;
+  }
+}
+
+
+/* L'introduction d'une page statique (#951), sous la bannière. */
+.static-intro {
+  margin: 20px 2px 0;
+  max-width: 72ch;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.static-intro p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ink);
+}

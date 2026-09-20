@@ -1,0 +1,375 @@
+{
+  "schema_version": "1",
+  "type_document": "profil_gouvernement",
+  "gouvernement_id": "gouvernement:FILLON_1",
+  "nom": "Gouvernement Fillon I",
+  "premier_ministre": {
+    "nom": "François Fillon",
+    "acteur_ref": "PA1310",
+    "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+  },
+  "periode": {
+    "debut": "2007-05-17",
+    "fin": "2007-06-18",
+    "actif": false
+  },
+  "membres": [
+    {
+      "membre_id": "alain-juppe",
+      "nom": "Alain Juppé",
+      "portefeuille": "Ministère de l'écologie, du développement et de l'aménagement durables",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "bernard-kouchner",
+      "nom": "Bernard Kouchner",
+      "portefeuille": "Ministère des affaires étrangères et européennes",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "brice-hortefeux",
+      "nom": "Brice Hortefeux",
+      "portefeuille": "Ministère de l'immigration, de l'intégration, de l'identité nationale et du codéveloppement",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "christine-albanel",
+      "nom": "Christine Albanel",
+      "portefeuille": "Ministère de la culture et de la communication",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "christine-boutin",
+      "nom": "Christine Boutin",
+      "portefeuille": "Ministère du logement et de la ville",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "christine-lagarde",
+      "nom": "Christine Lagarde",
+      "portefeuille": "Ministère de l'agriculture et de la pêche",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "dominique-bussereau",
+      "nom": "Dominique Bussereau",
+      "portefeuille": "Secrétariat d'Etat chargé des transports",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "eric-besson",
+      "nom": "Éric Besson",
+      "portefeuille": "Secrétariat d'Etat chargé de la prospective et de l'évaluation des politiques publiques",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "eric-woerth",
+      "nom": "Éric Woerth",
+      "portefeuille": "Ministère du budget, des comptes publics et de la fonction publique",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "francois-fillon",
+      "nom": "François Fillon",
+      "portefeuille": "Premier ministre",
+      "debut": "2007-05-17",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "francois-fillon",
+      "nom": "François Fillon",
+      "portefeuille": "Premier ministre",
+      "debut": "2007-06-18",
+      "fin": "2010-11-13",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "herve-morin",
+      "nom": "Hervé Morin",
+      "portefeuille": "Ministère de la défense",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "jean-louis-borloo",
+      "nom": "Jean-Louis Borloo",
+      "portefeuille": "Ministère de l'économie, des finances et de l'emploi",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "jean-pierre-jouyet",
+      "nom": "Jean-Pierre Jouyet",
+      "portefeuille": "Secrétariat d'Etat chargé des affaires européennes",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "martin-hirsch",
+      "nom": "Martin Hirsch",
+      "portefeuille": "Haut-commissariat aux solidarités actives contre la pauvreté",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "michele-alliot-marie",
+      "nom": "Michèle Alliot-Marie",
+      "portefeuille": "Ministère de l'intérieur, de l'outre-mer et des collectivités territoriales",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "rachida-dati",
+      "nom": "Rachida Dati",
+      "portefeuille": "Ministère de la justice",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "roger-karoutchi",
+      "nom": "Roger Karoutchi",
+      "portefeuille": "Secrétariat d'Etat chargé des relations avec le Parlement",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "roselyne-bachelot",
+      "nom": "Roselyne Bachelot",
+      "portefeuille": "Ministère de la santé, de la jeunesse et des sports",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "valerie-pecresse",
+      "nom": "Valérie Pécresse",
+      "portefeuille": "Ministère de l'enseignement supérieur et de la recherche",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "xavier-bertrand",
+      "nom": "Xavier Bertrand",
+      "portefeuille": "Ministère du travail, des relations sociales et de la solidarité",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "xavier-darcos",
+      "nom": "Xavier Darcos",
+      "portefeuille": "Ministère de l'éducation nationale",
+      "debut": "2007-05-18",
+      "fin": "2007-06-18",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    }
+  ],
+  "textes": [],
+  "tags_thematiques_agreges": [],
+  "comptages": {
+    "membres_recenses": 21,
+    "membres_distincts": 21,
+    "membres_avec_interventions": 0,
+    "par_statut": {
+      "adopte": 0,
+      "adopte_49_3": 0,
+      "adopte_cmp": 0,
+      "depose": 0,
+      "navette_en_cours": 0,
+      "promulgue": 0,
+      "rejete": 0,
+      "rejete_49_3": 0,
+      "retire": 0
+    }
+  },
+  "sources": [
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA1750",
+      "synchro_le": "2026-09-19T08:28:06+0000"
+    },
+    {
+      "type": "europarl",
+      "url": "https://www.europarl.europa.eu/meps/fr/1168",
+      "synchro_le": "2026-09-19T08:28:12+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA1772",
+      "synchro_le": "2026-09-19T08:28:13+0000"
+    },
+    {
+      "type": "europarl",
+      "url": "https://www.europarl.europa.eu/meps/fr/1978",
+      "synchro_le": "2026-09-19T08:28:18+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA312975",
+      "synchro_le": "2026-09-19T08:28:41+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA387842",
+      "synchro_le": "2026-09-19T08:28:14+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA632",
+      "synchro_le": "2026-09-19T08:35:25+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA312981",
+      "synchro_le": "2026-09-19T08:35:32+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA696",
+      "synchro_le": "2026-09-19T08:28:42+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA495",
+      "synchro_le": "2026-09-19T08:28:42+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA2960",
+      "synchro_le": "2026-09-19T08:26:06+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA1310",
+      "synchro_le": "2026-09-19T08:36:16+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA2236",
+      "synchro_le": "2026-09-19T08:28:43+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA588",
+      "synchro_le": "2026-09-19T08:36:27+0000"
+    },
+    {
+      "type": "europarl",
+      "url": "https://www.europarl.europa.eu/meps/fr/986",
+      "synchro_le": "2026-09-19T08:36:44+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA387833",
+      "synchro_le": "2026-09-19T08:36:48+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA387853",
+      "synchro_le": "2026-09-19T08:28:31+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA250",
+      "synchro_le": "2026-09-19T08:28:32+0000"
+    },
+    {
+      "type": "europarl",
+      "url": "https://www.europarl.europa.eu/meps/fr/1179",
+      "synchro_le": "2026-09-19T08:28:40+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA387829",
+      "synchro_le": "2026-09-19T08:36:47+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA205280",
+      "synchro_le": "2026-09-19T08:29:15+0000"
+    },
+    {
+      "type": "europarl",
+      "url": "https://www.europarl.europa.eu/meps/fr/2322",
+      "synchro_le": "2026-09-19T08:29:22+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA332",
+      "synchro_le": "2026-09-19T08:28:46+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA267605",
+      "synchro_le": "2026-09-19T08:36:51+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA267080",
+      "synchro_le": "2026-09-19T08:28:47+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA987",
+      "synchro_le": "2026-09-19T08:28:51+0000"
+    }
+  ],
+  "meta": {
+    "schema_version": "1",
+    "genere_le": "2026-09-19T09:27:55+0000",
+    "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr + CC BY 4.0 (Parlement européen, Open Data Portal - data.europarl.europa.eu)",
+    "warnings": [
+      "gouvernement_profile: tags_thematiques_agreges — 2736 intervention(s) écartée(s) : hors de la fenêtre de passage du membre dans ce gouvernement.",
+      "gouvernement_textes: dossier DLR5L14N34217 : fam_code inconnu 'TSORTF04' — statut non déterminé."
+    ]
+  }
+}

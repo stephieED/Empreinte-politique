@@ -1,0 +1,102 @@
+.cb-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cb-bar-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  padding-left: 2px;
+}
+
+/* SANS AVATAR ET PLUS SERRÉE. Les initiales redisaient le nom qu'elles
+   jouxtaient, et la pastille était taillée pour les accueillir : 6 px de marge à
+   gauche, 26 px de rond, 8 px de gouttière. Mesuré sur les 30 candidats,
+   5 293 px de rang deviennent 3 900 — cinq rangs deviennent trois, et aucun nom
+   n'est raccourci. */
+.cb-chip {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1.5px solid transparent;
+  box-shadow: 0 2px 8px rgba(20, 15, 40, 0.06);
+  cursor: pointer;
+  font: 600 13px 'Manrope', sans-serif;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.cb-chip:hover {
+  box-shadow: 0 4px 14px rgba(20, 15, 40, 0.1);
+}
+
+.cb-chip:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.cb-chip.active {
+  background: #ffffff;
+  border-color: var(--dark);
+}
+
+/* NI MANDAT À L'ASSEMBLÉE, NI FONCTION GOUVERNEMENTALE (#328).
+   La pastille se retire au second plan : sa fiche existe et reste atteignable,
+   mais elle ne porte ni vote, ni intervention, ni amendement. C'est un fait sur
+   CE QUE LA FICHE MONTRE, pas un rang entre des personnes — d'où le gris de
+   `--muted`, celui des métadonnées, et jamais une teinte de jugement (§2
+   règle 1). Le contraste reste lisible : #6f6b78 sur #ffffff vaut 5,5:1 (AA),
+   et l'état actif reprend l'encre pleine pour que la sélection ne soit jamais
+   moins visible que sur une autre pastille. */
+.cb-chip--sans-mandat {
+  color: #6f6b78;
+  box-shadow: none;
+  border-color: var(--border-strong);
+}
+
+
+.cb-chip--sans-mandat:hover {
+  box-shadow: 0 4px 14px rgba(20, 15, 40, 0.1);
+}
+
+.cb-chip--sans-mandat.active {
+  color: var(--ink);
+  border-color: var(--dark);
+}
+
+
+
+.cb-chip.active 
+
+.cb-skeleton {
+  width: 130px;
+  height: 34px;
+  background: linear-gradient(90deg, #ebe9e5 25%, #f5f3ef 37%, #ebe9e5 63%);
+  background-size: 400% 100%;
+  animation: cb-shine 1.4s ease infinite;
+  box-shadow: none;
+}
+
+@keyframes cb-shine {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.cb-empty {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+  padding: 8px 2px;
+}

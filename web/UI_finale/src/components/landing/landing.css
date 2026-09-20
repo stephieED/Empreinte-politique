@@ -1,0 +1,410 @@
+.landing-page {
+  width: 100%;
+  max-width: 1600px;
+}
+
+.landing-main {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 32px 40px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.landing-section {
+  border-radius: 18px;
+  background: var(--card);
+  box-shadow: 0 2px 12px rgba(20, 15, 40, 0.06);
+  padding: 24px 28px;
+}
+
+.landing-section h2 {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.landing-section p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.landing-section p:last-child {
+  margin-bottom: 0;
+}
+
+.landing-hero {
+  background: var(--dark);
+  box-shadow: 0 2px 16px rgba(20, 15, 40, 0.07);
+  padding: 28px;
+  clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 0 100%);
+}
+
+.landing-hero h1 {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.landing-hero p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.landing-hero h2 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.landing-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.landing-faq-item {
+  border: 1px solid #f0eeeb;
+  border-radius: 14px;
+  padding: 14px 18px;
+}
+
+.landing-faq-item summary {
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+
+.landing-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.landing-faq-item summary::before {
+  content: '+';
+  display: inline-block;
+  width: 16px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.landing-faq-item[open] summary::before {
+  content: '−';
+}
+
+.landing-faq-item summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.landing-faq-item p {
+  margin-top: 10px;
+  margin-left: 16px;
+}
+
+.wontfind-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.wontfind-list li {
+  border-radius: 14px;
+  background: var(--bg);
+  border: 1px solid #f0eeeb;
+  padding: 14px 16px;
+}
+
+/* <details> replié par défaut (retour utilisateur du 2026-08-15) : même
+   marqueur +/− que .landing-faq-item/.source-card-summary. */
+.wontfind-title {
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+
+.wontfind-title::-webkit-details-marker {
+  display: none;
+}
+
+.wontfind-title::before {
+  content: '+';
+  display: inline-block;
+  width: 16px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.wontfind-item[open] .wontfind-title::before {
+  content: '−';
+}
+
+.wontfind-title:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.wontfind-detail {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 8px;
+  margin-bottom: 0;
+  margin-left: 16px;
+}
+
+.how-it-works-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.how-it-works-step {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  text-align: left;
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  padding: 14px;
+  cursor: pointer;
+  color: var(--ink);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.how-it-works-step:hover,
+.how-it-works-step:focus-visible,
+.how-it-works-step.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  outline: none;
+}
+
+.how-it-works-step-number {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.how-it-works-step.active .how-it-works-step-number,
+.how-it-works-step:hover .how-it-works-step-number,
+.how-it-works-step:focus-visible .how-it-works-step-number {
+  color: var(--ink);
+}
+
+.how-it-works-step-icon {
+  display: flex;
+  color: var(--ink);
+}
+
+.how-it-works-step-label {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.how-it-works-step-stat {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.how-it-works-step.active .how-it-works-step-stat,
+.how-it-works-step:hover .how-it-works-step-stat,
+.how-it-works-step:focus-visible .how-it-works-step-stat {
+  color: var(--ink);
+}
+
+.how-it-works-detail {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.hero-pipeline {
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hero-pipeline-caption {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 14px;
+}
+
+.hero-pipeline-steps {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hero-pipeline-step {
+  flex: 1 1 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  padding: 14px 16px;
+  animation: hero-step-pulse 6s ease-in-out infinite;
+}
+
+.hero-pipeline-marker {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.32);
+}
+
+.hero-pipeline-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.hero-pipeline-sample {
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.65);
+  word-break: break-word;
+}
+
+.hero-pipeline-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--dark);
+  background: var(--accent);
+  padding: 3px 9px;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.hero-pipeline-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.hero-pipeline-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.28);
+  flex-shrink: 0;
+}
+
+.hero-pipeline-arrow {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.32);
+}
+
+@keyframes hero-step-pulse {
+  0%,
+  8%,
+  100% {
+    transform: scale(1);
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.04);
+  }
+  4% {
+    transform: scale(1.03);
+    border-color: var(--accent);
+    background: rgba(223, 255, 0, 0.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-pipeline-step {
+    animation: none;
+  }
+}
+
+/* Below this width, HowItWorks' internal 4-column step grid gets cramped:
+   it takes the same 2-column relief mobile already gets. */
+@media (max-width: 1180px) {
+  .how-it-works-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 680px) {
+  .landing-main {
+    padding: 24px 20px 48px;
+  }
+
+  .landing-section {
+    padding: 20px;
+  }
+
+  .hero-pipeline-steps {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-pipeline-step {
+    flex-basis: auto;
+  }
+
+  .hero-pipeline-arrow {
+    align-self: center;
+    transform: rotate(90deg);
+  }
+}
+
+/* ── Les candidats déclarés (#951, forme C) ── */
+.landing-candidats-liste {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.landing-candidats-liste .cb-chip {
+  text-decoration: none;
+}
+
+.landing-candidats-liste .cb-chip:hover {
+  text-decoration: none;
+}
+
+.landing-section .landing-candidats-aussi {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.landing-candidats-aussi a {
+  color: var(--ink);
+  font-weight: 600;
+}

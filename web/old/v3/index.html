@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Empreinte politique — En clair</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-tokens.css">
+</head>
+<body class="deconstructed">
+  <main class="page">
+    <section class="masthead">
+      <div>
+        <p class="section-kicker">Présidentielle 2027 / données publiques</p>
+        <h1><button type="button" id="home-link" class="brand-home" aria-label="Retour à l'accueil">Empreinte<br>politique</button></h1>
+      </div>
+      <div class="edition-mark">EN CLAIR</div>
+    </section>
+    <nav class="candidate-dock" aria-label="Choisir une vue et un profil">
+      <div class="mode-switch" role="group" aria-label="Type de profil">
+        <button type="button" class="active" data-profile-mode="candidates" aria-pressed="true">Candidats</button>
+        <button type="button" data-profile-mode="groups" aria-pressed="false">Groupes</button>
+      </div>
+      <div class="rail-shell">
+        <div id="candidat-carousel" class="avatar-carousel" role="tablist" aria-label="Choisir un candidat"></div>
+        <button type="button" class="rail-scroll-btn" id="rail-scroll-btn" aria-label="Faire défiler le rail" hidden>→</button>
+      </div>
+    </nav>
+
+    <div id="candidat-root"></div>
+    <footer class="site-footer">
+      <a href="mentions-legales.html" target="_blank" rel="noopener">Mentions légales</a>
+    </footer>
+  </main>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

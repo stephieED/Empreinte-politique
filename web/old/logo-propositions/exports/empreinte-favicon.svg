@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 132 132" role="img" aria-label="Empreinte favicon">
+<style>
+:root { --bg:#F7F6F4; --main:#14151A; --accent:#DFFF00; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#14151A; --main:#F7F6F4; --accent:#DFFF00; }
+}
+</style>
+<rect width="132" height="132" fill="var(--bg)"/>
+<g transform="translate(16,16) scale(1.0)" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 70c0-24 12-40 28-40s28 16 28 40" stroke="var(--main)" stroke-width="7"/><path d="M32 70c0-14 8-24 18-24s18 10 18 24" stroke="var(--accent)" stroke-width="7"/><path d="M17 74h66" stroke="var(--main)" stroke-width="7"/></g>
+</svg>

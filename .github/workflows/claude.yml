@@ -1,0 +1,209 @@
+name: Claude Code
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Deux workflows Claude, deux modèles de menace (#415)
+#
+# Ce fichier (`claude.yml`) est le mode **interactif** : le prompt est le
+# commentaire d'un humain, arbitraire par construction, et l'action tourne avec
+# `secrets.WORKFLOW_PAT`, un token en **écriture** réelle. Surface d'attaque
+# maximale → défense en profondeur maximale : sandbox bubblewrap + allowlist
+# réseau (`settings:` plus bas), `--allowed-tools` explicite,
+# `--append-system-prompt`.
+#
+# `claude-code-review.yml` est le mode **automation** : prompt fixe
+# (`/code-review:code-review`), `GITHUB_TOKEN` par défaut en lecture seule,
+# aucun outil d'écriture. L'asymétrie de `github_token`, de `permissions:` et de
+# `--allowed-tools` entre les deux fichiers est donc volontaire et
+# proportionnée. Ce qui ne l'était pas — l'absence de sandbox côté review, alors
+# que le token OAuth Claude y est exposé au contenu d'une PR potentiellement
+# hostile (diff, titre, description) — a été tranché en #415 : les deux fichiers
+# portent désormais la **même** isolation réseau. Rationale complète et réserves
+# restantes : `docs/decisions/workflows-claude-securite.md`.
+#
+# Garde d'auteur (`author_association`) : ce dépôt est **public**. La garde des
+# `if:` ci-dessous est un **pré-filtre**, pas la sécurité elle-même —
+# `anthropics/claude-code-action` vérifie déjà que l'acteur déclencheur a le
+# droit d'écriture sur le dépôt et s'arrête avant d'appeler Claude sinon (cf.
+# `docs/security.md` de l'action ; `allowed_non_write_users` reste vide, sa
+# valeur par défaut). La garde évite qu'un commentaire d'un inconnu démarre un
+# runner, installe bubblewrap et consomme des minutes Actions avant ce refus.
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened, assigned]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  claude:
+    # La garde d'auteur est répétée sur chaque branche plutôt que factorisée en
+    # fin d'expression : `author_association` ne vit pas au même endroit selon
+    # l'event (`.comment` / `.review` / `.issue`), et une forme factorisée
+    # (`.comment.author_association || .review.… || .issue.…`) reposerait sur le
+    # déréférencement d'objets absents. Rôle exact de cette garde : en-tête du
+    # fichier. `COLLABORATOR` couvre aussi un invité en lecture seule — assumé,
+    # le contrôle qui fait foi (droit d'écriture réel) est côté action.
+    if: |
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude') && contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude') && contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude') && contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.review.author_association)) ||
+      (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')) && contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association))
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    # Scopé par issue/PR (pas un groupe global) : deux @claude sur des issues
+    # différentes restent parallèles, seuls deux triggers sur la même
+    # issue/PR se sérialisent (évite deux tentatives concurrentes sur la même
+    # branche claude/issue-*). github.event.issue.number couvre issue_comment
+    # (issues et PR, l'event issue_comment porte .issue.number dans les deux
+    # cas) et issues ; github.event.pull_request.number couvre
+    # pull_request_review_comment/pull_request_review, où .issue est absent.
+    # cancel-in-progress: false — un nouveau commentaire ne doit pas tuer un
+    # travail déjà en cours (même choix que generate-data.yml). Divergence
+    # assumée avec claude-code-review.yml, qui annule : ici un run peut avoir
+    # commité sur une branche, là il n'écrit rien.
+    concurrency:
+      group: claude-${{ github.event.issue.number || github.event.pull_request.number }}
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      id-token: write
+      actions: read # Required for Claude to read CI results on PRs — see
+      # Bash(gh run *) in claude_args below: this permission alone doesn't let
+      # Claude actually call `gh run`/`gh api .../actions/*` without also being
+      # allow-listed at the tool level.
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      # Dépendances requises par le sandbox Bash de Claude Code sur Linux
+      # (isolation réseau/fichiers, cf. settings.sandbox ci-dessous).
+      - name: Installer les dépendances du sandbox (bubblewrap, socat)
+        run: sudo apt-get update && sudo apt-get install -y bubblewrap socat
+
+      # Ubuntu 24.04+ (image ubuntu-latest actuelle) restreint par défaut la
+      # création d'espaces de noms utilisateur non privilégiés via AppArmor,
+      # ce qui empêche bubblewrap de démarrer. Contournement documenté :
+      # https://code.claude.com/docs/en/sandboxing#set-up-linux-and-wsl2
+      - name: Autoriser bubblewrap à créer des espaces de noms utilisateur (AppArmor)
+        run: |
+          if [ "$(sysctl -n kernel.apparmor_restrict_unprivileged_userns 2>/dev/null || echo 0)" = "1" ]; then
+            sudo tee /etc/apparmor.d/bwrap > /dev/null <<'EOF'
+          abi <abi/4.0>,
+          include <tunables/global>
+
+          profile bwrap /usr/bin/bwrap flags=(unconfined) {
+            userns,
+            include if exists <local/bwrap>
+          }
+          EOF
+            sudo systemctl reload apparmor
+          fi
+
+      - name: Run Claude Code
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.WORKFLOW_PAT }}
+
+          # This is an optional setting that allows Claude to read CI results on PRs
+          additional_permissions: |
+            actions: read
+
+          # Optional: Give a custom prompt to Claude. If this is not specified, Claude will perform the instructions specified in the comment that tagged it.
+          # NOTE: setting `prompt` switches the action from interactive mode (waits for
+          # and replies to @claude mentions) to automation mode (runs this fixed prompt
+          # immediately, ignoring the triggering comment's content, no reply posted) —
+          # see https://github.com/anthropics/claude-code-action/blob/main/docs/faq.md.
+          # Leave unset to keep responding to @claude comments as usual; put standing
+          # guardrails in claude_args' --append-system-prompt below instead.
+          # prompt: 'Update the pull request description to include a summary of changes.'
+
+          # Sandbox Bash : isolation réseau/fichiers en défense en profondeur contre
+          # une injection de prompt via un commentaire d'issue/PR (ex. tentative
+          # d'exfiltration de secrets vers un domaine non listé). allowUnsandboxedCommands
+          # à false désactive l'échappatoire "dangerouslyDisableSandbox" — sans ça, une
+          # commande déjà couverte par --allowed-tools (ex. Bash(python3:*)) pourrait
+          # retenter hors sandbox et contourner la restriction réseau. failIfUnavailable
+          # évite un repli silencieux non-sandboxé si bubblewrap ne démarre pas.
+          # Liste de domaines = sources réseau réellement utilisées par ce dépôt
+          # (src/*.py) + PyPI (pip install) + npm (web/UI_finale, npm install/npm run
+          # lint) + GitHub (gh CLI). Étendre cette liste si Claude a besoin d'atteindre
+          # un nouveau domaine — et la répercuter dans claude-code-review.yml, qui porte
+          # volontairement la même liste (#415).
+          settings: |
+            {
+              "sandbox": {
+                "enabled": true,
+                "failIfUnavailable": true,
+                "allowUnsandboxedCommands": false,
+                "network": {
+                  "allowedDomains": [
+                    "github.com",
+                    "api.github.com",
+                    "*.githubusercontent.com",
+                    "objects.githubusercontent.com",
+                    "pypi.org",
+                    "files.pythonhosted.org",
+                    "registry.npmjs.org",
+                    "www.nosdeputes.fr",
+                    "2017-2022.nosdeputes.fr",
+                    "2012-2017.nosdeputes.fr",
+                    "2007-2012.nosdeputes.fr",
+                    "www.nossenateurs.fr",
+                    "archive.nossenateurs.fr",
+                    "data.assemblee-nationale.fr",
+                    "questions.assemblee-nationale.fr",
+                    "schemas.assemblee-nationale.fr",
+                    "www.assemblee-nationale.fr",
+                    "data.europarl.europa.eu",
+                    "www.europarl.europa.eu",
+                    "parltrack.org",
+                    "fr.wikipedia.org",
+                    "query.wikidata.org"
+                  ]
+                }
+              }
+            }
+
+          # Optional: Add claude_args to customize behavior and configuration
+          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
+          # or https://code.claude.com/docs/en/cli-reference for available options
+          # --append-system-prompt adds standing guardrails on top of the default
+          # system prompt without disabling interactive @claude-mention mode (unlike
+          # the `prompt` input above, which replaces it — see note above).
+          # L'interdiction de modifier claude.yml / claude-code-review.yml vise les deux
+          # fichiers qui définissent les privilèges de Claude lui-même : les changer
+          # depuis un run Claude serait une auto-élévation. generate-data.yml,
+          # retry-generate-data.yml, deploy-pages.yml et debug-network-shutdown-signal.yml
+          # ne sont **pas** couverts, volontairement : workflows de données/déploiement,
+          # sans secret d'élévation, dont toute modification passe de toute façon par une
+          # PR relue (#415).
+          # Bash(gh run *) : lecture seule (view/list/download — ex. inspecter les
+          # logs/artifacts d'un run CI). Choisi plutôt que Bash(gh workflow *) ou
+          # Bash(gh api *) : ne permet pas à Claude de déclencher un nouveau run
+          # (workflow_dispatch) ni d'appeler l'API Actions en écriture — un run réel
+          # de generate-data.yml reste une action à déclencher manuellement.
+          # --allowed-tools : liste dédoublonnée en #415. Les variantes
+          # `Bash(python3 -m pytest…)` / `Bash(python3 -m unittest)` qui figuraient ici
+          # sont toutes couvertes par `Bash(python3:*)` ; une entrée était de plus
+          # précédée d'une espace parasite (`, Bash(python3:*)`), qui pouvait faire
+          # échouer son matching. Ne pas réintroduire d'espace après une virgule.
+          # --model : pin volontaire sur la génération Opus. Sans lui, le modèle
+          # dépend du défaut du CLI/de l'abonnement au moment du run, qui peut basculer
+          # sur un modèle plus petit sans que rien ne le signale ici. Contrepartie : le
+          # pin se périme (il est resté sur `claude-opus-4-8` jusqu'à #415) — à
+          # reconfirmer à chaque revue de ce fichier.
+          claude_args: |
+            --append-system-prompt "Always read AGENTS.md and follow the instructions there. Update docs/technical_decisions.md if required. Never modify .github/workflows/claude.yml or .github/workflows/claude-code-review.yml — if these need changes, ask a human reviewer instead."
+            --model "claude-opus-5"
+            --allowed-tools Bash(gh pr *),Bash(gh run *),Bash(python3:*),Bash(pytest:*),Bash(pip install *),Bash(npm:*),WebFetch(domain:www.nosdeputes.fr),WebFetch(domain:2017-2022.nosdeputes.fr),WebFetch(domain:2012-2017.nosdeputes.fr),WebFetch(domain:2007-2012.nosdeputes.fr),WebFetch(domain:www.nossenateurs.fr),WebFetch(domain:archive.nossenateurs.fr),WebFetch(domain:data.assemblee-nationale.fr),WebFetch(domain:www.assemblee-nationale.fr),WebFetch(domain:data.europarl.europa.eu),WebFetch(domain:www.europarl.europa.eu),WebFetch(domain:parltrack.org),WebFetch(domain:fr.wikipedia.org),WebFetch(domain:query.wikidata.org)

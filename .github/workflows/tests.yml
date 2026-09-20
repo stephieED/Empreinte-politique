@@ -1,0 +1,170 @@
+name: Tests (pytest)
+
+# Exécute la suite complète et échoue si un seul test échoue.
+#
+# POURQUOI CE JOB EXISTE (#473) : jusqu'ici aucun workflow n'exécutait les
+# tests — `grep -rln pytest .github/workflows/` ne renvoyait que `claude.yml`,
+# et uniquement dans `--allowed-tools`, c'est-à-dire une autorisation donnée à
+# l'agent de revue, pas un job. La suite n'était verte que si quelqu'un la
+# lançait en local. C'est la cause racine de #457, où deux tests d'acceptation
+# cassaient depuis une mise à jour du corpus, découverts par hasard.
+#
+# Chaque arbitrage ci-dessous est justifié dans
+# docs/decisions/ci-tests-pytest.md — les commentaires ici ne font
+# que rappeler le verdict, pas le raisonnement.
+
+on:
+  # Les deux, et pas seulement pull_request : deux PR vertes séparément peuvent
+  # casser main une fois fusionnées l'une après l'autre (conflit sémantique, pas
+  # textuel — git ne le voit pas). Le dépôt vit précisément dans ce régime, avec
+  # plusieurs branches ouvertes en parallèle sur le même code.
+  pull_request:
+  push:
+    branches: [main]
+
+  # PAS de `paths-ignore` — ni pour exclure les commits de données du bot
+  # generate-data, ni pour les changements purement documentaires. Deux raisons,
+  # détaillées dans technical_decisions.md : un check requis « skippé » reste
+  # `pending` pour toujours côté GitHub et bloque la PR, et un commit de données
+  # est justement le canari qui révélerait qu'un test s'est recouplé au corpus.
+
+# contents: read suffit : ce job ne fait que lire le dépôt et exécuter pytest.
+permissions:
+  contents: read
+
+# Sur une PR, seul le dernier push mérite un run — les précédents sont périmés.
+# Sur main au contraire, chaque commit garde son verdict : c'est l'historique
+# qui sert à dater une régression.
+concurrency:
+  group: tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  pytest:
+    name: Suite complète
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      # CHECKOUT PARTIEL — le dépôt pèse 1,8 Gio d'arbre de travail, dont
+      # 1,5 Gio de raw_data/profiles/ et 240 Mio de pivot_data/. La suite n'a
+      # besoin d'aucun des deux : l'audit de #473 a instrumenté `io.open` /
+      # `os.open` sur toute la suite et relevé la liste exhaustive des chemins
+      # du dépôt touchés hors src/ et tests/ — ceux listés ci-dessous, et rien
+      # d'autre.
+      #
+      # Ce n'est pas qu'une économie de runner : ne pas poser le corpus sur le
+      # disque rend le critère « aucun test ne lit pivot_data/ » **structurel**
+      # au lieu d'audité une fois. Un test qui s'y recouplerait échouerait ici
+      # sur un FileNotFoundError nommant le chemin fautif, au lieu de passer en
+      # silence jusqu'à la prochaine mise à jour du corpus (le scénario #457).
+      #
+      # `filter: blob:none` complète le sparse-checkout : sans lui, git
+      # téléchargerait les blobs de tout l'arbre avant de n'en matérialiser
+      # qu'une fraction.
+      - uses: actions/checkout@v5
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          # Liste blanche : tout ce qui n'y figure pas est absent du disque.
+          # Un test portant sur un fichier hors liste échoue en CI alors qu'il
+          # passe en local — c'est arrivé dès le premier run, sur les 10 tests
+          # de scripts/borner_historique_donnees.sh (#434), mergé entre-temps.
+          # Ajouter ici tout nouveau répertoire de premier niveau dont les
+          # tests lisent le contenu ; ne jamais y ajouter pivot_data/ ni
+          # raw_data/profiles/, que le garde-fou ci-dessous refuse.
+          #
+          # `.gitignore` : lu par `tests/test_ci_roster_unique_par_run.py`, qui
+          # vérifie que les sorties régénérées à chaque run ne sont pas
+          # committées. Le piège annoncé deux lignes plus haut s'est reproduit
+          # tel quel avec #520 — suite verte en local, `FileNotFoundError` en CI
+          # sur le push vers `main` (run 32773016491). Un fichier de premier
+          # niveau compte autant qu'un répertoire.
+          #
+          # `LICENSE` (#1032) : `test_licence_du_code_1032.py` lit le texte de
+          # l'AGPL-3.0 — sa section 13, celle qui distingue l'AGPL de la GPL, et
+          # sa longueur, parce qu'une licence tronquée n'en est pas une. Sans
+          # cette ligne, le test passe en local et échoue en CI : le piège
+          # annoncé plus haut, pour la troisième fois.
+          #
+          # `raw_data/candidats.json` (#791) : quatre tests de
+          # `test_fetch_candidats_declares_753.py` et un de
+          # `test_perimetre_candidats_760.py` portent sur la validité de ce
+          # fichier committé (pas de doublon de nom ni de slug, tout statut
+          # publié connu, aucune famille inventée). Hors liste, ils se
+          # `pytest.skip`aient : leur garantie ne tenait qu'en local, sur ce
+          # qu'un run avait laissé. C'est le canari que l'absence de
+          # `paths-ignore` ci-dessus veut précisément voir chanter — un commit
+          # de données du bot passe désormais sous ces assertions. 20 Kio.
+          # `raw_data/mandats_anterieurs.json` (#860) : la table relue des mandats
+          # antérieurs à la couverture AN. `tests/test_mandats_anterieurs_860.py` en
+          # vérifie la validité — une source primaire par ligne, rien après la borne
+          # du 19/06/2002 —, et la déclare par `lit_reference_committee`. 5 Kio.
+          # `raw_data/correspondance_elus_rne.json` (#922) : la table relue qui
+          # apparie un candidat déclaré à un élu du Répertoire national, quand le
+          # corpus n'a pas sa date de naissance.
+          # `tests/test_correspondance_elus_rne_922.py` la lit en entier — verdicts,
+          # preuves, contrat de relevé. Hors liste, il tombe en `FileNotFoundError`
+          # et non en `skip` : c'est ce qui a fait échouer la CI de sa propre PR,
+          # alors que la suite passait dans le worktree, qui porte tout le dépôt.
+          # 8 Kio.
+          # `AGENTS.md`, `README.md`, `ROADMAP.md`, `docs/` : lus par
+          # `tests/test_index_decisions.py`, qui vérifie que toute décision citée
+          # dans le dépôt existe bien sous `docs/decisions/` et que l'index les
+          # connaît toutes. Sans eux le test passerait en CI **sans rien lire** —
+          # d'où son premier cas, qui échoue si `docs/decisions/` est vide.
+          sparse-checkout: |
+            .github
+            .gitignore
+            AGENTS.md
+            CLAUDE.md
+            LICENSE
+            README.md
+            ROADMAP.md
+            docs
+            raw_data/candidats.json
+            raw_data/correspondance_elus_rne.json
+            raw_data/gouvernements_reels.json
+            raw_data/groupes_reels.json
+            raw_data/mandats_anterieurs.json
+            requirements.txt
+            requirements-dev.txt
+            scripts
+            src
+            tests
+            web
+
+      # Garde-fou du périmètre ci-dessus : si le corpus réapparaît dans le
+      # checkout, le job doit le dire plutôt que de laisser les tests s'y
+      # rebrancher sans bruit.
+      - name: Le corpus vivant reste hors du checkout (#473)
+        run: |
+          set -euo pipefail
+          for chemin in pivot_data raw_data/profiles; do
+            if [ -e "$chemin" ]; then
+              echo "::error::$chemin est présent dans le checkout : le sparse-checkout de ce workflow a été élargi, ou git l'a matérialisé malgré le filtre. Aucun test ne doit lire le corpus vivant (#473)."
+              exit 1
+            fi
+          done
+          echo "pivot_data/ et raw_data/profiles/ absents, comme attendu."
+
+      # Réutilise le préambule des jobs d'extraction (setup-python + pip
+      # install) : la version de Python n'a ainsi qu'une seule déclaration dans
+      # tout le dépôt (`inputs.python-version`, défaut 3.12), et les tests
+      # tournent par construction sur l'interpréteur qui exécute la production.
+      # Les deux steps de diagnostic qu'elle ajoute (horodatage, `free -h`)
+      # coûtent une seconde et ne gênent pas.
+      - uses: ./.github/actions/bootstrap-extraction
+        with:
+          requirements: requirements-dev.txt
+
+      # `-q` : la suite passe en ~11 s, un log verbeux de 1 600+ lignes n'aide
+      # personne. `--durations=15` en revanche est consigné à chaque run : c'est
+      # la mesure qui manquait à #473, et la seule façon de voir un test devenir
+      # lent avant qu'il ne domine le job.
+      - name: pytest
+        run: |
+          set -euo pipefail
+          debut=$(date +%s)
+          python -m pytest -q --durations=15
+          echo "Durée pytest : $(( $(date +%s) - debut )) s" >> "$GITHUB_STEP_SUMMARY"

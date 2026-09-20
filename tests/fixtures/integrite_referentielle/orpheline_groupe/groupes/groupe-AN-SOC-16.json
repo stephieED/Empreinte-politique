@@ -1,0 +1,79 @@
+{
+  "schema_version": "1",
+  "type_document": "profil_groupe",
+  "groupe_id": "AN:SOC",
+  "groupe_sigle": "SOC",
+  "chambre": "AN",
+  "legislature": "16",
+  "cohesion_votes": [
+    {
+      "scrutin_id": "an:16:4087",
+      "membres_eligibles": 1,
+      "position_majoritaire": "contre",
+      "pour": 0,
+      "contre": 1,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 0,
+      "excuses": 0,
+      "taux_participation": 1.0,
+      "taux_coherence": 1.0,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": true
+    },
+    {
+      "scrutin_id": "an:16:99998",
+      "membres_eligibles": 1,
+      "position_majoritaire": "pour",
+      "pour": 1,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 0,
+      "excuses": 0,
+      "taux_participation": 1.0,
+      "taux_coherence": 1.0,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": true
+    },
+    {
+      "scrutin_id": "an:16:4093",
+      "membres_eligibles": 1,
+      "position_majoritaire": "pour",
+      "pour": 1,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 0,
+      "excuses": 0,
+      "taux_participation": 1.0,
+      "taux_coherence": 1.0,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": true
+    },
+    {
+      "scrutin_id": "an:16:4097",
+      "membres_eligibles": 1,
+      "position_majoritaire": "pour",
+      "pour": 1,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 0,
+      "excuses": 0,
+      "taux_participation": 1.0,
+      "taux_coherence": 1.0,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": true
+    }
+  ],
+  "meta": {
+    "schema_version": "1",
+    "fixture": {
+      "source": "pivot_data/groupes/groupe-AN-SOC-16.json",
+      "ref": "01ffa7fefbedf9b239bbada38a38d7ad014d3e81",
+      "extrait_le": "2026-08-20",
+      "reduction": "Champs conservés : les 4 premières entrées réelles de cohesion_votes[], seul champ d'un groupe qui porte une clé d'index. C'est la couche où une rupture produit un DÉNOMINATEUR FAUX plutôt qu'une fiche incomplète (AGENTS.md §2.7, mécanisme de la perte SOC-16). VARIANTE : le 2e scrutin_id de cohesion_votes est remplacé par `an:16:99998`. Le ratio publié garde son dénominateur mais compte un scrutin dont personne ne peut dire lequel c'est (AGENTS.md §2.7)."
+    }
+  }
+}

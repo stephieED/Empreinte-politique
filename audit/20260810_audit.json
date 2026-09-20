@@ -1,0 +1,704 @@
+{
+  "meta": {
+    "genere_le": "2026-08-10T16:08:19.291182+00:00",
+    "staleness_days": 30
+  },
+  "vue_ensemble": {
+    "total_profils_audites": 8,
+    "total_groupes_audites": 7,
+    "total_erreurs_lecture": 0,
+    "erreurs_lecture": {
+      "profils": [],
+      "groupes": []
+    },
+    "warnings": {
+      "total_warnings": 15,
+      "par_type": {
+        "ParlTrack": {
+          "frequence": 3,
+          "profils_ids": [
+            "europarl:131580",
+            "nosdeputes:marine-le-pen",
+            "nossenateurs:jean-luc-melenchon"
+          ],
+          "groupe_ids": []
+        },
+        "aucun mandat français connu (candidat non référencé sur NosDéputés/NosSénateurs, ou identité introuvable)": {
+          "frequence": 2,
+          "profils_ids": [
+            "nosdeputes:marine-le-pen",
+            "nossenateurs:jean-luc-melenchon"
+          ],
+          "groupe_ids": []
+        },
+        "fraicheur_donnees": {
+          "frequence": 7,
+          "profils_ids": [],
+          "groupe_ids": [
+            "AN:LFI",
+            "AN:LR",
+            "AN:REN",
+            "AN:RN",
+            "AN:SOC",
+            "Senat:LR",
+            "Senat:SER"
+          ]
+        },
+        "votes introuvables": {
+          "frequence": 3,
+          "profils_ids": [
+            "nosdeputes:edouard-philippe",
+            "nosdeputes:laurent-wauquiez",
+            "nossenateurs:bruno-retailleau"
+          ],
+          "groupe_ids": []
+        }
+      }
+    }
+  },
+  "audit_profils": {
+    "meta": {
+      "genere_le": "2026-08-10T16:08:19.291182+00:00",
+      "total_profils": 8,
+      "total_erreurs_lecture": 0,
+      "staleness_days": 30
+    },
+    "volumetrie": {
+      "repartition_chambre": {
+        "total_profils": 8,
+        "par_chambre": {
+          "AN": 5,
+          "PE": 1,
+          "Senat": 2,
+          "mairie": 0,
+          "null": 0
+        }
+      },
+      "distribution_listes": {
+        "votes": {
+          "min": 0,
+          "max": 1016,
+          "mediane": 134.5,
+          "moyenne": 332.12,
+          "pct_profils_a_zero": 50.0
+        },
+        "textes_portes": {
+          "min": 0,
+          "max": 12,
+          "mediane": 0.0,
+          "moyenne": 2.75,
+          "pct_profils_a_zero": 62.5
+        },
+        "amendements": {
+          "min": 0,
+          "max": 0,
+          "mediane": 0.0,
+          "moyenne": 0,
+          "pct_profils_a_zero": 100.0
+        },
+        "interventions": {
+          "min": 0,
+          "max": 395,
+          "mediane": 18.5,
+          "moyenne": 98.62,
+          "pct_profils_a_zero": 25.0
+        }
+      },
+      "nombre_sources": {
+        "moyenne_sources": 1.75,
+        "pct_profils_une_source": 50.0
+      }
+    },
+    "completude": {
+      "taux_remplissage": {
+        "parti": {
+          "renseignes": 8,
+          "total": 8,
+          "taux_pct": 100.0
+        },
+        "groupe": {
+          "renseignes": 8,
+          "total": 8,
+          "taux_pct": 100.0
+        },
+        "tags_thematiques": {
+          "renseignes": 3,
+          "total": 8,
+          "taux_pct": 37.5
+        },
+        "mandats": {
+          "renseignes": 8,
+          "total": 8,
+          "taux_pct": 100.0
+        }
+      },
+      "profils_sans_activite": {
+        "total_profils": 8,
+        "nb_profils_sans_activite": 2,
+        "profils_sans_activite": [
+          "nossenateurs:bruno-retailleau",
+          "europarl:131580"
+        ]
+      },
+      "presence_meta": {
+        "total_profils": 8,
+        "meta_absente": [],
+        "licence_donnees_manquante": [],
+        "genere_le_manquant": []
+      }
+    },
+    "coherence": {
+      "doublons_id": {
+        "doublons": []
+      },
+      "coherence_schema_version": {
+        "profils_incoherents": []
+      },
+      "validite_dates": {
+        "dates_invalides": []
+      },
+      "coherence_chambre_sources": {
+        "profils_incoherents": []
+      }
+    },
+    "fraicheur": {
+      "fraicheur_sources": {
+        "total_sources_datees": 14,
+        "par_type_source": {
+          "assemblee_nationale": {
+            "nombre_sources": 4,
+            "min_jours": 4,
+            "max_jours": 4,
+            "mediane_jours": 4.0,
+            "moyenne_jours": 4
+          },
+          "europarl": {
+            "nombre_sources": 3,
+            "min_jours": 3,
+            "max_jours": 3,
+            "mediane_jours": 3,
+            "moyenne_jours": 3
+          },
+          "nosdeputes": {
+            "nombre_sources": 5,
+            "min_jours": 4,
+            "max_jours": 4,
+            "mediane_jours": 4,
+            "moyenne_jours": 4
+          },
+          "nossenateurs": {
+            "nombre_sources": 2,
+            "min_jours": 4,
+            "max_jours": 4,
+            "mediane_jours": 4.0,
+            "moyenne_jours": 4
+          }
+        }
+      },
+      "profils_perimes": []
+    },
+    "warnings": {
+      "total_warnings": 8,
+      "par_type": {
+        "ParlTrack": {
+          "frequence": 3,
+          "ids": [
+            "europarl:131580",
+            "nosdeputes:marine-le-pen",
+            "nossenateurs:jean-luc-melenchon"
+          ]
+        },
+        "aucun mandat français connu (candidat non référencé sur NosDéputés/NosSénateurs, ou identité introuvable)": {
+          "frequence": 2,
+          "ids": [
+            "nosdeputes:marine-le-pen",
+            "nossenateurs:jean-luc-melenchon"
+          ]
+        },
+        "votes introuvables": {
+          "frequence": 3,
+          "ids": [
+            "nosdeputes:edouard-philippe",
+            "nosdeputes:laurent-wauquiez",
+            "nossenateurs:bruno-retailleau"
+          ]
+        }
+      }
+    },
+    "tableau_croise_candidats": {
+      "lignes": [
+        {
+          "id": "nossenateurs:bruno-retailleau",
+          "nom": "Bruno Retailleau",
+          "chambre": "Senat",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:edouard-philippe",
+          "nom": "Edouard Philippe",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 50
+        },
+        {
+          "id": "nosdeputes:gabriel-attal",
+          "nom": "Gabriel Attal",
+          "chambre": "AN",
+          "votes": 269,
+          "textes_portes": 12,
+          "amendements": 0,
+          "interventions": 5
+        },
+        {
+          "id": "nossenateurs:jean-luc-melenchon",
+          "nom": "Jean-Luc Mélenchon",
+          "chambre": "Senat",
+          "votes": 1016,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 15
+        },
+        {
+          "id": "europarl:131580",
+          "nom": "Jordan BARDELLA",
+          "chambre": "PE",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:jerome-guedj",
+          "nom": "Jérôme Guedj",
+          "chambre": "AN",
+          "votes": 814,
+          "textes_portes": 1,
+          "amendements": 0,
+          "interventions": 395
+        },
+        {
+          "id": "nosdeputes:laurent-wauquiez",
+          "nom": "Laurent Wauquiez",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 9,
+          "amendements": 0,
+          "interventions": 22
+        },
+        {
+          "id": "nosdeputes:marine-le-pen",
+          "nom": "Marine Le Pen",
+          "chambre": "AN",
+          "votes": 558,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 302
+        }
+      ]
+    },
+    "erreurs_lecture": []
+  },
+  "audit_groupes": {
+    "meta": {
+      "genere_le": "2026-08-10T16:08:19.291182+00:00",
+      "total_groupes": 7,
+      "total_erreurs_lecture": 0,
+      "staleness_days": 30
+    },
+    "volumetrie": {
+      "effectifs": {
+        "actuel": {
+          "nombre_groupes_renseignes": 7,
+          "min": 0,
+          "max": 1,
+          "mediane": 0,
+          "moyenne": 0.14
+        },
+        "min_historique": {
+          "nombre_groupes_renseignes": 0,
+          "min": null,
+          "max": null,
+          "mediane": null,
+          "moyenne": null
+        },
+        "max_historique": {
+          "nombre_groupes_renseignes": 0,
+          "min": null,
+          "max": null,
+          "mediane": null,
+          "moyenne": null
+        }
+      },
+      "nombre_cohesion_votes": {
+        "min": 0,
+        "max": 814,
+        "mediane": 0,
+        "moyenne": 234.29,
+        "pct_groupes_a_zero": 57.14
+      },
+      "distribution_amendements": {
+        "global": {
+          "nb_amendements": {
+            "min": 0,
+            "max": 0,
+            "mediane": 0,
+            "moyenne": 0
+          },
+          "nb_adoptes": {
+            "min": 0,
+            "max": 0,
+            "mediane": 0,
+            "moyenne": 0
+          },
+          "nb_rejetes": {
+            "min": 0,
+            "max": 0,
+            "mediane": 0,
+            "moyenne": 0
+          },
+          "nb_irrecevables": {
+            "min": 0,
+            "max": 0,
+            "mediane": 0,
+            "moyenne": 0
+          },
+          "nb_retires_ou_tombes": {
+            "min": 0,
+            "max": 0,
+            "mediane": 0,
+            "moyenne": 0
+          }
+        },
+        "par_type_deposant": {
+          "commission_rapporteur": {
+            "nb_amendements": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_adoptes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_rejetes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_irrecevables": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_retires_ou_tombes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            }
+          },
+          "depute": {
+            "nb_amendements": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_adoptes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_rejetes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_irrecevables": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_retires_ou_tombes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            }
+          },
+          "gouvernement": {
+            "nb_amendements": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_adoptes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_rejetes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_irrecevables": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_retires_ou_tombes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            }
+          },
+          "inconnu": {
+            "nb_amendements": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_adoptes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_rejetes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_irrecevables": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_retires_ou_tombes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            }
+          }
+        }
+      }
+    },
+    "completude": {
+      "presence_tags_thematiques": {
+        "renseignes": 2,
+        "total": 7,
+        "taux_pct": 28.57
+      },
+      "groupes_membres_sans_cohesion": {
+        "total_groupes": 7,
+        "nb_groupes_membres_sans_cohesion": 1,
+        "groupes_membres_sans_cohesion": [
+          "Senat:LR"
+        ]
+      }
+    },
+    "coherence": {
+      "validation_schema": {
+        "total_groupes": 7,
+        "nb_groupes_invalides": 0,
+        "groupes_invalides": []
+      },
+      "coherence_schema_version": {
+        "groupes_incoherents": []
+      },
+      "ecart_couverture_roster": {
+        "groupes": [
+          {
+            "groupe_id": "AN:LFI",
+            "roster_total": 76,
+            "profils_disponibles": 0,
+            "ecart": 76
+          },
+          {
+            "groupe_id": "AN:LR",
+            "roster_total": 62,
+            "profils_disponibles": 0,
+            "ecart": 62
+          },
+          {
+            "groupe_id": "AN:REN",
+            "roster_total": 193,
+            "profils_disponibles": 1,
+            "ecart": 192
+          },
+          {
+            "groupe_id": "AN:RN",
+            "roster_total": 90,
+            "profils_disponibles": 1,
+            "ecart": 89
+          },
+          {
+            "groupe_id": "AN:SOC",
+            "roster_total": 31,
+            "profils_disponibles": 1,
+            "ecart": 30
+          },
+          {
+            "groupe_id": "Senat:LR",
+            "roster_total": 235,
+            "profils_disponibles": 1,
+            "ecart": 234
+          },
+          {
+            "groupe_id": "Senat:SER",
+            "roster_total": 65,
+            "profils_disponibles": 0,
+            "ecart": 65
+          }
+        ]
+      },
+      "doublons_groupe_id": {
+        "doublons": []
+      }
+    },
+    "fraicheur": {
+      "fraicheur_sources": {
+        "total_sources_datees": 8,
+        "par_type_source": {
+          "assemblee_nationale": {
+            "nombre_sources": 3,
+            "min_jours": 4,
+            "max_jours": 4,
+            "mediane_jours": 4,
+            "moyenne_jours": 4
+          },
+          "europarl": {
+            "nombre_sources": 1,
+            "min_jours": 3,
+            "max_jours": 3,
+            "mediane_jours": 3,
+            "moyenne_jours": 3
+          },
+          "nosdeputes": {
+            "nombre_sources": 3,
+            "min_jours": 4,
+            "max_jours": 4,
+            "mediane_jours": 4,
+            "moyenne_jours": 4
+          },
+          "nossenateurs": {
+            "nombre_sources": 1,
+            "min_jours": 4,
+            "max_jours": 4,
+            "mediane_jours": 4,
+            "moyenne_jours": 4
+          }
+        }
+      },
+      "groupes_perimes": []
+    },
+    "warnings": {
+      "total_warnings": 7,
+      "par_type": {
+        "fraicheur_donnees": {
+          "frequence": 7,
+          "groupe_ids": [
+            "AN:LFI",
+            "AN:LR",
+            "AN:REN",
+            "AN:RN",
+            "AN:SOC",
+            "Senat:LR",
+            "Senat:SER"
+          ]
+        }
+      }
+    },
+    "tableau_croise_groupes": {
+      "lignes": [
+        {
+          "groupe_id": "AN:LFI",
+          "groupe_nom": "La France insoumise - NUPES",
+          "chambre": "AN",
+          "membres": 0,
+          "cohesion_votes": 0,
+          "tags_thematiques_agreges": 0,
+          "amendements": 0
+        },
+        {
+          "groupe_id": "AN:LR",
+          "groupe_nom": "Les Républicains",
+          "chambre": "AN",
+          "membres": 0,
+          "cohesion_votes": 0,
+          "tags_thematiques_agreges": 0,
+          "amendements": 0
+        },
+        {
+          "groupe_id": "Senat:LR",
+          "groupe_nom": "Les Républicains",
+          "chambre": "Senat",
+          "membres": 1,
+          "cohesion_votes": 0,
+          "tags_thematiques_agreges": 0,
+          "amendements": 0
+        },
+        {
+          "groupe_id": "AN:RN",
+          "groupe_nom": "Rassemblement National",
+          "chambre": "AN",
+          "membres": 1,
+          "cohesion_votes": 558,
+          "tags_thematiques_agreges": 318,
+          "amendements": 0
+        },
+        {
+          "groupe_id": "AN:REN",
+          "groupe_nom": "Renaissance",
+          "chambre": "AN",
+          "membres": 1,
+          "cohesion_votes": 268,
+          "tags_thematiques_agreges": 0,
+          "amendements": 0
+        },
+        {
+          "groupe_id": "Senat:SER",
+          "groupe_nom": "Socialiste, Écologiste et Républicain",
+          "chambre": "Senat",
+          "membres": 0,
+          "cohesion_votes": 0,
+          "tags_thematiques_agreges": 0,
+          "amendements": 0
+        },
+        {
+          "groupe_id": "AN:SOC",
+          "groupe_nom": "Socialistes et apparentés",
+          "chambre": "AN",
+          "membres": 1,
+          "cohesion_votes": 814,
+          "tags_thematiques_agreges": 179,
+          "amendements": 0
+        }
+      ]
+    },
+    "erreurs_lecture": []
+  }
+}

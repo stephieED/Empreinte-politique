@@ -1,0 +1,121 @@
+/* Le pied du site — un seul, trois colonnes.
+   Les valeurs reprennent celles des trois pieds qu'il remplace : filet
+   `--border`, texte `--muted` à 13 px, encre au survol. */
+.pds {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr auto;
+  gap: 26px 40px;
+  align-items: start;
+  /* `width: 100%` avant `margin: 0 auto` : le pied est un ITEM de grille dans
+     `explorer-main`, et une marge auto seule l'y ajustait à son contenu — il
+     rendait 729 px de large dans une colonne de 1 020. */
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 26px 40px 30px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.pds-marque {
+  line-height: 1.55;
+}
+
+.pds-marque b {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.pds-marque p {
+  margin: 0;
+}
+
+.pds-colonne {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+}
+
+.pds-titre {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: #b6b1bd;
+  margin-bottom: 2px;
+}
+
+.pds a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.pds a:hover,
+.pds a:focus-visible {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+.pds a:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.pds-comptes {
+  display: flex;
+  gap: 4px;
+  margin-top: 1px;
+}
+
+/* La cible fait 30 px même si le glyphe en fait 16 : l'icône remplace le
+   libellé à l'écran, jamais pour le doigt. */
+.pds-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.pds-icone svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.pds-icone:hover,
+.pds-icone:focus-visible {
+  background: #f2f0ed;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.pds-icone:focus-visible {
+  outline-offset: 1px;
+}
+
+/* Sous 760 px, les trois colonnes s'empilent plutôt que de comprimer l'adresse,
+   qui est la seule chose du pied qu'on vient y chercher. */
+@media (max-width: 760px) {
+  .pds {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 24px 20px 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pds-icone {
+    transition: none;
+  }
+}

@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  Fixture FIGÉE reproduisant la structure RÉELLE d'un compte rendu Syceron de la
+  17e législature (#510). Extraite de CRSANR5L17S2025O1N053.xml (archive
+  data.assemblee-nationale.fr, mesurée le 20/08/2026), réduite à quelques
+  paragraphes et anonymisée d'aucun champ : les identifiants et la forme des
+  balises sont ceux de la source.
+
+  Elle diffère de `syceron_minimal.xml` / `syceron_missing_fields.xml`, écrites
+  avant toute lecture de l'archive et qui décrivent un schéma que l'Assemblée
+  nationale ne publie pas :
+    - l'identifiant d'orateur est publié NU (<id>847629</id>), jamais préfixé ;
+    - le préfixe `PA` figure à côté, dans l'attribut `id_acteur` de <paragraphe> ;
+    - le titre du point vit dans <point><texte>, il n'y a aucun <titreStruct>
+      sous <contenu> (0 occurrence sur les 601 comptes rendus de la 17e) ;
+    - les <point> sont IMBRIQUÉS (nivpoint 1 à 5).
+  Les quatre cas d'identifiant observés sont représentés : identifiant nu
+  résoluble, `0` (orateur collectif anonyme), négatif (pseudo-acteur de rôle,
+  hors référentiel AN), et paragraphe sans orateur.
+-->
+<compteRendu xmlns="http://schemas.assemblee-nationale.fr/referentiel">
+  <uid>CRSANR5L17S2025O1N053</uid>
+  <seanceRef>RUANR5L17S2025IDS28723</seanceRef>
+  <sessionRef>SCR5A2025O1</sessionRef>
+  <metadonnees>
+    <dateSeance>20241127140000000</dateSeance>
+    <numSeance>53</numSeance>
+    <typeAssemblee>AN</typeAssemblee>
+    <legislature>17</legislature>
+    <etat>complet</etat>
+    <version>avant_JO</version>
+  </metadonnees>
+  <contenu>
+    <ouvertureSeance nivpoint="1" code_grammaire="OUV_SEAN_1_1">
+      <orateurs/>
+      <texte>Présidence de Mme Yaël Braun-Pivet</texte>
+    </ouvertureSeance>
+    <point nivpoint="1" code_grammaire="TITRE_TEXTE_DISCUSSION" code_style="Titre">
+      <orateurs/>
+      <texte>Questions au Gouvernement</texte>
+      <paragraphe ordre_absolu_seance="85" id_acteur="PA847629" id_mandat="PM848003" code_grammaire="QUESTION_1_10" code_style="NORMAL">
+        <orateurs>
+          <orateur>
+            <nom>M. le ministre délégué</nom>
+            <id>847629</id>
+            <qualite>ministre délégué chargé des transports</qualite>
+          </orateur>
+        </orateurs>
+        <texte stime="2132.46">Tout d’abord, nous sommes dans un État de droit, dont la séparation des pouvoirs est un principe fondamental. <italique>(Applaudissements sur les bancs du groupe EPR.)</italique></texte>
+      </paragraphe>
+      <paragraphe ordre_absolu_seance="86" code_grammaire="INTERRUPTION_1_10" code_style="NORMAL">
+        <orateurs>
+          <orateur>
+            <nom>Un député du groupe LFI-NFP</nom>
+            <id>0</id>
+            <qualite/>
+          </orateur>
+        </orateurs>
+        <texte stime="2138.72">Rappelez-le au ministre de l’intérieur !</texte>
+      </paragraphe>
+      <paragraphe ordre_absolu_seance="87" code_grammaire="PAROLE_GENERIQUE" code_style="Info Italiques">
+        <orateurs/>
+        <texte>
+          <italique>(Applaudissements sur plusieurs bancs.)</italique>
+        </texte>
+      </paragraphe>
+      <paragraphe ordre_absolu_seance="88" id_acteur="PA-125799" id_mandat="-1" code_grammaire="PAROLE_GENERIQUE" code_style="NORMAL">
+        <orateurs>
+          <orateur>
+            <nom>M. Hendrik Davi</nom>
+            <id>-125799</id>
+            <qualite>rapporteur du comité d’évaluation et de contrôle des politiques publiques</qualite>
+          </orateur>
+        </orateurs>
+        <texte stime="2145.10">Je veux revenir sur ce point de procédure.</texte>
+      </paragraphe>
+      <point nivpoint="2" code_grammaire="TITRE_TEXTE_DISCUSSION" code_style="Titre">
+        <orateurs/>
+        <texte>Accès à l’enseignement supérieur</texte>
+        <paragraphe ordre_absolu_seance="216" id_acteur="PA795310" id_mandat="PM842899" code_grammaire="PAROLE_GENERIQUE" code_style="NORMAL" roledebat="president">
+          <orateurs>
+            <orateur>
+              <nom>Mme la présidente</nom>
+              <id>795310</id>
+              <qualite/>
+            </orateur>
+          </orateurs>
+          <texte stime="4838.82">La parole est à M. Hendrik Davi, rapporteur du comité d’évaluation et de contrôle des politiques publiques.</texte>
+        </paragraphe>
+        <paragraphe ordre_absolu_seance="217" id_acteur="PA-125799" id_mandat="-1" code_grammaire="PAROLE_GENERIQUE" code_style="NORMAL">
+          <orateurs>
+            <orateur>
+              <nom>M. Hendrik Davi</nom>
+              <id>-125799</id>
+              <qualite>rapporteur du comité d’évaluation et de contrôle des politiques publiques</qualite>
+            </orateur>
+          </orateurs>
+          <texte stime="4858.49">Pourquoi débattre aujourd’hui de l’accès à l’enseignement supérieur ? Notre pays est à un tournant.</texte>
+        </paragraphe>
+      </point>
+    </point>
+  </contenu>
+</compteRendu>

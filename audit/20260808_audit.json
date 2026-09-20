@@ -1,0 +1,144 @@
+{
+  "meta": {
+    "genere_le": "2026-08-09T16:09:10.313904+00:00",
+    "total_profils": 3,
+    "total_erreurs_lecture": 1,
+    "staleness_days": 30
+  },
+  "volumetrie": {
+    "repartition_chambre": {
+      "total_profils": 3,
+      "par_chambre": {
+        "AN": 2,
+        "PE": 0,
+        "Senat": 1,
+        "mairie": 0,
+        "null": 0
+      }
+    },
+    "distribution_listes": {
+      "votes": {
+        "min": 0,
+        "max": 0,
+        "mediane": 0,
+        "moyenne": 0,
+        "pct_profils_a_zero": 100.0
+      },
+      "textes_portes": {
+        "min": 0,
+        "max": 0,
+        "mediane": 0,
+        "moyenne": 0,
+        "pct_profils_a_zero": 100.0
+      },
+      "amendements": {
+        "min": 0,
+        "max": 0,
+        "mediane": 0,
+        "moyenne": 0,
+        "pct_profils_a_zero": 100.0
+      },
+      "interventions": {
+        "min": 0,
+        "max": 0,
+        "mediane": 0,
+        "moyenne": 0,
+        "pct_profils_a_zero": 100.0
+      }
+    },
+    "nombre_sources": {
+      "moyenne_sources": 0,
+      "pct_profils_une_source": 0.0
+    }
+  },
+  "completude": {
+    "taux_remplissage": {
+      "parti": {
+        "renseignes": 0,
+        "total": 3,
+        "taux_pct": 0.0
+      },
+      "groupe": {
+        "renseignes": 3,
+        "total": 3,
+        "taux_pct": 100.0
+      },
+      "tags_thematiques": {
+        "renseignes": 0,
+        "total": 3,
+        "taux_pct": 0.0
+      },
+      "mandats": {
+        "renseignes": 0,
+        "total": 3,
+        "taux_pct": 0.0
+      }
+    },
+    "profils_sans_activite": {
+      "total_profils": 3,
+      "nb_profils_sans_activite": 3,
+      "profils_sans_activite": [
+        "nosdeputes:jean-dupont",
+        "nosdeputes:marie-martin",
+        "nossenateurs:paul-durand"
+      ]
+    },
+    "presence_meta": {
+      "total_profils": 3,
+      "meta_absente": [],
+      "licence_donnees_manquante": [
+        "nosdeputes:jean-dupont",
+        "nosdeputes:marie-martin",
+        "nossenateurs:paul-durand"
+      ],
+      "genere_le_manquant": []
+    }
+  },
+  "coherence": {
+    "doublons_id": {
+      "doublons": []
+    },
+    "coherence_schema_version": {
+      "profils_incoherents": []
+    },
+    "validite_dates": {
+      "dates_invalides": []
+    },
+    "coherence_chambre_sources": {
+      "profils_incoherents": [
+        {
+          "id": "nosdeputes:jean-dupont",
+          "chambre": "AN",
+          "types_sources": []
+        },
+        {
+          "id": "nosdeputes:marie-martin",
+          "chambre": "AN",
+          "types_sources": []
+        },
+        {
+          "id": "nossenateurs:paul-durand",
+          "chambre": "Senat",
+          "types_sources": []
+        }
+      ]
+    }
+  },
+  "fraicheur": {
+    "fraicheur_sources": {
+      "total_sources_datees": 0,
+      "par_type_source": {}
+    },
+    "profils_perimes": []
+  },
+  "warnings": {
+    "total_warnings": 0,
+    "par_type": {}
+  },
+  "erreurs_lecture": [
+    {
+      "fichier": "tests/fixtures/audit_pivot/invalide.pivot.json",
+      "erreur": "Expecting value: line 7 column 1 (char 122)"
+    }
+  ]
+}

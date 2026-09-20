@@ -1,0 +1,55 @@
+{
+  "schema_version": "1",
+  "id": "nossenateurs:jean-luc-melenchon",
+  "nom": "Jean-Luc Mélenchon",
+  "chambre": "Senat",
+  "votes": [
+    {
+      "scrutin_id": "an:15:4288",
+      "position": "pour"
+    },
+    {
+      "scrutin_id": "an:15:4295",
+      "position": "pour"
+    },
+    {
+      "scrutin_id": "an:15:4289",
+      "position": "pour"
+    },
+    {
+      "scrutin_id": "an:15:4290",
+      "position": "pour"
+    },
+    {
+      "scrutin_id": "an:15:4270",
+      "position": "pour"
+    }
+  ],
+  "amendements": [
+    {
+      "amendement_id": "an:AMANR5L17PO419604B0118P0D1N000025",
+      "role_signataire": "cosignataire"
+    },
+    {
+      "amendement_id": "an:AMANR5L15PO717460BTC5024P0D1N000001",
+      "role_signataire": "cosignataire"
+    },
+    {
+      "amendement_id": "an:AMANR5L15PO717460BTC5024P0D1N000004",
+      "role_signataire": "cosignataire"
+    },
+    {
+      "amendement_id": "an:AMANR5L15PO717460BTC5024P0D1N000005",
+      "role_signataire": "cosignataire"
+    }
+  ],
+  "meta": {
+    "schema_version": "1",
+    "fixture": {
+      "source": "pivot_data/profiles/jean-luc-melenchon.pivot.json",
+      "ref": "01ffa7fefbedf9b239bbada38a38d7ad014d3e81",
+      "extrait_le": "2026-08-20",
+      "reduction": "Champs conservés : ceux que le contrôle lit — les 5 premiers votes[] et 4 amendements[] réels, avec leurs clés d'origine, plus les scalaires d'identification. Le reste du profil (mandats, interventions, textes portés, sources, tags) ne porte aucune référence d'index et n'est donc pas lu. VARIANTE : le 1er amendement_id vise la législature 17, dont cette fixture ne porte AUCUN shard. C'est le scénario de publication partielle de #431 — un shard qui échoue rend orphelines toutes les références d'une législature d'un coup, et le remède n'est pas de corriger des clés mais de publier le fichier."
+    }
+  }
+}

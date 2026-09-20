@@ -1,0 +1,38 @@
+/* Bandeau « en construction » — voir ConstructionBanner.jsx pour le pourquoi.
+   Cyan signal sur encre : la charte ne définit aucune couleur d'alerte, et
+   c'est précisément l'intérêt — le cyan n'appartient à aucun autre élément de
+   l'interface, donc le bandeau ne peut être confondu avec du contenu. */
+.construction-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.5rem 1rem;
+  padding: 0.875rem 1.25rem;
+  background: var(--notice);
+  color: var(--ink);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.construction-banner__text {
+  margin: 0;
+  max-width: 78ch;
+}
+
+.construction-banner__link {
+  color: var(--ink);
+  font-weight: 600;
+  text-underline-offset: 0.25em;
+  white-space: nowrap;
+}
+
+.construction-banner__link:hover,
+.construction-banner__link:focus-visible {
+  text-decoration-thickness: 2px;
+}
+
+@media (max-width: 34rem) {
+  .construction-banner { text-align: left; justify-content: flex-start; }
+}

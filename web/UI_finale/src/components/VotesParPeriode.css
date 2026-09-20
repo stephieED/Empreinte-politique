@@ -1,0 +1,417 @@
+/* « Ce qu'il a voté », par période politique (#328).
+   Les teintes de position viennent de `VOTE_STYLE` (utils/lecture.js), passées
+   en `--pc` par le composant : une couleur écrite deux fois est une couleur qui
+   divergera. */
+
+.vp {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* La navigation par période a quitté ce fichier pour
+   `NavigationPeriodes.css` (#328) : deux sections la partagent, aucune ne
+   la possède. Seule la règle de focus des commandes PROPRES à cette
+   section reste ici. */
+.vp-piste:focus-visible,
+.vp-chip:focus-visible,
+.vp-col-tete:focus-visible,
+.vp-raz:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* ── Le bloc d'une période ──────────────────────────────────────────────── */
+.vp-tete {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+/* 15 px, comme `.pp-titre` et `.cp-gouv-nom` : un titre de PÉRIODE, à
+   l'intérieur d'une section, ne se rend pas à un point du titre de section
+   lui-même (21 px). Il y était à 20 px, et le rang se lisait faux. */
+.vp-titre {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.vp-quand {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.vp-barres {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 3px 12px;
+  align-items: center;
+}
+
+.vp-ligne {
+  display: contents;
+}
+
+.vp-nom {
+  font-size: 13px;
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.vp-nom em {
+  display: block;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.vp-piste {
+  position: relative;
+  height: 26px;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+
+.vp-piste--active {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.vp-axe {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  left: 50%;
+  width: 1px;
+  background: var(--border-strong);
+}
+
+.vp-seg {
+  position: absolute;
+  top: 4px;
+  height: 18px;
+}
+
+/* L'ORIGINE SE DIT PAR LA FORME, PAS PAR LA TEXTURE.
+   Gouvernement en aplat, Parlement en voile de la même teinte plus filet à
+   pleine saturation. La rayure, essayée d'abord, éclaircissait la teinte d'un
+   tiers — le vert s'approchait du gris de l'abstention — et disparaissait sur
+   un segment d'un ou deux textes, c'est-à-dire sur les cas rares. Le voile rend
+   au segment son poids, le filet garde l'arête. */
+.vp-seg--parlement {
+  background-color: color-mix(in srgb, var(--pc) 26%, var(--bg)) !important;
+  box-shadow: inset 0 0 0 1.6px var(--pc);
+}
+
+.vp-tot {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.vp-echelle {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+  margin: 10px 0 0;
+}
+
+.vp-echelle-mid {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.vp-vide {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* ── Les filtres, qui SONT la légende ───────────────────────────────────────
+   Chaque bouton porte déjà la pastille de sa position et la trame de son
+   origine : une légende sous la figure répéterait ce qu'ils disent. Posés là,
+   ils se lisent d'abord comme le code des couleurs, et se cliquent ensuite. */
+.vp-filtres {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin: 18px 0 0;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.vp-filtres-quoi {
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: 10.5px;
+}
+
+.vp-sep {
+  width: 1px;
+  align-self: stretch;
+  background: var(--border-strong);
+  margin: 0 2px;
+}
+
+.vp-chip {
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border-strong);
+  background: var(--card);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 5px 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vp-chip:hover {
+  color: var(--ink);
+  border-color: var(--muted);
+}
+
+.vp-chip[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+.vp-chip i {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  display: block;
+  background: var(--border-strong);
+}
+
+.vp-chip--parlement i {
+  background: color-mix(in srgb, var(--border-strong) 26%, var(--bg));
+  box-shadow: inset 0 0 0 1.6px var(--border-strong);
+}
+
+/* La pastille de position porte SA couleur, pleine quand la position est
+   retenue, creuse quand elle ne l'est pas — et jamais l'encre du bouton, qui la
+   rendrait invisible sur fond sombre. */
+.vp-chip--position i {
+  background: var(--pc);
+}
+
+.vp-chip--position[aria-pressed='false'] i {
+  background: transparent;
+  border: 1.5px solid var(--pc);
+}
+
+.vp-chip-n {
+  font-variant-numeric: tabular-nums;
+}
+
+.vp-methodo {
+  margin: 14px 0 0;
+  font-size: 12.5px;
+}
+
+.vp-methodo a {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
+}
+
+.vp-methodo a:hover {
+  text-decoration-color: currentcolor;
+}
+
+/* ── Les trois colonnes ─────────────────────────────────────────────────── */
+.vp-liste {
+  margin-top: 22px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 12px;
+  background: var(--card);
+  padding: 14px 16px;
+}
+
+.vp-liste-tete {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.vp-liste-quoi {
+  font-weight: 800;
+  font-size: 13.5px;
+}
+
+.vp-raz {
+  font: inherit;
+  font-size: 11.5px;
+  border: 1px solid var(--border-strong);
+  background: none;
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 3px 11px;
+  cursor: pointer;
+}
+
+.vp-raz:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+/* `--n` vaut le nombre de colonnes réellement affichées : isoler une position
+   ne doit pas laisser deux tiers de blanc. */
+.vp-colonnes {
+  display: grid;
+  gap: 0 18px;
+  margin-top: 12px;
+  grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr));
+}
+
+.vp-col-tete {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  font: inherit;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid var(--pc);
+  padding: 0 0 7px;
+  text-align: left;
+}
+
+.vp-col-tete:hover .vp-col-quoi {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.vp-col-quoi {
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--pc);
+}
+
+.vp-col-n {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.vp-colonnes ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 330px;
+  overflow-y: auto;
+}
+
+.vp-colonnes li {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  gap: 2px;
+}
+
+.vp-li-t {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.vp-li-t a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 2px;
+}
+
+.vp-li-t a:hover {
+  text-decoration-color: currentcolor;
+}
+
+.vp-li-f {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Un 49.3 n'est pas une position de vote : il est nommé à part, jamais fondu
+   dans le sort ordinaire du texte (AGENTS.md §2 règle 4). */
+.vp-49-3 {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 1px 7px;
+  margin-left: 6px;
+}
+
+.vp-col-vide {
+  color: var(--muted);
+  font-size: 12.5px;
+  padding: 9px 0;
+  font-style: italic;
+}
+
+.vp-aide {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin: 12px 0 0;
+}
+
+.vp-couverture {
+  margin-top: 18px;
+}
+
+@media (max-width: 720px) {
+  /* Les trois colonnes de la nav écrasaient le rail à quelques pixels : ses
+     années devenaient illisibles et ses segments intouchables. Le rail passe
+     pleine largeur au-dessus, les deux flèches se partagent la ligne du
+     dessous, et il gagne en hauteur — c'est une cible tactile. */
+  .vp-barres {
+    grid-template-columns: 1fr;
+  }
+
+  .vp-nom {
+    text-align: left;
+  }
+
+  .vp-tot {
+    display: none;
+  }
+
+  .vp-colonnes {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  /* Les colonnes gardent leur hauteur bornée sur mobile : déroulées, les 130
+     textes d'une seule position mettent les deux autres colonnes à un écran et
+     demi de distance, et on ne sait plus qu'elles existent. */
+}

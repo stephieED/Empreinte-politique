@@ -1,0 +1,555 @@
+{
+  "schema_version": "1",
+  "type_document": "profil_gouvernement",
+  "gouvernement_id": "gouvernement:PHILIPPE",
+  "nom": "Gouvernement Philippe I",
+  "premier_ministre": {
+    "nom": "Édouard Philippe",
+    "acteur_ref": "PA345619",
+    "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+  },
+  "periode": {
+    "debut": "2017-05-18",
+    "fin": "2017-06-19",
+    "actif": false
+  },
+  "membres": [
+    {
+      "membre_id": "agnes-buzyn",
+      "nom": "Agnès Buzyn",
+      "portefeuille": "Ministère des solidarités et de la santé",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "annick-girardin",
+      "nom": "Annick Girardin",
+      "portefeuille": "Ministère des outre-mer",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "bruno-le-maire",
+      "nom": "Bruno Le Maire",
+      "portefeuille": "Ministère de l’économie",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "christophe-castaner",
+      "nom": "Christophe Castaner",
+      "portefeuille": "Secrétariat d’État, auprès du Premier ministre, chargé des relations avec le Parlement, porte-parole du Gouvernement",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "edouard-philippe",
+      "nom": "Édouard Philippe",
+      "portefeuille": "Premier ministre",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "elisabeth-borne",
+      "nom": "Élisabeth Borne",
+      "portefeuille": "Ministère chargé des transports auprès du ministre d’État, ministre de la transition écologique et solidaire",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "francois-bayrou",
+      "nom": "François Bayrou",
+      "portefeuille": "Ministère de la justice",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "francoise-nyssen",
+      "nom": "Françoise Nyssen",
+      "portefeuille": "Ministère de la culture",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "frederique-vidal",
+      "nom": "Frédérique Vidal",
+      "portefeuille": "Ministère de l’enseignement supérieur, de la recherche et de l’innovation",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "gerald-darmanin",
+      "nom": "Gérald Darmanin",
+      "portefeuille": "Ministère de l’action et des comptes publics",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "gerard-collomb",
+      "nom": "Gérard Collomb",
+      "portefeuille": "Ministère de l’intérieur",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "jacques-mezard",
+      "nom": "Jacques Mézard",
+      "portefeuille": "Ministère de l’agriculture et de l’alimentation",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "jean-michel-blanquer",
+      "nom": "Jean-Michel Blanquer",
+      "portefeuille": "Ministère de l’éducation nationale",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "jean-yves-le-drian",
+      "nom": "Jean-Yves Le Drian",
+      "portefeuille": "Ministère de l’Europe et des affaires étrangères",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "laura-flessel",
+      "nom": "Laura Flessel",
+      "portefeuille": "Ministère des sports",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "marielle-de-sarnez",
+      "nom": "Marielle de Sarnez",
+      "portefeuille": "Ministère chargé des affaires européennes auprès du ministre de l’Europe et des affaires étrangères",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "marlene-schiappa",
+      "nom": "Marlène Schiappa",
+      "portefeuille": "Secrétariat d’État, auprès du Premier ministre, chargé de l’égalité entre les femmes et les hommes",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "mounir-mahjoubi",
+      "nom": "Mounir Mahjoubi",
+      "portefeuille": "Secrétariat d’État, auprès du Premier ministre, chargé du numérique",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "muriel-penicaud",
+      "nom": "Muriel Pénicaud",
+      "portefeuille": "Ministère du travail",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "nicolas-hulot",
+      "nom": "Nicolas Hulot",
+      "portefeuille": "Ministère de la transition écologique et solidaire",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "richard-ferrand",
+      "nom": "Richard Ferrand",
+      "portefeuille": "Ministère de la cohésion des territoires",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "sophie-cluzel",
+      "nom": "Sophie Cluzel",
+      "portefeuille": "Secrétariat d’État, auprès du Premier ministre, chargé des personnes handicapées",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "sylvie-goulard",
+      "nom": "Sylvie Goulard",
+      "portefeuille": "Ministère des armées",
+      "debut": "2017-05-18",
+      "fin": "2017-06-19",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    }
+  ],
+  "textes": [
+    {
+      "dossier_id": "DLR5L14N35831",
+      "titre": "Traités et conventions : normes de formation du personnel des navires de pêche (STCW-F)",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-06-14",
+      "date_dernier_evenement": "2018-03-22",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA345619",
+          "membre_id": "edouard-philippe"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/convention_formation_personnel_navires_peche",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35825",
+      "titre": "Pouvoirs publics : confiance dans la vie publique",
+      "statut": "adopte_cmp",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-06-14",
+      "date_dernier_evenement": "2017-09-15",
+      "sort_49_3": false,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA345619",
+          "membre_id": "edouard-philippe"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/confiance_action_publique",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59051",
+        "sigle": "Lois",
+        "nom": "Commission des lois constitutionnelles, de la législation et de l'administration générale de la République",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35824",
+      "titre": "Pouvoirs publics : confiance dans la vie politique",
+      "statut": "adopte",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-06-14",
+      "date_dernier_evenement": "2017-09-15",
+      "sort_49_3": false,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA345619",
+          "membre_id": "edouard-philippe"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/retablissement_confiance_action_publique",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59051",
+        "sigle": "Lois",
+        "nom": "Commission des lois constitutionnelles, de la législation et de l'administration générale de la République",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L15N35824",
+      "titre": "Confiance dans la vie politique (loi organique)",
+      "statut": "adopte",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-06-14",
+      "date_dernier_evenement": "2017-09-15",
+      "sort_49_3": false,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA345619",
+          "membre_id": "edouard-philippe"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/15/dossiers/retablissement_confiance_action_publique",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59051",
+        "sigle": "Lois",
+        "nom": "Commission des lois constitutionnelles, de la législation et de l'administration générale de la République",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35818",
+      "titre": "Economie : réforme du droit des contrats, du régime général et de la preuve des obligations",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-06-09",
+      "date_dernier_evenement": "2018-02-16",
+      "sort_49_3": false,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA345619",
+          "membre_id": "edouard-philippe"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016_131",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59051",
+        "sigle": "Lois",
+        "nom": "Commission des lois constitutionnelles, de la législation et de l'administration générale de la République",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35819",
+      "titre": "Affaires étrangères : conventions d'entraide judiciaire et d'extradition avec Sainte-Lucie",
+      "statut": "adopte",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-06-07",
+      "date_dernier_evenement": "2017-12-20",
+      "sort_49_3": false,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA345619",
+          "membre_id": "edouard-philippe"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/convention_entraide_judiciaire_sainte-lucie",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59047",
+        "sigle": "Affaires étrangères",
+        "nom": "Commission des affaires étrangères",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35821",
+      "titre": "Outre-mer : dispositions relatives à l'outre-mer du code de la consommation",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-05-31",
+      "date_dernier_evenement": "2017-05-31",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA345619",
+          "membre_id": "edouard-philippe"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2017-269",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35822",
+      "titre": "Economie : actions en dommages et intérêts du fait des pratiques anticoncurrentielles",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-05-31",
+      "date_dernier_evenement": "2017-05-31",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA345619",
+          "membre_id": "edouard-philippe"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2017-303",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    }
+  ],
+  "tags_thematiques_agreges": [],
+  "comptages": {
+    "membres_recenses": 23,
+    "membres_distincts": 23,
+    "membres_avec_interventions": 0,
+    "par_statut": {
+      "adopte": 3,
+      "adopte_49_3": 0,
+      "adopte_cmp": 1,
+      "depose": 2,
+      "navette_en_cours": 2,
+      "promulgue": 0,
+      "rejete": 0,
+      "rejete_49_3": 0,
+      "retire": 0
+    }
+  },
+  "sources": [
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA717153",
+      "synchro_le": "2026-09-18T16:05:34+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA337633",
+      "synchro_le": "2026-09-18T16:06:00+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA331481",
+      "synchro_le": "2026-09-18T15:57:51+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA605131",
+      "synchro_le": "2026-09-18T15:57:51+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA345619",
+      "synchro_le": "2026-09-18T16:04:58+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA717161",
+      "synchro_le": "2026-09-18T15:57:12+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA410",
+      "synchro_le": "2026-09-18T15:58:33+0000"
+    },
+    {
+      "type": "europarl",
+      "url": "https://www.europarl.europa.eu/meps/fr/4324",
+      "synchro_le": "2026-09-18T15:58:36+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA717155",
+      "synchro_le": "2026-09-18T16:05:37+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA717159",
+      "synchro_le": "2026-09-18T15:58:40+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA607846",
+      "synchro_le": "2026-09-18T15:56:48+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA906",
+      "synchro_le": "2026-09-18T15:58:36+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA415482",
+      "synchro_le": "2026-09-18T16:06:38+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA717157",
+      "synchro_le": "2026-09-18T16:05:42+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA1872",
+      "synchro_le": "2026-09-18T15:58:36+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA717171",
+      "synchro_le": "2026-09-18T16:06:39+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA717151",
+      "synchro_le": "2026-09-18T15:58:01+0000"
+    },
+    {
+      "type": "europarl",
+      "url": "https://www.europarl.europa.eu/meps/fr/4335",
+      "synchro_le": "2026-09-18T15:58:24+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA717163",
+      "synchro_le": "2026-09-18T16:06:39+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA717167",
+      "synchro_le": "2026-09-18T15:58:21+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA717169",
+      "synchro_le": "2026-09-18T15:58:44+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA717147",
+      "synchro_le": "2026-09-18T15:58:45+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA606171",
+      "synchro_le": "2026-09-18T16:04:36+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA717165",
+      "synchro_le": "2026-09-18T15:58:45+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA717149",
+      "synchro_le": "2026-09-18T16:06:26+0000"
+    },
+    {
+      "type": "europarl",
+      "url": "https://www.europarl.europa.eu/meps/fr/97137",
+      "synchro_le": "2026-09-18T05:48:40+0000"
+    }
+  ],
+  "meta": {
+    "schema_version": "1",
+    "genere_le": "2026-09-18T16:57:11+0000",
+    "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr + CC BY 4.0 (Parlement européen, Open Data Portal - data.europarl.europa.eu)",
+    "warnings": [
+      "gouvernement_profile: tags_thematiques_agreges — 52450 intervention(s) écartée(s) : hors de la fenêtre de passage du membre dans ce gouvernement.",
+      "gouvernement_textes: dossier DLR5L14N34217 : fam_code inconnu 'TSORTF04' — statut non déterminé."
+    ]
+  }
+}

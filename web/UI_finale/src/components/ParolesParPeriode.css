@@ -1,0 +1,440 @@
+/* « Ce qu'il a dit », par période politique (#328).
+   Aucune couleur ici : la section ne porte pas de position, donc rien à
+   encoder par la teinte. L'accent est réservé à la SÉLECTION — un sujet
+   retenu —, jamais au contenu (DESIGN_SYSTEM §1). */
+
+.pp {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.pp-cadre {
+  /* La marge vient de `.cp-carte`. */
+}
+
+.pp-tete {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.pp-titre {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.pp-quand-periode {
+  font-size: 12.5px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Les deux facettes ──────────────────────────────────────────────────── */
+.pp-facette {
+  padding: 12px 16px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.pp-facette:last-child {
+  border-bottom: 0;
+}
+
+.pp-facette-quoi {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 9px;
+}
+
+.pp-facette-quoi i {
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+.pp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.pp-chip {
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border-strong);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 5px 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pp-chip:hover:not(:disabled) {
+  border-color: var(--muted);
+}
+
+.pp-chip[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: #c2df00;
+}
+
+.pp-chip:disabled {
+  opacity: 0.34;
+  cursor: default;
+}
+
+.pp-chip-n {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.pp-chip[aria-pressed='true'] .pp-chip-n {
+  color: #4a4f00;
+}
+
+.pp-raz {
+  font: inherit;
+  font-size: 12px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.pp-raz:hover {
+  color: var(--ink);
+}
+
+/* ── Les sujets ─────────────────────────────────────────────────────────── */
+.pp-sujets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.pp-sujets li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 48px;
+  gap: 0 12px;
+  align-items: baseline;
+}
+
+.pp-sujets button {
+  all: unset;
+  cursor: pointer;
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  width: 100%;
+  padding: 3px 0;
+}
+
+.pp-sujet-nom {
+  font-size: 13px;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* La barre est la MESURE, jamais une décoration : sa largeur vient du plafond
+   de la fiche, pas du plus grand de la sélection courante (§2 règle 7). */
+.pp-sujet-barre {
+  display: block;
+  height: 8px;
+  min-width: 3px;
+  border-radius: 2px;
+  background: var(--ink);
+}
+
+.pp-sujet--actif .pp-sujet-nom {
+  font-weight: 700;
+}
+
+.pp-sujet--actif .pp-sujet-barre {
+  background: var(--accent);
+  box-shadow: inset 0 0 0 1.5px #a9c400;
+}
+
+.pp-sujet-n {
+  text-align: right;
+  font-size: 12.5px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.pp-sujets-plus {
+  grid-template-columns: 1fr;
+  padding-top: 6px;
+}
+
+.pp-sujets-plus button {
+  all: unset;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: underline;
+}
+
+.pp-sujets-plus button:hover {
+  color: var(--ink);
+}
+
+/* ── Le fil ─────────────────────────────────────────────────────────────── */
+.pp-fil {
+  margin-top: 22px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 12px;
+  background: var(--card);
+  padding: 14px 16px;
+}
+
+.pp-invite {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+.pp-invite b {
+  color: var(--ink);
+}
+
+.pp-fil-tete {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.pp-fil-quoi {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.pp-liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pp-item {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 0 18px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.pp-item:last-child {
+  border-bottom: 0;
+}
+
+.pp-quand {
+  font-size: 12.5px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.pp-quand em {
+  display: block;
+  font-style: normal;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 5px;
+  line-height: 1.3;
+}
+
+.pp-quoi {
+  min-width: 0;
+}
+
+.pp-chemin {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.pp-reste {
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.pp-qualite {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Le verbatim est LA matière de la section : il prend le pas sur ses
+   métadonnées, et se distingue d'elles par le filet et le retrait. */
+.pp-verbatim {
+  margin: 9px 0 0;
+  padding-left: 13px;
+  border-left: 2px solid var(--border-strong);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+/* Un verbatim absent n'est pas un silence de la personne : le fond hachuré le
+   dit comme la barre sans teinte des amendements (§2 règle 5). */
+.pp-sans-verbatim {
+  margin: 9px 0 0;
+  padding: 6px 13px;
+  border-left: 2px solid var(--border-strong);
+  font-size: 12.5px;
+  color: var(--muted);
+  background: repeating-linear-gradient(45deg, var(--bg) 0 4px, transparent 4px 8px);
+}
+
+/* La source du compte rendu, nommée une fois par section. */
+.pp-archive {
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.pp-archive a { color: var(--ink); font-weight: 600; }
+
+.pp-source {
+  display: inline-block;
+  margin-top: 9px;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.pp-plus {
+  font: inherit;
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--border);
+  background: transparent;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pp-plus:hover {
+  background: var(--bg);
+}
+
+.pp-vide {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.pp-couverture {
+  margin-top: 16px;
+}
+
+.pp-methodo {
+  margin: 14px 0 0;
+  font-size: 12.5px;
+}
+
+.pp-chip:focus-visible,
+.pp-raz:focus-visible,
+.pp-plus:focus-visible,
+.pp-sujets button:focus-visible,
+.pp-sujets-plus button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .pp-item {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .pp-quand em {
+    display: inline;
+    margin-left: 8px;
+  }
+}
+
+/* ── LA QUALITÉ : à quel titre la personne a parlé (#328, 13/09/2026) ───────
+ *
+ * Le vocabulaire est celui des puces d'institution d'« En bref » — un pilulier,
+ * la teinte de l'institution allumée, l'encre sourde éteinte. La fiche ne gagne
+ * pas un second jeu de commandes : elle réutilise celui qu'elle a déjà.
+ *
+ * Le sélecteur ne s'affiche que si la fiche porte plusieurs qualités, et sur 17
+ * fiches mesurées, 13 n'en ont qu'une. */
+.pp-qualites {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 14px;
+}
+
+.pp-qualite {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 7px 13px;
+  min-height: 40px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color .12s, background .12s, border-color .12s;
+}
+
+.pp-qualite i {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: currentColor;
+  flex: none;
+}
+
+.pp-qualite span {
+  font-weight: 500;
+  opacity: .75;
+  font-variant-numeric: tabular-nums;
+}
+
+.pp-qualite:hover { border-color: var(--ink-soft); }
+.pp-qualite:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+.pp-qualite[aria-pressed='true'] { color: #fff; border-color: transparent; }
+.pp-qualite--an[aria-pressed='true'] { background: var(--parl); }
+.pp-qualite--gouv[aria-pressed='true'] { background: var(--gouv); }
+.pp-qualite--pe[aria-pressed='true'] { background: var(--pe); }
+
+/* Le mot de la recherche dans un verbatim (#979) : le surlignage des titres de
+ * section, sur le bas des lettres — le jaune ne porte jamais le texte. */
+.pp-mot {
+  background: linear-gradient(transparent 62%, var(--accent) 62%);
+  color: inherit;
+}

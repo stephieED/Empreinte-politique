@@ -1,0 +1,63 @@
+/* Bandeau logo : hauteur définie (pas juste la hauteur intrinsèque de l'image).
+   58px pour le lockup complet — c'est la hauteur minimale à laquelle la
+   légende "POLITIQUE" (vectorisée à ~12px à l'échelle de référence) reste
+   lisible ; elle correspond à la largeur des rendus de vérification du
+   design system (~220px), cf. logo/empreinte-lockup-2lignes-specs.md. Row de
+   80px (58 / 80 ≈ 72 %) — ni collé aux bords, ni disproportionné. Aligné sur
+   la même marge horizontale que le reste de la nav (aucun padding propre :
+   hérite des 40px de .explorer-bars). Séparateur bas réutilisant le même
+   token de bordure que le reste de l'UI (cf. .vote-footer, .shelf-header).
+
+   LA GOUTTIÈRE EST PORTÉE ICI, PAS PAR LE CONTENEUR (15/09/2026). Elle était
+   héritée des 40px de `.explorer-bars`, ce qui ne valait QUE dans l'explorateur :
+   sur l'accueil, `/couverture`, la méthodologie et les mentions légales, le
+   logo est un frère du `<main>` et tombait donc à x = 0, collé au bord, quand
+   la fiche candidat le posait à x = 40. Mesuré au rendu sur les cinq pages.
+   Depuis #951 le logo de l'explorateur vit dans `.explorer-entete`, qui n'a pas
+   de gouttière gauche : il garde donc la sienne. */
+.brand {
+  display: flex;
+  align-items: center;
+  padding-inline: 40px;
+  /* LA HAUTEUR AUSSI EST PORTÉE ICI (15/09/2026). Même défaut que la gouttière,
+     dans l'autre axe : les 12px de retrait haut de `.explorer-bars` ne valaient
+     que dans l'explorateur. Mesuré à 1440px — le logo tombait à y = 84 sur les
+     fiches candidat, groupe et gouvernement, et à y = 72 sur les quatre autres
+     pages. Depuis #951 la rangée collée de l'explorateur annule ces 12px : collée,
+     elle doit faire exactement sa hauteur. Le logo y remonte de 12px par rapport
+     aux quatre autres pages, qui recevront la même rangée avec #951. */
+  margin-top: 12px;
+  height: 80px;
+  border-bottom: 1px solid var(--border);
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.brand:hover,
+.brand:focus-visible {
+  opacity: 0.75;
+  text-decoration: none;
+}
+
+.brand-lockup {
+  display: block;
+  height: 58px;
+  width: auto;
+}
+
+.brand-symbol {
+  display: none;
+  height: 40px;
+  width: 40px;
+}
+
+/* En-tête étroit / mobile : le lockup complet ne tient plus, on bascule sur le symbole seul. */
+@media (max-width: 480px) {
+  .brand-lockup {
+    display: none;
+  }
+
+  .brand-symbol {
+    display: block;
+  }
+}

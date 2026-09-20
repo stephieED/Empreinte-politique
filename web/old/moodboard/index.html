@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CONTRECHAMP — Explorations V4</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --ink: #17201d;
+      --paper: #f2f3ef;
+      --line: #c9ceca;
+      --muted: #65706b;
+    }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Instrument Sans", sans-serif;
+    }
+    button { font: inherit; }
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 2rem;
+      padding: clamp(1.5rem, 4vw, 4rem);
+      border-bottom: 1px solid var(--line);
+    }
+    .intro p { max-width: 58ch; margin: 0.7rem 0 0; color: var(--muted); }
+    h1 { margin: 0; font: 700 clamp(2.3rem, 6vw, 5.8rem)/0.9 "Bricolage Grotesque", sans-serif; letter-spacing: 0; }
+    .version { font: 500 0.72rem "DM Mono", monospace; text-transform: uppercase; }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+    }
+    .study {
+      min-width: 0;
+      padding: clamp(1rem, 2vw, 1.8rem);
+      background: var(--paper);
+    }
+    .study-head { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; margin-bottom: 0.8rem; }
+    .study-head h2 { margin: 0; font: 600 clamp(1.1rem, 2vw, 1.55rem) "Bricolage Grotesque", sans-serif; }
+    .study-head span { color: var(--muted); font: 0.65rem "DM Mono", monospace; }
+    .preview {
+      position: relative;
+      min-height: 390px;
+      overflow: hidden;
+      border: 1px solid rgba(23, 32, 29, 0.14);
+      cursor: zoom-in;
+    }
+    .preview:focus-visible { outline: 3px solid #2277ff; outline-offset: 3px; }
+    .concept { margin: 0.8rem 0 0; color: var(--muted); font-size: 0.86rem; }
+
+    /* 01 — Atlas augmenté */
+    .atlas { color: #183853; background: #e9f2ef; font-family: "DM Mono", monospace; }
+    .atlas::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.34;
+      background-image: linear-gradient(#76a39a 1px, transparent 1px), linear-gradient(90deg, #76a39a 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .atlas-nav { position: absolute; inset: 0 auto 0 0; z-index: 2; width: 31%; padding: 1.2rem; border-right: 1px solid #7ba197; background: rgba(240, 247, 244, 0.86); }
+    .atlas-brand { font: 700 1.2rem "Bricolage Grotesque", sans-serif; }
+    .atlas-name { margin-top: 5rem; font: 700 clamp(1.6rem, 3vw, 2.8rem)/0.9 "Bricolage Grotesque", sans-serif; }
+    .atlas-meta { margin-top: 1rem; font-size: 0.58rem; line-height: 1.8; text-transform: uppercase; }
+    .territory { position: absolute; inset: 7% 3% 5% 33%; }
+    .contour { position: absolute; border: 1px solid currentColor; border-radius: 48% 52% 36% 64%; opacity: 0.55; }
+    .contour.one { inset: 6% 8% 10% 10%; transform: rotate(-8deg); }
+    .contour.two { inset: 16% 17% 20% 19%; transform: rotate(11deg); }
+    .contour.three { inset: 27% 28% 29% 31%; transform: rotate(-4deg); background: rgba(90, 174, 152, 0.16); }
+    .map-node { position: absolute; z-index: 3; width: 12px; height: 12px; border: 2px solid #e9f2ef; border-radius: 50%; background: #ef694f; box-shadow: 0 0 0 1px #ef694f; }
+    .map-node::after { content: attr(data-label); position: absolute; left: 16px; top: -2px; white-space: nowrap; font-size: 0.56rem; }
+    .map-node.a { left: 18%; top: 22%; }.map-node.b { left: 62%; top: 30%; }.map-node.c { left: 43%; top: 65%; }.map-node.d { left: 73%; top: 73%; }
+    .atlas-scale { position: absolute; right: 1rem; bottom: 1rem; font-size: 0.52rem; }
+
+    /* 02 — Champ gravitationnel */
+    .gravity { color: #f3f7ff; background: #173fd1; font-family: "DM Mono", monospace; }
+    .gravity::before { content: ""; position: absolute; inset: -40%; border-radius: 50%; background: repeating-radial-gradient(circle, transparent 0 31px, rgba(162, 194, 255, 0.18) 32px 33px); transform: translate(25%, 10%); }
+    .gravity-top { position: relative; z-index: 4; display: flex; justify-content: space-between; padding: 1rem; font-size: 0.58rem; text-transform: uppercase; }
+    .gravity-name { position: absolute; z-index: 4; left: 1rem; bottom: 1rem; width: 7ch; font: 700 clamp(2rem, 4vw, 4rem)/0.8 "Bricolage Grotesque", sans-serif; }
+    .planet { position: absolute; z-index: 3; display: grid; place-items: center; border-radius: 50%; color: #102887; background: #b8ffda; font-weight: 500; font-size: 0.58rem; text-align: center; box-shadow: 0 0 40px rgba(184, 255, 218, 0.24); }
+    .planet.main { width: 122px; height: 122px; left: 48%; top: 34%; font-size: 1.1rem; }
+    .planet.vote { width: 66px; height: 66px; left: 74%; top: 14%; background: #ffcbbd; }
+    .planet.text { width: 79px; height: 79px; left: 68%; top: 67%; background: #b9d7ff; }
+    .planet.word { width: 45px; height: 45px; left: 36%; top: 16%; background: #fff29d; }
+
+    /* 03 — Profil chromatique */
+    .spectrum { color: #171d1a; background: #fbfbf8; }
+    .spectrum-top { display: flex; justify-content: space-between; padding: 1rem; font: 0.6rem "DM Mono", monospace; text-transform: uppercase; }
+    .spectrum-name { position: absolute; left: 1rem; bottom: 1rem; z-index: 4; max-width: 8ch; font: 700 clamp(2rem, 4vw, 4.2rem)/0.82 "Bricolage Grotesque", sans-serif; }
+    .fingerprint { position: absolute; inset: 12% 4% 8% 32%; }
+    .arc { position: absolute; inset: var(--space); border: var(--weight) solid var(--color); border-left-color: transparent; border-radius: 50%; transform: rotate(var(--turn)); }
+    .spectrum-legend { position: absolute; right: 1rem; bottom: 1rem; display: grid; gap: 0.3rem; font: 0.52rem "DM Mono", monospace; }
+    .spectrum-legend i { display: inline-block; width: 1.4rem; height: 0.45rem; margin-right: 0.4rem; background: var(--c); }
+
+    /* 04 — Scène cinétique */
+    .kinetic { color: #101010; background: #ef4f3c; }
+    .kinetic-word { position: absolute; font: 700 clamp(4rem, 10vw, 9rem)/0.72 "Bricolage Grotesque", sans-serif; text-transform: uppercase; }
+    .kinetic-word.first { left: -0.05em; top: 0.05em; }
+    .kinetic-word.second { right: -0.05em; top: 0.82em; color: #ecff79; writing-mode: vertical-rl; }
+    .kinetic-stat { position: absolute; left: 5%; bottom: 7%; width: 44%; padding-top: 0.7rem; border-top: 2px solid; font: 0.65rem "DM Mono", monospace; }
+    .kinetic-stat b { display: block; font: 700 3.8rem/0.9 "Bricolage Grotesque", sans-serif; }
+    .ticker { position: absolute; z-index: 4; left: 0; right: 0; top: 53%; padding: 0.55rem; overflow: hidden; border-block: 1px solid; background: #f7f4e8; font: 0.62rem "DM Mono", monospace; white-space: nowrap; transform: rotate(-3deg) scale(1.03); }
+    .kinetic-index { position: absolute; right: 1rem; bottom: 1rem; text-align: right; font: 0.58rem "DM Mono", monospace; }
+
+    /* 05 — Matière politique */
+    .matter { color: #f6f0e7; background: #175d56; }
+    .matter::before { content: ""; position: absolute; inset: 0; opacity: 0.7; background: repeating-linear-gradient(112deg, transparent 0 8px, rgba(255,255,255,0.1) 9px 10px), repeating-radial-gradient(ellipse at 70% 40%, transparent 0 14px, rgba(236, 255, 197, 0.18) 15px 17px); }
+    .matter-title { position: relative; z-index: 3; padding: 1rem; font: 0.62rem "DM Mono", monospace; text-transform: uppercase; }
+    .matter-shape { position: absolute; z-index: 2; filter: blur(0.3px); mix-blend-mode: screen; }
+    .matter-shape.a { width: 55%; height: 72%; right: 8%; top: 14%; border-radius: 68% 32% 54% 46%; background: #f27558; transform: rotate(18deg); }
+    .matter-shape.b { width: 46%; height: 54%; right: 23%; top: 24%; border-radius: 40% 60% 67% 33%; background: #64a9ff; transform: rotate(-22deg); opacity: 0.8; }
+    .matter-shape.c { width: 30%; height: 39%; right: 12%; bottom: 7%; border-radius: 50%; background: #caff93; opacity: 0.7; }
+    .matter-copy { position: absolute; z-index: 4; left: 1rem; bottom: 1rem; width: 40%; }
+    .matter-copy strong { display: block; font: 500 clamp(1.9rem, 3.5vw, 3.4rem)/0.88 "Newsreader", serif; }
+    .matter-copy span { display: block; margin-top: 0.8rem; font: 0.55rem "DM Mono", monospace; }
+
+    /* 06 — Interface sans interface */
+    .quiet { color: #20302b; background: #f2f0e9; }
+    .quiet-top { display: flex; justify-content: space-between; padding: 1rem; font: 0.58rem "DM Mono", monospace; }
+    .quiet-question { position: absolute; top: 23%; left: 10%; max-width: 12ch; font: 500 clamp(2rem, 4vw, 4.1rem)/0.94 "Newsreader", serif; }
+    .quiet-answer { position: absolute; right: 10%; bottom: 17%; text-align: right; }
+    .quiet-answer b { display: block; color: #2e6756; font: 600 clamp(4.5rem, 9vw, 8rem)/0.75 "Bricolage Grotesque", sans-serif; }
+    .quiet-answer span { font: 0.6rem "DM Mono", monospace; }
+    .quiet-step { position: absolute; left: 1rem; bottom: 1rem; width: 38%; height: 2px; background: #cad0ca; }
+    .quiet-step::before { content: ""; display: block; width: 24%; height: 2px; background: #2e6756; }
+
+    .modal {
+      position: fixed;
+      z-index: 20;
+      inset: 0;
+      display: none;
+      place-items: center;
+      padding: clamp(1rem, 4vw, 4rem);
+      background: rgba(17, 24, 21, 0.78);
+      backdrop-filter: blur(8px);
+    }
+    .modal.open { display: grid; }
+    .modal-frame { width: min(1100px, 100%); }
+    .modal-frame .preview { min-height: min(72vh, 720px); cursor: default; }
+    .modal-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.8rem 0; color: white; }
+    .modal-bar strong { font: 600 1rem "Bricolage Grotesque", sans-serif; }
+    .close { width: 2.4rem; height: 2.4rem; border: 1px solid rgba(255,255,255,0.5); color: white; background: transparent; cursor: pointer; font-size: 1.2rem; }
+
+    @media (max-width: 760px) {
+      .intro { grid-template-columns: 1fr; }
+      .gallery { grid-template-columns: 1fr; }
+      .preview { min-height: 360px; }
+      .atlas-nav { width: 38%; }
+      .territory { left: 39%; }
+      .modal { padding: 0.7rem; }
+      .modal-frame .preview { min-height: 72vh; }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .preview { transition: transform 180ms ease, box-shadow 180ms ease; }
+      .preview:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(23, 32, 29, 0.12); }
+      .planet { animation: float 5s ease-in-out infinite alternate; }
+      .planet:nth-child(2n) { animation-delay: -2s; }
+      .ticker { animation: pulse 3s ease-in-out infinite alternate; }
+      @keyframes float { to { transform: translate(8px, -10px); } }
+      @keyframes pulse { to { transform: rotate(1deg) scale(1.03); } }
+    }
+  </style>
+</head>
+<body>
+  <header class="intro">
+    <div>
+      <span class="version">CONTRECHAMP / Études V4</span>
+      <h1>Six intentions,<br>un même contenu.</h1>
+      <p>Des esquisses volontairement légères pour comparer la logique visuelle. Cliquez sur une proposition pour l’observer en grand.</p>
+    </div>
+    <span class="version">30.07.2026</span>
+  </header>
+
+  <main class="gallery">
+    <article class="study">
+      <div class="study-head"><h2>Atlas augmenté</h2><span>01 / Spatial</span></div>
+      <div class="preview atlas" tabindex="0" role="button" aria-label="Agrandir Atlas augmenté" data-title="Atlas augmenté">
+        <aside class="atlas-nav"><div class="atlas-brand">CONTRECHAMP</div><div class="atlas-name">Jean-Luc Mélenchon</div><div class="atlas-meta">Mandats 09<br>Textes 118<br>Votes 814<br>Paroles 326</div></aside>
+        <div class="territory"><div class="contour one"></div><div class="contour two"></div><div class="contour three"></div><i class="map-node a" data-label="Économie"></i><i class="map-node b" data-label="Institutions"></i><i class="map-node c" data-label="Écologie"></i><i class="map-node d" data-label="Social"></i></div>
+        <div class="atlas-scale">ACTIVITÉ PARLEMENTAIRE · 2017—2022</div>
+      </div>
+      <p class="concept">La carrière devient un territoire. On navigue par régions thématiques, puis on zoome jusqu’à la source.</p>
+    </article>
+
+    <article class="study">
+      <div class="study-head"><h2>Champ gravitationnel</h2><span>02 / Organique</span></div>
+      <div class="preview gravity" tabindex="0" role="button" aria-label="Agrandir Champ gravitationnel" data-title="Champ gravitationnel">
+        <div class="gravity-top"><span>CONTRECHAMP</span><span>Profil actif</span></div><div class="planet main">ÉCOLOGIE<br>38%</div><div class="planet vote">814<br>votes</div><div class="planet text">118<br>textes</div><div class="planet word">326</div><div class="gravity-name">Jean-Luc Mélenchon</div>
+      </div>
+      <p class="concept">Les thèmes attirent textes, votes et paroles. Le champ se recompose en temps réel avec les filtres.</p>
+    </article>
+
+    <article class="study">
+      <div class="study-head"><h2>Profil chromatique</h2><span>03 / Signature</span></div>
+      <div class="preview spectrum" tabindex="0" role="button" aria-label="Agrandir Profil chromatique" data-title="Profil chromatique">
+        <div class="spectrum-top"><span>Empreinte parlementaire</span><span>2017—2022</span></div><div class="spectrum-name">Jean-Luc Mélenchon</div>
+        <div class="fingerprint"><i class="arc" style="--space:2%;--weight:28px;--color:#ff6657;--turn:8deg"></i><i class="arc" style="--space:14%;--weight:24px;--color:#225ee8;--turn:-16deg"></i><i class="arc" style="--space:27%;--weight:20px;--color:#55b985;--turn:21deg"></i><i class="arc" style="--space:39%;--weight:14px;--color:#f3d34a;--turn:-8deg"></i></div>
+        <div class="spectrum-legend"><span><i style="--c:#ff6657"></i>Votes</span><span><i style="--c:#225ee8"></i>Textes</span><span><i style="--c:#55b985"></i>Paroles</span></div>
+      </div>
+      <p class="concept">Chaque profil génère une empreinte abstraite, stable et comparable, calculée à partir de ses traces.</p>
+    </article>
+
+    <article class="study">
+      <div class="study-head"><h2>Scène cinétique</h2><span>04 / Rythmique</span></div>
+      <div class="preview kinetic" tabindex="0" role="button" aria-label="Agrandir Scène cinétique" data-title="Scène cinétique">
+        <div class="kinetic-word first">814</div><div class="kinetic-word second">votes</div><div class="ticker">POUR 61% · CONTRE 28% · ABSTENTION 11% · SCRUTINS PUBLICS · SOURCES OUVERTES</div><div class="kinetic-stat"><b>118</b>textes parlementaires associés</div><div class="kinetic-index">JEAN-LUC MÉLENCHON<br>TRACE 02 / 06</div>
+      </div>
+      <p class="concept">Une donnée principale par scène. Typographie et mouvement construisent une narration rapide, sans cartes.</p>
+    </article>
+
+    <article class="study">
+      <div class="study-head"><h2>Matière politique</h2><span>05 / Génératif</span></div>
+      <div class="preview matter" tabindex="0" role="button" aria-label="Agrandir Matière politique" data-title="Matière politique">
+        <div class="matter-title">CONTRECHAMP · Composition générée depuis les données</div><i class="matter-shape a"></i><i class="matter-shape b"></i><i class="matter-shape c"></i><div class="matter-copy"><strong>Une activité dense, orientée vers l’écologie et les institutions.</strong><span>814 votes · 118 textes · 326 interventions</span></div>
+      </div>
+      <p class="concept">Les volumes d’activité produisent une composition vivante. La texture invite à explorer les valeurs exactes.</p>
+    </article>
+
+    <article class="study">
+      <div class="study-head"><h2>Interface sans interface</h2><span>06 / Essentiel</span></div>
+      <div class="preview quiet" tabindex="0" role="button" aria-label="Agrandir Interface sans interface" data-title="Interface sans interface">
+        <div class="quiet-top"><span>CONTRECHAMP</span><span>Jean-Luc Mélenchon · 02/06</span></div><div class="quiet-question">Quelle position lors des votes sur les textes entiers&nbsp;?</div><div class="quiet-answer"><b>61%</b><span>de votes « pour » · 42 scrutins</span></div><div class="quiet-step"></div>
+      </div>
+      <p class="concept">Chaque écran répond à une seule question. Le dossier se parcourt comme une conversation visuelle.</p>
+    </article>
+  </main>
+
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-frame">
+      <div class="modal-bar"><strong id="modal-title"></strong><button class="close" type="button" aria-label="Fermer">×</button></div>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.querySelector(".modal");
+    const modalContent = document.getElementById("modal-content");
+    const modalTitle = document.getElementById("modal-title");
+    const closeButton = document.querySelector(".close");
+    let trigger = null;
+
+    function openPreview(preview) {
+      trigger = preview;
+      modalTitle.textContent = preview.dataset.title;
+      modalContent.replaceChildren(preview.cloneNode(true));
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+      closeButton.focus();
+    }
+
+    function closePreview() {
+      modal.classList.remove("open");
+      modalContent.replaceChildren();
+      document.body.style.overflow = "";
+      trigger?.focus();
+    }
+
+    document.querySelectorAll(".preview").forEach((preview) => {
+      preview.addEventListener("click", () => openPreview(preview));
+      preview.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openPreview(preview);
+        }
+      });
+    });
+    closeButton.addEventListener("click", closePreview);
+    modal.addEventListener("click", (event) => { if (event.target === modal) closePreview(); });
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape" && modal.classList.contains("open")) closePreview(); });
+  </script>
+</body>
+</html>

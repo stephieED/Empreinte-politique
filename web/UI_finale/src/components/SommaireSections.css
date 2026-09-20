@@ -1,0 +1,63 @@
+/* Le sommaire des sections (#324). Il n'apparaît qu'au-delà de 1 440 px de
+   fenêtre — mesure, pas goût : voir l'en-tête de SommaireSections.jsx. */
+
+.som {
+  display: none;
+}
+
+.som-quoi {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 10px;
+  padding-left: 12px;
+}
+
+.som ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.som a {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 7px;
+  border-left: 2px solid transparent;
+  line-height: 1.3;
+}
+
+.som a:hover {
+  color: var(--ink);
+  background: var(--card);
+}
+
+.som a[aria-current='true'] {
+  color: var(--ink);
+  font-weight: 800;
+  border-left-color: var(--ink);
+  background: var(--card);
+}
+
+.som a:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+@media (min-width: 1440px) {
+  .som {
+    display: block;
+    position: sticky;
+    /* Sous la rangée collée (80 px, #951), plus une respiration. */
+    top: 100px;
+    align-self: start;
+  }
+}

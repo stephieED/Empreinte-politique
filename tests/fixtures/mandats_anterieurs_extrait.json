@@ -1,0 +1,18 @@
+{
+  "_meta": {
+    "description": "Extrait FIGÉ de raw_data/mandats_anterieurs.json pour la suite (#860, #791) : un candidat relu avec une ligne, et c'est tout. Un test dont le sujet est la table réelle la déclare par pytest.mark.lit_reference_committee."
+  },
+  "candidats": {
+    "candidat-releve": [
+      {
+        "institution": "assemblee_nationale",
+        "libelle": "Député de la Fixture",
+        "legislature": "11",
+        "debut": "1997-06-01",
+        "fin": "2002-06-18",
+        "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=0",
+        "verifie_le": "2026-09-11"
+      }
+    ]
+  }
+}

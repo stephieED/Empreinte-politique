@@ -1,0 +1,165 @@
+{
+  "_meta": {
+    "description": "Correspondance slug ↔ élu du Répertoire national des élus, pour les candidats déclarés dont le corpus NE PORTE PAS de date de naissance (#922). Table COMMITTÉE et RELUE, comme la correspondance slug ↔ acteur AN (#525) et les mandats antérieurs (#860) : chaque ligne porte ce qui a servi à trancher.",
+    "pourquoi": "Le RNE n'expose aucun identifiant de personne. La clé praticable est (nom, prénom, date de naissance) : elle résout 17 des 32 candidats déclarés sans relecture. Les 15 autres n'ont pas de date de naissance chez nous — leur appariement se ferait au nom seul, ce qui a déjà produit un faux positif en instruisant #885 (trois mandats sénatoriaux d'un homonyme mosellan attribués à jean-louis-masson).",
+    "la_date_de_naissance_ici_n_est_pas_circulaire": "Une ligne `confirme` porte la date de naissance telle que le RNE l'écrit. Elle ne sert PAS à établir l'appariement — c'est la relecture qui l'établit, sur la commune et une source primaire. Elle sert à RETROUVER les lignes de la personne au run suivant, sans dépendre de l'orthographe. Elle ne doit jamais être reversée dans `identite.date_naissance` : ce serait publier comme fait sur la personne une valeur qu'aucune de nos sources institutionnelles ne rend.",
+    "diacritiques": "Le RNE est incohérent sur les accents — « Edouard » sans accent et « Jérôme » avec, dans le même fichier. Un appariement sur le prénom tel qu'écrit rate SILENCIEUSEMENT : mesuré le 14/09/2026, Édouard Philippe ressortait sans aucun mandat alors qu'il est maire du Havre. Normaliser les deux côtés, ou passer par la date de naissance.",
+    "releve": "Un candidat présent dans `candidats` a été relu : son verdict, `confirme`, `ecarte` ou `aucun_mandat_trouve`, est complet pour les neuf fichiers locaux du RNE à la date de relecture. Un candidat ABSENT n'a PAS été relu — absent n'est pas « aucun mandat » (AGENTS.md §2 règle 5).",
+    "fichiers_interroges": [
+      "elus-conseillers-municipaux-cm",
+      "elus-maires-mai",
+      "elus-conseillers-departementaux-cd",
+      "elus-conseillers-regionaux-cr",
+      "elus-conseillers-communautaires-epci",
+      "elus-conseillers-darrondissements-ca",
+      "elus-membres-assemblee-ma",
+      "elus-conseillers-des-francais-de-letranger-consfde",
+      "elus-assemblee-des-francais-de-letranger-afe"
+    ],
+    "hors_portee": "Le RNE ne porte que les mandats EN COURS. Un mandat achevé n'y est pas, et son absence ici n'en est pas la négation : Marine Tondelier a été conseillère municipale d'Hénin-Beaumont jusqu'en mars 2026, ce que seul le fichier des sortants 2020-2026 rend. Plus ancien encore, le mandat municipal de Nathalie Arthaud à Vaulx-en-Velin (élue en 2008) n'est porté par aucun jeu accessible.",
+    "borne_couverture": "2020",
+    "borne": "La couverture des mandats locaux commence en 2020, et rien avant n'est intégré (#922, arbitré le 15/09/2026). Deux jeux la portent, tous deux sous Licence Ouverte 2.0 : le RNE pour les mandats en cours, les sortants 2020-2026 pour la mandature précédente. Les paliers antérieurs sont écartés pour DEUX raisons distinctes — les jeux complets de 2014 et de 2020 ne déclarent aucune licence (§7 interdit de collecter ce qu'on ne peut pas attribuer), et les seuls jeux de 2014 sous Licence Ouverte ne couvrent que le premier tour. Une absence avant 2020 doit se DÉCLARER : une fiche ne dit jamais « pas de mandat local avant 2020 », elle dit que nous ne pouvons pas le savoir (§2 règle 5). La première raison tomberait si le producteur précisait sa licence ; la seconde ne tombera pas.",
+    "licence": "Répertoire national des élus — Licence Ouverte 2.0 (Etalab), attribution seule. Les relectures s'appuient aussi sur fr.wikipedia.org (CC BY-SA 4.0), en FAITS seulement et jamais en prose reprise, comme pour raw_data/candidats.json (#753).",
+    "verifie_le": "2026-09-14"
+  },
+  "candidats": {
+    "david-lisnard": {
+      "appariement": "confirme",
+      "rne": {
+        "nom": "LISNARD",
+        "prenom": "David",
+        "date_naissance": "1969-02-02"
+      },
+      "preuve": {
+        "commune": "Cannes",
+        "source": "https://fr.wikipedia.org/wiki/David_Lisnard",
+        "fait_verifie": "maire de Cannes depuis 2014 ; conseiller départemental des Alpes-Maritimes"
+      },
+      "note": "Les deux sources donnent la même date de naissance (février 1969), sans qu'elle ait servi à apparier.",
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-09-14"
+    },
+    "karim-bouamrane": {
+      "appariement": "confirme",
+      "rne": {
+        "nom": "BOUAMRANE",
+        "prenom": "Karim",
+        "date_naissance": "1973-02-21"
+      },
+      "preuve": {
+        "commune": "Saint-Ouen-Sur-Seine",
+        "source": "https://fr.wikipedia.org/wiki/Karim_Bouamrane",
+        "fait_verifie": "conseiller municipal de Saint-Ouen-sur-Seine 1995-2014, maire depuis 2020, réélu en 2026 ; conseiller départemental de Seine-Saint-Denis depuis 2021"
+      },
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-09-14"
+    },
+    "fabien-verdier": {
+      "appariement": "confirme",
+      "rne": {
+        "nom": "VERDIER",
+        "prenom": "Fabien",
+        "date_naissance": "1981-04-16"
+      },
+      "preuve": {
+        "commune": "Châteaudun",
+        "source": "https://www.data.gouv.fr/datasets/repertoire-national-des-elus-1",
+        "fait_verifie": "conseiller municipal de Châteaudun et conseiller communautaire d'Eure-et-Loir ; une seule personne de ce nom et prénom dans les neuf fichiers"
+      },
+      "note": "Pas de page Wikipédia : l'appariement ne repose que sur l'unicité du couple (nom, prénom) au RNE et sur la relecture.",
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-09-14"
+    },
+    "marine-tondelier": {
+      "appariement": "confirme",
+      "rne": {
+        "nom": "TONDELIER",
+        "prenom": "Marine",
+        "date_naissance": "1986-08-23"
+      },
+      "preuve": {
+        "commune": "Hauts-De-France",
+        "source": "https://fr.wikipedia.org/wiki/Marine_Tondelier",
+        "fait_verifie": "conseillère régionale des Hauts-de-France depuis le 02/07/2021 ; conseillère municipale d'Hénin-Beaumont depuis 2014, mandat achevé en mars 2026"
+      },
+      "note": "Le seul TONDELIER des conseillers municipaux en cours est Jean-Claude, à Sissy : chercher là aurait conclu « aucun mandat ». C'est le fichier régional qui la porte.",
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-09-14"
+    },
+    "nathalie-arthaud": {
+      "appariement": "ecarte",
+      "ligne_ecartee": {
+        "nom": "ARTHAUD",
+        "prenom": "Nathalie",
+        "date_naissance": "1965-05-25",
+        "commune": "Limey-Remenauville"
+      },
+      "motif": "homonyme",
+      "preuve": {
+        "source": "https://fr.wikipedia.org/wiki/Nathalie_Arthaud",
+        "fait_verifie": "la candidate a été élue conseillère municipale de Vaulx-en-Velin (Rhône) en 2008, puis s'est implantée en Seine-Saint-Denis ; « Limey » n'apparaît pas dans sa biographie, et la date de naissance de la ligne RNE ne correspond pas à la sienne"
+      },
+      "note": "Une seule correspondance ne vaut pas appariement : c'est exactement la forme du faux positif de #885. Son mandat réel, commencé en 2008, n'est porté par aucun jeu accessible.",
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-09-14"
+    },
+    "francois-asselineau": {
+      "appariement": "aucun_mandat_trouve",
+      "preuve": {
+        "source": "https://fr.wikipedia.org/wiki/Fran%C3%A7ois_Asselineau",
+        "fait_verifie": "aucun mandat local dans sa biographie ; les mentions de « maire » y désignent les élus qu'il a démarchés pour ses parrainages"
+      },
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-09-14"
+    },
+    "sylvain-durif": {
+      "appariement": "aucun_mandat_trouve",
+      "preuve": {
+        "source": "https://fr.wikipedia.org/wiki/Sylvain_Durif",
+        "fait_verifie": "aucun mandat local ; la seule mention de « maire » désigne celui de Bugarach, qui parle de lui"
+      },
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-09-14"
+    },
+    "anasse-kazib": {
+      "appariement": "aucun_mandat_trouve",
+      "preuve": {
+        "source": "https://fr.wikipedia.org/wiki/Anasse_Kazib",
+        "fait_verifie": "aucune occurrence de mandat local dans sa biographie"
+      },
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-09-14"
+    },
+    "francis-lalanne": {
+      "appariement": "aucun_mandat_trouve",
+      "preuve": {
+        "source": "https://fr.wikipedia.org/wiki/Francis_Lalanne",
+        "fait_verifie": "aucun mandat local ; la mention de « conseiller régional » désigne le dirigeant d'une liste sur laquelle il a figuré"
+      },
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-09-14"
+    },
+    "selma-labib": {
+      "appariement": "aucun_mandat_trouve",
+      "corroboration": "absente",
+      "preuve": {
+        "source": "https://www.data.gouv.fr/datasets/repertoire-national-des-elus-1",
+        "fait_verifie": "aucune ligne dans les neuf fichiers du RNE"
+      },
+      "note": "Aucune page Wikipédia : l'absence n'est établie que par le RNE, et rien ne la corrobore. Ce n'est pas le même silence que pour les quatre ci-dessus.",
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-09-14"
+    },
+    "benoit-mathieu": {
+      "appariement": "aucun_mandat_trouve",
+      "corroboration": "absente",
+      "preuve": {
+        "source": "https://www.data.gouv.fr/datasets/repertoire-national-des-elus-1",
+        "fait_verifie": "aucune ligne dans les neuf fichiers du RNE ; les 400 MATHIEU du fichier des conseillers municipaux tombent à zéro dès que le prénom est joint"
+      },
+      "note": "Aucune page Wikipédia : absence non corroborée, comme selma-labib.",
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-09-14"
+    }
+  }
+}

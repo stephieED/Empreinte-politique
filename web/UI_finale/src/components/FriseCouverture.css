@@ -1,0 +1,344 @@
+/* La frise de couverture — UNE seule catégorie de fait porté, dans la teinte
+   de son institution. Les valeurs sont celles de `CandidateProfile.css`
+   (`--parl`, `--gouv`, `--pe`) : le lecteur apprend le code une fois, sur la
+   fiche, et le retrouve ici. Les trois teintes de population sont retirées.
+   → docs/decisions/frise-couverture-donnees-collectees-328.md */
+.fc {
+  --fc-an: #803060;
+  --fc-gouv: #85510d;
+  --fc-pe: #003399;
+  /* SARCELLE DU SÉNAT — retenue le 15/09/2026, et RETENUE MALGRÉ un critère.
+     `DESIGN_SYSTEM.md` §2 demande 72° d'écart de teinte entre institutions de
+     même rang ; la sarcelle est à 67° du bleu de l'Union. Ce qui a emporté la
+     décision est la mesure qui compte pour un lecteur : sous daltonisme, la
+     paire Europe/Sénat est LA PLUS SÉPARÉE des six — ΔE 33,0 en protanopie,
+     29,7 en deutéranopie, 29,5 en tritanopie, quand Assemblée/Gouvernement
+     tombe à 10,4 et Assemblée/Europe à 11,2. Ajouter le Sénat ne dégrade rien.
+     Les 67° disent « elles se lisent comme parentes » ; chaque institution
+     portant son titre en capitales au-dessus de ses lignes, la parenté
+     n'induit pas de hiérarchie. Ne pas la retirer au nom du seul critère : il
+     a été pesé. */
+  --fc-senat: #169E9E;
+  /* Le gris des mandats locaux sur la fiche candidat (`--local`, #922). */
+  --fc-local: #9a958d;
+  --fc-rule: #e7e4df;
+  --fc-rule-fin: #f0eeeb;
+  --fc-hachure: #eae6e0;
+  --fc-sous-ink: #5b5766;
+
+  background: var(--card);
+  border: 1px solid var(--fc-rule);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.fc-tete {
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--fc-rule-fin);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.fc-tete b {
+  font-size: 15px;
+}
+
+.fc-tete span {
+  font-size: 12.5px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Le corps défile horizontalement sur petit écran plutôt que d'écraser le rail :
+   une frise à 120 px de large ne dit plus rien, et le reste de la page n'a pas
+   à défiler avec elle.
+   La largeur minimale vit sur le CONTENEUR des lignes, jamais sur chacune : la
+   posée sur l'axe, dont les marges valent déjà 370 px, elle le rendait 8 px
+   plus large que les rails — et une graduation qui ne tombe pas sur le rail
+   décale toutes les lectures. */
+.fc-corps {
+  padding: 18px 20px 8px;
+  overflow-x: auto;
+}
+
+.fc-lignes {
+  min-width: 640px;
+}
+
+/* L'AXE ET LES RAILS PARTAGENT LA MÊME BOÎTE : les marges reprennent les
+   colonnes de .fc-piste, gouttières comprises. Une graduation qui ne tombe pas
+   sur le rail décale toutes les lectures. */
+.fc-axe {
+  position: relative;
+  height: 18px;
+  margin: 0 108px 6px 262px;
+  border-bottom: 1px solid var(--fc-rule);
+}
+
+.fc-axe span {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font-size: 10.5px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.fc-piste {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr) 96px;
+  gap: 0 12px;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.fc-nom {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--fc-sous-ink);
+  padding-left: 16px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.fc-piste--liste .fc-nom {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  padding-left: 0;
+}
+
+.fc-bouton {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  width: 100%;
+}
+
+.fc-bouton:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.fc-chevron {
+  font-size: 9px;
+  color: var(--muted);
+  transition: transform 0.12s ease;
+}
+
+.fc-chevron--ouvert {
+  transform: rotate(90deg);
+}
+
+.fc-rail {
+  position: relative;
+  height: 22px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: linear-gradient(var(--fc-rule-fin), var(--fc-rule-fin)) center / 100% 1px no-repeat;
+}
+
+.fc-rail--nu {
+  background: none;
+}
+
+/* UNE SEULE PISTE. Les segments des différentes fiches vivent dans le MÊME
+   rail, à la même hauteur, dans la même encre : la frise dit ce que le dépôt
+   porte, pas de quelle fiche le trait vient — le survol le nomme encore. */
+.fc-couche {
+  position: absolute;
+  inset: 0;
+}
+
+.fc-seg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+  background: var(--fc-inst, var(--ink));
+}
+
+.fc-groupe--AN { --fc-inst: var(--fc-an); }
+.fc-groupe--gouvernement { --fc-inst: var(--fc-gouv); }
+.fc-groupe--PE { --fc-inst: var(--fc-pe); }
+.fc-groupe--Senat { --fc-inst: var(--fc-senat); }
+/* Les mandats locaux, dans le gris qu'ils portent sur la fiche candidat
+   (`--local`, #922). */
+.fc-seg--local { background: var(--fc-local); }
+
+/* LE SEGMENT CONTINUE AVANT L'AXE. Le Sénat porte un mandat depuis octobre
+   1986, quatorze ans avant `AXE_DEBUT`. Un bord arrondi collé au zéro dirait
+   « commence en 2000 » — l'erreur exacte que #940 vient de corriger sur la
+   borne de l'Assemblée. Le bord perd son arrondi et porte un liseré : le trait
+   est sectionné, pas terminé. */
+.fc-seg--tronque {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: 3px solid var(--card);
+  box-shadow: inset 3px 0 0 rgba(0, 0, 0, 0.28);
+}
+
+/* Le nom d'une liste sans chevron : aligné sur celles qui en ont un. */
+.fc-nom-nu {
+  padding-left: 14px;
+}
+
+/* CE QUE LA SOURCE NE DONNE PAS — hachure discrète, sans contour : c'est un
+   fait sur l'institution, immuable, et rien ne se joue là. */
+.fc-horssource {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+  background: repeating-linear-gradient(45deg, var(--fc-hachure) 0 3px, transparent 3px 8px);
+}
+
+/* CE QUI MANQUE DE NOTRE FAIT — jaune signal, avec un filet d'encre pour qu'il
+   tienne sur blanc (le jaune seul est à 1,05:1). L'accent marque l'ACTION dans
+   ce système : un trou de notre côté est exactement une action, et ça ne juge
+   personne — c'est un fait sur NOUS. */
+.fc-noncollecte {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 2px;
+  background: repeating-linear-gradient(45deg, var(--accent) 0 5px, #fbffd6 5px 10px);
+  box-shadow: inset 0 0 0 1.5px #a9c400;
+}
+
+.fc-n {
+  text-align: right;
+  font-size: 12.5px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.fc-sous .fc-n {
+  font-size: 11.5px;
+}
+
+.fc-n em {
+  display: block;
+  font-style: normal;
+  font-size: 10.5px;
+  color: #a29ead;
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
+.fc-aucune {
+  font-size: 11.5px;
+}
+
+/* `[hidden]` ne suffit pas sur un `display: grid` : la règle d'agent
+   utilisateur perd contre la nôtre, et les replis s'ouvriraient tous. */
+.fc-sous {
+  display: grid;
+  gap: 2px;
+  padding: 2px 0 8px;
+}
+
+.fc-sous[hidden] {
+  display: none;
+}
+
+.fc-sous .fc-rail {
+  height: 14px;
+}
+
+.fc-groupe {
+  padding: 2px 0 10px;
+}
+
+.fc-groupe + .fc-groupe {
+  border-top: 1px solid var(--fc-rule-fin);
+  padding-top: 10px;
+}
+
+.fc-groupe-titre {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fc-sous-ink);
+  padding: 4px 0 6px;
+}
+
+.fc-piste--seule .fc-groupe-titre {
+  padding: 0;
+  align-self: center;
+}
+
+.fc-legende {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 22px;
+  padding: 12px 20px 16px;
+  border-top: 1px solid var(--fc-rule-fin);
+  font-size: 11.5px;
+  color: var(--fc-sous-ink);
+  margin: 0;
+}
+
+.fc-cle {
+  display: inline-block;
+  width: 22px;
+  height: 11px;
+  border-radius: 2px;
+  vertical-align: -1px;
+  margin-right: 6px;
+}
+
+/* Quatre teintes depuis #885 : la clé montre CE QUI EST À L'ÉCRAN, et le Sénat
+   y est une institution comme les trois autres. */
+.fc-cle--collecte {
+  width: 55px;
+  /* Le gris des mandats locaux y entre avec leur ligne (16/09/2026) : la clé
+     montre les teintes qui sont à l'écran. */
+  background: linear-gradient(
+    90deg,
+    var(--fc-an) 0 20%,
+    var(--fc-gouv) 20% 40%,
+    var(--fc-pe) 40% 60%,
+    var(--fc-senat) 60% 80%,
+    var(--fc-local) 80%
+  );
+}
+
+/* LE JAUNE N'EST PLUS EMPLOYÉ, et sa clé est retirée de la légende (#885,
+   15/09/2026). Il ne servait qu'au Sénat, et il y était FAUX depuis que ses
+   appartenances sont collectées : il dit « nous ne l'avons pas fait », quand
+   aucune des 93 tables de l'export sénatorial ne porte de scrutin, de compte
+   rendu, d'amendement ni de texte. Une légende décrit ce qui est à l'écran ;
+   une clé sans occurrence se lit comme un élément qu'on n'a pas su trouver.
+
+   La RÈGLE, elle, reste : un trou de NOTRE fait se dit en jaune, un fait sur la
+   source en hachure. Le style est gardé pour le jour où le premier cas
+   réapparaît — il revient alors avec sa clé, ce qui est une ligne de code. */
+.fc-cle--nonc {
+  background: repeating-linear-gradient(45deg, var(--accent) 0 5px, #fbffd6 5px 10px);
+  box-shadow: inset 0 0 0 1.5px #a9c400;
+}
+
+.fc-cle--hors {
+  background: repeating-linear-gradient(45deg, var(--fc-hachure) 0 3px, transparent 3px 8px);
+}
+
+/* PAS DE VARIANTE SOMBRE ICI. `index.css` déclare `color-scheme: light` sur
+   `:root` : l'interface est claire, point. Un composant qui bascule seul en
+   sombre poserait une figure foncée au milieu d'une page claire — c'est ce que
+   fait déjà le bloc `.cp-gc` de CandidateProfile.css, et ce n'est pas un motif
+   à reproduire. */
+
+@media (prefers-reduced-motion: reduce) {
+  .fc-chevron {
+    transition: none;
+  }
+}

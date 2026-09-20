@@ -1,0 +1,2303 @@
+{
+  "schema_version": "1",
+  "type_document": "profil_gouvernement",
+  "gouvernement_id": "gouvernement:CAZENEUVE",
+  "nom": "Gouvernement Cazeneuve",
+  "premier_ministre": {
+    "nom": "Bernard Cazeneuve",
+    "acteur_ref": "PA785",
+    "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+  },
+  "periode": {
+    "debut": "2016-12-07",
+    "fin": "2017-05-17",
+    "actif": false
+  },
+  "membres": [
+    {
+      "membre_id": "alain-vidalies",
+      "nom": "Alain Vidalies",
+      "portefeuille": "Secrétariat d'État, auprès du ministère de l'environnement, de l'énergie et de la mer, chargé des relations internationales sur le climat, chargé des transports, de la mer et de la pêche",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "andre-vallini",
+      "nom": "André Vallini",
+      "portefeuille": "Secrétariat d'État, auprès du Premier ministre, chargé des relations avec le Parlement",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "annick-girardin",
+      "nom": "Annick Girardin",
+      "portefeuille": "Ministère de la fonction publique",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "audrey-azoulay",
+      "nom": "Audrey Azoulay",
+      "portefeuille": "Ministère de la culture et de la communication",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "axelle-lemaire",
+      "nom": "Axelle Lemaire",
+      "portefeuille": "Secrétariat d'État, auprès du ministère de l'économie et des finances, chargé du numérique et de l'innovation",
+      "debut": "2016-12-07",
+      "fin": "2017-02-27",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "barbara-pompili",
+      "nom": "Barbara Pompili",
+      "portefeuille": "Secrétariat d'État, auprès du ministère de l'environnement, de l'énergie et de la mer, chargé des relations internationales sur le climat, chargé de la biodiversité",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "bernard-cazeneuve",
+      "nom": "Bernard Cazeneuve",
+      "portefeuille": "Premier ministre",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "bruno-le-roux",
+      "nom": "Bruno Le Roux",
+      "portefeuille": "Ministère de l'intérieur",
+      "debut": "2016-12-07",
+      "fin": "2017-03-21",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "christian-eckert",
+      "nom": "Christian Eckert",
+      "portefeuille": "Secrétariat d'État, auprès du ministère de l'économie et des finances, chargé du budget et des comptes publics",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "christophe-sirugue",
+      "nom": "Christophe Sirugue",
+      "portefeuille": "Secrétariat d'État, auprès du ministère de l'économie et des finances, chargé de l'industrie",
+      "debut": "2016-12-07",
+      "fin": "2017-02-27",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "christophe-sirugue",
+      "nom": "Christophe Sirugue",
+      "portefeuille": "Secrétariat d'État, auprès du ministère de l'économie et des finances, chargé de l'industrie, du numérique et de l'innovation",
+      "debut": "2017-02-28",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "clotilde-valter",
+      "nom": "Clotilde Valter",
+      "portefeuille": "Secrétariat d'État, auprès du ministère du travail, de l'emploi, de la formation professionnelle et du dialogue social, chargé de la formation professionnelle et de l’apprentissage",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "emmanuelle-cosse",
+      "nom": "Emmanuelle Cosse",
+      "portefeuille": "Ministère du logement et de l’habitat durable",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "ericka-bareigts",
+      "nom": "Ericka Bareigts",
+      "portefeuille": "Ministère des outre-mer",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "estelle-grelier",
+      "nom": "Estelle Grelier",
+      "portefeuille": "Secrétariat d'État, auprès du ministère de l'aménagement du territoire, de la ruralité et des collectivités territoriales, chargé des collectivités territoriales",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "harlem-desir",
+      "nom": "Harlem Désir",
+      "portefeuille": "Secrétariat d'État, auprès du ministère des affaires étrangères et du développement international, chargé des affaires européennes",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "helene-geoffroy",
+      "nom": "Hélène Geoffroy",
+      "portefeuille": "Secrétariat d'État, auprès du ministère de la ville, de la jeunesse et des sports, chargé de la ville",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "jean-jacques-urvoas",
+      "nom": "Jean-Jacques Urvoas",
+      "portefeuille": "Ministère de la justice",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "jean-marc-ayrault",
+      "nom": "Jean-Marc Ayrault",
+      "portefeuille": "Ministère des affaires étrangères et du développement international",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "jean-marc-todeschini",
+      "nom": "Jean-Marc Todeschini",
+      "portefeuille": "Secrétariat d'État, auprès du ministère de la défense, chargé des anciens combattants et de la mémoire",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "jean-marie-le-guen",
+      "nom": "Jean-Marie Le Guen",
+      "portefeuille": "Secrétariat d'État, auprès du ministère des affaires étrangères et du développement international, chargé du développement et de la francophonie",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "jean-michel-baylet",
+      "nom": "Jean-Michel Baylet",
+      "portefeuille": "Ministère de l'aménagement du territoire, de la ruralité et des collectivités territoriales",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "jean-vincent-place",
+      "nom": "Jean-Vincent Placé",
+      "portefeuille": "Secrétariat d'État, auprès du Premier ministre, chargé de la réforme de l'État et de la simplification",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "jean-yves-le-drian",
+      "nom": "Jean-Yves Le Drian",
+      "portefeuille": "Ministère de la défense",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "juliette-meadel",
+      "nom": "Juliette Méadel",
+      "portefeuille": "Secrétariat d'État, auprès du Premier ministre, chargé de l’aide aux victimes",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "laurence-rossignol",
+      "nom": "Laurence Rossignol",
+      "portefeuille": "Ministère des familles, de l'enfance et des droits des femmes",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "marisol-touraine",
+      "nom": "Marisol Touraine",
+      "portefeuille": "Ministère des affaires sociales et de la santé",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "martine-pinville",
+      "nom": "Martine Pinville",
+      "portefeuille": "Secrétariat d'État, auprès du ministère de l'économie et des finances, chargé du commerce, de l'artisanat, de la consommation et de l'économie sociale et solidaire",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "matthias-fekl",
+      "nom": "Matthias Fekl",
+      "portefeuille": "Secrétariat d'État, auprès du ministère des affaires étrangères et du développement international, chargé du commerce extérieur, de la promotion du tourisme et des Français de l'étranger",
+      "debut": "2016-12-07",
+      "fin": "2017-03-21",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "matthias-fekl",
+      "nom": "Matthias Fekl",
+      "portefeuille": "Ministère de l'intérieur",
+      "debut": "2017-03-22",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "michel-sapin",
+      "nom": "Michel Sapin",
+      "portefeuille": "Ministère de l'économie et des finances",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "myriam-el-khomri",
+      "nom": "Myriam El Khomri",
+      "portefeuille": "Ministère du travail, de l'emploi, de la formation professionnelle et du dialogue social",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "najat-vallaud-belkacem",
+      "nom": "Najat Vallaud-Belkacem",
+      "portefeuille": "Ministère de l'éducation nationale, de l'enseignement supérieur et de la recherche",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "pascale-boistard",
+      "nom": "Pascale Boistard",
+      "portefeuille": "Secrétariat d'État, auprès du ministère des affaires sociales et de la santé, chargé des personnes âgées et de l'autonomie",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "patrick-kanner",
+      "nom": "Patrick Kanner",
+      "portefeuille": "Ministère de la ville, de la jeunesse et des sports",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "segolene-neuville",
+      "nom": "Ségolène Neuville",
+      "portefeuille": "Secrétariat d'État, auprès du ministère des affaires sociales et de la santé, chargé des personnes handicapées et de la lutte contre l'exclusion",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "segolene-royal",
+      "nom": "Ségolène Royal",
+      "portefeuille": "Ministère de l'environnement, de l'énergie et de la mer, chargé des relations internationales sur le climat",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "stephane-le-foll",
+      "nom": "Stéphane Le Foll",
+      "portefeuille": "Ministère de l'agriculture, de l'agroalimentaire et de la forêt",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "thierry-braillard",
+      "nom": "Thierry Braillard",
+      "portefeuille": "Secrétariat d'État, auprès du ministère de la ville, de la jeunesse et des sports, chargé des sports",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    },
+    {
+      "membre_id": "thierry-mandon",
+      "nom": "Thierry Mandon",
+      "portefeuille": "Secrétariat d'État, auprès du ministère de l'éducation nationale, de l'enseignement supérieur et de la recherche, chargé de l'enseignement supérieur et de la recherche",
+      "debut": "2016-12-07",
+      "fin": "2017-05-17",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
+    }
+  ],
+  "textes": [
+    {
+      "dossier_id": "DLR5L14N35815",
+      "titre": "Traités et convention : sécurité de la navigation maritime",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-05-10",
+      "date_dernier_evenement": "2017-06-28",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/protocole_securite_navigation_maritime",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35814",
+      "titre": "Economie : création de l’établissement public Paris La Défense",
+      "statut": "adopte_cmp",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-05-10",
+      "date_dernier_evenement": "2017-12-25",
+      "sort_49_3": false,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2017-717",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59051",
+        "sigle": "Lois",
+        "nom": "Commission des lois constitutionnelles, de la législation et de l'administration générale de la République",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35816",
+      "titre": "Affaires étrangères : coopération en matière de sécurité intérieure avec la Turquie",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-05-10",
+      "date_dernier_evenement": "2017-05-10",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/securite_interieure_cooperation_turquie",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35794",
+      "titre": "Questions sociales et santé : fonctionnement des ordres des professions de santé",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-05-03",
+      "date_dernier_evenement": "2017-05-03",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2017-644",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35774",
+      "titre": "Travail : exercice en commun de plusieurs professions libérales",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-04-27",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2016-394",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35772",
+      "titre": "Transports : informations relatives au permis de conduire",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-04-27",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2016-460",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35775",
+      "titre": "Transports : gares routières",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-04-27",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2016-79",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35778",
+      "titre": "Transports : communication du solde de points affecté au permis de conduire",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-04-27",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2015-1241",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35773",
+      "titre": "Transports : Canal Seine-Nord Europe",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-04-27",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2016-489",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35780",
+      "titre": "Sports : code mondial antidopage",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-04-27",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2015-1207",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35785",
+      "titre": "Recherche : modification de la partie législative du code de la recherche",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-04-27",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2014-135",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35779",
+      "titre": "Questions sociales et santé : portage salarial",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-04-27",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2015-380",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35817",
+      "titre": "Partie législative du code de la sécurité intérieure",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-05-09",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnances-code_securite_interieure",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35783",
+      "titre": "Outre-mer : enseignement supérieur en outre-mer",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-04-27",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2015-24",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35767",
+      "titre": "Justice : répression en matière maritime",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-04-27",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2016-1315",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35770",
+      "titre": "Justice : commissaire de justice",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-04-27",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2016-728",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35768",
+      "titre": "Environnement : évaluation environnementale",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-06-28",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnances-2016-1058_2016-1060",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35820",
+      "titre": "Environnement : consultation locale sur les projets susceptibles ayant une incidence sur l'environnement",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-04-27",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2016-488",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35776",
+      "titre": "Environnement : bilans d'émission de gaz à effet de serre",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-04-27",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2015-1737",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35789",
+      "titre": "Education : Conseil supérieur de l’éducation",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-04-27",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2014-691",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35798",
+      "titre": "Affaires étrangères : coopération transfrontalière en matière policière et douanière avec Andorre",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-04-27",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/cooperation_police_douanes_andorre",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35784",
+      "titre": "Affaires étrangères : coopération technique en matière de sécurité civile avec Andorre",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-09-14",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/accord_securite_civile_andorre",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35771",
+      "titre": "Affaires étrangères : convention d’extradition avec le Cambodge",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-10-23",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/convention_extradition_royaume_cambodge",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35766",
+      "titre": "Affaires étrangères : convention avec l'Algérie sur la sécurité sociale",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-04-27",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/convention_securite_sociale_algerie",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35777",
+      "titre": "Affaires étrangères : accord avec la République de Maurice sur les investissements",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-10-23",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/accord_investissements_maurice",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35769",
+      "titre": "Affaires étrangères : accord avec la Jordanie sur le statut de leurs forces",
+      "statut": "adopte",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-10-18",
+      "sort_49_3": false,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/accord_statut_forces_jordanie",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59047",
+        "sigle": "Affaires étrangères",
+        "nom": "Commission des affaires étrangères",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35797",
+      "titre": "Affaires étrangères : accord avec la Bosnie-Herzégovine sur la mobilité des jeunes",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-10-23",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/accord_mobilite_jeunes_bosnie",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35782",
+      "titre": "Affaires étrangères : accord avec la Bosnie sur la réadmission des personnes en séjour irrégulier",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-10-24",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/accord_bosnie_personnes_sejour_irregulier",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35781",
+      "titre": "Affaires étrangères : accord avec l'Autriche sur les personnes en situation irrégulière",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-27",
+      "date_dernier_evenement": "2017-10-23",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/accord_personnes_situation_irreguliere_autriche",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35764",
+      "titre": "Questions sociales et santé : avantages offerts par les personnes fabriquant ou commercialisant des produits ou des prestations de santé",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-26",
+      "date_dernier_evenement": "2017-04-26",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2017-49",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35763",
+      "titre": "Questions sociales et santé : données à caractère personnel",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-19",
+      "date_dernier_evenement": "2017-04-19",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnances_2017-27-2017-29",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35751",
+      "titre": "Prise en charge de la rémunération des personnels des établissements de santé mis à disposition des inspections générales interministérielles et abrogeant les dispositions relatives aux conseillers généraux des établissements de santé et l’ordonnance n°20",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-19",
+      "date_dernier_evenement": "2017-04-19",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/personnels_etablissementsdesante_misadisposition",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35765",
+      "titre": "DOSSIER : projet de loi ratifiant l’ordonnance n° 2017-192 du 16 février 2017 relative à l’adaptation des dispositions législatives relatives aux ordres des professions de santé",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-19",
+      "date_dernier_evenement": "2017-04-19",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2017-192",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35762",
+      "titre": "Agriculture : compte personnel d’activité",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-19",
+      "date_dernier_evenement": "2017-04-19",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance-2017-43",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35746",
+      "titre": "Recherche : données couvertes par le secret médical ou le secret industriel pour le compte de l'Autorité de sûreté nucléaire",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-12",
+      "date_dernier_evenement": "2017-04-12",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2017-45",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35747",
+      "titre": "Questions sociales et santé : Haute Autorité de santé",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-12",
+      "date_dernier_evenement": "2017-04-12",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2017-84",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35748",
+      "titre": "Fonction publique : compte personnel d’activité, formation, santé et sécurité au travail",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-12",
+      "date_dernier_evenement": "2017-04-12",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2017-53",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35745",
+      "titre": "Logement et urbanisme : association pour l’accès aux garanties locatives et association foncière logement",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-05",
+      "date_dernier_evenement": "2017-04-05",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2017-52",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35744",
+      "titre": "Environnement : autorisation environnementale",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-05",
+      "date_dernier_evenement": "2017-04-05",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2017-80",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35743",
+      "titre": "Affaires étrangères : convention d’entraide judiciaire avec l'Algérie",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-04-05",
+      "date_dernier_evenement": "2017-04-05",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/convention_judiciaire_algerie",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35720",
+      "titre": "Questions sociales et santé : profession de physicien médical",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-30",
+      "date_dernier_evenement": "2017-06-28",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnances_2017-48_2017-50",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35721",
+      "titre": "Questions sociales et santé : mise en oeuvre du Règlement sanitaire international de 2005",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-30",
+      "date_dernier_evenement": "2017-03-30",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2017-44",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35716",
+      "titre": "Questions sociales et santé : mise en cohérence des textes au regard de la loi de modernisation de notre système de santé",
+      "statut": "navette_en_cours",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-30",
+      "date_dernier_evenement": "2017-06-28",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnances_2017-31_2016-41",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35719",
+      "titre": "Questions sociales et santé : harmonisation des dispositions législatives relatives aux vigilances sanitaires",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-30",
+      "date_dernier_evenement": "2017-03-30",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2017-51",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35717",
+      "titre": "Questions sociales et santé : accès des femmes et des hommes au sein des conseils d'administration et des conseils de surveillance des établissements et organismes",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-30",
+      "date_dernier_evenement": "2017-03-30",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2017-30",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35718",
+      "titre": "Affaires étrangères : modification de la convention fiscale entre la France et le Portugal",
+      "statut": "adopte",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-30",
+      "date_dernier_evenement": "2017-10-18",
+      "sort_49_3": false,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/modification_convention_fiscale_portugal",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59047",
+        "sigle": "Affaires étrangères",
+        "nom": "Commission des affaires étrangères",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35706",
+      "titre": "Questions sociales et santé : sécurité sanitaire",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-22",
+      "date_dernier_evenement": "2017-03-22",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2017-9",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35708",
+      "titre": "Questions sociales et santé : lutte contre le tabagisme et extension à certaines collectivités d'outre-mer",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-22",
+      "date_dernier_evenement": "2017-03-22",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1812",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35707",
+      "titre": "Police et sécurité : lutte contre le blanchiment et le financement du terrorisme",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-22",
+      "date_dernier_evenement": "2017-03-22",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1635",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35704",
+      "titre": "Travail : reconnaissance des qualifications professionnelles des professions réglementées",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-15",
+      "date_dernier_evenement": "2017-03-15",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1809",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35701",
+      "titre": "Culture : gestion collective du droit d'auteur",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-15",
+      "date_dernier_evenement": "2017-03-15",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1823",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35702",
+      "titre": "Affaires étrangères : coopération en matière de défense avec le Nigéria",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-15",
+      "date_dernier_evenement": "2017-03-15",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/cooperation_defense_nigeria",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35703",
+      "titre": "Affaires étrangères : accord avec le Portugal et le Luxembourg sur la sécurité civile",
+      "statut": "adopte",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-15",
+      "date_dernier_evenement": "2017-10-18",
+      "sort_49_3": false,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/accords_portugal_luxembourg_securite_civile",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59047",
+        "sigle": "Affaires étrangères",
+        "nom": "Commission des affaires étrangères",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35693",
+      "titre": "Questions sociales et santé : établissements de l’article 2 de la loi relative à la fonction publique hospitalière",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-08",
+      "date_dernier_evenement": "2017-03-08",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2017-10",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35692",
+      "titre": "Economie : réforme du dispositif de gel des avoirs",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-08",
+      "date_dernier_evenement": "2017-03-08",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1575",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35689",
+      "titre": "Economie : accès à un compte de paiement assorti de prestations de base",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-08",
+      "date_dernier_evenement": "2017-03-08",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1808",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35676",
+      "titre": "Transports : aptitude médicale à la navigation des gens de mer et à la lutte contre l'alcoolisme en mer",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-01",
+      "date_dernier_evenement": "2017-03-01",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1686",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35677",
+      "titre": "Questions sociales et santé : pharmacies à usage intérieur et groupements de coopération sanitaire",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-03-01",
+      "date_dernier_evenement": "2017-03-01",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnances_2016-1729_2017-28",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35679",
+      "titre": "Outre-mer : protection du salaire à Mayotte, au titre des privilèges et de l’assurance",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-02-24",
+      "date_dernier_evenement": "2017-02-24",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1580",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35678",
+      "titre": "Outre-mer : application à Mayotte de l'aide à l'activité partielle et du contrat de génération",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-02-24",
+      "date_dernier_evenement": "2017-02-24",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1579",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35602",
+      "titre": "Energie : réseaux fermés de distribution",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-02-15",
+      "date_dernier_evenement": "2017-02-15",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1725",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35607",
+      "titre": "Agriculture et pêche : espaces maritimes relevant de la souveraineté ou de la juridiction de la République française",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-02-15",
+      "date_dernier_evenement": "2017-02-15",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1687",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35563",
+      "titre": "Justice : décision d’enquête européenne en matière pénale",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-02-08",
+      "date_dernier_evenement": "2017-02-08",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1636",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35562",
+      "titre": "Affaires étrangères : transfèrement des personnes condamnées la France et le Pérou",
+      "statut": "adopte",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-02-08",
+      "date_dernier_evenement": "2017-12-20",
+      "sort_49_3": false,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/convention_perou_transferement_personnes_condamnees",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59047",
+        "sigle": "Affaires étrangères",
+        "nom": "Commission des affaires étrangères",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35549",
+      "titre": "Transports : expérimentation de véhicules à délégation de conduite",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-02-01",
+      "date_dernier_evenement": "2017-02-01",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1057",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35546",
+      "titre": "Affaires étrangères : convention avec l'Algérie sur les soins de santé programmés dispensés en France aux ressortissants algériens",
+      "statut": "retire",
+      "chambre_depot_initial": "AN",
+      "date_depot": "2017-02-01",
+      "date_dernier_evenement": "2017-04-20",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        },
+        {
+          "acteur_ref": "PA328",
+          "membre_id": "jean-marc-ayrault"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/soins_programmes_ressortissants_algeriens",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59047",
+        "sigle": "Affaires étrangères",
+        "nom": "Commission des affaires étrangères",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35505",
+      "titre": "Transports : répression en matière maritime",
+      "statut": "retire",
+      "chambre_depot_initial": "AN",
+      "date_depot": "2017-01-11",
+      "date_dernier_evenement": "2017-04-20",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        },
+        {
+          "acteur_ref": "PA2650",
+          "membre_id": "segolene-royal"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1315",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59051",
+        "sigle": "Lois",
+        "nom": "Commission des lois constitutionnelles, de la législation et de l'administration générale de la République",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35490",
+      "titre": "Travail : création de l'établissement public chargé de la formation professionnelle des adultes",
+      "statut": "adopte",
+      "chambre_depot_initial": "AN",
+      "date_depot": "2017-01-04",
+      "date_dernier_evenement": "2017-02-21",
+      "sort_49_3": false,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        },
+        {
+          "acteur_ref": "PA642983",
+          "membre_id": "myriam-el-khomri"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1519",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO420120",
+        "sigle": "Affaires sociales",
+        "nom": "Commission des affaires sociales",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35494",
+      "titre": "Transports : communication des données de la circulation routière",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-01-04",
+      "date_dernier_evenement": "2017-01-04",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1018",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35493",
+      "titre": "Logement : réorganisation de la participation des employeurs à l'effort de construction",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2017-01-04",
+      "date_dernier_evenement": "2017-01-04",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1408",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35489",
+      "titre": "Fonction publique : partie législative du code des juridictions financières",
+      "statut": "adopte",
+      "chambre_depot_initial": "AN",
+      "date_depot": "2017-01-04",
+      "date_dernier_evenement": "2017-08-08",
+      "sort_49_3": false,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1360",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59051",
+        "sigle": "Lois",
+        "nom": "Commission des lois constitutionnelles, de la législation et de l'administration générale de la République",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35491",
+      "titre": "Fonction publique : dispositions statutaires concernant le Conseil d’Etat et les magistrats des tribunaux administratifs et cours administratives d’appel",
+      "statut": "depose",
+      "chambre_depot_initial": "AN",
+      "date_depot": "2017-01-04",
+      "date_dernier_evenement": "2017-01-04",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        },
+        {
+          "acteur_ref": "PA331594",
+          "membre_id": "jean-jacques-urvoas"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1365",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59051",
+        "sigle": "Lois",
+        "nom": "Commission des lois constitutionnelles, de la législation et de l'administration générale de la République",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35469",
+      "titre": "Police et sécurité : sécurité publique",
+      "statut": "adopte_cmp",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2016-12-21",
+      "date_dernier_evenement": "2017-02-28",
+      "sort_49_3": false,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/securite_publique",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59051",
+        "sigle": "Lois",
+        "nom": "Commission des lois constitutionnelles, de la législation et de l'administration générale de la République",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35465",
+      "titre": "Economie : suivi du financement des entreprises par la Banque de France",
+      "statut": "depose",
+      "chambre_depot_initial": "AN",
+      "date_depot": "2016-12-21",
+      "date_dernier_evenement": "2016-12-21",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        },
+        {
+          "acteur_ref": "PA2679",
+          "membre_id": "michel-sapin"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1022",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59048",
+        "sigle": "Finances",
+        "nom": "Commission des finances, de l'économie générale et du contrôle budgétaire",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35507",
+      "titre": "Collectivités territoriales : règles financières, fiscales et comptables applicables à la Corse",
+      "statut": "adopte",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2016-12-21",
+      "date_dernier_evenement": "2017-03-07",
+      "sort_49_3": false,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnances_2016-1561_2016-1562_2016-1563",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59051",
+        "sigle": "Lois",
+        "nom": "Commission des lois constitutionnelles, de la législation et de l'administration générale de la République",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35443",
+      "titre": "Questions sociales et santé : législation relative à l'Etablissement français du sang et à la transfusion sanguine",
+      "statut": "depose",
+      "chambre_depot_initial": "AN",
+      "date_depot": "2016-12-14",
+      "date_dernier_evenement": "2016-12-14",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        },
+        {
+          "acteur_ref": "PA2825",
+          "membre_id": "marisol-touraine"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1406",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO420120",
+        "sigle": "Affaires sociales",
+        "nom": "Commission des affaires sociales",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35445",
+      "titre": "Outre-mer : convention sur le travail maritime et le travail dans la pêche applicable aux gens de mer à Wallis-et-Futuna et dans les Terres australes et antarctiques française",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2016-12-14",
+      "date_dernier_evenement": "2016-12-14",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1314",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35444",
+      "titre": "Outre-mer : code général de la propriété des personnes publiques relative à l'outre-mer",
+      "statut": "depose",
+      "chambre_depot_initial": "Senat",
+      "date_depot": "2016-12-14",
+      "date_dernier_evenement": "2016-12-14",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-1255",
+      "commission_saisie_au_fond": null,
+      "commission_non_resolue": {
+        "motif": "depot_senat"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35442",
+      "titre": "Environnement : évaluation environnementale des projets, plans et programmes",
+      "statut": "retire",
+      "chambre_depot_initial": "AN",
+      "date_depot": "2016-12-14",
+      "date_dernier_evenement": "2017-04-20",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        },
+        {
+          "acteur_ref": "PA2650",
+          "membre_id": "segolene-royal"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnances_2016-1058_2016-1060",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO419865",
+        "sigle": "Développement durable",
+        "nom": "Commission du développement durable et de l'aménagement du territoire",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35433",
+      "titre": "Pouvoirs publics : prorogation de l'état d’urgence (décembre 2016)",
+      "statut": "adopte",
+      "chambre_depot_initial": "AN",
+      "date_depot": "2016-12-10",
+      "date_dernier_evenement": "2016-12-19",
+      "sort_49_3": false,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        },
+        {
+          "acteur_ref": "PA1886",
+          "membre_id": "bruno-le-roux"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/prorogation_etat_urgence_decembre2016",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO59051",
+        "sigle": "Lois",
+        "nom": "Commission des lois constitutionnelles, de la législation et de l'administration générale de la République",
+        "type": "COMPER"
+      }
+    },
+    {
+      "dossier_id": "DLR5L14N35430",
+      "titre": "Logement : bail réel solidaire",
+      "statut": "depose",
+      "chambre_depot_initial": "AN",
+      "date_depot": "2016-12-07",
+      "date_dernier_evenement": "2016-12-07",
+      "sort_49_3": null,
+      "initiateurs": [
+        {
+          "acteur_ref": "PA785",
+          "membre_id": "bernard-cazeneuve"
+        },
+        {
+          "acteur_ref": "PA711558",
+          "membre_id": "emmanuelle-cosse"
+        }
+      ],
+      "source_url": "https://www.assemblee-nationale.fr/dyn/14/dossiers/ratification_ordonnance_2016-985",
+      "commission_saisie_au_fond": {
+        "organe_ref": "PO419610",
+        "sigle": "Affaires économiques",
+        "nom": "Commission des affaires économiques",
+        "type": "COMPER"
+      }
+    }
+  ],
+  "tags_thematiques_agreges": [],
+  "comptages": {
+    "membres_recenses": 38,
+    "membres_distincts": 38,
+    "membres_avec_interventions": 0,
+    "par_statut": {
+      "adopte": 8,
+      "adopte_49_3": 0,
+      "adopte_cmp": 2,
+      "depose": 49,
+      "navette_en_cours": 19,
+      "promulgue": 0,
+      "rejete": 0,
+      "rejete_49_3": 0,
+      "retire": 3
+    }
+  },
+  "sources": [
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA2912",
+      "synchro_le": "2026-09-18T15:58:39+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA2870",
+      "synchro_le": "2026-09-18T16:05:59+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA337633",
+      "synchro_le": "2026-09-18T16:06:00+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA711560",
+      "synchro_le": "2026-09-18T15:58:39+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA610873",
+      "synchro_le": "2026-09-18T16:05:35+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA609520",
+      "synchro_le": "2026-09-18T15:57:03+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA785",
+      "synchro_le": "2026-09-18T16:06:29+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA1886",
+      "synchro_le": "2026-09-18T15:58:32+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA1243",
+      "synchro_le": "2026-09-18T15:58:28+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA335017",
+      "synchro_le": "2026-09-18T16:06:37+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA605606",
+      "synchro_le": "2026-09-18T16:05:36+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA711558",
+      "synchro_le": "2026-09-18T15:58:39+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA610681",
+      "synchro_le": "2026-09-18T16:05:22+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA609218",
+      "synchro_le": "2026-09-18T16:04:58+0000"
+    },
+    {
+      "type": "europarl",
+      "url": "https://www.europarl.europa.eu/meps/fr/96953",
+      "synchro_le": "2026-09-18T16:05:03+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA700879",
+      "synchro_le": "2026-09-18T16:06:09+0000"
+    },
+    {
+      "type": "europarl",
+      "url": "https://www.europarl.europa.eu/meps/fr/4318",
+      "synchro_le": "2026-09-18T16:06:23+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA608574",
+      "synchro_le": "2026-09-18T15:58:40+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA331594",
+      "synchro_le": "2026-09-18T16:05:42+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA328",
+      "synchro_le": "2026-09-18T16:06:38+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA227096",
+      "synchro_le": "2026-09-18T15:58:41+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA1880",
+      "synchro_le": "2026-09-18T15:58:42+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA408",
+      "synchro_le": "2026-09-18T15:58:41+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA429885",
+      "synchro_le": "2026-09-18T15:58:41+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA1872",
+      "synchro_le": "2026-09-18T15:58:36+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA711562",
+      "synchro_le": "2026-09-18T16:05:06+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA429889",
+      "synchro_le": "2026-09-18T15:58:43+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA2825",
+      "synchro_le": "2026-09-18T16:06:25+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA330981",
+      "synchro_le": "2026-09-18T15:58:50+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA607287",
+      "synchro_le": "2026-09-18T15:58:44+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA2679",
+      "synchro_le": "2026-09-18T16:06:40+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA642983",
+      "synchro_le": "2026-09-18T16:05:44+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA588883",
+      "synchro_le": "2026-09-18T16:06:25+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA609513",
+      "synchro_le": "2026-09-18T15:58:45+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA702993",
+      "synchro_le": "2026-09-18T16:06:26+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA608328",
+      "synchro_le": "2026-09-18T16:06:26+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA2650",
+      "synchro_le": "2026-09-18T16:06:41+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA588886",
+      "synchro_le": "2026-09-18T15:58:13+0000"
+    },
+    {
+      "type": "europarl",
+      "url": "https://www.europarl.europa.eu/meps/fr/28162",
+      "synchro_le": "2026-09-18T15:58:19+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA608495",
+      "synchro_le": "2026-09-18T15:59:14+0000"
+    },
+    {
+      "type": "assemblee_nationale",
+      "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA2051",
+      "synchro_le": "2026-09-18T15:58:45+0000"
+    }
+  ],
+  "meta": {
+    "schema_version": "1",
+    "genere_le": "2026-09-18T16:57:11+0000",
+    "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr + CC BY 4.0 (Parlement européen, Open Data Portal - data.europarl.europa.eu)",
+    "warnings": [
+      "gouvernement_profile: tags_thematiques_agreges — 3263 intervention(s) écartée(s) : hors de la fenêtre de passage du membre dans ce gouvernement.",
+      "gouvernement_textes: dossier DLR5L14N34217 : fam_code inconnu 'TSORTF04' — statut non déterminé."
+    ]
+  }
+}

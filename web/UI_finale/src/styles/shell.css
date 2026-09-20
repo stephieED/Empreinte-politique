@@ -1,0 +1,9 @@
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: left bottom;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000'%3E%3Cg fill='none' stroke='rgb(20,21,26)' stroke-width='1.5' opacity='0.055'%3E%3Cellipse cx='150' cy='1000' rx='100' ry='92'/%3E%3Cellipse cx='150' cy='1000' rx='200' ry='184'/%3E%3Cellipse cx='150' cy='1000' rx='300' ry='276'/%3E%3Cellipse cx='150' cy='1000' rx='400' ry='368'/%3E%3Cellipse cx='150' cy='1000' rx='500' ry='460'/%3E%3Cellipse cx='150' cy='1000' rx='600' ry='552'/%3E%3Cellipse cx='150' cy='1000' rx='700' ry='644'/%3E%3Cellipse cx='150' cy='1000' rx='800' ry='736'/%3E%3Cellipse cx='150' cy='1000' rx='900' ry='828'/%3E%3Cellipse cx='150' cy='1000' rx='1000' ry='920'/%3E%3Cellipse cx='150' cy='1000' rx='1100' ry='1012'/%3E%3Cellipse cx='150' cy='1000' rx='1200' ry='1104'/%3E%3Cellipse cx='150' cy='1000' rx='1300' ry='1196'/%3E%3Cellipse cx='150' cy='1000' rx='1400' ry='1288'/%3E%3Cellipse cx='150' cy='1000' rx='1500' ry='1380'/%3E%3Cellipse cx='150' cy='1000' rx='1600' ry='1472'/%3E%3C/g%3E%3C/svg%3E");
+}

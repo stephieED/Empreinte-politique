@@ -1,0 +1,2370 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CONTRECHAMP — Politique en clair</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Palette éditoriale — justifiée par le sujet */
+    --bg: #F4EFE4;          /* Parchemin — fond de page, évoque les archives */
+    --surface: #FFFDF8;     /* Blanc chaud — panneaux de contenu */
+    --text: #1A2332;        /* Encre — texte principal, procès-verbal */
+    --muted: #7A6652;       /* Sépia — secondaire, labels, dates */
+    --line: #DDD5C5;        /* Lin chaud — bordures discrètes */
+    --deep: #1A2332;        /* = Encre (compatibilité interne) */
+    --accent: #7A6652;      /* = Sépia (liens discrets, neutralité) */
+    --accent-soft: #EDE8DC; /* Parchemin clair — état actif des filtres */
+    /* Couleurs sémantiques de vote — jamais décoratives */
+    --vert: #27744F;        /* Vert quorum — vote POUR / présence */
+    --rouge: #C0392B;       /* Rouge scrutin — vote CONTRE / absence */
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.45;
+  }
+  button { font: inherit; }
+
+  .page { max-width: 1040px; margin: 0 auto; padding: 1rem 0.9rem 5rem; }
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 0.9rem;
+    margin-bottom: 0.8rem;
+  }
+
+  h1, h2, h3 { margin: 0 0 0.55rem; color: var(--deep); line-height: 1.2; font-family: 'Libre Baskerville', Georgia, serif; }
+  h1 { font-size: 1.35rem; }
+  h2 { font-size: 1.05rem; }
+  h3 { font-size: 0.98rem; }
+  p { margin: 0.35rem 0; }
+  .small { font-size: 0.88rem; color: var(--muted); }
+  .muted { color: var(--muted); }
+  .empty { color: var(--muted); font-style: italic; }
+  /* Références vérifiables : signal visuel "coordonnée de source primaire" */
+  .source-ref {
+    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: -0.01em;
+  }
+
+  .section-kicker {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: 0 0 0.4rem;
+  }
+
+  /* Carrousel d'avatars — remplace le menu déroulant de sélection */
+  .avatar-carousel {
+    display: flex;
+    gap: 0.6rem;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding: 0.15rem 0.1rem 0.35rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  .avatar-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.28rem;
+    flex-shrink: 0;
+    width: 64px;
+    scroll-snap-align: start;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--text);
+  }
+  .avatar-chip-circle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--line);
+    background: linear-gradient(145deg, var(--accent-soft), var(--line));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.92rem;
+    font-family: 'Libre Baskerville', Georgia, serif;
+    color: var(--deep);
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .avatar-chip-circle img { width: 100%; height: 100%; object-fit: cover; }
+  .avatar-chip.active .avatar-chip-circle { border-color: var(--accent); transform: scale(1.06); }
+  .avatar-chip:disabled { opacity: 0.4; cursor: not-allowed; }
+  .avatar-chip-name {
+    font-size: 0.7rem;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 64px;
+  }
+  .avatar-chip.active .avatar-chip-name { color: var(--deep); font-weight: 600; }
+
+  /* Variante compacte pour la sélection de comparaison (multi-sélection) */
+  .avatar-chip--mini .avatar-chip-circle { width: 40px; height: 40px; font-size: 0.76rem; }
+  .avatar-chip--mini .avatar-chip-name { max-width: 52px; }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 62px 1fr;
+    gap: 0.7rem;
+    align-items: center;
+  }
+  .avatar {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: linear-gradient(145deg, var(--accent-soft), var(--line));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Libre Baskerville', Georgia, serif;
+    color: var(--deep);
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.25rem; }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg);
+    padding: 0.13rem 0.56rem;
+    font-size: 0.8rem;
+    color: var(--deep);
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.55rem;
+    margin-top: 0.65rem;
+  }
+
+  /* Cartes KPI en flip 3D : recto = pictogramme + chiffre, verso = l'explication/limite */
+  .kpi-flip {
+    perspective: 1000px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+  }
+  .kpi-flip-inner {
+    position: relative;
+    min-height: 132px;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+  }
+  .kpi-flip.flipped .kpi-flip-inner,
+  .kpi-flip:focus-visible .kpi-flip-inner { transform: rotateY(180deg); }
+  @media (hover: hover) {
+    .kpi-flip:hover .kpi-flip-inner { transform: rotateY(180deg); }
+  }
+  .kpi-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0.6rem;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+  }
+  .kpi-face--back { transform: rotateY(180deg); overflow-y: auto; justify-content: center; }
+  .kpi-icon { color: var(--accent); margin-bottom: 0.2rem; }
+  .kpi-icon svg { display: block; }
+  /* Valeur chiffrée en monospace : signal "donnée vérifiable, pas décorative" */
+  .kpi-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--deep);
+    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  }
+  .kpi-label { font-size: 0.78rem; color: var(--muted); margin-top: auto; }
+  .kpi-face--back .kpi-back-text { font-size: 0.8rem; color: var(--text); margin: 0 0 0.4rem; }
+  .kpi-face--back .kpi-back-link {
+    align-self: flex-start;
+    font-size: 0.78rem;
+    color: var(--accent);
+    background: none;
+    border: none;
+    padding: 0;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .trust-line {
+    margin-top: 0.5rem;
+    border-top: 1px dashed var(--line);
+    padding-top: 0.48rem;
+    font-size: 0.84rem;
+    color: var(--muted);
+  }
+
+  /* Répartition thématique — histogramme horizontal */
+  .theme-dist { margin-top: 0.85rem; }
+  .theme-dist-title { font-size: 0.84rem; color: var(--muted); margin: 0 0 0.45rem; }
+  .theme-dist-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.38rem; }
+  .theme-dist-label { width: 110px; flex-shrink: 0; font-size: 0.82rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .theme-dist-bar-wrap { flex: 1; background: var(--line); border-radius: 3px; height: 7px; overflow: hidden; }
+  .theme-dist-bar { height: 100%; background: var(--deep); border-radius: 3px; }
+  .theme-dist-count { width: 36px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--muted); }
+
+  /* Profil de vote — répartition, jamais un score unique */
+  .vote-profile-bar { display: flex; height: 10px; border-radius: 4px; overflow: hidden; margin-top: 0.4rem; background: var(--line); }
+  .vote-profile-seg--pour { background: var(--vert); }
+  .vote-profile-seg--contre { background: var(--rouge); }
+  .vote-profile-seg--abstention { background: var(--muted); }
+  .vote-profile-seg--absent { background: var(--line); }
+  .vote-profile-legend { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 0.4rem; font-size: 0.78rem; color: var(--muted); }
+  .vote-profile-legend .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.28rem; vertical-align: middle; }
+
+  /* Panneaux glissants (swipe) — remplace la navigation par ancres empilées */
+  .panel-indicator {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    margin: 0.6rem 0;
+  }
+  .panel-dot {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 999px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--muted);
+    padding: 0;
+    font-size: 0.95rem;
+  }
+  .panel-dot.active { background: var(--accent-soft); border-color: var(--accent); color: var(--deep); }
+  .swipe-deck {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+    scrollbar-width: none;
+  }
+  .swipe-deck::-webkit-scrollbar { display: none; }
+  .swipe-panel {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    min-width: 100%;
+    padding-right: 0.1rem;
+  }
+  .swipe-hint { text-align: center; font-size: 0.74rem; color: var(--muted); margin: 0.1rem 0 0.5rem; }
+
+  .themes-row {
+    display: flex;
+    gap: 0.4rem;
+    overflow-x: auto;
+    padding-bottom: 0.2rem;
+  }
+  .theme-pill {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 999px;
+    padding: 0.22rem 0.58rem;
+    font-size: 0.83rem;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .theme-pill.active {
+    background: var(--accent-soft);
+    border-color: #C4B8A4;
+    color: var(--deep);
+    font-weight: 600;
+  }
+
+  .rows { display: grid; gap: 0.55rem; }
+  .row-item {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface);
+    padding: 0.65rem;
+  }
+  .row-item p { margin: 0.18rem 0; }
+
+  /* Bande de scrutin — élément signature.
+     Barre verticale gauche de 4 px : la colonne de couleurs formée
+     en vue liste donne un bilan visuel immédiat sans lire les libellés. */
+  .vote-card { border-left-width: 4px; }
+  .vote-card--pour       { border-left-color: var(--vert); }
+  .vote-card--contre     { border-left-color: var(--rouge); }
+  .vote-card--abstention { border-left-color: var(--muted); border-left-style: dashed; }
+  .vote-card--absent     { border-left-color: var(--line); }
+
+  /* Badges de position — couleur réservée au sens, jamais décorative */
+  .vote-badge {
+    display: inline-block;
+    border-radius: 4px;
+    padding: 0.12rem 0.45rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
+    margin-left: 0.3rem;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    background: var(--bg);
+  }
+  .vote-badge.pour {
+    background: #EAF5EE;
+    border-color: var(--vert);
+    color: var(--vert);
+    font-weight: 600;
+  }
+  .vote-badge.contre {
+    background: #FAEAEA;
+    border-color: var(--rouge);
+    color: var(--rouge);
+    font-weight: 600;
+  }
+  .vote-badge.abstention {
+    background: var(--bg);
+    border-color: var(--muted);
+    border-style: dashed;
+    color: var(--muted);
+  }
+  .vote-badge.absent {
+    background: var(--bg);
+    border-color: var(--line);
+    color: var(--muted);
+  }
+
+  .votes-table-wrap { display: none; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td {
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    font-size: 0.84rem;
+    padding: 0.5rem 0.45rem;
+    vertical-align: top;
+  }
+  th { color: var(--deep); font-family: 'Libre Baskerville', Georgia, serif; }
+
+  details.inline-help {
+    display: inline-block;
+    margin-left: 0.35rem;
+    vertical-align: middle;
+  }
+  details.inline-help summary {
+    list-style: none;
+    cursor: pointer;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    color: var(--deep);
+    user-select: none;
+  }
+  details.inline-help summary::-webkit-details-marker { display: none; }
+  details.inline-help p {
+    margin-top: 0.45rem;
+    margin-bottom: 0;
+    font-size: 0.82rem;
+    color: var(--muted);
+    max-width: 320px;
+  }
+
+  .absence-grid {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: 1fr;
+  }
+  .absence-box {
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    padding: 0.58rem;
+    background: var(--bg);
+  }
+  .absence-box ul { margin: 0.3rem 0 0; padding-left: 1rem; }
+
+  .inter-controls {
+    display: flex;
+    gap: 0.45rem;
+    margin-bottom: 0.45rem;
+    flex-wrap: wrap;
+  }
+  .ghost-btn {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 9px;
+    padding: 0.28rem 0.58rem;
+    font-size: 0.84rem;
+    cursor: pointer;
+  }
+  .ghost-btn.active-choice {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--deep);
+    font-weight: 600;
+  }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.52rem;
+    margin-top: 0.5rem;
+  }
+  .compare-card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0.6rem;
+    background: var(--surface);
+  }
+
+  a.link { color: var(--accent); text-decoration: none; }
+  a.link:hover { text-decoration: underline; }
+
+  @media (min-width: 760px) {
+    .page { padding: 1.15rem 1.15rem 4rem; }
+    h1 { font-size: 1.6rem; }
+    .panel { padding: 1rem; }
+    .hero { grid-template-columns: 76px 1fr; }
+    .avatar { width: 76px; height: 76px; }
+    .votes-cards { display: none; }
+    .votes-table-wrap { display: block; }
+    .absence-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .compare-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .summary-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .theme-dist-label { width: 140px; }
+  }
+
+  /* Variante B — "Le Bulletin" : cockpit civique, dense et tactile. */
+  .cockpit {
+    --bg: #F0F2ED;
+    --surface: #FAFBF7;
+    --text: #17211D;
+    --deep: #17211D;
+    --muted: #65716B;
+    --line: #C9D0C9;
+    --accent: #006B64;
+    --accent-soft: #D8EBE6;
+    --signal: #E8593C;
+    --sun: #E6B447;
+    font-family: 'Manrope', sans-serif;
+    background-color: var(--bg);
+    background-image: linear-gradient(rgba(23, 33, 29, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(23, 33, 29, 0.035) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .cockpit h1,
+  .cockpit h2,
+  .cockpit h3 { font-family: 'Newsreader', serif; }
+  .cockpit .page { max-width: 1180px; padding-bottom: 6.5rem; }
+  .cockpit .panel { border-radius: 8px; box-shadow: 0 4px 18px rgba(23, 33, 29, 0.045); }
+  .cockpit .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.7rem;
+    align-items: end;
+    border-top: 5px solid var(--deep);
+  }
+  .cockpit .masthead h1 { font-size: clamp(1.8rem, 5vw, 3rem); margin: 0; }
+  .cockpit .masthead > .section-kicker,
+  .cockpit .masthead > .avatar-carousel { grid-column: 1 / -1; }
+  .cockpit .edition-mark {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    text-align: right;
+    color: var(--muted);
+  }
+
+  /* Les candidats deviennent des tickets horizontaux, pas des stories. */
+  .cockpit .avatar-carousel { gap: 0.5rem; padding: 0.45rem 0 0.15rem; }
+  .cockpit .avatar-chip {
+    width: 132px;
+    min-height: 56px;
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    grid-template-rows: 1fr;
+    gap: 0.5rem;
+    text-align: left;
+    align-items: center;
+    padding: 0.45rem;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: var(--surface);
+  }
+  .cockpit .avatar-chip-circle {
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+  }
+  .cockpit .avatar-chip-name {
+    max-width: 78px;
+    font-size: 0.76rem;
+    color: var(--text);
+  }
+  .cockpit .avatar-chip.active {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    box-shadow: inset 4px 0 0 var(--accent);
+  }
+  .cockpit .avatar-chip.active .avatar-chip-circle { transform: none; border-color: var(--accent); }
+  .cockpit .avatar-chip--mini { width: 110px; min-height: 48px; }
+
+  .cockpit #resume { position: relative; overflow: hidden; }
+  .cockpit #resume::before {
+    content: "DOSSIER";
+    position: absolute;
+    top: 0.7rem;
+    right: 0.8rem;
+    color: var(--signal);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.64rem;
+    font-weight: 600;
+    border: 1px solid currentColor;
+    padding: 0.14rem 0.35rem;
+  }
+  .cockpit .hero { grid-template-columns: 54px 1fr; }
+  .cockpit .avatar { width: 54px; height: 54px; border-radius: 6px; background: var(--accent-soft); }
+
+  /* KPI bento avec révélation plane; aucune rotation 3D. */
+  .cockpit .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cockpit .kpi-flip { perspective: none; }
+  .cockpit .kpi-flip-inner { min-height: 142px; transform-style: flat; transition: none; }
+  .cockpit .kpi-face {
+    border-radius: 7px;
+    backface-visibility: visible;
+    -webkit-backface-visibility: visible;
+    background: var(--surface);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .cockpit .kpi-face--front { border-top: 4px solid var(--accent); }
+  .cockpit .kpi-flip:nth-child(2) .kpi-face--front { border-top-color: var(--sun); }
+  .cockpit .kpi-flip:nth-child(3) .kpi-face--front { border-top-color: var(--signal); }
+  .cockpit .kpi-flip:nth-child(4) .kpi-face--front { border-top-color: var(--deep); }
+  .cockpit .kpi-face--back {
+    transform: translateY(8px);
+    opacity: 0;
+    pointer-events: none;
+    justify-content: center;
+    background: var(--deep);
+    color: var(--surface);
+  }
+  .cockpit .kpi-face--back .kpi-back-text { color: var(--surface); }
+  .cockpit .kpi-face--back .kpi-back-link { color: #9FE0D5; }
+  .cockpit .kpi-flip.flipped .kpi-flip-inner,
+  .cockpit .kpi-flip:focus-visible .kpi-flip-inner { transform: none; }
+  .cockpit .kpi-flip.flipped .kpi-face--front { opacity: 0; transform: translateY(-8px); }
+  .cockpit .kpi-flip.flipped .kpi-face--back { opacity: 1; transform: none; pointer-events: auto; }
+  @media (hover: hover) {
+    .cockpit .kpi-flip:hover .kpi-flip-inner { transform: none; }
+    .cockpit .kpi-flip:hover .kpi-face--front { opacity: 0; transform: translateY(-8px); }
+    .cockpit .kpi-flip:hover .kpi-face--back { opacity: 1; transform: none; pointer-events: auto; }
+  }
+  .cockpit .kpi-icon { color: var(--accent); }
+  .cockpit .kpi-value { font-size: clamp(1.35rem, 5vw, 2.3rem); }
+
+  /* Barre d'onglets fixe, comportement familier des apps mobiles. */
+  .cockpit .panel-indicator {
+    position: fixed;
+    left: 0.6rem;
+    right: 0.6rem;
+    bottom: 0.55rem;
+    z-index: 80;
+    margin: 0 auto;
+    max-width: 680px;
+    min-height: 58px;
+    justify-content: space-around;
+    gap: 0;
+    padding: 0.4rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(250, 251, 247, 0.96);
+    box-shadow: 0 10px 32px rgba(23, 33, 29, 0.16);
+    backdrop-filter: blur(12px);
+  }
+  .cockpit .panel-dot {
+    width: auto;
+    min-width: 44px;
+    height: 44px;
+    flex-direction: column;
+    gap: 0.1rem;
+    border: none;
+    border-radius: 5px;
+    background: transparent;
+    font-size: 0.74rem;
+  }
+  .cockpit .panel-dot small { font-size: 0.54rem; line-height: 1; }
+  .cockpit .panel-dot.active { color: var(--surface); background: var(--accent); }
+  .cockpit .swipe-deck { display: block; overflow: visible; border-radius: 0; }
+  .cockpit .swipe-panel { display: none; min-width: 0; padding: 0; animation: panel-in 0.26s ease both; }
+  .cockpit .swipe-panel.active { display: block; }
+  .cockpit .swipe-hint { display: none; }
+  @keyframes panel-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+  .cockpit .row-item,
+  .cockpit .absence-box,
+  .cockpit .compare-card { border-radius: 6px; }
+
+  @media (min-width: 760px) {
+    .cockpit .page { padding-bottom: 5rem; }
+    .cockpit .summary-grid { grid-template-columns: 1.1fr 0.9fr 1.1fr 0.9fr; }
+    .cockpit .panel-indicator { bottom: 1rem; }
+    .cockpit .panel-dot { min-width: 76px; }
+    .cockpit .panel-dot small { font-size: 0.62rem; }
+  }
+
+  /* Variante C — CONTRECHAMP. Chaque famille de données a sa propre forme. */
+  .deconstructed {
+    --bg: #F2F0E7;
+    --surface: #F2F0E7;
+    --text: #11110F;
+    --deep: #11110F;
+    --muted: #5E5C55;
+    --line: #11110F;
+    --accent: #006FEE;
+    --accent-soft: #B9DEFF;
+    --vert: #007A45;
+    --rouge: #E53420;
+    --acid: #DFFF00;
+    --pink: #FF70A6;
+    --candidate-dock-height: 52px;
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg);
+  }
+  .deconstructed .page { max-width: none; padding: 0 0 7rem; }
+  .deconstructed h1,
+  .deconstructed h2,
+  .deconstructed h3 { font-family: 'Archivo Black', sans-serif; letter-spacing: 0; }
+  .deconstructed .panel { border: 0; border-radius: 0; background: transparent; margin: 0; box-shadow: none; }
+  .deconstructed .masthead {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0;
+    align-items: end;
+    padding: 1rem;
+    border-bottom: 2px solid var(--line);
+    background: var(--acid);
+  }
+  .deconstructed .masthead h1 {
+    font-size: clamp(3rem, 13vw, 9rem);
+    line-height: 0.78;
+    max-width: 8ch;
+    margin: 0;
+    text-transform: uppercase;
+  }
+  .deconstructed .brand-home {
+    appearance: none;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+    text-align: left;
+    text-transform: inherit;
+    cursor: pointer;
+  }
+  .deconstructed .brand-home:hover { color: var(--accent); }
+  .deconstructed .edition-mark {
+    align-self: start;
+    writing-mode: vertical-rl;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.66rem;
+  }
+  .deconstructed .candidate-dock {
+    position: sticky;
+    top: 0;
+    z-index: 85;
+    height: var(--candidate-dock-height);
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: stretch;
+    border-top: 2px solid var(--line);
+    border-bottom: 2px solid var(--line);
+    background: var(--acid);
+  }
+  .deconstructed .candidate-dock-label {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0 0.7rem;
+    border-right: 2px solid var(--line);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Index typographique des candidats, sans avatar ni carte. */
+  .deconstructed .avatar-carousel { gap: 0; padding: 0; border: 0; overflow-x: auto; }
+  .deconstructed .avatar-chip {
+    width: auto;
+    min-width: max-content;
+    display: block;
+    height: 100%;
+    padding: 0.45rem 0.8rem;
+    border: 0;
+    border-right: 2px solid var(--line);
+    border-radius: 0;
+    background: transparent;
+    text-align: left;
+  }
+  .deconstructed .avatar-chip-circle { display: none; }
+  .deconstructed .avatar-chip-name {
+    max-width: none;
+    overflow: visible;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text);
+    text-transform: uppercase;
+  }
+  .deconstructed .avatar-chip.active { color: white; background: var(--text); }
+  .deconstructed .avatar-chip.active .avatar-chip-name { color: white; }
+  .deconstructed .avatar-chip:disabled { text-decoration: line-through; }
+
+  .deconstructed #candidat-root { position: relative; }
+  .deconstructed .home-stage {
+    min-height: 66vh;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    border-bottom: 2px solid var(--line);
+  }
+  .deconstructed .home-manifesto {
+    grid-column: 1 / -1;
+    padding: clamp(1rem, 6vw, 5rem);
+    background: var(--text);
+    color: var(--bg);
+  }
+  .deconstructed .home-manifesto h2 {
+    max-width: 10ch;
+    color: var(--bg);
+    font-size: clamp(2.8rem, 10vw, 7.5rem);
+    line-height: 0.86;
+    text-transform: uppercase;
+  }
+  .deconstructed .home-manifesto p { max-width: 52ch; }
+  .deconstructed .home-candidates {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .deconstructed .home-candidate {
+    min-height: 120px;
+    padding: 0.8rem;
+    border: 0;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+  }
+  .deconstructed .home-candidate:hover,
+  .deconstructed .home-candidate:focus-visible { background: var(--acid); }
+  .deconstructed .home-candidate strong { display: block; font-family: 'Archivo Black', sans-serif; font-size: clamp(1rem, 3vw, 1.6rem); }
+  .deconstructed .home-candidate small { font-family: 'IBM Plex Mono', monospace; }
+  .deconstructed .home-note { grid-column: 1 / -1; padding: 0.75rem 1rem; background: var(--accent); color: white; }
+  .deconstructed #resume { padding: 0; }
+  .deconstructed .hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 42vh;
+    padding: clamp(1rem, 5vw, 4rem);
+    border-bottom: 2px solid var(--line);
+    background: var(--text);
+    color: var(--bg);
+    align-content: end;
+  }
+  .deconstructed .avatar { display: none; }
+  .deconstructed .hero h2 {
+    color: var(--bg);
+    font-size: clamp(3rem, 12vw, 9rem);
+    line-height: 0.82;
+    max-width: 9ch;
+    text-transform: uppercase;
+  }
+  .deconstructed .tag { border-radius: 0; border-color: var(--bg); background: transparent; color: var(--bg); }
+
+  /* Les KPI sont des annotations asymétriques, pas quatre cartes homogènes. */
+  .deconstructed .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    margin: 0;
+    border-bottom: 2px solid var(--line);
+  }
+  .deconstructed .kpi-flip { grid-column: span 3; perspective: none; border-right: 2px solid var(--line); }
+  .deconstructed .kpi-flip:nth-child(3n) { background: var(--accent-soft); }
+  .deconstructed .kpi-flip:nth-child(2) { background: var(--pink); }
+  .deconstructed .kpi-flip:nth-child(4) { grid-column: span 4; }
+  .deconstructed .kpi-flip-inner { min-height: 170px; transform-style: flat; transition: none; }
+  .deconstructed .kpi-face { border: 0; border-radius: 0; background: transparent; padding: 1rem; backface-visibility: visible; }
+  .deconstructed .kpi-face--front { justify-content: space-between; }
+  .deconstructed .kpi-face--back {
+    transform: none;
+    opacity: 0;
+    background: var(--text);
+    color: var(--bg);
+    pointer-events: none;
+  }
+  .deconstructed .kpi-face--back .kpi-back-text { color: var(--bg); }
+  .deconstructed .kpi-face--back .kpi-back-link { color: var(--acid); }
+  .deconstructed .kpi-flip.flipped .kpi-flip-inner,
+  .deconstructed .kpi-flip:focus-visible .kpi-flip-inner { transform: none; }
+  .deconstructed .kpi-flip.flipped .kpi-face--front { opacity: 0; }
+  .deconstructed .kpi-flip.flipped .kpi-face--back { opacity: 1; pointer-events: auto; }
+  @media (hover: hover) {
+    .deconstructed .kpi-flip:hover .kpi-flip-inner { transform: none; }
+    .deconstructed .kpi-flip:hover .kpi-face--front { opacity: 0; }
+    .deconstructed .kpi-flip:hover .kpi-face--back { opacity: 1; pointer-events: auto; }
+  }
+  .deconstructed .kpi-icon { color: currentColor; }
+  .deconstructed .kpi-value { font-size: clamp(2rem, 7vw, 5rem); letter-spacing: -0.04em; }
+  .deconstructed .kpi-label { color: currentColor; font-family: 'IBM Plex Mono', monospace; text-transform: uppercase; }
+  .deconstructed .theme-dist { display: none; }
+  .deconstructed .trust-line { border: 0; padding: 0.8rem 1rem; margin: 0; background: var(--accent); color: white; }
+  .deconstructed .trust-line a { color: white; }
+
+  .deconstructed .theme-dock {
+    position: sticky;
+    top: var(--candidate-dock-height);
+    z-index: 75;
+    padding: 0.55rem 1rem;
+    border-top: 2px solid var(--line);
+    border-bottom: 2px solid var(--line);
+    background: rgba(242, 240, 231, 0.96);
+    backdrop-filter: blur(10px);
+  }
+  .deconstructed .theme-dock .section-kicker { margin: 0 0 0.3rem; }
+  .deconstructed .themes-row { gap: 0; padding: 0; }
+  .deconstructed .theme-pill,
+  .deconstructed .ghost-btn {
+    border: 1px solid var(--line);
+    border-radius: 0;
+    background: transparent;
+    margin: 0 -1px -1px 0;
+  }
+  .deconstructed .theme-pill.active,
+  .deconstructed .ghost-btn.active-choice { background: var(--text); color: var(--bg); }
+
+  /* Rail spatial: les sections sont des coordonnées, pas des onglets. */
+  .deconstructed .panel-indicator {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    border-top: 2px solid var(--line);
+    background: var(--bg);
+  }
+  .deconstructed .panel-dot {
+    width: 100%;
+    height: 64px;
+    border: 0;
+    border-right: 1px solid var(--line);
+    border-radius: 0;
+    background: transparent;
+    padding: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .deconstructed .panel-dot small { font-size: 0.55rem; text-transform: uppercase; }
+  .deconstructed .panel-dot.active { background: var(--acid); color: var(--text); }
+  .deconstructed .swipe-deck { display: block; overflow: visible; border-radius: 0; }
+  .deconstructed .swipe-panel { display: none; min-width: 0; padding: 0; }
+  .deconstructed .swipe-panel.active { display: block; }
+  .deconstructed .swipe-panel > .panel { min-height: 66vh; padding: clamp(1rem, 4vw, 3rem); }
+  .deconstructed .swipe-panel h2 { font-size: clamp(2rem, 7vw, 5rem); max-width: 10ch; line-height: 0.9; }
+  .deconstructed .swipe-hint { display: none; }
+
+  /* Formes spécifiques des données détaillées. */
+  .deconstructed .orbit {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.4rem, 2vw, 1.4rem);
+    min-height: 50vh;
+    padding: 2rem 0;
+  }
+  .deconstructed .orbit-node {
+    position: relative;
+    max-width: 230px;
+    padding: 0.65rem;
+    border: 2px solid var(--line);
+    background: var(--bg);
+    transform: rotate(var(--tilt));
+    color: var(--text);
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    transition: transform 0.18s ease, background 0.18s ease;
+  }
+  .deconstructed .orbit-node:nth-child(3n) { border-radius: 50%; padding: 1.2rem; text-align: center; }
+  .deconstructed .orbit-node.is-notable { background: var(--acid); border-width: 3px; }
+  .deconstructed .orbit-node small { display: block; font-family: 'IBM Plex Mono', monospace; }
+  .deconstructed .orbit-node:hover,
+  .deconstructed .orbit-node:focus-visible,
+  .deconstructed .orbit-node.expanded { transform: rotate(0) scale(1.04); z-index: 2; }
+  .deconstructed .orbit-detail {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 0.2s ease, opacity 0.2s ease;
+  }
+  .deconstructed .orbit-detail > span { overflow: hidden; }
+  .deconstructed .orbit-node:hover .orbit-detail,
+  .deconstructed .orbit-node:focus-visible .orbit-detail,
+  .deconstructed .orbit-node.expanded .orbit-detail { grid-template-rows: 1fr; opacity: 1; margin-top: 0.45rem; }
+  .deconstructed .orbit-legend { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; padding: 0.5rem; border: 2px solid var(--line); background: var(--acid); }
+
+  .deconstructed .text-atlas { display: grid; gap: 2rem; }
+  .deconstructed .text-shelf { min-width: 0; }
+  .deconstructed .text-shelf-head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.7rem;
+    align-items: center;
+    margin-bottom: 0.65rem;
+  }
+  .deconstructed .text-shelf-head::after { content: ""; height: 2px; background: var(--line); }
+  .deconstructed .text-shelf-head strong { font-family: 'Archivo Black', sans-serif; font-size: 1.05rem; }
+  .deconstructed .text-shelf-count { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; }
+  .deconstructed .text-shelf-track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(250px, 34vw);
+    gap: 0.65rem;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x proximity;
+    padding: 0 0 0.55rem;
+  }
+  .deconstructed .text-leaf {
+    min-height: 190px;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem;
+    border: 2px solid var(--line);
+    background: var(--bg);
+  }
+  .deconstructed .text-leaf:nth-child(3n + 2) { background: var(--accent-soft); }
+  .deconstructed .text-leaf:nth-child(3n) { background: var(--pink); }
+  .deconstructed .text-leaf-title { font-family: 'Archivo Black', sans-serif; font-size: clamp(1rem, 2.2vw, 1.45rem); line-height: 1.08; }
+  .deconstructed .text-leaf-meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; }
+  .deconstructed .text-shelf-more {
+    border: 0;
+    border-bottom: 2px solid var(--line);
+    background: transparent;
+    padding: 0.2rem 0;
+    font-family: 'IBM Plex Mono', monospace;
+    cursor: pointer;
+  }
+  .deconstructed .text-shelf-more:hover { color: var(--accent); }
+
+  .deconstructed .vote-atlas { display: grid; gap: 2.2rem; margin-top: 1rem; }
+  .deconstructed .vote-shelf { min-width: 0; }
+  .deconstructed .vote-shelf-head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.7rem;
+    align-items: center;
+    margin-bottom: 0.45rem;
+  }
+  .deconstructed .vote-shelf-head::after { content: ""; height: 2px; background: var(--line); }
+  .deconstructed .vote-shelf-head strong { font-family: 'Archivo Black', sans-serif; font-size: 1.05rem; }
+  .deconstructed .vote-shelf-count { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; }
+  .deconstructed .vote-cloud { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; padding-top: 0.4rem; }
+  .deconstructed .vote-token {
+    --vote-color: var(--muted);
+    max-width: min(300px, 86vw);
+    padding: calc(0.45rem + var(--weight) * 0.08rem);
+    border: 2px solid var(--vote-color);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+    font-size: calc(0.7rem + var(--weight) * 0.03rem);
+    text-decoration: none;
+  }
+  .deconstructed .vote-token.pour { --vote-color: var(--vert); }
+  .deconstructed .vote-token.contre { --vote-color: var(--rouge); }
+  .deconstructed .vote-token.abstention { --vote-color: var(--muted); border-style: dashed; }
+  .deconstructed .vote-token.absent { --vote-color: #A7A39A; opacity: 0.7; }
+  .deconstructed .vote-token:hover,
+  .deconstructed .vote-token:focus-visible { background: var(--vote-color); color: white; }
+  .deconstructed .vote-token em { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; font-style: normal; }
+  .deconstructed .vote-token .source-mark { display: inline-block; margin-left: 0.25rem; font-weight: 600; }
+  .deconstructed .vote-shelf-more {
+    margin-top: 0.65rem;
+    border: 0;
+    border-bottom: 2px solid var(--line);
+    background: transparent;
+    padding: 0.2rem 0;
+    font-family: 'IBM Plex Mono', monospace;
+    cursor: pointer;
+  }
+  .deconstructed .vote-shelf-more:hover { color: var(--accent); }
+
+  .deconstructed .void-map { display: grid; grid-template-columns: 1fr; border: 2px solid var(--line); }
+  .deconstructed .void-signal { min-height: 170px; padding: 1rem; border-bottom: 2px solid var(--line); display: flex; flex-direction: column; justify-content: space-between; }
+  .deconstructed .void-signal:last-child { border: 0; }
+  .deconstructed .void-number { font-family: 'Archivo Black', sans-serif; font-size: clamp(3rem, 14vw, 8rem); line-height: 0.8; }
+  .deconstructed .void-signal:nth-child(2) { background: var(--pink); }
+  .deconstructed .void-signal:nth-child(3) { background: var(--accent-soft); }
+
+  .deconstructed .speech-tape { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(250px, 38vw); gap: 0; overflow-x: auto; border-top: 2px solid var(--line); border-bottom: 2px solid var(--line); }
+  .deconstructed .speech-fragment { min-height: 350px; padding: 1rem; border-right: 2px solid var(--line); display: flex; flex-direction: column; justify-content: space-between; }
+  .deconstructed .speech-fragment:nth-child(even) { background: var(--acid); }
+  .deconstructed .speech-quote { font-family: 'Archivo Black', sans-serif; font-size: clamp(1.05rem, 2.5vw, 1.65rem); }
+
+  .deconstructed .versus-stage { display: grid; gap: 0; border: 2px solid var(--line); }
+  .deconstructed .versus-person { padding: 1rem; border-bottom: 2px solid var(--line); }
+  .deconstructed .versus-person:last-child { border: 0; }
+  .deconstructed .versus-name { font-family: 'Archivo Black', sans-serif; font-size: clamp(1.4rem, 5vw, 3.5rem); }
+  .deconstructed .versus-metrics { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 1rem; }
+  .deconstructed .versus-metric { border-top: 1px solid var(--line); padding: 0.5rem 0.2rem; }
+  .deconstructed .versus-metric b { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 1.35rem; }
+
+  @media (min-width: 820px) {
+    .deconstructed .page { padding: 0 0 0 84px; }
+    .deconstructed .panel-indicator { top: 0; bottom: 0; right: auto; width: 84px; grid-template-columns: 1fr; grid-template-rows: repeat(6, 1fr); border: 0; border-right: 2px solid var(--line); }
+    .deconstructed .panel-dot { height: auto; border: 0; border-bottom: 1px solid var(--line); }
+    .deconstructed .summary-grid { grid-template-columns: repeat(12, 1fr); }
+    .deconstructed .kpi-flip { grid-column: span 3; }
+    .deconstructed .kpi-flip:nth-child(2) { grid-column: span 2; }
+    .deconstructed .kpi-flip:nth-child(3) { grid-column: span 4; }
+    .deconstructed .kpi-flip:nth-child(4) { grid-column: span 3; }
+    .deconstructed .void-map { grid-template-columns: repeat(3, 1fr); }
+    .deconstructed .void-signal { border: 0; border-right: 2px solid var(--line); }
+    .deconstructed .versus-stage { grid-template-columns: repeat(3, 1fr); }
+    .deconstructed .versus-person { border: 0; border-right: 2px solid var(--line); }
+    .deconstructed .home-manifesto { grid-column: 1 / 4; }
+    .deconstructed .home-candidates { grid-column: 4 / -1; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  /* V4 — Revue civique : même profondeur de données, tonalité plus calme. */
+  .panorama {
+    --bg: #F5F3ED;
+    --surface: #FCFBF7;
+    --text: #263730;
+    --deep: #193A56;
+    --muted: #6B7771;
+    --line: #AEBBB4;
+    --accent: #285F87;
+    --accent-soft: #DDE9F0;
+    --vert: #39775C;
+    --rouge: #B85F50;
+    --acid: #DCE8DF;
+    --pink: #F0DCD4;
+    font-family: 'Manrope', sans-serif;
+    background: #E9EEE9;
+  }
+  .panorama .page {
+    max-width: 1440px;
+    margin: 0 auto;
+    background: var(--bg);
+    box-shadow: 0 0 0 1px rgba(38, 55, 48, 0.08);
+  }
+  .panorama h1,
+  .panorama h2,
+  .panorama h3 { font-family: 'Fraunces', Georgia, serif; text-transform: none; }
+  .panorama .masthead {
+    min-height: 310px;
+    align-items: center;
+    padding: clamp(1.25rem, 5vw, 4.5rem);
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(135deg, #E5EEF2 0 67%, #DCE8DF 67% 100%);
+  }
+  .panorama .masthead h1 {
+    max-width: none;
+    font-size: clamp(3.2rem, 10vw, 7.4rem);
+    line-height: 0.88;
+    color: var(--deep);
+  }
+  .panorama .brand-home { color: var(--deep); }
+  .panorama .brand-home:hover { color: var(--accent); }
+  .panorama .edition-mark {
+    writing-mode: horizontal-tb;
+    align-self: end;
+    padding: 0.4rem 0;
+    border-top: 1px solid var(--deep);
+    color: var(--deep);
+  }
+  .panorama .candidate-dock {
+    border-width: 0 0 1px;
+    border-color: var(--line);
+    background: rgba(252, 251, 247, 0.97);
+    backdrop-filter: blur(12px);
+  }
+  .panorama .candidate-dock-label,
+  .panorama .avatar-chip { border-color: var(--line); border-width: 0 1px 0 0; }
+  .panorama .avatar-chip.active { background: var(--accent); color: white; }
+  .panorama .avatar-chip.active .avatar-chip-name { color: white; }
+  .panorama .avatar-chip:disabled { color: var(--muted); opacity: 0.55; }
+
+  .panorama .home-stage { border-color: var(--line); }
+  .panorama .home-manifesto {
+    background: #DCE8DF;
+    color: var(--text);
+  }
+  .panorama .home-manifesto h2 {
+    color: var(--deep);
+    font-size: clamp(2.8rem, 8vw, 6.2rem);
+    line-height: 0.95;
+    text-transform: none;
+  }
+  .panorama .home-candidate {
+    border-color: var(--line);
+    background: var(--surface);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .panorama .home-candidate:hover,
+  .panorama .home-candidate:focus-visible { background: var(--accent-soft); color: var(--deep); }
+  .panorama .home-candidate strong { font-family: 'Fraunces', Georgia, serif; }
+  .panorama .home-note { background: var(--accent); }
+
+  .panorama .hero {
+    min-height: 36vh;
+    border-color: var(--line);
+    background: #E5EEF2;
+    color: var(--text);
+  }
+  .panorama .hero h2 {
+    max-width: 12ch;
+    color: var(--deep);
+    font-size: clamp(3rem, 9vw, 7rem);
+    line-height: 0.9;
+    text-transform: none;
+  }
+  .panorama .tag { border-color: var(--line); color: var(--text); background: rgba(252, 251, 247, 0.62); }
+
+  .panorama .summary-grid {
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-color: var(--line);
+    background: #E9EEE9;
+  }
+  .panorama .kpi-flip { border: 0; background: transparent !important; }
+  .panorama .kpi-face {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+    box-shadow: 0 5px 18px rgba(38, 55, 48, 0.06);
+  }
+  .panorama .kpi-flip:nth-child(2) .kpi-face--front { background: #F0E4DE; }
+  .panorama .kpi-flip:nth-child(3) .kpi-face--front { background: #DDE9F0; }
+  .panorama .kpi-flip:nth-child(4) .kpi-face--front { background: #DCE8DF; }
+  .panorama .kpi-face--back { background: var(--deep); color: white; }
+  .panorama .kpi-face--back .kpi-back-text { color: white; }
+  .panorama .kpi-face--back .kpi-back-link { color: #C9DFEA; }
+  .panorama .kpi-value { color: var(--deep); letter-spacing: 0; }
+  .panorama .trust-line { background: var(--deep); }
+
+  .panorama .theme-dock {
+    border-width: 0 0 1px;
+    border-color: var(--line);
+    background: rgba(245, 243, 237, 0.96);
+  }
+  .panorama .theme-pill,
+  .panorama .ghost-btn {
+    border-color: var(--line);
+    border-radius: 999px;
+    margin: 0 0.3rem 0 0;
+    background: var(--surface);
+  }
+  .panorama .theme-pill.active,
+  .panorama .ghost-btn.active-choice { background: var(--accent); color: white; border-color: var(--accent); }
+
+  .panorama .panel-indicator { border-color: var(--line); background: var(--surface); }
+  .panorama .panel-dot { border-color: var(--line); color: var(--muted); }
+  .panorama .panel-dot.active { background: var(--accent); color: white; }
+  .panorama .swipe-panel > .panel { max-width: 1240px; margin: 0 auto; }
+  .panorama .swipe-panel h2 {
+    max-width: 14ch;
+    color: var(--deep);
+    font-size: clamp(2.2rem, 6vw, 4.7rem);
+    line-height: 0.98;
+  }
+
+  .panorama .orbit { justify-content: flex-start; align-content: center; }
+  .panorama .orbit-node {
+    transform: none;
+    border: 1px solid var(--line);
+    border-radius: 6px !important;
+    background: var(--surface);
+    box-shadow: 0 3px 12px rgba(38, 55, 48, 0.05);
+  }
+  .panorama .orbit-node.is-notable { border: 1px solid #C77B68; background: #F0DCD4; }
+  .panorama .orbit-node:hover,
+  .panorama .orbit-node:focus-visible,
+  .panorama .orbit-node.expanded { transform: translateY(-3px); border-color: var(--accent); }
+  .panorama .orbit-legend { border: 1px solid #C77B68; border-radius: 5px; background: #F0DCD4; }
+
+  .panorama .text-shelf-head::after,
+  .panorama .vote-shelf-head::after { height: 1px; background: var(--line); }
+  .panorama .text-shelf-head strong,
+  .panorama .vote-shelf-head strong,
+  .panorama .text-leaf-title { font-family: 'Fraunces', Georgia, serif; color: var(--deep); }
+  .panorama .text-leaf {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+    box-shadow: 0 4px 14px rgba(38, 55, 48, 0.05);
+  }
+  .panorama .text-leaf:nth-child(3n + 2) { background: #E5EEF2; }
+  .panorama .text-leaf:nth-child(3n) { background: #E7EEE8; }
+  .panorama .text-shelf-more,
+  .panorama .vote-shelf-more { border-color: var(--accent); color: var(--accent); }
+
+  .panorama .vote-token { border-width: 1px; background: var(--surface); }
+  .panorama .vote-token:hover,
+  .panorama .vote-token:focus-visible { box-shadow: 0 4px 12px rgba(38, 55, 48, 0.12); }
+
+  .panorama .void-map { border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .panorama .void-signal { border-color: var(--line); }
+  .panorama .void-signal:nth-child(2) { background: #F0E4DE; }
+  .panorama .void-signal:nth-child(3) { background: #DDE9F0; }
+  .panorama .void-number { font-family: 'Fraunces', Georgia, serif; color: var(--deep); }
+
+  .panorama .speech-tape { border-color: var(--line); }
+  .panorama .speech-fragment { border-color: var(--line); background: var(--surface); }
+  .panorama .speech-fragment:nth-child(even) { background: #E7EEE8; }
+  .panorama .speech-quote { font-family: 'Fraunces', Georgia, serif; color: var(--deep); font-weight: 600; }
+  .panorama .versus-stage { border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .panorama .versus-person { border-color: var(--line); background: var(--surface); }
+  .panorama .versus-name { font-family: 'Fraunces', Georgia, serif; color: var(--deep); }
+
+  @media (max-width: 819px) {
+    .panorama .masthead { min-height: 250px; }
+    .panorama .edition-mark { max-width: 18ch; }
+  }
+</style>
+</head>
+<body class="deconstructed panorama">
+  <main class="page">
+    <section class="masthead">
+      <div>
+        <p class="section-kicker">Présidentielle 2027 / données publiques</p>
+        <h1><button type="button" id="home-link" class="brand-home" aria-label="Retour à l'accueil">Contre<br>champ</button></h1>
+      </div>
+      <div class="edition-mark">POLITIQUE EN CLAIR</div>
+    </section>
+    <nav class="candidate-dock" aria-label="Index des candidats">
+      <p class="candidate-dock-label">Candidats</p>
+      <div id="candidat-carousel" class="avatar-carousel" role="tablist" aria-label="Choisir un candidat"></div>
+    </nav>
+
+    <div id="candidat-root"></div>
+  </main>
+
+  <script>
+    const CANDIDATS_URL = "../../raw_data/candidats.json";
+    const PROFILE_URL = (slug) => `../../raw_data/profiles/${slug}.json`;
+    const THEME_OPTIONS = [
+      { key: "all", label: "Tous les thèmes" },
+      { key: "sante", label: "Santé", icon: "🩺" },
+      { key: "environnement", label: "Environnement", icon: "🌱" },
+      { key: "economie", label: "Économie", icon: "💶" },
+      { key: "education", label: "Éducation", icon: "🎓" },
+      { key: "securite", label: "Sécurité", icon: "🛡️" },
+      { key: "institutions", label: "Institutions", icon: "🏛️" },
+      { key: "europe_international", label: "Europe / International", icon: "🌍" },
+      { key: "social", label: "Social", icon: "🤝" },
+    ];
+
+    const THEME_RULES = {
+      sante: ["santé", "hopital", "hôpital", "malad", "soin", "medec", "médec", "cancer"],
+      environnement: ["climat", "environ", "biodivers", "energie", "énergie", "carbone", "pollution", "écologi"],
+      economie: ["budget", "fiscal", "impôt", "impot", "entreprise", "travail", "emploi", "financ"],
+      education: ["éduc", "ecole", "école", "universit", "apprentiss", "scolair"],
+      securite: ["sécurit", "police", "défense", "defense", "terror", "justice pénale", "violence"],
+      institutions: ["constitution", "assemblée", "assemblee", "sénat", "senat", "scrutin", "loi organique", "collectivités"],
+      europe_international: ["europe", "union européenne", "ue", "international", "onu", "otan", "étrang", "maghreb", "afrique"],
+      social: ["retraite", "logement", "social", "pauvret", "solidarit", "sécurité sociale", "égalité", "salaire"],
+    };
+    const DEFAULT_THEME = "institutions";
+    const MAX_COMPARE_CANDIDATES = 2;
+    const TITLE_TRUNCATE_LENGTH = 120;
+    // On garde 3 caractères de marge pour ajouter des points de suspension sans allonger visuellement la ligne.
+    const TITLE_TRUNCATE_SLICE = TITLE_TRUNCATE_LENGTH - 3;
+    const INTERVENTION_TEXT_PREVIEW_LENGTH = 200;
+    const NON_VOTING_PATTERN = /non[ _-]?vot/;
+    const DEFENDED_THRESHOLD = 600;
+    const CARRIED_THRESHOLD = 250;
+    const REPORTED_THRESHOLD = 80;
+
+    // Ordre des panneaux du carrousel glissant (remplace la pile d'accordéons)
+    const PANEL_ORDER = ["mandats", "textes", "votes", "absences", "interventions", "compare"];
+    const PANEL_META = {
+      mandats: { label: "Mandats", icon: "◌" },
+      textes: { label: "Textes", icon: "▤" },
+      votes: { label: "Votes", icon: "●" },
+      absences: { label: "Silences", icon: "□" },
+      interventions: { label: "Paroles", icon: "“" },
+      compare: { label: "Comparer", icon: "±" },
+    };
+
+    // Pictogrammes des cartes KPI (SVG inline, sans dépendance externe)
+    const KPI_ICONS = {
+      anciennete: '<svg viewBox="0 0 20 20" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h10M5 17h10M6 3c0 4 3 5 4 6 1-1 4-2 4-6M6 17c0-4 3-5 4-6 1 1 4 2 4 6"/></svg>',
+      responsabilites: '<svg viewBox="0 0 20 20" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17h14M4 17V9l6-4 6 4v8M8 17v-5h4v5"/></svg>',
+      vote: '<svg viewBox="0 0 20 20" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h14v9H3z"/><path d="M7 8V5a3 3 0 0 1 6 0v3M10 11v3"/></svg>',
+      theme: '<svg viewBox="0 0 20 20" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6l6 6-6 6-6-6z"/><circle cx="7" cy="7" r="1" fill="currentColor" stroke="none"/></svg>',
+    };
+
+    const state = {
+      candidats: [],
+      currentSlug: "",
+      currentMeta: null,
+      currentProfile: null,
+      selectedTheme: "all",
+      interventionsMode: "all",
+      interventionsVisible: 6,
+      compareTheme: "sante",
+      compareSlugs: ["", ""],
+      compareProfiles: {},
+      availableCompareCandidates: [],
+      activePanelIndex: 0,
+      flippedKpis: new Set(),
+      expandedTextThemes: new Set(),
+      expandedVoteThemes: new Set(),
+    };
+
+    function setDocumentTitle(label) {
+      document.title = label ? `CONTRECHAMP — ${label}` : "CONTRECHAMP — Politique en clair";
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? "").replace(/[&<>"']/g, (c) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      })[c]);
+    }
+
+    function toDateMs(value) {
+      if (!value) return 0;
+      const t = Date.parse(value);
+      return Number.isNaN(t) ? 0 : t;
+    }
+
+    function formatIsoDate(value) {
+      if (!value) return "non renseignée";
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return value;
+      return d.toLocaleDateString("fr-FR");
+    }
+
+    function shortName(name) {
+      if (!name) return "?";
+      return name
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part.charAt(0).toUpperCase())
+        .join("");
+    }
+
+    function simplifyTitle(text) {
+      const raw = String(text || "").trim();
+      if (!raw) return "Intitulé non renseigné";
+      const cleaned = raw.replace(/^(la|le|les)\s+/i, "");
+      return cleaned.length > TITLE_TRUNCATE_LENGTH ? `${cleaned.slice(0, TITLE_TRUNCATE_SLICE).trim()}…` : cleaned;
+    }
+
+    function normalizedText(...parts) {
+      return parts
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+    }
+
+    function detectThemeFromText(text) {
+      const t = String(text || "").toLowerCase();
+      for (const [theme, needles] of Object.entries(THEME_RULES)) {
+        if (needles.some((needle) => t.includes(needle))) return theme;
+      }
+      return DEFAULT_THEME;
+    }
+
+    function themeLabel(themeKey) {
+      return THEME_OPTIONS.find((t) => t.key === themeKey)?.label || "Institutions";
+    }
+
+    function voteLabelAndClass(position) {
+      const p = String(position || "").toLowerCase();
+      if (p.includes("pour")) return { label: "Pour", cls: "pour" };
+      if (p.includes("contre")) return { label: "Contre", cls: "contre" };
+      if (p.includes("abst")) return { label: "Abstention", cls: "abstention" };
+      if (NON_VOTING_PATTERN.test(p) || p.includes("absent")) {
+        return { label: "Absent / non votant", cls: "absent" };
+      }
+      return { label: "Position non précisée", cls: "absent" };
+    }
+
+    // --- KPI de synthèse (voir analyse KPI : ancienneté, responsabilités, profil de vote, thème dominant) ---
+
+    const MS_PER_YEAR = 365.25 * 24 * 3600 * 1000;
+    const RESPONSIBILITY_CATEGORIES = ["commission", "extra_parlementaire", "groupe_amitie"];
+    const ROLE_PRIORITY = [
+      "président", "présidente", "co-président", "co-présidente",
+      "vice-président", "vice-présidente", "rapporteur", "co-rapporteur", "rapporteure",
+    ];
+    const CATEGORIE_LABELS_FR = {
+      commission: "Commission / mission",
+      extra_parlementaire: "Engagement extra-parlementaire",
+      groupe_amitie: "Groupe d'amitié",
+    };
+
+    // KPI 1 — Ancienneté et statut du mandat : ne mesure pas l'implication, seulement la durée.
+    function computeMandateTenure(profile) {
+      const electifs = (profile.mandats || []).filter((m) => m.categorie === "mandat_electif");
+      const debuts = electifs.map((m) => toDateMs(m.debut)).filter(Boolean);
+      if (!debuts.length) return null;
+      const debutMin = Math.min(...debuts);
+      const enCours = electifs.some((m) => m.actif);
+      const fins = electifs.map((m) => toDateMs(m.fin)).filter(Boolean);
+      const refEnd = enCours || !fins.length ? Date.now() : Math.max(...fins);
+      const annees = Math.max(0, Math.round(((refEnd - debutMin) / MS_PER_YEAR) * 10) / 10);
+      return { debutIso: new Date(debutMin).toISOString().slice(0, 10), annees, enCours };
+    }
+
+    // KPI 2 — Responsabilités institutionnelles : dédupliquées par intitulé pour ne pas
+    // gonfler le chiffre avec des réaffectations administratives internes (churn de commissions).
+    function bestRoleType(types) {
+      for (const kw of ROLE_PRIORITY) {
+        const match = types.find((t) => (t || "").toLowerCase().includes(kw));
+        if (match) return match;
+      }
+      return types[0] || "membre";
+    }
+
+    function dedupeResponsibilities(profile) {
+      const relevant = (profile.mandats || []).filter((m) => RESPONSIBILITY_CATEGORIES.includes(m.categorie));
+      const byLabel = new Map();
+      for (const m of relevant) {
+        const key = m.label || "Responsabilité non précisée";
+        if (!byLabel.has(key)) {
+          byLabel.set(key, { label: key, categorie: m.categorie, types: [], debuts: [], fins: [], actif: false });
+        }
+        const entry = byLabel.get(key);
+        entry.types.push(m.type);
+        if (m.debut) entry.debuts.push(toDateMs(m.debut));
+        if (m.fin) entry.fins.push(toDateMs(m.fin));
+        if (m.actif) entry.actif = true;
+      }
+      return [...byLabel.values()]
+        .map((e) => ({
+          label: e.label,
+          categorie: e.categorie,
+          type: bestRoleType(e.types),
+          debut: e.debuts.length ? new Date(Math.min(...e.debuts)).toISOString().slice(0, 10) : null,
+          fin: e.actif ? null : (e.fins.length ? new Date(Math.max(...e.fins)).toISOString().slice(0, 10) : null),
+          actif: e.actif,
+        }))
+        .sort((a, b) => (b.debut || "").localeCompare(a.debut || ""));
+    }
+
+    function computeResponsibilitiesSummary(profile) {
+      const items = dedupeResponsibilities(profile);
+      const notable = items.filter((r) => ROLE_PRIORITY.some((kw) => r.type.toLowerCase().includes(kw)));
+      return { distinctCount: items.length, notableCount: notable.length };
+    }
+
+    function isNotableResponsibility(responsibility) {
+      return ROLE_PRIORITY.some((keyword) => (responsibility.type || "").toLowerCase().includes(keyword));
+    }
+
+    // KPI 3 — Profil de vote synthétique : une répartition, jamais un score isolé.
+    // Restreint aux votes portant sur "l'ensemble" du texte (pas les amendements/articles isolés,
+    // où un "contre" reflète souvent un désaccord technique ponctuel plutôt qu'une opposition de
+    // principe), et dédupliqué sur la lecture la plus avancée quand un même texte a été voté à
+    // plusieurs stades (première lecture, nouvelle lecture, CMP, lecture définitive...).
+    // Limite qui subsiste : un vote sur l'ensemble agrège quand même des motivations plurielles,
+    // et le regroupement des lectures d'un même texte repose sur une similarité de titre (fragile
+    // si le libellé change entre chambres). Les absences restent un segment à part (absence de
+    // donnée ≠ absence d'activité réelle).
+    const ENSEMBLE_VOTE_PATTERN = /^l[’']ensemble\s+(?:du|de la)\s+(.*?)\s*(?:\(([^)]*)\))?\.?$/i;
+    const READING_STAGE_RANK = {
+      "lecture définitive": 4,
+      "texte de la commission mixte paritaire": 3,
+      "texte de la commission paritaire": 3,
+      "nouvelle lecture": 2,
+      "deuxième lecture": 2,
+      "première lecture": 1,
+      "premiere lecture": 1,
+    };
+
+    function readingStageRank(stage) {
+      if (!stage) return 1;
+      return READING_STAGE_RANK[stage.trim().toLowerCase()] ?? 1;
+    }
+
+    function parseEnsembleVote(titre) {
+      const m = ENSEMBLE_VOTE_PATTERN.exec((titre || "").trim());
+      if (!m) return null;
+      return { key: m[1].trim().toLowerCase(), stage: m[2] || null, rank: readingStageRank(m[2]) };
+    }
+
+    function computeFinalTextVoteProfile(profile) {
+      const votes = profile.votes || [];
+      const groups = new Map();
+      let totalLectures = 0;
+      for (const v of votes) {
+        const parsed = parseEnsembleVote(v.titre);
+        if (!parsed) continue;
+        totalLectures += 1;
+        const current = groups.get(parsed.key);
+        if (
+          !current ||
+          parsed.rank > current.rank ||
+          (parsed.rank === current.rank && toDateMs(v.date) > toDateMs(current.vote.date))
+        ) {
+          groups.set(parsed.key, { rank: parsed.rank, vote: v });
+        }
+      }
+      const counts = { pour: 0, contre: 0, abstention: 0, absent: 0 };
+      for (const { vote } of groups.values()) {
+        const cls = voteLabelAndClass(vote.position).cls;
+        counts[cls] = (counts[cls] || 0) + 1;
+      }
+      return { totalTextes: groups.size, totalLectures, counts };
+    }
+
+    function renderResponsabilites(profile) {
+      const items = dedupeResponsibilities(profile);
+      if (!items.length) {
+        return `<p class="empty">Aucune responsabilité institutionnelle retrouvée.</p>`;
+      }
+      return `
+        <p class="orbit-legend">Jaune = présidence, vice-présidence ou rapport identifié · survoler / toucher pour détailler</p>
+        <div class="orbit" aria-label="Constellation des responsabilités">${items.map((r, index) => `
+        <button type="button" class="orbit-node ${isNotableResponsibility(r) ? "is-notable" : ""}" style="--tilt:${((index % 7) - 3) * 1.8}deg" aria-expanded="false">
+          <strong>${escapeHtml(r.label)}</strong>
+          <small>${escapeHtml(formatIsoDate(r.debut))} → ${r.fin ? escapeHtml(formatIsoDate(r.fin)) : (r.actif ? "aujourd’hui" : "fin non renseignée")}</small>
+          <span class="orbit-detail"><span>
+            <small>${escapeHtml(r.type || "membre")}</small>
+            <small>${escapeHtml(CATEGORIE_LABELS_FR[r.categorie] || r.categorie)}</small>
+            ${isNotableResponsibility(r) ? `<small>Rôle signalé comme responsabilité notable.</small>` : `<small>Participation comme membre.</small>`}
+          </span></span>
+        </button>
+      `).join("")}</div>`;
+    }
+
+    function withTheme(profile) {
+      const votes = (profile.votes || []).map((v) => ({
+        ...v,
+        _theme: detectThemeFromText(normalizedText(v.titre, v.position)),
+      }));
+      const dossiers = (profile.dossiers_legislatifs || []).map((d) => ({
+        ...d,
+        _theme: detectThemeFromText(normalizedText(d.titre)),
+      }));
+      const interventions = (profile.interventions || []).map((i) => ({
+        ...i,
+        _theme: detectThemeFromText(normalizedText(i.sujet, i.texte, ...(i.mots_cles || []))),
+      }));
+      return { ...profile, votes, dossiers_legislatifs: dossiers, interventions };
+    }
+
+    function inTheme(item, selectedTheme) {
+      return selectedTheme === "all" ? true : item._theme === selectedTheme;
+    }
+
+    function roleFromDossier(dossier) {
+      const n = Number(dossier.nb_interventions || 0);
+      // Seuils UX internes (observés sur les profils existants) :
+      // >=600 interventions => implication très forte ; >=250 => forte ; >=80 => moyenne ; sinon faible.
+      if (n >= DEFENDED_THRESHOLD) return "a défendu";
+      if (n >= CARRIED_THRESHOLD) return "a porté";
+      if (n >= REPORTED_THRESHOLD) return "a rapporté";
+      return "a cosigné";
+    }
+
+    function sourceLinkHtml(url, label = "Source officielle") {
+      if (!url) return `<span class="small">${escapeHtml(label)} indisponible</span>`;
+      return `<a class="link" href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(label)}</a>`;
+    }
+
+    function voteSourceUrl(profile, vote) {
+      const directUrl = vote.url_source || vote.url || vote.source;
+      if (/^https?:\/\//i.test(directUrl || "")) return { url: directUrl, direct: true };
+      const legislature = String(profile.votes_source || "").match(/l[ée]gislature\s*(\d+)/i)?.[1]
+        || (profile.dossiers_legislatifs || []).find((item) => item.legislature)?.legislature;
+      if (vote.numero_scrutin && legislature) {
+        return {
+          url: `https://www.assemblee-nationale.fr/dyn/${encodeURIComponent(legislature)}/scrutins/${encodeURIComponent(vote.numero_scrutin)}`,
+          direct: true,
+        };
+      }
+      const fallback = profile.synthese_activite?.url_an_ou_senat || profile.source;
+      return /^https?:\/\//i.test(fallback || "") ? { url: fallback, direct: false } : null;
+    }
+
+    function compareFactsForTheme(profile, theme) {
+      const votes = (profile.votes || []).filter((v) => v._theme === theme);
+      const textes = (profile.dossiers_legislatifs || []).filter((d) => d._theme === theme);
+      const interventions = (profile.interventions || []).filter((i) => i._theme === theme);
+      const absents = votes.filter((v) => voteLabelAndClass(v.position).cls === "absent");
+      return { votes, textes, interventions, absents };
+    }
+
+    function renderThemePills() {
+      return `
+        <div class="themes-row" aria-label="Filtre des thèmes">
+          ${THEME_OPTIONS.map((t) => `
+            <button type="button" class="theme-pill ${state.selectedTheme === t.key ? "active" : ""}" data-theme="${t.key}">
+              ${t.icon || ""} ${escapeHtml(t.label)}
+            </button>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function renderHeader(meta, profile) {
+      const nom = profile?.identite?.nom_complet || meta?.nom || profile?.slug || "Candidat";
+      const parti = meta?.parti || profile?.identite?.groupe_nom || profile?.identite?.groupe_sigle || "Affiliation non renseignée";
+      const statut = meta?.statut || "statut non renseigné";
+      const photo = profile?.mandat_europeen?.photo || "";
+      const updatedAt = profile?.meta?.genere_le || null;
+
+      // KPI 1 — Ancienneté et statut du mandat
+      const tenure = computeMandateTenure(profile);
+
+      // KPI 2 — Responsabilités institutionnelles occupées (dédupliquées, hors churn administratif)
+      const responsibilities = computeResponsibilitiesSummary(profile);
+
+      // KPI 3 — Profil de vote synthétique, restreint aux votes sur l'ensemble du texte (dernière lecture connue)
+      const voteProfile = computeFinalTextVoteProfile(profile);
+      const voteProfilePct = (key) => (voteProfile.totalTextes > 0 ? Math.round((voteProfile.counts[key] / voteProfile.totalTextes) * 100) : 0);
+
+      // Répartition thématique des votes pour histogramme horizontal (sert aussi de base au KPI 4)
+      const themeCountMap = {};
+      for (const v of (profile.votes || [])) {
+        themeCountMap[v._theme] = (themeCountMap[v._theme] || 0) + 1;
+      }
+      const sortedThemeDist = Object.entries(themeCountMap)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+      const maxThemeCount = sortedThemeDist[0]?.[1] || 1;
+
+      const themeDistHtml = sortedThemeDist.length ? `
+        <div class="theme-dist">
+          <p class="theme-dist-title">Répartition des votes par thème</p>
+          ${sortedThemeDist.map(([theme, count]) => `
+            <div class="theme-dist-row">
+              <span class="theme-dist-label">${escapeHtml(themeLabel(theme))}</span>
+              <div class="theme-dist-bar-wrap" title="${escapeHtml(themeLabel(theme))} — ${count} vote(s)">
+                <div class="theme-dist-bar" style="width:${Math.round((count / maxThemeCount) * 100)}%"></div>
+              </div>
+              <span class="theme-dist-count">${count}</span>
+            </div>
+          `).join("")}
+        </div>
+      ` : "";
+
+      return `
+        <section id="resume" class="panel">
+          <div class="hero">
+            <div class="avatar">${photo ? `<img src="${escapeHtml(photo)}" alt="Photo de ${escapeHtml(nom)}">` : escapeHtml(shortName(nom))}</div>
+            <div>
+              <h2>${escapeHtml(nom)}</h2>
+              <div class="tags">
+                <span class="tag">${escapeHtml(parti)}</span>
+                <span class="tag">${escapeHtml(statut)}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-grid">
+            <div class="kpi-flip ${state.flippedKpis.has("anciennete") ? "flipped" : ""}" tabindex="0" role="button" aria-pressed="${state.flippedKpis.has("anciennete")}" data-kpi="anciennete" aria-label="Ancienneté du mandat, appuyer pour l'explication">
+              <div class="kpi-flip-inner">
+                <div class="kpi-face kpi-face--front">
+                  <div class="kpi-icon">${KPI_ICONS.anciennete}</div>
+                  <div class="kpi-value">${tenure ? `${tenure.annees}\u00a0${tenure.annees <= 1 ? "an" : "ans"}` : "N/D"}</div>
+                  <div class="kpi-label">Ancienneté du mandat</div>
+                </div>
+                <div class="kpi-face kpi-face--back">
+                  <p class="kpi-back-text">${tenure ? (tenure.enCours ? `En cours depuis le ${escapeHtml(formatIsoDate(tenure.debutIso))}.` : `Terminé, débuté le ${escapeHtml(formatIsoDate(tenure.debutIso))}.`) : "Mandat électif non renseigné."} Mesure la durée, pas l'implication.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="kpi-flip ${state.flippedKpis.has("responsabilites") ? "flipped" : ""}" tabindex="0" role="button" aria-pressed="${state.flippedKpis.has("responsabilites")}" data-kpi="responsabilites" aria-label="Responsabilités occupées, appuyer pour l'explication">
+              <div class="kpi-flip-inner">
+                <div class="kpi-face kpi-face--front">
+                  <div class="kpi-icon">${KPI_ICONS.responsabilites}</div>
+                  <div class="kpi-value">${responsibilities.distinctCount}</div>
+                  <div class="kpi-label">Responsabilités occupées</div>
+                </div>
+                <div class="kpi-face kpi-face--back">
+                  <p class="kpi-back-text">${responsibilities.notableCount ? `dont ${responsibilities.notableCount} en tant que président(e)/rapporteur(e).` : "Aucune présidence/rapport identifié."} Commissions et engagements distincts, hors réaffectations internes.</p>
+                  <button type="button" class="kpi-back-link" data-goto-panel="mandats">Voir le détail →</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="kpi-flip ${state.flippedKpis.has("vote") ? "flipped" : ""}" tabindex="0" role="button" aria-pressed="${state.flippedKpis.has("vote")}" data-kpi="vote" aria-label="Profil de vote, appuyer pour l'explication">
+              <div class="kpi-flip-inner">
+                <div class="kpi-face kpi-face--front">
+                  <div class="kpi-icon">${KPI_ICONS.vote}</div>
+                  <div class="kpi-value">${voteProfile.totalTextes > 0 ? `${voteProfilePct("pour")}\u00a0%` : "N/D"}</div>
+                  <div class="kpi-label">Profil de vote — part de "pour"</div>
+                </div>
+                <div class="kpi-face kpi-face--back">
+                  ${voteProfile.totalTextes > 0 ? `
+                    <div class="vote-profile-bar" role="img" aria-label="Répartition : ${voteProfilePct("pour")}% pour, ${voteProfilePct("contre")}% contre, ${voteProfilePct("abstention")}% abstention, ${voteProfilePct("absent")}% sans trace">
+                      <div class="vote-profile-seg--pour" style="width:${voteProfilePct("pour")}%"></div>
+                      <div class="vote-profile-seg--contre" style="width:${voteProfilePct("contre")}%"></div>
+                      <div class="vote-profile-seg--abstention" style="width:${voteProfilePct("abstention")}%"></div>
+                      <div class="vote-profile-seg--absent" style="width:${voteProfilePct("absent")}%"></div>
+                    </div>
+                    <div class="vote-profile-legend">
+                      <span><span class="dot" style="background:var(--vert)"></span>Pour ${voteProfilePct("pour")}%</span>
+                      <span><span class="dot" style="background:var(--rouge)"></span>Contre ${voteProfilePct("contre")}%</span>
+                      <span><span class="dot" style="background:var(--muted)"></span>Abst. ${voteProfilePct("abstention")}%</span>
+                      <span><span class="dot" style="background:var(--line)"></span>Sans trace ${voteProfilePct("absent")}%</span>
+                    </div>
+                    <p class="kpi-back-text">${voteProfile.totalTextes} texte(s) sur leur vote final (${voteProfile.totalLectures} lecture(s) recensée(s)). Pas un score de performance.</p>
+                  ` : `<p class="kpi-back-text">Aucun vote sur l'ensemble d'un texte retrouvé dans les données disponibles.</p>`}
+                  <button type="button" class="kpi-back-link" data-goto-panel="votes">Voir le détail →</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="kpi-flip ${state.flippedKpis.has("theme") ? "flipped" : ""}" tabindex="0" role="button" aria-pressed="${state.flippedKpis.has("theme")}" data-kpi="theme" aria-label="Thème dominant, appuyer pour l'explication">
+              <div class="kpi-flip-inner">
+                <div class="kpi-face kpi-face--front">
+                  <div class="kpi-icon">${KPI_ICONS.theme}</div>
+                  <div class="kpi-value">${sortedThemeDist.length ? escapeHtml(themeLabel(sortedThemeDist[0][0])) : "N/D"}</div>
+                  <div class="kpi-label">Thème dominant</div>
+                </div>
+                <div class="kpi-face kpi-face--back">
+                  <p class="kpi-back-text">${sortedThemeDist.length ? `${sortedThemeDist[0][1]} vote(s) sur ce thème.` : "Thème non déterminé."} Classification par mots-clés : une tendance, pas un classement exhaustif.</p>
+                  <button type="button" class="kpi-back-link" data-goto-panel="votes">Voir le détail →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          ${themeDistHtml}
+
+          <div class="trust-line">
+            Données sourcées • Mise à jour le ${escapeHtml(formatIsoDate(updatedAt))} •
+            <a class="link" href="../../README.md" target="_blank" rel="noopener">Voir la méthode</a>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderTextes(profile) {
+      const items = (profile.dossiers_legislatifs || []).filter((d) => inTheme(d, state.selectedTheme));
+      if (!items.length) {
+        return `<p class="empty">${state.selectedTheme === "all" ? "Aucun texte porté retrouvé dans les données disponibles." : "Aucun texte porté retrouvé sur ce thème."}</p>`;
+      }
+      const sorted = [...items].sort((a, b) => {
+        const dateDiff = toDateMs(b.date_max || b.date_min) - toDateMs(a.date_max || a.date_min);
+        return dateDiff || simplifyTitle(a.titre).localeCompare(simplifyTitle(b.titre), "fr");
+      });
+      const byTheme = new Map();
+      for (const item of sorted) {
+        if (!byTheme.has(item._theme)) byTheme.set(item._theme, []);
+        byTheme.get(item._theme).push(item);
+      }
+      const shelves = [...byTheme.entries()].sort((a, b) => {
+        const countDiff = b[1].length - a[1].length;
+        if (countDiff) return countDiff;
+        const newestDiff = toDateMs(b[1][0]?.date_max || b[1][0]?.date_min) - toDateMs(a[1][0]?.date_max || a[1][0]?.date_min);
+        return newestDiff || themeLabel(a[0]).localeCompare(themeLabel(b[0]), "fr");
+      });
+
+      return `<div class="text-atlas">${shelves.map(([theme, themeItems]) => {
+        const expanded = state.expandedTextThemes.has(theme);
+        const visible = expanded ? themeItems : themeItems.slice(0, 6);
+        return `
+          <section class="text-shelf" aria-labelledby="text-theme-${escapeHtml(theme)}">
+            <div class="text-shelf-head">
+              <strong id="text-theme-${escapeHtml(theme)}">${escapeHtml(themeLabel(theme))}</strong>
+              <span></span>
+              <span class="text-shelf-count">${themeItems.length} texte(s)</span>
+            </div>
+            <div class="text-shelf-track">
+              ${visible.map((d) => `
+                <article class="text-leaf">
+                  <div class="text-leaf-title">${escapeHtml(simplifyTitle(d.titre))}</div>
+                  <div>
+                    <div class="text-leaf-meta">${escapeHtml(roleFromDossier(d))} / ${escapeHtml(formatIsoDate(d.date_min))}${d.date_max ? ` → ${escapeHtml(formatIsoDate(d.date_max))}` : ""}</div>
+                    ${sourceLinkHtml(d.url_institution || d.url_source, "↗ source")}
+                  </div>
+                </article>
+              `).join("")}
+            </div>
+            ${themeItems.length > 6 ? `<button type="button" class="text-shelf-more" data-expand-text-theme="${escapeHtml(theme)}">${expanded ? "Réduire" : `Voir les ${themeItems.length} textes`} ${escapeHtml(themeLabel(theme))}</button>` : ""}
+          </section>
+        `;
+      }).join("")}</div>`;
+    }
+
+    function sortVotesByDate(votes) {
+      return [...votes].sort((a, b) => {
+        const dateDiff = toDateMs(b.date) - toDateMs(a.date);
+        return dateDiff || simplifyTitle(a.titre).localeCompare(simplifyTitle(b.titre), "fr");
+      });
+    }
+
+    function renderVotes(profile) {
+      const items = (profile.votes || []).filter((v) => inTheme(v, state.selectedTheme));
+      if (!items.length) {
+        return `<p class="empty">${state.selectedTheme === "all" ? "Aucune donnée de vote trouvée dans cette fiche." : "Aucune donnée de vote trouvée sur ce thème."}</p>`;
+      }
+
+      const byTheme = new Map();
+      for (const vote of items) {
+        if (!byTheme.has(vote._theme)) byTheme.set(vote._theme, []);
+        byTheme.get(vote._theme).push(vote);
+      }
+      const shelves = [...byTheme.entries()]
+        .map(([theme, votes]) => [theme, sortVotesByDate(votes)])
+        .sort((a, b) => {
+          const countDiff = b[1].length - a[1].length;
+          return countDiff || themeLabel(a[0]).localeCompare(themeLabel(b[0]), "fr");
+        });
+
+      return `
+        <p class="source-ref">Dans chaque thème : du vote le plus récent au plus ancien.</p>
+        <div class="vote-atlas">
+          ${shelves.map(([theme, themeVotes]) => {
+            const expanded = state.expandedVoteThemes.has(theme);
+            const visible = expanded ? themeVotes : themeVotes.slice(0, 18);
+            return `
+              <section class="vote-shelf" aria-labelledby="vote-theme-${escapeHtml(theme)}">
+                <div class="vote-shelf-head">
+                  <strong id="vote-theme-${escapeHtml(theme)}">${escapeHtml(themeLabel(theme))}</strong>
+                  <span></span>
+                  <span class="vote-shelf-count">${themeVotes.length} vote(s)</span>
+                </div>
+                <div class="vote-cloud">
+                  ${visible.map((v, index) => {
+                    const badge = voteLabelAndClass(v.position);
+                    const weight = 1 + (index % 5);
+                    const source = voteSourceUrl(profile, v);
+                    const tagName = source ? "a" : "span";
+                    const sourceAttrs = source ? `href="${escapeHtml(source.url)}" target="_blank" rel="noopener"` : "";
+                    return `<${tagName} class="vote-token ${badge.cls}" style="--weight:${weight}" title="${escapeHtml(v.titre || "")}" ${sourceAttrs}>
+                      ${escapeHtml(simplifyTitle(v.titre))}
+                      <em>${escapeHtml(badge.label)} / ${escapeHtml(formatIsoDate(v.date))}${source ? `<span class="source-mark">↗ ${source.direct ? "scrutin" : "profil source"}</span>` : ""}</em>
+                    </${tagName}>`;
+                  }).join("")}
+                </div>
+                ${themeVotes.length > 18 ? `<button type="button" class="vote-shelf-more" data-expand-vote-theme="${escapeHtml(theme)}">${expanded ? "Réduire" : `Voir les ${themeVotes.length} votes`} ${escapeHtml(themeLabel(theme))}</button>` : ""}
+              </section>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    function renderAbsences(profile) {
+      const votes = (profile.votes || []).filter((v) => inTheme(v, state.selectedTheme));
+      const textes = (profile.dossiers_legislatifs || []).filter((d) => inTheme(d, state.selectedTheme));
+      const inters = (profile.interventions || []).filter((i) => inTheme(i, state.selectedTheme));
+
+      const absVotes = votes.filter((v) => voteLabelAndClass(v.position).cls === "absent");
+      const themeUniverse = THEME_OPTIONS.filter((t) => t.key !== "all").map((t) => t.key);
+
+      let noTextThemes = [];
+      let noInterThemes = [];
+      if (state.selectedTheme === "all") {
+        const textThemes = new Set((profile.dossiers_legislatifs || []).map((d) => d._theme));
+        const interThemes = new Set((profile.interventions || []).map((i) => i._theme));
+        noTextThemes = themeUniverse.filter((t) => !textThemes.has(t));
+        noInterThemes = themeUniverse.filter((t) => !interThemes.has(t));
+      }
+
+      const missingTextCount = state.selectedTheme === "all" ? noTextThemes.length : (textes.length ? 0 : 1);
+      const missingInterCount = state.selectedTheme === "all" ? noInterThemes.length : (inters.length ? 0 : 1);
+      return `<div class="void-map">
+        <div class="void-signal"><span class="void-number">${missingTextCount}</span><strong>thème(s) sans texte retrouvé</strong><small>${noTextThemes.map(themeLabel).join(" / ") || "aucun vide détecté"}</small></div>
+        <div class="void-signal"><span class="void-number">${missingInterCount}</span><strong>thème(s) sans parole retrouvée</strong><small>${noInterThemes.map(themeLabel).join(" / ") || "aucun vide détecté"}</small></div>
+        <div class="void-signal"><span class="void-number">${absVotes.length}</span><strong>vote(s) sans participation</strong><small>absence à un scrutin ≠ absence d'activité</small></div>
+      </div>`;
+    }
+
+    function renderInterventions(profile) {
+      let items = (profile.interventions || []).filter((i) => inTheme(i, state.selectedTheme));
+      if (state.interventionsMode === "short") {
+        items = items.filter((i) => i.format === "reaction_courte");
+      } else if (state.interventionsMode === "long") {
+        items = items.filter((i) => i.format === "prise_de_parole_developpee");
+      }
+
+      if (!items.length) {
+        return `<p class="empty">${state.selectedTheme === "all" ? "Aucune prise de parole trouvée." : "Aucune prise de parole retrouvée sur ce thème dans les données actuellement disponibles."}</p>`;
+      }
+
+      const sorted = [...items].sort((a, b) => toDateMs(b.date || b.created_at) - toDateMs(a.date || a.created_at));
+      const visible = sorted.slice(0, state.interventionsVisible);
+
+      return `
+        <div class="inter-controls">
+          <button type="button" class="ghost-btn ${state.interventionsMode === "all" ? "active-choice" : ""}" data-inter-mode="all">Toutes</button>
+          <button type="button" class="ghost-btn ${state.interventionsMode === "short" ? "active-choice" : ""}" data-inter-mode="short">Réactions courtes</button>
+          <button type="button" class="ghost-btn ${state.interventionsMode === "long" ? "active-choice" : ""}" data-inter-mode="long">Prises de parole longues</button>
+        </div>
+
+        <div class="speech-tape">
+          ${visible.map((i) => `
+            <article class="speech-fragment">
+              <div class="editorial-meta">${escapeHtml(formatIsoDate(i.date || i.created_at))} / ${escapeHtml(themeLabel(i._theme))}</div>
+              <p class="speech-quote">“${escapeHtml(i.texte ? String(i.texte).slice(0, INTERVENTION_TEXT_PREVIEW_LENGTH) : (i.sujet || "Extrait non disponible"))}${i.texte && String(i.texte).length > INTERVENTION_TEXT_PREVIEW_LENGTH ? "…" : ""}”</p>
+              <div>${sourceLinkHtml(i.url_detail || i.url, "↗ archive")}</div>
+            </article>
+          `).join("")}
+        </div>
+
+        ${sorted.length > visible.length ? `<p><button type="button" id="see-more-interventions" class="ghost-btn">Voir plus d’extraits</button></p>` : ""}
+      `;
+    }
+
+    async function loadProfile(slug) {
+      if (!slug) return null;
+      const resp = await fetch(PROFILE_URL(slug), { cache: "no-store" });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      return withTheme(await resp.json());
+    }
+
+    async function ensureCompareProfile(slug) {
+      if (!slug) return null;
+      if (state.compareProfiles[slug]) return state.compareProfiles[slug];
+      try {
+        state.compareProfiles[slug] = await loadProfile(slug);
+      } catch {
+        state.compareProfiles[slug] = null;
+      }
+      return state.compareProfiles[slug];
+    }
+
+    function renderCompareSection(profile) {
+      const baseTheme = state.selectedTheme === "all" ? state.compareTheme : state.selectedTheme;
+      const availableCandidates = state.availableCompareCandidates;
+
+      const activeProfiles = [{ slug: state.currentSlug, profile, meta: state.currentMeta }];
+      for (const slug of state.compareSlugs.filter(Boolean)) {
+        const p = state.compareProfiles[slug];
+        const m = state.candidats.find((c) => c.slug === slug);
+        if (p && m) activeProfiles.push({ slug, profile: p, meta: m });
+      }
+
+      return `
+        <section id="compare" class="panel">
+          <h2>Comparer</h2>
+          <p class="section-kicker">Thème de comparaison</p>
+          <div class="themes-row" aria-label="Thème de comparaison">
+            ${THEME_OPTIONS.filter((t) => t.key !== "all").map((t) => `
+              <button type="button" class="theme-pill ${baseTheme === t.key ? "active" : ""}" data-compare-theme="${t.key}">${t.icon || ""} ${escapeHtml(t.label)}</button>
+            `).join("")}
+          </div>
+
+          <p class="section-kicker">Candidats à comparer (2 max)</p>
+          <div class="avatar-carousel" role="group" aria-label="Choisir jusqu'à deux candidats à comparer">
+            ${availableCandidates.map((c) => `
+              <button type="button" class="avatar-chip avatar-chip--mini ${state.compareSlugs.includes(c.slug) ? "active" : ""}" data-compare-toggle="${escapeHtml(c.slug)}">
+                <span class="avatar-chip-circle">${escapeHtml(shortName(c.nom))}</span>
+                <span class="avatar-chip-name">${escapeHtml(c.nom.split(/\s+/).slice(-1)[0])}</span>
+              </button>
+            `).join("")}
+          </div>
+
+          <div class="versus-stage">
+            ${activeProfiles.map(({ profile: p, meta: m }) => {
+              const facts = compareFactsForTheme(p, baseTheme);
+              return `
+                <article class="versus-person">
+                  <div class="versus-name">${escapeHtml(p.identite?.nom_complet || m?.nom || p.slug)}</div>
+                  <div class="editorial-meta">${escapeHtml(themeLabel(baseTheme))}</div>
+                  <div class="versus-metrics">
+                    <div class="versus-metric"><b>${facts.votes.length}</b><small>votes</small></div>
+                    <div class="versus-metric"><b>${facts.textes.length}</b><small>textes</small></div>
+                    <div class="versus-metric"><b>${facts.interventions.length}</b><small>paroles</small></div>
+                    <div class="versus-metric"><b>${facts.absents.length}</b><small>sans part.</small></div>
+                  </div>
+                </article>
+              `;
+            }).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderHome() {
+      const root = document.getElementById("candidat-root");
+      const available = state.candidats.filter((candidate) => candidate.slug);
+      state.currentSlug = "";
+      state.currentMeta = null;
+      state.currentProfile = null;
+      updateActiveAvatarChip();
+      root.innerHTML = `
+        <section class="home-stage">
+          <div class="home-manifesto">
+            <p class="section-kicker">Politique en clair / Présidentielle 2027</p>
+            <h2>Choisir, puis regarder les traces.</h2>
+            <p><strong>Les traces parlementaires des candidats.</strong> Une lecture visuelle des mandats, textes, votes et prises de parole issus des données publiques. Aucun candidat n’est mis en avant par défaut.</p>
+          </div>
+          <div class="home-candidates">
+            ${available.map((candidate) => `
+              <button type="button" class="home-candidate" data-home-slug="${escapeHtml(candidate.slug)}">
+                <strong>${escapeHtml(candidate.nom)}</strong>
+                <small>${escapeHtml(candidate.parti || "Affiliation non renseignée")} ↗</small>
+              </button>
+            `).join("")}
+          </div>
+          <div class="home-note">Les noms barrés dans l’index supérieur ne disposent pas encore de données parlementaires exploitables.</div>
+        </section>
+      `;
+      root.querySelectorAll("[data-home-slug]").forEach((button) => {
+        button.addEventListener("click", () => selectCandidate(button.dataset.homeSlug));
+      });
+      setDocumentTitle("");
+    }
+
+    function renderPage() {
+      const root = document.getElementById("candidat-root");
+      const profile = state.currentProfile;
+      const meta = state.currentMeta;
+
+      if (!profile || !meta) {
+        root.innerHTML = "";
+        return;
+      }
+
+      root.innerHTML = `
+        ${renderHeader(meta, profile)}
+
+        <section class="theme-dock">
+          <p class="section-kicker">Filtrer par thème</p>
+          ${renderThemePills()}
+        </section>
+
+        ${renderPanelIndicator()}
+        <div class="swipe-deck" id="swipe-deck">
+          <div class="swipe-panel ${state.activePanelIndex === 0 ? "active" : ""}">
+            <section class="panel">
+              <h2>Responsabilités & mandats <span class="source-ref">(${dedupeResponsibilities(profile).length})</span></h2>
+              <div id="mandats">${renderResponsabilites(profile)}</div>
+            </section>
+          </div>
+
+          <div class="swipe-panel ${state.activePanelIndex === 1 ? "active" : ""}">
+            <section class="panel">
+              <h2>Textes portés <span class="source-ref">(${(profile.dossiers_legislatifs || []).length})</span></h2>
+              <div id="textes">${renderTextes(profile)}</div>
+            </section>
+          </div>
+
+          <div class="swipe-panel ${state.activePanelIndex === 2 ? "active" : ""}">
+            <section class="panel">
+              <h2>Votes enregistrés <span class="source-ref">(${(profile.votes || []).length})</span></h2>
+              <div id="votes">${renderVotes(profile)}</div>
+            </section>
+          </div>
+
+          <div class="swipe-panel ${state.activePanelIndex === 3 ? "active" : ""}">
+            <section class="panel">
+              <h2>Absences et silences</h2>
+              <div id="absences">${renderAbsences(profile)}</div>
+            </section>
+          </div>
+
+          <div class="swipe-panel ${state.activePanelIndex === 4 ? "active" : ""}">
+            <section class="panel">
+              <h2>Prises de parole <span class="source-ref">(${(profile.interventions || []).length})</span></h2>
+              <div id="interventions">${renderInterventions(profile)}</div>
+            </section>
+          </div>
+
+          <div class="swipe-panel ${state.activePanelIndex === 5 ? "active" : ""}">${renderCompareSection(profile)}</div>
+        </div>
+        <p class="swipe-hint">← Glissez ou touchez les icônes pour changer de section →</p>
+      `;
+
+      setDocumentTitle(profile.identite?.nom_complet || meta.nom);
+      bindRenderedEvents();
+    }
+
+    function renderPanelIndicator() {
+      return `
+        <div class="panel-indicator" role="tablist" aria-label="Sections du dossier">
+          ${PANEL_ORDER.map((id, i) => `
+            <button type="button" class="panel-dot ${state.activePanelIndex === i ? "active" : ""}" data-panel-index="${i}" title="${escapeHtml(PANEL_META[id].label)}" aria-label="${escapeHtml(PANEL_META[id].label)}">
+              <span aria-hidden="true">${PANEL_META[id].icon}</span>
+              <small>${escapeHtml(PANEL_META[id].label)}</small>
+            </button>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function toggleKpiFlip(el) {
+      const id = el.dataset.kpi;
+      const flipped = el.classList.toggle("flipped");
+      el.setAttribute("aria-pressed", String(flipped));
+      if (flipped) state.flippedKpis.add(id); else state.flippedKpis.delete(id);
+    }
+
+    function setActivePanel(index, { scroll = false } = {}) {
+      if (index < 0 || index >= PANEL_ORDER.length) return;
+      state.activePanelIndex = index;
+      document.querySelectorAll(".panel-dot").forEach((dot, i) => {
+        dot.classList.toggle("active", i === index);
+      });
+      document.querySelectorAll(".swipe-panel").forEach((panel, i) => {
+        panel.classList.toggle("active", i === index);
+      });
+      if (scroll) document.getElementById("swipe-deck")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function scrollToPanel(id) {
+      setActivePanel(PANEL_ORDER.indexOf(id), { scroll: true });
+    }
+
+    function bindRenderedEvents() {
+      document.querySelectorAll("[data-expand-vote-theme]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const theme = button.dataset.expandVoteTheme;
+          if (state.expandedVoteThemes.has(theme)) state.expandedVoteThemes.delete(theme);
+          else state.expandedVoteThemes.add(theme);
+          renderPage();
+        });
+      });
+
+      document.querySelectorAll("[data-expand-text-theme]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const theme = button.dataset.expandTextTheme;
+          if (state.expandedTextThemes.has(theme)) state.expandedTextThemes.delete(theme);
+          else state.expandedTextThemes.add(theme);
+          renderPage();
+        });
+      });
+
+      document.querySelectorAll(".orbit-node").forEach((node) => {
+        node.addEventListener("click", () => {
+          const expanded = node.classList.toggle("expanded");
+          node.setAttribute("aria-expanded", String(expanded));
+        });
+      });
+
+      document.querySelectorAll("[data-theme]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.selectedTheme = btn.dataset.theme;
+          if (state.selectedTheme !== "all") state.compareTheme = state.selectedTheme;
+          renderPage();
+        });
+      });
+
+      document.querySelectorAll("[data-compare-theme]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.compareTheme = btn.dataset.compareTheme;
+          renderPage();
+        });
+      });
+
+      document.querySelectorAll("[data-inter-mode]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.interventionsMode = btn.dataset.interMode;
+          state.interventionsVisible = 6;
+          renderPage();
+        });
+      });
+
+      const moreBtn = document.getElementById("see-more-interventions");
+      if (moreBtn) {
+        moreBtn.addEventListener("click", () => {
+          state.interventionsVisible += 6;
+          renderPage();
+        });
+      }
+
+      document.querySelectorAll("[data-compare-toggle]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const slug = btn.dataset.compareToggle;
+          const idx = state.compareSlugs.indexOf(slug);
+          if (idx !== -1) {
+            state.compareSlugs[idx] = "";
+          } else {
+            const emptyIdx = state.compareSlugs.indexOf("");
+            state.compareSlugs[emptyIdx !== -1 ? emptyIdx : 0] = slug;
+          }
+          await refreshCompareProfiles();
+          renderPage();
+        });
+      });
+
+      // Cartes KPI en flip 3D : clic/tap pour basculer (le survol suffit sur desktop)
+      document.querySelectorAll(".kpi-flip").forEach((el) => {
+        el.addEventListener("click", (e) => {
+          if (e.target.closest(".kpi-back-link")) return;
+          toggleKpiFlip(el);
+        });
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            toggleKpiFlip(el);
+          }
+        });
+      });
+      document.querySelectorAll(".kpi-back-link").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          scrollToPanel(btn.dataset.gotoPanel);
+        });
+      });
+
+      // Barre d'onglets : un seul panneau visible, sans défilement horizontal forcé.
+      document.querySelectorAll(".panel-dot").forEach((dot) => {
+        dot.addEventListener("click", () => {
+          setActivePanel(Number(dot.dataset.panelIndex), { scroll: true });
+        });
+      });
+    }
+
+    async function refreshCompareProfiles() {
+      // Dédoublonnage utile si la même personne est choisie deux fois pour la comparaison.
+      const slugs = [...new Set(state.compareSlugs.filter(Boolean))].slice(0, MAX_COMPARE_CANDIDATES);
+      state.compareSlugs = [slugs[0] || "", slugs[1] || ""];
+      await Promise.all(slugs.map((slug) => ensureCompareProfile(slug)));
+    }
+
+    function updateActiveAvatarChip() {
+      document.querySelectorAll("#candidat-carousel .avatar-chip").forEach((chip) => {
+        const isActive = chip.dataset.slug === state.currentSlug;
+        chip.classList.toggle("active", isActive);
+        chip.setAttribute("aria-selected", String(isActive));
+      });
+    }
+
+    async function selectCandidate(slug) {
+      state.currentSlug = slug;
+      state.currentMeta = state.candidats.find((c) => c.slug === slug) || null;
+      state.currentProfile = null;
+      state.selectedTheme = "all";
+      state.interventionsMode = "all";
+      state.interventionsVisible = 6;
+      state.compareSlugs = ["", ""];
+      state.compareProfiles = {};
+      state.activePanelIndex = 0;
+      state.flippedKpis = new Set();
+      state.expandedTextThemes = new Set();
+      state.expandedVoteThemes = new Set();
+
+      updateActiveAvatarChip();
+
+      const root = document.getElementById("candidat-root");
+      if (!slug || !state.currentMeta) {
+        root.innerHTML = "";
+        setDocumentTitle("");
+        return;
+      }
+      state.availableCompareCandidates = state.candidats.filter((c) => c.slug && c.slug !== slug);
+
+      root.innerHTML = `<section class="panel"><p class="empty" role="status" aria-live="polite">Chargement de la fiche de ${escapeHtml(state.currentMeta.nom)}…</p></section>`;
+      try {
+        state.currentProfile = await loadProfile(slug);
+        renderPage();
+      } catch (err) {
+        root.innerHTML = `
+          <section class="panel">
+            <p class="empty">Données non disponibles pour ce candidat (${escapeHtml(err.message)}).</p>
+            <p class="small">Aucune donnée trouvée pour le moment. Cette fiche sera affichée dès que les données seront disponibles.</p>
+          </section>
+        `;
+        setDocumentTitle(state.currentMeta?.nom || "");
+      }
+    }
+
+    function candidateLastName(nom) {
+      const parts = String(nom || "").split(/\s+/).filter(Boolean);
+      return parts.length ? parts[parts.length - 1] : "?";
+    }
+
+    async function init() {
+      const carousel = document.getElementById("candidat-carousel");
+      document.getElementById("home-link").addEventListener("click", renderHome);
+
+      try {
+        const resp = await fetch(CANDIDATS_URL, { cache: "no-store" });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const data = await resp.json();
+        state.candidats = data.candidats || [];
+
+        carousel.innerHTML = state.candidats.map((c) => `
+          <button type="button" class="avatar-chip" data-slug="${escapeHtml(c.slug || "")}" role="tab" aria-selected="false" ${c.slug ? "" : "disabled"} title="${c.slug ? escapeHtml(c.nom) : `${escapeHtml(c.nom)} (pas de données parlementaires)`}">
+            <span class="avatar-chip-circle">${escapeHtml(shortName(c.nom))}</span>
+            <span class="avatar-chip-name">${escapeHtml(candidateLastName(c.nom))}</span>
+          </button>
+        `).join("");
+
+        carousel.querySelectorAll(".avatar-chip[data-slug]:not(:disabled)").forEach((chip) => {
+          chip.addEventListener("click", () => selectCandidate(chip.dataset.slug));
+        });
+
+        renderHome();
+      } catch (err) {
+        document.getElementById("candidat-root").innerHTML = `
+          <section class="panel"><p class="empty">Impossible de charger la liste des candidats (${escapeHtml(err.message)}).</p></section>
+        `;
+        return;
+      }
+
+    }
+
+    init();
+  </script>
+</body>
+</html>

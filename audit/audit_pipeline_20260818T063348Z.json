@@ -1,0 +1,5882 @@
+{
+  "meta": {
+    "genere_le": "2026-08-18T06:33:48.044541+00:00",
+    "staleness_days": 30
+  },
+  "vue_ensemble": {
+    "total_profils_audites": 129,
+    "total_groupes_audites": 7,
+    "total_gouvernements_audites": 10,
+    "total_erreurs_lecture": 0,
+    "erreurs_lecture": {
+      "profils": [],
+      "groupes": [],
+      "gouvernements": []
+    },
+    "warnings": {
+      "total_warnings": 202,
+      "par_type": {
+        "ParlTrack": {
+          "frequence": 2,
+          "profils_ids": [
+            "europarl:131580",
+            "nosdeputes:jean-luc-melenchon"
+          ],
+          "groupe_ids": [],
+          "gouvernement_ids": []
+        },
+        "amendements indisponibles": {
+          "frequence": 2,
+          "profils_ids": [
+            "nosdeputes:rene-pilato",
+            "nosdeputes:rodrigo-arenas"
+          ],
+          "groupe_ids": [],
+          "gouvernement_ids": []
+        },
+        "amendements indisponibles (législature 15)": {
+          "frequence": 24,
+          "profils_ids": [
+            "nosdeputes:annie-vidal",
+            "nosdeputes:beatrice-piron",
+            "nosdeputes:benjamin-haddad",
+            "nosdeputes:benoit-mournet",
+            "nosdeputes:bruno-studer",
+            "nosdeputes:charlotte-parmentier-lecocq",
+            "nosdeputes:david-amiel",
+            "nosdeputes:david-valence",
+            "nosdeputes:dominique-da-silva",
+            "nosdeputes:dominique-faure",
+            "nosdeputes:emmanuel-pellerin",
+            "nosdeputes:guillaume-vuilletet",
+            "nosdeputes:jean-marc-zulesi",
+            "nosdeputes:jean-michel-jacques",
+            "nosdeputes:ludovic-mendes",
+            "nosdeputes:marjolaine-meynier-millefert",
+            "nosdeputes:olivier-dussopt",
+            "nosdeputes:pascale-boyer",
+            "nosdeputes:patrick-vignal",
+            "nosdeputes:philippe-dunoyer",
+            "nosdeputes:pierre-cazeneuve",
+            "nosdeputes:pieyre-alexandre-anglade",
+            "nosdeputes:sophie-panonacle",
+            "nosdeputes:yannick-chenevard"
+          ],
+          "groupe_ids": [],
+          "gouvernement_ids": []
+        },
+        "amendements indisponibles (législature 16)": {
+          "frequence": 24,
+          "profils_ids": [
+            "nosdeputes:annie-vidal",
+            "nosdeputes:beatrice-piron",
+            "nosdeputes:benjamin-haddad",
+            "nosdeputes:benoit-mournet",
+            "nosdeputes:bruno-studer",
+            "nosdeputes:charlotte-parmentier-lecocq",
+            "nosdeputes:david-amiel",
+            "nosdeputes:david-valence",
+            "nosdeputes:dominique-da-silva",
+            "nosdeputes:dominique-faure",
+            "nosdeputes:emmanuel-pellerin",
+            "nosdeputes:guillaume-vuilletet",
+            "nosdeputes:jean-marc-zulesi",
+            "nosdeputes:jean-michel-jacques",
+            "nosdeputes:ludovic-mendes",
+            "nosdeputes:marjolaine-meynier-millefert",
+            "nosdeputes:olivier-dussopt",
+            "nosdeputes:pascale-boyer",
+            "nosdeputes:patrick-vignal",
+            "nosdeputes:philippe-dunoyer",
+            "nosdeputes:pierre-cazeneuve",
+            "nosdeputes:pieyre-alexandre-anglade",
+            "nosdeputes:sophie-panonacle",
+            "nosdeputes:yannick-chenevard"
+          ],
+          "groupe_ids": [],
+          "gouvernement_ids": []
+        },
+        "amendements indisponibles (législature 17)": {
+          "frequence": 32,
+          "profils_ids": [
+            "nosdeputes:annie-vidal",
+            "nosdeputes:beatrice-piron",
+            "nosdeputes:benjamin-haddad",
+            "nosdeputes:benoit-mournet",
+            "nosdeputes:bruno-studer",
+            "nosdeputes:catherine-belrhiti",
+            "nosdeputes:catherine-procaccia",
+            "nosdeputes:charlotte-parmentier-lecocq",
+            "nosdeputes:david-amiel",
+            "nosdeputes:david-valence",
+            "nosdeputes:dominique-da-silva",
+            "nosdeputes:dominique-faure",
+            "nosdeputes:emmanuel-pellerin",
+            "nosdeputes:eric-dolige",
+            "nosdeputes:evelyne-renaud-garabedian",
+            "nosdeputes:guillaume-vuilletet",
+            "nosdeputes:hussein-bourgi",
+            "nosdeputes:jean-marc-zulesi",
+            "nosdeputes:jean-michel-jacques",
+            "nosdeputes:jean-pierre-bansard",
+            "nosdeputes:joel-bigot",
+            "nosdeputes:ludovic-mendes",
+            "nosdeputes:marjolaine-meynier-millefert",
+            "nosdeputes:olivier-dussopt",
+            "nosdeputes:pascale-boyer",
+            "nosdeputes:patrick-vignal",
+            "nosdeputes:philippe-dunoyer",
+            "nosdeputes:pierre-cazeneuve",
+            "nosdeputes:pieyre-alexandre-anglade",
+            "nosdeputes:sophie-panonacle",
+            "nosdeputes:viviane-malet",
+            "nosdeputes:yannick-chenevard"
+          ],
+          "groupe_ids": [],
+          "gouvernement_ids": []
+        },
+        "couverture_roster_senat": {
+          "frequence": 2,
+          "profils_ids": [],
+          "groupe_ids": [
+            "Senat:LR",
+            "Senat:SER"
+          ],
+          "gouvernement_ids": []
+        },
+        "fraicheur_donnees": {
+          "frequence": 7,
+          "profils_ids": [],
+          "groupe_ids": [
+            "AN:LFI",
+            "AN:LR",
+            "AN:REN",
+            "AN:RN",
+            "AN:SOC",
+            "Senat:LR",
+            "Senat:SER"
+          ],
+          "gouvernement_ids": []
+        },
+        "mandats introuvables": {
+          "frequence": 9,
+          "profils_ids": [
+            "nosdeputes:charles-guene",
+            "nosdeputes:eric-dolige",
+            "nosdeputes:evelyne-renaud-garabedian",
+            "nosdeputes:jean-jacques-panunzi",
+            "nosdeputes:jean-pierre-bansard",
+            "nosdeputes:jean-raymond-hugonet",
+            "nosdeputes:marie-christine-chauvin",
+            "nosdeputes:thierry-cozic",
+            "nosdeputes:viviane-malet"
+          ],
+          "groupe_ids": [],
+          "gouvernement_ids": []
+        },
+        "synchro_sources.nosdeputes": {
+          "frequence": 80,
+          "profils_ids": [
+            "nosdeputes:anne-genetet",
+            "nosdeputes:anne-sophie-frigout",
+            "nosdeputes:antoine-villedieu",
+            "nosdeputes:benjamin-dirx",
+            "nosdeputes:brigitte-klinkert",
+            "nosdeputes:bruno-bilde",
+            "nosdeputes:carole-grandjean",
+            "nosdeputes:catherine-belrhiti",
+            "nosdeputes:catherine-deroche",
+            "nosdeputes:catherine-dumas",
+            "nosdeputes:catherine-procaccia",
+            "nosdeputes:celine-calvez",
+            "nosdeputes:charles-guene",
+            "nosdeputes:christine-decodts",
+            "nosdeputes:christine-le-nabour",
+            "nosdeputes:christophe-bentz",
+            "nosdeputes:christophe-marion",
+            "nosdeputes:claude-raynal",
+            "nosdeputes:corinne-vignon",
+            "nosdeputes:danielle-brulebois",
+            "nosdeputes:dominique-de-legge",
+            "nosdeputes:eric-dolige",
+            "nosdeputes:evelyne-renaud-garabedian",
+            "nosdeputes:fabien-di-filippo",
+            "nosdeputes:florent-boudie",
+            "nosdeputes:franck-riester",
+            "nosdeputes:francois-cormier-bouligeon",
+            "nosdeputes:francoise-buffet",
+            "nosdeputes:gerard-larcher",
+            "nosdeputes:gilles-le-gendre",
+            "nosdeputes:graziella-melchior",
+            "nosdeputes:hadrien-ghomi",
+            "nosdeputes:herve-berville",
+            "nosdeputes:hussein-bourgi",
+            "nosdeputes:jean-carles-grelier",
+            "nosdeputes:jean-francois-lovisolo",
+            "nosdeputes:jean-francois-rousset",
+            "nosdeputes:jean-jacques-panunzi",
+            "nosdeputes:jean-luc-bourgeaux",
+            "nosdeputes:jean-pierre-bansard",
+            "nosdeputes:jean-pierre-vigier",
+            "nosdeputes:jean-raymond-hugonet",
+            "nosdeputes:jean-rene-cazeneuve",
+            "nosdeputes:jean-terlier",
+            "nosdeputes:joel-bigot",
+            "nosdeputes:julie-delpech",
+            "nosdeputes:julien-odoul",
+            "nosdeputes:julien-rancoule",
+            "nosdeputes:karl-olive",
+            "nosdeputes:lionel-vuibert",
+            "nosdeputes:lysiane-metayer",
+            "nosdeputes:marie-christine-chauvin",
+            "nosdeputes:marie-guevenoux",
+            "nosdeputes:marie-pierre-rixain",
+            "nosdeputes:martine-etienne",
+            "nosdeputes:mathieu-lefevre",
+            "nosdeputes:maud-bregeon",
+            "nosdeputes:maxime-minot",
+            "nosdeputes:michael-taverne",
+            "nosdeputes:michel-lauzzana",
+            "nosdeputes:mikaele-seo",
+            "nosdeputes:nicole-le-peih",
+            "nosdeputes:pascal-lavergne",
+            "nosdeputes:philippe-juvin",
+            "nosdeputes:prisca-thevenot",
+            "nosdeputes:quentin-bataillon",
+            "nosdeputes:rene-pilato",
+            "nosdeputes:rodrigo-arenas",
+            "nosdeputes:roland-lescure",
+            "nosdeputes:sandra-marsaud",
+            "nosdeputes:sandrine-le-feur",
+            "nosdeputes:stephane-travert",
+            "nosdeputes:stephanie-rist",
+            "nosdeputes:thierry-cozic",
+            "nosdeputes:thomas-gassilloud",
+            "nosdeputes:veronique-riotton",
+            "nosdeputes:vincent-rolland",
+            "nosdeputes:viviane-malet",
+            "nosdeputes:yannick-haury",
+            "nosdeputes:yannick-vaugrenard"
+          ],
+          "groupe_ids": [],
+          "gouvernement_ids": []
+        },
+        "votes introuvables": {
+          "frequence": 20,
+          "profils_ids": [
+            "nosdeputes:bruno-retailleau",
+            "nosdeputes:catherine-belrhiti",
+            "nosdeputes:catherine-deroche",
+            "nosdeputes:catherine-dumas",
+            "nosdeputes:catherine-procaccia",
+            "nosdeputes:charles-guene",
+            "nosdeputes:claude-raynal",
+            "nosdeputes:dominique-de-legge",
+            "nosdeputes:eric-dolige",
+            "nosdeputes:evelyne-renaud-garabedian",
+            "nosdeputes:gerard-larcher",
+            "nosdeputes:hussein-bourgi",
+            "nosdeputes:jean-jacques-panunzi",
+            "nosdeputes:jean-pierre-bansard",
+            "nosdeputes:jean-raymond-hugonet",
+            "nosdeputes:joel-bigot",
+            "nosdeputes:marie-christine-chauvin",
+            "nosdeputes:thierry-cozic",
+            "nosdeputes:viviane-malet",
+            "nosdeputes:yannick-vaugrenard"
+          ],
+          "groupe_ids": [],
+          "gouvernement_ids": []
+        }
+      }
+    }
+  },
+  "audit_profils": {
+    "meta": {
+      "genere_le": "2026-08-18T06:33:48.044541+00:00",
+      "total_profils": 129,
+      "total_erreurs_lecture": 0,
+      "staleness_days": 30
+    },
+    "volumetrie": {
+      "repartition_chambre": {
+        "total_profils": 129,
+        "par_chambre": {
+          "AN": 127,
+          "PE": 1,
+          "Senat": 1,
+          "mairie": 0,
+          "null": 0
+        }
+      },
+      "repartition_provenance": {
+        "total_profils": 129,
+        "par_provenance": {
+          "candidat_declare": 8,
+          "roster_groupe": 121,
+          "null": 0
+        }
+      },
+      "distribution_listes": {
+        "votes": {
+          "min": 0,
+          "max": 5697,
+          "mediane": 1026,
+          "moyenne": 1133.53,
+          "pct_profils_a_zero": 16.28
+        },
+        "textes_portes": {
+          "min": 0,
+          "max": 283,
+          "mediane": 0,
+          "moyenne": 3.4,
+          "pct_profils_a_zero": 83.72
+        },
+        "amendements": {
+          "min": 0,
+          "max": 13477,
+          "mediane": 2004,
+          "moyenne": 2634.68,
+          "pct_profils_a_zero": 37.21
+        },
+        "interventions": {
+          "min": 0,
+          "max": 395,
+          "mediane": 0,
+          "moyenne": 6.12,
+          "pct_profils_a_zero": 95.35
+        }
+      },
+      "nombre_sources": {
+        "moyenne_sources": 1.91,
+        "pct_profils_une_source": 14.73
+      }
+    },
+    "completude": {
+      "taux_remplissage": {
+        "parti": {
+          "renseignes": 8,
+          "total": 129,
+          "taux_pct": 6.2
+        },
+        "groupe": {
+          "renseignes": 91,
+          "total": 129,
+          "taux_pct": 70.54
+        },
+        "tags_thematiques": {
+          "renseignes": 3,
+          "total": 129,
+          "taux_pct": 2.33
+        },
+        "mandats": {
+          "renseignes": 120,
+          "total": 129,
+          "taux_pct": 93.02
+        }
+      },
+      "profils_sans_activite": {
+        "total_profils": 129,
+        "nb_profils_sans_activite": 21,
+        "profils_sans_activite": [
+          "nosdeputes:bruno-retailleau",
+          "nosdeputes:catherine-belrhiti",
+          "nosdeputes:catherine-deroche",
+          "nosdeputes:catherine-dumas",
+          "nosdeputes:catherine-procaccia",
+          "nosdeputes:charles-guene",
+          "nosdeputes:claude-raynal",
+          "nosdeputes:dominique-de-legge",
+          "nosdeputes:eric-dolige",
+          "nosdeputes:evelyne-renaud-garabedian",
+          "nosdeputes:gerard-larcher",
+          "nosdeputes:hussein-bourgi",
+          "nosdeputes:jean-jacques-panunzi",
+          "nosdeputes:jean-pierre-bansard",
+          "nosdeputes:jean-raymond-hugonet",
+          "nosdeputes:joel-bigot",
+          "europarl:131580",
+          "nosdeputes:marie-christine-chauvin",
+          "nosdeputes:thierry-cozic",
+          "nosdeputes:viviane-malet",
+          "nosdeputes:yannick-vaugrenard"
+        ]
+      },
+      "presence_meta": {
+        "total_profils": 129,
+        "meta_absente": [],
+        "licence_donnees_manquante": [],
+        "genere_le_manquant": []
+      }
+    },
+    "coherence": {
+      "doublons_id": {
+        "doublons": []
+      },
+      "coherence_schema_version": {
+        "profils_incoherents": []
+      },
+      "validite_dates": {
+        "dates_invalides": [
+          {
+            "id": "nosdeputes:anne-genetet",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:anne-sophie-frigout",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:antoine-villedieu",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:benjamin-dirx",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:brigitte-klinkert",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:bruno-bilde",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:carole-grandjean",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:catherine-belrhiti",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:catherine-deroche",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:catherine-dumas",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:catherine-procaccia",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:celine-calvez",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:charles-guene",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:christine-decodts",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:christine-le-nabour",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:christophe-bentz",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:christophe-marion",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:claude-raynal",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:corinne-vignon",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:danielle-brulebois",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:dominique-de-legge",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:eric-dolige",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:evelyne-renaud-garabedian",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:fabien-di-filippo",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:florent-boudie",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:franck-riester",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:francois-cormier-bouligeon",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:francoise-buffet",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:gerard-larcher",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:gilles-le-gendre",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:graziella-melchior",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:hadrien-ghomi",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:herve-berville",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:hussein-bourgi",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:jean-carles-grelier",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:jean-francois-lovisolo",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:jean-francois-rousset",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:jean-jacques-panunzi",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:jean-luc-bourgeaux",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:jean-pierre-bansard",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:jean-pierre-vigier",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:jean-raymond-hugonet",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:jean-rene-cazeneuve",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:jean-terlier",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:joel-bigot",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:julie-delpech",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:julien-odoul",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:julien-rancoule",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:karl-olive",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:lionel-vuibert",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:lysiane-metayer",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:marie-christine-chauvin",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:marie-guevenoux",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:marie-pierre-rixain",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:martine-etienne",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:mathieu-lefevre",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:maud-bregeon",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:maxime-minot",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:michael-taverne",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:michel-lauzzana",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:mikaele-seo",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:nicole-le-peih",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:pascal-lavergne",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:philippe-juvin",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:prisca-thevenot",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:quentin-bataillon",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:rene-pilato",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:rodrigo-arenas",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:roland-lescure",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:sandra-marsaud",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:sandrine-le-feur",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:stephane-travert",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:stephanie-rist",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:thierry-cozic",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:thomas-gassilloud",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:veronique-riotton",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:vincent-rolland",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:viviane-malet",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:yannick-haury",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          },
+          {
+            "id": "nosdeputes:yannick-vaugrenard",
+            "champ": "sources[0].synchro_le",
+            "valeur": null,
+            "erreur": "format_invalide"
+          }
+        ]
+      },
+      "coherence_chambre_sources": {
+        "profils_incoherents": []
+      }
+    },
+    "fraicheur": {
+      "fraicheur_sources": {
+        "total_sources_datees": 166,
+        "par_type_source": {
+          "assemblee_nationale": {
+            "nombre_sources": 108,
+            "min_jours": 0,
+            "max_jours": 4,
+            "mediane_jours": 0.0,
+            "moyenne_jours": 0.75
+          },
+          "europarl": {
+            "nombre_sources": 7,
+            "min_jours": 0,
+            "max_jours": 0,
+            "mediane_jours": 0,
+            "moyenne_jours": 0
+          },
+          "nosdeputes": {
+            "nombre_sources": 48,
+            "min_jours": 0,
+            "max_jours": 11,
+            "mediane_jours": 3.5,
+            "moyenne_jours": 3.88
+          },
+          "nossenateurs": {
+            "nombre_sources": 3,
+            "min_jours": 0,
+            "max_jours": 0,
+            "mediane_jours": 0,
+            "moyenne_jours": 0
+          }
+        }
+      },
+      "profils_perimes": []
+    },
+    "warnings": {
+      "total_warnings": 193,
+      "par_type": {
+        "ParlTrack": {
+          "frequence": 2,
+          "ids": [
+            "europarl:131580",
+            "nosdeputes:jean-luc-melenchon"
+          ]
+        },
+        "amendements indisponibles": {
+          "frequence": 2,
+          "ids": [
+            "nosdeputes:rene-pilato",
+            "nosdeputes:rodrigo-arenas"
+          ]
+        },
+        "amendements indisponibles (législature 15)": {
+          "frequence": 24,
+          "ids": [
+            "nosdeputes:annie-vidal",
+            "nosdeputes:beatrice-piron",
+            "nosdeputes:benjamin-haddad",
+            "nosdeputes:benoit-mournet",
+            "nosdeputes:bruno-studer",
+            "nosdeputes:charlotte-parmentier-lecocq",
+            "nosdeputes:david-amiel",
+            "nosdeputes:david-valence",
+            "nosdeputes:dominique-da-silva",
+            "nosdeputes:dominique-faure",
+            "nosdeputes:emmanuel-pellerin",
+            "nosdeputes:guillaume-vuilletet",
+            "nosdeputes:jean-marc-zulesi",
+            "nosdeputes:jean-michel-jacques",
+            "nosdeputes:ludovic-mendes",
+            "nosdeputes:marjolaine-meynier-millefert",
+            "nosdeputes:olivier-dussopt",
+            "nosdeputes:pascale-boyer",
+            "nosdeputes:patrick-vignal",
+            "nosdeputes:philippe-dunoyer",
+            "nosdeputes:pierre-cazeneuve",
+            "nosdeputes:pieyre-alexandre-anglade",
+            "nosdeputes:sophie-panonacle",
+            "nosdeputes:yannick-chenevard"
+          ]
+        },
+        "amendements indisponibles (législature 16)": {
+          "frequence": 24,
+          "ids": [
+            "nosdeputes:annie-vidal",
+            "nosdeputes:beatrice-piron",
+            "nosdeputes:benjamin-haddad",
+            "nosdeputes:benoit-mournet",
+            "nosdeputes:bruno-studer",
+            "nosdeputes:charlotte-parmentier-lecocq",
+            "nosdeputes:david-amiel",
+            "nosdeputes:david-valence",
+            "nosdeputes:dominique-da-silva",
+            "nosdeputes:dominique-faure",
+            "nosdeputes:emmanuel-pellerin",
+            "nosdeputes:guillaume-vuilletet",
+            "nosdeputes:jean-marc-zulesi",
+            "nosdeputes:jean-michel-jacques",
+            "nosdeputes:ludovic-mendes",
+            "nosdeputes:marjolaine-meynier-millefert",
+            "nosdeputes:olivier-dussopt",
+            "nosdeputes:pascale-boyer",
+            "nosdeputes:patrick-vignal",
+            "nosdeputes:philippe-dunoyer",
+            "nosdeputes:pierre-cazeneuve",
+            "nosdeputes:pieyre-alexandre-anglade",
+            "nosdeputes:sophie-panonacle",
+            "nosdeputes:yannick-chenevard"
+          ]
+        },
+        "amendements indisponibles (législature 17)": {
+          "frequence": 32,
+          "ids": [
+            "nosdeputes:annie-vidal",
+            "nosdeputes:beatrice-piron",
+            "nosdeputes:benjamin-haddad",
+            "nosdeputes:benoit-mournet",
+            "nosdeputes:bruno-studer",
+            "nosdeputes:catherine-belrhiti",
+            "nosdeputes:catherine-procaccia",
+            "nosdeputes:charlotte-parmentier-lecocq",
+            "nosdeputes:david-amiel",
+            "nosdeputes:david-valence",
+            "nosdeputes:dominique-da-silva",
+            "nosdeputes:dominique-faure",
+            "nosdeputes:emmanuel-pellerin",
+            "nosdeputes:eric-dolige",
+            "nosdeputes:evelyne-renaud-garabedian",
+            "nosdeputes:guillaume-vuilletet",
+            "nosdeputes:hussein-bourgi",
+            "nosdeputes:jean-marc-zulesi",
+            "nosdeputes:jean-michel-jacques",
+            "nosdeputes:jean-pierre-bansard",
+            "nosdeputes:joel-bigot",
+            "nosdeputes:ludovic-mendes",
+            "nosdeputes:marjolaine-meynier-millefert",
+            "nosdeputes:olivier-dussopt",
+            "nosdeputes:pascale-boyer",
+            "nosdeputes:patrick-vignal",
+            "nosdeputes:philippe-dunoyer",
+            "nosdeputes:pierre-cazeneuve",
+            "nosdeputes:pieyre-alexandre-anglade",
+            "nosdeputes:sophie-panonacle",
+            "nosdeputes:viviane-malet",
+            "nosdeputes:yannick-chenevard"
+          ]
+        },
+        "mandats introuvables": {
+          "frequence": 9,
+          "ids": [
+            "nosdeputes:charles-guene",
+            "nosdeputes:eric-dolige",
+            "nosdeputes:evelyne-renaud-garabedian",
+            "nosdeputes:jean-jacques-panunzi",
+            "nosdeputes:jean-pierre-bansard",
+            "nosdeputes:jean-raymond-hugonet",
+            "nosdeputes:marie-christine-chauvin",
+            "nosdeputes:thierry-cozic",
+            "nosdeputes:viviane-malet"
+          ]
+        },
+        "synchro_sources.nosdeputes": {
+          "frequence": 80,
+          "ids": [
+            "nosdeputes:anne-genetet",
+            "nosdeputes:anne-sophie-frigout",
+            "nosdeputes:antoine-villedieu",
+            "nosdeputes:benjamin-dirx",
+            "nosdeputes:brigitte-klinkert",
+            "nosdeputes:bruno-bilde",
+            "nosdeputes:carole-grandjean",
+            "nosdeputes:catherine-belrhiti",
+            "nosdeputes:catherine-deroche",
+            "nosdeputes:catherine-dumas",
+            "nosdeputes:catherine-procaccia",
+            "nosdeputes:celine-calvez",
+            "nosdeputes:charles-guene",
+            "nosdeputes:christine-decodts",
+            "nosdeputes:christine-le-nabour",
+            "nosdeputes:christophe-bentz",
+            "nosdeputes:christophe-marion",
+            "nosdeputes:claude-raynal",
+            "nosdeputes:corinne-vignon",
+            "nosdeputes:danielle-brulebois",
+            "nosdeputes:dominique-de-legge",
+            "nosdeputes:eric-dolige",
+            "nosdeputes:evelyne-renaud-garabedian",
+            "nosdeputes:fabien-di-filippo",
+            "nosdeputes:florent-boudie",
+            "nosdeputes:franck-riester",
+            "nosdeputes:francois-cormier-bouligeon",
+            "nosdeputes:francoise-buffet",
+            "nosdeputes:gerard-larcher",
+            "nosdeputes:gilles-le-gendre",
+            "nosdeputes:graziella-melchior",
+            "nosdeputes:hadrien-ghomi",
+            "nosdeputes:herve-berville",
+            "nosdeputes:hussein-bourgi",
+            "nosdeputes:jean-carles-grelier",
+            "nosdeputes:jean-francois-lovisolo",
+            "nosdeputes:jean-francois-rousset",
+            "nosdeputes:jean-jacques-panunzi",
+            "nosdeputes:jean-luc-bourgeaux",
+            "nosdeputes:jean-pierre-bansard",
+            "nosdeputes:jean-pierre-vigier",
+            "nosdeputes:jean-raymond-hugonet",
+            "nosdeputes:jean-rene-cazeneuve",
+            "nosdeputes:jean-terlier",
+            "nosdeputes:joel-bigot",
+            "nosdeputes:julie-delpech",
+            "nosdeputes:julien-odoul",
+            "nosdeputes:julien-rancoule",
+            "nosdeputes:karl-olive",
+            "nosdeputes:lionel-vuibert",
+            "nosdeputes:lysiane-metayer",
+            "nosdeputes:marie-christine-chauvin",
+            "nosdeputes:marie-guevenoux",
+            "nosdeputes:marie-pierre-rixain",
+            "nosdeputes:martine-etienne",
+            "nosdeputes:mathieu-lefevre",
+            "nosdeputes:maud-bregeon",
+            "nosdeputes:maxime-minot",
+            "nosdeputes:michael-taverne",
+            "nosdeputes:michel-lauzzana",
+            "nosdeputes:mikaele-seo",
+            "nosdeputes:nicole-le-peih",
+            "nosdeputes:pascal-lavergne",
+            "nosdeputes:philippe-juvin",
+            "nosdeputes:prisca-thevenot",
+            "nosdeputes:quentin-bataillon",
+            "nosdeputes:rene-pilato",
+            "nosdeputes:rodrigo-arenas",
+            "nosdeputes:roland-lescure",
+            "nosdeputes:sandra-marsaud",
+            "nosdeputes:sandrine-le-feur",
+            "nosdeputes:stephane-travert",
+            "nosdeputes:stephanie-rist",
+            "nosdeputes:thierry-cozic",
+            "nosdeputes:thomas-gassilloud",
+            "nosdeputes:veronique-riotton",
+            "nosdeputes:vincent-rolland",
+            "nosdeputes:viviane-malet",
+            "nosdeputes:yannick-haury",
+            "nosdeputes:yannick-vaugrenard"
+          ]
+        },
+        "votes introuvables": {
+          "frequence": 20,
+          "ids": [
+            "nosdeputes:bruno-retailleau",
+            "nosdeputes:catherine-belrhiti",
+            "nosdeputes:catherine-deroche",
+            "nosdeputes:catherine-dumas",
+            "nosdeputes:catherine-procaccia",
+            "nosdeputes:charles-guene",
+            "nosdeputes:claude-raynal",
+            "nosdeputes:dominique-de-legge",
+            "nosdeputes:eric-dolige",
+            "nosdeputes:evelyne-renaud-garabedian",
+            "nosdeputes:gerard-larcher",
+            "nosdeputes:hussein-bourgi",
+            "nosdeputes:jean-jacques-panunzi",
+            "nosdeputes:jean-pierre-bansard",
+            "nosdeputes:jean-raymond-hugonet",
+            "nosdeputes:joel-bigot",
+            "nosdeputes:marie-christine-chauvin",
+            "nosdeputes:thierry-cozic",
+            "nosdeputes:viviane-malet",
+            "nosdeputes:yannick-vaugrenard"
+          ]
+        }
+      }
+    },
+    "tableau_croise_candidats": {
+      "lignes": [
+        {
+          "id": "nosdeputes:anne-genetet",
+          "nom": "Anne Genetet",
+          "chambre": "AN",
+          "votes": 1595,
+          "textes_portes": 0,
+          "amendements": 3103,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:anne-sophie-frigout",
+          "nom": "Anne-Sophie Frigout",
+          "chambre": "AN",
+          "votes": 427,
+          "textes_portes": 0,
+          "amendements": 1779,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:annie-vidal",
+          "nom": "Annie Vidal",
+          "chambre": "AN",
+          "votes": 1422,
+          "textes_portes": 2,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:antoine-villedieu",
+          "nom": "Antoine Villedieu",
+          "chambre": "AN",
+          "votes": 1041,
+          "textes_portes": 0,
+          "amendements": 5778,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:benjamin-dirx",
+          "nom": "Benjamin Dirx",
+          "chambre": "AN",
+          "votes": 2382,
+          "textes_portes": 0,
+          "amendements": 3288,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:benjamin-haddad",
+          "nom": "Benjamin Haddad",
+          "chambre": "AN",
+          "votes": 1163,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:benoit-mournet",
+          "nom": "Benoit Mournet",
+          "chambre": "AN",
+          "votes": 1445,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:brigitte-klinkert",
+          "nom": "Brigitte Klinkert",
+          "chambre": "AN",
+          "votes": 3395,
+          "textes_portes": 0,
+          "amendements": 2366,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:bruno-bilde",
+          "nom": "Bruno Bilde",
+          "chambre": "AN",
+          "votes": 702,
+          "textes_portes": 0,
+          "amendements": 6383,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:bruno-retailleau",
+          "nom": "Bruno Retailleau",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 36,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:bruno-studer",
+          "nom": "Bruno Studer",
+          "chambre": "AN",
+          "votes": 1327,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:beatrice-piron",
+          "nom": "Béatrice Piron",
+          "chambre": "AN",
+          "votes": 1921,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:carole-grandjean",
+          "nom": "Carole Grandjean",
+          "chambre": "AN",
+          "votes": 9,
+          "textes_portes": 0,
+          "amendements": 2404,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:caroline-abadie",
+          "nom": "Caroline Abadie",
+          "chambre": "AN",
+          "votes": 1402,
+          "textes_portes": 0,
+          "amendements": 2391,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:catherine-belrhiti",
+          "nom": "Catherine Belrhiti",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:catherine-deroche",
+          "nom": "Catherine Deroche",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:catherine-dumas",
+          "nom": "Catherine Dumas",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:catherine-procaccia",
+          "nom": "Catherine Procaccia",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:charles-guene",
+          "nom": "Charles Guené",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:charlotte-parmentier-lecocq",
+          "nom": "Charlotte Parmentier-Lecocq",
+          "chambre": "AN",
+          "votes": 1205,
+          "textes_portes": 1,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:christine-decodts",
+          "nom": "Christine Decodts",
+          "chambre": "AN",
+          "votes": 1846,
+          "textes_portes": 0,
+          "amendements": 1858,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:christine-le-nabour",
+          "nom": "Christine Le Nabour",
+          "chambre": "AN",
+          "votes": 2178,
+          "textes_portes": 0,
+          "amendements": 3618,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:christophe-bentz",
+          "nom": "Christophe Bentz",
+          "chambre": "AN",
+          "votes": 2480,
+          "textes_portes": 0,
+          "amendements": 10149,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:christophe-marion",
+          "nom": "Christophe Marion",
+          "chambre": "AN",
+          "votes": 1885,
+          "textes_portes": 0,
+          "amendements": 3375,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:claude-raynal",
+          "nom": "Claude Raynal",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:corinne-vignon",
+          "nom": "Corinne Vignon",
+          "chambre": "AN",
+          "votes": 1434,
+          "textes_portes": 0,
+          "amendements": 3851,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:celine-calvez",
+          "nom": "Céline Calvez",
+          "chambre": "AN",
+          "votes": 1144,
+          "textes_portes": 0,
+          "amendements": 3552,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:damien-abad",
+          "nom": "Damien Abad",
+          "chambre": "AN",
+          "votes": 257,
+          "textes_portes": 0,
+          "amendements": 10474,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:danielle-brulebois",
+          "nom": "Danielle Brulebois",
+          "chambre": "AN",
+          "votes": 1829,
+          "textes_portes": 0,
+          "amendements": 7740,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:david-amiel",
+          "nom": "David Amiel",
+          "chambre": "AN",
+          "votes": 1594,
+          "textes_portes": 4,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:david-valence",
+          "nom": "David Valence",
+          "chambre": "AN",
+          "votes": 2281,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:dominique-da-silva",
+          "nom": "Dominique Da Silva",
+          "chambre": "AN",
+          "votes": 1547,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:dominique-faure",
+          "nom": "Dominique Faure",
+          "chambre": "AN",
+          "votes": 1,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:dominique-de-legge",
+          "nom": "Dominique de Legge",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:emmanuel-pellerin",
+          "nom": "Emmanuel Pellerin",
+          "chambre": "AN",
+          "votes": 2642,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:emmanuel-tache-de-la-pagerie",
+          "nom": "Emmanuel Taché de la Pagerie",
+          "chambre": "AN",
+          "votes": 832,
+          "textes_portes": 0,
+          "amendements": 5861,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:fabien-di-filippo",
+          "nom": "Fabien Di Filippo",
+          "chambre": "AN",
+          "votes": 630,
+          "textes_portes": 0,
+          "amendements": 6880,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:fadila-khattabi",
+          "nom": "Fadila Khattabi",
+          "chambre": "AN",
+          "votes": 820,
+          "textes_portes": 0,
+          "amendements": 2527,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:florent-boudie",
+          "nom": "Florent Boudié",
+          "chambre": "AN",
+          "votes": 853,
+          "textes_portes": 0,
+          "amendements": 4359,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:franck-riester",
+          "nom": "Franck Riester",
+          "chambre": "AN",
+          "votes": 938,
+          "textes_portes": 0,
+          "amendements": 3371,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:francois-cormier-bouligeon",
+          "nom": "François Cormier-Bouligeon",
+          "chambre": "AN",
+          "votes": 923,
+          "textes_portes": 0,
+          "amendements": 3188,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:francoise-buffet",
+          "nom": "Françoise Buffet",
+          "chambre": "AN",
+          "votes": 1420,
+          "textes_portes": 0,
+          "amendements": 1769,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:frederic-descrozaille",
+          "nom": "Frédéric Descrozaille",
+          "chambre": "AN",
+          "votes": 1242,
+          "textes_portes": 0,
+          "amendements": 2425,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:gabriel-attal",
+          "nom": "Gabriel Attal",
+          "chambre": "AN",
+          "votes": 2035,
+          "textes_portes": 34,
+          "amendements": 1074,
+          "interventions": 5
+        },
+        {
+          "id": "nosdeputes:gilles-le-gendre",
+          "nom": "Gilles Le Gendre",
+          "chambre": "AN",
+          "votes": 2585,
+          "textes_portes": 0,
+          "amendements": 2907,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:graziella-melchior",
+          "nom": "Graziella Melchior",
+          "chambre": "AN",
+          "votes": 1345,
+          "textes_portes": 0,
+          "amendements": 3698,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:guillaume-vuilletet",
+          "nom": "Guillaume Vuilletet",
+          "chambre": "AN",
+          "votes": 522,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:gerard-larcher",
+          "nom": "Gérard Larcher",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:hadrien-ghomi",
+          "nom": "Hadrien Ghomi",
+          "chambre": "AN",
+          "votes": 1135,
+          "textes_portes": 0,
+          "amendements": 1898,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:herve-berville",
+          "nom": "Hervé Berville",
+          "chambre": "AN",
+          "votes": 2446,
+          "textes_portes": 0,
+          "amendements": 2297,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:hussein-bourgi",
+          "nom": "Hussein Bourgi",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:jean-terlier",
+          "nom": "Jean Terlier",
+          "chambre": "AN",
+          "votes": 1260,
+          "textes_portes": 0,
+          "amendements": 3979,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:jean-carles-grelier",
+          "nom": "Jean-Carles Grelier",
+          "chambre": "AN",
+          "votes": 253,
+          "textes_portes": 0,
+          "amendements": 3961,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:jean-francois-lovisolo",
+          "nom": "Jean-François Lovisolo",
+          "chambre": "AN",
+          "votes": 973,
+          "textes_portes": 0,
+          "amendements": 1270,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:jean-francois-rousset",
+          "nom": "Jean-François Rousset",
+          "chambre": "AN",
+          "votes": 5697,
+          "textes_portes": 0,
+          "amendements": 3050,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:jean-jacques-panunzi",
+          "nom": "Jean-Jacques Panunzi",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:jean-luc-bourgeaux",
+          "nom": "Jean-Luc Bourgeaux",
+          "chambre": "AN",
+          "votes": 768,
+          "textes_portes": 0,
+          "amendements": 8476,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:jean-luc-melenchon",
+          "nom": "Jean-Luc Mélenchon",
+          "chambre": "AN",
+          "votes": 1016,
+          "textes_portes": 0,
+          "amendements": 11043,
+          "interventions": 15
+        },
+        {
+          "id": "nosdeputes:jean-marc-zulesi",
+          "nom": "Jean-Marc Zulesi",
+          "chambre": "AN",
+          "votes": 1195,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:jean-michel-jacques",
+          "nom": "Jean-Michel Jacques",
+          "chambre": "AN",
+          "votes": 777,
+          "textes_portes": 2,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:jean-philippe-ardouin",
+          "nom": "Jean-Philippe Ardouin",
+          "chambre": "AN",
+          "votes": 959,
+          "textes_portes": 0,
+          "amendements": 3910,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:jean-pierre-bansard",
+          "nom": "Jean-Pierre Bansard",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:jean-pierre-vigier",
+          "nom": "Jean-Pierre Vigier",
+          "chambre": "AN",
+          "votes": 728,
+          "textes_portes": 0,
+          "amendements": 11300,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:jean-raymond-hugonet",
+          "nom": "Jean-Raymond Hugonet",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:jean-rene-cazeneuve",
+          "nom": "Jean-René Cazeneuve",
+          "chambre": "AN",
+          "votes": 1778,
+          "textes_portes": 0,
+          "amendements": 4692,
+          "interventions": 0
+        },
+        {
+          "id": "europarl:131580",
+          "nom": "Jordan BARDELLA",
+          "chambre": "PE",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:joel-bigot",
+          "nom": "Joël Bigot",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:julie-delpech",
+          "nom": "Julie Delpech",
+          "chambre": "AN",
+          "votes": 3001,
+          "textes_portes": 0,
+          "amendements": 2810,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:julien-odoul",
+          "nom": "Julien Odoul",
+          "chambre": "AN",
+          "votes": 645,
+          "textes_portes": 0,
+          "amendements": 9058,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:julien-rancoule",
+          "nom": "Julien Rancoule",
+          "chambre": "AN",
+          "votes": 1638,
+          "textes_portes": 0,
+          "amendements": 5240,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:jerome-guedj",
+          "nom": "Jérôme Guedj",
+          "chambre": "AN",
+          "votes": 2906,
+          "textes_portes": 5,
+          "amendements": 13477,
+          "interventions": 395
+        },
+        {
+          "id": "nosdeputes:karl-olive",
+          "nom": "Karl Olive",
+          "chambre": "AN",
+          "votes": 727,
+          "textes_portes": 0,
+          "amendements": 1825,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:laurence-maillart-mehaignerie",
+          "nom": "Laurence Maillart-Méhaignerie",
+          "chambre": "AN",
+          "votes": 773,
+          "textes_portes": 0,
+          "amendements": 2772,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:laurent-wauquiez",
+          "nom": "Laurent Wauquiez",
+          "chambre": "AN",
+          "votes": 826,
+          "textes_portes": 9,
+          "amendements": 1949,
+          "interventions": 22
+        },
+        {
+          "id": "nosdeputes:lionel-vuibert",
+          "nom": "Lionel Vuibert",
+          "chambre": "AN",
+          "votes": 2560,
+          "textes_portes": 0,
+          "amendements": 2404,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:ludovic-mendes",
+          "nom": "Ludovic Mendes",
+          "chambre": "AN",
+          "votes": 591,
+          "textes_portes": 6,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:lysiane-metayer",
+          "nom": "Lysiane Métayer",
+          "chambre": "AN",
+          "votes": 1575,
+          "textes_portes": 0,
+          "amendements": 2031,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:marie-guevenoux",
+          "nom": "Marie Guévenoux",
+          "chambre": "AN",
+          "votes": 740,
+          "textes_portes": 0,
+          "amendements": 2247,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:marie-christine-chauvin",
+          "nom": "Marie-Christine Chauvin",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:marie-pierre-rixain",
+          "nom": "Marie-Pierre Rixain",
+          "chambre": "AN",
+          "votes": 282,
+          "textes_portes": 0,
+          "amendements": 3247,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:marine-le-pen",
+          "nom": "Marine Le Pen",
+          "chambre": "AN",
+          "votes": 1813,
+          "textes_portes": 23,
+          "amendements": 13094,
+          "interventions": 302
+        },
+        {
+          "id": "nosdeputes:marjolaine-meynier-millefert",
+          "nom": "Marjolaine Meynier-Millefert",
+          "chambre": "AN",
+          "votes": 1420,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:martine-etienne",
+          "nom": "Martine Etienne",
+          "chambre": "AN",
+          "votes": 1102,
+          "textes_portes": 0,
+          "amendements": 11561,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:mathieu-lefevre",
+          "nom": "Mathieu Lefèvre",
+          "chambre": "AN",
+          "votes": 3473,
+          "textes_portes": 0,
+          "amendements": 2269,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:maud-bregeon",
+          "nom": "Maud Bregeon",
+          "chambre": "AN",
+          "votes": 758,
+          "textes_portes": 0,
+          "amendements": 1131,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:maxime-minot",
+          "nom": "Maxime Minot",
+          "chambre": "AN",
+          "votes": 1250,
+          "textes_portes": 0,
+          "amendements": 4813,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:michael-taverne",
+          "nom": "Michaël Taverne",
+          "chambre": "AN",
+          "votes": 1009,
+          "textes_portes": 0,
+          "amendements": 5215,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:michel-lauzzana",
+          "nom": "Michel Lauzzana",
+          "chambre": "AN",
+          "votes": 1264,
+          "textes_portes": 0,
+          "amendements": 3483,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:mikaele-seo",
+          "nom": "Mikaele Seo",
+          "chambre": "AN",
+          "votes": 985,
+          "textes_portes": 0,
+          "amendements": 1696,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:nicole-le-peih",
+          "nom": "Nicole Le Peih",
+          "chambre": "AN",
+          "votes": 1561,
+          "textes_portes": 0,
+          "amendements": 3958,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:olivier-dussopt",
+          "nom": "Olivier Dussopt",
+          "chambre": "AN",
+          "votes": 26,
+          "textes_portes": 1,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:olivier-veran",
+          "nom": "Olivier Véran",
+          "chambre": "AN",
+          "votes": 18,
+          "textes_portes": 0,
+          "amendements": 2174,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:pascal-lavergne",
+          "nom": "Pascal Lavergne",
+          "chambre": "AN",
+          "votes": 1510,
+          "textes_portes": 0,
+          "amendements": 1859,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:pascale-boyer",
+          "nom": "Pascale Boyer",
+          "chambre": "AN",
+          "votes": 1407,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:patrick-vignal",
+          "nom": "Patrick Vignal",
+          "chambre": "AN",
+          "votes": 265,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:philippe-dunoyer",
+          "nom": "Philippe Dunoyer",
+          "chambre": "AN",
+          "votes": 1355,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:philippe-juvin",
+          "nom": "Philippe Juvin",
+          "chambre": "AN",
+          "votes": 698,
+          "textes_portes": 0,
+          "amendements": 4959,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:pierre-cazeneuve",
+          "nom": "Pierre Cazeneuve",
+          "chambre": "AN",
+          "votes": 1759,
+          "textes_portes": 6,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:pieyre-alexandre-anglade",
+          "nom": "Pieyre-Alexandre Anglade",
+          "chambre": "AN",
+          "votes": 833,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:prisca-thevenot",
+          "nom": "Prisca Thevenot",
+          "chambre": "AN",
+          "votes": 3962,
+          "textes_portes": 0,
+          "amendements": 1775,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:quentin-bataillon",
+          "nom": "Quentin Bataillon",
+          "chambre": "AN",
+          "votes": 1105,
+          "textes_portes": 0,
+          "amendements": 901,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:rene-pilato",
+          "nom": "René Pilato",
+          "chambre": "AN",
+          "votes": 1136,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:rodrigo-arenas",
+          "nom": "Rodrigo Arenas",
+          "chambre": "AN",
+          "votes": 564,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:roland-lescure",
+          "nom": "Roland Lescure",
+          "chambre": "AN",
+          "votes": 2498,
+          "textes_portes": 0,
+          "amendements": 2645,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:sandra-marsaud",
+          "nom": "Sandra Marsaud",
+          "chambre": "AN",
+          "votes": 1233,
+          "textes_portes": 0,
+          "amendements": 4264,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:sandrine-le-feur",
+          "nom": "Sandrine Le Feur",
+          "chambre": "AN",
+          "votes": 3812,
+          "textes_portes": 0,
+          "amendements": 6029,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:sophie-errante",
+          "nom": "Sophie Errante",
+          "chambre": "AN",
+          "votes": 602,
+          "textes_portes": 1,
+          "amendements": 2766,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:sophie-panonacle",
+          "nom": "Sophie Panonacle",
+          "chambre": "AN",
+          "votes": 812,
+          "textes_portes": 3,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:stella-dupont",
+          "nom": "Stella Dupont",
+          "chambre": "AN",
+          "votes": 1061,
+          "textes_portes": 1,
+          "amendements": 5063,
+          "interventions": 0
+        },
+        {
+          "id": "nossenateurs:stephane-mazars",
+          "nom": "Stéphane Mazars",
+          "chambre": "Senat",
+          "votes": 882,
+          "textes_portes": 6,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:stephane-travert",
+          "nom": "Stéphane Travert",
+          "chambre": "AN",
+          "votes": 3480,
+          "textes_portes": 0,
+          "amendements": 7186,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:stephanie-rist",
+          "nom": "Stéphanie Rist",
+          "chambre": "AN",
+          "votes": 1048,
+          "textes_portes": 0,
+          "amendements": 3559,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:thierry-cozic",
+          "nom": "Thierry Cozic",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:thomas-cazenave",
+          "nom": "Thomas Cazenave",
+          "chambre": "AN",
+          "votes": 734,
+          "textes_portes": 7,
+          "amendements": 1090,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:thomas-gassilloud",
+          "nom": "Thomas Gassilloud",
+          "chambre": "AN",
+          "votes": 1682,
+          "textes_portes": 0,
+          "amendements": 2639,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:thomas-rudigoz",
+          "nom": "Thomas Rudigoz",
+          "chambre": "AN",
+          "votes": 1066,
+          "textes_portes": 0,
+          "amendements": 3187,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:vincent-rolland",
+          "nom": "Vincent Rolland",
+          "chambre": "AN",
+          "votes": 298,
+          "textes_portes": 0,
+          "amendements": 6392,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:viviane-malet",
+          "nom": "Viviane Malet",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:veronique-riotton",
+          "nom": "Véronique Riotton",
+          "chambre": "AN",
+          "votes": 1026,
+          "textes_portes": 0,
+          "amendements": 5583,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:xavier-roseren",
+          "nom": "Xavier Roseren",
+          "chambre": "AN",
+          "votes": 1044,
+          "textes_portes": 2,
+          "amendements": 4006,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:yannick-chenevard",
+          "nom": "Yannick Chenevard",
+          "chambre": "AN",
+          "votes": 1363,
+          "textes_portes": 3,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:yannick-haury",
+          "nom": "Yannick Haury",
+          "chambre": "AN",
+          "votes": 1223,
+          "textes_portes": 0,
+          "amendements": 6652,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:yannick-vaugrenard",
+          "nom": "Yannick Vaugrenard",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:yael-braun-pivet",
+          "nom": "Yaël Braun-Pivet",
+          "chambre": "AN",
+          "votes": 356,
+          "textes_portes": 4,
+          "amendements": 2004,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:edouard-philippe",
+          "nom": "Édouard Philippe",
+          "chambre": "AN",
+          "votes": 141,
+          "textes_portes": 283,
+          "amendements": 749,
+          "interventions": 50
+        },
+        {
+          "id": "nosdeputes:emilie-chandler",
+          "nom": "Émilie Chandler",
+          "chambre": "AN",
+          "votes": 1811,
+          "textes_portes": 0,
+          "amendements": 1435,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:eric-dolige",
+          "nom": "Éric Doligé",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:eric-poulliat",
+          "nom": "Éric Poulliat",
+          "chambre": "AN",
+          "votes": 833,
+          "textes_portes": 0,
+          "amendements": 2633,
+          "interventions": 0
+        },
+        {
+          "id": "nosdeputes:evelyne-renaud-garabedian",
+          "nom": "Évelyne Renaud-Garabedian",
+          "chambre": "AN",
+          "votes": 0,
+          "textes_portes": 0,
+          "amendements": 0,
+          "interventions": 0
+        }
+      ]
+    },
+    "plage_dates_candidats": {
+      "lignes": [
+        {
+          "id": "nosdeputes:anne-genetet",
+          "nom": "Anne Genetet",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-05-28"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:anne-sophie-frigout",
+          "nom": "Anne-Sophie Frigout",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2022-12-01"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-15",
+            "max": "2024-05-23"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:annie-vidal",
+          "nom": "Annie Vidal",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": "2025-03-11",
+            "max": "2026-05-26"
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:antoine-villedieu",
+          "nom": "Antoine Villedieu",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-06"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-15",
+            "max": "2024-06-08"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:benjamin-dirx",
+          "nom": "Benjamin Dirx",
+          "chambre": "AN",
+          "votes": {
+            "min": "2017-07-04",
+            "max": "2026-07-21"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-17",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:benjamin-haddad",
+          "nom": "Benjamin Haddad",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:benoit-mournet",
+          "nom": "Benoit Mournet",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-06"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:brigitte-klinkert",
+          "nom": "Brigitte Klinkert",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2026-07-21"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:bruno-bilde",
+          "nom": "Bruno Bilde",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-06-04"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2024-06-08"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:bruno-retailleau",
+          "nom": "Bruno Retailleau",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": "2010-12-14",
+            "max": "2026-05-06"
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:bruno-studer",
+          "nom": "Bruno Studer",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:beatrice-piron",
+          "nom": "Béatrice Piron",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:carole-grandjean",
+          "nom": "Carole Grandjean",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-03-12"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-07",
+            "max": "2024-03-21"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:caroline-abadie",
+          "nom": "Caroline Abadie",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-05-30"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2024-05-31"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:catherine-belrhiti",
+          "nom": "Catherine Belrhiti",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:catherine-deroche",
+          "nom": "Catherine Deroche",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:catherine-dumas",
+          "nom": "Catherine Dumas",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:catherine-procaccia",
+          "nom": "Catherine Procaccia",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:charles-guene",
+          "nom": "Charles Guené",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:charlotte-parmentier-lecocq",
+          "nom": "Charlotte Parmentier-Lecocq",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": "2020-12-23",
+            "max": "2025-02-19"
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:christine-decodts",
+          "nom": "Christine Decodts",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2024-06-07"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:christine-le-nabour",
+          "nom": "Christine Le Nabour",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-07",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:christophe-bentz",
+          "nom": "Christophe Bentz",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2026-07-16"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:christophe-marion",
+          "nom": "Christophe Marion",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:claude-raynal",
+          "nom": "Claude Raynal",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:corinne-vignon",
+          "nom": "Corinne Vignon",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-06"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-07",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:celine-calvez",
+          "nom": "Céline Calvez",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:damien-abad",
+          "nom": "Damien Abad",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-25",
+            "max": "2024-05-28"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2012-07-12",
+            "max": "2024-05-28"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:danielle-brulebois",
+          "nom": "Danielle Brulebois",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-06-06"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-11",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:david-amiel",
+          "nom": "David Amiel",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-06-06"
+          },
+          "textes_portes": {
+            "min": "2024-07-20",
+            "max": "2026-06-29"
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:david-valence",
+          "nom": "David Valence",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-06"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:dominique-da-silva",
+          "nom": "Dominique Da Silva",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-13",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:dominique-faure",
+          "nom": "Dominique Faure",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2022-07-11"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:dominique-de-legge",
+          "nom": "Dominique de Legge",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:emmanuel-pellerin",
+          "nom": "Emmanuel Pellerin",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:emmanuel-tache-de-la-pagerie",
+          "nom": "Emmanuel Taché de la Pagerie",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-04"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2024-06-08"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:fabien-di-filippo",
+          "nom": "Fabien Di Filippo",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-06-06"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-17",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:fadila-khattabi",
+          "nom": "Fadila Khattabi",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2023-07-19"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-07",
+            "max": "2024-05-21"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:florent-boudie",
+          "nom": "Florent Boudié",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-04"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2012-07-12",
+            "max": "2024-05-31"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:franck-riester",
+          "nom": "Franck Riester",
+          "chambre": "AN",
+          "votes": {
+            "min": "2012-07-03",
+            "max": "2026-04-14"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2012-07-12",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:francois-cormier-bouligeon",
+          "nom": "François Cormier-Bouligeon",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2024-05-28"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:francoise-buffet",
+          "nom": "Françoise Buffet",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2026-07-15"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:frederic-descrozaille",
+          "nom": "Frédéric Descrozaille",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2024-06-08"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:gabriel-attal",
+          "nom": "Gabriel Attal",
+          "chambre": "AN",
+          "votes": {
+            "min": "2017-07-04",
+            "max": "2026-07-21"
+          },
+          "textes_portes": {
+            "min": "2017-11-21",
+            "max": "2026-05-26"
+          },
+          "amendements": {
+            "min": "2017-10-05",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:gilles-le-gendre",
+          "nom": "Gilles Le Gendre",
+          "chambre": "AN",
+          "votes": {
+            "min": "2017-07-04",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2024-06-01"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:graziella-melchior",
+          "nom": "Graziella Melchior",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-05-29"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2024-05-23"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:guillaume-vuilletet",
+          "nom": "Guillaume Vuilletet",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-05-28"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:gerard-larcher",
+          "nom": "Gérard Larcher",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:hadrien-ghomi",
+          "nom": "Hadrien Ghomi",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2024-05-28"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:herve-berville",
+          "nom": "Hervé Berville",
+          "chambre": "AN",
+          "votes": {
+            "min": "2017-07-04",
+            "max": "2026-07-21"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:hussein-bourgi",
+          "nom": "Hussein Bourgi",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:jean-terlier",
+          "nom": "Jean Terlier",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:jean-carles-grelier",
+          "nom": "Jean-Carles Grelier",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-05-14"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2024-06-01"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:jean-francois-lovisolo",
+          "nom": "Jean-François Lovisolo",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2024-06-07"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:jean-francois-rousset",
+          "nom": "Jean-François Rousset",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2026-07-21"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:jean-jacques-panunzi",
+          "nom": "Jean-Jacques Panunzi",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:jean-luc-bourgeaux",
+          "nom": "Jean-Luc Bourgeaux",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-07",
+            "max": "2024-06-08"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:jean-luc-melenchon",
+          "nom": "Jean-Luc Mélenchon",
+          "chambre": "AN",
+          "votes": {
+            "min": "2017-07-04",
+            "max": "2022-01-13"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-11",
+            "max": "2022-02-03"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:jean-marc-zulesi",
+          "nom": "Jean-Marc Zulesi",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:jean-michel-jacques",
+          "nom": "Jean-Michel Jacques",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-05-28"
+          },
+          "textes_portes": {
+            "min": "2022-12-14",
+            "max": "2025-09-30"
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:jean-philippe-ardouin",
+          "nom": "Jean-Philippe Ardouin",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2024-06-01"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:jean-pierre-bansard",
+          "nom": "Jean-Pierre Bansard",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:jean-pierre-vigier",
+          "nom": "Jean-Pierre Vigier",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-04"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2012-07-12",
+            "max": "2024-06-08"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:jean-raymond-hugonet",
+          "nom": "Jean-Raymond Hugonet",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:jean-rene-cazeneuve",
+          "nom": "Jean-René Cazeneuve",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-05-30"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2026-07-16"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "europarl:131580",
+          "nom": "Jordan BARDELLA",
+          "chambre": "PE",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:joel-bigot",
+          "nom": "Joël Bigot",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:julie-delpech",
+          "nom": "Julie Delpech",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2026-07-21"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:julien-odoul",
+          "nom": "Julien Odoul",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-06"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-15",
+            "max": "2026-07-16"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:julien-rancoule",
+          "nom": "Julien Rancoule",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-06"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-15",
+            "max": "2024-06-08"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:jerome-guedj",
+          "nom": "Jérôme Guedj",
+          "chambre": "AN",
+          "votes": {
+            "min": "2012-10-09",
+            "max": "2026-07-21"
+          },
+          "textes_portes": {
+            "min": "2022-09-15",
+            "max": "2025-12-10"
+          },
+          "amendements": {
+            "min": "2012-07-12",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": "2022-07-11",
+            "max": "2026-07-07"
+          }
+        },
+        {
+          "id": "nosdeputes:karl-olive",
+          "nom": "Karl Olive",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-04"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:laurence-maillart-mehaignerie",
+          "nom": "Laurence Maillart-Méhaignerie",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-11",
+            "max": "2024-06-07"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:laurent-wauquiez",
+          "nom": "Laurent Wauquiez",
+          "chambre": "AN",
+          "votes": {
+            "min": "2012-07-03",
+            "max": "2026-07-21"
+          },
+          "textes_portes": {
+            "min": "2024-10-15",
+            "max": "2026-02-03"
+          },
+          "amendements": {
+            "min": "2012-07-12",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": "2025-07-22",
+            "max": "2026-04-21"
+          }
+        },
+        {
+          "id": "nosdeputes:lionel-vuibert",
+          "nom": "Lionel Vuibert",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2026-07-21"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:ludovic-mendes",
+          "nom": "Ludovic Mendes",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": "2024-10-02",
+            "max": "2025-05-13"
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:lysiane-metayer",
+          "nom": "Lysiane Métayer",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2024-05-28"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:marie-guevenoux",
+          "nom": "Marie Guévenoux",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-02-06"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2024-05-31"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:marie-christine-chauvin",
+          "nom": "Marie-Christine Chauvin",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:marie-pierre-rixain",
+          "nom": "Marie-Pierre Rixain",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2026-07-15"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:marine-le-pen",
+          "nom": "Marine Le Pen",
+          "chambre": "AN",
+          "votes": {
+            "min": "2017-07-04",
+            "max": "2026-07-21"
+          },
+          "textes_portes": {
+            "min": "2017-10-13",
+            "max": "2024-01-25"
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2026-07-16"
+          },
+          "interventions": {
+            "min": "2022-07-06",
+            "max": "2025-12-30"
+          }
+        },
+        {
+          "id": "nosdeputes:marjolaine-meynier-millefert",
+          "nom": "Marjolaine Meynier-Millefert",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:martine-etienne",
+          "nom": "Martine Etienne",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-03"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-05",
+            "max": "2024-06-07"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:mathieu-lefevre",
+          "nom": "Mathieu Lefèvre",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2025-11-12"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:maud-bregeon",
+          "nom": "Maud Bregeon",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-05-29"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:maxime-minot",
+          "nom": "Maxime Minot",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2024-06-07"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:michael-taverne",
+          "nom": "Michaël Taverne",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-06-06"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-15",
+            "max": "2024-06-08"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:michel-lauzzana",
+          "nom": "Michel Lauzzana",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-06-06"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:mikaele-seo",
+          "nom": "Mikaele Seo",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-21",
+            "max": "2026-07-21"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:nicole-le-peih",
+          "nom": "Nicole Le Peih",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-05-30"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:olivier-dussopt",
+          "nom": "Olivier Dussopt",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": "2013-09-10",
+            "max": "2024-07-23"
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:olivier-veran",
+          "nom": "Olivier Véran",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-05-28"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2012-07-12",
+            "max": "2024-05-22"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:pascal-lavergne",
+          "nom": "Pascal Lavergne",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2024-06-08"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:pascale-boyer",
+          "nom": "Pascale Boyer",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:patrick-vignal",
+          "nom": "Patrick Vignal",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-20",
+            "max": "2024-06-06"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:philippe-dunoyer",
+          "nom": "Philippe Dunoyer",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-05-28"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:philippe-juvin",
+          "nom": "Philippe Juvin",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:pierre-cazeneuve",
+          "nom": "Pierre Cazeneuve",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": "2024-10-29",
+            "max": "2026-07-23"
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:pieyre-alexandre-anglade",
+          "nom": "Pieyre-Alexandre Anglade",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-05-28"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:prisca-thevenot",
+          "nom": "Prisca Thevenot",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2026-07-21"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:quentin-bataillon",
+          "nom": "Quentin Bataillon",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2024-05-23"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:rene-pilato",
+          "nom": "René Pilato",
+          "chambre": "AN",
+          "votes": {
+            "min": "2023-02-06",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:rodrigo-arenas",
+          "nom": "Rodrigo Arenas",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-03"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:roland-lescure",
+          "nom": "Roland Lescure",
+          "chambre": "AN",
+          "votes": {
+            "min": "2017-07-04",
+            "max": "2025-11-12"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:sandra-marsaud",
+          "nom": "Sandra Marsaud",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-11",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:sandrine-le-feur",
+          "nom": "Sandrine Le Feur",
+          "chambre": "AN",
+          "votes": {
+            "min": "2017-07-04",
+            "max": "2026-07-21"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-11",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:sophie-errante",
+          "nom": "Sophie Errante",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": "2025-06-18",
+            "max": "2026-06-24"
+          },
+          "amendements": {
+            "min": "2012-07-12",
+            "max": "2026-07-01"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:sophie-panonacle",
+          "nom": "Sophie Panonacle",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-06"
+          },
+          "textes_portes": {
+            "min": "2024-10-15",
+            "max": "2025-01-21"
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:stella-dupont",
+          "nom": "Stella Dupont",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": "2025-02-04",
+            "max": "2025-02-04"
+          },
+          "amendements": {
+            "min": "2017-07-17",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nossenateurs:stephane-mazars",
+          "nom": "Stéphane Mazars",
+          "chambre": "Senat",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-06"
+          },
+          "textes_portes": {
+            "min": "2012-10-16",
+            "max": "2026-03-27"
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:stephane-travert",
+          "nom": "Stéphane Travert",
+          "chambre": "AN",
+          "votes": {
+            "min": "2012-07-03",
+            "max": "2026-07-21"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2012-07-12",
+            "max": "2026-07-15"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:stephanie-rist",
+          "nom": "Stéphanie Rist",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:thierry-cozic",
+          "nom": "Thierry Cozic",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:thomas-cazenave",
+          "nom": "Thomas Cazenave",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2023-07-20"
+          },
+          "textes_portes": {
+            "min": "2024-07-19",
+            "max": "2026-07-23"
+          },
+          "amendements": {
+            "min": "2022-07-09",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:thomas-gassilloud",
+          "nom": "Thomas Gassilloud",
+          "chambre": "AN",
+          "votes": {
+            "min": "2017-07-04",
+            "max": "2026-07-21"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:thomas-rudigoz",
+          "nom": "Thomas Rudigoz",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-06"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2024-05-31"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:vincent-rolland",
+          "nom": "Vincent Rolland",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-04"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-07",
+            "max": "2024-06-08"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:viviane-malet",
+          "nom": "Viviane Malet",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:veronique-riotton",
+          "nom": "Véronique Riotton",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-06"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-11",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:xavier-roseren",
+          "nom": "Xavier Roseren",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-04"
+          },
+          "textes_portes": {
+            "min": "2025-04-03",
+            "max": "2026-07-24"
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2026-07-16"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:yannick-chenevard",
+          "nom": "Yannick Chenevard",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-05-29"
+          },
+          "textes_portes": {
+            "min": "2024-07-20",
+            "max": "2026-08-06"
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:yannick-haury",
+          "nom": "Yannick Haury",
+          "chambre": "AN",
+          "votes": {
+            "min": "2017-07-04",
+            "max": "2024-06-04"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-11",
+            "max": "2024-06-07"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:yannick-vaugrenard",
+          "nom": "Yannick Vaugrenard",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:yael-braun-pivet",
+          "nom": "Yaël Braun-Pivet",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": "2024-07-18",
+            "max": "2026-07-08"
+          },
+          "amendements": {
+            "min": "2017-07-17",
+            "max": "2026-07-10"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:edouard-philippe",
+          "nom": "Édouard Philippe",
+          "chambre": "AN",
+          "votes": {
+            "min": "2012-07-03",
+            "max": "2016-11-22"
+          },
+          "textes_portes": {
+            "min": "2017-06-14",
+            "max": "2024-03-21"
+          },
+          "amendements": {
+            "min": "2012-07-12",
+            "max": "2017-02-02"
+          },
+          "interventions": {
+            "min": "2017-08-09",
+            "max": "2019-12-10"
+          }
+        },
+        {
+          "id": "nosdeputes:emilie-chandler",
+          "nom": "Émilie Chandler",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2022-07-05",
+            "max": "2024-05-31"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:eric-dolige",
+          "nom": "Éric Doligé",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:eric-poulliat",
+          "nom": "Éric Poulliat",
+          "chambre": "AN",
+          "votes": {
+            "min": "2022-07-12",
+            "max": "2024-06-05"
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": "2017-07-21",
+            "max": "2024-05-31"
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        },
+        {
+          "id": "nosdeputes:evelyne-renaud-garabedian",
+          "nom": "Évelyne Renaud-Garabedian",
+          "chambre": "AN",
+          "votes": {
+            "min": null,
+            "max": null
+          },
+          "textes_portes": {
+            "min": null,
+            "max": null
+          },
+          "amendements": {
+            "min": null,
+            "max": null
+          },
+          "interventions": {
+            "min": null,
+            "max": null
+          }
+        }
+      ],
+      "dates_ignorees": {
+        "votes": 0,
+        "textes_portes": 0,
+        "amendements": 0,
+        "interventions": 6
+      }
+    },
+    "erreurs_lecture": []
+  },
+  "audit_groupes": {
+    "meta": {
+      "genere_le": "2026-08-18T06:33:48.044541+00:00",
+      "total_groupes": 7,
+      "total_erreurs_lecture": 0,
+      "staleness_days": 30
+    },
+    "volumetrie": {
+      "effectifs": {
+        "actuel": {
+          "nombre_groupes_renseignes": 7,
+          "min": 0,
+          "max": 23,
+          "mediane": 2,
+          "moyenne": 5.57
+        },
+        "min_historique": {
+          "nombre_groupes_renseignes": 0,
+          "min": null,
+          "max": null,
+          "mediane": null,
+          "moyenne": null
+        },
+        "max_historique": {
+          "nombre_groupes_renseignes": 0,
+          "min": null,
+          "max": null,
+          "mediane": null,
+          "moyenne": null
+        }
+      },
+      "nombre_cohesion_votes": {
+        "min": 0,
+        "max": 4102,
+        "mediane": 1996,
+        "moyenne": 1792.71,
+        "pct_groupes_a_zero": 28.57
+      },
+      "distribution_amendements": {
+        "global": {
+          "nb_amendements": {
+            "min": 0,
+            "max": 195718,
+            "mediane": 13477,
+            "moyenne": 46590.43
+          },
+          "nb_adoptes": {
+            "min": 0,
+            "max": 40149,
+            "mediane": 677,
+            "moyenne": 6775.29
+          },
+          "nb_rejetes": {
+            "min": 0,
+            "max": 45982,
+            "mediane": 4488,
+            "moyenne": 13229
+          },
+          "nb_irrecevables": {
+            "min": 0,
+            "max": 29592,
+            "mediane": 2162,
+            "moyenne": 7596.43
+          },
+          "nb_retires_ou_tombes": {
+            "min": 0,
+            "max": 51479,
+            "mediane": 2825,
+            "moyenne": 11139.71
+          }
+        },
+        "par_type_deposant": {
+          "commission_rapporteur": {
+            "nb_amendements": {
+              "min": 0,
+              "max": 4779,
+              "mediane": 203,
+              "moyenne": 959.29
+            },
+            "nb_adoptes": {
+              "min": 0,
+              "max": 2858,
+              "mediane": 38,
+              "moyenne": 518.14
+            },
+            "nb_rejetes": {
+              "min": 0,
+              "max": 563,
+              "mediane": 88,
+              "moyenne": 164.14
+            },
+            "nb_irrecevables": {
+              "min": 0,
+              "max": 60,
+              "mediane": 8,
+              "moyenne": 13.86
+            },
+            "nb_retires_ou_tombes": {
+              "min": 0,
+              "max": 876,
+              "mediane": 28,
+              "moyenne": 165
+            }
+          },
+          "depute": {
+            "nb_amendements": {
+              "min": 0,
+              "max": 190939,
+              "mediane": 13337,
+              "moyenne": 45631.14
+            },
+            "nb_adoptes": {
+              "min": 0,
+              "max": 37291,
+              "mediane": 639,
+              "moyenne": 6257.14
+            },
+            "nb_rejetes": {
+              "min": 0,
+              "max": 45419,
+              "mediane": 4400,
+              "moyenne": 13064.86
+            },
+            "nb_irrecevables": {
+              "min": 0,
+              "max": 29532,
+              "mediane": 2157,
+              "moyenne": 7582.57
+            },
+            "nb_retires_ou_tombes": {
+              "min": 0,
+              "max": 50603,
+              "mediane": 2797,
+              "moyenne": 10974.71
+            }
+          },
+          "gouvernement": {
+            "nb_amendements": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_adoptes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_rejetes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_irrecevables": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_retires_ou_tombes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            }
+          },
+          "inconnu": {
+            "nb_amendements": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_adoptes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_rejetes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_irrecevables": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            },
+            "nb_retires_ou_tombes": {
+              "min": 0,
+              "max": 0,
+              "mediane": 0,
+              "moyenne": 0
+            }
+          }
+        }
+      }
+    },
+    "completude": {
+      "presence_tags_thematiques": {
+        "renseignes": 2,
+        "total": 7,
+        "taux_pct": 28.57
+      },
+      "groupes_membres_sans_cohesion": {
+        "total_groupes": 7,
+        "nb_groupes_membres_sans_cohesion": 2,
+        "groupes_membres_sans_cohesion": [
+          "Senat:LR",
+          "Senat:SER"
+        ]
+      }
+    },
+    "coherence": {
+      "validation_schema": {
+        "total_groupes": 7,
+        "nb_groupes_invalides": 0,
+        "groupes_invalides": []
+      },
+      "coherence_schema_version": {
+        "groupes_incoherents": []
+      },
+      "ecart_couverture_roster": {
+        "groupes": [
+          {
+            "groupe_id": "AN:LFI",
+            "roster_total": 76,
+            "profils_disponibles": 3,
+            "ecart": 73,
+            "taux_couverture_pct": 3.95
+          },
+          {
+            "groupe_id": "AN:LR",
+            "roster_total": 62,
+            "profils_disponibles": 6,
+            "ecart": 56,
+            "taux_couverture_pct": 9.68
+          },
+          {
+            "groupe_id": "AN:REN",
+            "roster_total": 193,
+            "profils_disponibles": 86,
+            "ecart": 107,
+            "taux_couverture_pct": 44.56
+          },
+          {
+            "groupe_id": "AN:RN",
+            "roster_total": 90,
+            "profils_disponibles": 9,
+            "ecart": 81,
+            "taux_couverture_pct": 10.0
+          },
+          {
+            "groupe_id": "AN:SOC",
+            "roster_total": 31,
+            "profils_disponibles": 1,
+            "ecart": 30,
+            "taux_couverture_pct": 3.23
+          },
+          {
+            "groupe_id": "Senat:LR",
+            "roster_total": 235,
+            "profils_disponibles": 15,
+            "ecart": 220,
+            "taux_couverture_pct": 6.38
+          },
+          {
+            "groupe_id": "Senat:SER",
+            "roster_total": 65,
+            "profils_disponibles": 5,
+            "ecart": 60,
+            "taux_couverture_pct": 7.69
+          }
+        ]
+      },
+      "doublons_groupe_id": {
+        "doublons": []
+      }
+    },
+    "fraicheur": {
+      "fraicheur_sources": {
+        "total_sources_datees": 57,
+        "par_type_source": {
+          "assemblee_nationale": {
+            "nombre_sources": 5,
+            "min_jours": 0,
+            "max_jours": 4,
+            "mediane_jours": 0,
+            "moyenne_jours": 0.8
+          },
+          "europarl": {
+            "nombre_sources": 5,
+            "min_jours": 0,
+            "max_jours": 0,
+            "mediane_jours": 0,
+            "moyenne_jours": 0
+          },
+          "nosdeputes": {
+            "nombre_sources": 45,
+            "min_jours": 0,
+            "max_jours": 11,
+            "mediane_jours": 4,
+            "moyenne_jours": 3.84
+          },
+          "nossenateurs": {
+            "nombre_sources": 2,
+            "min_jours": 0,
+            "max_jours": 0,
+            "mediane_jours": 0.0,
+            "moyenne_jours": 0
+          }
+        }
+      },
+      "groupes_perimes": []
+    },
+    "warnings": {
+      "total_warnings": 9,
+      "par_type": {
+        "couverture_roster_senat": {
+          "frequence": 2,
+          "groupe_ids": [
+            "Senat:LR",
+            "Senat:SER"
+          ]
+        },
+        "fraicheur_donnees": {
+          "frequence": 7,
+          "groupe_ids": [
+            "AN:LFI",
+            "AN:LR",
+            "AN:REN",
+            "AN:RN",
+            "AN:SOC",
+            "Senat:LR",
+            "Senat:SER"
+          ]
+        }
+      }
+    },
+    "tableau_croise_groupes": {
+      "lignes": [
+        {
+          "groupe_id": "AN:LFI",
+          "groupe_nom": "La France insoumise - NUPES",
+          "chambre": "AN",
+          "membres": 3,
+          "cohesion_votes": 1996,
+          "tags_thematiques_agreges": 0,
+          "amendements": 11561
+        },
+        {
+          "groupe_id": "AN:LR",
+          "groupe_nom": "Les Républicains",
+          "chambre": "AN",
+          "membres": 6,
+          "cohesion_votes": 2232,
+          "tags_thematiques_agreges": 0,
+          "amendements": 42820
+        },
+        {
+          "groupe_id": "Senat:LR",
+          "groupe_nom": "Les Républicains",
+          "chambre": "Senat",
+          "membres": 15,
+          "cohesion_votes": 0,
+          "tags_thematiques_agreges": 0,
+          "amendements": 0
+        },
+        {
+          "groupe_id": "AN:RN",
+          "groupe_nom": "Rassemblement National",
+          "chambre": "AN",
+          "membres": 9,
+          "cohesion_votes": 3405,
+          "tags_thematiques_agreges": 318,
+          "amendements": 62557
+        },
+        {
+          "groupe_id": "AN:REN",
+          "groupe_nom": "Renaissance",
+          "chambre": "AN",
+          "membres": 86,
+          "cohesion_votes": 4102,
+          "tags_thematiques_agreges": 0,
+          "amendements": 195718
+        },
+        {
+          "groupe_id": "Senat:SER",
+          "groupe_nom": "Socialiste, Écologiste et Républicain",
+          "chambre": "Senat",
+          "membres": 5,
+          "cohesion_votes": 0,
+          "tags_thematiques_agreges": 0,
+          "amendements": 0
+        },
+        {
+          "groupe_id": "AN:SOC",
+          "groupe_nom": "Socialistes et apparentés",
+          "chambre": "AN",
+          "membres": 1,
+          "cohesion_votes": 814,
+          "tags_thematiques_agreges": 179,
+          "amendements": 13477
+        }
+      ]
+    },
+    "plage_dates_groupes": {
+      "lignes": [
+        {
+          "groupe_id": "AN:LFI",
+          "groupe_nom": "La France insoumise - NUPES",
+          "chambre": "AN",
+          "cohesion_votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "amendements_agreges": null
+        },
+        {
+          "groupe_id": "AN:LR",
+          "groupe_nom": "Les Républicains",
+          "chambre": "AN",
+          "cohesion_votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "amendements_agreges": null
+        },
+        {
+          "groupe_id": "Senat:LR",
+          "groupe_nom": "Les Républicains",
+          "chambre": "Senat",
+          "cohesion_votes": null,
+          "amendements_agreges": null
+        },
+        {
+          "groupe_id": "AN:RN",
+          "groupe_nom": "Rassemblement National",
+          "chambre": "AN",
+          "cohesion_votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "amendements_agreges": null
+        },
+        {
+          "groupe_id": "AN:REN",
+          "groupe_nom": "Renaissance",
+          "chambre": "AN",
+          "cohesion_votes": {
+            "min": "2017-11-09",
+            "max": "2024-06-07"
+          },
+          "amendements_agreges": null
+        },
+        {
+          "groupe_id": "Senat:SER",
+          "groupe_nom": "Socialiste, Écologiste et Républicain",
+          "chambre": "Senat",
+          "cohesion_votes": null,
+          "amendements_agreges": null
+        },
+        {
+          "groupe_id": "AN:SOC",
+          "groupe_nom": "Socialistes et apparentés",
+          "chambre": "AN",
+          "cohesion_votes": {
+            "min": "2022-07-11",
+            "max": "2024-06-07"
+          },
+          "amendements_agreges": null
+        }
+      ],
+      "dates_invalides": []
+    },
+    "erreurs_lecture": []
+  },
+  "audit_gouvernements": {
+    "meta": {
+      "genere_le": "2026-08-18T06:33:48.044541+00:00",
+      "total_gouvernements": 10,
+      "total_erreurs_lecture": 0,
+      "staleness_days": 30
+    },
+    "volumetrie": {
+      "repartition_periode_actif": {
+        "total_gouvernements": 10,
+        "actifs": 1,
+        "inactifs": 9,
+        "indetermines": 0
+      },
+      "distribution_membres_textes": {
+        "membres": {
+          "min": 1,
+          "max": 16,
+          "mediane": 5.0,
+          "moyenne": 5.7
+        },
+        "textes": {
+          "min": 0,
+          "max": 282,
+          "mediane": 30.0,
+          "moyenne": 72.5
+        }
+      },
+      "comptages_agreges": {
+        "adopte": 188,
+        "adopte_49_3": 9,
+        "adopte_cmp": 111,
+        "depose": 0,
+        "navette_en_cours": 335,
+        "promulgue": 67,
+        "rejete": 9,
+        "rejete_49_3": 0,
+        "retire": 6
+      }
+    },
+    "completude": {
+      "presence_premier_ministre": {
+        "renseignes": 3,
+        "total": 10,
+        "taux_pct": 30.0
+      },
+      "taux_portefeuille_renseigne": {
+        "renseignes": 40,
+        "total": 57,
+        "taux_pct": 70.18
+      },
+      "presence_meta": {
+        "renseignes": 10,
+        "total": 10,
+        "taux_pct": 100.0
+      }
+    },
+    "coherence": {
+      "validation_schema": {
+        "total_gouvernements": 10,
+        "nb_gouvernements_invalides": 0,
+        "gouvernements_invalides": []
+      },
+      "coherence_schema_version": {
+        "gouvernements_incoherents": []
+      },
+      "doublons_gouvernement_id": {
+        "doublons": []
+      }
+    },
+    "fraicheur": {
+      "fraicheur_sources": {
+        "total_sources_datees": 44,
+        "par_type_source": {
+          "assemblee_nationale": {
+            "nombre_sources": 10,
+            "min_jours": 0,
+            "max_jours": 3,
+            "mediane_jours": 0.0,
+            "moyenne_jours": 0.9
+          },
+          "europarl": {
+            "nombre_sources": 1,
+            "min_jours": 0,
+            "max_jours": 0,
+            "mediane_jours": 0,
+            "moyenne_jours": 0
+          },
+          "nosdeputes": {
+            "nombre_sources": 31,
+            "min_jours": 0,
+            "max_jours": 11,
+            "mediane_jours": 4,
+            "moyenne_jours": 4.71
+          },
+          "nossenateurs": {
+            "nombre_sources": 2,
+            "min_jours": 0,
+            "max_jours": 0,
+            "mediane_jours": 0.0,
+            "moyenne_jours": 0
+          }
+        }
+      },
+      "gouvernements_perimes": []
+    },
+    "couverture_textes": {
+      "borne_couverture": "2017-06-21",
+      "legislatures_ingerees": [
+        15,
+        16,
+        17
+      ],
+      "libelle_couverture": "législatures XV–XVII (dossiers déposés à partir du 2017-06-21)",
+      "par_statut": {
+        "couverte": 6,
+        "partielle": 1,
+        "hors_couverture": 3,
+        "indeterminee": 0
+      },
+      "lignes": [
+        {
+          "gouvernement_id": "gouvernement:ATTAL",
+          "nom": "Gouvernement Attal",
+          "periode_debut": "2024-01-10",
+          "periode_fin": "2024-09-05",
+          "statut_couverture": "couverte",
+          "nb_textes": 25
+        },
+        {
+          "gouvernement_id": "gouvernement:BARNIER",
+          "nom": "Gouvernement Barnier",
+          "periode_debut": "2024-09-28",
+          "periode_fin": "2024-12-13",
+          "statut_couverture": "couverte",
+          "nb_textes": 13
+        },
+        {
+          "gouvernement_id": "gouvernement:BAYROU",
+          "nom": "Gouvernement Bayrou",
+          "periode_debut": "2024-12-24",
+          "periode_fin": "2025-09-09",
+          "statut_couverture": "couverte",
+          "nb_textes": 35
+        },
+        {
+          "gouvernement_id": "gouvernement:BORNE",
+          "nom": "Gouvernement Borne",
+          "periode_debut": "2022-05-21",
+          "periode_fin": "2024-01-09",
+          "statut_couverture": "couverte",
+          "nb_textes": 111
+        },
+        {
+          "gouvernement_id": "gouvernement:CASTEX",
+          "nom": "Gouvernement Castex",
+          "periode_debut": "2020-07-07",
+          "periode_fin": "2022-05-16",
+          "statut_couverture": "couverte",
+          "nb_textes": 195
+        },
+        {
+          "gouvernement_id": "gouvernement:FILLON_2",
+          "nom": "Gouvernement Fillon II",
+          "periode_debut": "2007-06-19",
+          "periode_fin": "2010-11-13",
+          "statut_couverture": "hors_couverture",
+          "nb_textes": 0
+        },
+        {
+          "gouvernement_id": "gouvernement:FILLON_3",
+          "nom": "Gouvernement Fillon III",
+          "periode_debut": "2010-11-14",
+          "periode_fin": "2012-05-10",
+          "statut_couverture": "hors_couverture",
+          "nb_textes": 0
+        },
+        {
+          "gouvernement_id": "gouvernement:LECORNU_II",
+          "nom": "Gouvernement Lecornu II",
+          "periode_debut": "2025-10-13",
+          "periode_fin": null,
+          "statut_couverture": "couverte",
+          "nb_textes": 63
+        },
+        {
+          "gouvernement_id": "gouvernement:PHILIPPE",
+          "nom": "Gouvernement Philippe I",
+          "periode_debut": "2017-05-18",
+          "periode_fin": "2017-06-19",
+          "statut_couverture": "hors_couverture",
+          "nb_textes": 1
+        },
+        {
+          "gouvernement_id": "gouvernement:PHILIPPE_2",
+          "nom": "Gouvernement Philippe II",
+          "periode_debut": "2017-06-20",
+          "periode_fin": "2020-07-06",
+          "statut_couverture": "partielle",
+          "nb_textes": 282
+        }
+      ],
+      "sans_texte_hors_couverture": [
+        "gouvernement:FILLON_2",
+        "gouvernement:FILLON_3"
+      ],
+      "sans_texte_dans_couverture": []
+    },
+    "plage_dates_gouvernements": {
+      "lignes": [
+        {
+          "gouvernement_id": "gouvernement:ATTAL",
+          "nom": "Gouvernement Attal",
+          "mandats_membres": {
+            "min": "2024-01-10",
+            "max": "2024-09-05"
+          },
+          "textes": {
+            "min": "2024-01-17",
+            "max": "2026-05-26"
+          }
+        },
+        {
+          "gouvernement_id": "gouvernement:BARNIER",
+          "nom": "Gouvernement Barnier",
+          "mandats_membres": {
+            "min": "2024-09-22",
+            "max": "2024-12-13"
+          },
+          "textes": {
+            "min": "2024-10-01",
+            "max": "2026-01-29"
+          }
+        },
+        {
+          "gouvernement_id": "gouvernement:BAYROU",
+          "nom": "Gouvernement Bayrou",
+          "mandats_membres": {
+            "min": "2024-12-24",
+            "max": "2025-09-09"
+          },
+          "textes": {
+            "min": "2025-01-08",
+            "max": "2026-07-01"
+          }
+        },
+        {
+          "gouvernement_id": "gouvernement:BORNE",
+          "nom": "Gouvernement Borne",
+          "mandats_membres": {
+            "min": "2022-05-21",
+            "max": "2024-01-09"
+          },
+          "textes": {
+            "min": "2022-06-01",
+            "max": "2025-09-30"
+          }
+        },
+        {
+          "gouvernement_id": "gouvernement:CASTEX",
+          "nom": "Gouvernement Castex",
+          "mandats_membres": {
+            "min": "2020-07-07",
+            "max": "2022-05-16"
+          },
+          "textes": {
+            "min": "2020-07-07",
+            "max": "2023-06-02"
+          }
+        },
+        {
+          "gouvernement_id": "gouvernement:FILLON_2",
+          "nom": "Gouvernement Fillon II",
+          "mandats_membres": {
+            "min": "2007-06-19",
+            "max": "2010-11-13"
+          },
+          "textes": null
+        },
+        {
+          "gouvernement_id": "gouvernement:FILLON_3",
+          "nom": "Gouvernement Fillon III",
+          "mandats_membres": {
+            "min": "2010-11-14",
+            "max": "2012-05-10"
+          },
+          "textes": null
+        },
+        {
+          "gouvernement_id": "gouvernement:LECORNU_II",
+          "nom": "Gouvernement Lecornu II",
+          "mandats_membres": {
+            "min": "2025-10-13",
+            "max": "2026-02-26"
+          },
+          "textes": {
+            "min": "2025-10-14",
+            "max": "2026-09-16"
+          }
+        },
+        {
+          "gouvernement_id": "gouvernement:PHILIPPE",
+          "nom": "Gouvernement Philippe I",
+          "mandats_membres": {
+            "min": "2017-05-18",
+            "max": "2017-06-19"
+          },
+          "textes": {
+            "min": "2017-06-14",
+            "max": "2017-09-15"
+          }
+        },
+        {
+          "gouvernement_id": "gouvernement:PHILIPPE_2",
+          "nom": "Gouvernement Philippe II",
+          "mandats_membres": {
+            "min": "2017-06-20",
+            "max": "2020-07-06"
+          },
+          "textes": {
+            "min": "2017-06-22",
+            "max": "2024-03-21"
+          }
+        }
+      ],
+      "dates_invalides": []
+    },
+    "warnings": {
+      "total_warnings": 0,
+      "par_type": {}
+    },
+    "erreurs_lecture": []
+  }
+}

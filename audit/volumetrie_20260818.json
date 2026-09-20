@@ -1,0 +1,68 @@
+{
+  "volumetrie": {
+    "nb_profils": 379,
+    "nb_echantillon": 60,
+    "extrapole": true,
+    "octets_total": 2393244907,
+    "octets_median": 6312503,
+    "octets_moyen": 6314630,
+    "octets_max": 31141796,
+    "fichier_max": "marine-le-pen.json",
+    "octets_compact_total": 1581871772,
+    "octets_gzip_total": 84222853,
+    "poids_par_champ": {
+      "amendements:co_signataires": 1010549350,
+      "amendements": 1303999854,
+      "votes": 260658295,
+      "interventions": 10103772
+    }
+  },
+  "leviers": [
+    {
+      "nom": "Fichiers gzippés (.json.gz)",
+      "gain_octets": 2309022054,
+      "perte": false,
+      "note": "blob binaire : git ne peut plus déltifier, mesurer l'effet sur .git"
+    },
+    {
+      "nom": "Externaliser `amendements` hors du profil",
+      "gain_octets": 1303999854,
+      "perte": false,
+      "note": "la donnée reste disponible dans un index dédié (modèle #392)"
+    },
+    {
+      "nom": "Externaliser `amendements:co_signataires` hors du profil",
+      "gain_octets": 1010549350,
+      "perte": false,
+      "note": "la donnée reste disponible dans un index dédié (modèle #392)"
+    },
+    {
+      "nom": "JSON compact (sans indentation)",
+      "gain_octets": 811373135,
+      "perte": false,
+      "note": "aucune décision éditoriale, aucun champ touché"
+    },
+    {
+      "nom": "Externaliser `votes` hors du profil",
+      "gain_octets": 260658295,
+      "perte": false,
+      "note": "la donnée reste disponible dans un index dédié (modèle #392)"
+    },
+    {
+      "nom": "Externaliser `interventions` hors du profil",
+      "gain_octets": 10103772,
+      "perte": false,
+      "note": "la donnée reste disponible dans un index dédié (modèle #392)"
+    }
+  ],
+  "projection": {
+    "cible": 752,
+    "facteur_duplication": 1.0,
+    "octets_projetes": 4748602031,
+    "go_projetes": 4.42,
+    "depasse_seuil_push": true,
+    "depasse_seuil_depot": false,
+    "profils_avant_seuil_depot": 850
+  },
+  "erreurs_lecture": []
+}

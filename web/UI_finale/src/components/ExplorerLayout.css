@@ -1,0 +1,146 @@
+.explorer-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* La rangée collée elle-même vit dans EnTeteSite.css (#951) : l'accueil la
+   porte aussi. Ce fichier ne garde que ce qui est propre à l'explorateur —
+   l'outil qui remplace l'onglet « Explorateur » et le tiroir qu'il ouvre. */
+
+/* L'OUTIL, À LA PLACE DE L'ONGLET (#1025). Il est là dès l'arrivée : les listes
+   ne sont plus dans la page, il n'y a donc plus rien à franchir pour le voir. */
+.explorer-outil {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  border: 1px solid var(--border-strong);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 6px 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.explorer-outil:hover {
+  border-color: var(--muted);
+}
+
+.explorer-outil[aria-expanded='true'] {
+  border-color: var(--ink);
+}
+
+.explorer-outil:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.explorer-outil-chevron {
+  transition: transform 120ms ease;
+}
+
+.explorer-outil[aria-expanded='true'] .explorer-outil-chevron {
+  transform: rotate(180deg);
+}
+
+/* Le libellé long dit les deux gestes ; sous 720 px il ne tient pas. */
+.explorer-outil-court {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .explorer-outil-chevron {
+    transition: none;
+  }
+}
+
+/* LE TIROIR : un panneau SOUS la rangée, par-dessus la fiche. Il ne prend
+   aucune place dans la page. */
+.explorer-tiroir {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: var(--entete-hauteur);
+  max-height: calc(100vh - var(--entete-hauteur));
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 40px 16px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 10px 24px rgba(23, 20, 31, 0.1);
+}
+
+/* `display: flex` l'emporte sur le `[hidden]` du navigateur. Sans cette règle,
+   l'attribut est bien posé et le tiroir reste affiché — une mesure qui lisait
+   `element.hidden` l'a déjà déclaré corrigé (#324). */
+.explorer-tiroir[hidden] {
+  display: none;
+}
+
+/* La recherche vient EN TÊTE du tiroir, les listes ensuite : on cherche dans la
+   page où l'on est avant d'en changer. */
+.explorer-tiroir-recherche {
+  display: flex;
+  flex-direction: column;
+}
+
+.explorer-tiroir-titre {
+  margin: 0 0 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* La barre garde sa forme de la fiche (Recherche.css) ; seules ses marges
+   changent, le tiroir portant déjà son espacement. */
+.explorer-tiroir .cp-filtre {
+  margin: 0;
+  max-width: 560px;
+}
+
+@media (max-width: 720px) {
+  .explorer-outil-long {
+    display: none;
+  }
+
+  .explorer-outil-court {
+    display: inline;
+  }
+
+  .explorer-tiroir {
+    padding: 12px 16px 14px;
+  }
+}
+
+/* LE SOMMAIRE PREND SUR LA MARGE, JAMAIS SUR LE CONTENU. La colonne de gauche
+   n'existe qu'au-delà de 1 440 px ; en dessous, la grille n'a qu'une colonne et
+   le contenu garde exactement la largeur qu'il avait. */
+.explorer-corps {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 1440px) {
+  .explorer-corps {
+    grid-template-columns: 204px minmax(0, 1fr);
+    gap: 0 24px;
+    padding-left: 40px;
+  }
+}
+
+.explorer-profile-zone {
+  flex: 1;
+  min-width: 0;
+}

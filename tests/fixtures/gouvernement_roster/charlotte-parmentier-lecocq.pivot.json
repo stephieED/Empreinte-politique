@@ -1,0 +1,126 @@
+{
+  "schema_version": "1",
+  "id": "nosdeputes:charlotte-parmentier-lecocq",
+  "nom": "Charlotte Parmentier-Lecocq",
+  "identite": {
+    "source_url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA720480"
+  },
+  "mandats": [
+    {
+      "label": "Ministère des solidarités et de la santé",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "en mission",
+      "debut": "2018-01-22",
+      "fin": "2018-07-20",
+      "actif": false,
+      "source_url": null,
+      "position_dans_hemicycle": null,
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Ministère délégué auprès du ministre des solidarités, de l'autonomie et de l'égalité entre les femmes et les hommes, chargé des personnes en situation de handicap",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "Ministre délégué",
+      "debut": "2024-09-28",
+      "fin": "2024-12-13",
+      "actif": false,
+      "source_url": null,
+      "position_dans_hemicycle": null,
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Ministère délégué auprès de la ministre du travail, de la santé, de la solidarité et des familles, chargé de l'autonomie et du handicap",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "Ministre délégué",
+      "debut": "2024-12-24",
+      "fin": "2025-09-09",
+      "actif": false,
+      "source_url": null,
+      "position_dans_hemicycle": null,
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Ministère de l'action et des comptes publics",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "en mission",
+      "debut": "2019-03-15",
+      "fin": "2019-12-09",
+      "actif": false,
+      "source_url": null,
+      "position_dans_hemicycle": null,
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Ministère délégué auprès de la ministre de la santé, des familles, de l’autonomie et des personnes handicapées, chargé de  l’autonomie et des personnes handicapées",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "Ministre délégué",
+      "debut": "2025-10-13",
+      "fin": "2026-02-26",
+      "actif": false,
+      "source_url": null,
+      "position_dans_hemicycle": null,
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Mandat parlementaire (Horizons & Indépendants)",
+      "categorie": "mandat_electif",
+      "fonction": "mandat",
+      "debut": "2024-07-07",
+      "fin": null,
+      "actif": true,
+      "source_url": null,
+      "position_dans_hemicycle": null,
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Gouvernement (BARNIER)",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "membre",
+      "debut": "2024-09-28",
+      "fin": "2024-12-13",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+      "position_dans_hemicycle": "gouvernement",
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Gouvernement (BAYROU)",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "membre",
+      "debut": "2024-12-24",
+      "fin": "2025-09-09",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+      "position_dans_hemicycle": "gouvernement",
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    },
+    {
+      "label": "Gouvernement (LECORNU II)",
+      "categorie": "fonction_gouvernementale",
+      "fonction": "membre",
+      "debut": "2025-10-13",
+      "fin": "2026-02-26",
+      "actif": false,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+      "position_dans_hemicycle": "gouvernement",
+      "mode_declenchement": null,
+      "suspendu_pour_fonction_gouvernementale": null
+    }
+  ],
+  "meta": {
+    "fixture": {
+      "source": "pivot_data/profiles/charlotte-parmentier-lecocq.pivot.json",
+      "ref": "a19519e2a0a375686600f766c662e23038de6e2c",
+      "extrait_le": "2026-08-20",
+      "reduction": "Champs conservés : ceux que gouvernement_roster lit — id, nom, identite.source_url, mandats[]. mandats[] restreint aux catégories ['fonction_gouvernementale', 'mandat_electif'], dans l'ordre de la source (jamais retrié)."
+    }
+  }
+}

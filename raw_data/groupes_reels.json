@@ -1,0 +1,1661 @@
+{
+  "_meta": {
+    "description": "Liste validée manuellement (voir README §6) des groupes parlementaires réels à générer via generate_group_profiles.py / group_profile.py --from-roster. Couvre les candidats actuellement identifiés dans raw_data/candidats.json ayant un mandat parlementaire réel (AN/Sénat). Une fiche par groupe ET par législature : le nom de fichier le porte depuis l'origine (`groupe-AN-REN-16.json`), et les 5 groupes de la 17e y sont depuis #700.",
+    "suspension": "Une entrée portant `extraction_suspendue` n'est ni interrogée en réseau (generate_roster_candidats.py) ni régénérée (generate_group_profiles.py) : son fichier de groupe déjà publié reste en place, gelé à sa dernière génération réussie, et le quality gate le contrôle toujours structurellement mais ne mesure plus sa couverture. Le bloc exige `depuis`, `motif`, `references` et `condition_reprise` — voir docs/decisions/extraction-groupe-suspendue-516.md.",
+    "avertissement": "Les données sources (NosDéputés.fr, NosSénateurs.fr) reflètent la dernière composition connue avant la dissolution du 9 juin 2024 (16e législature) ou avant l'arrêt du site — voir l'avertissement meta.warnings de chaque profil de groupe généré.",
+    "correspondance_sigles": "La clé `correspondance_sigles_an` est la table sigle publié → sigle(s) AN (#526), lue par src/an_roster.py. Elle EST consommée par le pipeline, à deux titres : le roster de groupe la lit depuis que `an_roster.AN_ROSTER_ACTIF` est levé (#527), et `groupes_config.position_politique_publiee` en tire la position déclarée que chaque fiche de groupe publie (#686). Corrigé le 01/09/2026 : cette note affirmait encore le contraire — « pas consommée tant que le drapeau est baissé » — alors que le drapeau vaut True. Une note qui décrit un état révolu se lit comme un fait et dispense de vérifier. Depuis #700 les 5 groupes de la 17e législature sont aussi dans `groupes[]` : leurs fiches paraissent au prochain run, et jusque-là `effectif_publie` reste null. `succede_a` est lu par `groupes_config.succession_publiee` et publié sur la fiche : c'est une RELECTURE HUMAINE datée, pas un champ de l'AN — l'Assemblée ouvre et ferme des organes, elle ne les chaîne pas (voir docs/decisions/fiches-groupe-17e-legislature-700.md).",
+    "lignees": "La clé `lignees` déclare les LIGNÉES de groupe : la suite des fiches qu'un même groupe a portées au fil des législatures (#836). L'interface n'en publie qu'une par lignée (décision de la propriétaire, 10/09/2026), et chaque entrée de `groupes[]` porte le `lignee_id` de la sienne. L'identifiant est DÉCLARÉ et jamais dérivé : par la racine il changerait le jour où un maillon antérieur est ajouté — MoDem, Horizons, LIOT et UDR restent à déclarer (#815) —, par le maillon le plus récent il changerait à chaque législature, et un identifiant qu'une collecte déplace casse les liens du site. `lignee_nom` est en revanche un libellé de LECTURE, celui du maillon le plus récent : il se relit sans que rien ne casse. La chaîne, elle, n'est écrite qu'une fois — dans `correspondance_sigles_an.groupes[].succede_a` — et generate_lignee_profiles.py refuse que les deux se contredisent."
+  },
+  "correspondance_sigles_an": {
+    "_description": "Sigle publié par ce dépôt → sigle(s) AN (`organe.libelleAbrev` du référentiel AMO30), par législature. Committée et relue, jamais devinée : `RE` ne se déduit pas de `REN`, ni `DR` de `LR`. `libelleAbrev` et non `libelleAbrege`, parce que lui seul distingue les deux organes SOC successifs de la 16e (`SOC` puis `SOC-A`) et les deux UDR de la 17e (`UDR` puis `UDDPLR`).",
+    "_organes_an": "Organes MESURÉS au moment de la relecture. Ils ne servent pas à construire le roster — celui-ci prend l'union des organes portant `sigles_an`, pour qu'un organe successif nouvellement ouvert entre quand même. Ils sont le FIL-PIÈGE : une divergence entre attendus et trouvés dit que l'AN a ouvert ou fermé un organe et que la table doit être relue.",
+    "_position_politique_an": "Qualification que l'Assemblée nationale donne ELLE-MÊME au groupe (organe.positionPolitique du référentiel AMO30) : Majoritaire | Opposition | Minoritaire. Recopiée, jamais produite — ce dépôt ne qualifie personne (AGENTS.md §2 règle 1). `organes` porte la déclaration ORGANE PAR ORGANE avec la chaîne source verbatim : un groupe peut avoir deux organes successifs dans une législature (SOC puis SOC-A, XVIe), et `position` en est le RÉSUMÉ DÉRIVÉ — la valeur commune si les organes s'accordent, `divergente` s'ils se contredisent, `non_declaree` si aucun ne déclare (les 14 groupes de la XVIIe : l'AN ne qualifie qu'une fois la législature achevée). Remesurable par `python3 src/an_roster.py --positions`, qui compare committé et mesuré sans rien réécrire. Voir docs/decisions/position-politique-groupes-686.md.",
+    "_effectif_amo30": "Effectif mesuré le 26/08/2026 sur l'archive AMO30 réelle, APRÈS filtrage des mandats de transit (voir an_roster.est_mandat_de_transit). Aucun groupe de cette table ne perd un membre à ce filtrage ; seul `NI` en perd (592 → 39 sur la 16e, 640 → 94 sur la 17e), et `NI` n'est pas un groupe publié.",
+    "_ecart_membres": "L'écart avec la fiche publiée est nommé ENTRÉE PAR ENTRÉE — acteur AN, état civil, dates de mandat — et non résumé en volume. « ~3 de plus » ne se relit pas ; un `acteur_ref` et une date de fin, si. `tests/test_an_roster.py` vérifie chacune de ces entrées contre l'archive : une liste qui cesserait de correspondre fait échouer la suite au lieu de vieillir en silence.",
+    "source": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+    "licence": "Licence Ouverte / Open Licence (Etalab) — attribution seule, contrairement à l'ODbL share-alike de NosDéputés (AGENTS.md §7).",
+    "groupes": [
+      {
+        "groupe_sigle": "REN",
+        "groupe_id": "AN:REN:16",
+        "legislature": "16",
+        "fichier": "groupe-AN-REN-16.json",
+        "sigles_an": [
+          "RE"
+        ],
+        "organes_an": [
+          "PO800538"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO800538",
+            "sigle_an": "RE",
+            "nom": "Renaissance",
+            "debut": "2022-06-28",
+            "fin": "2024-06-09"
+          }
+        ],
+        "position_politique_an": {
+          "position": "majorite",
+          "verifie_le": "2026-09-01",
+          "organes": [
+            {
+              "organe_an": "PO800538",
+              "sigle_an": "RE",
+              "valeur_source": "Majoritaire",
+              "position": "majorite"
+            }
+          ]
+        },
+        "effectif_amo30": 196,
+        "effectif_publie": 193,
+        "verifie_le": "2026-09-10",
+        "ecart_motif": "3 membres partis avant la fin de la législature : absents de la dernière composition connue de NosDéputés, sans profil publié, donc sans entrée dans raw_data/correspondance_acteurs_an.json. L'écart est une catégorie fermée et datée, pas un résidu.",
+        "ecart_membres": [
+          {
+            "acteur_ref": "PA722070",
+            "nom": "Pierre Henriet",
+            "mandat_debut": "2022-06-29",
+            "mandat_fin": "2024-02-15"
+          },
+          {
+            "acteur_ref": "PA719032",
+            "nom": "Bertrand Bouyx",
+            "mandat_debut": "2022-06-29",
+            "mandat_fin": "2024-02-15"
+          },
+          {
+            "acteur_ref": "PA721522",
+            "nom": "Xavier Batut",
+            "mandat_debut": "2022-06-29",
+            "mandat_fin": "2023-08-29"
+          }
+        ],
+        "succede_a": [
+          "AN:LAREM:15"
+        ]
+      },
+      {
+        "groupe_sigle": "SOC",
+        "groupe_id": "AN:SOC:16",
+        "legislature": "16",
+        "fichier": "groupe-AN-SOC-16.json",
+        "sigles_an": [
+          "SOC",
+          "SOC-A"
+        ],
+        "organes_an": [
+          "PO800496",
+          "PO830170"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO800496",
+            "sigle_an": "SOC",
+            "nom": "Socialistes et apparentés (membre de l’intergroupe NUPES)",
+            "debut": "2022-06-28",
+            "fin": "2023-10-18"
+          },
+          {
+            "organe_an": "PO830170",
+            "sigle_an": "SOC-A",
+            "nom": "Socialistes et apparentés",
+            "debut": "2023-10-19",
+            "fin": "2024-06-09"
+          }
+        ],
+        "position_politique_an": {
+          "position": "opposition",
+          "verifie_le": "2026-09-01",
+          "organes": [
+            {
+              "organe_an": "PO800496",
+              "sigle_an": "SOC",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            },
+            {
+              "organe_an": "PO830170",
+              "sigle_an": "SOC-A",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 31,
+        "effectif_publie": 31,
+        "verifie_le": "2026-09-10",
+        "ecart_motif": "Aucun écart. Deux organes successifs dans la même législature — PO800496 (2022-06-28 → 2023-10-18) puis PO830170 (2023-10-19 → 2024-06-09) — dont l'union rend exactement l'effectif publié. Sans union, la moitié de l'année serait perdue.",
+        "ecart_membres": [],
+        "succede_a": [
+          "AN:SOC:15"
+        ]
+      },
+      {
+        "groupe_sigle": "RN",
+        "groupe_id": "AN:RN:16",
+        "legislature": "16",
+        "fichier": "groupe-AN-RN-16.json",
+        "sigles_an": [
+          "RN"
+        ],
+        "organes_an": [
+          "PO800520"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO800520",
+            "sigle_an": "RN",
+            "nom": "Rassemblement National",
+            "debut": "2022-06-28",
+            "fin": "2024-06-09"
+          }
+        ],
+        "position_politique_an": {
+          "position": "opposition",
+          "verifie_le": "2026-09-01",
+          "organes": [
+            {
+              "organe_an": "PO800520",
+              "sigle_an": "RN",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 90,
+        "effectif_publie": 90,
+        "verifie_le": "2026-08-26",
+        "ecart_motif": "Aucun écart.",
+        "ecart_membres": []
+      },
+      {
+        "groupe_sigle": "LFI",
+        "groupe_id": "AN:LFI:16",
+        "legislature": "16",
+        "fichier": "groupe-AN-LFI-16.json",
+        "sigles_an": [
+          "LFI-NUPES"
+        ],
+        "organes_an": [
+          "PO800490"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO800490",
+            "sigle_an": "LFI-NUPES",
+            "nom": "La France insoumise - Nouvelle Union Populaire écologique et sociale",
+            "debut": "2022-06-28",
+            "fin": "2024-06-09"
+          }
+        ],
+        "position_politique_an": {
+          "position": "opposition",
+          "verifie_le": "2026-09-01",
+          "organes": [
+            {
+              "organe_an": "PO800490",
+              "sigle_an": "LFI-NUPES",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 76,
+        "effectif_publie": 76,
+        "verifie_le": "2026-09-10",
+        "ecart_motif": "Aucun écart.",
+        "ecart_membres": [],
+        "succede_a": [
+          "AN:FI:15"
+        ]
+      },
+      {
+        "groupe_sigle": "LR",
+        "groupe_id": "AN:LR:16",
+        "legislature": "16",
+        "fichier": "groupe-AN-LR-16.json",
+        "sigles_an": [
+          "LR"
+        ],
+        "organes_an": [
+          "PO800508"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO800508",
+            "sigle_an": "LR",
+            "nom": "Les Républicains",
+            "debut": "2022-06-28",
+            "fin": "2024-06-09"
+          }
+        ],
+        "position_politique_an": {
+          "position": "opposition",
+          "verifie_le": "2026-09-01",
+          "organes": [
+            {
+              "organe_an": "PO800508",
+              "sigle_an": "LR",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 63,
+        "effectif_publie": 62,
+        "verifie_le": "2026-09-10",
+        "ecart_motif": "1 membre parti avant la fin de la législature : absent de la dernière composition connue de NosDéputés, sans profil publié, donc sans entrée dans raw_data/correspondance_acteurs_an.json.",
+        "ecart_membres": [
+          {
+            "acteur_ref": "PA794914",
+            "nom": "Alexandre Vincendet",
+            "mandat_debut": "2022-06-29",
+            "mandat_fin": "2024-03-19"
+          }
+        ],
+        "succede_a": [
+          "AN:LR:15"
+        ]
+      },
+      {
+        "groupe_sigle": "EPR",
+        "groupe_id": "AN:EPR:17",
+        "legislature": "17",
+        "fichier": "groupe-AN-EPR-17.json",
+        "sigles_an": [
+          "EPR"
+        ],
+        "organes_an": [
+          "PO845407"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO845407",
+            "sigle_an": "EPR",
+            "nom": "Ensemble pour la République",
+            "debut": "2024-07-18",
+            "fin": null
+          }
+        ],
+        "position_politique_an": {
+          "position": "non_declaree",
+          "verifie_le": "2026-09-01",
+          "organes": [
+            {
+              "organe_an": "PO845407",
+              "sigle_an": "EPR",
+              "valeur_source": null,
+              "position": null
+            }
+          ]
+        },
+        "effectif_amo30": 123,
+        "effectif_publie": null,
+        "succede_a": [
+          "AN:REN:16"
+        ],
+        "verifie_le": "2026-08-26",
+        "ecart_motif": "Publication configurée par #700 : cette entrée est désormais dans `groupes[]`, la fiche paraît au prochain run. 99 des 123 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les 24 autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution ; la mention « lot 1b » qui figurait ici désignait #527, qui a basculé la SOURCE du roster sur AMO30 et n'a jamais publié de fiche.",
+        "membres_avec_slug": 99,
+        "ecart_membres": []
+      },
+      {
+        "groupe_sigle": "SOC",
+        "groupe_id": "AN:SOC:17",
+        "legislature": "17",
+        "fichier": "groupe-AN-SOC-17.json",
+        "sigles_an": [
+          "SOC"
+        ],
+        "organes_an": [
+          "PO845419"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO845419",
+            "sigle_an": "SOC",
+            "nom": "Socialistes et apparentés",
+            "debut": "2024-07-18",
+            "fin": null
+          }
+        ],
+        "position_politique_an": {
+          "position": "non_declaree",
+          "verifie_le": "2026-09-01",
+          "organes": [
+            {
+              "organe_an": "PO845419",
+              "sigle_an": "SOC",
+              "valeur_source": null,
+              "position": null
+            }
+          ]
+        },
+        "effectif_amo30": 70,
+        "effectif_publie": null,
+        "succede_a": [
+          "AN:SOC:16"
+        ],
+        "verifie_le": "2026-08-26",
+        "ecart_motif": "Publication configurée par #700 : cette entrée est désormais dans `groupes[]`, la fiche paraît au prochain run. 29 des 70 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les 41 autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution ; la mention « lot 1b » qui figurait ici désignait #527, qui a basculé la SOURCE du roster sur AMO30 et n'a jamais publié de fiche.",
+        "membres_avec_slug": 29,
+        "ecart_membres": []
+      },
+      {
+        "groupe_sigle": "RN",
+        "groupe_id": "AN:RN:17",
+        "legislature": "17",
+        "fichier": "groupe-AN-RN-17.json",
+        "sigles_an": [
+          "RN"
+        ],
+        "organes_an": [
+          "PO845401"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO845401",
+            "sigle_an": "RN",
+            "nom": "Rassemblement National",
+            "debut": "2024-07-18",
+            "fin": null
+          }
+        ],
+        "position_politique_an": {
+          "position": "non_declaree",
+          "verifie_le": "2026-09-01",
+          "organes": [
+            {
+              "organe_an": "PO845401",
+              "sigle_an": "RN",
+              "valeur_source": null,
+              "position": null
+            }
+          ]
+        },
+        "effectif_amo30": 131,
+        "effectif_publie": null,
+        "succede_a": [
+          "AN:RN:16"
+        ],
+        "verifie_le": "2026-08-26",
+        "ecart_motif": "Publication configurée par #700 : cette entrée est désormais dans `groupes[]`, la fiche paraît au prochain run. 79 des 131 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les 52 autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution ; la mention « lot 1b » qui figurait ici désignait #527, qui a basculé la SOURCE du roster sur AMO30 et n'a jamais publié de fiche.",
+        "membres_avec_slug": 79,
+        "ecart_membres": []
+      },
+      {
+        "groupe_sigle": "LFI",
+        "groupe_id": "AN:LFI:17",
+        "legislature": "17",
+        "fichier": "groupe-AN-LFI-17.json",
+        "sigles_an": [
+          "LFI-NFP"
+        ],
+        "organes_an": [
+          "PO845413"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO845413",
+            "sigle_an": "LFI-NFP",
+            "nom": "La France insoumise - Nouveau Front Populaire",
+            "debut": "2024-07-18",
+            "fin": null
+          }
+        ],
+        "position_politique_an": {
+          "position": "non_declaree",
+          "verifie_le": "2026-09-01",
+          "organes": [
+            {
+              "organe_an": "PO845413",
+              "sigle_an": "LFI-NFP",
+              "valeur_source": null,
+              "position": null
+            }
+          ]
+        },
+        "effectif_amo30": 73,
+        "effectif_publie": null,
+        "succede_a": [
+          "AN:LFI:16"
+        ],
+        "verifie_le": "2026-08-26",
+        "ecart_motif": "Publication configurée par #700 : cette entrée est désormais dans `groupes[]`, la fiche paraît au prochain run. 56 des 73 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les 17 autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution ; la mention « lot 1b » qui figurait ici désignait #527, qui a basculé la SOURCE du roster sur AMO30 et n'a jamais publié de fiche.",
+        "membres_avec_slug": 56,
+        "ecart_membres": []
+      },
+      {
+        "groupe_sigle": "DR",
+        "groupe_id": "AN:DR:17",
+        "legislature": "17",
+        "fichier": "groupe-AN-DR-17.json",
+        "sigles_an": [
+          "DR"
+        ],
+        "organes_an": [
+          "PO845425"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO845425",
+            "sigle_an": "DR",
+            "nom": "Droite Républicaine",
+            "debut": "2024-07-18",
+            "fin": null
+          }
+        ],
+        "position_politique_an": {
+          "position": "non_declaree",
+          "verifie_le": "2026-09-01",
+          "organes": [
+            {
+              "organe_an": "PO845425",
+              "sigle_an": "DR",
+              "valeur_source": null,
+              "position": null
+            }
+          ]
+        },
+        "effectif_amo30": 64,
+        "effectif_publie": null,
+        "succede_a": [
+          "AN:LR:16"
+        ],
+        "verifie_le": "2026-08-26",
+        "ecart_motif": "Publication configurée par #700 : cette entrée est désormais dans `groupes[]`, la fiche paraît au prochain run. 42 des 64 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les 22 autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution ; la mention « lot 1b » qui figurait ici désignait #527, qui a basculé la SOURCE du roster sur AMO30 et n'a jamais publié de fiche.",
+        "membres_avec_slug": 42,
+        "ecart_membres": []
+      },
+      {
+        "groupe_sigle": "ECOLO",
+        "groupe_id": "AN:ECOLO:16",
+        "legislature": "16",
+        "fichier": "groupe-AN-ECOLO-16.json",
+        "sigles_an": [
+          "ECOLO"
+        ],
+        "organes_an": [
+          "PO800526"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO800526",
+            "sigle_an": "ECOLO",
+            "nom": "Écologiste - NUPES",
+            "debut": "2022-06-28",
+            "fin": "2024-06-09"
+          }
+        ],
+        "position_politique_an": {
+          "position": "opposition",
+          "verifie_le": "2026-09-08",
+          "organes": [
+            {
+              "organe_an": "PO800526",
+              "sigle_an": "ECOLO",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 23,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-08",
+        "ecart_motif": "Publication configurée par #777 : organe PO800526 relu dans l'index AMO30 des groupes politiques le 2026-09-08 — sigle `ECOLO` (libelleAbrev), 2022-06-28 → 2024-06-09. La fiche paraît au prochain run. 2 des 23 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution.",
+        "membres_avec_slug": 2,
+        "ecart_membres": []
+      },
+      {
+        "groupe_sigle": "GDR",
+        "groupe_id": "AN:GDR:16",
+        "legislature": "16",
+        "fichier": "groupe-AN-GDR-16.json",
+        "sigles_an": [
+          "GDR-NUPES"
+        ],
+        "organes_an": [
+          "PO800502"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO800502",
+            "sigle_an": "GDR-NUPES",
+            "nom": "Gauche démocrate et républicaine - NUPES",
+            "debut": "2022-06-28",
+            "fin": "2024-06-09"
+          }
+        ],
+        "position_politique_an": {
+          "position": "opposition",
+          "verifie_le": "2026-09-08",
+          "organes": [
+            {
+              "organe_an": "PO800502",
+              "sigle_an": "GDR-NUPES",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 24,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-08",
+        "ecart_motif": "Publication configurée par #777 : organe PO800502 relu dans l'index AMO30 des groupes politiques le 2026-09-08 — sigle `GDR-NUPES` (libelleAbrev), 2022-06-28 → 2024-06-09. La fiche paraît au prochain run. 2 des 24 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution.",
+        "membres_avec_slug": 2,
+        "ecart_membres": [],
+        "succede_a": [
+          "AN:GDR:15"
+        ]
+      },
+      {
+        "groupe_sigle": "FI",
+        "groupe_id": "AN:FI:15",
+        "legislature": "15",
+        "fichier": "groupe-AN-FI-15.json",
+        "sigles_an": [
+          "FI"
+        ],
+        "organes_an": [
+          "PO730958"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO730958",
+            "sigle_an": "FI",
+            "nom": "La France insoumise",
+            "debut": "2017-06-27",
+            "fin": "2022-06-21"
+          }
+        ],
+        "position_politique_an": {
+          "position": "opposition",
+          "verifie_le": "2026-09-08",
+          "organes": [
+            {
+              "organe_an": "PO730958",
+              "sigle_an": "FI",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 17,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-08",
+        "ecart_motif": "Publication configurée par #777 : organe PO730958 relu dans l'index AMO30 des groupes politiques le 2026-09-08 — sigle `FI` (libelleAbrev), 2017-06-27 → 2022-06-21. La fiche paraît au prochain run. 14 des 17 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution.",
+        "membres_avec_slug": 14,
+        "ecart_membres": []
+      },
+      {
+        "groupe_sigle": "NG",
+        "groupe_id": "AN:NG:15",
+        "legislature": "15",
+        "fichier": "groupe-AN-NG-15.json",
+        "sigles_an": [
+          "NG"
+        ],
+        "organes_an": [
+          "PO730946"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO730946",
+            "sigle_an": "NG",
+            "nom": "Nouvelle Gauche",
+            "debut": "2017-06-27",
+            "fin": "2018-09-11"
+          }
+        ],
+        "position_politique_an": {
+          "position": "opposition",
+          "verifie_le": "2026-09-08",
+          "organes": [
+            {
+              "organe_an": "PO730946",
+              "sigle_an": "NG",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 33,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-08",
+        "ecart_motif": "Publication configurée par #777 : organe PO730946 relu dans l'index AMO30 des groupes politiques le 2026-09-08 — sigle `NG` (libelleAbrev), 2017-06-27 → 2018-09-11. La fiche paraît au prochain run. 14 des 33 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution.",
+        "membres_avec_slug": 14,
+        "ecart_membres": []
+      },
+      {
+        "groupe_sigle": "SOC",
+        "groupe_id": "AN:SOC:15",
+        "legislature": "15",
+        "fichier": "groupe-AN-SOC-15.json",
+        "sigles_an": [
+          "SOC"
+        ],
+        "organes_an": [
+          "PO758835"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO758835",
+            "sigle_an": "SOC",
+            "nom": "Socialistes et apparentés",
+            "debut": "2018-09-12",
+            "fin": "2022-06-21"
+          }
+        ],
+        "position_politique_an": {
+          "position": "opposition",
+          "verifie_le": "2026-09-08",
+          "organes": [
+            {
+              "organe_an": "PO758835",
+              "sigle_an": "SOC",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 36,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-08",
+        "ecart_motif": "Publication configurée par #777 : organe PO758835 relu dans l'index AMO30 des groupes politiques le 2026-09-08 — sigle `SOC` (libelleAbrev), 2018-09-12 → 2022-06-21. La fiche paraît au prochain run. 17 des 36 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution.",
+        "membres_avec_slug": 17,
+        "ecart_membres": [],
+        "succede_a": [
+          "AN:NG:15"
+        ]
+      },
+      {
+        "groupe_sigle": "EDS",
+        "groupe_id": "AN:EDS:15",
+        "legislature": "15",
+        "fichier": "groupe-AN-EDS-15.json",
+        "sigles_an": [
+          "EDS"
+        ],
+        "organes_an": [
+          "PO771789"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO771789",
+            "sigle_an": "EDS",
+            "nom": "Écologie Démocratie Solidarité",
+            "debut": "2020-05-20",
+            "fin": "2020-10-16"
+          }
+        ],
+        "position_politique_an": {
+          "position": "minoritaire",
+          "verifie_le": "2026-09-08",
+          "organes": [
+            {
+              "organe_an": "PO771789",
+              "sigle_an": "EDS",
+              "valeur_source": "Minoritaire",
+              "position": "minoritaire"
+            }
+          ]
+        },
+        "effectif_amo30": 17,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-08",
+        "ecart_motif": "Publication configurée par #777 : organe PO771789 relu dans l'index AMO30 des groupes politiques le 2026-09-08 — sigle `EDS` (libelleAbrev), 2020-05-20 → 2020-10-16. La fiche paraît au prochain run. 2 des 17 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution.",
+        "membres_avec_slug": 2,
+        "ecart_membres": []
+      },
+      {
+        "groupe_sigle": "GDR",
+        "groupe_id": "AN:GDR:15",
+        "legislature": "15",
+        "fichier": "groupe-AN-GDR-15.json",
+        "sigles_an": [
+          "GDR"
+        ],
+        "organes_an": [
+          "PO730940"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO730940",
+            "sigle_an": "GDR",
+            "nom": "Gauche démocrate et républicaine",
+            "debut": "2017-06-27",
+            "fin": "2022-06-21"
+          }
+        ],
+        "position_politique_an": {
+          "position": "opposition",
+          "verifie_le": "2026-09-08",
+          "organes": [
+            {
+              "organe_an": "PO730940",
+              "sigle_an": "GDR",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 18,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-08",
+        "ecart_motif": "Publication configurée par #777 : organe PO730940 relu dans l'index AMO30 des groupes politiques le 2026-09-08 — sigle `GDR` (libelleAbrev), 2017-06-27 → 2022-06-21. La fiche paraît au prochain run. 2 des 18 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution.",
+        "membres_avec_slug": 2,
+        "ecart_membres": []
+      },
+      {
+        "groupe_sigle": "LAREM",
+        "groupe_id": "AN:LAREM:15",
+        "legislature": "15",
+        "fichier": "groupe-AN-LAREM-15.json",
+        "sigles_an": [
+          "LAREM"
+        ],
+        "organes_an": [
+          "PO730964"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO730964",
+            "sigle_an": "LAREM",
+            "nom": "La République en Marche",
+            "debut": "2017-06-27",
+            "fin": "2022-06-21"
+          }
+        ],
+        "position_politique_an": {
+          "position": "majorite",
+          "verifie_le": "2026-09-09",
+          "organes": [
+            {
+              "organe_an": "PO730964",
+              "sigle_an": "LAREM",
+              "valeur_source": "Majoritaire",
+              "position": "majorite"
+            }
+          ]
+        },
+        "effectif_amo30": 343,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-09",
+        "ecart_motif": "Publication configurée par #779, après #691. L'organe PO730964 est relu dans l'index AMO30 des groupes politiques le 2026-09-09 : sigle `LAREM` (libelleAbrev, `LaREM` en libelleAbrege), « La République en Marche », 2017-06-27 → 2022-06-21, positionPolitique « Majoritaire ». 367 mandats pour 343 acteurs distincts, et 343 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur cet organe, contrairement aux NI de la 16e et de la 17e. 131 des 343 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 212 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715), comme les 5 groupes XVe de #777 — dont FI publie ses 17 membres sur 17. `effectif_publie` reste null jusqu'à la parution.\n\nCE QUI A LEVÉ LA CONDITION. #779 écartait ce groupe sur son coût de stockage : 227 profils à collecter, ~3,4 Go, pour un seul candidat bénéficiaire — Gabriel Attal, dont les 268 votes de la XVe sont la seule autre période comparable à sa XVIIe. #691 a supprimé la recopie des amendements des législatures closes : ils se dérivent désormais de raw_data/amendements_an_figes/, et un membre de la XVe ne coûte plus que son socle.",
+        "membres_avec_slug": 131,
+        "ecart_membres": []
+      },
+      {
+        "groupe_sigle": "LR",
+        "groupe_id": "AN:LR:15",
+        "legislature": "15",
+        "fichier": "groupe-AN-LR-15.json",
+        "sigles_an": [
+          "LR"
+        ],
+        "organes_an": [
+          "PO730934"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO730934",
+            "sigle_an": "LR",
+            "nom": "Les Républicains",
+            "debut": "2017-06-27",
+            "fin": "2022-06-21"
+          }
+        ],
+        "position_politique_an": {
+          "position": "opposition",
+          "verifie_le": "2026-09-10",
+          "organes": [
+            {
+              "organe_an": "PO730934",
+              "sigle_an": "LR",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 120,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-10",
+        "membres_avec_slug": 53,
+        "ecart_membres": [],
+        "ecart_motif": "Publication configurée par #815, pour fermer une lignée entre la XVe et la XVIIe. L'organe PO730934 est relu dans l'index AMO30 des groupes politiques le 2026-09-10 : sigle `LR` (libelleAbrev), « Les Républicains », 2017-06-27 → 2022-06-21. 126 mandats pour 120 acteurs distincts, et 120 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur cet organe. 53 des 120 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 67 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "GDR",
+        "groupe_id": "AN:GDR:17",
+        "legislature": "17",
+        "fichier": "groupe-AN-GDR-17.json",
+        "sigles_an": [
+          "GDR"
+        ],
+        "organes_an": [
+          "PO845514"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO845514",
+            "sigle_an": "GDR",
+            "nom": "Gauche Démocrate et Républicaine",
+            "debut": "2024-07-18",
+            "fin": null
+          }
+        ],
+        "position_politique_an": {
+          "position": "non_declaree",
+          "verifie_le": "2026-09-10",
+          "organes": [
+            {
+              "organe_an": "PO845514",
+              "sigle_an": "GDR",
+              "valeur_source": null,
+              "position": null
+            }
+          ]
+        },
+        "effectif_amo30": 18,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-10",
+        "membres_avec_slug": 15,
+        "ecart_membres": [],
+        "succede_a": [
+          "AN:GDR:16"
+        ],
+        "ecart_motif": "Publication configurée par #815, pour fermer une lignée entre la XVe et la XVIIe. L'organe PO845514 est relu dans l'index AMO30 des groupes politiques le 2026-09-10 : sigle `GDR` (libelleAbrev), « Gauche Démocrate et Républicaine », 2024-07-18 → en cours. 20 mandats pour 18 acteurs distincts, et 18 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur cet organe. 15 des 18 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 3 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "ECOS",
+        "groupe_id": "AN:ECOS:17",
+        "legislature": "17",
+        "fichier": "groupe-AN-ECOS-17.json",
+        "sigles_an": [
+          "ECOS"
+        ],
+        "organes_an": [
+          "PO845439"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO845439",
+            "sigle_an": "ECOS",
+            "nom": "Écologiste et Social",
+            "debut": "2024-07-18",
+            "fin": null
+          }
+        ],
+        "position_politique_an": {
+          "position": "non_declaree",
+          "verifie_le": "2026-09-10",
+          "organes": [
+            {
+              "organe_an": "PO845439",
+              "sigle_an": "ECOS",
+              "valeur_source": null,
+              "position": null
+            }
+          ]
+        },
+        "effectif_amo30": 38,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-10",
+        "membres_avec_slug": 24,
+        "ecart_membres": [],
+        "succede_a": [
+          "AN:ECOLO:16"
+        ],
+        "ecart_motif": "Publication configurée par #815, pour fermer une lignée entre la XVe et la XVIIe. L'organe PO845439 est relu dans l'index AMO30 des groupes politiques le 2026-09-10 : sigle `ECOS` (libelleAbrev ; `EcoS` en libelleAbrege), « Écologiste et Social », 2024-07-18 → en cours. 39 mandats pour 38 acteurs distincts, et 38 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur cet organe. 24 des 38 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 14 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "DEM",
+        "groupe_id": "AN:DEM:15",
+        "legislature": "15",
+        "fichier": "groupe-AN-DEM-15.json",
+        "sigles_an": [
+          "MODEM",
+          "DEM"
+        ],
+        "organes_an": [
+          "PO730970",
+          "PO774834"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO730970",
+            "sigle_an": "MODEM",
+            "nom": "Mouvement Démocrate et apparentés",
+            "debut": "2017-06-27",
+            "fin": "2020-09-23"
+          },
+          {
+            "organe_an": "PO774834",
+            "sigle_an": "DEM",
+            "nom": "Mouvement Démocrate (MoDem) et Démocrates apparentés",
+            "debut": "2020-09-24",
+            "fin": "2022-06-21"
+          }
+        ],
+        "position_politique_an": {
+          "position": "minoritaire",
+          "verifie_le": "2026-09-11",
+          "organes": [
+            {
+              "organe_an": "PO730970",
+              "sigle_an": "MODEM",
+              "valeur_source": "Minoritaire",
+              "position": "minoritaire"
+            },
+            {
+              "organe_an": "PO774834",
+              "sigle_an": "DEM",
+              "valeur_source": "Minoritaire",
+              "position": "minoritaire"
+            }
+          ]
+        },
+        "effectif_amo30": 67,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-11",
+        "membres_avec_slug": 11,
+        "ecart_membres": [],
+        "ecart_motif": "Publication configurée par #815, pour déclarer la lignée MoDem. Deux organes successifs dans la même législature, relus dans l'index AMO30 des groupes politiques le 2026-09-11 : PO730970 (`MODEM`, « Mouvement Démocrate et apparentés », 2017-06-27 → 2020-09-23) puis PO774834 (`DEM`, « Mouvement Démocrate (MoDem) et Démocrates apparentés », 2020-09-24 → 2022-06-21). Même motif que `SOC`/`SOC-A` sur la XVIe : l'AN ferme un organe et rouvre le suivant le lendemain, et c'est l'UNION des deux qui rend le groupe — sans elle, trois ans sur cinq seraient perdus. 131 mandats pour 67 acteurs distincts, et 67 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur ces organes. 11 des 67 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 56 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "DEM",
+        "groupe_id": "AN:DEM:16",
+        "legislature": "16",
+        "fichier": "groupe-AN-DEM-16.json",
+        "sigles_an": [
+          "DEM"
+        ],
+        "organes_an": [
+          "PO800484"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO800484",
+            "sigle_an": "DEM",
+            "nom": "Démocrate (MoDem et Indépendants)",
+            "debut": "2022-06-28",
+            "fin": "2024-06-09"
+          }
+        ],
+        "position_politique_an": {
+          "position": "minoritaire",
+          "verifie_le": "2026-09-11",
+          "organes": [
+            {
+              "organe_an": "PO800484",
+              "sigle_an": "DEM",
+              "valeur_source": "Minoritaire",
+              "position": "minoritaire"
+            }
+          ]
+        },
+        "effectif_amo30": 58,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-11",
+        "membres_avec_slug": 5,
+        "ecart_membres": [],
+        "succede_a": [
+          "AN:DEM:15"
+        ],
+        "ecart_motif": "Publication configurée par #815, pour déclarer la lignée MoDem. L'organe PO800484 est relu dans l'index AMO30 des groupes politiques le 2026-09-11 : sigle `DEM` (libelleAbrev ; `Dem` en libelleAbrege), « Démocrate (MoDem et Indépendants) », 2022-06-28 → 2024-06-09. 62 mandats pour 58 acteurs distincts, et 58 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur cet organe. 5 des 58 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 53 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "DEM",
+        "groupe_id": "AN:DEM:17",
+        "legislature": "17",
+        "fichier": "groupe-AN-DEM-17.json",
+        "sigles_an": [
+          "DEM"
+        ],
+        "organes_an": [
+          "PO845454"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO845454",
+            "sigle_an": "DEM",
+            "nom": "Les Démocrates",
+            "debut": "2024-07-18",
+            "fin": null
+          }
+        ],
+        "position_politique_an": {
+          "position": "non_declaree",
+          "verifie_le": "2026-09-11",
+          "organes": [
+            {
+              "organe_an": "PO845454",
+              "sigle_an": "DEM",
+              "valeur_source": null,
+              "position": null
+            }
+          ]
+        },
+        "effectif_amo30": 42,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-11",
+        "membres_avec_slug": 6,
+        "ecart_membres": [],
+        "succede_a": [
+          "AN:DEM:16"
+        ],
+        "ecart_motif": "Publication configurée par #815, pour déclarer la lignée MoDem. L'organe PO845454 est relu dans l'index AMO30 des groupes politiques le 2026-09-11 : sigle `DEM` (libelleAbrev ; `Dem` en libelleAbrege), « Les Démocrates », 2024-07-18 → en cours. 46 mandats pour 42 acteurs distincts, et 42 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur cet organe. 6 des 42 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 36 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "HOR",
+        "groupe_id": "AN:HOR:16",
+        "legislature": "16",
+        "fichier": "groupe-AN-HOR-16.json",
+        "sigles_an": [
+          "HOR"
+        ],
+        "organes_an": [
+          "PO800514"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO800514",
+            "sigle_an": "HOR",
+            "nom": "Horizons et apparentés",
+            "debut": "2022-06-28",
+            "fin": "2024-06-09"
+          }
+        ],
+        "position_politique_an": {
+          "position": "minoritaire",
+          "verifie_le": "2026-09-11",
+          "organes": [
+            {
+              "organe_an": "PO800514",
+              "sigle_an": "HOR",
+              "valeur_source": "Minoritaire",
+              "position": "minoritaire"
+            }
+          ]
+        },
+        "effectif_amo30": 36,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-11",
+        "membres_avec_slug": 12,
+        "ecart_membres": [],
+        "ecart_motif": "Publication configurée par #815, pour déclarer la lignée Horizons. L'organe PO800514 est relu dans l'index AMO30 des groupes politiques le 2026-09-11 : sigle `HOR` (libelleAbrev ; `HOR` en libelleAbrege), « Horizons et apparentés », 2022-06-28 → 2024-06-09. 40 mandats pour 36 acteurs distincts, et 36 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur cet organe. 12 des 36 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 24 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "HOR",
+        "groupe_id": "AN:HOR:17",
+        "legislature": "17",
+        "fichier": "groupe-AN-HOR-17.json",
+        "sigles_an": [
+          "HOR"
+        ],
+        "organes_an": [
+          "PO845470"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO845470",
+            "sigle_an": "HOR",
+            "nom": "Horizons & Indépendants",
+            "debut": "2024-07-18",
+            "fin": null
+          }
+        ],
+        "position_politique_an": {
+          "position": "non_declaree",
+          "verifie_le": "2026-09-11",
+          "organes": [
+            {
+              "organe_an": "PO845470",
+              "sigle_an": "HOR",
+              "valeur_source": null,
+              "position": null
+            }
+          ]
+        },
+        "effectif_amo30": 44,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-11",
+        "membres_avec_slug": 14,
+        "ecart_membres": [],
+        "succede_a": [
+          "AN:HOR:16"
+        ],
+        "ecart_motif": "Publication configurée par #815, pour déclarer la lignée Horizons. L'organe PO845470 est relu dans l'index AMO30 des groupes politiques le 2026-09-11 : sigle `HOR` (libelleAbrev ; `HOR` en libelleAbrege), « Horizons & Indépendants », 2024-07-18 → en cours. 52 mandats pour 44 acteurs distincts, et 44 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur cet organe. 14 des 44 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 30 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "LIOT",
+        "groupe_id": "AN:LIOT:16",
+        "legislature": "16",
+        "fichier": "groupe-AN-LIOT-16.json",
+        "sigles_an": [
+          "LIOT"
+        ],
+        "organes_an": [
+          "PO800532"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO800532",
+            "sigle_an": "LIOT",
+            "nom": "Libertés, Indépendants, Outre-mer et Territoires",
+            "debut": "2022-06-28",
+            "fin": "2024-06-09"
+          }
+        ],
+        "position_politique_an": {
+          "position": "opposition",
+          "verifie_le": "2026-09-11",
+          "organes": [
+            {
+              "organe_an": "PO800532",
+              "sigle_an": "LIOT",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 22,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-11",
+        "membres_avec_slug": 5,
+        "ecart_membres": [],
+        "ecart_motif": "Publication configurée par #815, pour déclarer la lignée LIOT. L'organe PO800532 est relu dans l'index AMO30 des groupes politiques le 2026-09-11 : sigle `LIOT` (libelleAbrev ; `LIOT` en libelleAbrege), « Libertés, Indépendants, Outre-mer et Territoires », 2022-06-28 → 2024-06-09. 23 mandats pour 22 acteurs distincts, et 22 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur cet organe. 5 des 22 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 17 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "LIOT",
+        "groupe_id": "AN:LIOT:17",
+        "legislature": "17",
+        "fichier": "groupe-AN-LIOT-17.json",
+        "sigles_an": [
+          "LIOT"
+        ],
+        "organes_an": [
+          "PO845485"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO845485",
+            "sigle_an": "LIOT",
+            "nom": "Libertés, Indépendants, Outre-mer et Territoires",
+            "debut": "2024-07-18",
+            "fin": null
+          }
+        ],
+        "position_politique_an": {
+          "position": "non_declaree",
+          "verifie_le": "2026-09-11",
+          "organes": [
+            {
+              "organe_an": "PO845485",
+              "sigle_an": "LIOT",
+              "valeur_source": null,
+              "position": null
+            }
+          ]
+        },
+        "effectif_amo30": 26,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-11",
+        "membres_avec_slug": 5,
+        "ecart_membres": [],
+        "succede_a": [
+          "AN:LIOT:16"
+        ],
+        "ecart_motif": "Publication configurée par #815, pour déclarer la lignée LIOT. L'organe PO845485 est relu dans l'index AMO30 des groupes politiques le 2026-09-11 : sigle `LIOT` (libelleAbrev ; `LIOT` en libelleAbrege), « Libertés, Indépendants, Outre-mer et Territoires », 2024-07-18 → en cours. 30 mandats pour 26 acteurs distincts, et 26 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur cet organe. 5 des 26 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 21 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "UDR",
+        "groupe_id": "AN:UDR:17",
+        "legislature": "17",
+        "fichier": "groupe-AN-UDR-17.json",
+        "sigles_an": [
+          "AD",
+          "UDR",
+          "UDDPLR"
+        ],
+        "organes_an": [
+          "PO845520",
+          "PO847173",
+          "PO872880"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO845520",
+            "sigle_an": "AD",
+            "nom": "À Droite",
+            "debut": "2024-07-18",
+            "fin": "2024-09-11"
+          },
+          {
+            "organe_an": "PO847173",
+            "sigle_an": "UDR",
+            "nom": "UDR",
+            "debut": "2024-09-12",
+            "fin": "2025-09-04"
+          },
+          {
+            "organe_an": "PO872880",
+            "sigle_an": "UDDPLR",
+            "nom": "Union des droites pour la République",
+            "debut": "2025-09-05",
+            "fin": null
+          }
+        ],
+        "position_politique_an": {
+          "position": "non_declaree",
+          "verifie_le": "2026-09-11",
+          "organes": [
+            {
+              "organe_an": "PO845520",
+              "sigle_an": "AD",
+              "valeur_source": null,
+              "position": null
+            },
+            {
+              "organe_an": "PO847173",
+              "sigle_an": "UDR",
+              "valeur_source": null,
+              "position": null
+            },
+            {
+              "organe_an": "PO872880",
+              "sigle_an": "UDDPLR",
+              "valeur_source": null,
+              "position": null
+            }
+          ]
+        },
+        "effectif_amo30": 18,
+        "effectif_publie": null,
+        "verifie_le": "2026-09-11",
+        "membres_avec_slug": 2,
+        "ecart_membres": [],
+        "ecart_motif": "Publication configurée par #815 : UDR est une LIGNÉE À ELLE SEULE, sans prédécesseur (arbitrage de la propriétaire, 2026-09-11). Trois organes successifs de la XVIIe, relus dans l'index AMO30 des groupes politiques le 2026-09-11 : PO845520 (`AD`, « À Droite », 2024-07-18 → 2024-09-11), PO847173 (`UDR`, « UDR », 2024-09-12 → 2025-09-04), PO872880 (`UDDPLR`, `UDR` en libelleAbrege, « Union des droites pour la République », 2025-09-05 → en cours). Deux RENOMMAGES et non une scission : AD et UDR portent les mêmes 16 acteurs, UDR et UDDPLR 15 sur 16, et c'est l'UNION des trois qui rend le groupe — le motif `SOC`/`SOC-A` de la XVIe. AUCUN `succede_a`, et c'est mesuré : 0 des 16 acteurs d'AD n'a siégé dans DR (AD n'a donc jamais « quitté DR », comme #815 et #836 l'écrivaient), et 2 des 16 seulement viennent de LR-16, qui en a envoyé 41 vers DR. Déclarer LR-16 comme prédécesseur affirmerait une succession pour 2 membres sur 16. 52 mandats pour 18 acteurs distincts, et 18 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur ces organes. 2 des 18 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 16 autres reçoivent un slug fabriqué au roster (#527, #708 §3), sont collectés sous l'acteur que le roster nomme (#850), puis reçoivent leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+      }
+    ]
+  },
+  "groupes": [
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:REN:16",
+      "lignee_id": "AN:LIGNEE:REN",
+      "groupe_sigle": "REN",
+      "groupe_nom": "Renaissance",
+      "chambre": "AN",
+      "legislature": "16",
+      "fichier": "groupe-AN-REN-16.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:SOC:16",
+      "lignee_id": "AN:LIGNEE:SOC",
+      "groupe_sigle": "SOC",
+      "groupe_nom": "Socialistes et apparentés",
+      "chambre": "AN",
+      "legislature": "16",
+      "fichier": "groupe-AN-SOC-16.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:RN:16",
+      "lignee_id": "AN:LIGNEE:RN",
+      "groupe_sigle": "RN",
+      "groupe_nom": "Rassemblement National",
+      "chambre": "AN",
+      "legislature": "16",
+      "fichier": "groupe-AN-RN-16.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:LFI:16",
+      "lignee_id": "AN:LIGNEE:LFI",
+      "groupe_sigle": "LFI",
+      "groupe_nom": "La France insoumise - NUPES",
+      "chambre": "AN",
+      "legislature": "16",
+      "fichier": "groupe-AN-LFI-16.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:LR:16",
+      "lignee_id": "AN:LIGNEE:LR",
+      "groupe_sigle": "LR",
+      "groupe_nom": "Les Républicains",
+      "chambre": "AN",
+      "legislature": "16",
+      "fichier": "groupe-AN-LR-16.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:EPR:17",
+      "lignee_id": "AN:LIGNEE:REN",
+      "groupe_sigle": "EPR",
+      "groupe_nom": "Ensemble pour la République",
+      "chambre": "AN",
+      "legislature": "17",
+      "fichier": "groupe-AN-EPR-17.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:SOC:17",
+      "lignee_id": "AN:LIGNEE:SOC",
+      "groupe_sigle": "SOC",
+      "groupe_nom": "Socialistes et apparentés",
+      "chambre": "AN",
+      "legislature": "17",
+      "fichier": "groupe-AN-SOC-17.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:RN:17",
+      "lignee_id": "AN:LIGNEE:RN",
+      "groupe_sigle": "RN",
+      "groupe_nom": "Rassemblement National",
+      "chambre": "AN",
+      "legislature": "17",
+      "fichier": "groupe-AN-RN-17.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:LFI:17",
+      "lignee_id": "AN:LIGNEE:LFI",
+      "groupe_sigle": "LFI",
+      "groupe_nom": "La France insoumise - Nouveau Front Populaire",
+      "chambre": "AN",
+      "legislature": "17",
+      "fichier": "groupe-AN-LFI-17.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:DR:17",
+      "lignee_id": "AN:LIGNEE:LR",
+      "groupe_sigle": "DR",
+      "groupe_nom": "Droite Républicaine",
+      "chambre": "AN",
+      "legislature": "17",
+      "fichier": "groupe-AN-DR-17.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:ECOLO:16",
+      "lignee_id": "AN:LIGNEE:ECOLO",
+      "groupe_sigle": "ECOLO",
+      "groupe_nom": "Écologiste - NUPES",
+      "chambre": "AN",
+      "legislature": "16",
+      "fichier": "groupe-AN-ECOLO-16.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:GDR:16",
+      "lignee_id": "AN:LIGNEE:GDR",
+      "groupe_sigle": "GDR",
+      "groupe_nom": "Gauche démocrate et républicaine - NUPES",
+      "chambre": "AN",
+      "legislature": "16",
+      "fichier": "groupe-AN-GDR-16.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:FI:15",
+      "lignee_id": "AN:LIGNEE:LFI",
+      "groupe_sigle": "FI",
+      "groupe_nom": "La France insoumise",
+      "chambre": "AN",
+      "legislature": "15",
+      "fichier": "groupe-AN-FI-15.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:NG:15",
+      "lignee_id": "AN:LIGNEE:SOC",
+      "groupe_sigle": "NG",
+      "groupe_nom": "Nouvelle Gauche",
+      "chambre": "AN",
+      "legislature": "15",
+      "fichier": "groupe-AN-NG-15.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:SOC:15",
+      "lignee_id": "AN:LIGNEE:SOC",
+      "groupe_sigle": "SOC",
+      "groupe_nom": "Socialistes et apparentés",
+      "chambre": "AN",
+      "legislature": "15",
+      "fichier": "groupe-AN-SOC-15.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:EDS:15",
+      "lignee_id": "AN:LIGNEE:EDS",
+      "groupe_sigle": "EDS",
+      "groupe_nom": "Écologie Démocratie Solidarité",
+      "chambre": "AN",
+      "legislature": "15",
+      "fichier": "groupe-AN-EDS-15.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:GDR:15",
+      "lignee_id": "AN:LIGNEE:GDR",
+      "groupe_sigle": "GDR",
+      "groupe_nom": "Gauche démocrate et républicaine",
+      "chambre": "AN",
+      "legislature": "15",
+      "fichier": "groupe-AN-GDR-15.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:LAREM:15",
+      "lignee_id": "AN:LIGNEE:REN",
+      "groupe_sigle": "LAREM",
+      "groupe_nom": "La République en Marche",
+      "chambre": "AN",
+      "legislature": "15",
+      "fichier": "groupe-AN-LAREM-15.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:LR:15",
+      "lignee_id": "AN:LIGNEE:LR",
+      "groupe_sigle": "LR",
+      "groupe_nom": "Les Républicains",
+      "chambre": "AN",
+      "legislature": "15",
+      "fichier": "groupe-AN-LR-15.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:GDR:17",
+      "lignee_id": "AN:LIGNEE:GDR",
+      "groupe_sigle": "GDR",
+      "groupe_nom": "Gauche Démocrate et Républicaine",
+      "chambre": "AN",
+      "legislature": "17",
+      "fichier": "groupe-AN-GDR-17.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:ECOS:17",
+      "lignee_id": "AN:LIGNEE:ECOLO",
+      "groupe_sigle": "ECOS",
+      "groupe_nom": "Écologiste et Social",
+      "chambre": "AN",
+      "legislature": "17",
+      "fichier": "groupe-AN-ECOS-17.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:DEM:15",
+      "lignee_id": "AN:LIGNEE:DEM",
+      "groupe_sigle": "DEM",
+      "groupe_nom": "Mouvement Démocrate (MoDem) et Démocrates apparentés",
+      "chambre": "AN",
+      "legislature": "15",
+      "fichier": "groupe-AN-DEM-15.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:DEM:16",
+      "lignee_id": "AN:LIGNEE:DEM",
+      "groupe_sigle": "DEM",
+      "groupe_nom": "Démocrate (MoDem et Indépendants)",
+      "chambre": "AN",
+      "legislature": "16",
+      "fichier": "groupe-AN-DEM-16.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:DEM:17",
+      "lignee_id": "AN:LIGNEE:DEM",
+      "groupe_sigle": "DEM",
+      "groupe_nom": "Les Démocrates",
+      "chambre": "AN",
+      "legislature": "17",
+      "fichier": "groupe-AN-DEM-17.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:HOR:16",
+      "lignee_id": "AN:LIGNEE:HOR",
+      "groupe_sigle": "HOR",
+      "groupe_nom": "Horizons et apparentés",
+      "chambre": "AN",
+      "legislature": "16",
+      "fichier": "groupe-AN-HOR-16.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:HOR:17",
+      "lignee_id": "AN:LIGNEE:HOR",
+      "groupe_sigle": "HOR",
+      "groupe_nom": "Horizons & Indépendants",
+      "chambre": "AN",
+      "legislature": "17",
+      "fichier": "groupe-AN-HOR-17.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:LIOT:16",
+      "lignee_id": "AN:LIGNEE:LIOT",
+      "groupe_sigle": "LIOT",
+      "groupe_nom": "Libertés, Indépendants, Outre-mer et Territoires",
+      "chambre": "AN",
+      "legislature": "16",
+      "fichier": "groupe-AN-LIOT-16.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:LIOT:17",
+      "lignee_id": "AN:LIGNEE:LIOT",
+      "groupe_sigle": "LIOT",
+      "groupe_nom": "Libertés, Indépendants, Outre-mer et Territoires",
+      "chambre": "AN",
+      "legislature": "17",
+      "fichier": "groupe-AN-LIOT-17.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:UDR:17",
+      "lignee_id": "AN:LIGNEE:UDR",
+      "groupe_sigle": "UDR",
+      "groupe_nom": "Union des droites pour la République",
+      "chambre": "AN",
+      "legislature": "17",
+      "fichier": "groupe-AN-UDR-17.json"
+    }
+  ],
+  "lignees": [
+    {
+      "lignee_id": "AN:LIGNEE:REN",
+      "lignee_nom": "Ensemble pour la République",
+      "chambre": "AN",
+      "fichier": "lignee-AN-REN.json",
+      "verifie_le": "2026-09-11"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:SOC",
+      "lignee_nom": "Socialistes",
+      "chambre": "AN",
+      "fichier": "lignee-AN-SOC.json",
+      "verifie_le": "2026-09-11"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:RN",
+      "lignee_nom": "Rassemblement National",
+      "chambre": "AN",
+      "fichier": "lignee-AN-RN.json",
+      "verifie_le": "2026-09-11"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:LFI",
+      "lignee_nom": "La France insoumise",
+      "chambre": "AN",
+      "fichier": "lignee-AN-LFI.json",
+      "verifie_le": "2026-09-11"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:LR",
+      "lignee_nom": "Droite Républicaine",
+      "chambre": "AN",
+      "fichier": "lignee-AN-LR.json",
+      "verifie_le": "2026-09-11"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:ECOLO",
+      "lignee_nom": "Écologiste et Social",
+      "chambre": "AN",
+      "fichier": "lignee-AN-ECOLO.json",
+      "verifie_le": "2026-09-11"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:GDR",
+      "lignee_nom": "Gauche Démocrate et Républicaine",
+      "chambre": "AN",
+      "fichier": "lignee-AN-GDR.json",
+      "verifie_le": "2026-09-11"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:EDS",
+      "lignee_nom": "Écologie Démocratie Solidarité",
+      "chambre": "AN",
+      "fichier": "lignee-AN-EDS.json",
+      "verifie_le": "2026-09-11"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:DEM",
+      "lignee_nom": "Les Démocrates",
+      "chambre": "AN",
+      "fichier": "lignee-AN-DEM.json",
+      "verifie_le": "2026-09-11"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:HOR",
+      "lignee_nom": "Horizons & Indépendants",
+      "chambre": "AN",
+      "fichier": "lignee-AN-HOR.json",
+      "verifie_le": "2026-09-11"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:LIOT",
+      "lignee_nom": "Libertés, Indépendants, Outre-mer et Territoires",
+      "chambre": "AN",
+      "fichier": "lignee-AN-LIOT.json",
+      "verifie_le": "2026-09-11"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:UDR",
+      "lignee_nom": "Union des droites pour la République",
+      "chambre": "AN",
+      "fichier": "lignee-AN-UDR.json",
+      "verifie_le": "2026-09-11"
+    }
+  ]
+}

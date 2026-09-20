@@ -1,0 +1,1178 @@
+/*
+ * Fiche de lignée de groupe (#329). Charte : web/UI_finale/DESIGN_SYSTEM.md.
+ *
+ * La grammaire est celle de la fiche candidat — en-tête de section, titre
+ * surligné, carte, rangs de matière, renvoi de méthodologie en pied — recopiée
+ * sous le préfixe `lp-` plutôt qu'importée : `CandidateProfile.css` porte
+ * 1 800 lignes que cette page n'emploie pas, et Vite les chargerait toutes. Les
+ * valeurs, elles, sont les mêmes ; un écart ici est un écart à justifier.
+ */
+.lp-main {
+  /* La teinte de l'Assemblée, celle de la fiche candidat (#328). */
+  --parl: #803060;
+  --parl-wash: #f2eaef;
+  --parl-line: #dfcbd7;
+  /* Groupe minoritaire, retenu en maquette le 11/09/2026 : un mauve clair uni,
+     dans la famille de l'Assemblée — jamais une teinte de plus. */
+  --parl-mauve: #c9a3b9;
+  /* La cascade des textes portés (`CascadeTextes.jsx`) lit les teintes de la
+     fiche candidat : ses colonnes « parlement » et « gouvernement », et la
+     barre de sortie d'une porte. Mêmes valeurs que `CandidateProfile.css`. */
+  --gouv: #85510d;
+  --gouv-wash: #f3eee7;
+  --ter-sortie: #a9a4b0;
+  --texte-2: #6e6a78;
+  --lavis: #fbfaf8;
+
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  max-width: 1100px;
+  padding: 32px 40px 64px;
+}
+
+@media (max-width: 720px) {
+  .lp-main {
+    padding: 24px 18px 48px;
+  }
+}
+
+.lp-num {
+  font-variant-numeric: tabular-nums;
+}
+
+.lp-fil {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.lp-fil strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ── En-tête ─────────────────────────────────────────────────────────────── */
+.lp-entete {
+  padding-bottom: 8px;
+}
+
+.lp-sourcil {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+}
+
+.lp-entete h1 {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 8px 0 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+
+.lp-qui {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--texte-2);
+}
+
+/* ── Sections ────────────────────────────────────────────────────────────── */
+.lp-section {
+  margin-top: 44px;
+}
+
+.lp-section--bref {
+  margin-top: 26px;
+}
+
+.lp-section-bande {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.lp-section-numero {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.lp-section-trait {
+  flex: 1;
+  height: 1px;
+  background: var(--border-strong);
+}
+
+.lp-section-titre {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.018em;
+  margin: 0 0 4px;
+}
+
+.lp-section-titre > span {
+  background: linear-gradient(transparent 62%, var(--accent) 62%);
+  padding: 0 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.lp-section-critere {
+  font-size: 13px;
+  color: var(--texte-2);
+  max-width: 78ch;
+  margin: 8px 0 0;
+  line-height: 1.55;
+}
+
+.lp-section-corps {
+  margin-top: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.lp-section-pied {
+  margin: 14px 0 0;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--texte-2);
+}
+
+.lp-section-pied a {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.lp-methodo {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+}
+
+.lp-methodo a {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
+}
+
+.lp-methodo a:hover {
+  text-decoration-color: currentcolor;
+}
+
+.lp-carte {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 1px 10px rgba(20, 15, 40, 0.05);
+  padding: 22px 26px;
+  min-width: 0;
+}
+
+@media (max-width: 720px) {
+  .lp-carte {
+    padding: 18px 16px;
+  }
+}
+
+/* L'intitulé qui porte le lien vers sa source. */
+.lp-lien {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.lp-lien:hover,
+.lp-lien:focus-visible {
+  text-decoration-color: var(--ink);
+  text-decoration-thickness: 2px;
+}
+
+.lp-sans-lien {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.lp-plus {
+  border: 0;
+  background: none;
+  padding: 6px 0 0;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--texte-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* § 6 — la grammaire de « Ce que la collecte signale » de la fiche candidat :
+   l'intitulé de la liste à gauche, ses signalements à droite, un par maillon. */
+.lp-signal {
+  display: grid;
+  gap: 12px;
+  margin: 14px 0 0;
+  font-size: 13px;
+}
+
+.lp-signal-rang {
+  display: grid;
+  grid-template-columns: minmax(120px, 180px) minmax(0, 1fr);
+  gap: 4px 20px;
+}
+
+.lp-signal dt {
+  grid-row: span var(--lignes, 1);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.lp-signal dd {
+  grid-column: 2;
+  margin: 0;
+  color: var(--texte-2);
+  line-height: 1.55;
+}
+
+.lp-signal dd b {
+  display: inline-block;
+  min-width: 7.5em;
+  margin-right: 10px;
+  color: var(--ink);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 720px) {
+  .lp-signal-rang {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-signal dt,
+  .lp-signal dd {
+    grid-column: 1;
+  }
+
+  .lp-signal dt {
+    grid-row: auto;
+  }
+
+  .lp-signal dd b {
+    display: block;
+    min-width: 0;
+  }
+}
+
+.lp-rien {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--texte-2);
+}
+
+.lp-main button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* ── La posture : une pilule dont la bordure reprend le motif ─────────────── */
+.lp-posture {
+  display: inline-flex;
+  margin-left: 8px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  vertical-align: middle;
+}
+
+.lp-posture--diagonales {
+  border-style: dashed;
+}
+
+.lp-posture--mauve {
+  border-color: var(--parl-mauve);
+  background: var(--parl-wash);
+}
+
+.lp-posture--points {
+  border-style: dotted;
+  border-width: 2px;
+  color: var(--texte-2);
+  border-color: var(--parl-line);
+}
+
+.lp-posture--absente {
+  border-style: dashed;
+  border-color: var(--border-strong);
+  color: var(--texte-2);
+}
+
+/* ── En bref : la frise ──────────────────────────────────────────────────── */
+/* Le graphique, et lui seul : les pavés de légende sont aussi des `svg`. */
+.lp-frise > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.lp-frise text {
+  font-family: inherit;
+}
+
+.lp-axe {
+  font-size: 10px;
+  font-weight: 700;
+  fill: var(--muted);
+}
+
+.lp-repere {
+  font-size: 10.5px;
+  font-weight: 800;
+  fill: var(--ink);
+}
+
+.lp-effectif {
+  font-size: 15px;
+  font-weight: 800;
+  fill: var(--ink);
+}
+
+.lp-bande-nom {
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.lp-bande-vide {
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--texte-2);
+}
+
+.lp-frise-lecture {
+  min-height: 18px;
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  color: var(--texte-2);
+}
+
+.lp-frise-lecture b {
+  color: var(--ink);
+}
+
+.lp-legende {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-top: 10px;
+  align-items: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--texte-2);
+}
+
+.lp-legende-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lp-pave {
+  width: 34px;
+  height: 17px;
+  border-radius: 3px;
+  flex: 0 0 auto;
+}
+
+.lp-maillons {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 12px 0 0;
+  border-top: 1px solid var(--border);
+}
+
+.lp-maillon {
+  display: grid;
+  grid-template-columns: 19px 170px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: baseline;
+  padding: 7px 0;
+  font-size: 13px;
+}
+
+.lp-maillon-repere {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #f7f6f4;
+  font-size: 10.5px;
+  font-weight: 800;
+}
+
+.lp-maillon-dates {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.lp-maillon-nom b {
+  font-weight: 700;
+}
+
+.lp-maillon-effectif {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.lp-maillon-effectif b {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.lp-maillon-effectif small {
+  color: var(--texte-2);
+  font-size: 12px;
+}
+
+@media (max-width: 720px) {
+  .lp-maillon {
+    grid-template-columns: 19px minmax(0, 1fr);
+  }
+
+  .lp-maillon-dates,
+  .lp-maillon-nom,
+  .lp-maillon-effectif {
+    grid-column: 2;
+    text-align: left;
+  }
+}
+
+/* ── § 1 — un point par personne ─────────────────────────────────────────── */
+.lp-cles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin-bottom: 16px;
+  font-size: 12.5px;
+  color: var(--texte-2);
+  font-weight: 600;
+}
+
+.lp-cles span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.lp-blocs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 26px 30px;
+  align-items: flex-start;
+}
+
+.lp-bloc-tete {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--texte-2);
+}
+
+.lp-bloc-tete b {
+  display: block;
+  font-size: 20px;
+  letter-spacing: 0;
+  color: var(--ink);
+  text-transform: none;
+}
+
+.lp-bloc-tete small {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--texte-2);
+}
+
+.lp-grille {
+  display: grid;
+  gap: 3px;
+}
+
+.lp-point {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--parl);
+  background: var(--card);
+  padding: 0;
+}
+
+button.lp-point {
+  cursor: pointer;
+}
+
+.lp-point--prec {
+  background: var(--parl);
+}
+
+.lp-point--retour {
+  background: var(--parl-line);
+}
+
+.lp-point--eclaire {
+  box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--ink);
+}
+
+.lp-bloc-comptes {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--texte-2);
+  display: grid;
+  gap: 1px;
+}
+
+.lp-bloc-comptes b {
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.lp-chemin {
+  min-height: 18px;
+  margin: 12px 0 0;
+  font-size: 12.5px;
+  color: var(--texte-2);
+}
+
+.lp-chemin b {
+  color: var(--ink);
+}
+
+.lp-tous {
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.lp-tous summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* Une colonne par groupe de la lignée ; elles passent à la ligne en étroit. */
+.lp-tous-colonnes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 18px 24px;
+  margin-top: 12px;
+  align-items: start;
+}
+
+.lp-tous-colonne ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+}
+
+.lp-tous-colonne li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 2px 4px;
+  margin: 0 -4px;
+  border-radius: 4px;
+}
+
+.lp-tous-colonne li .lp-point {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+}
+
+/* Le nom survolé : le lavis des lignes marquées, jamais une teinte. */
+.lp-tous-actif {
+  background: var(--lavis);
+  box-shadow: inset 2px 0 0 var(--ink);
+}
+
+.lp-tous-colonne a {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* ── Tête de période ─────────────────────────────────────────────────────── */
+.lp-periode-tete {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 16px;
+  align-items: baseline;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.lp-periode-tete h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.lp-periode-dates {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── § 2 — sujets ────────────────────────────────────────────────────────── */
+.lp-sujet {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 76px;
+  gap: 2px 14px;
+  padding: 6px 0;
+}
+
+.lp-sujet-lib {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.lp-sujet-barre {
+  grid-column: 1;
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.lp-sujet-barre i {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+  border-radius: 3px;
+}
+
+.lp-sujet-n {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  text-align: right;
+  align-self: center;
+  white-space: nowrap;
+}
+
+.lp-sujet-n b {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.lp-sujet-n small {
+  color: var(--texte-2);
+}
+
+/* ── § 3 — amendements par matière, le gabarit de la fiche candidat ──────── */
+.lp-onglets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+/* Une pilule de filtre multi-état : les deux types se sélectionnent ensemble.
+   Contour encre inversé quand elle est active (DESIGN_SYSTEM §5) — le jaune
+   plein reste à l'onglet exclusif, et les deux ne se confondent pas. */
+.lp-filtre {
+  border: 1px solid var(--border-strong);
+  background: var(--card);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.lp-filtre[aria-pressed='true'] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+.lp-mat-tete {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 16px;
+  align-items: baseline;
+  margin: 4px 0 10px;
+}
+
+.lp-mat-titre {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.lp-mat-totaux {
+  font-size: 12.5px;
+  color: var(--texte-2);
+}
+
+.lp-mat-totaux b {
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.lp-mat {
+  display: grid;
+  gap: 4px;
+}
+
+.lp-mr {
+  display: grid;
+  grid-template-columns: minmax(120px, 200px) minmax(0, 1.2fr) 74px 74px minmax(0, 0.55fr) 78px;
+  gap: 12px;
+  align-items: center;
+  font-size: 12.5px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 3px 0;
+  color: inherit;
+  font-family: inherit;
+}
+
+.lp-mr--cliquable {
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.lp-mr--cliquable:hover .lp-mr-lib,
+.lp-mr--cliquable[aria-expanded='true'] .lp-mr-lib {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.lp-mr--tete {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #b6b1bd;
+  padding-bottom: 2px;
+}
+
+.lp-mr-lib {
+  color: var(--texte-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lp-mr-rail {
+  height: 14px;
+  border-radius: 2px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.lp-mr--tete .lp-mr-rail,
+.lp-mr--nd span:nth-child(5) {
+  background: none;
+}
+
+.lp-mr-rail i {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+}
+
+.lp-mr-n {
+  text-align: right;
+  color: var(--texte-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.lp-mr-n--textes {
+  color: #9b96a2;
+}
+
+.lp-mr--nd .lp-mr-lib {
+  font-style: italic;
+}
+
+@media (max-width: 720px) {
+  .lp-mr {
+    grid-template-columns: 1fr 64px 64px 64px;
+    gap: 8px;
+  }
+
+  .lp-mr-rail {
+    display: none;
+  }
+}
+
+/* Ce qui se déroule au clic : les textes d'une commission, d'un segment. */
+.lp-deroule {
+  margin: 4px 0 12px;
+  padding: 10px 14px;
+  background: var(--lavis);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.lp-deroule--large {
+  grid-column: 1 / -1;
+}
+
+.lp-deroule-ligne {
+  display: grid;
+  grid-template-columns: 86px minmax(0, 1fr) auto;
+  gap: 4px 14px;
+  padding: 6px 0;
+  font-size: 12.5px;
+  align-items: baseline;
+}
+
+.lp-deroule-ligne + .lp-deroule-ligne {
+  border-top: 1px solid var(--border);
+}
+
+.lp-deroule-date {
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 11.5px;
+}
+
+.lp-deroule-titre {
+  font-weight: 600;
+}
+
+.lp-deroule-n {
+  text-align: right;
+  white-space: nowrap;
+  color: var(--texte-2);
+}
+
+.lp-deroule-n b {
+  color: var(--ink);
+}
+
+@media (max-width: 720px) {
+  .lp-deroule-ligne {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-deroule-n {
+    text-align: left;
+  }
+}
+
+.lp-statut {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 1px solid var(--ink);
+  margin-left: 6px;
+  white-space: nowrap;
+}
+
+.lp-statut--absent {
+  border-style: dashed;
+  border-color: var(--border-strong);
+  color: var(--muted);
+}
+
+/* Un fait de procédure, pas une issue de vote (DESIGN_SYSTEM §5, §2 règle 4). */
+.lp-statut--493 {
+  background: var(--ink);
+  color: #fff;
+}
+
+/* ── § 4 — votes ─────────────────────────────────────────────────────────── */
+.lp-sous {
+  font-size: 13px;
+  font-weight: 800;
+  margin: 18px 0 8px;
+}
+
+.lp-sous:first-of-type {
+  margin-top: 0;
+}
+
+.lp-sous-regle {
+  font-weight: 600;
+  color: var(--texte-2);
+}
+
+/* Les trois parts : même sens / nuance / sens opposé, et d'une seule voix /
+   abstention / pour et contre. Sans teinte de vote — le vert et le rouge disent
+   pour et contre, pas un accord entre groupes. */
+.lp-part {
+  display: inline-block;
+  border: 0;
+  padding: 0;
+  border-radius: 3px;
+  min-width: 2px;
+}
+
+.lp-part--une {
+  background: var(--ink);
+}
+
+.lp-part--nuance {
+  background: repeating-linear-gradient(90deg, #b8b4ae 0 2px, #e7e4df 2px 4px);
+}
+
+.lp-part--oppose {
+  background: var(--card);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+
+button.lp-part {
+  cursor: pointer;
+}
+
+button.lp-part:hover,
+button.lp-part[aria-pressed='true'] {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.lp-trois {
+  display: flex;
+  gap: 2px;
+  height: 16px;
+  margin: 6px 0 8px;
+}
+
+.lp-trois-cles,
+.lp-accord-cles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  font-size: 12.5px;
+  color: var(--texte-2);
+}
+
+.lp-trois-cles button,
+.lp-accord-cles button {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
+}
+
+.lp-trois-cles button[aria-pressed='true'],
+.lp-accord-cles button[aria-pressed='true'] {
+  font-weight: 800;
+  color: var(--ink);
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 3px;
+}
+
+.lp-trois-cles i {
+  width: 14px;
+  height: 10px;
+}
+
+.lp-trois-cles b {
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.lp-accord-cles b {
+  color: var(--ink);
+}
+
+.lp-scrutin {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 8px 22px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+}
+
+.lp-scrutin-texte {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.lp-scrutin-date {
+  margin: 3px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.lp-repartition {
+  display: flex;
+  gap: 2px;
+  height: 20px;
+}
+
+.lp-repartition i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 3px;
+  min-width: 18px;
+}
+
+.lp-repartition-leg {
+  margin: 4px 0 0;
+  font-size: 11.5px;
+  color: var(--texte-2);
+}
+
+@media (max-width: 720px) {
+  .lp-scrutin {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── § 5 — avec qui ils votent ───────────────────────────────────────────── */
+.lp-natures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: var(--texte-2);
+}
+
+.lp-natures span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lp-natures i {
+  width: 16px;
+  height: 9px;
+}
+
+.lp-accord {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr) 130px;
+  gap: 6px 16px;
+  align-items: center;
+  padding: 9px 0;
+}
+
+.lp-accord + .lp-accord {
+  border-top: 1px solid var(--border);
+}
+
+.lp-accord-sigle {
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.lp-accord-sigle small {
+  display: block;
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.lp-accord-barre {
+  display: flex;
+  gap: 2px;
+  height: 12px;
+  margin-bottom: 5px;
+}
+
+.lp-accord-n {
+  text-align: right;
+}
+
+.lp-accord-n b {
+  font-size: 17px;
+  font-weight: 800;
+  display: block;
+  line-height: 1.1;
+}
+
+.lp-accord-n small {
+  font-size: 11.5px;
+  color: var(--texte-2);
+}
+
+.lp-pos {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 0 6px;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--muted);
+}
+
+@media (max-width: 720px) {
+  .lp-accord {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lp-accord-n {
+    text-align: left;
+  }
+}
+
+/* ── Pied ────────────────────────────────────────────────────────────────── */
+.lp-pied {
+  margin-top: 48px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-strong);
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  justify-content: space-between;
+}
+
+.lp-textes {
+  margin-bottom: 14px;
+}

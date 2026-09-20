@@ -1,0 +1,84 @@
+{
+ "@xmlns": "http://schemas.assemblee-nationale.fr/referentiel",
+ "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+ "uid": "VTANR5L17V4241",
+ "numero": "4241",
+ "organeRef": "PO838901",
+ "legislature": "17",
+ "sessionRef": "SCR5A2026O1",
+ "seanceRef": "RUANR5L17S2026IDS29940",
+ "dateScrutin": "2025-11-21",
+ "quantiemeJourSeance": "3",
+ "typeVote": {
+  "codeTypeVote": "SPS",
+  "libelleTypeVote": "scrutin public solennel",
+  "typeMajorite": "Majorité absolue des suffrages exprimés"
+ },
+ "sort": {
+  "code": "rejeté",
+  "libelle": "L'Assemblée nationale n'a pas adopté"
+ },
+ "titre": "la première partie du projet de loi de finances pour 2026 (première lecture).",
+ "demandeur": {
+  "texte": "Conférence des Présidents",
+  "referenceLegislative": null
+ },
+ "objet": {
+  "libelle": "la première partie du projet de loi de finances pour 2026 (première lecture).",
+  "dossierLegislatif": null,
+  "referenceLegislative": null
+ },
+ "modePublicationDesVotes": "DecompteNominatif",
+ "syntheseVote": {
+  "nombreVotants": "489",
+  "suffragesExprimes": "405",
+  "nbrSuffragesRequis": "203",
+  "annonce": "L'Assemblée nationale n'a pas adopté",
+  "decompte": {
+   "nonVotants": "1",
+   "pour": "1",
+   "contre": "404",
+   "abstentions": "84",
+   "nonVotantsVolontaires": "0"
+  }
+ },
+ "ventilationVotes": {
+  "organe": {
+   "organeRef": "PO838901",
+   "groupes": {
+    "groupe": [
+     {
+      "organeRef": "PO845401",
+      "nombreMembresGroupe": "123",
+      "vote": {
+       "positionMajoritaire": "contre",
+       "decompteVoix": {
+        "nonVotants": "0",
+        "pour": "0",
+        "contre": "117",
+        "abstentions": "0",
+        "nonVotantsVolontaires": "0"
+       },
+       "decompteNominatif": {
+        "nonVotants": null,
+        "pours": null,
+        "contres": {
+         "votant": [
+          {
+           "acteurRef": "PA793432",
+           "mandatRef": "PM840276",
+           "parDelegation": "true",
+           "numPlace": "080"
+          }
+         ]
+        },
+        "abstentions": null
+       }
+      }
+     }
+    ]
+   }
+  }
+ },
+ "lieuVote": "Hémicycle"
+}

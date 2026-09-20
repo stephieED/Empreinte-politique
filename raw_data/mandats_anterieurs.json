@@ -1,0 +1,340 @@
+{
+ "_meta": {
+  "description": "Mandats nationaux exercés AVANT le début des données publiées par l'Assemblée nationale, pour les candidats déclarés (#860). Table COMMITTÉE et RELUE, comme la correspondance slug ↔ acteur (#525) : chaque ligne porte sa source primaire — Sycomore pour un mandat de député, un décret au Journal officiel pour une fonction gouvernementale. Wikidata (P39) a servi à DÉCOUVRIR, jamais à publier : il lui manquait les quatre fonctions ministérielles de Ségolène Royal, et deux dates de début y diffèrent de Sycomore.",
+  "borne_couverture_an": "2002-06-19",
+  "borne": "Premier jour de la XIIe législature, premier mandat que les données de l'Assemblée publient. Une ligne de cette table se termine au plus tard la veille ; ce qui commence après relève de la collecte, et un trou APRÈS la borne est un autre défaut (#859).",
+  "releve": "Un candidat présent dans `candidats` a été relu : sa liste, vide ou non, est complète pour les institutions de KNOWN_INSTITUTIONS_ANTERIEURES. Un candidat absent n'a PAS été relu, et sa fiche le dit (`mandats_anterieurs_non_resolu`) — absent n'est pas « aucun » (AGENTS §2 règle 5).",
+  "non_portes": "Les deux mandats de sénateur de Jean-Luc Mélenchon (Essonne, 28/09/1986 → 27/04/2000, source senat.fr) ne sont PAS portés : #528 a sorti le Sénat du périmètre, y compris l'usage biographique « a été sénateur de … à … ». Leur place est prête (une institution de plus dans le frozenset) le jour où la décision est reprise.",
+  "verifie_le": "2026-09-11"
+ },
+ "candidats": {
+  "anasse-kazib": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/recherche",
+    "constate_le": "2026-09-16",
+    "methode": "relecture_humaine"
+   }
+  },
+  "benoit-mathieu": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/recherche",
+    "constate_le": "2026-09-16",
+    "methode": "relecture_humaine"
+   }
+  },
+  "bernard-cazeneuve": [
+   {
+    "institution": "assemblee_nationale",
+    "libelle": "Député de la Manche",
+    "legislature": "11",
+    "debut": "1997-06-01",
+    "fin": "2002-06-18",
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=1562",
+    "verifie_le": "2026-09-11"
+   }
+  ],
+  "bruno-retailleau": [
+   {
+    "institution": "assemblee_nationale",
+    "libelle": "Député de la Vendée",
+    "legislature": "10",
+    "debut": "1994-11-27",
+    "fin": "1997-04-21",
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=6689",
+    "verifie_le": "2026-09-11"
+   }
+  ],
+  "david-lisnard": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/recherche",
+    "constate_le": "2026-09-16",
+    "methode": "relecture_humaine"
+   }
+  },
+  "delphine-batho": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=17264",
+    "constate_le": "2026-09-15",
+    "methode": "lecture_fiche_sycomore"
+   }
+  },
+  "edouard-philippe": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=18496",
+    "constate_le": "2026-09-15",
+    "methode": "lecture_fiche_sycomore"
+   }
+  },
+  "emmanuel-maurel": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=19974",
+    "constate_le": "2026-09-15",
+    "methode": "lecture_fiche_sycomore"
+   }
+  },
+  "fabien-roussel": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=19365",
+    "constate_le": "2026-09-15",
+    "methode": "lecture_fiche_sycomore"
+   }
+  },
+  "fabien-verdier": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/recherche",
+    "constate_le": "2026-09-16",
+    "methode": "relecture_humaine"
+   }
+  },
+  "florian-philippot": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/recherche",
+    "constate_le": "2026-09-16",
+    "methode": "relecture_humaine"
+   }
+  },
+  "francis-lalanne": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/recherche",
+    "constate_le": "2026-09-16",
+    "methode": "relecture_humaine"
+   }
+  },
+  "francois-asselineau": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/recherche",
+    "constate_le": "2026-09-16",
+    "methode": "relecture_humaine"
+   }
+  },
+  "francois-ruffin": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=19368",
+    "constate_le": "2026-09-15",
+    "methode": "lecture_fiche_sycomore"
+   }
+  },
+  "gabriel-attal": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=19016",
+    "constate_le": "2026-09-15",
+    "methode": "lecture_fiche_sycomore"
+   }
+  },
+  "jean-luc-melenchon": [
+   {
+    "institution": "gouvernement",
+    "libelle": "Ministre délégué à l'enseignement professionnel",
+    "debut": "2000-03-27",
+    "fin": "2002-05-06",
+    "source_url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000582796",
+    "source_fin_url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000412382",
+    "verifie_le": "2026-09-11"
+   }
+  ],
+  "jerome-guedj": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=18318",
+    "constate_le": "2026-09-15",
+    "methode": "lecture_fiche_sycomore"
+   }
+  },
+  "jordan-bardella": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/recherche",
+    "constate_le": "2026-09-16",
+    "methode": "relecture_humaine"
+   }
+  },
+  "karim-bouamrane": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/recherche",
+    "constate_le": "2026-09-16",
+    "methode": "relecture_humaine"
+   }
+  },
+  "laurent-wauquiez": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=13402",
+    "constate_le": "2026-09-15",
+    "methode": "lecture_fiche_sycomore"
+   }
+  },
+  "lydie-massard": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/recherche",
+    "constate_le": "2026-09-16",
+    "methode": "relecture_humaine"
+   }
+  },
+  "marine-le-pen": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=19249",
+    "constate_le": "2026-09-15",
+    "methode": "lecture_fiche_sycomore"
+   }
+  },
+  "marine-tondelier": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/recherche",
+    "constate_le": "2026-09-16",
+    "methode": "relecture_humaine"
+   }
+  },
+  "nathalie-arthaud": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/recherche",
+    "constate_le": "2026-09-16",
+    "methode": "relecture_humaine"
+   }
+  },
+  "nicolas-dupont-aignan": [
+   {
+    "institution": "assemblee_nationale",
+    "libelle": "Député de l'Essonne",
+    "legislature": "11",
+    "debut": "1997-06-01",
+    "fin": "2002-06-18",
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=2721",
+    "verifie_le": "2026-09-11"
+   }
+  ],
+  "olivier-faure": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=18421",
+    "constate_le": "2026-09-15",
+    "methode": "lecture_fiche_sycomore"
+   }
+  },
+  "philippe-brun": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=19595",
+    "constate_le": "2026-09-15",
+    "methode": "lecture_fiche_sycomore"
+   }
+  },
+  "raphael-glucksmann": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/recherche",
+    "constate_le": "2026-09-16",
+    "methode": "relecture_humaine"
+   }
+  },
+  "segolene-royal": [
+   {
+    "institution": "assemblee_nationale",
+    "libelle": "Députée des Deux-Sèvres",
+    "legislature": "9",
+    "debut": "1988-06-13",
+    "fin": "1992-05-02",
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=6174",
+    "verifie_le": "2026-09-11"
+   },
+   {
+    "institution": "gouvernement",
+    "libelle": "Ministre de l'environnement",
+    "debut": "1992-04-02",
+    "fin": null,
+    "fin_non_resolue": {
+     "motif": "source_primaire_non_trouvee",
+     "note": "Aucun décret de cessation des fonctions du gouvernement Bérégovoy trouvé sur Légifrance. Le décret de composition du 02/04/1992 n'y rend que son titre ; la fonction est attestée par la signature « Le ministre de l'environnement » du décret n° 92-396 du 16/04/1992 (JORFTEXT000000357501)."
+    },
+    "source_url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000703414",
+    "verifie_le": "2026-09-11"
+   },
+   {
+    "institution": "assemblee_nationale",
+    "libelle": "Députée des Deux-Sèvres",
+    "legislature": "10",
+    "debut": "1993-04-02",
+    "fin": "1997-04-21",
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=6174",
+    "verifie_le": "2026-09-11"
+   },
+   {
+    "institution": "assemblee_nationale",
+    "libelle": "Députée des Deux-Sèvres",
+    "legislature": "11",
+    "debut": "1997-06-01",
+    "fin": "1997-07-04",
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=6174",
+    "verifie_le": "2026-09-11"
+   },
+   {
+    "institution": "gouvernement",
+    "libelle": "Ministre délégué chargé de l'enseignement scolaire",
+    "debut": "1997-06-04",
+    "fin": "2000-03-27",
+    "source_url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000566649",
+    "source_fin_url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000582796",
+    "verifie_le": "2026-09-11"
+   },
+   {
+    "institution": "gouvernement",
+    "libelle": "Ministre déléguée à la famille et à l'enfance",
+    "debut": "2000-03-27",
+    "fin": "2001-03-27",
+    "source_url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000582796",
+    "source_fin_url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000588207",
+    "verifie_le": "2026-09-11"
+   },
+   {
+    "institution": "gouvernement",
+    "libelle": "Ministre déléguée à la famille, à l'enfance et aux personnes handicapées",
+    "debut": "2001-03-27",
+    "fin": "2002-05-06",
+    "source_url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000588207",
+    "source_fin_url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000412382",
+    "verifie_le": "2026-09-11"
+   }
+  ],
+  "selma-labib": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/recherche",
+    "constate_le": "2026-09-16",
+    "methode": "relecture_humaine"
+   }
+  },
+  "sylvain-durif": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/recherche",
+    "constate_le": "2026-09-16",
+    "methode": "relecture_humaine"
+   }
+  },
+  "xavier-bertrand": {
+   "mandats": [],
+   "constat": {
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=11024",
+    "constate_le": "2026-09-15",
+    "methode": "lecture_fiche_sycomore"
+   }
+  }
+ }
+}

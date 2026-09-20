@@ -1,0 +1,372 @@
+{
+  "_meta": {
+    "description": "Liste des candidats déclarés/pressentis à l'élection présidentielle française de 2027. À maintenir manuellement jusqu'à publication de la liste officielle par le Conseil constitutionnel (attendue vers janvier-février 2027).",
+    "statuts_possibles": [
+      "declare",
+      "pressenti",
+      "decline",
+      "officiel"
+    ],
+    "derniere_verification": "2026-09-18",
+    "sources_de_veille": [
+      "https://lcp.fr/actualites/presidentielle-2027-la-liste-des-candidats-deja-en-lice-et-des-pretendants-436373",
+      "https://www.france24.com/fr/france/20260524-france-presidentielle-2027-qui-sont-les-candidats-officiellement-declares",
+      "https://fr.wikipedia.org/wiki/%C3%89lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027"
+    ],
+    "avertissement": "Statuts et alliances très mouvants à ce stade (plus d'un an avant le scrutin). Vérifier chaque entrée avant usage public.",
+    "regle_slug": "slug = identifiant du profil, et donc nom de son fichier (pivot_data/profiles/<slug>.pivot.json) — jamais un identifiant de source (#487, #539). Il vient de slugify(nom) et il est FABRIQUÉ UNE SEULE FOIS, à la première publication : une fois écrit ici il est immuable, jamais re-dérivé, parce que renommer un fichier publié est une suppression que audit_diff_profils bloque (#460/#470). En cas d'homonymie, suffixe numérique attribué au second (alexandra-martin / alexandra-martin-1), jamais réattribué ni recalculé. Il valait null pour cinq candidats jusqu'à #539 — l'ancienne règle le liait à la présence sur nosdeputes.fr/nossenateurs.fr, plateformes hors pipeline depuis #529, et ce null les rendait invisibles du matrix extract-an comme du manifeste de l'interface.",
+    "regle_statut": "statut = où en est la candidature, jamais un jugement sur elle. « decline » nomme une candidature explicitement abandonnée ou jamais engagée par une personne que nous portions comme declare/pressenti : l'entrée est CONSERVÉE et non supprimée, parce que son slug est publié et que retirer un fichier publié est une disparition qu'audit_diff_profils bloque (#460/#470). src/fetch_candidats_declares.py ne pose jamais cette valeur lui-même : il ne lit que la section des déclarés, où l'absence d'une personne ne distingue pas un retrait d'un déplacement de section — il signale, un humain tranche avec sa source (#753)."
+  },
+  "candidats": [
+    {
+      "nom": "Nathalie Arthaud",
+      "slug": "nathalie-arthaud",
+      "parti": "Lutte Ouvrière (LO)",
+      "famille_politique": "extrême gauche",
+      "statut": "declare",
+      "date_declaration": "2025-12",
+      "source": "https://election-presidentielle-francaise-2027.fr/les-candidats-declares-pour-lelection-de-2027/",
+      "notes": "4e candidature consécutive."
+    },
+    {
+      "nom": "Jean-Luc Mélenchon",
+      "slug": "jean-luc-melenchon",
+      "parti": "La France Insoumise (LFI)",
+      "famille_politique": "gauche",
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://lcp.fr/actualites/presidentielle-2027-la-liste-des-candidats-deja-en-lice-et-des-pretendants-436373",
+      "notes": "Ancien député, présent dans la base NosDéputés.fr (législatures passées)."
+    },
+    {
+      "nom": "Marine Tondelier",
+      "slug": "marine-tondelier",
+      "parti": "Les Écologistes",
+      "famille_politique": "gauche",
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://www.france24.com/fr/france/20260524-france-presidentielle-2027-qui-sont-les-candidats-officiellement-declares",
+      "notes": null
+    },
+    {
+      "nom": "Jérôme Guedj",
+      "slug": "jerome-guedj",
+      "parti": "Parti Socialiste (PS)",
+      "famille_politique": "gauche",
+      "statut": "declare",
+      "date_declaration": "2026-02",
+      "source": "https://election-presidentielle-francaise-2027.fr/les-candidats-declares-pour-lelection-de-2027/",
+      "notes": "Vise la primaire de la gauche (prévue automne 2026)."
+    },
+    {
+      "nom": "Ségolène Royal",
+      "slug": "segolene-royal",
+      "parti": "Parti Socialiste (PS)",
+      "famille_politique": "gauche",
+      "statut": "declare",
+      "date_declaration": "2026-07-10",
+      "source": "https://www.france24.com/fr/france/20260524-france-presidentielle-2027-qui-sont-les-candidats-officiellement-declares",
+      "notes": "Candidate à la primaire socialiste, pas encore à l'élection elle-même."
+    },
+    {
+      "nom": "Édouard Philippe",
+      "slug": "edouard-philippe",
+      "parti": "Horizons",
+      "famille_politique": "centre-droit",
+      "statut": "declare",
+      "date_declaration": "2024-09",
+      "source": "https://lcp.fr/actualites/presidentielle-2027-la-liste-des-candidats-deja-en-lice-et-des-pretendants-436373",
+      "notes": "Ancien Premier ministre. Parti tôt en campagne."
+    },
+    {
+      "nom": "Gabriel Attal",
+      "slug": "gabriel-attal",
+      "parti": "Renaissance",
+      "famille_politique": "centre",
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://www.france24.com/fr/france/20260524-france-presidentielle-2027-qui-sont-les-candidats-officiellement-declares",
+      "notes": "Ancien Premier ministre."
+    },
+    {
+      "nom": "Xavier Bertrand",
+      "slug": "xavier-bertrand",
+      "parti": "Nous France",
+      "famille_politique": "droite",
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://election-presidentielle-francaise-2027.fr/les-candidats-declares-pour-lelection-de-2027/",
+      "notes": "Ancien ministre, président des Hauts-de-France."
+    },
+    {
+      "nom": "Bruno Retailleau",
+      "slug": "bruno-retailleau",
+      "parti": "Les Républicains (LR)",
+      "famille_politique": "droite",
+      "statut": "declare",
+      "date_declaration": "2026-02-12",
+      "source": "https://www.lejdd.fr/politique/presidentielle-2027-la-liste-des-40-candidats-declares-ou-pressentis-177960",
+      "notes": "Président de LR, ancien ministre de l'Intérieur."
+    },
+    {
+      "nom": "Laurent Wauquiez",
+      "slug": "laurent-wauquiez",
+      "parti": "Les Républicains (LR)",
+      "famille_politique": "droite",
+      "statut": "decline",
+      "date_declaration": "2025-03",
+      "source": "https://fr.wikipedia.org/wiki/Candidatures_%C3%A0_l%27%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027#Candidats_d%C3%A9clar%C3%A9s",
+      "notes": "Candidature déclinée : figure sous « Candidats pressentis ayant décliné » de l'article des candidatures, en soutien à Bruno Retailleau. Statut passé de declare à decline le 2026-09-07 (#753) ; le doute était déjà noté ici depuis mi-2026. Entrée conservée : son slug est publié."
+    },
+    {
+      "nom": "David Lisnard",
+      "slug": "david-lisnard",
+      "parti": "Nouvelle Énergie",
+      "famille_politique": "droite",
+      "statut": "declare",
+      "date_declaration": "2026-04",
+      "source": "https://www.france24.com/fr/france/20260524-france-presidentielle-2027-qui-sont-les-candidats-officiellement-declares",
+      "notes": "A quitté LR en 2026 pour fonder son propre parti. Maire de Cannes, président de l'AMF."
+    },
+    {
+      "nom": "Marine Le Pen",
+      "slug": "marine-le-pen",
+      "parti": "Rassemblement National (RN)",
+      "famille_politique": "extrême droite",
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/%C3%89lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027",
+      "notes": "ATTENTION - situation juridique complexe : condamnée en appel (juillet 2026) à une peine d'inéligibilité ; éligibilité redevenue effective courant juin 2026 selon les mêmes sources. À vérifier avant toute publication."
+    },
+    {
+      "nom": "Jordan Bardella",
+      "slug": "jordan-bardella",
+      "parti": "Rassemblement National (RN)",
+      "famille_politique": "extrême droite",
+      "statut": "decline",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Candidatures_%C3%A0_l%27%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027#Candidats_d%C3%A9clar%C3%A9s",
+      "notes": "Candidature déclinée : figure sous « Candidats pressentis ayant décliné » de l'article des candidatures, en soutien à Marine Le Pen. Statut passé de pressenti à decline le 2026-09-07 (#753). Il restait le candidat de substitution pressenti si Marine Le Pen ne pouvait pas se présenter. Entrée conservée : son slug est publié."
+    },
+    {
+      "nom": "François Asselineau",
+      "slug": "francois-asselineau",
+      "parti": "Union populaire républicaine",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Fran%C3%A7ois_Asselineau",
+      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+    },
+    {
+      "nom": "Delphine Batho",
+      "slug": "delphine-batho",
+      "parti": "Génération écologie",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Delphine_Batho",
+      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+    },
+    {
+      "nom": "Karim Bouamrane",
+      "slug": "karim-bouamrane",
+      "parti": "Parti socialiste",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Karim_Bouamrane",
+      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+    },
+    {
+      "nom": "Bernard Cazeneuve",
+      "slug": "bernard-cazeneuve",
+      "parti": "La Convention",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Bernard_Cazeneuve",
+      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+    },
+    {
+      "nom": "Nicolas Dupont-Aignan",
+      "slug": "nicolas-dupont-aignan",
+      "parti": "Debout la France",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Nicolas_Dupont-Aignan",
+      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+    },
+    {
+      "nom": "Sylvain Durif",
+      "slug": "sylvain-durif",
+      "parti": "Elvita",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Sylvain_Durif",
+      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+    },
+    {
+      "nom": "Anasse Kazib",
+      "slug": "anasse-kazib",
+      "parti": "Révolution permanente",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Anasse_Kazib",
+      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+    },
+    {
+      "nom": "Selma Labib",
+      "slug": "selma-labib",
+      "parti": "NPA – Révolutionnaires",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Candidatures_%C3%A0_l%27%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027#Candidats_d%C3%A9clar%C3%A9s",
+      "notes": "Relu à la main le 2026-09-07 : aucun acteur AMO30 ne porte ce nom, donc entrée hors_an dans raw_data/correspondance_acteurs_an.json. Slug posé à ce moment-là et désormais immuable (#460/#470). Famille politique, date et source primaire de la déclaration restent à compléter."
+    },
+    {
+      "nom": "Francis Lalanne",
+      "slug": "francis-lalanne",
+      "parti": "France Libre",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Francis_Lalanne",
+      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+    },
+    {
+      "nom": "Benoît Mathieu",
+      "slug": "benoit-mathieu",
+      "parti": "Sans étiquette",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Candidatures_%C3%A0_l%27%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027#Candidats_d%C3%A9clar%C3%A9s",
+      "notes": "Relu à la main le 2026-09-07 : aucun acteur AMO30 ne porte ce nom, donc entrée hors_an dans raw_data/correspondance_acteurs_an.json. Slug posé à ce moment-là et désormais immuable (#460/#470). Famille politique, date et source primaire de la déclaration restent à compléter."
+    },
+    {
+      "nom": "Florian Philippot",
+      "slug": "florian-philippot",
+      "parti": "Les Patriotes",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Florian_Philippot",
+      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+    },
+    {
+      "nom": "Fabien Roussel",
+      "slug": "fabien-roussel",
+      "parti": "Parti communiste français",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Fabien_Roussel",
+      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+    },
+    {
+      "nom": "Lydie Massard",
+      "slug": "lydie-massard",
+      "parti": "Union démocratique bretonne",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Lydie_Massard",
+      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré dans le cadre d'une primaire). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+    },
+    {
+      "nom": "François Ruffin",
+      "slug": "francois-ruffin",
+      "parti": "Debout !",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Fran%C3%A7ois_Ruffin",
+      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré dans le cadre d'une primaire). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+    },
+    {
+      "nom": "Philippe Brun",
+      "slug": "philippe-brun",
+      "parti": "Parti socialiste",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Philippe_Brun",
+      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré dans le cadre d'une primaire). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+    },
+    {
+      "nom": "Olivier Faure",
+      "slug": "olivier-faure",
+      "parti": "Parti socialiste",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Olivier_Faure",
+      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré dans le cadre d'une primaire). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+    },
+    {
+      "nom": "Raphaël Glucksmann",
+      "slug": "raphael-glucksmann",
+      "parti": "Place publique",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Rapha%C3%ABl_Glucksmann",
+      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré dans le cadre d'une primaire). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+    },
+    {
+      "nom": "Emmanuel Maurel",
+      "slug": "emmanuel-maurel",
+      "parti": "Gauche républicaine et socialiste",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Emmanuel_Maurel",
+      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré dans le cadre d'une primaire). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+    },
+    {
+      "nom": "Fabien Verdier",
+      "slug": "fabien-verdier",
+      "parti": "Divers gauche",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Candidatures_%C3%A0_l%27%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027#Candidats_d%C3%A9clar%C3%A9s",
+      "notes": "Relu à la main le 2026-09-07 : aucun acteur AMO30 ne porte ce nom, donc entrée hors_an dans raw_data/correspondance_acteurs_an.json. Slug posé à ce moment-là et désormais immuable (#460/#470). Famille politique, date et source primaire de la déclaration restent à compléter."
+    },
+    {
+      "nom": "Manolo Mlekuz",
+      "slug": null,
+      "parti": "Trajectoire",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Candidatures_%C3%A0_l%27%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027#Candidats_d%C3%A9clar%C3%A9s",
+      "notes": "Ajouté le 2026-09-08 par src/fetch_candidats_declares.py (déclaré). Sans slug : la chaîne d'identifiants n'a rien pu corroborer, donc ce candidat n'a pas de shard extract-an et n'est pas publié. À relire — slug, famille politique, date et source primaire (#753, #757)."
+    },
+    {
+      "nom": "Antoine Mikolajczak",
+      "slug": null,
+      "parti": "Équinoxe",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Candidatures_%C3%A0_l%27%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027#Candidats_d%C3%A9clar%C3%A9s",
+      "notes": "Ajouté le 2026-09-11 par src/fetch_candidats_declares.py (déclaré). Sans slug : la chaîne d'identifiants n'a rien pu corroborer, donc ce candidat n'a pas de shard extract-an et n'est pas publié. À relire — slug, famille politique, date et source primaire (#753, #757)."
+    },
+    {
+      "nom": "Éric Zemmour",
+      "slug": "eric-zemmour",
+      "parti": "Reconquête",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/%C3%89ric_Zemmour",
+      "notes": "Ajouté le 2026-09-18 par src/fetch_candidats_declares.py (déclaré). Slug fabriqué depuis le nom ; l'acteur AN est résolu par identifiant externe et corroboré hors ligne (#757). Famille politique, date et source primaire de la déclaration restent à compléter. Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans raw_data/mandats_anterieurs.json — même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » jusque-là (#860)."
+    }
+  ]
+}
