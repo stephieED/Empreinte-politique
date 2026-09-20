@@ -85,7 +85,7 @@ PREFIXE_ACTEUR_AN = "PA"
 HEADERS = {
     "User-Agent": (
         "EmpreintePolitique/1.0 "
-        "(https://github.com/stephieED/Empreinte-politique-src) "
+        "(https://github.com/stephieED/Empreinte-politique) "
         "python-requests"
     )
 }

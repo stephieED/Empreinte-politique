@@ -11,7 +11,7 @@ transformaient une panne de source en run entièrement perdu.**
 
 ## 1. Ce qui s'est passé
 
-Run [`32876863499`](https://github.com/stephieED/Empreinte-politique-src/actions/runs/32876863499) :
+Run [`32876863499`](https://github.com/stephieED/Empreinte-politique/actions/runs/32876863499) :
 3 jobs rouges (`prepare-roster-matrix`, `extract-roster-groupes (shard 0)`,
 `merge-and-pivot`), la même annotation dans les trois :
 

@@ -9,7 +9,7 @@
 signature de préemption runner au niveau job, mais le job `detect-and-retry`
 n'était invoqué que sur `github.event.workflow_run.conclusion == 'failure'`.
 Run #30 (2026-08-13T09:17:33Z,
-https://github.com/stephieED/Empreinte-politique-src/actions/runs/31685914622) :
+https://github.com/stephieED/Empreinte-politique/actions/runs/31685914622) :
 `extract-roster-groupes` (`continue-on-error: true`, choix délibéré #192/#222)
 a été tué par la même signature de préemption déjà documentée
 ([[retry-generate-data-preemption]], #217/#228/#230) — `shutdown signal` à

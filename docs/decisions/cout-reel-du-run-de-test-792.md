@@ -7,7 +7,7 @@
 ## Contexte
 
 Le mode de test de #792 a été exercé pour la première fois le 09/09/2026, run
-[`34323318020`](https://github.com/stephieED/Empreinte-politique-src/actions/runs/34323318020),
+[`34323318020`](https://github.com/stephieED/Empreinte-politique/actions/runs/34323318020),
 sur `delphine-batho,gabriel-attal`. Il a fait ce qu'il annonçait — matrice
 réduite à **2 shards** au lieu de 27, roster à **1 shard** plafonné à 8 membres,
 quatre garde-fous verts, **aucun commit**.

@@ -6,7 +6,7 @@
 
 ## Le constat
 
-Le run [`34329085168`](https://github.com/stephieED/Empreinte-politique-src/actions/runs/34329085168)
+Le run [`34329085168`](https://github.com/stephieED/Empreinte-politique/actions/runs/34329085168)
 est **vert**, a committé `5e7b5dca` (2 324 fichiers), et **n'a basculé aucune
 tranche** : zéro fichier supprimé sous `raw_data/profiles/*/1[456].json`, et
 aucun `derivee` dans les manifestes committés.

@@ -12,7 +12,7 @@ rencontrant l'échec paie le cycle complet de retry. Ce cache est scopé au
 process Python — or `extract-an` et `extract-roster-groupes` sont deux jobs
 CI distincts (deux process), séquencés sur le même cache disque partagé
 `public-data-cache-an-*` par [[concurrence-ci-roster]] (#222). Sur le run #30
-(https://github.com/stephieED/Empreinte-politique-src/actions/runs/31685914622),
+(https://github.com/stephieED/Empreinte-politique/actions/runs/31685914622),
 `extract-an` a épuisé ses tentatives dès le premier segment sur les
 législatures 17/16/15 (`IncompleteRead` immédiat, aucun `index_par_acteur.json`
 mis en cache) sans que `extract-roster-groupes`, quelques minutes plus tard

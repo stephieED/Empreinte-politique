@@ -134,7 +134,7 @@ from audit_volumetrie_profils import MOTIF_COMMIT_DONNEES
 # remote, et la sortie l'annonce alors explicitement. Elle était le défaut
 # silencieux jusqu'au 28/08/2026, et faisait rendre un verdict confiant sur
 # l'archive d'un autre dépôt que celui qu'on tenait sous la main.
-ORIGINE_PAR_DEFAUT = "https://github.com/stephieED/Empreinte-politique-src"
+ORIGINE_PAR_DEFAUT = "https://github.com/stephieED/Empreinte-politique"
 BASE_SWH = "https://archive.softwareheritage.org/api/1"
 
 # 7 caractères est la longueur de SHA abrégé que git rend par défaut, et celle

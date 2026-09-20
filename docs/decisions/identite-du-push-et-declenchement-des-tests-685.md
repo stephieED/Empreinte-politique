@@ -40,7 +40,7 @@ donnent, et le journal d'un run la montre à l'exécution.
 | Clés de déploiement du dépôt | `GET /repos/{o}/{r}/keys` | `[]` — **aucune** |
 | Secrets Actions du dépôt | `GET /repos/{o}/{r}/actions/secrets` | 4 secrets : `ACTIONS_RUNNER_DEBUG`, `ACTIONS_STEP_DEBUG`, `CLAUDE_CODE_OAUTH_TOKEN`, `WORKFLOW_PAT` — **pas** `DATA_PUSH_SSH_KEY` |
 | Règles du ruleset `20260729_ruleset` | `GET /repos/{o}/{r}/rulesets/19959954` | `deletion`, `non_fast_forward`. **Pas** de `required_status_checks` ; `bypass_actors` = `RepositoryRole/5` seul, **aucun** `DeployKey` |
-| Identité réellement employée par le push | journal du job `99566091830` (run `33414042623`, qui a poussé `3fafa99e`) | `git remote add origin https://github.com/stephieED/Empreinte-politique-src` puis `git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***` |
+| Identité réellement employée par le push | journal du job `99566091830` (run `33414042623`, qui a poussé `3fafa99e`) | `git remote add origin https://github.com/stephieED/Empreinte-politique` puis `git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***` |
 
 La dernière ligne est la preuve, et pas un indice : `actions/checkout` pose
 `git@github.com:` **si et seulement si** `ssh-key` est renseignée. Elle a posé

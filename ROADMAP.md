@@ -20,8 +20,8 @@ qui démarre à froid doit savoir avant de rouvrir un sujet.
 dérivait en moins d'une heure : un tableau qui recopie l'état de GitHub se périme
 à chaque lot livré, et un tableau faux est pire qu'un tableau absent — on le croit.
 
-- **L'état à jour** : les [issues](https://github.com/stephieED/Empreinte-politique-src/issues)
-  et les [milestones](https://github.com/stephieED/Empreinte-politique-src/milestones)
+- **L'état à jour** : les [issues](https://github.com/stephieED/Empreinte-politique/issues)
+  et les [milestones](https://github.com/stephieED/Empreinte-politique/milestones)
   du dépôt, qui sont la source de vérité.
 - **En session Claude Code** : `/etat-issues` rend la synthèse par milestone et par
   priorité, mesurée à l'instant.
@@ -140,7 +140,7 @@ Convention d'écriture : `AGENTS.md` §8.
 - **Le téléphone : ça tient dans l'écran, ça ne s'y lit pas (#867, mesuré le
   12/09/2026).** Sept pages relevées à 360, 400 et 768 px — le relevé complet,
   avec ses captures et ses causes, est le
-  [commentaire du 12/09 sur #867](https://github.com/stephieED/Empreinte-politique-src/issues/867#issuecomment-5645223332)
+  [commentaire du 12/09 sur #867](https://github.com/stephieED/Empreinte-politique/issues/867#issuecomment-5645223332)
   et l'artifact qu'il cite. **Ne pas re-mesurer avant de corriger** ; trois
   constats seulement sont à connaître avant de rouvrir le sujet :
   **1.** « aucun débordement horizontal » était faux — deux causes nommées,

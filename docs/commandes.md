@@ -938,10 +938,50 @@ sous l'un des deux, ni ne sort sur le réseau (#473).
 
 ---
 
+## Publier, et reprendre les données
+
+Ce projet vit sur **deux dépôts** : celui-ci publie le code, les données et
+exécute les runs ; le développement se fait ailleurs. La navette entre les deux
+passe par un seul script, et elle a **deux sens qui ne se valent pas**.
+
+```bash
+scripts/sync_depots.sh --etat
+scripts/sync_depots.sh --recuperer-donnees
+scripts/sync_depots.sh --publier-code v1.0.1
+scripts/sync_depots.sh --tout v1.0.1
+```
+
+| Option | Sens | Ce qu'elle fait |
+| --- | --- | --- |
+| `--etat` | — | dit où en sont les deux dépôts, **ne touche à rien** |
+| `--recuperer-donnees` | public → dev | reprend `pivot_data/` et `raw_data/` régénérés par un run |
+| `--publier-code <version>` | dev → public | publie le code en **un** commit de publication |
+| `--tout <version>` | les deux | récupère, pousse vers le dev, puis publie |
+
+**L'ordre compte, et c'est tout l'intérêt du script.** `--publier-code` pousse
+un arbre **entier** : parti d'un dépôt de développement aux données périmées,
+il écraserait celles qu'un run vient de produire. D'où « récupérer les données
+d'abord, publier le code ensuite », que `--tout` enchaîne seul. Le script
+refuse de publier si les données diffèrent, et refuse d'agir tant qu'un run
+tourne — mais mieux vaut connaître la raison que se fier au garde-fou.
+
+**Pourquoi pas un simple `git push`.** Les deux historiques n'ont aucun ancêtre
+commun. Un push est refusé ; forcé, il déverserait l'historique de
+développement sur le dépôt public. Le script construit un commit dont le
+**contenu** vient du dépôt de développement et le **parent** est le dernier
+commit publié : le public accumule un historique de publications, jamais celui
+du développement.
+
+Le remote `public` doit exister une fois pour toutes :
+
+```bash
+git remote add public https://github.com/stephieED/Empreinte-politique.git
+```
+
 ## Ce qui n'est pas ici, et pourquoi
 
-Le dépôt compte **46 exécutables** (41 modules `src/` avec un CLI, 5 scripts).
-Ce fichier en documente **33**. Les 13 autres ont un CLI, mais personne n'a de
+Le dépôt compte **47 exécutables** (41 modules `src/` avec un CLI, 6 scripts).
+Ce fichier en documente **34**. Les 13 autres ont un CLI, mais personne n'a de
 raison de les taper :
 
 | Écarté | Pourquoi |

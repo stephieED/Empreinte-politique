@@ -610,7 +610,7 @@ suggère précisément l'inverse de ce qu'il faut faire.
 
 **État opérationnel — archivage déclenché le 28/08/2026.** La demande « Save Code
 Now » a été soumise à **14:51:37 UTC** et acceptée ; la **visite n°1** de l'origine
-`https://github.com/stephieED/Empreinte-politique-src` a été créée à **14:51:47**,
+`https://github.com/stephieED/Empreinte-politique` a été créée à **14:51:47**,
 ingestion en cours. Le filet est donc posé **avant** toute coupure — l'ordre
 inverse serait irrécupérable.
 
@@ -619,7 +619,7 @@ n'est plus `null` :
 
 ```
 curl -s "https://archive.softwareheritage.org/api/1/origin/\
-https://github.com/stephieED/Empreinte-politique-src/visit/latest/"
+https://github.com/stephieED/Empreinte-politique/visit/latest/"
 ```
 
 **Le renouvellement est automatique, mesuré.** Une fois l'origine connue de

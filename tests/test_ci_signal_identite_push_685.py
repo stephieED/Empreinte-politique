@@ -146,7 +146,7 @@ def test_sur_un_push_sous_le_token_le_signal_nomme_la_consequence(tmp_path):
     réparer. Nommer seulement « pas de clé de déploiement » laisserait le
     lecteur reconstruire la conséquence — c'est la reconstruction qui n'a pas
     eu lieu pendant quinze commits."""
-    code, sortie, resume = _rejouer("https://github.com/stephieED/Empreinte-politique-src", tmp_path)
+    code, sortie, resume = _rejouer("https://github.com/stephieED/Empreinte-politique", tmp_path)
 
     assert "::warning::" in sortie, (
         "un push sous le GITHUB_TOKEN doit produire une annotation : sans elle, "
@@ -168,7 +168,7 @@ def test_sur_un_push_sous_cle_de_deploiement_le_signal_confirme(tmp_path):
     n'apprend rien ; un signal qui se tait dans les deux cas non plus. Le jour
     où les trois gestes de #508 §7 seront posés, ce cas est celui qui doit
     basculer — et il dit ce que le run doit alors afficher."""
-    code, sortie, resume = _rejouer("git@github.com:stephieED/Empreinte-politique-src.git", tmp_path)
+    code, sortie, resume = _rejouer("git@github.com:stephieED/Empreinte-politique.git", tmp_path)
 
     assert "::warning::" not in sortie, (
         "sous clé de déploiement l'événement `push` est bien émis : avertir "
@@ -180,7 +180,7 @@ def test_sur_un_push_sous_cle_de_deploiement_le_signal_confirme(tmp_path):
 
 @pytest.mark.parametrize(
     "url",
-    ["https://github.com/stephieED/Empreinte-politique-src", "git@github.com:stephieED/x.git"],
+    ["https://github.com/stephieED/Empreinte-politique", "git@github.com:stephieED/x.git"],
 )
 def test_le_signal_ne_fait_jamais_echouer_le_job(url, tmp_path):
     """Les trois gestes qui répareraient le mécanisme (clé de déploiement,

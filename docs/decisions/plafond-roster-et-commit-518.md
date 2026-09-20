@@ -11,7 +11,7 @@ donnée non écrite pouvait annuler la publication d'une donnée écrite.**
 
 ## 1. Ce qui s'est passé
 
-Run [`32750929942`](https://github.com/stephieED/Empreinte-politique-src/actions/runs/32750929942),
+Run [`32750929942`](https://github.com/stephieED/Empreinte-politique/actions/runs/32750929942),
 le premier après la fusion de #519. **22 jobs verts**, dont les 8 shards roster
 (contre 4/8 avant) : ils ne fetchent plus rien, ils téléchargent l'artifact
 `roster-candidats`, et dans `merge-and-pivot` le step de repli est bien

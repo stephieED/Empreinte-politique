@@ -60,7 +60,7 @@ job lui-même (sous-issue 3, hors périmètre ici).
    s'appuie donc principalement sur des mesures de production **déjà
    consignées dans ce fichier**, réutilisées ici comme la mesure réelle la
    plus fiable disponible :
-   - Run #30 (13/08, `https://github.com/stephieED/Empreinte-politique-src/actions/runs/31685914622`) :
+   - Run #30 (13/08, `https://github.com/stephieED/Empreinte-politique/actions/runs/31685914622`) :
      un blocage réel (pas une coupure rapide) sur une législature amendements
      a consommé **6 min 48 s** avant préemption du runner — cf.
      [[amendements-failed-legislature-marker-inter-jobs]]. Cohérent avec le

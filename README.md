@@ -9,7 +9,7 @@
 > imprécise — ne pas conclure d'une liste vide sans lire son bloc `couverture`.
 >
 > L'état courant se lit dans les
-> [issues ouvertes](https://github.com/stephieED/Empreinte-politique-src/issues).
+> [issues ouvertes](https://github.com/stephieED/Empreinte-politique/issues).
 
 **Empreinte politique** produit des « CV politiques » factuels et sourcés —
 mandats, responsabilités, votes, textes portés, interventions en séance — pour

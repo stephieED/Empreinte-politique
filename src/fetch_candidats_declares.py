@@ -171,7 +171,7 @@ API = "https://fr.wikipedia.org/w/api.php"
 HEADERS = {
     "User-Agent": (
         "EmpreintePolitique/1.0 "
-        "(https://github.com/stephieED/Empreinte-politique-src) "
+        "(https://github.com/stephieED/Empreinte-politique) "
         "python-requests"
     )
 }

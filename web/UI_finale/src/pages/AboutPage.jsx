@@ -54,7 +54,7 @@ import './AboutPage.css';
  * pouvoir atteindre le code de la version qu'il utilise. « Open source » est
  * exact depuis que le dépôt porte son fichier `LICENSE` — avant, le dépôt était
  * seulement public, c'est-à-dire visible et tous droits réservés. */
-const DEPOT = 'https://github.com/stephieED/Empreinte-politique-src';
+const DEPOT = 'https://github.com/stephieED/Empreinte-politique';
 
 const MANIFESTE = [
   'Empreinte politique rassemble ce que les institutions publient sur les candidats à la présidentielle 2027 — mandats, votes, textes, prises de parole — et le donne à lire tel quel.',

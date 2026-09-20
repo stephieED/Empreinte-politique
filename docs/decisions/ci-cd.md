@@ -8,7 +8,7 @@
 **Contexte** : #219 a ajouté `if: always()` sur les steps `Upload artifact *`
 de `generate-data.yml` pour préserver la progression partielle (profils déjà
 écrits sur disque) en cas d'annulation/échec de job. Le run #25
-(récidive de #217/#221, https://github.com/stephieED/Empreinte-politique-src/actions/runs/31605692943)
+(récidive de #217/#221, https://github.com/stephieED/Empreinte-politique/actions/runs/31605692943)
 montre empiriquement que ce mécanisme a un angle mort : quand le runner
 hébergé GitHub reçoit un `shutdown signal` d'infrastructure (cause retenue
 pour #217, voir [[verification-billing-actions]] — préemption transitoire,

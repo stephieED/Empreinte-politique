@@ -5,7 +5,7 @@
 
 > **En bref** — #1012 a corrigé le stade procédural : 6 808 dossiers cessaient
 > d'être qualifiés `examine_commission` sans l'avoir été. Le run
-> [35324142500](https://github.com/stephieED/Empreinte-politique-src/actions/runs/35324142500)
+> [35324142500](https://github.com/stephieED/Empreinte-politique/actions/runs/35324142500)
 > portait ce correctif et a republié **les 21 `examine_commission` de Marine Le
 > Pen à l'identique**. Le `stade` est calculé au moment de construire
 > `index_acteur_textes_v3.json`, puis figé dedans ; `.cache/dossiers_an` est

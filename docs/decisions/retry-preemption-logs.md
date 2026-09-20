@@ -21,7 +21,7 @@ le message `the response contains terminal escape sequences; pass
 explicitement passé. Reproduit manuellement contre le job réel du run #28
 (`extract-an`, job id `94359092658`, cf. corps de #235) :
 ```
-$ gh api "repos/stephieED/Empreinte-politique-src/actions/jobs/94359092658/logs" 2>&1 1>/dev/null
+$ gh api "repos/stephieED/Empreinte-politique/actions/jobs/94359092658/logs" 2>&1 1>/dev/null
 the response contains terminal escape sequences; pass --allow-escape-sequences to output it anyway
 $ echo $?
 1

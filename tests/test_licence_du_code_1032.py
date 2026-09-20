@@ -47,7 +47,7 @@ LEGAL = WEB / "src" / "pages" / "LegalNoticePage.jsx"
 PACKAGE = WEB / "package.json"
 
 SPDX = "AGPL-3.0"
-DEPOT = "github.com/stephieED/Empreinte-politique-src"
+DEPOT = "github.com/stephieED/Empreinte-politique"
 
 
 @pytest.fixture(scope="module")

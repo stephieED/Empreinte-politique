@@ -11,7 +11,7 @@ après coup ce qu'il a refusé de publier.**
 
 ## 1. Ce qui s'est passé le 24/08/2026
 
-Le run [`32738726729`](https://github.com/stephieED/Empreinte-politique-src/actions/runs/32738726729)
+Le run [`32738726729`](https://github.com/stephieED/Empreinte-politique/actions/runs/32738726729)
 est le premier lancé après la fusion de #517 (suspension des deux groupes
 Sénat). Il n'a **pas committé** : le job `merge-and-pivot` est allé jusqu'à son
 dernier garde-fou avant commit et s'y est arrêté.

@@ -644,14 +644,14 @@ BANC = "https://github.com/stephieED/test_procedure_bornage_issue_569"
 @pytest.mark.parametrize(
     "ecriture",
     [
-        "https://github.com/stephieED/Empreinte-politique-src",
-        "https://github.com/stephieED/Empreinte-politique-src/",
-        "https://github.com/stephieED/Empreinte-politique-src.git",
-        "git@github.com:stephieED/Empreinte-politique-src.git",
-        "git@github.com:stephieED/Empreinte-politique-src",
-        "ssh://git@github.com/stephieED/Empreinte-politique-src.git",
-        "https://stephieED@github.com/stephieED/Empreinte-politique-src.git",
-        "  https://GitHub.com/stephieED/Empreinte-politique-src.git \n",
+        "https://github.com/stephieED/Empreinte-politique",
+        "https://github.com/stephieED/Empreinte-politique/",
+        "https://github.com/stephieED/Empreinte-politique.git",
+        "git@github.com:stephieED/Empreinte-politique.git",
+        "git@github.com:stephieED/Empreinte-politique",
+        "ssh://git@github.com/stephieED/Empreinte-politique.git",
+        "https://stephieED@github.com/stephieED/Empreinte-politique.git",
+        "  https://GitHub.com/stephieED/Empreinte-politique.git \n",
     ],
 )
 def test_les_ecritures_d_une_meme_origine_se_normalisent(ecriture):
@@ -665,7 +665,7 @@ def test_les_ecritures_d_une_meme_origine_se_normalisent(ecriture):
     archivé — un INDÉTERMINÉ permanent, à la place d'un VÉRIFIÉ trompeur."""
     assert (
         v.normaliser_origine(ecriture)
-        == "https://github.com/stephieED/Empreinte-politique-src"
+        == "https://github.com/stephieED/Empreinte-politique"
     )
 
 

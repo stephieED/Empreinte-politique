@@ -81,7 +81,7 @@ const SECTIONS = [
         <p>
           <strong>Le code source</strong> de ce site est publié sous licence{' '}
           <a
-            href="https://github.com/stephieED/Empreinte-politique-src/blob/main/LICENSE"
+            href="https://github.com/stephieED/Empreinte-politique/blob/main/LICENSE"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -91,11 +91,11 @@ const SECTIONS = [
           met en ligne un service fondé sur une version modifiée doit en publier le code source sous
           la même licence. Le dépôt est à l’adresse{' '}
           <a
-            href="https://github.com/stephieED/Empreinte-politique-src"
+            href="https://github.com/stephieED/Empreinte-politique"
             target="_blank"
             rel="noopener noreferrer"
           >
-            github.com/stephieED/Empreinte-politique-src
+            github.com/stephieED/Empreinte-politique
           </a>
           .
         </p>

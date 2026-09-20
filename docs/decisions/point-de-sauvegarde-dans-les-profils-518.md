@@ -11,7 +11,7 @@ fichier qui n'est pas un profil.**
 
 ## 1. Ce qui s'est passé
 
-Run [`32773067295`](https://github.com/stephieED/Empreinte-politique-src/actions/runs/32773067295)
+Run [`32773067295`](https://github.com/stephieED/Empreinte-politique/actions/runs/32773067295)
 (24/08/2026 20:17), le premier après la fusion de #520. **22 jobs verts** — les
 correctifs (a) à (d) ont tenu : les 8 shards roster passent, et le step
 `Générer les profils de groupe parlementaire réel`, qui avait tué le run
@@ -42,7 +42,7 @@ Reproduit à l'identique hors CI, message compris.
 
 Ce n'était pas « maintenant » : **aucun run n'a abouti depuis la mise en service
 du contrôle**. Le dernier `success` de `generate-data.yml` est
-[`32405297873`](https://github.com/stephieED/Empreinte-politique-src/actions/runs/32405297873)
+[`32405297873`](https://github.com/stephieED/Empreinte-politique/actions/runs/32405297873)
 (20/08), c'est-à-dire l'incident *fondateur* de #511, antérieur au contrôle. Les
 runs suivants sont morts avant d'y arriver — sur le roster (#516), sur les
 shards (#518), sur les fiches de groupe (#518 second incident) — sauf deux, le
@@ -103,7 +103,7 @@ ROADMAP plutôt que décidé dans un correctif d'incident.
 
 ## 5. La seconde panne du même push : `Tests (pytest)` rouge sur `main`
 
-Run [`32773016491`](https://github.com/stephieED/Empreinte-politique-src/actions/runs/32773016491).
+Run [`32773016491`](https://github.com/stephieED/Empreinte-politique/actions/runs/32773016491).
 `tests/test_ci_roster_unique_par_run.py::test_le_roster_brut_n_est_pas_committe`
 lit `.gitignore`, **absent du sparse-checkout** de `tests.yml` : suite verte en
 local (2 109 tests), `FileNotFoundError` en CI. Reproduit en clonant avec la
