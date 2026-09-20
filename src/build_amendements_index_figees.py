@@ -61,6 +61,7 @@ import json
 import sys
 import time
 import zipfile
+import zlib
 from pathlib import Path
 
 import requests
@@ -206,7 +207,10 @@ def main() -> int:
     print(f"-> Parsing de {zip_path_to_parse} (législature {args.legislature})...")
     try:
         index = _parse_amendements_zip(zip_path_to_parse)
-    except zipfile.BadZipFile as exc:
+    except (zipfile.BadZipFile, zlib.error) as exc:
+        # `zlib.error` aussi (#1050) : une archive recollee a partir de deux
+        # versions servies par la source s'ouvre normalement et ne derape
+        # qu'a la decompression d'un membre.
         print(f"Archive invalide : {exc}", file=sys.stderr)
         return 1
 

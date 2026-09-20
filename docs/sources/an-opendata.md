@@ -24,6 +24,29 @@ https://data.assemblee-nationale.fr/static/openData/repository/{legislature}/loi
   The "all X" subpages (for example amendments pages) include links in static
   HTML and are used as the reliable discovery path.
 
+### Trap: one URL, two versions (measured 2026-09-21)
+
+**The same URL serves two different files, depending on which backend answers.**
+Ten `HEAD` requests on the legislature-17 amendments archive returned the
+older version eight times (300 382 312 bytes, `ETag "11e77868-65bee362fa5cb"`,
+*Last-Modified* 20/09 20h22) and the newer one twice (300 418 979 bytes,
+`"11e807a3-65befe27af972"`, 22h21). One IP address (`46.105.202.26`), two
+contents, no announcement.
+
+Consequences for any code fetching a large file here:
+
+- **A ranged download opening one connection per segment mixes both versions.**
+  The assembled file has exactly the announced `Content-Length` and is
+  unreadable — the corruption only surfaces at decompression. Seven ranges
+  chained on a single keep-alive connection all returned the same `ETag`, so
+  connection affinity is what keeps the mix rare.
+- **`If-Range` is honoured**: a stale validator makes the server answer `200`
+  with the full body instead of `206`, which is the documented way to detect
+  the swap. Both `ETag` and `Last-Modified` are served.
+- Our own handling lives in `src/candidate_profile.py`
+  (`_download_amendements_zip`) — see
+  `docs/decisions/deux-versions-archive-amendements-1050.md`.
+
 ## Votes (roll-call records)
 
 | Legislature | Dataset | File | Size (zip) | Packaging |

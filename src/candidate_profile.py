@@ -46,6 +46,7 @@ import time
 import traceback
 import unicodedata
 import zipfile
+import zlib
 from collections import Counter
 from pathlib import Path
 from typing import Any, NamedTuple, Optional
@@ -380,6 +381,16 @@ AMENDEMENTS_DOWNLOAD_READ_BUFFER_BYTES = 1024 * 1024
 
 AMENDEMENTS_SOURCE_STALL_MAX_CYCLES = 3
 AMENDEMENTS_SOURCE_STALL_WAIT_SECONDS = 30
+
+# #1050 : data.assemblee-nationale.fr sert DEUX versions de la meme URL selon le
+# backend qui repond — mesure du 21/09/2026, 10 requetes HEAD sur l'archive de
+# la 17e legislature, 8 fois l'ETag "11e77868-65bee362fa5cb" (300 382 312
+# octets) et 2 fois "11e807a3-65befe27af972" (300 418 979). Recoller neuf
+# segments Range preleves au hasard sur l'une ou l'autre produit un fichier de
+# la taille annoncee, mais illisible. Un redemarrage depuis zero est donc
+# parfois inevitable ; borne ici, car au-dela c'est la source qui est
+# incoherente, pas le transfert qui a eu la malchance.
+AMENDEMENTS_DOWNLOAD_MAX_REDEMARRAGES_VERSION = 3
 
 # Legislatures dont le telechargement de l'archive amendements a echoue de
 # facon definitive (toutes les tentatives de _download_and_build_amendement_index
@@ -2061,18 +2072,69 @@ class SourceAmendementsIndisponibleError(OSError):
     """
 
 
+class SourceAmendementsIncoherenteError(OSError):
+    """Levée quand la source sert durablement plusieurs versions de la même URL
+    et qu'aucun téléchargement complet n'a pu être obtenu d'une seule d'entre
+    elles — #1050.
+
+    Distincte de `SourceAmendementsIndisponibleError`, et le mot compte comme
+    en #443 : ici la source délivre parfaitement, elle est seulement
+    incohérente avec elle-même. Relancer peut réussir — c'est un tirage — mais
+    le log doit dire que ce n'est pas le réseau qui a flanché, sans quoi la
+    personne qui le lit cherchera une panne qui n'existe pas.
+    """
+
+
+class ArchiveAmendementsChangeeError(OSError):
+    """Levée quand la version servie n'est plus celle du préfixe déjà écrit —
+    #1050.
+
+    Ce n'est ni un échec de téléchargement ni une source indisponible : les
+    octets arrivent normalement, ils appartiennent simplement à une autre
+    archive. Les recoller produirait un fichier de la taille annoncée et
+    illisible, ce qui est le pire des trois états — une corruption qu'aucune
+    garde de taille ne voit. L'appelant redémarre donc depuis zéro plutôt que
+    d'écrire quoi que ce soit.
+
+    Sous-classe d'`OSError` pour rester attrapée par les appelants existants
+    (`except (requests.RequestException, OSError)`), qui n'ont pas à connaître
+    ce type pour rester corrects.
+    """
+
+
+def _identite_archive(resp: "requests.Response") -> Optional[str]:
+    """Identité de la version servie : l'`ETag` si le serveur en rend une,
+    sinon `Last-Modified`. `None` si le serveur ne rend ni l'une ni l'autre —
+    auquel cas aucun contrôle de cohérence n'est possible et rien n'est
+    supposé.
+
+    Les deux en-têtes sont rendus par `data.assemblee-nationale.fr` (vérifié le
+    21/09/2026), et `ETag` est préféré parce qu'il distingue deux versions
+    publiées dans la même seconde, ce que `Last-Modified` ne fait pas."""
+    for entete in ("ETag", "Last-Modified"):
+        valeur = (resp.headers.get(entete) or "").strip()
+        if valeur:
+            return valeur
+    return None
+
+
 class _ResultatFlux(NamedTuple):
     """Issue d'une tentative de transfert.
 
     `octets_ecrits` prime sur `erreur` : un flux coupé en cours de route laisse
     malgré tout sur disque un préfixe valide du même fichier, qu'il ne faut
     jamais jeter (#443).
+
+    `identite` porte l'`ETag` (ou le `Last-Modified`) de la réponse : c'est ce
+    qui permet à l'appelant de savoir de QUELLE version viennent les octets
+    reçus, et donc de refuser d'en recoller deux (#1050).
     """
 
     octets_ecrits: int
     status_code: Optional[int]
     total_distant: Optional[int]
     erreur: Optional[Exception]
+    identite: Optional[str] = None
 
 
 def _content_length_total(resp: "requests.Response") -> Optional[int]:
@@ -2084,7 +2146,11 @@ def _content_length_total(resp: "requests.Response") -> Optional[int]:
         return None
 
 
-def _telecharger_flux(url: str, headers: dict[str, str], dest: Path, mode: str) -> _ResultatFlux:
+def _telecharger_flux(
+    url: str, headers: dict[str, str], dest: Path, mode: str,
+    identite_attendue: Optional[str] = None,
+    session: Optional["requests.Session"] = None,
+) -> _ResultatFlux:
     """Écrit le corps de la réponse dans `dest` **au fil de l'eau**, et rend ce
     qui a réellement été écrit — y compris quand le flux se coupe en cours.
 
@@ -2110,6 +2176,18 @@ def _telecharger_flux(url: str, headers: dict[str, str], dest: Path, mode: str) 
     bruyamment plutôt qu'écrit tel quel (une archive silencieusement compressée
     serait indétectable jusqu'au parsing).
 
+    `identite_attendue` (#1050) fait refuser le corps — sans écrire un seul
+    octet — quand la réponse porte une autre version que celle du préfixe déjà
+    obtenu. Le contrôle a lieu AVANT l'ouverture du fichier : une fois les
+    octets écrits, plus rien ne distingue les deux versions.
+
+    `session` sert à enchaîner tous les segments sur la MÊME connexion. Ce
+    n'est pas une optimisation : la source répartit les requêtes entre deux
+    backends qui ne portent pas la même archive, et l'affinité de connexion est
+    ce qui rend le cas d'incohérence rare plutôt que majoritaire (mesuré le
+    21/09/2026 : 7 plages sur une connexion keep-alive rendent la même `ETag`,
+    là où 10 requêtes séparées en rendent deux différentes).
+
     Ne lève pas : l'exception rencontrée est rendue à l'appelant avec le nombre
     d'octets écrits, pour qu'il reprenne à l'octet réellement obtenu et non au
     début du segment.
@@ -2118,24 +2196,37 @@ def _telecharger_flux(url: str, headers: dict[str, str], dest: Path, mode: str) 
     status_code: Optional[int] = None
     total_distant: Optional[int] = None
     erreur: Optional[Exception] = None
+    identite: Optional[str] = None
     headers = {**headers, "Accept-Encoding": "identity"}
     try:
-        with requests.get(
+        with (session or requests).get(
             url, headers=headers,
             timeout=(TIMEOUT, AMENDEMENTS_DOWNLOAD_READ_TIMEOUT_SECONDS),
             stream=True,
         ) as resp:
             resp.raise_for_status()
             status_code = resp.status_code
+            identite = _identite_archive(resp)
             total_distant = (
                 _content_range_total(resp) if status_code == 206 else _content_length_total(resp)
             )
+            if (
+                identite_attendue is not None
+                and identite is not None
+                and identite != identite_attendue
+            ):
+                # Rien n'est écrit : ces octets appartiennent à une autre
+                # archive que le préfixe déjà sur disque.
+                raise ArchiveAmendementsChangeeError(
+                    f"version distante changée en cours de téléchargement "
+                    f"(attendue {identite_attendue}, servie {identite})"
+                )
             if status_code == 200 and mode == "ab":
                 # Le serveur a ignoré l'en-tête Range alors qu'une reprise à un
                 # offset non nul était attendue : écrire ce flux à la suite
                 # dupliquerait le début du fichier. On rend la main sans rien
                 # écrire, l'appelant décide (et lève).
-                return _ResultatFlux(0, status_code, total_distant, None)
+                return _ResultatFlux(0, status_code, total_distant, None, identite)
             encodage = (resp.headers.get("Content-Encoding") or "identity").strip().lower()
             if encodage != "identity":
                 raise OSError(
@@ -2154,7 +2245,7 @@ def _telecharger_flux(url: str, headers: dict[str, str], dest: Path, mode: str) 
                     octets += len(morceau)
     except (requests.RequestException, urllib3.exceptions.HTTPError, OSError) as exc:
         erreur = exc
-    return _ResultatFlux(octets, status_code, total_distant, erreur)
+    return _ResultatFlux(octets, status_code, total_distant, erreur, identite)
 
 
 def _est_erreur_http_definitive(exc: Optional[Exception]) -> bool:
@@ -2171,39 +2262,83 @@ def _est_erreur_http_definitive(exc: Optional[Exception]) -> bool:
     return isinstance(code, int) and 400 <= code < 500 and code not in (408, 429)
 
 
+class _ResultatSegments(NamedTuple):
+    """Issue d'un cycle de segments `Range`, rendue à `_download_amendements_zip`.
+
+    `identite` est celle de la version réellement servie : l'appelant s'en sert
+    pour épingler la version au premier segment, puis la redemande à chaque
+    segment suivant via `If-Range` (#1050).
+    """
+
+    gagne: int
+    total: Optional[int]
+    tentatives: int
+    derniere_erreur: Optional[Exception]
+    fichier_entier: bool
+    identite: Optional[str] = None
+
+
 def _tenter_segments_range(
     url: str, zip_path: Path, legislature: str, offset: int, chunk_bytes: int,
-    max_attempts: int,
-) -> tuple[int, Optional[int], int, Optional[Exception], bool]:
+    max_attempts: int, identite_attendue: Optional[str] = None,
+    session: Optional["requests.Session"] = None,
+) -> _ResultatSegments:
     """Un segment par plage `Range` à partir de `offset`, retenté jusqu'à
     `max_attempts` fois.
 
-    Retourne `(octets_gagnés, total_distant, tentatives, dernière_erreur,
-    fichier_entier_delivre)` — ce dernier drapeau signalant une réponse 200
-    terminée proprement, c'est-à-dire un serveur qui a ignoré l'en-tête `Range`
-    et délivré le fichier complet en une fois.
+    `identite_attendue` est envoyée en `If-Range` et vérifiée sur la réponse
+    (#1050). Les deux gardes sont complémentaires et aucune ne remplace
+    l'autre : `If-Range` fait répondre le serveur 200 + fichier entier quand le
+    validateur ne correspond plus — vérifié le 21/09/2026 sur la source réelle
+    — mais un backend qui ne connaît pas notre `ETag` répond de même, et seule
+    la comparaison de l'`ETag` rendue dit laquelle des deux versions on a sous
+    la main.
+
     Ne lève **pas** sur épuisement des tentatives : rendre 0 octet est
     précisément le signal qui fait basculer l'appelant sur le mode suivant —
     dans les fenêtres où le `Range` est mort, insister sur la taille de segment
     ne sert à rien (8 Kio échouent autant que 32 Mio, mesuré le 18/08/2026).
+    Lève en revanche `ArchiveAmendementsChangeeError` dès qu'une autre version
+    est servie : réessayer le même segment ne ferait que retomber au hasard sur
+    l'un ou l'autre backend, la décision appartient à l'appelant.
     """
     gagne = 0
     total: Optional[int] = None
     derniere_erreur: Optional[Exception] = None
     tentatives = 0
     fichier_entier = False
+    identite = identite_attendue
     for tentative in range(1, max_attempts + 1):
         tentatives = tentative
         debut = offset + gagne
         fin = debut + chunk_bytes - 1
         entetes = {**HEADERS, "Range": f"bytes={debut}-{fin}"}
-        res = _telecharger_flux(url, entetes, zip_path, "wb" if debut == 0 else "ab")
+        if identite_attendue is not None:
+            entetes["If-Range"] = identite_attendue
+        res = _telecharger_flux(
+            url, entetes, zip_path, "wb" if debut == 0 else "ab",
+            identite_attendue=identite_attendue, session=session,
+        )
+        if res.identite is not None:
+            identite = res.identite
+        if isinstance(res.erreur, ArchiveAmendementsChangeeError):
+            raise res.erreur
         if res.total_distant is not None:
             # Renseigné même quand le corps est vide : dans l'état où le CDN
             # annonce un 206 correct puis ne délivre rien, l'en-tête reste la
             # seule source fiable de la taille totale.
             total = res.total_distant
         if res.status_code == 200 and debut != 0:
+            if identite_attendue is not None:
+                # `If-Range` a été envoyée et le serveur a refusé la plage : le
+                # validateur ne correspond plus, donc l'archive distante n'est
+                # plus celle du préfixe. Rien n'a été écrit (`_telecharger_flux`
+                # rend la main sur un 200 en mode "ab"), l'appelant redémarre.
+                raise ArchiveAmendementsChangeeError(
+                    f"plage refusée à l'offset {debut} pour la législature {legislature} "
+                    f"(If-Range {identite_attendue} périmée, version servie "
+                    f"{res.identite or 'inconnue'})"
+                )
             raise OSError(
                 f"réponse HTTP 200 inattendue (en-tête Range ignoré) pour le segment "
                 f"amendements législature {legislature} à l'offset {debut} : écriture "
@@ -2229,17 +2364,19 @@ def _tenter_segments_range(
                 f"{tentative}/{max_attempts}) : {res.erreur}{recu} — nouvel essai du segment seul"
             )
             time.sleep(AMENDEMENTS_DOWNLOAD_BACKOFF_SECONDS)
-    return gagne, total, tentatives, derniere_erreur, fichier_entier
+    return _ResultatSegments(gagne, total, tentatives, derniere_erreur, fichier_entier, identite)
 
 
 def _tenter_get_sequentiel(
     url: str, zip_path: Path, legislature: str, prefixe_courant: int,
-) -> tuple[int, Optional[int], bool]:
+    session: Optional["requests.Session"] = None,
+) -> tuple[int, Optional[int], bool, Optional[str]]:
     """Repli GET séquentiel (sans en-tête `Range`), conservé comme préfixe.
 
-    Retourne `(taille_du_préfixe_retenu, total_distant, flux_acheve)`, ce
-    dernier drapeau indiquant un flux terminé sans erreur — donc un fichier
-    complet, et non un préfixe de plus.
+    Retourne `(taille_du_préfixe_retenu, total_distant, flux_acheve,
+    identite)`, l'avant-dernier drapeau indiquant un flux terminé sans erreur —
+    donc un fichier complet, et non un préfixe de plus — et le dernier la
+    version servie, que l'appelant épingle pour les segments suivants (#1050).
 
     Le flux est écrit dans un fichier voisin `.seq`, adopté **seulement s'il est
     plus long** que le préfixe déjà détenu. C'est l'application du principe de
@@ -2257,7 +2394,7 @@ def _tenter_get_sequentiel(
     """
     seq_path = zip_path.with_name(zip_path.name + ".seq")
     try:
-        res = _telecharger_flux(url, dict(HEADERS), seq_path, "wb")
+        res = _telecharger_flux(url, dict(HEADERS), seq_path, "wb", session=session)
         obtenu = res.octets_ecrits
         if res.erreur is not None:
             print(
@@ -2270,13 +2407,13 @@ def _tenter_get_sequentiel(
                 f"  -> Législature {legislature} : préfixe séquentiel de {obtenu} octets "
                 f"retenu (plus long que les {prefixe_courant} octets déjà obtenus)"
             )
-            return obtenu, res.total_distant, res.erreur is None
+            return obtenu, res.total_distant, res.erreur is None, res.identite
         if obtenu:
             print(
                 f"  -> Législature {legislature} : préfixe séquentiel de {obtenu} octets "
                 f"écarté (le préfixe déjà obtenu, {prefixe_courant} octets, est plus long)"
             )
-        return prefixe_courant, res.total_distant, False
+        return prefixe_courant, res.total_distant, False, None
     finally:
         try:
             seq_path.unlink(missing_ok=True)
@@ -2306,6 +2443,15 @@ def _download_amendements_zip(
        marteler la source, puis on échoue en disant que la **source est
        indisponible** (`SourceAmendementsIndisponibleError`), pas que le
        téléchargement a échoué.
+    4. La source sert **deux versions de la même URL** selon le backend qui
+       répond (#1050) -> tous les segments passent par une seule connexion, et
+       chacun redemande explicitement la version du préfixe (`If-Range` +
+       contrôle de l'`ETag` rendue). Une version qui change fait redémarrer le
+       téléchargement depuis zéro, jamais recoller ; au-delà de
+       `AMENDEMENTS_DOWNLOAD_MAX_REDEMARRAGES_VERSION`, on échoue en disant que
+       la **source est incohérente** (`SourceAmendementsIncoherenteError`).
+       C'est le seul des quatre états qui ne se voit pas à la taille finale :
+       le fichier recollé fait exactement le nombre d'octets annoncé.
 
     Le serveur annonce `Accept-Ranges: bytes` et un `Content-Length` correct
     dans les trois états : aucune sonde `HEAD` ne permet de les distinguer, seul
@@ -2384,86 +2530,144 @@ def _download_amendements_zip(
     segments_total = 0
     segments_retried = 0
     cycles_sans_progres = 0
+    identite_archive: Optional[str] = None
+    redemarrages_version = 0
 
-    while total_size is None or offset < total_size:
-        offset_debut_cycle = offset
+    # Tous les segments sur la MÊME connexion : la source répartit les requêtes
+    # entre deux backends qui ne portent pas la même archive, et l'affinité de
+    # connexion est ce qui rend l'incohérence rare au lieu de majoritaire
+    # (#1050). La garde `If-Range` reste nécessaire : une connexion peut être
+    # rouverte à tout moment, par le serveur comme par un retry.
+    session = requests.Session()
+    try:
+        while total_size is None or offset < total_size:
+            offset_debut_cycle = offset
 
-        # --- Mode 1 : reprise par segments (HTTP Range) ---
-        segments_total += 1
-        gagne, total_annonce, tentatives, derniere_erreur, fichier_entier = _tenter_segments_range(
-            url, zip_path, legislature, offset, chunk_bytes, max_attempts,
-        )
-        if total_annonce is not None and total_size is None:
-            total_size = total_annonce
-        offset += gagne
-        if gagne and tentatives > 1:
-            segments_retried += 1
-        if fichier_entier and total_size is None:
-            # Fichier entier délivré et flux achevé proprement, sans
-            # Content-Length exploitable : la taille obtenue *est* la taille
-            # totale. Rien n'est deviné — un corps tronqué aurait levé.
-            total_size = offset
-
-        if gagne:
-            if total_size:
-                percent = offset / total_size * 100
-                print(
-                    f"  -> Législature {legislature} : {offset}/{total_size} octets "
-                    f"({percent:.1f}%) — segment {segments_total} écrit"
+            # --- Mode 1 : reprise par segments (HTTP Range) ---
+            segments_total += 1
+            try:
+                res_segments = _tenter_segments_range(
+                    url, zip_path, legislature, offset, chunk_bytes, max_attempts,
+                    identite_attendue=identite_archive, session=session,
                 )
-            else:
+            except ArchiveAmendementsChangeeError as exc:
+                redemarrages_version += 1
+                if redemarrages_version > AMENDEMENTS_DOWNLOAD_MAX_REDEMARRAGES_VERSION:
+                    raise SourceAmendementsIncoherenteError(
+                        f"source data.assemblee-nationale.fr incohérente pour l'archive "
+                        f"amendements législature {legislature} : la version servie a changé "
+                        f"{redemarrages_version} fois en cours de téléchargement ({exc}). "
+                        "Ce n'est pas un échec de transfert à relancer : la source publie "
+                        "plusieurs versions de la même URL, et un préfixe déjà obtenu ne peut "
+                        "pas être complété tant que c'est le cas."
+                    ) from exc
                 print(
-                    f"  -> Législature {legislature} : {offset} octets — segment "
-                    f"{segments_total} écrit"
+                    f"  [!] Législature {legislature} : {exc} — redémarrage du téléchargement "
+                    f"depuis le début (tentative {redemarrages_version}/"
+                    f"{AMENDEMENTS_DOWNLOAD_MAX_REDEMARRAGES_VERSION}). Recoller deux versions "
+                    "produirait une archive de la taille attendue et illisible."
                 )
-            cycles_sans_progres = 0
-            continue
+                # Le préfixe est jeté SCIEMMENT, à rebours du principe de #443 :
+                # il est valide pour une archive qui n'est plus celle que la source
+                # sert, donc il ne peut plus être complété.
+                try:
+                    zip_path.unlink(missing_ok=True)
+                except OSError:
+                    pass
+                offset = 0
+                total_size = None
+                identite_archive = None
+                session.close()
+                session = requests.Session()
+                continue
+            gagne = res_segments.gagne
+            total_annonce = res_segments.total
+            tentatives = res_segments.tentatives
+            derniere_erreur = res_segments.derniere_erreur
+            fichier_entier = res_segments.fichier_entier
+            if identite_archive is None and res_segments.identite is not None:
+                # Épinglée au premier segment servi : c'est la version dont le
+                # préfixe sur disque provient, et celle que tous les segments
+                # suivants devront porter.
+                identite_archive = res_segments.identite
+            if total_annonce is not None and total_size is None:
+                total_size = total_annonce
+            offset += gagne
+            if gagne and tentatives > 1:
+                segments_retried += 1
+            if fichier_entier and total_size is None:
+                # Fichier entier délivré et flux achevé proprement, sans
+                # Content-Length exploitable : la taille obtenue *est* la taille
+                # totale. Rien n'est deviné — un corps tronqué aurait levé.
+                total_size = offset
 
-        if _est_erreur_http_definitive(derniere_erreur):
-            # Ni un mode de transfert en cause, ni une source indisponible :
-            # réessayer ou attendre ne changerait rien. Remonte tel quel.
-            raise derniere_erreur  # type: ignore[misc]
+            if gagne:
+                if total_size:
+                    percent = offset / total_size * 100
+                    print(
+                        f"  -> Législature {legislature} : {offset}/{total_size} octets "
+                        f"({percent:.1f}%) — segment {segments_total} écrit"
+                    )
+                else:
+                    print(
+                        f"  -> Législature {legislature} : {offset} octets — segment "
+                        f"{segments_total} écrit"
+                    )
+                cycles_sans_progres = 0
+                continue
 
-        # --- Mode 2 : repli GET séquentiel, conservé comme préfixe ---
-        # Atteint uniquement quand le `Range` n'a rien rendu du tout après
-        # épuisement des tentatives : ni exception, ni corps vide (le CDN AN
-        # répond alors 206 + Content-Range correct puis ne délivre rien).
-        motif = f" ({derniere_erreur})" if derniere_erreur is not None else " (corps vide)"
-        print(
-            f"  [!] Législature {legislature} : plage à l'offset {offset} sans effet après "
-            f"{max_attempts} tentative(s){motif} — repli sur un GET séquentiel"
-        )
-        offset, total_annonce, flux_acheve = _tenter_get_sequentiel(
-            url, zip_path, legislature, offset,
-        )
-        if total_annonce is not None and total_size is None:
-            total_size = total_annonce
-        if flux_acheve and total_size is None:
-            total_size = offset
-        if offset > offset_debut_cycle:
-            cycles_sans_progres = 0
-            continue
+            if _est_erreur_http_definitive(derniere_erreur):
+                # Ni un mode de transfert en cause, ni une source indisponible :
+                # réessayer ou attendre ne changerait rien. Remonte tel quel.
+                raise derniere_erreur  # type: ignore[misc]
 
-        # --- Mode 3 : aucun des deux modes ne délivre quoi que ce soit ---
-        cycles_sans_progres += 1
-        if cycles_sans_progres >= stall_max_cycles:
-            attendu = f"/{total_size}" if total_size is not None else ""
-            raise SourceAmendementsIndisponibleError(
-                f"source data.assemblee-nationale.fr indisponible pour l'archive amendements "
-                f"législature {legislature} : aucun octet nouveau obtenu en "
-                f"{cycles_sans_progres} cycle(s), ni par plages HTTP Range ni par GET "
-                f"séquentiel ({offset}{attendu} octets obtenus). Ce n'est pas un échec de "
-                "téléchargement à relancer : les deux modes de transfert sont sans effet "
-                "tant que la source ne redevient pas disponible — attendre et réessayer "
-                "plus tard, ou utiliser un index figé déjà committé."
+            # --- Mode 2 : repli GET séquentiel, conservé comme préfixe ---
+            # Atteint uniquement quand le `Range` n'a rien rendu du tout après
+            # épuisement des tentatives : ni exception, ni corps vide (le CDN AN
+            # répond alors 206 + Content-Range correct puis ne délivre rien).
+            motif = f" ({derniere_erreur})" if derniere_erreur is not None else " (corps vide)"
+            print(
+                f"  [!] Législature {legislature} : plage à l'offset {offset} sans effet après "
+                f"{max_attempts} tentative(s){motif} — repli sur un GET séquentiel"
             )
-        print(
-            f"  [!] Législature {legislature} : aucun octet obtenu par aucun mode "
-            f"(cycle {cycles_sans_progres}/{stall_max_cycles}) — la source semble "
-            f"indisponible, attente de {stall_wait_seconds}s avant un nouveau cycle "
-            "(inutile de marteler : aucun repli réseau ne fonctionne dans cet état)"
-        )
-        time.sleep(stall_wait_seconds)
+            offset, total_annonce, flux_acheve, identite_seq = _tenter_get_sequentiel(
+                url, zip_path, legislature, offset, session=session,
+            )
+            if identite_seq is not None:
+                # Le préfixe séquentiel REMPLACE le fichier : la version à
+                # exiger des segments suivants est la sienne, pas celle qui
+                # était épinglée avant (#1050).
+                identite_archive = identite_seq
+            if total_annonce is not None and total_size is None:
+                total_size = total_annonce
+            if flux_acheve and total_size is None:
+                total_size = offset
+            if offset > offset_debut_cycle:
+                cycles_sans_progres = 0
+                continue
+
+            # --- Mode 3 : aucun des deux modes ne délivre quoi que ce soit ---
+            cycles_sans_progres += 1
+            if cycles_sans_progres >= stall_max_cycles:
+                attendu = f"/{total_size}" if total_size is not None else ""
+                raise SourceAmendementsIndisponibleError(
+                    f"source data.assemblee-nationale.fr indisponible pour l'archive amendements "
+                    f"législature {legislature} : aucun octet nouveau obtenu en "
+                    f"{cycles_sans_progres} cycle(s), ni par plages HTTP Range ni par GET "
+                    f"séquentiel ({offset}{attendu} octets obtenus). Ce n'est pas un échec de "
+                    "téléchargement à relancer : les deux modes de transfert sont sans effet "
+                    "tant que la source ne redevient pas disponible — attendre et réessayer "
+                    "plus tard, ou utiliser un index figé déjà committé."
+                )
+            print(
+                f"  [!] Législature {legislature} : aucun octet obtenu par aucun mode "
+                f"(cycle {cycles_sans_progres}/{stall_max_cycles}) — la source semble "
+                f"indisponible, attente de {stall_wait_seconds}s avant un nouveau cycle "
+                "(inutile de marteler : aucun repli réseau ne fonctionne dans cet état)"
+            )
+            time.sleep(stall_wait_seconds)
+    finally:
+        session.close()
 
     if segments_retried >= AMENDEMENTS_SEGMENT_RETRY_WARNING_THRESHOLD:
         print(
@@ -3132,6 +3336,17 @@ def _download_and_build_amendement_index(legislature: str) -> dict[str, list[dic
                 if index_path.is_file():
                     _write_amendements_fraicheur(index_path, reussi=False)
                 raise AmendementsIndexError(f"source indisponible ({exc})") from exc
+            except SourceAmendementsIncoherenteError as exc:
+                # Journalisé distinctement lui aussi (#1050) : ni le réseau ni
+                # la disponibilité de la source ne sont en cause, c'est la
+                # source qui publie plusieurs versions de la même URL.
+                # Relancer est un tirage, pas une réparation — le log doit le
+                # dire, sinon on cherche une panne qui n'existe pas.
+                print(f"  [!] Source AN incohérente pour les amendements : {exc}")
+                _mark_amendements_legislature_failed(legislature)
+                if index_path.is_file():
+                    _write_amendements_fraicheur(index_path, reussi=False)
+                raise AmendementsIndexError(f"source incohérente ({exc})") from exc
             except (requests.RequestException, OSError) as exc:
                 print(f"  [!] Échec du téléchargement des amendements officiels : {exc}")
                 _mark_amendements_legislature_failed(legislature)
@@ -3141,7 +3356,17 @@ def _download_and_build_amendement_index(legislature: str) -> dict[str, list[dic
 
             try:
                 index = _parse_amendements_zip(zip_path)
-            except zipfile.BadZipFile as exc:
+            except (zipfile.BadZipFile, zlib.error) as exc:
+                # `zlib.error` et non seulement `BadZipFile` (#1050) : une
+                # archive recollée à partir de deux versions s'OUVRE
+                # normalement — l'en-tête et le répertoire central sont
+                # valides — et ne déraille qu'à la décompression d'un membre.
+                # Attraper le seul `BadZipFile` laissait cette erreur sortir
+                # de la boucle par législature de `build_amendements_index.py`,
+                # là où le contrat est « une législature perdue, jamais les
+                # autres ». Le run, lui, survivait : le job porte
+                # `continue-on-error: true` (mesuré sur le run 35531938588 du
+                # 20/09/2026, où il a échoué à 21h23 sans interrompre la suite).
                 print(f"  [!] Archive d'amendements invalide : {exc}")
                 _mark_amendements_legislature_failed(legislature)
                 if index_path.is_file():

@@ -1973,7 +1973,7 @@ def test_download_and_build_amendement_index_ignores_existing_cache_write(tmp_pa
 
     with (
         patch("candidate_profile.AMENDEMENTS_CACHE_DIR", tmp_path),
-        patch("candidate_profile.requests.get", side_effect=_requests.RequestException("boom")) as mock_get,
+        patch("candidate_profile.requests.Session.get", side_effect=_requests.RequestException("boom")) as mock_get,
         patch("candidate_profile.time.sleep", return_value=None),
     ):
         try:
@@ -2024,7 +2024,7 @@ def test_download_and_build_amendement_index_success_writes_fraicheur(tmp_path):
 
     with (
         patch("candidate_profile.AMENDEMENTS_CACHE_DIR", tmp_path),
-        patch("candidate_profile.requests.get", return_value=FakeStreamResponse()),
+        patch("candidate_profile.requests.Session.get", return_value=FakeStreamResponse()),
         patch("candidate_profile.time.strftime", return_value="2026-08-13T12:00:00+0000"),
     ):
         index = _download_and_build_amendement_index("17")
@@ -2079,7 +2079,7 @@ def test_download_and_build_amendement_index_success_removes_raw_zip(tmp_path):
 
     with (
         patch("candidate_profile.AMENDEMENTS_CACHE_DIR", tmp_path),
-        patch("candidate_profile.requests.get", return_value=_fake_amendements_zip_response(buf.getvalue())),
+        patch("candidate_profile.requests.Session.get", return_value=_fake_amendements_zip_response(buf.getvalue())),
     ):
         _download_and_build_amendement_index("17")
 
@@ -2095,7 +2095,7 @@ def test_download_and_build_amendement_index_download_failure_removes_partial_zi
 
     with (
         patch("candidate_profile.AMENDEMENTS_CACHE_DIR", tmp_path),
-        patch("candidate_profile.requests.get", side_effect=_requests.RequestException("boom")),
+        patch("candidate_profile.requests.Session.get", side_effect=_requests.RequestException("boom")),
         patch("candidate_profile.time.sleep", return_value=None),
     ):
         try:
@@ -2115,7 +2115,7 @@ def test_download_and_build_amendement_index_bad_zip_removes_raw_zip(tmp_path):
     with (
         patch("candidate_profile.AMENDEMENTS_CACHE_DIR", tmp_path),
         patch(
-            "candidate_profile.requests.get",
+            "candidate_profile.requests.Session.get",
             return_value=_fake_amendements_zip_response(b"ceci n'est pas une archive zip"),
         ),
         patch("candidate_profile.time.sleep", return_value=None),
@@ -2149,7 +2149,7 @@ def test_download_and_build_amendement_index_failure_preserves_existing_index(tm
 
     with (
         patch("candidate_profile.AMENDEMENTS_CACHE_DIR", tmp_path),
-        patch("candidate_profile.requests.get", side_effect=_requests.RequestException("boom")),
+        patch("candidate_profile.requests.Session.get", side_effect=_requests.RequestException("boom")),
         patch("candidate_profile.time.sleep", return_value=None),
         patch("candidate_profile.time.strftime", return_value="2026-08-13T12:05:00+0000"),
     ):
@@ -2177,7 +2177,7 @@ def test_download_and_build_amendement_index_failure_without_existing_index_writ
 
     with (
         patch("candidate_profile.AMENDEMENTS_CACHE_DIR", tmp_path),
-        patch("candidate_profile.requests.get", side_effect=_requests.RequestException("boom")),
+        patch("candidate_profile.requests.Session.get", side_effect=_requests.RequestException("boom")),
         patch("candidate_profile.time.sleep", return_value=None),
     ):
         try:
@@ -2418,7 +2418,7 @@ def test_download_and_build_amendement_index_frozen_legislature_falls_back_to_ne
     with (
         patch("candidate_profile.AMENDEMENTS_CACHE_DIR", tmp_path / "cache"),
         patch("candidate_profile.AN_AMENDEMENTS_FIGEES_DIR", tmp_path / "figees_absent"),
-        patch("candidate_profile.requests.get", side_effect=_requests.RequestException("boom")) as mock_get,
+        patch("candidate_profile.requests.Session.get", side_effect=_requests.RequestException("boom")) as mock_get,
         patch("candidate_profile.time.sleep", return_value=None),
     ):
         try:
@@ -2442,7 +2442,7 @@ def test_download_and_build_amendement_index_raises_on_download_failure(tmp_path
 
     with (
         patch("candidate_profile.AMENDEMENTS_CACHE_DIR", tmp_path),
-        patch("candidate_profile.requests.get", side_effect=_requests.RequestException("boom")) as mock_get,
+        patch("candidate_profile.requests.Session.get", side_effect=_requests.RequestException("boom")) as mock_get,
         patch("candidate_profile.time.sleep", return_value=None) as mock_sleep,
     ):
         try:
@@ -2472,7 +2472,7 @@ def test_download_and_build_amendement_index_failed_legislature_is_not_retried_f
 
     with (
         patch("candidate_profile.AMENDEMENTS_CACHE_DIR", tmp_path),
-        patch("candidate_profile.requests.get", side_effect=_requests.RequestException("boom")) as mock_get,
+        patch("candidate_profile.requests.Session.get", side_effect=_requests.RequestException("boom")) as mock_get,
         patch("candidate_profile.time.sleep", return_value=None),
     ):
         # Premier appel ayant besoin de cette législature : cycle complet de
@@ -2516,7 +2516,7 @@ def test_download_and_build_amendement_index_failed_legislature_shared_across_jo
 
     with (
         patch("candidate_profile.AMENDEMENTS_CACHE_DIR", tmp_path),
-        patch("candidate_profile.requests.get", side_effect=_requests.RequestException("boom")) as mock_get,
+        patch("candidate_profile.requests.Session.get", side_effect=_requests.RequestException("boom")) as mock_get,
         patch("candidate_profile.time.sleep", return_value=None),
     ):
         # Premier process : cycle complet de tentatives, échec définitif.
@@ -2570,7 +2570,7 @@ def test_download_and_build_amendement_index_disk_marker_from_different_run_is_i
         marker_path.write_text("99999999999", encoding="utf-8")  # run_id d'un run précédent
 
         with (
-            patch("candidate_profile.requests.get", side_effect=_requests.RequestException("boom")) as mock_get,
+            patch("candidate_profile.requests.Session.get", side_effect=_requests.RequestException("boom")) as mock_get,
             patch("candidate_profile.time.sleep", return_value=None),
         ):
             try:
@@ -2625,7 +2625,7 @@ def test_download_and_build_amendement_index_retries_transient_failure_then_succ
     with (
         patch("candidate_profile.AMENDEMENTS_CACHE_DIR", tmp_path),
         patch(
-            "candidate_profile.requests.get",
+            "candidate_profile.requests.Session.get",
             side_effect=[
                 _requests.RequestException("IncompleteRead(16779130 bytes read, 346527232 more expected)"),
                 FakeStreamResponse(valid_zip_bytes),
@@ -2662,7 +2662,7 @@ def test_download_and_build_amendement_index_raises_on_bad_zip(tmp_path):
 
     with (
         patch("candidate_profile.AMENDEMENTS_CACHE_DIR", tmp_path),
-        patch("candidate_profile.requests.get", return_value=FakeStreamResponse()),
+        patch("candidate_profile.requests.Session.get", return_value=FakeStreamResponse()),
     ):
         try:
             _download_and_build_amendement_index("17")
@@ -2711,7 +2711,7 @@ def test_download_amendements_zip_retries_only_failed_segment(tmp_path):
 
     with (
         patch("candidate_profile.AMENDEMENTS_DOWNLOAD_CHUNK_BYTES", 4),
-        patch("candidate_profile.requests.get", side_effect=fake_get),
+        patch("candidate_profile.requests.Session.get", side_effect=fake_get),
         patch("candidate_profile.time.sleep", return_value=None),
     ):
         zip_path = tmp_path / "amendements.zip"
@@ -2778,7 +2778,7 @@ def test_download_amendements_zip_resumes_from_existing_partial_file(tmp_path):
     with (
         patch("candidate_profile.AMENDEMENTS_DOWNLOAD_CHUNK_BYTES", 4),
         patch("candidate_profile.requests.head", return_value=_FakeHeadResponse(len(payload))),
-        patch("candidate_profile.requests.get", side_effect=fake_get),
+        patch("candidate_profile.requests.Session.get", side_effect=fake_get),
     ):
         _download_amendements_zip("https://example.test/amendements.zip", zip_path, "17")
 
@@ -2809,7 +2809,7 @@ def test_download_amendements_zip_chunk_bytes_param_overrides_module_default(tmp
 
     with (
         patch("candidate_profile.AMENDEMENTS_DOWNLOAD_CHUNK_BYTES", 4),
-        patch("candidate_profile.requests.get", side_effect=fake_get),
+        patch("candidate_profile.requests.Session.get", side_effect=fake_get),
     ):
         _download_amendements_zip(
             "https://example.test/amendements.zip", zip_path, "17", chunk_bytes=2,
@@ -2845,7 +2845,7 @@ def test_download_amendements_zip_max_attempts_param_overrides_module_default(tm
     with (
         patch("candidate_profile.AMENDEMENTS_DOWNLOAD_CHUNK_BYTES", 4),
         patch("candidate_profile.AMENDEMENTS_DOWNLOAD_MAX_ATTEMPTS", 2),
-        patch("candidate_profile.requests.get", side_effect=fake_get),
+        patch("candidate_profile.requests.Session.get", side_effect=fake_get),
         patch("candidate_profile.time.sleep", return_value=None),
     ):
         _download_amendements_zip(
@@ -2903,7 +2903,7 @@ def test_download_amendements_zip_restarts_from_scratch_when_probe_fails(tmp_pat
     with (
         patch("candidate_profile.AMENDEMENTS_DOWNLOAD_CHUNK_BYTES", 4),
         patch("candidate_profile.requests.head", side_effect=_requests.RequestException("HEAD indisponible")),
-        patch("candidate_profile.requests.get", side_effect=fake_get),
+        patch("candidate_profile.requests.Session.get", side_effect=fake_get),
     ):
         _download_amendements_zip("https://example.test/amendements.zip", zip_path, "17")
 
@@ -2933,7 +2933,7 @@ def test_download_amendements_zip_restarts_from_scratch_when_local_size_exceeds_
     with (
         patch("candidate_profile.AMENDEMENTS_DOWNLOAD_CHUNK_BYTES", 4),
         patch("candidate_profile.requests.head", return_value=_FakeHeadResponse(len(payload))),
-        patch("candidate_profile.requests.get", side_effect=fake_get),
+        patch("candidate_profile.requests.Session.get", side_effect=fake_get),
     ):
         _download_amendements_zip("https://example.test/amendements.zip", zip_path, "17")
 
@@ -2971,7 +2971,7 @@ def test_download_amendements_zip_raises_instead_of_corrupting_on_unexpected_200
     with (
         patch("candidate_profile.AMENDEMENTS_DOWNLOAD_CHUNK_BYTES", 4),
         patch("candidate_profile.requests.head", return_value=_FakeHeadResponse(len(payload))),
-        patch("candidate_profile.requests.get", return_value=FakeFullResponse()),
+        patch("candidate_profile.requests.Session.get", return_value=FakeFullResponse()),
         patch("candidate_profile.time.sleep", return_value=None),
     ):
         try:
@@ -3000,7 +3000,7 @@ def test_download_amendements_zip_prints_progress_on_success(tmp_path, capsys):
 
     with (
         patch("candidate_profile.AMENDEMENTS_DOWNLOAD_CHUNK_BYTES", 4),
-        patch("candidate_profile.requests.get", side_effect=fake_get),
+        patch("candidate_profile.requests.Session.get", side_effect=fake_get),
     ):
         _download_amendements_zip("https://example.test/amendements.zip", zip_path, "17")
 
@@ -4504,3 +4504,79 @@ def test_write_cached_amendements_agreges_ecrit_bien_toutes_les_tranches(tmp_pat
         assert _read_cached_amendements_acteur("17", "PA3") == [
             {"uid": uid, "numero": "12", "role_signataire": "auteur_principal"}
         ]
+
+
+def _archive_au_membre_corrompu() -> bytes:
+    """Une archive zip VALIDE dont le flux compressé d'un membre ne l'est pas.
+
+    C'est la forme exacte de ce que #1050 a produit en CI : le fichier s'ouvre,
+    `namelist()` répond, et rien ne casse avant la décompression du membre —
+    la corruption vit dans le flux deflate, pas dans les en-têtes. Fabriquée en
+    décalant le flux de 64 octets, recette mesurée le 21/09/2026 ; le message
+    rendu par zlib varie avec le décalage (« invalid block type », « invalid
+    distance too far back » en production), mais le TYPE ne varie pas, et c'est
+    lui que le correctif attrape."""
+    import io
+    import random
+    import struct
+    import zipfile
+
+    rng = random.Random(7)
+    mots = ["amendement", "signataire", "irrecevable", "commission", "seance"]
+    contenu = json.dumps({
+        "amendement": {
+            "uid": "AMANR5L17PO59048B0001",
+            "texte": " ".join(rng.choice(mots) for _ in range(20000)),
+            "signataires": {"signataire": []},
+        }
+    }).encode()
+
+    tampon = io.BytesIO()
+    with zipfile.ZipFile(tampon, "w", zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr("AMANR5L17PO59048B0001.json", contenu)
+    octets = bytearray(tampon.getvalue())
+
+    nom_len, extra_len = struct.unpack("<HH", octets[26:30])
+    debut = 30 + nom_len + extra_len
+    taille = struct.unpack("<I", octets[18:22])[0]
+    donnees = bytes(octets[debut : debut + taille])
+    # Même longueur, donc en-têtes et répertoire central restent cohérents :
+    # seul le contenu compressé est illisible.
+    octets[debut : debut + taille] = donnees[64:] + bytes(64)
+    return bytes(octets)
+
+
+def test_download_and_build_amendement_index_convertit_zlib_error(tmp_path):
+    """#1050 : une archive au flux corrompu doit devenir une
+    `AmendementsIndexError` — une législature perdue — et non une `zlib.error`
+    qui sort de la boucle par législature.
+
+    Mesuré sur le run 35531938588 du 20/09/2026 : l'archive recollée à partir
+    des deux versions servies par l'AN s'ouvrait sans erreur, et seul
+    `except zipfile.BadZipFile` gardait le parsing. Le job est tombé à 21h23 ;
+    son `continue-on-error: true` a épargné le run, mais la 17e législature
+    est sortie sans index amendements."""
+    import zlib
+
+    from candidate_profile import AmendementsIndexError, _download_and_build_amendement_index
+
+    archive = _archive_au_membre_corrompu()
+
+    def faux_telechargement(url, zip_path, legislature, **kwargs):
+        zip_path.parent.mkdir(parents=True, exist_ok=True)
+        zip_path.write_bytes(archive)
+
+    with (
+        patch("candidate_profile.AMENDEMENTS_CACHE_DIR", tmp_path),
+        patch("candidate_profile._download_amendements_zip", side_effect=faux_telechargement),
+    ):
+        try:
+            _download_and_build_amendement_index("17")
+            assert False, "AmendementsIndexError attendue"
+        except AmendementsIndexError as exc:
+            assert "invalide" in str(exc), f"Message attendu sur l'archive invalide, reçu : {exc}"
+        except zlib.error:
+            assert False, (
+                "zlib.error ne doit pas traverser : elle doit être reconvertie en "
+                "AmendementsIndexError, sans quoi le job meurt et le run avec lui"
+            )
