@@ -2,6 +2,20 @@
 """
 dossiers_europeens.py — L'index des dossiers du Parlement européen (#901).
 
+Ce qui gouverne ce module
+-------------------------
+- `docs/decisions/index-europeen-reprend-ses-acquis-1062.md` — le fichier
+  publié est la mémoire durable, le cache du portail n'est qu'un raccourci :
+  996 verdicts avaient été perdus avec lui.
+- `docs/decisions/domaines-eurovoc-des-dossiers-901.md` — les domaines se lisent
+  sur le **document de séance**, jamais sur la procédure, et aucun n'est « le »
+  domaine du dossier.
+- `docs/decisions/dossiers-europeens-votes-901.md` — le périmètre est ce que les
+  profils publiés citent : amendements, textes portés **et** votes.
+
+La liste complète, et celles qui ne font que le mentionner :
+`docs/decisions-par-module.md`.
+
 Ce que cet index résout
 ------------------------
 Un amendement européen publie son `texte_vise` — `"2021/0136(COD)"` — sur
@@ -609,6 +623,72 @@ def domaines_des_dossiers(
     return compteurs
 
 
+#: Les motifs qui sont un VERDICT du portail, donc un acquis qui se reprend.
+#: `question_non_posee` n'en est pas un — c'est l'ignorance elle-même — et
+#: `eurovoc_injoignable` non plus : c'est une panne, pas une réponse.
+MOTIFS_ACQUIS = frozenset({"documents_non_classes", "domaine_eurovoc_introuvable"})
+
+
+def reprendre_acquis(
+    entrees: list[dict[str, Any]],
+    documents: dict[str, list[str]],
+    publie: Path,
+) -> dict[str, int]:
+    """Reprend, depuis l'index DÉJÀ PUBLIÉ, ce que ce run n'a pas pu demander.
+
+    Ce que ce run a appris vit dans le cache du portail, qui est un cache de
+    CI : il disparaît. Mesuré le 21/09/2026, premier run sur le dépôt public,
+    cache reparti vide — **996 dossiers sont repassés de `documents_non_classes`
+    à `question_non_posee`**, c'est-à-dire de « le portail a répondu, il ne
+    classe rien » à « nous n'avons jamais demandé ». La fiche européenne
+    devenait plus pauvre d'un run à l'autre, sans qu'aucune garde ne s'en
+    aperçoive : les deux états sont des absences licites (§2 règle 5), et le
+    contrôle de perte ne compte pas les motifs.
+
+    **Le fichier publié est la mémoire durable, le cache n'est qu'un raccourci.**
+
+    Ne reprend que ce que ce run a laissé en `question_non_posee` : un verdict
+    obtenu maintenant est plus frais que l'ancien et l'emporte toujours. Rien
+    n'est donc figé — le budget du run suivant réinterroge ce qui a été repris,
+    et le nouveau verdict écrase l'ancien.
+
+    Un `domaines` repris n'est retenu que si le document qui le porte est
+    ENCORE cité par le dossier : le dump bouge, et republier un domaine tiré
+    d'un document que le dossier ne cite plus serait une affirmation que la
+    source ne porte pas (§2 règle 2).
+    """
+    try:
+        ancien = json.loads(publie.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    par_reference = {
+        e.get("reference"): e
+        for e in (ancien.get("dossiers") or [])
+        if isinstance(e, dict)
+    }
+    compteurs: dict[str, int] = {}
+    for entree in entrees:
+        motif = (entree.get("domaines_non_resolu") or {}).get("motif")
+        if motif != "question_non_posee":
+            continue
+        precedent = par_reference.get(entree["reference"])
+        if not precedent:
+            continue
+        domaines = precedent.get("domaines") or []
+        porteur = precedent.get("domaines_document")
+        if domaines and porteur and porteur in (documents.get(entree["reference"]) or []):
+            entree["domaines"] = domaines
+            entree["domaines_document"] = porteur
+            entree.pop("domaines_non_resolu", None)
+            compteurs["avec_domaines"] = compteurs.get("avec_domaines", 0) + 1
+            continue
+        motif_ancien = (precedent.get("domaines_non_resolu") or {}).get("motif")
+        if motif_ancien in MOTIFS_ACQUIS:
+            entree["domaines_non_resolu"] = {"motif": motif_ancien}
+            compteurs[motif_ancien] = compteurs.get(motif_ancien, 0) + 1
+    return compteurs
+
+
 def construire(
     references: Iterable[str],
     force_download: bool = False,
@@ -730,6 +810,11 @@ def main(argv: Optional[list[str]] = None) -> int:
             budget_secondes=args.budget_secondes)
         resolveur.enregistrer()
         print(f"  domaines EuroVoc : {compteurs}")
+        # Le fichier publié est la mémoire durable : ce que le cache a perdu
+        # s'y retrouve, au lieu de redevenir « jamais demandé ».
+        repris = reprendre_acquis(entrees, documents, args.out)
+        if repris:
+            print(f"  repris de l'index publié : {repris}")
         if resolveur.statistiques.get("disjoncte"):
             print("  ⚠ le portail s'est tu : la passe des domaines s'est ARRÊTÉE en route.")
     manquantes = sorted(refs - {e["reference"] for e in entrees})

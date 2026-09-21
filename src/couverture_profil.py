@@ -397,7 +397,7 @@ DECISIONS_ROSTER: tuple[str, ...] = ("skip_interventions", "skip_dossiers_legisl
 class GroupeSuspendu(NamedTuple):
     """Le gel d'extraction d'un groupe, tel que sa config le documente (#558).
 
-    La preuve est **lue** dans `raw_data/groupes_reels.json`, jamais codée en
+    La preuve est **lue** dans `config/groupes_reels.json`, jamais codée en
     dur ici : les quatre champs de `groupes_config.CHAMPS_SUSPENSION_REQUIS` sont
     exigés justement pour qu'une suspension soit relisible, et une preuve qui les
     recopierait à la main divergerait le jour où la suspension est levée.

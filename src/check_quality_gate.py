@@ -2641,9 +2641,9 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--groupes-config",
         type=Path,
-        default=Path("raw_data/groupes_reels.json"),
+        default=Path("config/groupes_reels.json"),
         dest="groupes_config",
-        help="Config des groupes attendus (défaut : raw_data/groupes_reels.json).",
+        help="Config des groupes attendus (défaut : config/groupes_reels.json).",
     )
     parser.add_argument(
         "--gouvernements-dir",

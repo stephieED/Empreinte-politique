@@ -268,13 +268,13 @@ def test_un_bloc_normal_est_lu_et_s_arrete_a_la_cle_suivante(tmp_path):
         "            .github\n"
         "            # un commentaire\n"
         "            docs\n"
-        "            raw_data/groupes_reels.json\n"
+        "            config/groupes_reels.json\n"
         "\n"
         "      - name: Etape suivante\n"
         "        run: echo ok\n"
     )
     lue = _outils_ci.lire_liste_blanche(_workflow(tmp_path, contenu))
-    assert lue == frozenset({".github", "docs", "raw_data/groupes_reels.json"})
+    assert lue == frozenset({".github", "docs", "config/groupes_reels.json"})
 
 
 # ---------------------------------------------------------------------------

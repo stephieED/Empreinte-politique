@@ -261,7 +261,7 @@ GROUPE_MERGE_FLAG=()
 # un échec. Ne pas remplacer par un `|| true`, qui avalerait aussi le code 1.
 GROUPE_CODE=0
 python3 src/generate_group_profiles.py \
-  --config raw_data/groupes_reels.json \
+  --config config/groupes_reels.json \
   --profiles-dir pivot_data/profiles \
   --out-dir pivot_data/groupes \
   --rosters-bruts raw_data/rosters_bruts.json \
@@ -284,7 +284,7 @@ python3 src/check_quality_gate.py \
   --partis-dir        pivot_data/partis \
   --raw-dir           raw_data/profiles \
   --candidats         raw_data/candidats.json \
-  --groupes-config    raw_data/groupes_reels.json \
+  --groupes-config    config/groupes_reels.json \
   --gouvernements-dir    pivot_data/gouvernements \
   --gouvernements-config raw_data/gouvernements_reels.json \
   --threshold         "$THRESHOLD" \

@@ -71,8 +71,17 @@ def test_le_nom_du_secret_est_le_seul_du_job():
     `test_transport_artifacts_786.py`, verrouille cette moitié-là.
     """
     secrets = set(re.findall(r"secrets\.([A-Z0-9_]+)", BLOC))
-    assert secrets == {"DATA_PUSH_SSH_KEY"}, (
-        f"secrets attendus dans merge-and-pivot : DATA_PUSH_SSH_KEY seul ; trouvés : {sorted(secrets)}"
+    assert secrets == {"DATA_PUSH_SSH_KEY", "SRC_READ_TOKEN"}, (
+        f"secrets attendus dans merge-and-pivot : DATA_PUSH_SSH_KEY (la seule "
+        f"identité de PUSH) et SRC_READ_TOKEN ; trouvés : {sorted(secrets)}"
+    )
+    # `SRC_READ_TOKEN` n'est pas une identité de push (#1059) : jeton à portée
+    # fine, `Contents: Read-only` sur le dépôt privé, et il ne sert qu'au pas de
+    # superposition du code. Ce qui reste interdit est ce que #508 visait —
+    # une SECONDE identité capable de pousser, dont une seule serait inscrite
+    # dans les `bypass_actors` du ruleset et l'autre se ferait rejeter.
+    assert BLOC.count("secrets.SRC_READ_TOKEN") == 1, (
+        "le jeton de lecture ne doit apparaître qu'au pas de superposition"
     )
 
 

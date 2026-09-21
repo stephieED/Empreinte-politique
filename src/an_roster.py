@@ -56,7 +56,7 @@ Le sigle AN est `organe.libelleAbrev` (`RE`, `LFI-NUPES`, `SOC-A`,
 `UDDPLR`…), pas le sigle publié par ce dépôt (`REN`, `LFI`, `SOC`…), et pas
 non plus `libelleAbrege`, qui écrit `LFI - NUPES` avec des espaces et **ne
 distingue pas** les deux organes `SOC` de la 16e. La correspondance vit dans
-`raw_data/groupes_reels.json`, clé `correspondance_sigles_an` : relue, datée,
+`config/groupes_reels.json`, clé `correspondance_sigles_an` : relue, datée,
 avec les organes et l'effectif **mesurés** au moment de la relecture. Une
 heuristique sur les sigles rapprocherait `RE` de `REN` et `DR` de rien.
 
@@ -195,7 +195,7 @@ AIDE_ROSTER_AN = (
     "#527 (lot 1b de l'épic « une seule source AN »), sur la mesure du lot 1 "
     "(#526) : les 5 rosters publiés de la 16e sont reproduits à l'identique à "
     "4 entrées près, toutes nommées et datées dans "
-    "raw_data/groupes_reels.json (des membres partis avant la fin de la "
+    "config/groupes_reels.json (des membres partis avant la fin de la "
     "législature, sans profil publié, donc sans slug). La 17e législature, que "
     "NosDéputés n'a jamais servie, reste HORS périmètre tant que ses 5 fiches "
     "ne sont pas configurées : elle apporterait 461 membres sur les 5 familles "
@@ -568,7 +568,7 @@ def est_mandat_de_transit(fin: Optional[str], constitution: Optional[str]) -> bo
 
 # ── La table de correspondance des sigles, committée ─────────────────────────
 # Portée par `groupes_config` depuis #686, comme `CHEMIN_CONFIG_GROUPES`
-# l'était déjà depuis #558 et pour la même raison : `raw_data/groupes_reels.json`
+# l'était déjà depuis #558 et pour la même raison : `config/groupes_reels.json`
 # a maintenant quatre lecteurs — le roster (ici), la génération des fiches, le
 # portail de qualité et la config des groupes —, et trois d'entre eux n'ont
 # aucune raison de dépendre du dérivateur de roster AN. Réexporté pour les

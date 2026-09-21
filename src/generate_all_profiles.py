@@ -772,7 +772,7 @@ def vider_index_groupes_suspendus() -> None:
 
     Ce mémo est construit UNE fois par processus. Dans un run, c'est ce qu'on
     veut. Dans la suite, il faisait qu'un seul test lisait réellement
-    `raw_data/groupes_reels.json` et que les onze suivants consommaient sa
+    `config/groupes_reels.json` et que les onze suivants consommaient sa
     lecture sans rouvrir de fichier — donc sans que le garde-fou de #791 puisse
     les voir. Le vider aux deux bouts rend chaque test comptable de ce qu'il
     lit (le piège de #767).

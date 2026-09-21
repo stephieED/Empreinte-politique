@@ -113,6 +113,13 @@ INVENTAIRE_STEPS = {
     # qui n'enregistre qu'en cas de succès, a perdu 1 501 réponses. Toujours le
     # même écrivain, sous une clé suffixée `-dossiers`.
     ("merge-and-pivot", 2): True,
+    # #1064 : le réchauffage du portail européen. Le `restore` ne remplit rien
+    # — il repart de ce que les runs précédents ont appris.
+    ("rechauffer-le-portail-europeen", 0): False,
+    # #1064 : et il SAUVEGARDE ce qu'il vient d'apprendre, en `if: always()`
+    # pour la même raison qu'en #901 — un job coupé ne doit pas emporter ses
+    # réponses. Écrivain légitime : c'est lui qui interroge le portail.
+    ("rechauffer-le-portail-europeen", 1): True,
 }
 
 # Jobs autorisés à cacher `.cache` EN BLOC. Le seul l'était `extract-senat`,

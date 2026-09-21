@@ -59,7 +59,7 @@ RACINE = Path(__file__).resolve().parents[1]
 DEFAULT_RAW_DIR = RACINE / "raw_data" / "profiles"
 DEFAULT_PIVOT_DIR = RACINE / "pivot_data" / "profiles"
 DEFAULT_CANDIDATS = RACINE / "raw_data" / "candidats.json"
-DEFAULT_TABLE = RACINE / "raw_data" / "correspondance_elus_rne.json"
+DEFAULT_TABLE = RACINE / "config" / "correspondance_elus_rne.json"
 
 #: La clé du bloc dans le profil brut.
 CLE_BLOC = "mandats_locaux"

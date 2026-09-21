@@ -33,9 +33,9 @@ from mandats_anterieurs import (  # noqa: E402
 )
 from schema_pivot import valider_mandats_anterieurs  # noqa: E402
 
-pytestmark = pytest.mark.lit_reference_committee("raw_data/mandats_anterieurs.json")
+pytestmark = pytest.mark.lit_reference_committee("config/mandats_anterieurs.json")
 
-TABLE = RACINE / "raw_data" / "mandats_anterieurs.json"
+TABLE = RACINE / "config" / "mandats_anterieurs.json"
 
 
 # ---------------------------------------------------------------------------
@@ -189,5 +189,5 @@ def test_une_entree_neuve_rappelle_la_releve_des_mandats_anterieurs():
     candidat = fcd.CandidatDeclare(nom="Un Nouveau", parti="Un parti", url=None)
     for slug in ("un-nouveau", None):
         notes = fcd.nouvelle_entree(candidat, "2026-09-11", slug)["notes"]
-        assert "raw_data/mandats_anterieurs.json" in notes, slug
+        assert "config/mandats_anterieurs.json" in notes, slug
         assert "#860" in notes, slug

@@ -82,6 +82,17 @@ slices → `pivot_data/profiles/<slug>.pivot.json` → groupes / lignées /
 gouvernements → `check_quality_gate.py`, which gates every commit. `raw_data/` is
 source-near; `pivot_data/` is the only layer `web/` reads.
 
+**Three top-level directories, and the difference is who writes them (#1057).**
+`raw_data/` and `pivot_data/` hold what a run collected or derived — **a run
+writes them, you don't**. `config/` holds what a human decided and typed: the
+groups and their lineages, the Sycomore table of pre-2002 mandates, the RNE
+correspondence. **No run ever writes into `config/`.** A file that carries a
+judgement — which groups deserve a fiche, that EPR-17 continues REN-16 — is
+configuration even when it looks like data, and it does not belong in
+`raw_data/` (`gouvernements_reels.json` does, despite its name: it is derived
+from AMO30 by the run).
+→ `docs/decisions/repertoire-config-1057.md`
+
 **`pivot_data/profiles/` holds three populations, and nothing on disk says so
 (#630, #996).** One directory, one naming pattern — a `glob` returns all of
 them. `meta.provenance == "candidat_declare"` marks the declared candidates,
@@ -179,7 +190,7 @@ Full rationale: `web/old/v3/methodologie.html` — do not duplicate prose here.
 | Parltrack (JSON dumps) | Yes | ODbL v1.0 | **Share-alike** if republished as downloadable dataset |
 | European Parliament (data.europarl.europa.eu) | Yes — **every request goes to the open-data portal**; `www.europarl.europa.eu` is only linked, never fetched (#983) | CC BY 4.0 (Bureau decision of 16/12/2024, EUR-Lex C/2025/341, art. 4) | Attribution only |
 | NosDeputes.fr / NosSenateurs.fr | **No** since #528/#529 — and **no published field derives from it any more** since #976 and #718 (measured 17/09/2026 — #976 missed 331 mandate entries that carried no source name): not cited on the site | ODbL v1.0 | None while nothing derives from it — attribution and share-alike return with the first field that does |
-| Sycomore (www2.assemblee-nationale.fr/sycomore) | **No — cited**: one row per deputy mandate older than AMO30's 19/06/2002 bound, hand-checked, in `raw_data/mandats_anterieurs.json` (#860) | © Assemblée nationale, all rights reserved | **Facts only** (office, dates) with a link to the page; nothing reproduced |
+| Sycomore (www2.assemblee-nationale.fr/sycomore) | **No — cited**: one row per deputy mandate older than AMO30's 19/06/2002 bound, hand-checked, in `config/mandats_anterieurs.json` (#860) | © Assemblée nationale, all rights reserved | **Facts only** (office, dates) with a link to the page; nothing reproduced |
 | Journal officiel (Légifrance) | **No — cited**: one decree per government office older than the corpus, same table (#860) | Licence Ouverte 2.0 (Etalab) | Attribution only |
 | Répertoire national des élus + Municipales 2026 sortants (data.gouv.fr, `tabular-api`) | **Yes since #922 — local mandates only**, for declared candidates. Queried through the tabular API (~160 filtered requests), never downloaded (76 Mo). Coverage **starts in 2020**: the complete 2014 and 2020 datasets declare no licence, and the Licence Ouverte 2014 ones cover the first round only. An absence before that bound is **declared**, never read as « no local mandate ». The three files of mandates we already collect elsewhere — deputies, senators, MEPs — are refused at read time | Licence Ouverte 2.0 (Etalab) | Attribution only |
 | EuroVoc (publications.europa.eu, point SPARQL) | **Yes since #901 — two readings, both in French**: `skos:prefLabel`, to name a concept whose identifier the European Parliament already gave, and since 17/09/2026 the concept's **domain**, read along the thesaurus (concept → microthesaurus → domain), never inferred from a label. Nothing is discovered here and nothing is classified here: the subject of a document is the Parliament's fact, never our reading of its title | CC BY 4.0 | Attribution, and changes must be stated. A code the thesaurus does not return is **never invented**: the document keeps the labels found and declares the others |

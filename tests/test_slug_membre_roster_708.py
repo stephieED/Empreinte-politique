@@ -61,13 +61,13 @@ from generate_roster_candidats import (  # noqa: E402
 #: test n'a pas déclaré (#791), et n'accepte la déclaration que si le chemin
 #: est dans le `sparse-checkout` de `tests.yml` — sinon le test ne tournerait
 #: qu'en local, sur ce qu'un run y a laissé.
-pytestmark = pytest.mark.lit_reference_committee("raw_data/groupes_reels.json")
+pytestmark = pytest.mark.lit_reference_committee("config/groupes_reels.json")
 
 ARCHIVE = Path(__file__).resolve().parent / "fixtures" / "amo30_gp_leg16_17.zip"
 CORRESPONDANCE = (
     Path(__file__).resolve().parent / "fixtures" / "correspondance_acteurs_an_extrait.json"
 )
-CONFIG = RACINE / "raw_data" / "groupes_reels.json"
+CONFIG = RACINE / "config" / "groupes_reels.json"
 
 #: Nicolas Forissier, `LR` 16e — présent dans l'archive réduite, **absent** de
 #: la table de correspondance : c'est exactement le cas que #708 ouvre.

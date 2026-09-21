@@ -724,7 +724,7 @@ def attribuer_slugs(
 #: primaires. La note est là où passe forcément qui relit l'entrée.
 RAPPEL_MANDATS_ANTERIEURS = (
     "Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au "
-    "Journal officiel, puis à inscrire dans raw_data/mandats_anterieurs.json — "
+    "Journal officiel, puis à inscrire dans config/mandats_anterieurs.json — "
     "même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » "
     "jusque-là (#860)."
 )

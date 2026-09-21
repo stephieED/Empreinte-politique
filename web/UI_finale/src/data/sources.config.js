@@ -119,7 +119,7 @@ export const sourcesConfig = [
     contenuCouvert:
       "Mandats de député antérieurs au 19 juin 2002, que l'open data de l'Assemblée ne rattache pas : fonction et dates, citées mandat par mandat avec un lien vers la fiche du député.",
     cadenceMiseAJour:
-      "Aucune collecte : table relue une fois (raw_data/mandats_anterieurs.json), complétée quand un candidat se déclare.",
+      "Aucune collecte : table relue une fois (config/mandats_anterieurs.json), complétée quand un candidat se déclare.",
     licence: 'Tous droits réservés (Assemblée nationale) — faits cités',
     implication:
       "Seuls des faits — une fonction, deux dates — sont repris, chacun avec son lien ; aucun contenu du site n'est reproduit.",
@@ -133,7 +133,7 @@ export const sourcesConfig = [
     contenuCouvert:
       "Fonctions gouvernementales antérieures à celles que publie l'open data de l'Assemblée : décrets relatifs à la composition du Gouvernement, cités fonction par fonction.",
     cadenceMiseAJour:
-      "Aucune collecte : table relue une fois (raw_data/mandats_anterieurs.json), complétée quand un candidat se déclare.",
+      "Aucune collecte : table relue une fois (config/mandats_anterieurs.json), complétée quand un candidat se déclare.",
     licence: 'Licence Ouverte 2.0 (Etalab)',
     implication: 'Réutilisation libre sous réserve de mention de la source (attribution uniquement).',
     perimetre: ['Gouvernement'],

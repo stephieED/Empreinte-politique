@@ -21,7 +21,7 @@ indisponible » nommé, donc un `exit 2` qui laisse les fiches publiées en
 place, et non une trace de pile qui annule le commit du run (#518).
 
 La liste des groupes à générer est lue depuis un fichier de config JSON (par
-défaut raw_data/groupes_reels.json), validée manuellement (voir README §6).
+défaut config/groupes_reels.json), validée manuellement (voir README §6).
 
 Une entrée portant `extraction_suspendue` est ignorée, sans compter comme un
 échec : sa fiche de groupe déjà publiée reste en place, gelée à sa dernière
@@ -55,7 +55,7 @@ absente ou invalide, et chaque échec part en annotation `::error::` (gha.py).
 
 Usage (depuis la racine du dépôt) :
     python src/generate_group_profiles.py \\
-        --config raw_data/groupes_reels.json \\
+        --config config/groupes_reels.json \\
         --profiles-dir pivot_data/profiles \\
         --out-dir pivot_data/groupes \\
         --rosters-bruts raw_data/rosters_bruts.json \\
@@ -377,9 +377,9 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument(
         "--config",
-        default="raw_data/groupes_reels.json",
+        default="config/groupes_reels.json",
         metavar="FICHIER",
-        help="Fichier JSON listant les groupes à générer (défaut : raw_data/groupes_reels.json).",
+        help="Fichier JSON listant les groupes à générer (défaut : config/groupes_reels.json).",
     )
     parser.add_argument(
         "--profiles-dir",

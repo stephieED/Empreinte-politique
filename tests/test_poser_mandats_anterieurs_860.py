@@ -79,7 +79,7 @@ def _racine(tmp_path, profils, table_candidats):
         (dossier / f"{profil['id']}.pivot.json").write_text(
             json.dumps(profil, ensure_ascii=False), encoding="utf-8"
         )
-    table = tmp_path / "raw_data"
+    table = tmp_path / "config"
     table.mkdir(parents=True)
     (table / "mandats_anterieurs.json").write_text(
         json.dumps({"_meta": {"description": "table d'essai"}, "candidats": table_candidats},
@@ -170,7 +170,7 @@ def test_la_reprise_pose_ce_que_le_pipeline_poserait(tmp_path):
     # `appliquer_mandats_anterieurs` consomme la table NORMALISÉE que rend
     # `charger_table`, pas la forme du fichier : depuis #860 les deux diffèrent,
     # une entrée sans mandat portant son constat.
-    table = charger_table(racine / "raw_data" / "mandats_anterieurs.json")
+    table = charger_table(racine / "config" / "mandats_anterieurs.json")
     for slug in ("segolene-royal", "nathalie-arthaud"):
         attendu = _profil(slug)
         appliquer_mandats_anterieurs(attendu, table)
@@ -204,6 +204,8 @@ def test_la_reprise_ne_reecrit_pas_un_profil_gele(tmp_path):
     racine = _racine(tmp_path, [_profil("jordan-bardella"), _profil("selma-labib")],
                      {"jordan-bardella": {"mandats": [], "constat": constat},
                       "selma-labib": {"mandats": [], "constat": constat}})
+    # `candidats.json` reste dans `raw_data/` : le run le réécrit (#1057).
+    (racine / "raw_data").mkdir(parents=True, exist_ok=True)
     (racine / "raw_data" / "candidats.json").write_text(json.dumps({"candidats": [
         {"slug": "jordan-bardella", "statut": "decline"},
         {"slug": "selma-labib", "statut": "declare"},

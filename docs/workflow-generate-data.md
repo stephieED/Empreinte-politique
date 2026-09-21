@@ -13,16 +13,18 @@ Ce fichier existe pour être lu **avant** d'ouvrir
 
 | Job | `needs:` | Consomme | Produit |
 |---|---|---|---|
-| `rafraichir-candidats` | — | l'article Wikipédia des candidatures, Wikidata (`P4123`) | `raw_data/candidats.json` à jour + `raw_data/resolutions_candidats.json` → artifact `candidats-a-jour` (#757) |
+| `epingler-le-code` | — | l'API du dépôt **privé** (jeton `SRC_READ_TOKEN`) | le SHA de `main` du privé, en sortie `sha` — **tous les autres jobs en dépendent** et superposent ce code (#1059) |
+| `rafraichir-candidats` | `epingler-le-code` | l'article Wikipédia des candidatures, Wikidata (`P4123`) | `raw_data/candidats.json` à jour + `raw_data/resolutions_candidats.json` → artifact `candidats-a-jour` (#757) |
 | `prepare-an-matrix` | `rafraichir-candidats` | l'artifact `candidats-a-jour`, à défaut `raw_data/candidats.json` | la matrice `extract-an` (un shard par candidat à slug résolvable, #344) |
-| `extract-amendements-an` | — | AN open data (dumps amendements) | artifact `amendements-index-an` + cache `public-data-cache-amendements-<semaine>` |
-| `extract-ue-officiel` | — | Europarl Open Data | artifact `raw-profiles-ue-officiel`, cache `public-data-cache-ue-<semaine>` |
-| `extract-parltrack` | — | 5 dumps ParlTrack (232 Mio) | artifact `parltrack-dumps`, cache `public-data-cache-parltrack-<semaine>` |
-| `prepare-roster-matrix` | — | `raw_data/groupes_reels.json`, l'archive AMO30 | `raw_data/roster_candidats.json` → artifact `roster-candidats`, la matrice roster, et `rosters_bruts.json` — qui porte depuis #996 une clé `gouvernements:`, les membres des 17 gouvernements lus dans AMO30 (`gouvernement_roster_an.py`). **Depuis #996 lot 3 ces membres entrent aussi dans `roster_candidats.json`**, sous `statut: "roster_gouvernement"`, donc les shards les collectent ; les slugs déjà portés par un roster de groupe ne sont pas repris, et restent `roster_groupe`. La passe tourne **après** le portail d'anomalies et **avant** l'écriture des deux fichiers ; `--sans-gouvernements` la débranche, et son échec est non fatal |
+| `extract-amendements-an` | `epingler-le-code` | AN open data (dumps amendements) | artifact `amendements-index-an` + cache `public-data-cache-amendements-<semaine>` |
+| `extract-ue-officiel` | `epingler-le-code` | Europarl Open Data | artifact `raw-profiles-ue-officiel`, cache `public-data-cache-ue-<semaine>` |
+| `extract-parltrack` | `epingler-le-code` | 5 dumps ParlTrack (232 Mio) | artifact `parltrack-dumps`, cache `public-data-cache-parltrack-<semaine>` |
+| `rechauffer-le-portail-europeen` | `epingler-le-code`, `extract-parltrack` | le portail du Parlement européen, le dump `ep_dossiers` | l'artifact `portail-europeen-chaud` (le cache des réponses du portail) + le cache `public-data-cache-europarl-documents-v3-<run>-rechauffage` (#1064) |
+| `prepare-roster-matrix` | `epingler-le-code` | `config/groupes_reels.json`, l'archive AMO30 | `raw_data/roster_candidats.json` → artifact `roster-candidats`, la matrice roster, et `rosters_bruts.json` — qui porte depuis #996 une clé `gouvernements:`, les membres des 17 gouvernements lus dans AMO30 (`gouvernement_roster_an.py`). **Depuis #996 lot 3 ces membres entrent aussi dans `roster_candidats.json`**, sous `statut: "roster_gouvernement"`, donc les shards les collectent ; les slugs déjà portés par un roster de groupe ne sont pas repris, et restent `roster_groupe`. La passe tourne **après** le portail d'anomalies et **avant** l'écriture des deux fichiers ; `--sans-gouvernements` la débranche, et son échec est non fatal |
 | `extract-an` | `extract-amendements-an`, `prepare-an-matrix` | AN open data, Syceron, l'index amendements | un artifact `raw-profiles-an-<slug>` par shard, cache `public-data-cache-an-<semaine>[-interv-<empreinte>]` |
 | `extract-roster-groupes` | les quatre `extract-*` + `prepare-roster-matrix` | l'artifact `roster-candidats`, les mêmes sources | un artifact `raw-profiles-roster-groupes-<shard>` par shard |
-| `extract-senat` | — | `export_sens.zip` de `data.senat.fr` (#885) | artifact `raw-profiles-senat`, cache `public-data-cache-senat-<date>` |
-| `extract-mandats-locaux` | — | le Répertoire national des élus et les sortants 2026, par `tabular-api.data.gouv.fr` (#922) | artifact `raw-profiles-mandats-locaux`, **aucun cache** |
+| `extract-senat` | `epingler-le-code` | `export_sens.zip` de `data.senat.fr` (#885) | artifact `raw-profiles-senat`, cache `public-data-cache-senat-<date>` |
+| `extract-mandats-locaux` | `epingler-le-code` | le Répertoire national des élus et les sortants 2026, par `tabular-api.data.gouv.fr` (#922) | artifact `raw-profiles-mandats-locaux`, **aucun cache** |
 | `merge-and-pivot` | `extract-an`, `extract-ue-officiel`, `extract-parltrack`, `extract-roster-groupes`, `extract-senat` | tous les artifacts ci-dessus, et les **quatre archives de dossiers** (XIV à XVII, deux formats depuis #1019) | le contrôle du transport, la fusion, les deux passes pivot, les fiches de groupe, de lignée et **de gouvernement** (rattachement par `organe_ref`, #996 lot 4), les quatre contrôles, le commit et le push |
 
 Sept jobs n'ont aucun `needs:` et démarrent ensemble (`rafraichir-candidats` en
@@ -43,6 +45,30 @@ dimensionne la matrice.
 
 ### Ce que fait chaque job, et pourquoi comme ça
 
+#### `epingler-le-code`
+
+**Le premier job du graphe, et tous les autres en dépendent** (#1059). Il
+résout `main` du dépôt **privé** par l'API — jeton `SRC_READ_TOKEN`, lecture
+seule — et publie ce SHA en sortie. Chaque autre job superpose ensuite ce SHA
+exact sur son checkout, par `.github/actions/code-du-prive` : **les données
+viennent du dépôt public, le code du privé**, et le commit de fin de run
+dépose les deux ensemble.
+
+**Pourquoi un job de tête plutôt qu'une résolution par job.** Les extractions
+démarrent à t=0, `merge-and-pivot` ~27 min plus tard. Résolu par job, un merge
+pendant le run donnerait des extractions faites avec un code et une fusion
+faite avec un autre — l'état mixte que #390 avait écarté. Épinglé une fois, la
+cohérence est vraie par construction : c'est ce qui a permis de retirer
+`GENERATION_CODE_CHANGED_DURING_RUN`.
+
+**Consomme** l'API GitHub du dépôt privé. **Produit** la sortie `sha`.
+**Coût** quelques secondes ; la superposition elle-même coûte ~3,5 s et 6 Mo
+par job (clone sans blobs, données exclues).
+
+**Ce qu'il ne fait pas** : publier le fichier de workflow. GitHub lit celui du
+dépôt public, jamais celui qu'on superpose — une modification de
+`generate-data.yml` ne prend donc effet qu'au run **suivant** sa publication.
+
 Ce qu'un job **déclare**, le YAML le dit, et il le dit mieux. Ce qui suit est ce
 qu'on ne relira pas dans le YAML dans un an : ce que le job fait, ce qu'il
 touche, et les deux ou trois décisions qui expliquent sa forme. Le reste du
@@ -61,10 +87,13 @@ correspondance tourne dans `merge-and-pivot` et reste **hors ligne** : une panne
 de source tierce ne doit pas coûter le commit d'un run dont la donnée est bonne
 (#524, c'est la forme que #715 s'est donnée).
 
-**Il ne pousse rien.** `merge-and-pivot` annule le commit si `raw_data/*.json` a
-bougé sur la branche *pendant* le run (`GENERATION_CODE_CHANGED_DURING_RUN`,
-#390/#413) : le fichier voyage donc dans l'artifact et il est committé à la fin,
-avec les données qu'il a produites.
+**Il ne pousse rien.** Le fichier voyage dans l'artifact et il est committé à la
+fin, avec les données qu'il a produites — une liste publiée seule décrirait un
+périmètre que personne n'a encore collecté. Le garde-fou qui annulait le commit
+sur un `raw_data/*.json` modifié pendant le run
+(`GENERATION_CODE_CHANGED_DURING_RUN`, #390/#413) a été **retiré** par #1059,
+le code du run étant désormais épinglé et publié avec ses données
+(`docs/decisions/code-du-prive-dans-le-run-1059.md`).
 
 **Consomme** `fr.wikipedia.org` et `query.wikidata.org`. **Produit** l'artifact
 `candidats-a-jour` (les deux fichiers ensemble — séparés, un run collecterait
@@ -222,6 +251,37 @@ JSON que `check_quality_gate.py` §5 relit. La licence est ODbL, ce que
 `src/licences.py` répercute dans `meta.licence_donnees`
 ([licences](decisions/licences.md), [lot 6](decisions/licence-lot-6-530.md)).
 
+#### `rechauffer-le-portail-europeen`
+
+**Vingt minutes de réseau, sorties du chemin critique** (#1064). La passe des
+domaines EuroVoc pesait **21,5 des 52,5 minutes** de `merge-and-pivot` (run
+`35563358605`) — et ce n'est pas un calcul : c'est un **budget**, 685 requêtes
+au portail à 1,85 s l'une, consommé en entier tant que la file n'est pas vidée.
+
+**Ce job ne produit pas l'index, il produit le cache.** Il interroge le portail
+sur les références que les profils **déjà publiés** citent, et publie
+`.cache/europarl` en artifact. `merge-and-pivot` le télécharge et reconstruit
+l'index sur les références de **ce** run, **budget à zéro** : tout ce que le
+portail sait est déjà là.
+
+**Le décalage d'un run est assumé.** Une référence qui apparaît pendant ce run
+sera résolue au suivant, et l'index la déclare `question_non_posee` en
+attendant (§2 règle 5). Les références bougent au rythme des dumps ParlTrack,
+pas à celui des runs.
+
+**`continue-on-error: true`** : son échec ne coûte pas le run. `merge-and-pivot`
+retombe alors sur le cache restauré par sa propre clé et sur la reprise des
+acquis de l'index publié ([#1062](decisions/index-europeen-reprend-ses-acquis-1062.md))
+— plus pauvre, jamais faux.
+
+**Budget à 18 min et non 20** : il doit conclure **avant** le démarrage de
+`merge-and-pivot`, ~27 min après le départ du run, checkout et parsing du dump
+compris.
+
+**Consomme** le dump `ep_dossiers` (artifact `parltrack-dumps`), les profils
+committés, le portail. **Produit** l'artifact `portail-europeen-chaud`.
+→ `docs/decisions/portail-europeen-hors-chemin-critique-1064.md`
+
 #### `prepare-roster-matrix`
 
 Construit **une fois pour tout le run** `raw_data/roster_candidats.json` (la
@@ -229,7 +289,7 @@ liste roster-driven, filtrée par sigle) *et* `raw_data/rosters_bruts.json` (la
 **même** collecte, avant filtrage), publiés dans **un seul** artifact
 `roster-candidats` ; puis calcule la liste des 8 shards roster.
 
-**Consomme** `raw_data/groupes_reels.json` — **12 entrées** depuis #700, dont 10
+**Consomme** `config/groupes_reels.json` — **12 entrées** depuis #700, dont 10
 actives : un fetch de roster par couple `(roster_chambre, législature)`
 distinct, donc **deux** côté AN (`("deputes", "16")` et `("deputes", "17")`),
 lus dans la **même** archive AMO30 déjà en cache — pas de téléchargement
@@ -554,9 +614,9 @@ la plus proche :
 | `public-data-cache-an-<semaine>[-interv-<empreinte>]` | `.cache/acteurs_historique_an`, `.cache/scrutins_an`, `.cache/questions_an/*/index_par_acteur.json`, `.cache/syceron_an/*/index_par_acteur` | `extract-an` (`actions/cache/save`) | `extract-roster-groupes` (`actions/cache/restore`, **même suffixe** depuis #657) |
 | `public-data-cache-amendements-<semaine>` | `.cache/amendements_an` | `extract-amendements-an` (`actions/cache`) | `extract-an`, `extract-roster-groupes` (`restore`) |
 | `public-data-cache-dossiers-<semaine>` | `.cache/dossiers_an` | `extract-an`, `merge-and-pivot` | `extract-roster-groupes` (`restore`) |
-| `public-data-cache-ue-<semaine>` | `.cache/europarl` | `extract-ue-officiel` | — |
-| `public-data-cache-parltrack-<semaine>` | `.cache/parltrack` | `extract-parltrack` | — |
-| `public-data-cache-senat-<date>` | `.cache/senat` | `extract-senat` | — |
+| `public-data-cache-ue-<semaine>` | `.cache/europarl` | `extract-ue-officiel` | `epingler-le-code` |
+| `public-data-cache-parltrack-<semaine>` | `.cache/parltrack` | `extract-parltrack` | `epingler-le-code` |
+| `public-data-cache-senat-<date>` | `.cache/senat` | `extract-senat` | `epingler-le-code` |
 
 La clé sénatoriale est au **jour**, et non à la semaine comme les quatre autres :
 `data.senat.fr` régénère son export chaque nuit (#885).
@@ -658,6 +718,17 @@ Actions ne peut pas être `bypass_actor` sur un dépôt **personnel**, la clé s
 Un push par clé de déploiement **émet un événement `push`**, là où le
 `GITHUB_TOKEN` n'en émet aucun : c'est cette bascule qui décide si `tests.yml` et
 `deploy-pages.yml` voient passer le commit de données.
+
+**Les trois gestes vivent HORS du dépôt, donc un dépôt recréé repart sans eux.**
+Mesuré le 21/09/2026, après la bascule vers le dépôt public : la clé et le
+secret avaient été reposés, **le ruleset non** — il a été recréé ce jour-là
+(`20260729_ruleset`, id 23753641 : suppression interdite, force-push interdit,
+check `Suite complète` requis, `DeployKey` et rôle admin en `bypass_actors`).
+Vérification le même jour sur le commit de données `98e6479d2` : il porte une
+`Suite complète` **réussie**, donc la chaîne tient de bout en bout sur le
+nouveau dépôt. **Ce qui se mesure, et ne se déduit pas** : ces trois objets ne
+sont pas versionnés, et rien dans le dépôt ne dit s'ils existent — seule la
+mesure le dit.
 
 **Elle a lieu depuis le 01/09/2026, et c'est mesuré.** Les trois gestes que #685
 attendait ont été faits, et ils tiennent ensemble : le secret

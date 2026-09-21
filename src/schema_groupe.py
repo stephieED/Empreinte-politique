@@ -537,7 +537,7 @@ POSITIONS_POLITIQUES_GROUPE: tuple[str, ...] = (
 # L'Assemblée ouvre et ferme des organes (`PO800508` clos le 09/06/2024,
 # `PO845425` ouvert le 18/07/2024) ; elle ne les chaîne jamais. Dire que
 # `AN:DR` succède à `AN:LR` est une lecture, committée et relue dans
-# `raw_data/groupes_reels.json` → `correspondance_sigles_an`, datée par
+# `config/groupes_reels.json` → `correspondance_sigles_an`, datée par
 # `verifie_le`.
 #
 # C'est pourquoi le bloc porte `etabli_par` et **refuse** `source_url`, là où

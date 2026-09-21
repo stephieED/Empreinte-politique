@@ -43,7 +43,7 @@ import group_roster  # noqa: E402
 #: test n'a pas déclaré (#791), et n'accepte la déclaration que si le chemin
 #: est dans le `sparse-checkout` de `tests.yml` — sinon le test ne tournerait
 #: qu'en local, sur ce qu'un run y a laissé.
-pytestmark = pytest.mark.lit_reference_committee("raw_data/groupes_reels.json")
+pytestmark = pytest.mark.lit_reference_committee("config/groupes_reels.json")
 
 #: Le nombre d'entrées de `correspondance_sigles_an`, lu depuis le fichier
 #: plutôt que figé (#777). Il valait 10 jusqu'aux huit groupes des XVe et XVIe ;
@@ -56,7 +56,7 @@ def _entrees_committees() -> list:
     import json
     from pathlib import Path as _P
     racine = _P(__file__).resolve().parents[1]
-    return json.loads((racine / "raw_data" / "groupes_reels.json").read_text(encoding="utf-8"))[
+    return json.loads((racine / "config" / "groupes_reels.json").read_text(encoding="utf-8"))[
         "correspondance_sigles_an"
     ]["groupes"]
 
@@ -68,7 +68,7 @@ ARCHIVE = Path(__file__).resolve().parent / "fixtures" / "amo30_gp_leg16_17.zip"
 CORRESPONDANCE = (
     Path(__file__).resolve().parent / "fixtures" / "correspondance_acteurs_an_extrait.json"
 )
-CONFIG = RACINE / "raw_data" / "groupes_reels.json"
+CONFIG = RACINE / "config" / "groupes_reels.json"
 
 #: Organes de référence, tels que le référentiel AN les publie.
 NI_16 = "PO793087"

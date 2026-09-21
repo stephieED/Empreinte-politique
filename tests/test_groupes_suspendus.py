@@ -48,7 +48,7 @@ import pytest
 #: test n'a pas déclaré (#791), et n'accepte la déclaration que si le chemin
 #: est dans le `sparse-checkout` de `tests.yml` — sinon le test ne tournerait
 #: qu'en local, sur ce qu'un run y a laissé.
-pytestmark = pytest.mark.lit_reference_committee("raw_data/groupes_reels.json")
+pytestmark = pytest.mark.lit_reference_committee("config/groupes_reels.json")
 
 
 _SUSPENSION = {
@@ -331,7 +331,7 @@ def test_toute_suspension_du_depot_est_documentee():
     relisable : pourquoi, depuis quand, sous quelle référence, et à quelle
     condition on la lève.
     """
-    config_path = Path(__file__).resolve().parents[1] / "raw_data" / "groupes_reels.json"
+    config_path = Path(__file__).resolve().parents[1] / "config" / "groupes_reels.json"
     groupes = json.loads(config_path.read_text(encoding="utf-8"))["groupes"]
 
     anomalies = [a for groupe in groupes for a in anomalies_suspension(groupe)]
@@ -340,7 +340,7 @@ def test_toute_suspension_du_depot_est_documentee():
 
 
 def test_la_config_du_depot_garde_au_moins_un_groupe_actif():
-    config_path = Path(__file__).resolve().parents[1] / "raw_data" / "groupes_reels.json"
+    config_path = Path(__file__).resolve().parents[1] / "config" / "groupes_reels.json"
     groupes = json.loads(config_path.read_text(encoding="utf-8"))["groupes"]
 
     actifs, _ = partitionner_groupes(groupes)

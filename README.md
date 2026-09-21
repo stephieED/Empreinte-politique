@@ -162,7 +162,7 @@ où ils se lisaient comme des faits sur la personne affichée (#328).
 → [`docs/decisions/page-couverture-commune-328.md`](docs/decisions/page-couverture-commune-328.md)
 
 - **Groupes** : seuls les groupes déclarés dans
-  `raw_data/groupes_reels.json` sont produits, pas tous ceux qui existent — une
+  `config/groupes_reels.json` sont produits, pas tous ceux qui existent — une
   fiche par groupe **et par législature** (31 au 14/09/2026), que l'interface
   publie en **une page par lignée** : 14 pages, la suite des fiches d'un même
   groupe (#329, #836). Les **5 groupes de la XVIIe** y sont

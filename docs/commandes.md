@@ -103,7 +103,7 @@ python3 src/generate_all_profiles.py --candidats raw_data/roster_candidats.json 
 ```
 
 Produit : `raw_data/roster_candidats.json` (la composition réelle des groupes
-de `raw_data/groupes_reels.json`, au lieu de la liste éditoriale), puis les
+de `config/groupes_reels.json`, au lieu de la liste éditoriale), puis les
 profils de ses membres. `--skip-existing` combiné à `--limit` fait avancer la
 frontière de couverture d'un run à l'autre au lieu de retenter les mêmes.
 
@@ -144,7 +144,7 @@ lancement :
 
 ### Une fiche de groupe parlementaire
 
-Tous les groupes déclarés dans `raw_data/groupes_reels.json`, en un run :
+Tous les groupes déclarés dans `config/groupes_reels.json`, en un run :
 
 ```bash
 python3 src/generate_group_profiles.py --validate
@@ -168,7 +168,7 @@ python3 src/generate_lignee_profiles.py --validate
 ```
 
 Produit : `pivot_data/lignees/lignee-<chambre>-<sigle>.json`, une par entrée de
-`lignees[]` dans `raw_data/groupes_reels.json`. Ne touche pas au réseau. Sort
+`lignees[]` dans `config/groupes_reels.json`. Ne touche pas au réseau. Sort
 `1` si la configuration est fausse (aucune fiche écrite) ou si une lignée a
 échoué ; `0` sinon. Compter **~2 min** et **~1,5 Gio** de mémoire pour les dix.
 
@@ -569,7 +569,7 @@ python3 scripts/poser_mandats_anterieurs_860.py
 `--verifier` ne modifie rien : sortie 0 si tout profil de candidat déclaré porte
 `mandats_anterieurs` — la liste relue s'il est dans la table, `null` et son motif
 `non_relu` sinon —, 1 s'il en manque. Sans drapeau, la reprise repose le champ
-sur les profils déjà écrits, depuis `raw_data/mandats_anterieurs.json`.
+sur les profils déjà écrits, depuis `config/mandats_anterieurs.json`.
 
 À lancer quand la table relue change **entre deux runs** : le pipeline repose ce
 champ dérivé à chaque écriture de profil, donc un run complet le ferait aussi —

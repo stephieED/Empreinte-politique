@@ -41,7 +41,7 @@ Voir docs/decisions/retrait-nosdeputes-529.md.
 ## Le Sénat n'est plus une chambre servie ici (#528)
 
 Toute chambre autre que `deputes` **lève**, en nommant la décision. Les deux
-entrées Sénat de `raw_data/groupes_reels.json` restent `extraction_suspendue`
+entrées Sénat de `config/groupes_reels.json` restent `extraction_suspendue`
 — leurs fiches publiées ne bougent pas — et ce chemin n'est atteint que si
 quelqu'un lève cette suspension : il doit alors échouer bruyamment plutôt que
 rendre un roster vide. Voir docs/decisions/retrait-senat-528.md.
@@ -191,7 +191,7 @@ def fetch_full_roster(
     téléchargée et mise en cache par `candidate_profile`.
 
     La table sigle publié → sigle AN est lue dans son fichier committé,
-    `raw_data/groupes_reels.json` (`an_roster.CHEMIN_CONFIG_GROUPES`), et non
+    `config/groupes_reels.json` (`an_roster.CHEMIN_CONFIG_GROUPES`), et non
     dans le `--config` de l'appelant : un groupe absent de la table échoue en
     **nommant** le couple `(sigle, législature)` plutôt que de rendre un roster
     vide (#526 §3b).

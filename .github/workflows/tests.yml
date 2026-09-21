@@ -96,11 +96,11 @@ jobs:
           # qu'un run avait laissé. C'est le canari que l'absence de
           # `paths-ignore` ci-dessus veut précisément voir chanter — un commit
           # de données du bot passe désormais sous ces assertions. 20 Kio.
-          # `raw_data/mandats_anterieurs.json` (#860) : la table relue des mandats
+          # `config/mandats_anterieurs.json` (#860) : la table relue des mandats
           # antérieurs à la couverture AN. `tests/test_mandats_anterieurs_860.py` en
           # vérifie la validité — une source primaire par ligne, rien après la borne
           # du 19/06/2002 —, et la déclare par `lit_reference_committee`. 5 Kio.
-          # `raw_data/correspondance_elus_rne.json` (#922) : la table relue qui
+          # `config/correspondance_elus_rne.json` (#922) : la table relue qui
           # apparie un candidat déclaré à un élu du Répertoire national, quand le
           # corpus n'a pas sa date de naissance.
           # `tests/test_correspondance_elus_rne_922.py` la lit en entier — verdicts,
@@ -123,10 +123,8 @@ jobs:
             ROADMAP.md
             docs
             raw_data/candidats.json
-            raw_data/correspondance_elus_rne.json
+            config
             raw_data/gouvernements_reels.json
-            raw_data/groupes_reels.json
-            raw_data/mandats_anterieurs.json
             requirements.txt
             requirements-dev.txt
             scripts

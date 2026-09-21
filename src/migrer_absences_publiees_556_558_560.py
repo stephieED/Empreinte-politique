@@ -373,7 +373,7 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--profiles-dir", default="pivot_data/profiles", type=Path)
     parser.add_argument("--raw-profiles-dir", default="raw_data/profiles", type=Path)
     parser.add_argument("--groupes-dir", default="pivot_data/groupes", type=Path)
-    parser.add_argument("--config-groupes", default="raw_data/groupes_reels.json", type=Path)
+    parser.add_argument("--config-groupes", default="config/groupes_reels.json", type=Path)
     parser.add_argument("--correspondance", default=None, type=Path)
     parser.add_argument(
         "--constate-le", default=None,

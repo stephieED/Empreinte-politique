@@ -742,7 +742,7 @@ def build_gouvernement_roster(
 # `_normalise_fonction` s'interdit explicitement le sémantique. Ce patron —
 # énumérer ce qui a été vu, après vérification humaine — est celui de
 # `FONCTIONS_MINISTERIELLES_OBSERVEES` juste au-dessus et de
-# `correspondance_sigles_an` dans `raw_data/groupes_reels.json`.
+# `correspondance_sigles_an` dans `config/groupes_reels.json`.
 #
 # Relevé le 2026-08-31 sur `.cache/acteurs_historique_an/acteurs_historique.zip`
 # (3 117 fiches acteur, 1 162 mandats `typeOrgane == "MINISTERE"`) : les deux

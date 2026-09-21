@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 generate_roster_candidats.py — Construit une liste de "candidats" à partir du
-roster réel des groupes parlementaires configurés dans raw_data/groupes_reels.json,
+roster réel des groupes parlementaires configurés dans config/groupes_reels.json,
 au lieu de la liste éditoriale raw_data/candidats.json.
 
 Contexte : raw_data/candidats.json est une liste éditoriale maintenue à la
@@ -35,7 +35,7 @@ fichier : une donnée non résolue ne reçoit pas de valeur par défaut, elle
    clé), l'information était simplement jetée. C'est aussi la réponse au
    rétrécissement : la granularité d'une panne est la clé de fetch entière, donc
    un échec partiel n'enlève pas « quelques » membres mais **452 ou 300** sur
-   les 752 de `raw_data/groupes_reels.json` (mesuré au 19/08/2026 : 452 AN
+   les 752 de `config/groupes_reels.json` (mesuré au 19/08/2026 : 452 AN
    + 300 Sénat). Un test de vacuité ne verrait rien ; celui-ci nomme la clé ;
 2. **un groupe configuré qui rend 0 membre** alors que son fetch a réussi —
    le seul mécanisme de rétrécissement restant (sigle renommé en amont). Les 7
@@ -110,7 +110,7 @@ Une conséquence de la bascule tombe **ici** et pas ailleurs : AMO30 publie un
 (#525). Un membre qui n'y a pas d'entrée traversait l'aplatissement sans un mot
 — `build_roster_candidats_detaille` ignore un membre sans slug depuis toujours,
 mais NosDéputés n'en produisait aucun. `membres_sans_slug` les compte et les
-nomme (4 à la bascule, tous déclarés dans `raw_data/groupes_reels.json`), en
+nomme (4 à la bascule, tous déclarés dans `config/groupes_reels.json`), en
 `warning` : ils ne bloquent pas, ils cessent d'être invisibles.
 
 ## Compter n'était pas ouvrir la porte (#708)
@@ -137,7 +137,7 @@ fonction qui fabrique déjà tous les autres slugs du dépôt — et n'attribue
 
 Usage (depuis la racine du dépôt) :
     python src/generate_roster_candidats.py \\
-        --config raw_data/groupes_reels.json \\
+        --config config/groupes_reels.json \\
         --out raw_data/roster_candidats.json \\
         --rosters-bruts-out raw_data/rosters_bruts.json
 """
@@ -367,7 +367,7 @@ def fetch_rosters_bruts(
 def _libelle_groupe(groupe: dict[str, Any]) -> str:
     """Nom d'un groupe dans les messages d'anomalie, stable et sans ambiguïté.
 
-    `groupe_id` est renseigné sur les 7 groupes de `raw_data/groupes_reels.json`
+    `groupe_id` est renseigné sur les 7 groupes de `config/groupes_reels.json`
     et distingue les deux `LR` (`AN:LR` et `Senat:LR`), ce que le seul sigle ne
     ferait pas. Repli sur `chambre:sigle` pour une config plus ancienne.
 
@@ -682,9 +682,9 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument(
         "--config",
-        default="raw_data/groupes_reels.json",
+        default="config/groupes_reels.json",
         metavar="FICHIER",
-        help="Fichier JSON listant les groupes à agréger (défaut : raw_data/groupes_reels.json).",
+        help="Fichier JSON listant les groupes à agréger (défaut : config/groupes_reels.json).",
     )
     parser.add_argument(
         "--out",

@@ -71,7 +71,7 @@ import perimetre_candidats as perimetre  # noqa: E402
 #: test n'a pas déclaré (#791), et n'accepte la déclaration que si le chemin
 #: est dans le `sparse-checkout` de `tests.yml` — sinon le test ne tournerait
 #: qu'en local, sur ce qu'un run y a laissé.
-pytestmark = pytest.mark.lit_reference_committee("raw_data/groupes_reels.json")
+pytestmark = pytest.mark.lit_reference_committee("config/groupes_reels.json")
 
 
 @pytest.fixture(autouse=True)

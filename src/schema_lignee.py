@@ -32,7 +32,7 @@ ne se dédoublonnent pas au niveau des fiches : il faut repasser par
 
 ## L'identifiant est DÉCLARÉ, jamais dérivé
 
-`lignee_id` vient de `raw_data/groupes_reels.json`, comme `succede_a`. Les deux
+`lignee_id` vient de `config/groupes_reels.json`, comme `succede_a`. Les deux
 dérivations possibles bougent :
 
 - **par la racine** — change le jour où un maillon **antérieur** est déclaré, et

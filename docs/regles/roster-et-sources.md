@@ -98,7 +98,7 @@ les charger, ni à les faire grossir. -->
   or before the day the legislature's groups are constituted is a **transit**, and that
   date is *read* from the referential, never hard-coded; the AN sigle is
   `organe.libelleAbrev`, **not** `libelleAbrege`, and the published sigle → AN sigle(s)
-  table is committed in `raw_data/groupes_reels.json`; one group can have **successive
+  table is committed in `config/groupes_reels.json`; one group can have **successive
   organs** in one legislature, so the roster is their deduplicated **union** with periods
   re-glued. An actor with no entry in #525's table gets `slug: None` **and** a named,
   dated line in `membres_sans_slug`. Guarded by `tests/test_an_roster.py`, on a
@@ -190,7 +190,7 @@ les charger, ni à les faire grossir. -->
   slug, and lets §5b block.
   → `docs/decisions/boucle-perimetre-candidats-757.md`
 - **A new declared candidate's pre-2002 career is reviewed by hand — the loop does not
-  do it (#860).** `raw_data/mandats_anterieurs.json` is a reviewed table, not a
+  do it (#860).** `config/mandats_anterieurs.json` is a reviewed table, not a
   collection: nothing updates it when `rafraichir-candidats` adds someone, and the
   candidate's sheet publishes `mandats_anterieurs: null` + `non_relu` until a hand
   reads Sycomore and the Journal officiel and writes the slug in — **an empty list

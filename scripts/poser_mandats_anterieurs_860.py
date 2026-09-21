@@ -5,7 +5,7 @@ candidats déclarés déjà écrits, depuis la table relue (#860).
 
 Pourquoi une reprise, et pas l'attente d'un run
 ----------------------------------------------
-#861 a livré la table relue (`raw_data/mandats_anterieurs.json`) et le champ
+#861 a livré la table relue (`config/mandats_anterieurs.json`) et le champ
 dérivé qui la porte, posé par `appliquer_mandats_anterieurs()` **à chaque
 écriture de profil**. Mais aucun run n'a régénéré les profils depuis la fusion :
 mesuré le 12/09/2026, le champ est absent des **32** profils de candidats

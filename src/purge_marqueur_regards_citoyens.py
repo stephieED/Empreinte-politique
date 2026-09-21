@@ -36,7 +36,7 @@ Ce n'est pas une timidité de découpage, c'est ce que la mesure sépare. Côté
 Assemblée, il ne reste **que** le marqueur. Tout ce qui n'est pas le marqueur est
 côté Sénat — les 19 URL `nosdeputes.fr` encore dans `raw_data`, les 51
 identifiants `nosdeputes:<slug>` des fiches `Senat-LR`/`Senat-SER` et de leurs
-lignées, le bloc de suspension de `raw_data/groupes_reels.json`. Ceux-là sont le
+lignées, le bloc de suspension de `config/groupes_reels.json`. Ceux-là sont le
 périmètre de #885, et les emporter ici les retirerait **avant** d'avoir une
 source pour les remplacer.
 

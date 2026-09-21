@@ -21,7 +21,7 @@ import pytest
 #: test n'a pas déclaré (#791), et n'accepte la déclaration que si le chemin
 #: est dans le `sparse-checkout` de `tests.yml` — sinon le test ne tournerait
 #: qu'en local, sur ce qu'un run y a laissé.
-pytestmark = pytest.mark.lit_reference_committee("raw_data/groupes_reels.json")
+pytestmark = pytest.mark.lit_reference_committee("config/groupes_reels.json")
 
 
 def _deputes_payload():
@@ -298,7 +298,7 @@ def test_un_roster_existant_n_est_pas_ecrase_par_une_collecte_en_echec(tmp_path,
 def test_un_seul_fetch_en_echec_bloque_aussi(tmp_path, monkeypatch, capsys):
     """LE cas qu'un test de vacuité ne verrait pas.
 
-    Sur `raw_data/groupes_reels.json` au 19/08/2026, les deux clés de fetch
+    Sur `config/groupes_reels.json` au 19/08/2026, les deux clés de fetch
     valent 452 (AN) et 300 (Sénat) membres sur 752 : un échec partiel n'enlève
     pas « quelques » membres, il en enlève 40 % ou 60 % d'un coup, et le roster
     reste NON VIDE. C'est la réponse à « faut-il refuser un roster qui
@@ -446,7 +446,7 @@ _PAYLOADS_REELS = {
 
 
 def _groupes_reels() -> list[dict]:
-    config_path = Path(__file__).resolve().parents[1] / "raw_data" / "groupes_reels.json"
+    config_path = Path(__file__).resolve().parents[1] / "config" / "groupes_reels.json"
     return json.loads(config_path.read_text(encoding="utf-8"))["groupes"]
 
 

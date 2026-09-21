@@ -126,7 +126,7 @@ _FORMES = {
 }
 
 #: Emplacement committé de la table. Fichier de configuration, au même titre
-#: que `raw_data/groupes_reels.json` — jamais sous `raw_data/profiles/`.
+#: que `config/groupes_reels.json` — jamais sous `raw_data/profiles/`.
 CHEMIN_PAR_DEFAUT = Path("raw_data") / "correspondance_acteurs_an.json"
 
 #: Natures d'écart admises entre le slug NosDéputés et l'état civil AMO30.

@@ -40,9 +40,9 @@ from groupes_config import LigneeConfigInvalide, charger_lignees  # noqa: E402
 from lignee_profile import ordonner_maillons  # noqa: E402
 from schema_lignee import validate_profil_lignee  # noqa: E402
 
-pytestmark = pytest.mark.lit_reference_committee("raw_data/groupes_reels.json")
+pytestmark = pytest.mark.lit_reference_committee("config/groupes_reels.json")
 
-CONFIG_COMMITTEE = RACINE / "raw_data" / "groupes_reels.json"
+CONFIG_COMMITTEE = RACINE / "config" / "groupes_reels.json"
 
 
 # ---------------------------------------------------------------------------

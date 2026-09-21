@@ -1,0 +1,78 @@
+name: Code du dépôt privé
+description: >
+  Superpose le code du dépôt de développement sur le checkout courant, sans
+  toucher aux données. Le run produit ainsi ses données avec le code à jour, et
+  le commit de fin de run publie les deux ensemble (#1059).
+
+inputs:
+  sha:
+    description: >
+      Le commit du dépôt privé à superposer. ÉPINGLÉ UNE FOIS par le job
+      `epingler-le-code` et passé tel quel à tous les autres : si chaque job
+      résolvait `main` à son propre démarrage, un merge pendant le run
+      donnerait des extractions faites avec un code et une fusion faite avec un
+      autre — l'état mixte que #390 a écarté.
+    required: true
+  token:
+    description: >
+      Jeton de LECTURE sur le dépôt privé (`Contents: Read-only`), déposé en
+      secret `SRC_READ_TOKEN` sur le dépôt public. Son expiration casse ce pas.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Superposer le code du dépôt privé (${{ inputs.sha }})
+      shell: bash
+      env:
+        SHA: ${{ inputs.sha }}
+        TOKEN: ${{ inputs.token }}
+      run: |
+        set -euo pipefail
+
+        # LES DEUX RÉPERTOIRES DE DONNÉES NE SONT JAMAIS SUPERPOSÉS. Ils
+        # viennent du dépôt public, qui est le seul à jour : un run additif qui
+        # partirait d'une copie périmée écraserait ce que le run précédent a
+        # produit. Même constante que `DONNEES` dans `scripts/sync_depots.sh`,
+        # et même raison (#1057, #1059).
+        DONNEES=(pivot_data raw_data)
+
+        DEPOT_PRIVE="https://x-access-token:${TOKEN}@github.com/stephieED/Empreinte-politique-src.git"
+        SOURCE="$(mktemp -d)"
+
+        # Clone SANS BLOBS et SANS les données : 6 Mo et ~3,5 s mesurés le
+        # 21/09/2026, là où un clone complet ferait 6,1 Gio pour un arbre de
+        # 7,5 Go — davantage que le disque d'un runner. Les blobs manquants
+        # sont récupérés à la demande par le `checkout`, donc seuls ceux du
+        # code arrivent.
+        git init --quiet "$SOURCE"
+        git -C "$SOURCE" remote add origin "$DEPOT_PRIVE"
+        git -C "$SOURCE" config core.sparseCheckout true
+        git -C "$SOURCE" sparse-checkout init --no-cone
+        git -C "$SOURCE" sparse-checkout set '/*' "${DONNEES[@]/#/!/}"
+        # Le SHA est demandé explicitement : `main` aurait pu bouger entre le
+        # job de tête et celui-ci.
+        git -C "$SOURCE" fetch --quiet --depth 1 --filter=blob:none origin "$SHA"
+        git -C "$SOURCE" checkout --quiet FETCH_HEAD
+
+        # VÉRIFIER PAR LA RÉFÉRENCE, jamais par le code de sortie d'un pipe.
+        OBTENU="$(git -C "$SOURCE" rev-parse HEAD)"
+        if [ "$OBTENU" != "$SHA" ]; then
+          echo "::error::Le dépôt privé a rendu $OBTENU au lieu de $SHA : superposition annulée."
+          exit 1
+        fi
+
+        # `--delete` pour qu'un fichier SUPPRIMÉ sur le privé disparaisse ici
+        # aussi : sans lui, le code publié garderait indéfiniment ce qu'une PR
+        # a retiré. Les deux répertoires de données et `.git` sont exclus des
+        # deux côtés, donc `--delete` ne peut pas les atteindre.
+        EXCLUSIONS=(--exclude '.git')
+        for d in "${DONNEES[@]}"; do EXCLUSIONS+=(--exclude "/$d"); done
+        rsync -a --delete "${EXCLUSIONS[@]}" "$SOURCE"/ ./
+
+        rm -rf "$SOURCE"
+
+        # Le log DIT ce qui a été superposé : sans cette ligne, un run qui
+        # tourne sur le mauvais code ne se distingue de rien.
+        echo "-> Code superposé depuis le dépôt privé : $SHA"
+        echo "   Données laissées intactes : ${DONNEES[*]}"

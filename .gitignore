@@ -63,7 +63,7 @@ raw_data/profiles/.generation_checkpoint.json
 
 # Sorties régénérées à chaque run de generate-data.yml, jamais committées (#413).
 # raw_data/roster_candidats.json : aplatissement du roster, source de vérité =
-# raw_data/groupes_reels.json (generate_roster_candidats.py).
+# config/groupes_reels.json (generate_roster_candidats.py).
 # raw_data/rosters_bruts.json : la MÊME collecte, avant filtrage par sigle,
 # transitée par l'artifact `roster-candidats` pour que generate_group_profiles.py
 # ne refetche pas la liste (#518). Régénérable, jamais publiée, ~814 Ko par clé.

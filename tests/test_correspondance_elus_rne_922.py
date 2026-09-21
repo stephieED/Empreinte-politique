@@ -26,7 +26,7 @@ import pytest
 RACINE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RACINE / "src"))
 
-TABLE = RACINE / "raw_data" / "correspondance_elus_rne.json"
+TABLE = RACINE / "config" / "correspondance_elus_rne.json"
 VERDICTS = {"confirme", "ecarte", "aucun_mandat_trouve"}
 
 #: Ce fichier LIT une configuration committée, et le déclare (#791). Le garde-fou
@@ -36,7 +36,7 @@ VERDICTS = {"confirme", "ecarte", "aucun_mandat_trouve"}
 #:
 #: C'est exactement ce qui est arrivé : la suite passait dans le worktree, qui
 #: porte tout le dépôt, et la CI de la PR #939 tombait en `FileNotFoundError`.
-pytestmark = pytest.mark.lit_reference_committee("raw_data/correspondance_elus_rne.json")
+pytestmark = pytest.mark.lit_reference_committee("config/correspondance_elus_rne.json")
 
 
 @pytest.fixture

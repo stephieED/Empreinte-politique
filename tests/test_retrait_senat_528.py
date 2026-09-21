@@ -14,7 +14,7 @@ jamais rien gardé.
 
 Ce qui reste EXPRESSÉMENT en place, et que ce fichier vérifie aussi :
 
-- les 2 entrées Sénat de `raw_data/groupes_reels.json`, toujours
+- les 2 entrées Sénat de `config/groupes_reels.json`, toujours
   `extraction_suspendue` — les retirer supprimerait deux fichiers publiés, ce
   que `audit_diff_profils` bloque (#460/#470) ;
 - leur `condition_reprise`, qui doit renvoyer à la décision éditoriale et **pas**
@@ -34,7 +34,7 @@ import pytest
 
 RACINE = Path(__file__).resolve().parents[1]
 WORKFLOW = RACINE / ".github" / "workflows" / "generate-data.yml"
-GROUPES = RACINE / "raw_data" / "groupes_reels.json"
+GROUPES = RACINE / "config" / "groupes_reels.json"
 
 sys.path.insert(0, str(RACINE / "src"))
 
@@ -47,7 +47,7 @@ import group_roster
 #: test n'a pas déclaré (#791), et n'accepte la déclaration que si le chemin
 #: est dans le `sparse-checkout` de `tests.yml` — sinon le test ne tournerait
 #: qu'en local, sur ce qu'un run y a laissé.
-pytestmark = pytest.mark.lit_reference_committee("raw_data/groupes_reels.json")
+pytestmark = pytest.mark.lit_reference_committee("config/groupes_reels.json")
 
 #: L'ancre de la décision. Un refus qui ne la cite pas oblige son lecteur à
 #: deviner s'il regarde une panne ou un choix.

@@ -1301,7 +1301,7 @@ KNOWN_PROVENANCES: frozenset[str] = frozenset({
 KNOWN_IDENTIFIANTS: frozenset[str] = frozenset({"an", "senat", "europarl", "hatvp"})
 
 #: Institutions d'un mandat national ANTÉRIEUR à la couverture de l'Assemblée
-#: (#860), porté par `mandats_anterieurs` depuis `raw_data/mandats_anterieurs.json`.
+#: (#860), porté par `mandats_anterieurs` depuis `config/mandats_anterieurs.json`.
 #: Le Sénat n'y est pas : #528 a sorti du périmètre jusqu'à l'usage biographique
 #: « a été sénateur de … à … ». L'y ajouter est la reprise de cette décision.
 KNOWN_INSTITUTIONS_ANTERIEURES: frozenset[str] = frozenset({"assemblee_nationale", "gouvernement"})

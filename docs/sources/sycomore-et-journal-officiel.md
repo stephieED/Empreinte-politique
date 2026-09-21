@@ -1,7 +1,7 @@
 # Sycomore, Journal officiel, Wikidata — les sources CITÉES des mandats antérieurs
 
 > **Status: cited, not collected (#860).** No job queries these sites. They are the
-> primary sources behind `raw_data/mandats_anterieurs.json`, a table reviewed by hand:
+> primary sources behind `config/mandats_anterieurs.json`, a table reviewed by hand:
 > the mandates a declared candidate held **before 19/06/2002**, the first day of the
 > Assembly's open data. External reference: it drifts with its providers, not with
 > our code. Siblings: `an-opendata.md` (live, collected), `nosdeputes/` (historical).

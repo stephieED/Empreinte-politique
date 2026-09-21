@@ -218,6 +218,50 @@ env:
 jobs:
 
   # ──────────────────────────────────────────────────────────────────────────
+  # ÉPINGLER-LE-CODE (#1059) — le SHA du dépôt privé, résolu UNE SEULE FOIS.
+  #
+  # Le run prend ses DONNÉES sur le dépôt public — seule copie à jour, base de
+  # la fusion additive — et son CODE sur le dépôt privé, superposé par
+  # `.github/actions/code-du-prive`. Le commit de fin de run dépose les deux
+  # ensemble : le public porte alors les données ET le code exact qui les a
+  # produites, ce que deux gestes séparés ne garantissaient pas.
+  #
+  # POURQUOI UN JOB DE TÊTE PLUTÔT QU'UNE RÉSOLUTION PAR JOB. Les extractions
+  # démarrent à t=0 et `merge-and-pivot` ~27 min plus tard. Si chaque job
+  # résolvait `main` à son propre démarrage, un merge pendant le run donnerait
+  # des extractions faites avec un code et une fusion faite avec un autre —
+  # exactement l'état mixte que #390 a écarté (« plus cohérent qu'aujourd'hui
+  # mais toujours pas cohérent »). Épinglé une fois, tous les jobs partagent le
+  # même code : la cohérence est vraie PAR CONSTRUCTION, et non vérifiée à la
+  # fin.
+  #
+  # CE JOB NE DOIT PAS ÊTRE `continue-on-error`. Sans SHA, les autres jobs
+  # tourneraient sur le code publié — plus ancien — sans que rien ne le dise,
+  # et le commit final publierait du code qui n'a pas produit ces données.
+  # ──────────────────────────────────────────────────────────────────────────
+  epingler-le-code:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      sha: ${{ steps.resolu.outputs.sha }}
+    steps:
+      - name: Résoudre main du dépôt privé
+        id: resolu
+        env:
+          GH_TOKEN: ${{ secrets.SRC_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          SHA="$(gh api repos/stephieED/Empreinte-politique-src/commits/main --jq .sha)"
+          # Une chaîne vide ou tronquée passerait les jobs suivants sur un
+          # `checkout` muet : on refuse ici, là où le message est lisible.
+          if [[ ! "$SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::Le dépôt privé n'a pas rendu un SHA exploitable ('$SHA')."
+            exit 1
+          fi
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "::notice::Code du run épinglé sur $SHA (dépôt privé)."
+
+  # ──────────────────────────────────────────────────────────────────────────
   # JOB PRÉPARATOIRE — Calcul du matrix extract-an, un shard par candidat
   # (#344 — voir docs/decisions/matrix-extract-an-par-candidat.md)
   #
@@ -241,10 +285,13 @@ jobs:
   # liste à deux moments du run divergent, et un candidat collecté par l'une
   # sans être normalisé par l'autre ne fait échouer aucune étape.
   #
-  # POURQUOI IL NE POUSSE RIEN : `merge-and-pivot` annule le commit si
-  # `raw_data/*.json` a bougé sur la branche PENDANT le run
-  # (GENERATION_CODE_CHANGED_DURING_RUN, #390/#413). Le fichier voyage donc dans
-  # l'artifact et il est committé à la fin, AVEC les données qu'il a produites.
+  # POURQUOI IL NE POUSSE RIEN : le fichier voyage dans l'artifact et il est
+  # committé à la fin, AVEC les données qu'il a produites — une liste publiée
+  # seule décrirait un périmètre que personne n'a encore collecté. Le garde-fou
+  # qui annulait le commit sur un `raw_data/*.json` modifié pendant le run
+  # (GENERATION_CODE_CHANGED_DURING_RUN, #390/#413) a été retiré par #1059 : le
+  # code du run est désormais épinglé et publié avec ses données, donc il ne
+  # peut plus diverger d'elles.
   #
   # LE RÉSEAU EST ICI, ET NULLE PART AILLEURS : la résolution d'identifiants
   # (Wikidata P4123) a lieu dans ce job, et son résultat voyage en artifact. La
@@ -258,6 +305,7 @@ jobs:
   # jamais avec une liste vide (AGENTS.md §2 règle 5, le patron de #511).
   # ──────────────────────────────────────────────────────────────────────────
   rafraichir-candidats:
+    needs: epingler-le-code
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -272,6 +320,13 @@ jobs:
             requirements.txt
             raw_data/candidats.json
             raw_data/correspondance_acteurs_an.json
+
+      # Le CODE vient du dépôt privé, les DONNÉES du checkout ci-dessus (#1059).
+      - uses: ./.github/actions/code-du-prive
+        with:
+          sha: ${{ needs.epingler-le-code.outputs.sha }}
+          token: ${{ secrets.SRC_READ_TOKEN }}
+
 
       - uses: actions/setup-python@v6
         with:
@@ -332,7 +387,7 @@ jobs:
 
   # ──────────────────────────────────────────────────────────────────────────
   prepare-an-matrix:
-    needs: rafraichir-candidats
+    needs: [rafraichir-candidats, epingler-le-code]
     # `!cancelled()` et non `always()` : si `rafraichir-candidats` échoue, ce job
     # tourne quand même et retombe sur la liste committée — le périmètre d'hier
     # vaut mieux qu'un run sans aucun candidat. Un job amont *skipped* ne doit
@@ -366,6 +421,13 @@ jobs:
             .github
             src/perimetre_candidats.py
             raw_data/candidats.json
+
+      # Le CODE vient du dépôt privé, les DONNÉES du checkout ci-dessus (#1059).
+      - uses: ./.github/actions/code-du-prive
+        with:
+          sha: ${{ needs.epingler-le-code.outputs.sha }}
+          token: ${{ secrets.SRC_READ_TOKEN }}
+
 
       # La liste du jour ÉCRASE la liste committée, et son absence n'est pas une
       # erreur : `continue-on-error` sur le download ferait retomber le job sur
@@ -575,7 +637,7 @@ jobs:
   # JOB D'EXTRACTION — Assemblée nationale (matrix par candidat, #344)
   # ──────────────────────────────────────────────────────────────────────────
   extract-an:
-    needs: [extract-amendements-an, prepare-an-matrix]
+    needs: [extract-amendements-an, prepare-an-matrix, epingler-le-code]
     name: extract-an (${{ matrix.slug }})
     runs-on: ubuntu-latest
     # TIMEOUT CONDITIONNEL AU MODE (#498). Une seule valeur ne peut pas couvrir
@@ -757,11 +819,18 @@ jobs:
             raw_data/correspondance_acteurs_an.json
             raw_data/resolutions_candidats.json
             raw_data/gouvernements_reels.json
-            raw_data/groupes_reels.json
+            config/groupes_reels.json
             raw_data/amendements_an_figes
             raw_data/scrutins_an_figes
             raw_data/profiles/${{ matrix.slug }}.json
             raw_data/profiles/${{ matrix.slug }}
+
+      # Le CODE vient du dépôt privé, les DONNÉES du checkout ci-dessus (#1059).
+      - uses: ./.github/actions/code-du-prive
+        with:
+          sha: ${{ needs.epingler-le-code.outputs.sha }}
+          token: ${{ secrets.SRC_READ_TOKEN }}
+
 
       # Le checkout n'a matérialisé qu'une fraction de l'arbre : on le dit, et
       # on vérifie que les référentiels indispensables en font partie. Sans ce
@@ -1272,6 +1341,7 @@ jobs:
   # JOB D'EXTRACTION — API officielle Parlement européen
   # ──────────────────────────────────────────────────────────────────────────
   extract-ue-officiel:
+    needs: epingler-le-code
     runs-on: ubuntu-latest
     timeout-minutes: 60
     # continue-on-error: true — voir justification sur extract-an ci-dessus.
@@ -1279,6 +1349,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+
+      # Le CODE vient du dépôt privé, les DONNÉES du checkout ci-dessus (#1059).
+      - uses: ./.github/actions/code-du-prive
+        with:
+          sha: ${{ needs.epingler-le-code.outputs.sha }}
+          token: ${{ secrets.SRC_READ_TOKEN }}
+
 
       # Horodatage de démarrage + relevé mémoire runner (OOM) + setup-python +
       # pip install, factorisés par #412 §3.
@@ -1374,12 +1451,20 @@ jobs:
   # (données ParlTrack du dépôt précédent, warning ajouté dans meta.warnings).
   # ──────────────────────────────────────────────────────────────────────────
   extract-parltrack:
+    needs: epingler-le-code
     runs-on: ubuntu-latest
     timeout-minutes: 30   # ← même valeur que env.PARLTRACK_TIMEOUT_MINUTES (Github Actions n'accepte pas les env vars ici)
     continue-on-error: true
 
     steps:
       - uses: actions/checkout@v5
+
+      # Le CODE vient du dépôt privé, les DONNÉES du checkout ci-dessus (#1059).
+      - uses: ./.github/actions/code-du-prive
+        with:
+          sha: ${{ needs.epingler-le-code.outputs.sha }}
+          token: ${{ secrets.SRC_READ_TOKEN }}
+
 
       # Horodatage de démarrage + relevé mémoire runner (OOM) + setup-python +
       # pip install, factorisés par #412 §3.
@@ -1507,13 +1592,118 @@ jobs:
   # (workflow_dispatch), aucune mesure de débit GitHub Actions authentique
   # n'ayant pu être obtenue lors du spike.
   # ──────────────────────────────────────────────────────────────────────────
+  # RÉCHAUFFER-LE-PORTAIL-EUROPÉEN (#1064) — 20 minutes de réseau, hors du
+  # chemin critique.
+  #
+  # La passe des domaines EuroVoc pesait 21,5 des 52,5 minutes de
+  # `merge-and-pivot` (mesuré sur le run 35563358605). Ce n'est pas un calcul :
+  # c'est un BUDGET RÉSEAU, 685 requêtes au portail du Parlement à 1,85 s
+  # l'une, consommé en entier tant que la file n'est pas vidée — et elle ne le
+  # sera pas avant des dizaines de runs.
+  #
+  # CE QUE CE JOB PRODUIT N'EST PAS L'INDEX, C'EST LE CACHE. Il interroge le
+  # portail sur les références que les profils DÉJÀ PUBLIÉS citent, et publie
+  # `.cache/europarl` en artifact. `merge-and-pivot` le télécharge et
+  # reconstruit l'index sur les références de CE run, budget à zéro : tout ce
+  # que le portail sait est déjà là, et la passe devient instantanée.
+  #
+  # LE DÉCALAGE D'UN RUN EST ASSUMÉ. Une référence qui apparaît pendant ce run
+  # n'est pas encore connue du portail quand ce job tourne ; elle sera résolue
+  # au run suivant, et l'index la déclare `question_non_posee` en attendant
+  # (§2 règle 5). Les références bougent au rythme des dumps ParlTrack, pas à
+  # celui des runs.
+  #
+  # `continue-on-error: true` : un échec ici ne doit pas coûter le run.
+  # `merge-and-pivot` retombe alors sur le cache restauré par sa propre clé et
+  # sur la reprise des acquis de l'index publié (#1062) — plus pauvre, jamais
+  # faux.
+  #
+  # Budget à 18 min et non 20 : ce job doit conclure AVANT que
+  # `merge-and-pivot` ne démarre (~27 min après le départ du run), checkout et
+  # parsing du dump compris.
+  # ──────────────────────────────────────────────────────────────────────────
+  rechauffer-le-portail-europeen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    continue-on-error: true
+    needs: [epingler-le-code, extract-parltrack]
+
+    steps:
+      - uses: actions/checkout@v5
+
+      # Le CODE vient du dépôt privé, les DONNÉES du checkout ci-dessus (#1059).
+      - uses: ./.github/actions/code-du-prive
+        with:
+          sha: ${{ needs.epingler-le-code.outputs.sha }}
+          token: ${{ secrets.SRC_READ_TOKEN }}
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - run: pip install -r requirements.txt
+
+      # Le cache du portail, restauré par la même clé que `merge-and-pivot` :
+      # ce job repart de ce que les runs précédents ont appris.
+      - uses: actions/cache/restore@v5
+        if: ${{ !inputs.cold_start }}
+        with:
+          path: .cache/europarl
+          key: public-data-cache-europarl-documents-v3-${{ github.run_id }}
+          restore-keys: |
+            public-data-cache-europarl-documents-v3-
+            public-data-cache-europarl-
+
+      - name: Download artifact ParlTrack
+        uses: actions/download-artifact@v7
+        with:
+          name: parltrack-dumps
+          path: .cache/parltrack
+
+      # L'index écrit ici est JETÉ : seul le cache compte. L'écrire dans
+      # `pivot_data/` ferait croire à un second producteur du même fichier.
+      - name: Interroger le portail européen (budget du run)
+        run: |
+          python3 src/dossiers_europeens.py \
+            --profils-dir pivot_data/profiles \
+            --budget-secondes 1080 \
+            --out "$RUNNER_TEMP/dossiers-rechauffage.json"
+
+      # `if: always()` aux deux endroits : ce qui a été appris est acquis, même
+      # si l'étape suivante échoue — c'est la leçon du run 35231390627, annulé
+      # au dépassement du plafond, dont les 1 501 réponses ont été perdues.
+      - name: Portail européen réchauffé — artifact
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: portail-europeen-chaud
+          path: .cache/europarl
+          if-no-files-found: warn
+          retention-days: 1
+
+      - name: Sauvegarder le cache du portail européen
+        if: ${{ always() && !inputs.cold_start }}
+        uses: actions/cache/save@v5
+        with:
+          path: .cache/europarl
+          key: public-data-cache-europarl-documents-v3-${{ github.run_id }}-rechauffage
+
+  # ──────────────────────────────────────────────────────────────────────────
   extract-amendements-an:
+    needs: epingler-le-code
     runs-on: ubuntu-latest
     timeout-minutes: 30
     continue-on-error: true
 
     steps:
       - uses: actions/checkout@v5
+
+      # Le CODE vient du dépôt privé, les DONNÉES du checkout ci-dessus (#1059).
+      - uses: ./.github/actions/code-du-prive
+        with:
+          sha: ${{ needs.epingler-le-code.outputs.sha }}
+          token: ${{ secrets.SRC_READ_TOKEN }}
+
 
       # Horodatage de démarrage + relevé mémoire runner (OOM) + setup-python +
       # pip install, factorisés par #412 §3.
@@ -1734,6 +1924,7 @@ jobs:
   # `|| '[0]'` du matrix ci-dessous.
   # ──────────────────────────────────────────────────────────────────────────
   prepare-roster-matrix:
+    needs: epingler-le-code
     runs-on: ubuntu-latest
     # 5 -> 15 min : ce job fait désormais un appel réseau avec reprises (#518).
     # 15 -> 20 min (#708) : ce job dérive la composition des groupes depuis
@@ -1759,6 +1950,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+
+      # Le CODE vient du dépôt privé, les DONNÉES du checkout ci-dessus (#1059).
+      - uses: ./.github/actions/code-du-prive
+        with:
+          sha: ${{ needs.epingler-le-code.outputs.sha }}
+          token: ${{ secrets.SRC_READ_TOKEN }}
+
 
       - uses: actions/setup-python@v6
         with:
@@ -1913,7 +2111,7 @@ jobs:
           echo "shard_total=${TOTAL}" >> "$GITHUB_OUTPUT"
 
   extract-roster-groupes:
-    needs: [extract-amendements-an, extract-an, extract-ue-officiel, extract-parltrack, prepare-roster-matrix]
+    needs: [extract-amendements-an, extract-an, extract-ue-officiel, extract-parltrack, prepare-roster-matrix, epingler-le-code]
     # if: !cancelled() (#412 §2.1) — continue-on-error: transforme un ÉCHEC en
     # non-bloquant, mais ne fait rien contre un job *skipped* : un maillon amont
     # skippé (matrix vide, prepare-* en échec) skippait toute la suite, donc le
@@ -1975,6 +2173,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+
+      # Le CODE vient du dépôt privé, les DONNÉES du checkout ci-dessus (#1059).
+      - uses: ./.github/actions/code-du-prive
+        with:
+          sha: ${{ needs.epingler-le-code.outputs.sha }}
+          token: ${{ secrets.SRC_READ_TOKEN }}
+
 
       # Horodatage de démarrage + relevé mémoire runner (OOM) + setup-python +
       # pip install, factorisés par #412 §3. Le relevé mémoire compte
@@ -2490,12 +2695,20 @@ jobs:
   # ne doit pas coûter le run entier. Le corpus garde alors ce que la fusion
   # additive a publié au run précédent.
   extract-senat:
+    needs: epingler-le-code
     runs-on: ubuntu-latest
     timeout-minutes: 15
     continue-on-error: true
 
     steps:
       - uses: actions/checkout@v5
+
+      # Le CODE vient du dépôt privé, les DONNÉES du checkout ci-dessus (#1059).
+      - uses: ./.github/actions/code-du-prive
+        with:
+          sha: ${{ needs.epingler-le-code.outputs.sha }}
+          token: ${{ secrets.SRC_READ_TOKEN }}
+
 
       - uses: ./.github/actions/bootstrap-extraction
 
@@ -2570,12 +2783,20 @@ jobs:
           if-no-files-found: warn
 
   extract-mandats-locaux:
+    needs: epingler-le-code
     runs-on: ubuntu-latest
     timeout-minutes: 20
     continue-on-error: true
 
     steps:
       - uses: actions/checkout@v5
+
+      # Le CODE vient du dépôt privé, les DONNÉES du checkout ci-dessus (#1059).
+      - uses: ./.github/actions/code-du-prive
+        with:
+          sha: ${{ needs.epingler-le-code.outputs.sha }}
+          token: ${{ secrets.SRC_READ_TOKEN }}
+
 
       - uses: ./.github/actions/bootstrap-extraction
 
@@ -2613,7 +2834,7 @@ jobs:
           if-no-files-found: warn
 
   merge-and-pivot:
-    needs: [extract-an, extract-ue-officiel, extract-parltrack, extract-roster-groupes, extract-senat, extract-mandats-locaux]
+    needs: [extract-an, extract-ue-officiel, extract-parltrack, extract-roster-groupes, extract-senat, extract-mandats-locaux, epingler-le-code, rechauffer-le-portail-europeen]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     # 60 → 120 (#827). Le job tournait en 28 min ; la PREMIÈRE interrogation du
@@ -2667,6 +2888,13 @@ jobs:
       - uses: actions/checkout@v5
         with:
           ssh-key: ${{ secrets.DATA_PUSH_SSH_KEY }}
+
+      # Le CODE vient du dépôt privé, les DONNÉES du checkout ci-dessus (#1059).
+      - uses: ./.github/actions/code-du-prive
+        with:
+          sha: ${{ needs.epingler-le-code.outputs.sha }}
+          token: ${{ secrets.SRC_READ_TOKEN }}
+
 
       - uses: actions/setup-python@v6
         with:
@@ -2813,6 +3041,19 @@ jobs:
         with:
           name: parltrack-dumps
           path: .cache/parltrack
+
+      # #1064 — le portail européen, déjà interrogé en parallèle. L'artifact
+      # complète le cache restauré au-dessus : la passe des domaines n'a plus
+      # aucune requête à poser, et ses 20 minutes sortent du chemin critique.
+      # Optionnel comme les autres : sans lui, l'index retombe sur le cache
+      # restauré et sur la reprise des acquis (#1062) — plus pauvre, jamais
+      # faux.
+      - name: Download artifact portail européen (optionnel)
+        uses: actions/download-artifact@v7
+        continue-on-error: true
+        with:
+          name: portail-europeen-chaud
+          path: .cache/europarl
 
       # Roster-driven : optionnel — continue-on-error si l'artifact est absent
       # (job extract-roster-groupes a échoué/timeout, rollout progressif #192).
@@ -3176,8 +3417,16 @@ jobs:
       # références citées par une fiche ne résolvaient nulle part.
       - name: Générer l'index des dossiers européens
         run: |
+          # BUDGET À ZÉRO, et ce n'est pas une amputation (#1064) : le
+          # portail a été interrogé en parallèle par
+          # `rechauffer-le-portail-europeen`, et son cache est arrivé par
+          # artifact juste au-dessus. Ce que le portail sait est déjà là ; ce
+          # qu'il ne sait pas serait de toute façon hors budget. Ce que ce run
+          # n'a pas pu demander est repris de l'index publié (#1062).
           python3 src/dossiers_europeens.py \
             --profils-dir pivot_data/profiles \
+            --budget-secondes 0 \
+            --plafond-requetes 0 \
             --out pivot_data/dossiers_europeens.json
 
       # #901 — le cache du portail est SAUVEGARDÉ ICI, sans attendre la fin du
@@ -3219,7 +3468,7 @@ jobs:
           [[ "$OVERWRITE" != "true" ]] && MERGE_FLAG=(--merge-existing)
           CODE=0
           python3 src/generate_group_profiles.py \
-            --config raw_data/groupes_reels.json \
+            --config config/groupes_reels.json \
             --profiles-dir pivot_data/profiles \
             --out-dir pivot_data/groupes \
             --rosters-bruts raw_data/rosters_bruts.json \
@@ -3253,7 +3502,7 @@ jobs:
         continue-on-error: true
         run: |
           python3 src/generate_lignee_profiles.py \
-            --config raw_data/groupes_reels.json \
+            --config config/groupes_reels.json \
             --groupes-dir pivot_data/groupes \
             --profiles-dir pivot_data/profiles \
             --out-dir pivot_data/lignees \
@@ -3380,7 +3629,7 @@ jobs:
             --groupes-dir       pivot_data/groupes \
             --raw-dir           raw_data/profiles \
             --candidats         raw_data/candidats.json \
-            --groupes-config    raw_data/groupes_reels.json \
+            --groupes-config    config/groupes_reels.json \
             --gouvernements-dir    pivot_data/gouvernements \
             --gouvernements-config raw_data/gouvernements_reels.json \
             --threshold         "$GATE_THRESHOLD" \
@@ -3763,55 +4012,30 @@ jobs:
             collecte-vs-publie.md
             collecte-vs-publie.json
           if-no-files-found: ignore
-
+      # ──────────────────────────────────────────────────────────────────
+      # LE GARDE-FOU DE #390/#413 A DISPARU ICI, ET C'EST VOULU (#1059).
       #
-      # BRANCHE COMPARÉE (#413 §2) : celle du run (`github.ref_name`), pas
-      # `main` en dur. Ce workflow est déclenchable par workflow_dispatch sur
-      # n'importe quelle ref, et retry-generate-data.yml propage explicitement
-      # `--ref "${{ github.event.workflow_run.head_branch }}"`. Sur un run lancé
-      # depuis dev ou une branche de worktree, `$BASE_SHA` est le HEAD de CETTE
-      # branche : le diff contre origin/main remontait alors TOUTES les
-      # différences entre la branche et main, pas les commits arrivés pendant le
-      # run. Conséquence observable : commit toujours annulé, retry automatique
-      # déclenché, qui échouait à l'identique — un run hors main ne pouvait
-      # jamais committer, pour une raison étrangère au motif de #390.
-      - name: Vérifier que le code de génération n'a pas changé pendant le run
-        env:
-          BASE_SHA: ${{ github.sha }}
-          # Via env: et pas en substitution directe dans le script — le nom de
-          # branche est une donnée contrôlable par qui déclenche le run.
-          RUN_REF: ${{ github.ref_name }}
-        run: |
-          set -euo pipefail
-          # Entrées du build surveillées. Modifier cette liste suffit : elle
-          # n'est dupliquée nulle part ailleurs.
-          BUILD_INPUTS=(src/ 'raw_data/*.json' ':(exclude)raw_data/profiles/')
+      # Il annulait le commit quand `src/` ou un `raw_data/*.json` avait bougé
+      # sur la branche PENDANT le run : les données auraient été produites avec
+      # du code périmé, puis committées sur un `main` en portant un autre.
+      # « Le cas dangereux est celui où git merge proprement : la donnée
+      # périmée est publiée en silence » — run #266, 17/08/2026.
+      #
+      # Cette situation ne peut plus se produire. Le code du run est épinglé
+      # une fois par `epingler-le-code`, tous les jobs superposent ce SHA, et
+      # le commit ci-dessous publie CE code avec les données qu'il a produites.
+      # Le code publié et la donnée publiée ne sont plus deux choses qui
+      # peuvent diverger : c'est le même commit. La cohérence est vraie par
+      # construction, ce que la décision de #390 appelait déjà le bon
+      # mécanisme, et qu'elle n'avait écarté que parce qu'il n'était pas
+      # câblé.
+      #
+      # Ce qui reste couvert autrement : un autre run qui committerait entre
+      # le checkout et le push relève du rebase de la boucle de relance, et
+      # les quatre garde-fous d'avant-commit comparent la donnée produite à
+      # l'état committé, pas au code.
+      # ──────────────────────────────────────────────────────────────────
 
-          git fetch origin "$RUN_REF" --quiet
-          if git diff --quiet "$BASE_SHA" "origin/$RUN_REF" -- "${BUILD_INPUTS[@]}"; then
-            echo "✓ Entrées du build inchangées sur origin/$RUN_REF depuis le début du run — commit sûr."
-            exit 0
-          fi
-          echo "Entrées du build modifiées sur origin/$RUN_REF pendant ce run :"
-          git diff --name-only "$BASE_SHA" "origin/$RUN_REF" -- "${BUILD_INPUTS[@]}" | sed 's/^/  - /'
-          {
-            echo "### ⛔ Commit annulé — entrées du build modifiées pendant le run"
-            echo ""
-            echo "\`src/\` ou un fichier de configuration (\`raw_data/*.json\`) a changé"
-            echo "sur \`origin/$RUN_REF\` depuis le SHA sur lequel ce job a été checkouté"
-            echo "(\`$BASE_SHA\`). Les fichiers dérivés produits ici l'ont donc été avec"
-            echo "du code ou une configuration périmés : les committer publierait de la"
-            echo "donnée potentiellement fausse (voir #390, périmètre étendu en #413)."
-            echo ""
-            echo "Aucune donnée n'est perdue — tout est régénérable. Un nouveau run"
-            echo "sur \`$RUN_REF\` à jour produira un résultat cohérent."
-          } >> "$GITHUB_STEP_SUMMARY"
-          # Marqueur greppable par retry-generate-data.yml, distinct de la
-          # signature de préemption runner, pour que le diagnostic de la
-          # relance reste lisible. Texte conservé à l'identique : le retry le
-          # cherche littéralement.
-          echo "::error::GENERATION_CODE_CHANGED_DURING_RUN — src/ ou configuration raw_data/*.json modifié sur origin/$RUN_REF pendant le run ; commit annulé pour ne pas publier un build périmé (#390/#413)."
-          exit 1
 
       # `pushed` (output) : consommé par l'étape de déploiement ci-dessous, qui
       # ne doit partir que si des données ont réellement atterri sur main.
@@ -3867,6 +4091,13 @@ jobs:
           # run, comme `rosters_bruts.json`, et le committer ferait bouger un
           # fichier à chaque exécution sans que personne ne le lise.
           git add raw_data/candidats.json raw_data/profiles raw_data/correspondance_acteurs_an.json raw_data/gouvernements_reels.json pivot_data/profiles pivot_data/groupes pivot_data/gouvernements pivot_data/scrutins.json pivot_data/scrutins_europeens.json pivot_data/dossiers_europeens.json pivot_data/documents_europeens.json pivot_data/amendements
+          # LE CODE ENTRE DANS LE MEME COMMIT (#1059) — tout ce qui n'est
+          # pas une donnee, donc l'exact complement de `DONNEES` : le depot
+          # public porte alors les donnees ET le code qui les a produites.
+          # Ecrit en exclusions plutot qu'en liste de repertoires, pour
+          # qu'un repertoire ajoute demain a la racine soit publie sans
+          # qu'on y pense ; le `.gitignore` ecarte caches et artifacts.
+          git add -A -- . ':(exclude)pivot_data' ':(exclude)raw_data'
           # Table des commissions saisies au fond (#328), ajoutée seulement si
           # elle existe : `git add` sur un chemin absent échoue, et le step qui
           # la produit est non bloquant. Un run sans archive lisible ne doit pas

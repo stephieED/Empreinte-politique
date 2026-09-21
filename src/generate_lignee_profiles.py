@@ -7,7 +7,7 @@ generate_lignee_profiles.py — Écrit les fiches de LIGNÉE dans `pivot_data/li
 
 Rien du réseau. Il lit les fiches de groupe **déjà publiées**
 (`pivot_data/groupes/`), la déclaration des lignées
-(`raw_data/groupes_reels.json`), les profils pivot des membres et l'index des
+(`config/groupes_reels.json`), les profils pivot des membres et l'index des
 amendements. C'est pourquoi il tourne APRÈS `generate_group_profiles.py` et
 survit à son code 2 : un roster indisponible laisse les fiches committées en
 place, et une lignée bâtie dessus reste juste — simplement inchangée.
@@ -52,7 +52,7 @@ garder entiers coûtait 0,9 à 1,1 Gio pour une seule fiche de groupe.
 
 Usage (depuis la racine du dépôt) :
     python3 src/generate_lignee_profiles.py \\
-        --config raw_data/groupes_reels.json \\
+        --config config/groupes_reels.json \\
         --groupes-dir pivot_data/groupes \\
         --profiles-dir pivot_data/profiles \\
         --out-dir pivot_data/lignees \\
@@ -347,7 +347,7 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         default=str(CHEMIN_CONFIG_GROUPES),
         metavar="FICHIER",
         help="Configuration déclarant les lignées et l'appartenance de chaque "
-             "groupe (défaut : raw_data/groupes_reels.json).",
+             "groupe (défaut : config/groupes_reels.json).",
     )
     parser.add_argument(
         "--groupes-dir",

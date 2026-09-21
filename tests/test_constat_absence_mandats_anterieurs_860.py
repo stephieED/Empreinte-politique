@@ -32,7 +32,7 @@ from mandats_anterieurs import (
 from schema_pivot import KNOWN_METHODES_CONSTAT_ANTERIEUR, valider_mandats_anterieurs
 
 RACINE = Path(__file__).resolve().parent.parent
-TABLE = RACINE / "raw_data" / "mandats_anterieurs.json"
+TABLE = RACINE / "config" / "mandats_anterieurs.json"
 
 CONSTAT = {
     "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=17264",
@@ -171,7 +171,7 @@ def test_le_schema_accepte_une_absence_constatee() -> None:
 # et `tests.yml` a déjà ce chemin dans son sparse-checkout (#791).
 
 
-@pytest.mark.lit_reference_committee("raw_data/mandats_anterieurs.json")
+@pytest.mark.lit_reference_committee("config/mandats_anterieurs.json")
 def test_la_table_commitee_se_charge() -> None:
     table = charger_table(TABLE)
     vides = {s: e for s, e in table.items() if not e["mandats"]}

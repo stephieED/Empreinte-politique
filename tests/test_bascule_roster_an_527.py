@@ -159,7 +159,7 @@ def test_un_membre_sans_slug_ne_bloque_pas_l_ecriture(tmp_path, monkeypatch):
 
     Même arbitrage que les 5 389 identifiants non résolus de #510 : ce qui
     doit être bruyant, c'est leur **nombre s'il bouge**, pas chaque entrée d'une
-    liste écrite d'avance dans `raw_data/groupes_reels.json`. Les faire bloquer
+    liste écrite d'avance dans `config/groupes_reels.json`. Les faire bloquer
     reviendrait à empêcher tout run tant que la clause 2 de la condition de
     retrait de #526 §9 n'est pas soldée.
     """

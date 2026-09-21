@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-groupes_config.py — Lecture partagée de `raw_data/groupes_reels.json`, et
+groupes_config.py — Lecture partagée de `config/groupes_reels.json`, et
 **suspension temporaire** de l'extraction d'un groupe configuré (#516).
 
 ## Pourquoi une suspension plutôt qu'une suppression
 
-`raw_data/groupes_reels.json` pilote trois choses à la fois : les fetchs de
+`config/groupes_reels.json` pilote trois choses à la fois : les fetchs de
 roster (`generate_roster_candidats.py`), la génération des fiches de groupe
 (`generate_group_profiles.py`) et la liste des fichiers attendus par le
 quality gate (`check_quality_gate._report_groupes`). Retirer une entrée les
@@ -144,7 +144,7 @@ def anomalies_suspension(groupe: dict[str, Any]) -> list[str]:
 #: pilote, et trois consommateurs le lisent sans avoir la moindre raison de
 #: dépendre du dérivateur de roster AN. `an_roster` le réexporte pour ses
 #: propres appelants.
-CHEMIN_CONFIG_GROUPES = Path("raw_data") / "groupes_reels.json"
+CHEMIN_CONFIG_GROUPES = Path("config") / "groupes_reels.json"
 
 #: Répertoire des fiches de groupe publiées.
 GROUPES_PUBLIES_DIR = Path("pivot_data") / "groupes"
@@ -225,7 +225,7 @@ def resume_suspension(groupe: dict[str, Any]) -> str:
 
 
 # ── La table de correspondance des sigles, committée (#526, portée ici #686) ──
-#: Clé portant la table dans `raw_data/groupes_reels.json`. Un sigle publié et
+#: Clé portant la table dans `config/groupes_reels.json`. Un sigle publié et
 #: sa correspondance AN sont deux faces du même choix éditorial : les séparer
 #: en deux fichiers garantirait qu'un jour l'un bouge sans l'autre.
 CLE_CORRESPONDANCE_SIGLES = "correspondance_sigles_an"
@@ -717,7 +717,7 @@ def historique_noms_publie(
     ]
 
 # ── Les lignées de groupe, déclarées (#836) ──────────────────────────────────
-#: Clé portant, dans `raw_data/groupes_reels.json`, la liste des LIGNÉES : la
+#: Clé portant, dans `config/groupes_reels.json`, la liste des LIGNÉES : la
 #: suite des fiches qu'un même groupe a portées au fil des législatures.
 #:
 #: **L'identifiant est déclaré, jamais dérivé** (#836). Les deux dérivations

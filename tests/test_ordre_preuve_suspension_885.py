@@ -26,7 +26,7 @@ sys.path.insert(0, str(RACINE / "src"))
 
 from couverture_profil import GroupeSuspendu, groupe_suspendu_depuis_config  # noqa: E402
 
-CONFIG = RACINE / "raw_data" / "groupes_reels.json"
+CONFIG = RACINE / "config" / "groupes_reels.json"
 
 
 def _suspendus():
@@ -62,7 +62,7 @@ def test_l_identifiant_et_la_date_restent_publies():
     assert "références : #528" in preuve
 
 
-@pytest.mark.lit_reference_committee("raw_data/groupes_reels.json")
+@pytest.mark.lit_reference_committee("config/groupes_reels.json")
 def test_aucune_suspension_publiee_n_annonce_le_senat_hors_perimetre():
     """L'affirmation que #885 a rendue fausse, gelée là où elle vivait.
 

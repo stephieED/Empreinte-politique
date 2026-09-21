@@ -58,10 +58,20 @@ def _indice(job: str, aiguille: str) -> int:
 # ---------------------------------------------------------------------------
 
 
-def test_le_job_de_rafraichissement_na_aucun_needs():
-    """Il doit démarrer au premier étage : c'est lui qui dimensionne la matrice."""
-    entete = _bloc_job("rafraichir-candidats").split("steps:")[0]
-    assert "needs:" not in _sans_commentaires(entete)
+def test_le_job_de_rafraichissement_ne_depend_que_du_code_epingle():
+    """Il doit démarrer au premier étage : c'est lui qui dimensionne la matrice.
+
+    Depuis #1059 il attend `epingler-le-code`, qui ne fait qu'un appel d'API —
+    quelques secondes, et le même pour tous les jobs. Ce qui reste interdit est
+    ce que #757 visait : dépendre d'une EXTRACTION, ce qui repousserait la
+    liste des candidats derrière plusieurs dizaines de minutes de collecte.
+    """
+    entete = _sans_commentaires(_bloc_job("rafraichir-candidats").split("steps:")[0])
+    besoins = re.findall(r"needs: (.+)", entete)
+    assert besoins == ["epingler-le-code"], (
+        f"`rafraichir-candidats` dépend de {besoins} : seul le job qui épingle le "
+        "code peut le précéder"
+    )
 
 
 def test_il_ne_porte_pas_continue_on_error():
@@ -102,8 +112,13 @@ def test_la_resolution_reseau_na_lieu_que_dans_ce_job():
 
 
 def test_la_matrice_attend_le_rafraichissement():
+    """La forme du champ a changé avec #1059 (liste), pas son exigence."""
     entete = _sans_commentaires(_bloc_job("prepare-an-matrix").split("steps:")[0])
-    assert "needs: rafraichir-candidats" in entete
+    besoins = re.findall(r"needs: (.+)", entete)
+    assert besoins, "la matrice doit déclarer ses dépendances"
+    assert "rafraichir-candidats" in besoins[0], (
+        f"la matrice ne suit plus le rafraîchissement : needs = {besoins[0]}"
+    )
 
 
 def test_la_matrice_tourne_meme_si_le_rafraichissement_echoue():

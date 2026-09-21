@@ -39,7 +39,7 @@ import io
 import os
 import sys
 from functools import lru_cache
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit
 
 import pytest
@@ -232,7 +232,17 @@ def _chemins_declares(item) -> frozenset:
     for marqueur in item.iter_markers(MARQUEUR_REFERENCE):
         for brut in marqueur.args:
             relatif = str(brut).strip("/")
-            if blanche is not None and relatif not in blanche:
+            # Un RÉPERTOIRE inscrit dans la liste blanche matérialise tout ce
+            # qu'il contient (#1057) : `config` couvre `config/groupes_reels.json`.
+            # Sans cette lecture, une liste blanche correcte serait refusée, et
+            # on la rallongerait fichier par fichier jusqu'à ce qu'elle mente.
+            # `test_la_liste_blanche_couvre_tout_ce_que_la_suite_lit` raisonne
+            # déjà ainsi sur le premier segment.
+            couvert = blanche is None or any(
+                candidat in blanche
+                for candidat in (relatif, *(str(p) for p in PurePosixPath(relatif).parents))
+            )
+            if not couvert:
                 raise ReferenceCommitteeHorsChecKout(
                     f"`{MARQUEUR_REFERENCE}(\"{relatif}\")` autorise un fichier "
                     "que le `sparse-checkout` de `.github/workflows/tests.yml` ne "
@@ -340,7 +350,7 @@ FIXTURE_CORRESPONDANCE = (
 FIXTURE_RESOLUTIONS = (
     Path(__file__).resolve().parent / "fixtures" / "resolutions_candidats_neutre.json")
 
-#: `raw_data/mandats_anterieurs.json` (#860) : une table relue que chaque
+#: `config/mandats_anterieurs.json` (#860) : une table relue que chaque
 #: écriture de pivot de candidat relit. Servie figée, pour qu'aucun test qui
 #: écrit un pivot ne dépende de ce que la table committée contient ce jour-là.
 FIXTURE_MANDATS_ANTERIEURS = (
@@ -475,7 +485,7 @@ def _relatif_hors_liste_blanche(chemin: str) -> str | None:
     Trois raisons de se taire, toutes du côté « dans le doute, rien » :
     la liste est illisible ; le chemin sort du dépôt (un `tmp_path`, un fichier
     système — la CI ne l'aurait pas téléchargé davantage en local) ; une entrée
-    de la liste le couvre, en préfixe de composants (`raw_data/groupes_reels.json`
+    de la liste le couvre, en préfixe de composants (`config/groupes_reels.json`
     couvre ce seul fichier, `docs` couvre tout ce qui est dessous).
     """
     blanche = _liste_blanche_sparse_checkout()

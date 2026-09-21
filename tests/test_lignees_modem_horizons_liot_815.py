@@ -28,9 +28,9 @@ sys.path.insert(0, str(RACINE / "src"))
 from an_roster import fusionner_intervalles  # noqa: E402
 from groupes_config import charger_lignees  # noqa: E402
 
-pytestmark = pytest.mark.lit_reference_committee("raw_data/groupes_reels.json")
+pytestmark = pytest.mark.lit_reference_committee("config/groupes_reels.json")
 
-CONFIG = RACINE / "raw_data" / "groupes_reels.json"
+CONFIG = RACINE / "config" / "groupes_reels.json"
 
 
 # ---------------------------------------------------------------------------

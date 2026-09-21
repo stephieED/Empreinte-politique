@@ -273,6 +273,12 @@ def test_tout_job_au_budget_serre_porte_une_liste_blanche():
         trouve = re.search(r"\n    timeout-minutes:\s*(.+)", tranche)
         if not trouve:
             continue
+        # Un job SANS checkout ne paie rien (#1059) : `epingler-le-code` ne
+        # fait qu'un appel d'API. La règle porte sur le prix d'un checkout
+        # complet, pas sur la durée du job — exempter ici est plus juste que
+        # lui faire déclarer une liste blanche qui ne s'appliquerait à rien.
+        if "uses: actions/checkout@" not in tranche:
+            continue
         # Un commentaire de fin de ligne suit parfois la valeur
         # (`timeout-minutes: 30   # ← même valeur que ...`) : sans cette coupe,
         # un job conforme serait signalé comme non vérifiable.

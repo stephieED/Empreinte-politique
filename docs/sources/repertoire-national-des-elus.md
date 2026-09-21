@@ -56,7 +56,7 @@ constaté le 27/02/2026 » est sourçable ; « jusqu'en mars 2026 » serait une
 inférence.
 
 **Aucun identifiant de personne.** L'appariement se fait sur l'état civil, d'où
-la table relue `raw_data/correspondance_elus_rne.json` pour les candidats dont le
+la table relue `config/correspondance_elus_rne.json` pour les candidats dont le
 corpus n'a pas la date de naissance.
 
 ## Cinq pièges, tous mesurés

@@ -7,7 +7,7 @@
 [`docs/technical_decisions.md`](technical_decisions.md) va des décisions vers le
 code et se lit par date. Cette table va dans l'autre sens : **ce module → ces
 décisions**, pour qu'un agent qui ouvre un fichier de `src/` sache ce qui le
-gouverne sans avoir à fouiller les 392 décisions
+gouverne sans avoir à fouiller les 396 décisions
 du répertoire. Le critère, ce qu'il rate et pourquoi la table est générée :
 [`docs/decisions/table-inversee-decisions-par-module.md`](decisions/table-inversee-decisions-par-module.md).
 
@@ -37,7 +37,6 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 
 | Module | Décisions qui le gouvernent |
 | --- | ---: |
-| `src/dossiers_europeens.py` | 4 |
 | `src/parse_syceron.py` | 4 |
 | `src/perimetre_candidats.py` | 4 |
 | `src/audit_pipeline.py` | 3 |
@@ -458,7 +457,7 @@ Le mentionnent sans le gouverner : [`archive-dossiers-xiv-1019`](decisions/archi
 | [Une entrée dérivée gèle un slug fabriqué, elle ne prouve plus rien (#715) (2026-09-02)](decisions/entree-derivee-correspondance-715.md) | `ECARTS_CONNUS` |
 | [Un garde-fou posé sur `builtins.open` ne voit pas `pathlib` (#791) (2026-09-10)](decisions/lectures-du-depot-dans-les-tests-791.md) | `CHEMIN_PAR_DEFAUT`, `charger_correspondance` |
 
-Le mentionnent sans le gouverner : [`civilite-et-pcs-insee-659`](decisions/civilite-et-pcs-insee-659.md), [`identite-profils-539`](decisions/identite-profils-539.md), [`larem-xv-apres-691-779`](decisions/larem-xv-apres-691-779.md), [`position-politique-groupes-686`](decisions/position-politique-groupes-686.md), [`preuve-de-borne-dite-une-fois-328`](decisions/preuve-de-borne-dite-une-fois-328.md), [`provenance-roster-gouvernement-996`](decisions/provenance-roster-gouvernement-996.md), [`roster-an-derive-amo30-526`](decisions/roster-an-derive-amo30-526.md), [`roster-gouvernements-amo30-996`](decisions/roster-gouvernements-amo30-996.md), [`slug-fabrique-membre-de-roster-708`](decisions/slug-fabrique-membre-de-roster-708.md), [`sparse-checkout-extract-an-674`](decisions/sparse-checkout-extract-an-674.md), [`tranches-derivees-lecteur-691`](decisions/tranches-derivees-lecteur-691.md).
+Le mentionnent sans le gouverner : [`civilite-et-pcs-insee-659`](decisions/civilite-et-pcs-insee-659.md), [`identite-profils-539`](decisions/identite-profils-539.md), [`larem-xv-apres-691-779`](decisions/larem-xv-apres-691-779.md), [`position-politique-groupes-686`](decisions/position-politique-groupes-686.md), [`preuve-de-borne-dite-une-fois-328`](decisions/preuve-de-borne-dite-une-fois-328.md), [`provenance-roster-gouvernement-996`](decisions/provenance-roster-gouvernement-996.md), [`repertoire-config-1057`](decisions/repertoire-config-1057.md), [`roster-an-derive-amo30-526`](decisions/roster-an-derive-amo30-526.md), [`roster-gouvernements-amo30-996`](decisions/roster-gouvernements-amo30-996.md), [`slug-fabrique-membre-de-roster-708`](decisions/slug-fabrique-membre-de-roster-708.md), [`sparse-checkout-extract-an-674`](decisions/sparse-checkout-extract-an-674.md), [`tranches-derivees-lecteur-691`](decisions/tranches-derivees-lecteur-691.md).
 
 ## `src/couverture_dossiers.py`
 
@@ -508,16 +507,17 @@ Le mentionnent sans le gouverner : [`domaines-eurovoc-familles-oeil-901`](decisi
 
 ## `src/dossiers_europeens.py`
 
-4 décision(s) le gouvernent ; le module en cite 0.
+5 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
 | [Un dossier européen reçoit ses domaines EuroVoc de son texte adopté (#901) (2026-09-17)](decisions/domaines-eurovoc-des-dossiers-901.md) | `documents_de_seance` |
 | [L'index des dossiers européens lit aussi les dossiers que les votes citent (#901) (2026-09-17)](decisions/dossiers-europeens-votes-901.md) | `references_visees` |
 | [L'index européen ne lisait que les amendements, et 34 références ne résolvaient nulle part (#901) (2026-09-16)](decisions/index-europeen-lit-aussi-les-textes-portes-901.md) | `references_visees` |
+| [L'index européen relit ce qu'il a publié : le cache n'est pas une mémoire (#1062) (2026-09-21)](decisions/index-europeen-reprend-ses-acquis-1062.md) | `reprendre_acquis` |
 | [Les quatre saisines au fond européennes se distinguent, elles ne se fondent pas (#901) (2026-09-14)](decisions/trois-saisines-au-fond-europeennes-901.md) | `KNOWN_STATUTS_COMMISSION_AU_FOND`, `commissions_au_fond_non_resolu` |
 
-Le mentionnent sans le gouverner : [`cascade-europeenne-une-porte-901`](decisions/cascade-europeenne-une-porte-901.md), [`domaines-eurovoc-familles-oeil-901`](decisions/domaines-eurovoc-familles-oeil-901.md), [`filtre-par-intitule-fiche-candidat-979`](decisions/filtre-par-intitule-fiche-candidat-979.md), [`index-dossiers-europeens-901`](decisions/index-dossiers-europeens-901.md), [`matieres-eurovoc-documents-901`](decisions/matieres-eurovoc-documents-901.md).
+Le mentionnent sans le gouverner : [`cascade-europeenne-une-porte-901`](decisions/cascade-europeenne-une-porte-901.md), [`domaines-eurovoc-familles-oeil-901`](decisions/domaines-eurovoc-familles-oeil-901.md), [`filtre-par-intitule-fiche-candidat-979`](decisions/filtre-par-intitule-fiche-candidat-979.md), [`index-dossiers-europeens-901`](decisions/index-dossiers-europeens-901.md), [`matieres-eurovoc-documents-901`](decisions/matieres-eurovoc-documents-901.md), [`portail-europeen-hors-chemin-critique-1064`](decisions/portail-europeen-hors-chemin-critique-1064.md).
 
 ## `src/download_watchdog.py`
 
@@ -531,12 +531,13 @@ Le mentionnent sans le gouverner : [`budget-collecte-interventions`](decisions/b
 
 ## `src/europarl_documents.py`
 
-6 décision(s) le gouvernent ; le module en cite 3.
+7 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
 | [Un portail muet coûtait 2 h 20 de run pour rien (#901) (2026-09-16)](decisions/disjoncteur-portail-europeen-901.md) | `MAX_ECHECS_CONSECUTIFS`, `PAUSE_ENTRE_REQUETES` |
 | [Un dossier européen reçoit ses domaines EuroVoc de son texte adopté (#901) (2026-09-17)](decisions/domaines-eurovoc-des-dossiers-901.md) | `ResolveurDocuments` |
+| [L'index européen relit ce qu'il a publié : le cache n'est pas une mémoire (#1062) (2026-09-21)](decisions/index-europeen-reprend-ses-acquis-1062.md) | `ResolveurDocuments` |
 | [628 textes européens sans dossier, et le portail les classait déjà (#901) (2026-09-16)](decisions/matieres-eurovoc-documents-901.md) | `DOCEO_BASE`, `ResolveurDocuments` |
 | [Le titre français cherchait sa référence là où elle n'est jamais (#901) (2026-09-16)](decisions/titre-francais-lu-dans-source-url-901.md) | `reference_doceo` |
 | [Le titre français était téléchargé puis jeté (#901) (2026-09-16)](decisions/titre-francais-textes-europeens-901.md) | `ResolveurDocuments` |
@@ -734,7 +735,7 @@ Le mentionnent sans le gouverner : [`audit-pipeline-gouvernement`](decisions/aud
 
 ## `src/gouvernements_amo30.py`
 
-Le mentionnent sans le gouverner : [`liste-gouvernements-amo30-996`](decisions/liste-gouvernements-amo30-996.md), [`rattachement-des-membres-par-organe-996`](decisions/rattachement-des-membres-par-organe-996.md).
+Le mentionnent sans le gouverner : [`liste-gouvernements-amo30-996`](decisions/liste-gouvernements-amo30-996.md), [`rattachement-des-membres-par-organe-996`](decisions/rattachement-des-membres-par-organe-996.md), [`repertoire-config-1057`](decisions/repertoire-config-1057.md).
 
 ## `src/group_profile.py`
 
@@ -856,7 +857,7 @@ Le mentionnent sans le gouverner : [`contact-et-comptes-publics-328`](decisions/
 | --- | --- |
 | [Les mandats antérieurs à la couverture de l'Assemblée entrent par une table relue (#860)](decisions/mandats-anterieurs-couverture-860.md) | `appliquer_mandats_anterieurs`, `charger_table` |
 
-Le mentionnent sans le gouverner : [`accueil-borne-par-institution-328`](decisions/accueil-borne-par-institution-328.md), [`borne-mandats-locaux-2020-922`](decisions/borne-mandats-locaux-2020-922.md), [`constat-absence-mandats-anterieurs-860`](decisions/constat-absence-mandats-anterieurs-860.md), [`correspondance-elus-rne-relue-922`](decisions/correspondance-elus-rne-relue-922.md), [`mention-mandats-anterieurs-fiche-candidat-860`](decisions/mention-mandats-anterieurs-fiche-candidat-860.md), [`sediment-nosdeputes-839`](decisions/sediment-nosdeputes-839.md).
+Le mentionnent sans le gouverner : [`accueil-borne-par-institution-328`](decisions/accueil-borne-par-institution-328.md), [`borne-mandats-locaux-2020-922`](decisions/borne-mandats-locaux-2020-922.md), [`constat-absence-mandats-anterieurs-860`](decisions/constat-absence-mandats-anterieurs-860.md), [`correspondance-elus-rne-relue-922`](decisions/correspondance-elus-rne-relue-922.md), [`mention-mandats-anterieurs-fiche-candidat-860`](decisions/mention-mandats-anterieurs-fiche-candidat-860.md), [`repertoire-config-1057`](decisions/repertoire-config-1057.md), [`sediment-nosdeputes-839`](decisions/sediment-nosdeputes-839.md).
 
 ## `src/mep_profile.py`
 

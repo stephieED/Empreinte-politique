@@ -130,18 +130,20 @@ les charger, ni à les faire grossir. -->
   `python3 scripts/rendu_formulaire.py` before touching a label** — reading the YAML hides
   exactly the defect #578 fixed.
   → `docs/decisions/ci-cd.md`, `docs/decisions/deux-axes-formulaire-578.md`
-- **The push identity decides whether any workflow sees the data commit — and today none
-  does (#508, #685).** A `GITHUB_TOKEN` push emits **no `push` event**; only a deploy-key
-  push does. #508 wired `ssh-key: ${{ secrets.DATA_PUSH_SSH_KEY }}` into `merge-and-pivot`,
-  but the three manual gestures its §7 names — deploy key, secret, ruleset — were **never
-  performed** (measured 01/09/2026: zero deploy keys, no such secret, no
-  `required_status_checks`), so the push still goes out under the token and **0 of the 15
-  data commits since `tests.yml` exists carry a test run**, the 11 since #508 included. Its
-  **loud** rejection cannot fire either: it speaks only on a `GH013`, which needs the
-  required check that was never restored — two omissions covering each other, which is why
-  fifteen commits went unnoticed. `merge-and-pivot` now **measures the remote it actually
-  pushed to** and says so in an annotation and in the job summary, non-blocking; the
-  guarantee returns only with #508 §7, never by editing this line.
+- **The push identity decides whether any workflow sees the data commit (#508, #685).**
+  A `GITHUB_TOKEN` push emits **no `push` event**; only a deploy-key push does. #508 wired
+  `ssh-key: ${{ secrets.DATA_PUSH_SSH_KEY }}` into `merge-and-pivot`, and the three manual
+  gestures its §7 names — deploy key, secret, ruleset — **live outside the repository**, so
+  a repository that is re-created starts without them. They were missing for the whole of
+  #685 (measured 01/09/2026: zero deploy keys, no such secret, no `required_status_checks`,
+  and **0 of 15** data commits carrying a test run), posed on 01/09/2026, and **posed again
+  on the public repository on 21/09/2026** — the ruleset had not survived the move. Current
+  state, re-measured that day: deploy key `data-push` in **write**, secret present, ruleset
+  `20260729_ruleset` active with `Suite complète` required and `DeployKey` + admin in
+  `bypass_actors`, and the data commit `98e6479d2` carries a **successful** `tests.yml` run.
+  `merge-and-pivot` keeps **measuring the remote it actually pushed to** and says so in an
+  annotation and in the job summary, non-blocking — because the gestures live outside the
+  repository, the measurement is the only thing that can tell you they are gone.
   → `docs/decisions/push-donnees-cle-de-deploiement-508.md`,
   `docs/decisions/identite-du-push-et-declenchement-des-tests-685.md`
 - **A job never writes a cache key for a directory it does not fill.** Three times:

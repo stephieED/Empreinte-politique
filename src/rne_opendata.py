@@ -354,7 +354,7 @@ def mandats_locaux(
             faite sans diacritiques (`aplatir`).
         date_naissance: quand le corpus la porte, c'est la clé. Les candidats
             déclarés qui n'en ont pas passent par la table relue
-            `raw_data/correspondance_elus_rne.json` (#922).
+            `config/correspondance_elus_rne.json` (#922).
         constate_le: la date d'état du jeu des sortants, reportée telle quelle
             dans `fin_non_resolue`.
 

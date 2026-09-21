@@ -298,7 +298,7 @@ def test_un_membre_de_gouvernement_transmet_son_acteur_a_la_collecte(monkeypatch
 # réécrit : le déclarer est le chemin documenté par le garde de #791, et non un
 # affaiblissement. Même déclaration que `tests/test_generate_all_profiles.py`,
 # et sur le SEUL test qui va jusqu'à l'écriture du pivot.
-@pytest.mark.lit_reference_committee("raw_data/groupes_reels.json")
+@pytest.mark.lit_reference_committee("config/groupes_reels.json")
 def test_le_pivot_ecrit_declare_la_provenance_de_gouvernement(monkeypatch, tmp_path):
     """Le bout de la chaîne, et l'observable durable : c'est
     `meta.provenance` du fichier publié qui décide de tout l'aval — la

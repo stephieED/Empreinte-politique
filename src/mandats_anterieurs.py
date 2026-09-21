@@ -56,7 +56,7 @@ from schema_pivot import (
     KNOWN_MOTIFS_MANDAT_ANTERIEUR_NON_RESOLU,
 )
 
-CHEMIN_TABLE = Path("raw_data") / "mandats_anterieurs.json"
+CHEMIN_TABLE = Path("config") / "mandats_anterieurs.json"
 
 #: Premier jour des données de l'Assemblée : la XIIe législature.
 BORNE_COUVERTURE_AN = "2002-06-19"

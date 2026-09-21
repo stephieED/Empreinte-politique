@@ -90,7 +90,7 @@ Voir `.github/workflows/generate-data.yml` (job `extract-roster-groupes`).
 Contrairement à `extract-an` / `extract-ue-officiel`, ce job
 ne part pas de la liste éditoriale `raw_data/candidats.json` mais de la
 composition réelle des groupes parlementaires configurés dans
-`raw_data/groupes_reels.json` — couverture de groupe complète (~750+
+`config/groupes_reels.json` — couverture de groupe complète (~750+
 membres), pas seulement les candidats déclarés/pressentis. Voir
 `docs/data-architecture.md` (tableau des deux sources d'entrée).
 
@@ -186,7 +186,7 @@ Ce job est un **déploiement progressif**, pas encore un run complet :
 
 ```mermaid
 flowchart TD
-    G0["raw_data/groupes_reels.json\nListe des groupes a produire"] --> RC["generate_roster_candidats.py"]
+    G0["config/groupes_reels.json\nListe des groupes a produire"] --> RC["generate_roster_candidats.py"]
 
     AMO["data.assemblee-nationale.fr\nAMO30 (archive deja en cache) - SEULE source, #527/#529"] --> GR["group_roster.py\nfetch_full_roster (refus hors deputes) + filter_roster_by_sigle"]
     GR --> RC
@@ -225,7 +225,7 @@ flowchart TD
 > `an_roster.AN_ROSTER_ACTIF`. Voir
 > `docs/decisions/bascule-roster-an-amo30-527.md`.  
 > **`raw_data/roster_candidats.json` n'est pas committé** : source de vérité
-> = `raw_data/groupes_reels.json`, produit à chaque run.  
+> = `config/groupes_reels.json`, produit à chaque run.  
 > **UNE construction par run depuis #518** : `prepare-roster-matrix` la fait et
 > publie l'artifact `roster-candidats` ; les 8 shards et `merge-and-pivot` le
 > téléchargent, et ne régénèrent que si l'artifact manque. Neuf constructions
@@ -302,7 +302,7 @@ groupes intact.
 
 ## Logique d'extraction (chaîne interne)
 
-1. `generate_roster_candidats.py` lit `raw_data/groupes_reels.json` (via
+1. `generate_roster_candidats.py` lit `config/groupes_reels.json` (via
    `--config`, défaut ce fichier). Une entrée portant `extraction_suspendue`
    en sort d'emblée (#516) : ni fetch, ni collecte, et son absence n'est pas
    une anomalie. Les **2 groupes Sénat** le sont depuis le 24/08/2026, ce qui
@@ -416,7 +416,7 @@ groupes intact.
 
 | Source | Contenu |
 |---|---|
-| `raw_data/groupes_reels.json` | Liste des groupes à couvrir (chambre, législature, sigle) |
+| `config/groupes_reels.json` | Liste des groupes à couvrir (chambre, législature, sigle) |
 | AMO30 (`data.assemblee-nationale.fr`, Licence Ouverte) | Composition des groupes AN, dérivée par `src/an_roster.py` depuis #527 — même archive que les scrutins et les amendements |
 | `src/group_roster.py` | Mutualisation par clé + filtrage du roster par sigle. **Aucun appel réseau propre depuis #529** : `AN_ROSTER_ACTIF` baissé lève `RosterAnInactif`, il n'aiguille plus vers rien |
 | `src/generate_roster_candidats.py` | Aplatissement du roster en liste de candidats (`raw_data/roster_candidats.json`) |

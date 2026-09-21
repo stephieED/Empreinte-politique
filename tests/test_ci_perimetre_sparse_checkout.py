@@ -41,7 +41,7 @@ WORKFLOW = RACINE / ".github" / "workflows" / "tests.yml"
 _ANCRES = r"(?:RACINE|ROOT|REPO_ROOT|parents\[1\])"
 
 #: `ANCRE / "a"` ou `ANCRE / "a" / "b"`. Deux composants suffisent : la liste
-#: blanche ne descend jamais plus bas (`raw_data/groupes_reels.json`).
+#: blanche ne descend jamais plus bas (`config/groupes_reels.json`).
 _LITTERAL = re.compile(_ANCRES + r'\s*/\s*"([^"/]+)"(?:\s*/\s*"([^"/]+)")?')
 
 
@@ -133,11 +133,17 @@ def test_le_cache_du_poste_reste_hors_de_la_liste_blanche():
 
 
 def test_raw_data_entier_reste_hors_de_la_liste_blanche():
-    """L'exemption de `raw_data` (#791) ne porte que sur le RÉPERTOIRE. Les
-    fichiers de configuration que la suite lit — `groupes_reels.json`,
-    `gouvernements_reels.json`, `candidats.json` — y sont nommés un par un, et
-    c'est cette liste que le marqueur `lit_reference_committee` interroge."""
+    """`raw_data` n'entre jamais en entier ; `config/` si, et la raison diffère.
+
+    Un run RÉÉCRIT les `.json` de `raw_data/` : ceux que la suite lit y sont
+    donc nommés un par un, et c'est cette liste que le marqueur
+    `lit_reference_committee` interroge. **Rien dans `config/` n'est écrit par
+    un run** (#1057) : le répertoire entier est stable, petit et committé à la
+    main, donc il se blanchit d'un mot — un fichier de config ajouté demain est
+    couvert sans qu'on ait à y penser, et aucun run ne peut le faire bouger.
+    """
     blanche = _liste_blanche()
     assert "raw_data" not in blanche
-    assert {"raw_data/groupes_reels.json", "raw_data/gouvernements_reels.json",
+    assert "config" in blanche
+    assert {"raw_data/gouvernements_reels.json",
             "raw_data/candidats.json"} <= blanche

@@ -157,7 +157,7 @@ Convention d'écriture : `AGENTS.md` §8.
   ne sont pas mesurés.
 
 - **Les mandats antérieurs sont sur les fiches, mais pas encore sur la fiche
-  candidat (#860, mesuré le 12/09/2026).** `raw_data/mandats_anterieurs.json`
+  candidat (#860, mesuré le 12/09/2026).** `config/mandats_anterieurs.json`
   porte **11 lignes relues pour 5 candidats** depuis #861, et la reprise #869 a
   posé le champ dérivé sur les **32** profils de candidats déclarés — 5 relus,
   27 déclarés `non_relu` — sans attendre un run, la pose étant une fonction pure.

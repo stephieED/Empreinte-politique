@@ -37,7 +37,7 @@ import builtins
 import io
 import re
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 import pytest
 
@@ -160,7 +160,7 @@ def test_le_corpus_publie_reste_au_hook_de_diagnostic():
 
 def test_un_json_hors_du_depot_nest_pas_refuse(tmp_path):
     """Le cas nominal : les tests écrivent leurs configurations sous `tmp_path`."""
-    fichier = tmp_path / "raw_data" / "groupes_reels.json"
+    fichier = tmp_path / "config" / "groupes_reels.json"
     fichier.parent.mkdir(parents=True)
     fichier.write_text("{}", encoding="utf-8")
     assert fichier.read_text(encoding="utf-8") == "{}"
@@ -197,7 +197,14 @@ def test_toute_declaration_est_couverte_par_le_sparse_checkout():
     assert declarees, (
         "aucune déclaration relevée : le relevé s'est cassé, ou le marqueur a "
         "été retiré des fichiers de tests sans que ce témoin le sache")
-    hors_liste = sorted(chemin for chemin in declarees if chemin not in blanche)
+    # Un RÉPERTOIRE blanchi matérialise ce qu'il contient (#1057) : `config`
+    # couvre `config/groupes_reels.json`. Même lecture que `conftest._chemins_declares`,
+    # qui refuse la déclaration elle-même, et que le témoin de la liste blanche.
+    def _couvert(chemin: str) -> bool:
+        return any(candidat in blanche
+                   for candidat in (chemin, *(str(p) for p in PurePosixPath(chemin).parents)))
+
+    hors_liste = sorted(chemin for chemin in declarees if not _couvert(chemin))
     assert not hors_liste, (
         "ces chemins sont déclarés lisibles mais absents du sparse-checkout de "
         f"tests.yml : {hors_liste}")
@@ -225,8 +232,8 @@ def test_une_declaration_hors_liste_blanche_leve():
 
 def test_une_declaration_couverte_est_acceptee():
     autorises = conftest_suite._chemins_declares(
-        _ItemFactice(_MarqueurFactice("raw_data/groupes_reels.json")))
-    assert (RACINE / "raw_data" / "groupes_reels.json").resolve() in autorises
+        _ItemFactice(_MarqueurFactice("config/groupes_reels.json")))
+    assert (RACINE / "config" / "groupes_reels.json").resolve() in autorises
 
 
 # --------------------------------------------------------------------------
