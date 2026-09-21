@@ -131,22 +131,20 @@ def test_la_superposition_exclut_les_deux_repertoires_de_donnees():
 
 
 def test_le_code_entre_dans_le_commit_final():
-    """Le commit doit porter le code ET les données, par exclusion des données.
+    """Le commit porte le code ET les données — le code, par la liste que
+    l'action de superposition écrit (#1066), jamais par exclusion des données.
 
-    Une liste de répertoires de code se périmerait au premier répertoire ajouté
-    à la racine ; l'exclusion, non.
+    L'exclusion (« tout sauf `pivot_data` et `raw_data` ») a publié 5,3 Go de
+    `_artifacts/` le 21/09/2026 : tout ce qu'un run dépose à la racine y
+    passait. Le comportement exact est exécuté par
+    `test_commit_du_code_par_construction_1066.py`.
     """
     texte = _texte_workflow()
-    ligne = next((l for l in texte.splitlines() if "git add -A" in l), None)
-    assert ligne, (
-        "le commit final ne stage plus le code : le dépôt public porterait des "
-        "données produites par un code qu'il ne contient pas"
+    assert 'LISTE="$RUNNER_TEMP/code-du-prive-racine.lst"' in texte, (
+        "le commit final ne lit plus la liste du code superposé : le dépôt public "
+        "porterait des données produites par un code qu'il ne contient pas"
     )
-    for donnee in DONNEES:
-        assert f"':(exclude){donnee}'" in ligne, (
-            f"`{donnee}` doit être exclu de ce `git add` — il a sa propre ligne, "
-            "explicite, juste au-dessus"
-        )
+    assert 'git add -A -- "${CODE[@]}"' in texte
 
 
 def test_le_jeton_est_en_lecture_seule_et_nomme():

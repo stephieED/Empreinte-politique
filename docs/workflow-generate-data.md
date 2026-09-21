@@ -54,6 +54,16 @@ exact sur son checkout, par `.github/actions/code-du-prive` : **les données
 viennent du dépôt public, le code du privé**, et le commit de fin de run
 dépose les deux ensemble.
 
+**Le commit stage le code par liste, jamais par exclusion** (#1066). L'action
+de superposition écrit `$RUNNER_TEMP/code-du-prive-racine.lst` — les entrées de
+tête de l'arbre du privé, données exclues — et le commit ne stage que celles-là ;
+une seconde passe retire de l'index toute entrée de tête qui n'est ni du code
+listé ni une donnée. La première version stageait « tout sauf les données » et
+comptait sur le `.gitignore` : le 21/09/2026, elle a publié **5,3 Go de
+`_artifacts/` et huit rapports de contrôle**, et la pointe du dépôt public a été
+purgée (commit remplacé, mêmes données octet pour octet). **Tout ce qu'un run
+dépose à la racine est donc un sous-produit**, quel que soit son nom.
+
 **Pourquoi un job de tête plutôt qu'une résolution par job.** Les extractions
 démarrent à t=0, `merge-and-pivot` ~27 min plus tard. Résolu par job, un merge
 pendant le run donnerait des extractions faites avec un code et une fusion

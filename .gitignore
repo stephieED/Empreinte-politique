@@ -258,3 +258,19 @@ __marimo__/
 .claude/worktrees/
 .claude/settings.local.json
 .claude/RESUME.md
+
+# Sous-produits d'un run de `generate-data.yml`, déposés à la racine (#1066).
+# Le commit de fin de run ne les stage plus — il ne stage que la liste du code
+# superposé —, mais les ignorer ici garde aussi propre un arbre local où l'on
+# rejoue une étape du workflow. Le 21/09/2026, faute de ces lignes, 5,3 Go de
+# `_artifacts/` et huit rapports ont été publiés, et la pointe purgée.
+/_artifacts/
+/_manifest/
+/integrite-referentielle.json
+/integrite-referentielle.md
+/diff-profils.json
+/diff-profils.md
+/collecte-vs-publie.json
+/collecte-vs-publie.md
+/collecte-non-publiee.json
+/collecte-non-publiee.md

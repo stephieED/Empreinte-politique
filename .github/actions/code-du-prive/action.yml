@@ -70,6 +70,17 @@ runs:
         for d in "${DONNEES[@]}"; do EXCLUSIONS+=(--exclude "/$d"); done
         rsync -a --delete "${EXCLUSIONS[@]}" "$SOURCE"/ ./
 
+        # LA LISTE DE CE QUI EST DU CODE, ÉCRITE ICI ET NULLE PART AILLEURS
+        # (#1066). Les entrées de tête de l'arbre superposé, données exclues :
+        # c'est exactement ce que le commit de fin de run a le droit de
+        # publier. Stager « tout sauf les données » avait publié 5,3 Go de
+        # `_artifacts/` et huit rapports de contrôle le 21/09/2026 — tout ce
+        # qu'un run dépose à la racine y passait. Dérivée de la source, cette
+        # liste ne peut contenir que ce que le dépôt privé porte.
+        ( cd "$SOURCE" && git ls-tree --name-only HEAD ) \
+          | grep -vxF -e "${DONNEES[0]}" -e "${DONNEES[1]}" \
+          > "$RUNNER_TEMP/code-du-prive-racine.lst"
+
         rm -rf "$SOURCE"
 
         # Le log DIT ce qui a été superposé : sans cette ligne, un run qui

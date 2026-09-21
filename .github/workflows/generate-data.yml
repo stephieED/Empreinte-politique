@@ -4091,13 +4091,33 @@ jobs:
           # run, comme `rosters_bruts.json`, et le committer ferait bouger un
           # fichier à chaque exécution sans que personne ne le lise.
           git add raw_data/candidats.json raw_data/profiles raw_data/correspondance_acteurs_an.json raw_data/gouvernements_reels.json pivot_data/profiles pivot_data/groupes pivot_data/gouvernements pivot_data/scrutins.json pivot_data/scrutins_europeens.json pivot_data/dossiers_europeens.json pivot_data/documents_europeens.json pivot_data/amendements
-          # LE CODE ENTRE DANS LE MEME COMMIT (#1059) — tout ce qui n'est
-          # pas une donnee, donc l'exact complement de `DONNEES` : le depot
-          # public porte alors les donnees ET le code qui les a produites.
-          # Ecrit en exclusions plutot qu'en liste de repertoires, pour
-          # qu'un repertoire ajoute demain a la racine soit publie sans
-          # qu'on y pense ; le `.gitignore` ecarte caches et artifacts.
-          git add -A -- . ':(exclude)pivot_data' ':(exclude)raw_data'
+          # LE CODE ENTRE DANS LE MÊME COMMIT (#1059) — et SEULEMENT le code
+          # (#1066). La liste vient de l'action de superposition : ce sont
+          # les entrées de tête de l'arbre du dépôt privé, données exclues.
+          # `git add -A` sur chacune couvre ajouts, modifications ET
+          # suppressions à l'intérieur ; rien de ce qu'un run dépose à la
+          # racine (`_artifacts/`, rapports de contrôle) n'y figure, par
+          # construction.
+          #
+          # La version précédente stageait « tout sauf les données » en
+          # comptant sur le `.gitignore` — qui ne couvrait ni `_artifacts/` ni
+          # les rapports. Le commit du 21/09/2026 a publié 5,3 Go de profils
+          # bruts et huit rapports ; la pointe a dû être purgée.
+          LISTE="$RUNNER_TEMP/code-du-prive-racine.lst"
+          if [ ! -s "$LISTE" ]; then
+            echo "::error::Liste du code superposé absente ou vide ($LISTE) : le code ne sera PAS committé, pour ne rien publier au hasard."
+          else
+            mapfile -t CODE < "$LISTE"
+            git add -A -- "${CODE[@]}"
+            # Une entrée de tête SUPPRIMÉE sur le privé : encore suivie ici,
+            # absente de la liste. `rsync --delete` l'a retirée de l'arbre de
+            # travail ; sans cette passe, le dépôt public la garderait.
+            comm -23 \
+              <(git ls-files | cut -d/ -f1 | sort -u) \
+              <(sort -u "$LISTE") \
+              | grep -vxF -e pivot_data -e raw_data \
+              | while IFS= read -r entree; do git rm -r -q --cached -- "$entree"; done
+          fi
           # Table des commissions saisies au fond (#328), ajoutée seulement si
           # elle existe : `git add` sur un chemin absent échoue, et le step qui
           # la produit est non bloquant. Un run sans archive lisible ne doit pas
