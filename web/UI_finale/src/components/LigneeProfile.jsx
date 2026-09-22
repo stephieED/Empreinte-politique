@@ -17,10 +17,14 @@
  * méthodologie derrière un renvoi — jamais un paragraphe sur la fiche.
  */
 import { createContext, useContext, useMemo, useState } from 'react';
-import { EtiquetteFiltre, MOT } from './Recherche';
+import { Condition, EtiquetteFiltre, PeriodeContext } from './Recherche';
 import { Link } from 'react-router-dom';
 import '../styles/shell.css';
 import './LigneeProfile.css';
+import { ProposParOrateur } from './ExtraitsDuDebat';
+import { getPaquetExtraitsMaillon } from '../data';
+import { paquetDe } from '../utils/extraits';
+import { motsDuFiltre } from '../utils/filtreIntitule';
 import NavigationPeriodes from './NavigationPeriodes';
 import { ListeVide } from './Lecture';
 import { LAST_READING_LABEL, formatNumber, styleForPosition, pageDuJeuDeDonnees } from '../utils/lecture';
@@ -86,14 +90,16 @@ function LienSource({ url, children }) {
  * maillon elle rend, et si elle porte le titre (premier de la pile) et le pied
  * (dernier). « En bref » et « Qui sont-ils » se retirent ; « Ce qu'on n'a pas pu
  * lire » ne change pas. */
-const Filtre = createContext({ mot: '', index: null, avecTete: true, avecPied: true });
+/* `filtreActif` : un mot OU une période (#1074) — la fiche se comporte alors de
+ * la même façon, et c'est lui que les conditions lisent, jamais le mot seul. */
+const Filtre = createContext({ mot: '', filtreActif: false, index: null, avecTete: true, avecPied: true });
 function Etiquette() {
   const { mot } = useContext(Filtre);
-  return mot ? <EtiquetteFiltre mot={mot} /> : null;
+  return <EtiquetteFiltre mot={mot} />;
 }
-function VideFiltre({ children }) {
+function VideFiltre({ quoi, critere }) {
   const { mot } = useContext(Filtre);
-  return <p className="cp-filtre-vide">{children} {MOT(mot)}.</p>;
+  return <p className="cp-filtre-vide">{quoi}<Condition critere={critere} mot={mot} />.</p>;
 }
 function Section({ numero, titre, critere, pied, renvoi, renvois, children }) {
   const { avecTete, avecPied } = useContext(Filtre);
@@ -507,13 +513,16 @@ function QuiSontIls({ lignee }) {
 /* ── § 2 — sur quoi ils ont pris la parole ─────────────────────────────────── */
 function SurQuoiIlsParlent({ lignee }) {
   const [m, index, setIndex] = useMaillon(lignee);
-  const { mot } = useContext(Filtre);
-  const s = mot ? m.sujets : { ...m.sujets, liste: m.sujets.liste.slice(0, 10) };
+  const { filtreActif, mot } = useContext(Filtre);
+  const debut = useContext(PeriodeContext);
+  // Un débat ouvert, par maillon : ce qui y a été dit (#1029).
+  const [ouvert, setOuvert] = useState(null);
+  const s = filtreActif ? m.sujets : { ...m.sujets, liste: m.sujets.liste.slice(0, 10) };
   return (
     <Section
       critere="Les débats où le plus de membres sont intervenus : des sujets, jamais des positions du groupe."
       numero="2"
-      pied={mot ? null : s.liste.length > 0
+      pied={filtreActif ? null : s.liste.length > 0
         ? `${s.liste.length} sur ${formatNumber(s.total)} débats · membres qui y sont intervenus, sur ${formatNumber(s.denominateur)} passés par le groupe`
         : null}
       renvoi={{ ancre: 'paroles', texte: 'D’où viennent ces intitulés' }}
@@ -523,15 +532,42 @@ function SurQuoiIlsParlent({ lignee }) {
       <div className="lp-carte">
         <TeteDePeriode avecPosture={false} maillon={m} />
         <Etiquette />
-        {s.liste.length === 0 && mot ? <VideFiltre>Aucun débat dont l’intitulé contient</VideFiltre> : s.liste.length === 0 ? <Vide maillon={m} /> : s.liste.map((t) => (
-          <div className="lp-sujet" key={t.label}>
-            <span className="lp-sujet-lib">{t.label}</span>
-            <span className="lp-sujet-n lp-num" title={t.porteursTexte}>
-              <b>{formatNumber(t.porteurs)}</b> <small>/ {formatNumber(t.denominateur)}</small>
-            </span>
-            <span className="lp-sujet-barre"><i style={{ width: `${((100 * t.porteurs) / Math.max(1, t.denominateur)).toFixed(1)}%` }} /></span>
-          </div>
-        ))}
+        {s.liste.length === 0 && filtreActif ? <VideFiltre critere="dont l’intitulé contient" quoi="Aucun débat" /> : s.liste.length === 0 ? <Vide maillon={m} /> : s.liste.map((t) => {
+          const choisi = ouvert === `${m.id}\u0000${t.label}`;
+          return (
+            <div className="lp-sujet-bloc" key={t.label}>
+              <button
+                aria-expanded={choisi}
+                className="lp-sujet lp-sujet--bouton"
+                onClick={() => setOuvert(choisi ? null : `${m.id}\u0000${t.label}`)}
+                type="button"
+              >
+                <span className="lp-sujet-lib">
+                  <span aria-hidden="true" className="lp-chevron">{choisi ? '▾' : '▸'}</span>
+                  {t.label}
+                  {/* Retenu par les propos seuls (#1029). */}
+                  {t.parIntitule === false && <span className="lp-sujet-via"> · le mot est dans les propos</span>}
+                </span>
+                <span className="lp-sujet-n lp-num" title={t.porteursTexte}>
+                  <b>{formatNumber(t.porteurs)}</b> <small>/ {formatNumber(t.denominateur)}</small>
+                </span>
+                <span className="lp-sujet-barre"><i style={{ width: `${((100 * t.porteurs) / Math.max(1, t.denominateur)).toFixed(1)}%` }} /></span>
+              </button>
+              {choisi && (
+                <ProposParOrateur
+                  charger={() => getPaquetExtraitsMaillon(m.id, paquetDe(t.label))}
+                  cle={`${m.id}:${paquetDe(t.label)}`}
+                  debut={debut}
+                  mots={motsDuFiltre(mot)}
+                  nomDe={(r) => lignee.personnes[r]?.nom ?? '—'}
+                  parIntitule={t.parIntitule !== false}
+                  saisie={mot}
+                  sujet={t.label}
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
     </Section>
   );
@@ -568,7 +604,7 @@ const LIBELLES_QUALITE = {
  * ensemble, comme les types de déposant des amendements. Sous le seuil de
  * l'examen en commission, rien n'est publié (AGENTS §6). */
 function TextesPortes({ maillon, rangs }) {
-  const { mot } = useContext(Filtre);
+  const { filtreActif } = useContext(Filtre);
   const [qualites, setQualites] = useState(Object.keys(QUALITES_TEXTE));
   const [sel, setSel] = useState(null);
   const textes = useMemo(() => {
@@ -578,8 +614,8 @@ function TextesPortes({ maillon, rangs }) {
     return textesPortes(retenus, (dossier) => parDossier.get(dossier) ?? null);
   }, [maillon, qualites]);
   if (!textes) return null;
-  if (mot && !maillon.textes.length) {
-    return <div className="lp-carte lp-textes"><Etiquette /><VideFiltre>Aucun texte porté dont l’intitulé contient</VideFiltre></div>;
+  if (filtreActif && !maillon.textes.length) {
+    return <div className="lp-carte lp-textes"><Etiquette /><VideFiltre critere="dont l’intitulé contient" quoi="Aucun texte porté" /></div>;
   }
   const presentes = Object.keys(QUALITES_TEXTE).filter((q) => maillon.textes.some((t) => t.roles?.[q]));
   const basculer = (q) => {
@@ -615,7 +651,7 @@ function TextesPortes({ maillon, rangs }) {
       {textes.cascade.total > 0 ? (
         <>
           <Cascade cascade={textes.cascade} onSelection={setSel} rangs={rangs} selection={sel} />
-          <ListeCascade cascade={textes.cascade} onRaz={sel ? () => setSel(null) : null} selection={sel ?? (mot ? { matiere: null, lo: 0, hi: textes.cascade.stades.length - 1 } : null)} />
+          <ListeCascade cascade={textes.cascade} onRaz={sel ? () => setSel(null) : null} selection={sel ?? (filtreActif ? { matiere: null, lo: 0, hi: textes.cascade.stades.length - 1 } : null)} />
         </>
       ) : (
         <p className="lp-rien">Aucun de ces textes n'a atteint l'examen en commission.</p>
@@ -665,7 +701,7 @@ function TextesAmendes({ detail }) {
 }
 
 function CeQuIlsOntPropose({ lignee }) {
-  const { mot } = useContext(Filtre);
+  const { filtreActif } = useContext(Filtre);
   const [m, index, setIndex] = useMaillon(lignee);
   const types = Object.keys(TYPES_DEPOSANT).filter((t) => m.amendements.parType[t]);
   const [choisis, setChoisis] = useState(['depute']);
@@ -693,7 +729,7 @@ function CeQuIlsOntPropose({ lignee }) {
   const maxD = Math.max(1, ...lignes.map((l) => (l.textes ? l.amendements / l.textes : 0)));
   const limites = [];
   if (m.amendements.distincts) limites.push(`${formatNumber(m.amendements.distincts)} amendements distincts en tout`);
-  if (m.amendements.sansType && !mot) limites.push(`dont ${formatNumber(m.amendements.sansType)} sans type de déposant publié`);
+  if (m.amendements.sansType && !filtreActif) limites.push(`dont ${formatNumber(m.amendements.sansType)} sans type de déposant publié`);
   if (lignes.length) limites.push('textes rangés du plus récemment amendé au plus ancien');
 
   return (
@@ -716,7 +752,11 @@ function CeQuIlsOntPropose({ lignee }) {
       {m.textes ? <TextesPortes key={m.id} maillon={m} rangs={rangs} /> : null}
       <div className="lp-carte">
         <Etiquette />
-        {!bloc && mot ? <VideFiltre>Aucun dossier amendé dont l’intitulé contient</VideFiltre> : !bloc ? <Vide maillon={m} /> : (
+        {m.amendementsHorsPeriode ? (
+          /* La projection compte les amendements par dossier, sur toute la
+             législature : les recompter dans une fenêtre serait inventer (#1074). */
+          <p className="cp-note">Les amendements du groupe se comptent par dossier, sur toute la législature : la période ne s’y applique pas.</p>
+        ) : !bloc && filtreActif ? <VideFiltre critere="dont l’intitulé contient" quoi="Aucun dossier amendé" /> : !bloc ? <Vide maillon={m} /> : (
           <>
             {types.length > 1 && (
               <div aria-label="Types de déposant retenus" className="lp-onglets" role="group">
@@ -762,7 +802,7 @@ function CeQuIlsOntPropose({ lignee }) {
               {lignes.map((l, r) => {
                 const densite = l.textes ? l.amendements / l.textes : null;
                 const teinte = PALETTE_MATIERE[(rangs.get(l.commission) ?? r) % PALETTE_MATIERE.length];
-                const ouvert = ouverte === l.commission || Boolean(mot);
+                const ouvert = ouverte === l.commission || filtreActif;
                 return (
                   <div key={l.commission}>
                     <button
@@ -799,7 +839,7 @@ function CeQuIlsOntPropose({ lignee }) {
                     <span className="lp-mr-rail" />
                     <span className="lp-mr-n lp-mr-n--textes">{nd.textes ? formatNumber(nd.textes) : '—'}</span>
                   </button>
-                  {(ouverte === MATIERE_NON_ETABLIE || mot) && nd.detail.length > 0 && <TextesAmendes detail={nd.detail} />}
+                  {(ouverte === MATIERE_NON_ETABLIE || filtreActif) && nd.detail.length > 0 && <TextesAmendes detail={nd.detail} />}
                 </div>
               )}
             </div>
@@ -852,7 +892,7 @@ function Scrutin({ id, pour, contre, abstention, scrutins }) {
 }
 
 function CeQuIlsOntVote({ lignee }) {
-  const { mot } = useContext(Filtre);
+  const { filtreActif } = useContext(Filtre);
   const [m, index, setIndex] = useMaillon(lignee);
   const [filtre, setFiltre] = useState(null);
   const [montres, setMontres] = useState(SCRUTINS_MONTRES);
@@ -865,7 +905,7 @@ function CeQuIlsOntVote({ lignee }) {
   };
   /* Sous un mot, la liste est DÉPLIÉE sur toutes les parts (#979) : les votes
    * d'une seule voix n'y apparaissaient qu'au clic sur leur segment. */
-  const liste = filtre || !mot
+  const liste = filtre || !filtreActif
     ? (m.partageListes?.[filtre || 'partages'] || [])
     : [...(m.partageListes?.partages || []), ...(m.partageListes?.une_seule_voix || [])];
   const dernieres = liste.filter(([id]) => m.scrutins[id]?.derniere);
@@ -884,17 +924,17 @@ function CeQuIlsOntVote({ lignee }) {
         index={index}
         lignee={lignee}
         onIndex={(i) => { setIndex(i); setFiltre(null); setMontres(SCRUTINS_MONTRES); }}
-        poids={(x) => (mot ? x.quorum.mesurables : x.quorum.agreges)}
+        poids={(x) => (filtreActif ? x.quorum.mesurables : x.quorum.agreges)}
         unite="scrutins"
         uniteSingulier="scrutin"
       />
       <div className="lp-carte">
         <Etiquette />
         <TeteDePeriode maillon={m} />
-        {q.agreges && mot && !q.mesurables ? <VideFiltre>Aucun scrutin dont l’intitulé contient</VideFiltre> : !q.agreges ? <Vide maillon={m} /> : (
+        {q.agreges && filtreActif && !q.mesurables ? <VideFiltre critere="dont l’intitulé contient" quoi="Aucun scrutin" /> : !q.agreges ? <Vide maillon={m} /> : (
           <>
             <p className="lp-sous">
-              Sur les {formatNumber(q.mesurables)} scrutins où le quorum du groupe est atteint{mot ? '' : `, sur ${formatNumber(q.agreges)}`}
+              Sur les {formatNumber(q.mesurables)} scrutins où le quorum du groupe est atteint{filtreActif ? '' : `, sur ${formatNumber(q.agreges)}`}
             </p>
             <div aria-label="Filtrer la liste par part" className="lp-trois" role="group">
               {Object.entries(PARTS).map(([cle, part]) => (
@@ -917,20 +957,20 @@ function CeQuIlsOntVote({ lignee }) {
               ))}
             </div>
             <p className="lp-sous">
-              {filtre ? PARTS[filtre].titre : mot ? 'Tous les scrutins' : 'Les plus partagés'} <span className="lp-sous-regle">· {LAST_READING_LABEL}</span>
+              {filtre ? PARTS[filtre].titre : filtreActif ? 'Tous les scrutins' : 'Les plus partagés'} <span className="lp-sous-regle">· {LAST_READING_LABEL}</span>
             </p>
             {dernieres.length === 0 ? (
               <p className="lp-rien">Aucune dernière lecture d'un texte dans cette part.</p>
-            ) : dernieres.slice(0, mot ? undefined : montres).map(([id, po, co, ab]) => (
+            ) : dernieres.slice(0, filtreActif ? undefined : montres).map(([id, po, co, ab]) => (
               <Scrutin abstention={ab} contre={co} id={id} key={id} pour={po} scrutins={m.scrutins} />
             ))}
-            {!mot && dernieres.length > montres && (
+            {!filtreActif && dernieres.length > montres && (
               <button className="lp-plus" onClick={() => setMontres(montres + 20)} type="button">
                 et {formatNumber(dernieres.length - montres)} autres textes
               </button>
             )}
             {reste.length > 0 && (
-              <details className="lp-tous" open={Boolean(mot)}>
+              <details className="lp-tous" open={filtreActif}>
                 <summary>Lectures antérieures, amendements, articles et motions — {formatNumber(reste.length)} scrutins</summary>
                 <Repli entrees={reste} scrutins={m.scrutins} />
               </details>
@@ -973,7 +1013,7 @@ const NATURES = [
 const LIBELLES_NATURE = { meme_sens: 'même sens', nuance: 'nuance', oppose: 'sens opposé' };
 
 function AvecQuiIlsVotent({ lignee }) {
-  const { mot } = useContext(Filtre);
+  const { filtreActif } = useContext(Filtre);
   const [m, index, setIndex] = useMaillon(lignee);
   const [ouvert, setOuvert] = useState(null);
   const lignes = (m.convergences || []).filter((a) => a.communs > 0);
@@ -1004,7 +1044,7 @@ function AvecQuiIlsVotent({ lignee }) {
       <div className="lp-carte">
         <Etiquette />
         <TeteDePeriode maillon={m} />
-        {m.convergences && mot && lignes.length === 0 ? <VideFiltre>Aucun texte comparé dont l’intitulé contient</VideFiltre> : !m.convergences ? <Vide maillon={m} /> : lignes.length === 0 ? (
+        {m.convergences && filtreActif && lignes.length === 0 ? <VideFiltre critere="dont l’intitulé contient" quoi="Aucun texte comparé" /> : !m.convergences ? <Vide maillon={m} /> : lignes.length === 0 ? (
           <p className="lp-rien">Aucun texte en dernière lecture où ce groupe et un autre atteignent tous deux leur quorum.</p>
         ) : (
           <>
@@ -1050,7 +1090,7 @@ function AvecQuiIlsVotent({ lignee }) {
                     <small>textes communs</small>
                   </span>
                   {actif && <TextesCompares autre={a.sigle} entrees={a.scrutins[actif] || []} moi={m.sigle} scrutins={m.scrutins} />}
-                  {!actif && mot && <TextesCompares autre={a.sigle} entrees={NATURES.flatMap((n) => a.scrutins[n.cle] || []).concat(a.scrutins.autres || [])} moi={m.sigle} scrutins={m.scrutins} />}
+                  {!actif && filtreActif && <TextesCompares autre={a.sigle} entrees={NATURES.flatMap((n) => a.scrutins[n.cle] || []).concat(a.scrutins.autres || [])} moi={m.sigle} scrutins={m.scrutins} />}
                 </div>
               );
             })}
@@ -1165,6 +1205,8 @@ function EnPile({ lignee, cle, Composant }) {
   ));
 }
 export default function LigneeProfile({ lignee, mot = '' }) {
+  const debut = useContext(PeriodeContext);
+  const filtreActif = Boolean(mot) || Boolean(debut);
   const aujourdhui = lignee.genereLe || new Date().toISOString().slice(0, 10);
   const noms = [];
   for (const m of lignee.maillons) if (!noms.includes(m.nom)) noms.push(m.nom);
@@ -1185,16 +1227,16 @@ export default function LigneeProfile({ lignee, mot = '' }) {
       </header>
 
 
-      {!mot && (
+      {!filtreActif && (
       <section className="lp-section lp-section--bref" data-section="En bref" id="section-bref">
         <h2 className="lp-section-titre"><span>En bref</span></h2>
         <Frise aujourdhui={aujourdhui} lignee={lignee} />
       </section>
       )}
 
-      <Filtre.Provider value={{ mot, index: null, avecTete: true, avecPied: true }}>
-        {!mot && <QuiSontIls lignee={lignee} />}
-        {mot ? (
+      <Filtre.Provider value={{ mot, filtreActif, index: null, avecTete: true, avecPied: true }}>
+        {!filtreActif && <QuiSontIls lignee={lignee} />}
+        {filtreActif ? (
           <>
             <EnPile Composant={SurQuoiIlsParlent} cle="parole" lignee={lignee} />
             <EnPile Composant={CeQuIlsOntPropose} cle="propose" lignee={lignee} />
@@ -1203,7 +1245,7 @@ export default function LigneeProfile({ lignee, mot = '' }) {
           </>
         ) : (
           <>
-            <SurQuoiIlsParlent key={`p-${mot}`} lignee={lignee} />
+            <SurQuoiIlsParlent key={`p-${mot}-${debut}`} lignee={lignee} />
             <CeQuIlsOntPropose key={`r-${mot}`} lignee={lignee} />
             <CeQuIlsOntVote key={`v-${mot}`} lignee={lignee} />
             <AvecQuiIlsVotent key={`a-${mot}`} lignee={lignee} />

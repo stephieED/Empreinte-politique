@@ -57,15 +57,20 @@ export function contientLesMots(intitule, mots) {
  *
  * Rend le profil INCHANGÉ (même objet) quand la saisie ne porte aucun mot.
  */
-export function filtrerProfil(pivot, saisie, { intituleDuVote, intituleDeLAmendement, intituleDeLIntervention }) {
+export function filtrerProfil(pivot, saisie, { intituleDuVote, intituleDeLAmendement, intituleDeLIntervention, amendementsParContenu = null }) {
   const mots = motsDuFiltre(saisie);
   if (!mots.length || !pivot) return pivot;
   const garde = (lire) => (x) => contientLesMots(lire(x), mots);
+  // Un amendement reste aussi quand son EXPOSÉ porte le mot (#1029, voie 2) —
+  // l'intitulé de son dossier nomme le véhicule, rarement le sujet.
+  const parContenu = amendementsParContenu ? amendementsParContenu(saisie) : null;
+  const amendementRetenu = (a) => contientLesMots(intituleDeLAmendement(a), mots)
+    || Boolean(parContenu?.has(String(a.amendement_id).replace(/^an:/, '')));
   return {
     ...pivot,
     textes_portes: (pivot.textes_portes || []).filter(garde((t) => t.titre)),
     votes: (pivot.votes || []).filter(garde(intituleDuVote)),
-    amendements: (pivot.amendements || []).filter(garde(intituleDeLAmendement)),
+    amendements: (pivot.amendements || []).filter(amendementRetenu),
     interventions: (pivot.interventions || []).filter(garde(intituleDeLIntervention)),
   };
 }

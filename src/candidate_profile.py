@@ -80,7 +80,7 @@ from gouvernement_textes import (
 from profil_brut import ecrire_profil_brut
 from licences import LICENCE_AN
 from parse_syceron import parse_syceron_xml
-from schema_pivot import COLLECTE_THEME_SEUL, POSITION_POLITIQUE_AN_VERS_PIVOT
+from schema_pivot import COLLECTE_EXTRAIT, COLLECTE_THEME_SEUL, POSITION_POLITIQUE_AN_VERS_PIVOT, extrait_de_texte
 from syceron_debates import (
     SYCERON_AVAILABLE_LEGISLATURES,
     SYCERON_CACHE_DIR,
@@ -545,6 +545,15 @@ AN_QUESTIONS_PATH: dict[str, dict[str, tuple[str, str]]] = {
 }
 QUESTIONS_CACHE_DIR = Path(".cache") / "questions_an"
 
+# #1094 — la marque de format de `index_par_acteur.json`. Un cache porte le code
+# qui l'a écrit, et les législatures closes ne sont jamais périmées (#555) :
+# sans elle, l'index de la XVe écrit avant la lecture de `ANALYSE.ANA` serait
+# servi indéfiniment, sujets à `null` compris. Le NOM du fichier ne change pas,
+# parce que `generate-data.yml` le cite et se publie à la main. À changer dès
+# que ce que l'index CONTIENT change.
+CLE_FORMAT_INDEX_QUESTIONS = "_format"
+FORMAT_INDEX_QUESTIONS = "sujet-xve-1094"
+
 # Verrous par législature pour `_build_acteur_vote_index` : plusieurs threads peuvent
 # appeler cette fonction simultanément pour des législatures différentes (pas de blocage
 # entre eux), mais on sérialise les accès pour une même législature afin d'éviter un
@@ -826,7 +835,9 @@ SYCERON_INDEX_PAR_ACTEUR_DIRNAME = "index_par_acteur"
 # lourds à la lecture), l'inverse est impossible. Un run réduit n'a donc rien à
 # reconstruire quand `extract-an` a déjà publié l'index complet — le cas nominal
 # en CI, où le job roster est derrière lui par `needs:`.
-SYCERON_INDEX_PAR_ACTEUR_THEME_DIRNAME = "index_par_acteur_theme"
+# #1029 — renommé quand la forme réduite a gagné l'EXTRAIT du verbatim : un
+# index au nom inchangé servirait, d'un cache, des entrées sans extrait.
+SYCERON_INDEX_PAR_ACTEUR_THEME_DIRNAME = "index_par_acteur_extrait"
 
 #: Valeur publiée dans `interventions[].collecte` pour une entrée réduite au
 #: thème (#657). Une entrée sans cette clé est une entrée complète : l'absence
@@ -3356,6 +3367,16 @@ def _download_and_build_amendement_index(legislature: str) -> dict[str, list[dic
 
             try:
                 index = _parse_amendements_zip(zip_path)
+                # #1029 voie 2 — l'article visé et les mots de l'exposé, lus dans
+                # la MÊME archive avant qu'elle ne soit supprimée. Non bloquant :
+                # un contenu manquant se reconstruit au run suivant, l'index des
+                # amendements, lui, ne doit jamais être perdu pour autant.
+                try:
+                    from amendements_contenu import ecrire_contenu_cache  # noqa: PLC0415
+
+                    ecrire_contenu_cache(legislature, zip_path, AMENDEMENTS_CACHE_DIR)
+                except (MemoryError, OSError, ValueError, zipfile.BadZipFile, zlib.error) as exc:
+                    print(f"  [!] Contenu des amendements non construit ({legislature}) : {exc}")
             except (zipfile.BadZipFile, zlib.error) as exc:
                 # `zlib.error` et non seulement `BadZipFile` (#1050) : une
                 # archive recollée à partir de deux versions s'OUVRE
@@ -4978,9 +4999,13 @@ def _parse_question_entry(data: dict, sous_type: str) -> Optional[tuple[str, dic
     uid = question.get("uid")
 
     # Sujet court (indexation AN — peut être une chaîne ou une liste de chaînes).
+    # #1094 — la XVe législature le range sous `ANALYSE.ANA`, en capitales, et
+    # jamais sous `analyses.analyse` : 52 213 questions sur 52 213 (QE, QG,
+    # QOSD, mesuré le 22/09/2026 sur les archives AN). Lu à la seule clé des
+    # XVIe et XVIIe, leur sujet était publié `null`.
     indexation = question.get("indexationAN") or {}
-    analyses = indexation.get("analyses") or {}
-    analyse = analyses.get("analyse")
+    analyses = indexation.get("analyses") or indexation.get("ANALYSE") or {}
+    analyse = analyses.get("analyse") or analyses.get("ANA")
     if isinstance(analyse, list):
         analyse = " ; ".join(str(a) for a in analyse if a)
     elif not isinstance(analyse, str):
@@ -5051,7 +5076,11 @@ def _build_acteur_questions_index(legislature: str) -> dict[str, list[dict[str, 
         if index_path.is_file():
             try:
                 with open(index_path, encoding="utf-8") as f:
-                    return json.load(f)
+                    en_cache = json.load(f)
+                # #1094 — un index écrit par un parseur plus ancien ne porte pas
+                # la marque : il est reconstruit, jamais servi.
+                if isinstance(en_cache, dict) and en_cache.pop(CLE_FORMAT_INDEX_QUESTIONS, None) == FORMAT_INDEX_QUESTIONS:
+                    return en_cache
             except (json.JSONDecodeError, OSError):
                 pass  # cache corrompu : on reconstruit
 
@@ -5114,7 +5143,7 @@ def _build_acteur_questions_index(legislature: str) -> dict[str, list[dict[str, 
         try:
             index_path.parent.mkdir(parents=True, exist_ok=True)
             with open(index_path, "w", encoding="utf-8") as f:
-                json.dump(index, f, ensure_ascii=False)
+                json.dump({CLE_FORMAT_INDEX_QUESTIONS: FORMAT_INDEX_QUESTIONS, **index}, f, ensure_ascii=False)
         except OSError:
             pass
 
@@ -5263,6 +5292,22 @@ def _normaliser_orateur_id_syceron(
     return acteur_ref, motif
 
 
+def _reduire_a_l_extrait(record: dict[str, Any]) -> dict[str, Any]:
+    """La forme des membres de roster depuis #1029 : la forme réduite au thème,
+    plus un extrait du verbatim (`schema_pivot.extrait_de_texte`) et
+    `texte_tronque`. Une entrée déjà réduite reste telle quelle : réduite au
+    thème, on n'invente pas un extrait qu'on n'a pas lu ; déjà un extrait, le
+    recouper perdrait `texte_tronque`.
+    """
+    if record.get("collecte") in (COLLECTE_EXTRAIT, COLLECTE_THEME_SEUL):
+        return dict(record)
+    extrait, tronque = extrait_de_texte(record.get("texte"))
+    reduite = _reduire_au_theme(record)
+    if extrait is None:
+        return reduite
+    return {**reduite, "texte": extrait, "texte_tronque": tronque, "collecte": COLLECTE_EXTRAIT}
+
+
 def _reduire_au_theme(record: dict[str, Any]) -> dict[str, Any]:
     """Réduit une entrée brute Syceron à ce qui porte le thème (#657).
 
@@ -5304,6 +5349,11 @@ def _reduire_au_theme(record: dict[str, Any]) -> dict[str, Any]:
         "session_ref": record.get("session_ref"),
         "url": record.get("url"),
         "legislature": record.get("legislature"),
+        # #1087 — une entrée réduite garde le lien vers le texte entier : c'est
+        # lui qui rend l'extrait vérifiable. La clé n'est posée que si l'entrée
+        # la porte : posée à `None` sur l'entrée d'un index d'avant #1087, elle
+        # ferait passer l'index réduit pour conforme (`_syceron_index_qualifie`).
+        **({"id_syceron": record["id_syceron"]} if "id_syceron" in record else {}),
         "collecte": COLLECTE_INTERVENTION_THEME_SEUL,
     }
 
@@ -5348,6 +5398,9 @@ def _parse_syceron_intervention_entry(
         # PRÉSENCE prouve que l'entrée sort du parseur corrigé ; c'est le critère
         # que lit `merge_profile.backfill_sujet_seance`.
         "sujet_code_grammaire": intervention.get("sujet_code_grammaire"),
+        # #1087 — l'ancre de la prise de parole sur la page de séance de l'AN.
+        # Posée seulement si le parseur l'a lue (même raison que ci-dessous).
+        **({"id_syceron": intervention["id_syceron"]} if "id_syceron" in intervention else {}),
         "texte": intervention.get("texte"),
         "fonction": intervention.get("fonction"),
         "format": intervention.get("format"),
@@ -5371,7 +5424,7 @@ def _parse_syceron_intervention_entry(
         "legislature": legislature,
     }
     if theme_seul:
-        record = _reduire_au_theme(record)
+        record = _reduire_a_l_extrait(record)
     return acteur_ref, record
 
 
@@ -5418,7 +5471,10 @@ def _syceron_shard_path_acteur(
 # APRÈS #710. Le parseur corrigé l'écrit sur CHAQUE entrée (`parse_syceron.py`,
 # `_reduire_au_theme` le reconduit) : un index où aucune entrée ne porte la clé
 # est donc périmé, jamais « une législature dont la source ne qualifie rien ».
-SYCERON_CHAMP_QUALIFICATION = "sujet_code_grammaire"
+# #1087 — `id_syceron` remplace `sujet_code_grammaire` (#710) : un index écrit
+# avant #1087 n'a pas l'ancre, et se relirait sans elle. Tout index qui la
+# porte porte aussi la clé de #710 — le parseur les écrit ensemble.
+SYCERON_CHAMP_QUALIFICATION = "id_syceron"
 
 #: Mémo du verdict de conformité, indexé par CHEMIN absolu du répertoire
 #: d'index — jamais par un nom logique : les tests règlent leur propre cache par
@@ -5536,7 +5592,7 @@ def _read_cached_interventions_syceron_acteur(
         if not isinstance(entrees, list):
             return None
         if theme_seul and not forme_theme:
-            entrees = [_reduire_au_theme(e) for e in entrees if isinstance(e, dict)]
+            entrees = [_reduire_a_l_extrait(e) for e in entrees if isinstance(e, dict)]
         return entrees
     return None
 
@@ -6019,7 +6075,7 @@ def build_profile(
             # moyen de le savoir. Absente quand la collecte est complète : une
             # clé toujours présente ne distinguerait plus les deux runs.
             **(
-                {"collecte_reduite": {"interventions": COLLECTE_INTERVENTION_THEME_SEUL}}
+                {"collecte_reduite": {"interventions": COLLECTE_EXTRAIT}}
                 if interventions_theme_seul and not skip_interventions
                 else {}
             ),

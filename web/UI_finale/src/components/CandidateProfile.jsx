@@ -15,7 +15,7 @@
 import '../styles/shell.css';
 import './CandidateProfile.css';
 import { BadgeSource, ListeVide } from './Lecture';
-import { EtiquetteFiltre, MOT, VideDuFiltre } from './Recherche';
+import { Condition, EtiquetteFiltre, VideDuFiltre, useFiltreActif } from './Recherche';
 import { teinteMatiere, teinteThemeUe } from '../utils/matiere';
 import { MATIERE_NON_ETABLIE, NATURES_UE } from '../utils/profilCandidat';
 import { Cascade, ListeCascade } from './CascadeTextes';
@@ -669,6 +669,7 @@ function CommutateurVersant({ ue, onFr, onUe, compteFr, compteUe, libelle }) {
 
 function Propositions({ amendements, amendementsParVersant, amendementsUe, textes, causeAmendements, causeTextes, voix, filtre = null }) {
   const mot = filtre?.mot || '';
+  const actif = useFiltreActif(mot);
   const [matiere, setMatiere] = useState(null);
   const [selTexte, setSelTexte] = useState(null);
   const europe = textes.europe || { total: 0, publies: 0, cascade: null };
@@ -736,19 +737,19 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
   /* Une cascade non dessinée, ou un mot tapé : la liste montre tous les textes
    * sans attendre de clic (#979). Un clic dans la cascade reste une sélection. */
   const disposer = ue ? disposerCascadeUE : undefined;
-  const toutVoir = cascade && (Boolean(mot) || !cascadeDessinee(cascade, disposer));
+  const toutVoir = cascade && (actif || !cascadeDessinee(cascade, disposer));
   const selectionTextes = selTexte ?? (toutVoir ? selectionDeTousLesTextes(cascade) : null);
   return (
     <>
-      {textes.total === 0 && europe.total === 0 && mot ? (
-        <VideDuFiltre mot={mot}>Aucun texte porté dont l’intitulé contient {MOT(mot)}.</VideDuFiltre>
+      {textes.total === 0 && europe.total === 0 && actif ? (
+        <VideDuFiltre mot={mot}>Aucun texte porté<Condition critere="dont l’intitulé contient" mot={mot} />.</VideDuFiltre>
       ) : textes.total === 0 && europe.total === 0 ? (
         <div className="cp-carte">
           <ListeVide cause={causeTextes} source="Textes portés comme auteur ou rapporteur" />
         </div>
       ) : (
         <div className="cp-carte cp-textes">
-          {mot && <EtiquetteFiltre mot={mot} />}
+          <EtiquetteFiltre mot={mot} />
           <div className="cp-gouv-tete">
             <span className="cp-gouv-nom">
               Les textes {voix.quil} a portés
@@ -825,7 +826,7 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
 
       {amdt.totalAuteur === 0 ? (
         <div className="cp-carte">
-          {mot && <EtiquetteFiltre mot={mot} />}
+          <EtiquetteFiltre mot={mot} />
           {/* Un versant vide DIT de quel parlement il parle : sans commutateur
               ni titre, « aucun amendement » se lirait comme un vide de
               collecte, alors que l'autre versant en porte des milliers. */}
@@ -847,9 +848,9 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
           )}
           {/* Sous un mot, ce vide est celui du FILTRE : « non collecté » y
               serait faux (§2 règle 5, #979). */}
-          {mot ? (
+          {actif ? (
             <p className="cp-note cp-filtre-vide">
-              Aucun dossier amendé dont l’intitulé contient {MOT(mot)}.
+              Aucun dossier amendé<Condition critere="dont l’intitulé contient" mot={mot} />.
               {filtre.amendementsEuropeens && amdtUe.totalAuteur === 0
                 ? ' Au Parlement européen, ces intitulés sont publiés en anglais.'
                 : ''}
@@ -863,7 +864,7 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
         </div>
       ) : amdt.chute && (
         <div className="cp-carte">
-          {mot && <EtiquetteFiltre mot={mot} />}
+          <EtiquetteFiltre mot={mot} />
           <div className="cp-gouv-tete">
             <span className="cp-gouv-nom">
               Les amendements dont {voix.sujet} est l’auteur
@@ -1004,8 +1005,9 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
  * section ne sait pas est publié sous la figure.
  */
 function Paroles({ interventions, cause, mot = '' }) {
-  if (!interventions.total && mot) {
-    return <VideDuFiltre mot={mot}>Aucune intervention dont le sujet ou le propos contient {MOT(mot)}.</VideDuFiltre>;
+  const actif = useFiltreActif(mot);
+  if (!interventions.total && actif) {
+    return <VideDuFiltre mot={mot}>Aucune intervention<Condition critere="dont le sujet ou le propos contient" mot={mot} />.</VideDuFiltre>;
   }
   if (!interventions.total) {
     return (
@@ -1030,7 +1032,7 @@ function Paroles({ interventions, cause, mot = '' }) {
     <ParolesParPeriode
       deplie={Boolean(mot)}
       mot={mot}
-      etiquette={mot ? <EtiquetteFiltre mot={mot} /> : null}
+      etiquette={actif ? <EtiquetteFiltre mot={mot} /> : null}
       qualites={interventions.qualites}
       plafondPeriode={interventions.plafondPeriode}
       plafondEnsemble={interventions.plafondEnsemble}
@@ -1049,6 +1051,7 @@ function Paroles({ interventions, cause, mot = '' }) {
  * place de la commission saisie au fond.
  */
 function Votes({ votes, cause, mot = '' }) {
+  const actif = useFiltreActif(mot);
   const europe = votes.europe || { textes: 0 };
   const deuxVersants = votes.textes > 0 && europe.textes > 0;
   const [versant, setVersant] = useState(votes.textes > 0 ? 'fr' : 'ue');
@@ -1057,11 +1060,11 @@ function Votes({ votes, cause, mot = '' }) {
    * plutôt que de disparaître (§2 règle 5). Depuis #901, les positions
    * européennes sont rattachées et filtrées comme les autres : la phrase
    * qui les déclarait absentes n'a plus lieu d'être. */
-  if (mot && votes.derniereLectureDisponible !== false
+  if (actif && votes.derniereLectureDisponible !== false
     && !europe.textes && (!votes.textes || !votes.periodes?.length)) {
     return (
       <VideDuFiltre mot={mot}>
-        Aucun vote affiché dont l’intitulé contient {MOT(mot)}.
+        Aucun vote affiché<Condition critere="dont l’intitulé contient" mot={mot} />.
       </VideDuFiltre>
     );
   }
@@ -1097,6 +1100,7 @@ function Votes({ votes, cause, mot = '' }) {
 }
 
 function VotesFrancais({ votes, cause, mot = '' }) {
+  const actif = useFiltreActif(mot);
   if (!votes.total) {
     return (
       <div className="cp-carte">
@@ -1166,7 +1170,7 @@ function VotesFrancais({ votes, cause, mot = '' }) {
           {votes.periodes?.length ? (
             <>
               <VotesParPeriode
-                etiquette={mot ? <EtiquetteFiltre mot={mot} /> : null}
+                etiquette={actif ? <EtiquetteFiltre mot={mot} /> : null}
                 periodes={votes.periodes}
                 portee={votes.portee}
                 reperes={votes.reperes}
@@ -1566,8 +1570,9 @@ const LIMITES_DU_PARCOURS = new Set([
 ]);
 
 export default function CandidateProfile({ candidate, mot = '' }) {
+  const actif = useFiltreActif(mot);
   const c = candidate;
-  const filtre = mot ? c.filtre : null;
+  const filtre = actif ? c.filtre : null;
   const limitesDuParcours = (c.limites || []).filter((l) => LIMITES_DU_PARCOURS.has(l.cle));
   const limitesDeCollecte = (c.limites || []).filter((l) => !LIMITES_DU_PARCOURS.has(l.cle));
 
@@ -1678,14 +1683,14 @@ export default function CandidateProfile({ candidate, mot = '' }) {
         titre={c.voix.titres.ecarts}
         critere="Sa position à côté de celle de son groupe, scrutin par scrutin. Jamais totalisée."
       >
-        {mot && !c.ecarts.bande.length ? (
+        {actif && !c.ecarts.bande.length ? (
           <VideDuFiltre mot={mot}>
-            Aucun scrutin comparable avec son groupe dont l’intitulé contient {MOT(mot)}.
+            Aucun scrutin comparable avec son groupe<Condition critere="dont l’intitulé contient" mot={mot} />.
           </VideDuFiltre>
         ) : (
           <EcartsGroupe
             ecarts={c.ecarts}
-            etiquette={mot ? <EtiquetteFiltre mot={mot} /> : null}
+            etiquette={actif ? <EtiquetteFiltre mot={mot} /> : null}
             voix={c.voix}
           />
         )}

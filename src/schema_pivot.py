@@ -414,6 +414,12 @@ Format d'un profil pivot v1 :
             "ministere": "Ministère...",     # ministère interrogé (texte libre)
             "reponse": "...",                # texte de la réponse, si disponible (null sinon)
             "date_reponse": "2023-04-20",    # date JO de la réponse (null si pas encore répondu)
+            # #1094 — présent UNIQUEMENT sur un tour de parole Syceron
+            # (`type_detail: "question_gouvernement"`) dont l'acte questions.an
+            # est publié dans le même profil et confirmé par le thème :
+            # l'`intervention_id` de cet acte. Dérivé, jamais fusionné
+            # (`rattacher_parole_aux_questions`). Absent = aucun acte rattaché.
+            "question_ref": "question_QANR5L17QG1472",
         }
     ],
     "tags_thematiques": ["budget", "fiscalité"],  # bruts, avant harmonisation Phase 4
@@ -462,6 +468,7 @@ from collections import Counter, defaultdict
 import re
 from datetime import date as _date
 import time
+import unicodedata
 from typing import Any, NamedTuple, Optional
 from avertissements import DESTINATAIRES_AVERTISSEMENT
 from amendements_index import (
@@ -532,10 +539,70 @@ COLLECTE_THEME_SEUL = "theme_seul"
 #: jamais (§2 règle 5).
 COLLECTE_SANS_VERBATIM_SOURCE = "sans_verbatim_source"
 
+#: #1029 — la forme des membres de roster (groupes ET gouvernement) depuis le
+#: 22/09/2026 : la forme réduite au thème, plus un EXTRAIT du verbatim —
+#: `EXTRAIT_TEXTE_CARACTERES` caractères au plus, coupés en fin de phrase ou de
+#: mot, et `texte_tronque` qui dit si le texte continue. Le texte entier reste
+#: chez l'Assemblée, source primaire (#1087). Arbitré par la propriétaire :
+#: « un extrait de 280 » pour tous les profils de groupes et de gouvernement.
+COLLECTE_EXTRAIT = "extrait"
+EXTRAIT_TEXTE_CARACTERES = 280
+
 KNOWN_COLLECTES_INTERVENTION: frozenset[str] = frozenset({
     COLLECTE_THEME_SEUL,
+    COLLECTE_EXTRAIT,
     COLLECTE_SANS_VERBATIM_SOURCE,
 })
+
+_FIN_DE_PHRASE = re.compile(r"[.!?…](?=\s|$)")
+
+
+_ID_INTERVENTION_SYCERON = re.compile(r"^syceron_(CRSANR5L(\d+)S\w+?)_\d+$")
+
+
+def url_seance_an(intervention: dict[str, Any]) -> Optional[str]:
+    """Le lien vers la prise de parole sur la page de séance de l'AN (#1087).
+
+    `https://www.assemblee-nationale.fr/dyn/<lég>/comptes-rendus/seance/<uid>`,
+    que l'AN redirige vers la page lisible, et `#<id_syceron>` — l'ancre exacte
+    de la prise de parole — quand l'entrée la porte. Construit depuis
+    `intervention_id`, dont l'uid du compte rendu est le préfixe : rien n'est
+    stocké de plus qu'un numéro. `None` pour une entrée qui ne vient pas de
+    Syceron.
+
+    Mesuré le 22/09/2026 : 90 séances tirées au hasard (30 par législature,
+    XV à XVII) répondent 200 ; l'ancre `#4166184` mène à l'intervention de
+    Gabriel Attal du 20/07/2026. Un compte rendu connu échoue chez l'AN
+    (`CRSANR5L16S2021O1N144`, daté du 01/02/2021 et rangé sous la XVIe : 500).
+    """
+    m = _ID_INTERVENTION_SYCERON.match(str(intervention.get("intervention_id") or intervention.get("id") or ""))
+    if not m:
+        return None
+    url = f"https://www.assemblee-nationale.fr/dyn/{m.group(2)}/comptes-rendus/seance/{m.group(1)}"
+    ancre = intervention.get("id_syceron")
+    return f"{url}#{ancre}" if ancre else url
+
+
+def extrait_de_texte(texte: Optional[str], limite: int = EXTRAIT_TEXTE_CARACTERES) -> tuple[Optional[str], bool]:
+    """`(extrait, tronqué)` d'un verbatim (#1029).
+
+    Au plus `limite` caractères. Coupé à la dernière fin de phrase si elle tombe
+    dans la seconde moitié de la limite — un propos coupé au milieu d'une phrase
+    peut se lire à l'envers de ce qui a été dit (§2 règle 1) —, sinon au dernier
+    blanc, jamais au milieu d'un mot. **Aucun caractère n'est ajouté** : pas de
+    « … » dans le verbatim, c'est `tronqué` qui dit que le texte continue.
+    """
+    if not isinstance(texte, str) or not texte:
+        return None, False
+    if len(texte) <= limite:
+        return texte, False
+    fenetre = texte[:limite]
+    fins = [m.end() for m in _FIN_DE_PHRASE.finditer(fenetre)]
+    if fins and fins[-1] >= limite // 2:
+        return fenetre[:fins[-1]], True
+    blanc = fenetre.rstrip().rfind(" ")
+    coupe = fenetre[:blanc] if blanc > 0 else fenetre
+    return coupe.rstrip(), True
 
 # Ordre canonique de `chambres` (#493). Il rend la liste **stable** d'un run à
 # l'autre — sans lui, l'ordre suivrait celui des mandats, que la fusion additive
@@ -870,6 +937,105 @@ def deriver_tags_thematiques(interventions: Optional[list[dict[str, Any]]]) -> l
                 if cleaned:
                     formes[cle_tag_thematique(cleaned)][cleaned] += 1
     return sorted(forme_publiee(compte) for compte in formes.values())
+
+
+#: Écart maximal, en jours, entre la séance d'une question au gouvernement et
+#: la parution de son compte rendu au JO, qui date l'entrée questions.an (#1044).
+#: Mesuré le 22/09/2026 sur les QG appariées par leur thème : 0 et 2 jours
+#: deux fois chacun, 1 jour pour toutes les autres.
+ECART_MAX_SEANCE_JO_QG = 2
+
+
+def _cle_theme(texte: Any) -> str:
+    """Un intitulé ramené à ce qui le distingue : casse, accents, apostrophes
+    typographiques et espaces ne comptent pas. La même QG est intitulée
+    « Hausse des prix de l'énergie » par questions.an et « Hausse des prix de
+    l’énergie » par le compte rendu."""
+    if not isinstance(texte, str):
+        return ""
+    texte = re.sub(r"[’‘]", "'", texte)
+    sans_accents = unicodedata.normalize("NFKD", texte).encode("ascii", "ignore").decode()
+    return re.sub(r"\s+", " ", sans_accents).strip().lower()
+
+
+def rattacher_parole_aux_questions(
+    interventions: Optional[list[dict[str, Any]]],
+) -> Optional[list[dict[str, Any]]]:
+    """Relie chaque tour de parole d'une question au gouvernement à l'acte (#1094).
+
+    Une QG est publiée sous deux formes, qui ne disent pas la même chose :
+    l'ACTE, venu de questions.assemblee-nationale.fr (`type_detail: "question"`,
+    `sous_type: "QG"`, daté par le JO, avec le ministère et la réponse), et ses
+    TOURS DE PAROLE, venus du compte rendu Syceron (`type_detail:
+    "question_gouvernement"`, datés par la séance) — de 1 à 13 par question. On
+    garde les deux (arbitré le 22/09/2026, option A) et chaque tour de parole
+    reçoit `question_ref`, l'`intervention_id` de son acte : un lecteur compte
+    les actes sur les QG, la parole sur les tours, et plus rien deux fois.
+
+    **Le lien n'est écrit que si le thème le confirme** : même intitulé des deux
+    côtés (`sujet` de l'acte ↔ `theme_officiel` du tour, ou son `sujet` quand
+    le compte rendu ne publie pas de thème, comme en XVe ; `_cle_theme`),
+    séance de 0 à `ECART_MAX_SEANCE_JO_QG` jours avant la parution. La source
+    des QG ne publie aucune référence de séance. Mesuré le 22/09/2026 sur les
+    167 QG des 12 candidats déclarés qui en ont, sujets XVe relus par le
+    parseur corrigé : 122 actes reliés à 416 tours ; 28 QG dont la date seule
+    désigne une séance sans thème pour le confirmer, 5 dont le thème contredit
+    (coquilles de la source — « ventre de la branche énergie », « oubre-mer » —,
+    ou une autre question la même semaine), le reste sans séance ou indécidable. Un lien déduit de la date seule,
+    ou d'un intitulé rapproché, serait notre inférence présentée comme un fait
+    (§2 règle 2) : ces tours restent sans `question_ref`.
+
+    Un tour que deux actes réclameraient n'est rattaché à aucun (0 cas mesuré).
+
+    **Champ DÉRIVÉ**, comme `tags_thematiques` : recalculé après chaque fusion,
+    jamais fusionné. Il se retire donc de lui-même le jour où l'appariement
+    change, et un lien ancien ne survit pas à la correction de son thème.
+    """
+    if not interventions:
+        return interventions
+
+    def _jour(valeur: Any) -> Optional[_date]:
+        try:
+            return _date.fromisoformat(str(valeur)[:10])
+        except ValueError:
+            return None
+
+    tours = [
+        (index, cle, jour)
+        for index, i in enumerate(interventions)
+        if isinstance(i, dict) and i.get("type_detail") == "question_gouvernement"
+        and (cle := _cle_theme(i.get("theme_officiel") or i.get("sujet")))
+        and (jour := _jour(i.get("date"))) is not None
+    ]
+    reclames: dict[int, set[str]] = defaultdict(set)
+    for acte in interventions:
+        if not (isinstance(acte, dict) and acte.get("type_detail") == "question"
+                and acte.get("sous_type") == "QG" and acte.get("intervention_id")):
+            continue
+        cle, jour = _cle_theme(acte.get("sujet")), _jour(acte.get("date"))
+        if not cle or jour is None:
+            continue
+        candidats = [
+            (ecart, index) for index, cle_tour, jour_tour in tours
+            if cle_tour == cle and 0 <= (ecart := (jour - jour_tour).days) <= ECART_MAX_SEANCE_JO_QG
+        ]
+        if candidats:
+            plus_proche = min(ecart for ecart, _ in candidats)
+            for ecart, index in candidats:
+                if ecart == plus_proche:
+                    reclames[index].add(acte["intervention_id"])
+
+    resultat: list[dict[str, Any]] = []
+    for index, i in enumerate(interventions):
+        if isinstance(i, dict):
+            actes = reclames.get(index)
+            ref = next(iter(actes)) if actes and len(actes) == 1 else None
+            if ref is not None and i.get("question_ref") != ref:
+                i = {**i, "question_ref": ref}
+            elif ref is None and "question_ref" in i:
+                i = {k: v for k, v in i.items() if k != "question_ref"}
+        resultat.append(i)
+    return resultat
 
 
 def lire_chambres(profil: Any) -> list[str]:

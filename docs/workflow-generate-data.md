@@ -171,6 +171,18 @@ la CI ne télécharge que la 17e. Un échec est isolé par législature ; le scr
 sort en 1 si l'une a échoué, et c'est le `continue-on-error` du job, pas le
 script, qui empêche cela de bloquer le run.
 
+**Le contenu des amendements (#1029)** — article visé et index de mots de
+l'exposé (`src/amendements_contenu.py`) — se lit dans la MÊME archive, avant sa
+suppression, et se dépose en `.cache/amendements_an/<lég>/contenu.json` :
+l'artifact `amendements-index-an` l'emporte, `merge-and-pivot` le publie
+(`build_amendements_index_pivot.publier_contenus`). Un index de la XVIIe servi
+par le cache sans son contenu se reconstruit. Les législatures **closes** n'ont
+pas d'index à reconstruire : leur contenu se construit **une par run**
+(`construire_un_contenu_fige`) tant que `pivot_data/amendements/<lég>.contenu.json`
+n'est pas publié — les trois archives pèsent 1,1 Go et la XVe demande 2,7 Go de
+mémoire, ce que le plafond de 30 minutes ne permet pas en une fois. Trois runs,
+une seule fois.
+
 **Le job passe `--reconstruire-actives` quand la clé de cache exacte de la
 semaine n'a pas été touchée** (`steps.cache_amendements.outputs.cache-hit !=
 'true'`, vrai sur un `restore-keys` comme sur un cache absent) : le cache des
@@ -427,7 +439,8 @@ depuis #753 — seules celles-là ont un shard), et en **mode léger**. Les deux
 axes de ce mode léger sont désormais sous le formulaire, et plus rien n'y est
 écarté en dur : les interventions suivent `collect_interventions` **depuis
 #657**, sous une forme réduite — `--interventions-theme-seul` collecte les
-débats Syceron sans leur verbatim et laisse les questions officielles —, et les
+débats Syceron avec un extrait de 280 caractères de leur verbatim depuis #1029, et
+laisse les questions officielles —, et les
 dossiers législatifs suivent `collect_dossiers_legislatifs` **depuis #817**.
 Les deux étaient posés en dur au même motif, « aucun agrégat de groupe ne les
 consomme », faux dans les deux cas. 8 shards découpés par modulo,
@@ -996,6 +1009,36 @@ pour / contre / abstention **ventilés par groupe politique**, jamais de liste
 nominative ni de `sort` déduit des totaux — le Parlement vote aussi à la majorité
 qualifiée, et le dump ne dit pas quelle règle s'appliquait. Les dossiers portent
 titre, type de procédure, stade et **commissions saisies au fond** (341 sur 355).
+
+### Les actes réglementaires du Journal officiel, dans `merge-and-pivot` (#1029 voie 1)
+
+Une étape, après les index européens et avant les fiches de groupe.
+
+|  |  |
+| --- | --- |
+| entrée | `src/actes_reglementaires.py` |
+| consomme | `echanges.dila.gouv.fr` — les livraisons quotidiennes de la DILA (Licence Ouverte) |
+| produit | `pivot_data/actes_reglementaires/<AAAA-MM>.json`, un fichier par mois de publication |
+| budget | `--budget-secondes 900`, en TEMPS et pas en requêtes |
+| tolérance | `continue-on-error: true` |
+
+**Ce que l'étape relit, et pourquoi si peu.** Les deux derniers mois seulement —
+une cinquantaine de livraisons, ~150 s mesurées depuis un poste le 22/09/2026.
+Un mois clos ne change plus : son fichier n'est ni relu ni réécrit, ce qui borne
+le temps du run comme la croissance de l'historique git. Le fonds **2007 →
+aujourd'hui** (389 397 actes) a été construit **une seule fois en local**
+(`python3 src/actes_reglementaires.py --depuis-dump`) et commité : le dump global
+de la DILA est une livraison unique du 13/07/2025, qu'elle ne renouvelle pas, et
+les livraisons quotidiennes ne remontent pas plus loin.
+
+**Deux refus, plutôt qu'une publication fausse.** Un mois relu sans aucun acte
+n'écrase rien — ce serait publier « aucun acte ce mois-ci » sur une lecture
+incomplète (§2 règle 5). Et un acte déjà publié qu'une relecture ne retrouve pas
+arrête la publication (`ActesPerdus`) au lieu de disparaître : le fichier d'un
+mois est réécrit, pas fusionné, donc rien d'autre ne rattraperait la perte (§3c).
+
+**Ce que l'étape ne fait pas** : rattacher un acte à une personne. La source
+laisse `<AUTORITE>` vide sur tous les décrets (#664).
 
 ### `extract-mandats-locaux` — le versant local d'un parcours (#922)
 

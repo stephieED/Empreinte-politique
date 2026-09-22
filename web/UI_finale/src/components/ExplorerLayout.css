@@ -144,3 +144,32 @@
   flex: 1;
   min-width: 0;
 }
+
+/* LA PÉRIODE (#1074) : deux vraies cases à cocher sous le champ, arbitré sur
+   maquette le 22/09/2026. L'encre de la case cochée reprend celle du texte. */
+.periode {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 10px;
+}
+
+.periode-case {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.periode-case input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--ink);
+}
+
+.cp-filtre-periode {
+  font-weight: 700;
+}

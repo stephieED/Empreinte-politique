@@ -182,7 +182,7 @@ class Collection:
     #: Motif des fichiers présents mais volontairement non ouverts. `fnmatch`
     #: et non un motif positif : `*` y traverse le point, si bien que
     #: `[0-9]*.json` attraperait aussi `14.cosignatures.json`.
-    motif_exclu: str = ""
+    motif_exclu: str | tuple[str, ...] = ""
     #: `True` pour `pivot_data/profiles`, dont l'absence dans la référence est
     #: une erreur d'invocation (`--ref-dir`) et non un constat.
     obligatoire: bool = False
@@ -197,8 +197,8 @@ class Collection:
     def se_lit(self, nom_fichier: str) -> bool:
         if not self.concerne(nom_fichier):
             return False
-        return not (self.motif_exclu
-                    and fnmatch.fnmatch(nom_fichier, self.motif_exclu))
+        motifs = (self.motif_exclu,) if isinstance(self.motif_exclu, str) else self.motif_exclu
+        return not any(m and fnmatch.fnmatch(nom_fichier, m) for m in motifs)
 
 
 #: Combien d'entrées disparues un constat d'échange nomme au plus. Le rapport
@@ -428,7 +428,9 @@ COLLECTION_INDEX_AMENDEMENTS = Collection(
     # Les `*.cosignatures.json` sont listés mais jamais ouverts : 222 Mio de
     # RSS pour le seul `15.cosignatures.json`, aucun consommateur (AGENTS.md
     # §3), et leur disparition est détectée par le listing.
-    motif_exclu="*.cosignatures.json",
+    # `*.contenu.json` (#1029) de même : 47 Mo pour la XVe, un index de mots
+    # rangé par position — ses listes ne se comparent pas en cardinalité.
+    motif_exclu=("*.cosignatures.json", "*.contenu.json"),
 )
 
 COLLECTIONS_AGREGATS: tuple[Collection, ...] = (

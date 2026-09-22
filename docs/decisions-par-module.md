@@ -7,7 +7,7 @@
 [`docs/technical_decisions.md`](technical_decisions.md) va des décisions vers le
 code et se lit par date. Cette table va dans l'autre sens : **ce module → ces
 décisions**, pour qu'un agent qui ouvre un fichier de `src/` sache ce qui le
-gouverne sans avoir à fouiller les 403 décisions
+gouverne sans avoir à fouiller les 414 décisions
 du répertoire. Le critère, ce qu'il rate et pourquoi la table est générée :
 [`docs/decisions/table-inversee-decisions-par-module.md`](decisions/table-inversee-decisions-par-module.md).
 
@@ -39,14 +39,15 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | --- | ---: |
 | `src/parse_syceron.py` | 4 |
 | `src/perimetre_candidats.py` | 4 |
+| `src/amendements_contenu.py` | 3 |
 | `src/audit_pipeline.py` | 3 |
 | `src/budget_collecte.py` | 3 |
+| `src/json_io.py` | 3 |
 | `src/purge_mandats_dupliques.py` | 3 |
 | `src/rne_opendata.py` | 3 |
 | `src/audit_gouvernement_dataset.py` | 2 |
 | `src/avertissements.py` | 2 |
 | `src/fetch_candidats_declares.py` | 2 |
-| `src/json_io.py` | 2 |
 | `src/titres_europeens.py` | 2 |
 | `src/build_amendements_index.py` | 1 |
 | `src/candidate_profile_ue.py` | 1 |
@@ -68,6 +69,20 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/verifier_transport_artifacts.py` | 1 |
 
 ---
+
+## `src/actes_reglementaires.py`
+
+Le mentionnent sans le gouverner : [`actes-reglementaires-du-journal-officiel-1029`](decisions/actes-reglementaires-du-journal-officiel-1029.md).
+
+## `src/amendements_contenu.py`
+
+3 décision(s) le gouvernent ; le module en cite 0.
+
+| Décision | Nomme |
+| --- | --- |
+| [Les actes réglementaires du Journal officiel, par mois et par mots (#1029 voie 1) (2026-09-22)](decisions/actes-reglementaires-du-journal-officiel-1029.md) | `forme_indexee`, `mots_du_texte` |
+| [Trouver les amendements d'un sujet par leur exposé, sur les fiches (#1029) (2026-09-22)](decisions/amendements-par-mot-sur-les-fiches-1029.md) | `forme_indexee` |
+| [Trouver les amendements d'un sujet : l'article visé et un index de mots de l'exposé (#1029) (2026-09-22)](decisions/index-de-mots-des-amendements-1029.md) | `forme_indexee` |
 
 ## `src/amendements_index.py`
 
@@ -310,7 +325,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 
 ## `src/candidate_profile.py`
 
-90 décision(s) le gouvernent ; le module en cite 14.
+93 décision(s) le gouvernent ; le module en cite 14.
 
 | Décision | Nomme |
 | --- | --- |
@@ -360,6 +375,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [Un amendement retrouve son dossier, et la clé qu'on lui avait retirée (#639, rang 3)](decisions/dossier-des-amendements-639.md) | `fetch_amendements_officiels` |
 | [Les dossiers du roster passent sous une case, le motif qui les écartait est tombé (#817)](decisions/dossiers-legislatifs-sous-le-formulaire-817.md) | `_build_acteur_textes_portes_index`, `_collect_initiateurs` |
 | [Un texte renvoyé en commission n'est pas un texte examiné (#997) (2026-09-18)](decisions/examen-en-commission-997.md) | `_stade_from_code_acte` |
+| [La parole des membres de groupe et de gouvernement publie un extrait de 280 caractères (#1029) (2026-09-22)](decisions/extrait-de-la-parole-des-rosters-1029.md) | `_reduire_a_l_extrait` |
 | [Un filtre de publication posé avant la fusion ne filtre rien (#641, réouverture) (2026-08-31)](decisions/filtre-publication-apres-fusion-641.md) | `_profession_an` |
 | [L'archive vivante se reprend au changement de semaine, les mortes jamais (#762), 07/09/2026](decisions/fraicheur-dossiers-762.md) | `AN_SCRUTINS_LEGISLATURES_FIGEES` |
 | [La rotation de clé hebdomadaire était toute la politique de fraîcheur, et son propre repli la désamorçait (#749)](decisions/fraicheur-index-amendements-749.md) | `_download_and_build_amendement_index`, `amendements_index_en_cache_utilisable` |
@@ -371,6 +387,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [`extract-senat` ne collecte plus d'interventions : la collecte n'en retenait aucune, par construction (#501) (2026-08-20)](decisions/interventions-senat-501.md) | `build_profile`, `fetch_questions_officielles` |
 | [Un garde-fou posé sur `builtins.open` ne voit pas `pathlib` (#791) (2026-09-10)](decisions/lectures-du-depot-dans-les-tests-791.md) | `AMENDEMENTS_CACHE_DIR` |
 | [Le libellé d'organe du chef du gouvernement s'accorde en genre, la qualité jamais (#658) (2026-08-31)](decisions/libelle-chef-du-gouvernement-au-feminin-658.md) | `_build_acteur_mandats_index` |
+| [Chaque prise de parole porte l'ancre de sa page de séance à l'AN (#1087) (2026-09-22)](decisions/lien-vers-la-prise-de-parole-1087.md) | `_syceron_index_qualifie` |
 | [Un profil publie tous ses mandats de député, et le compteur devient un témoin de couverture (#640) (2026-08-31)](decisions/mandats-electifs-liste-complete-640.md) | `_select_mandat_assemblee_courant`, `_select_mandat_par_type_courant` |
 | [Le référentiel type l'organe, il n'y a rien à interpréter (#730) (2026-09-04)](decisions/mandats-gouvernementaux-en-commission-730.md) | `_TYPE_ORGANE_TO_CATEGORIE` |
 | [Mandats commission/groupe_amitie/extra_parlementaire sourcés depuis l'AN, fetch_identity NosDéputés rendu conditionnel (#369, complet), watchdog générique sur tous les téléchargements zip (#370, complet) (2026-08-17)](decisions/mandats-officiels-an-369.md) | `_TYPE_ORGANE_TO_CATEGORIE`, `_build_acteur_identite_index`, `_build_acteur_mandats_index`, `_build_organe_index`, `_ensure_acteurs_historique_zip_downloaded`, `_extract_mandats_officiels`, `build_profile`, `fetch_identite_officielle_par_slug`, `fetch_organe`, `fetch_votes_officiels` |
@@ -385,6 +402,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [Un code de nomenclature n'est pas une profession, et « sans activité professionnelle » n'en est pas une (#641) (2026-08-31)](decisions/profession-code-nomenclature-641.md) | `_profession_an` |
 | [La qualification d'un scrutin et la clé de son dossier étaient lues puis jetées (#639, rangs 1 et 2)](decisions/qualification-scrutins-et-cle-dossier-639.md) | `_load_frozen_scrutins_index`, `_parse_scrutins_zip`, `_scrutins_store_qualifie` |
 | [Un projet de loi porté au nom du Gouvernement n'est pas une production personnelle (#689) (2026-09-01)](decisions/qualification-textes-portes-689.md) | `_build_acteur_textes_portes_index` |
+| [Une question au gouvernement : un acte, et ses tours de parole reliés à lui (#1094) (2026-09-22)](decisions/question-au-gouvernement-acte-et-parole-1094.md) | `FORMAT_INDEX_QUESTIONS`, `_parse_question_entry` |
 | [Rattacher une intervention ou un scrutin à son dossier : les deux volets restants sont écartés, mesure à l'appui (#639) (2026-09-01)](decisions/rattachement-au-dossier-interventions-et-scrutins-639.md) | `_parse_scrutins_zip`, `_reduire_au_theme` |
 | [Le `texte_vise` fautif se reprend depuis l'archive figée, pas par une fusion plus permissive (#696, 01/09/2026)](decisions/report-texte-vise-source-696.md) | `fetch_amendements_officiels` |
 | [Résilience de `generate-data.yml` face aux `shutdown signal` runner : continue-on-error généralisé, watchdog réseau, retry générique sur `_get_payload`, retry `retry-generate-data.yml` non-régressif, et appels NosDéputés morts pour les députés (dossiers, votes) (2026-08-16)](decisions/resilience-generate-data-shutdown-signal.md) | `WARNING_PREFIX_VOTES_INTROUVABLES`, `build_profile`, `fetch_textes_portes_officiels`, `fetch_votes_officiels` |
@@ -742,7 +760,7 @@ Le mentionnent sans le gouverner : [`liste-gouvernements-amo30-996`](decisions/l
 
 ## `src/group_profile.py`
 
-31 décision(s) le gouvernent ; le module en cite 4.
+33 décision(s) le gouvernent ; le module en cite 4.
 
 | Décision | Nomme |
 | --- | --- |
@@ -755,12 +773,14 @@ Le mentionnent sans le gouverner : [`liste-gouvernements-amo30-996`](decisions/l
 | [`debut_dans_groupe` se lit sur le mandat de groupe, plus sur le premier mandat électif (#653) (2026-08-31)](decisions/dates-appartenance-groupe-653.md) | `build_groupe_profile` |
 | [Le passé sénatorial est un fait de carrière, pas une donnée d'activité : bicaméral pour les candidats seulement (#488) (2026-08-20)](decisions/deux-chambres-interrogees.md) | `_is_eligible_at`, `_member_eligibility_intervals` |
 | [L'effectif d'un groupe dans le temps : `min_historique` et `max_historique` portent leur date (#702) — 01/09/2026](decisions/effectif-du-groupe-dans-le-temps-702.md) | `_appartenance_couvre`, `build_groupe_profile` |
+| [Les fenêtres de parole se comptent depuis la date des données, pas depuis la clôture de la fiche (#1081) (2026-09-22)](decisions/fenetres-depuis-la-date-des-donnees-1081.md) | `bornes_des_fenetres` |
 | [Extension de la stabilité des horodatages aux profils groupe/gouvernement/parti (#343, complet) (2026-08-17)](decisions/freshness-timestamps-groupes-gouvernements-partis.md) | `generate_groupe_profile_from_roster` |
 | [Les dix lignées sont écrites, et une mesure corrige le motif du recalcul (#836)](decisions/generation-fiches-lignees-836.md) | `_aggregate_amendements` |
 | [Juxtaposer deux positions sourcées n'est pas mesurer un écart (#328) — 01/09/2026](decisions/juxtaposition-position-groupe-328.md) | `compute_ecarts_cohesion_internes` |
 | [Trois lectures du corpus passent à la projection, et chacune a son plafond dans un test (#635, 2026-08-30)](decisions/lectures-pipeline-par-projection-635.md) | `BLOCS_LUS_MEMBRE`, `_aggregate_amendements`, `_aggregate_mandats`, `_is_pivot_v1`, `aggregate_tags_thematiques`, `build_groupe_profile`, `compute_ecarts_cohesion_internes`, `contribution_amendements`, `generate_groupe_profile_from_roster`, `load_profil_from_file` |
 | [Un mandat électif perdu ne manque pas seulement sur la fiche : il sort le membre du dénominateur de son groupe (#465) (2026-08-20)](decisions/mandat-electif-perdu-fausse-le-denominateur.md) | `_aggregate_amendements`, `_member_eligibility_intervals` |
 | [`mandats_agreges` : agrégation catégorielle sur `mandats[]`, famille 1 (#361, sous-issue de #349) (2026-08-16)](decisions/mandats-agreges-famille-1.md) | `MANDATS_AGREGES_CATEGORIES`, `_aggregate_mandats`, `_compute_cohesion_votes`, `_intervals_overlap`, `_is_eligible_at`, `_member_eligibility_intervals`, `_select_mandat_entree_unique` |
+| [Les mandats agrégés d'un groupe sont ceux exercés pendant l'appartenance (#853) (2026-09-22)](decisions/mandats-agreges-par-appartenance-853.md) | `_member_eligibility_intervals`, `periodes_d_appartenance` |
 | [`mandats_agreges` : « qui y siège » et « qui y est passé » sont deux nombres, pas un (#656) (2026-08-31)](decisions/mandats-agreges-siege-vs-passe-656.md) | `_aggregate_mandats` |
 | [Normaliser les amendements : le coût n'est pas l'amendement, c'est sa liste de cosignataires (#431) (2026-08-19)](decisions/normalisation-amendements.md) | `_aggregate_amendements` |
 | [Normalisation de `par_fonction` dans `mandats_agreges`, et requalification du défaut « catégorie commission » (#379) (2026-08-17)](decisions/normalisation-fonction-mandats-agreges.md) | `_aggregate_mandats`, `_normalize_fonction_mandat` |
@@ -822,11 +842,12 @@ Le mentionnent sans le gouverner : [`cloisonnement-branche-roster-524`](decision
 
 ## `src/json_io.py`
 
-2 décision(s) le gouvernent ; le module en cite 0.
+3 décision(s) le gouvernent ; le module en cite 0.
 
 | Décision | Nomme |
 | --- | --- |
 | [Un timeout ne peut plus écraser le roster, et rien de collecté ne reste non publié (#511) (2026-08-20)](decisions/collecte-non-publiee.md) | `ecrire_profil_json` |
+| [Trouver les amendements d'un sujet : l'article visé et un index de mots de l'exposé (#1029) (2026-09-22)](decisions/index-de-mots-des-amendements-1029.md) | `ecrire_index_json` |
 | [Un index partagé ne se réécrit que si son contenu change (#1075) (2026-09-22)](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md) | `ecrire_index_json` |
 
 Le mentionnent sans le gouverner : [`profils-json-compact`](decisions/profils-json-compact.md).
@@ -876,7 +897,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 
 ## `src/merge_profile.py`
 
-70 décision(s) le gouvernent ; le module en cite 5.
+73 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -905,6 +926,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [Le passé sénatorial est un fait de carrière, pas une donnée d'activité : bicaméral pour les candidats seulement (#488) (2026-08-20)](decisions/deux-chambres-interrogees.md) | `_prefer_non_empty`, `merge_raw_profile` |
 | [Un amendement retrouve son dossier, et la clé qu'on lui avait retirée (#639, rang 3)](decisions/dossier-des-amendements-639.md) | `_amendement_key` |
 | [Un texte européen est identifié par son document, pas par son titre (#901) (2026-09-16)](decisions/doublons-textes-europeens-cle-doceo-901.md) | `_pivot_texte_key`, `merge_dossier_records` |
+| [La parole des membres de groupe et de gouvernement publie un extrait de 280 caractères (#1029) (2026-09-22)](decisions/extrait-de-la-parole-des-rosters-1029.md) | `aligner_collecte_reduite`, `promouvoir_forme_complete` |
 | [Borner l'historique de données : ce que ça rend vraiment, et quand (#434) (2026-08-20)](decisions/fenetre-historique-donnees.md) | `merge_raw_profile` |
 | [Un filtre de publication posé avant la fusion ne filtre rien (#641, réouverture) (2026-08-31)](decisions/filtre-publication-apres-fusion-641.md) | `FILTRES_PUBLICATION_IDENTITE`, `_composer_identite`, `bloc_sans_fond`, `deriver_provenance_champs`, `filtrer_identite_publiee`, `merge_pivot_profile` |
 | [Extension de la stabilité des horodatages aux profils groupe/gouvernement/parti (#343, complet) (2026-08-17)](decisions/freshness-timestamps-groupes-gouvernements-partis.md) | `load_existing_document`, `preserve_stable_freshness_timestamps` |
@@ -915,6 +937,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [Index amendements shardé par acteur (#392) (2026-08-17)](decisions/index-amendements-sharde-par-acteur.md) | `_amendement_key` |
 | [`extract-senat` ne collecte plus d'interventions : la collecte n'en retenait aucune, par construction (#501) (2026-08-20)](decisions/interventions-senat-501.md) | `preserver_collectes_non_vides` |
 | [Le versant AN passe en Licence Ouverte, et `meta.licence_donnees` devient un champ dérivé (#530, lot 6 de l'épic « une seule source AN ») (2026-08-27)](decisions/licence-lot-6-530.md) | `_merge_pivot_sources`, `merge_pivot_profile` |
+| [Chaque prise de parole porte l'ancre de sa page de séance à l'AN (#1087) (2026-09-22)](decisions/lien-vers-la-prise-de-parole-1087.md) | `reporter_id_syceron` |
 | [Un profil publie tous ses mandats de député, et le compteur devient un témoin de couverture (#640) (2026-08-31)](decisions/mandats-electifs-liste-complete-640.md) | `_pivot_mandat_key` |
 | [Le référentiel type l'organe, il n'y a rien à interpréter (#730) (2026-09-04)](decisions/mandats-gouvernementaux-en-commission-730.md) | `merge_pivot_profile` |
 | [`merge-and-pivot` : garde-fou #390 hors `main`, entrées de configuration, budget de temps mur, permissions (#413) (2026-08-18)](decisions/merge-and-pivot-budget-permissions-413.md) | `merge_pivot_profile` |
@@ -932,6 +955,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [185 doublons hérités retirés : l'outil existait, il n'avait jamais été relancé (#729) (2026-09-04)](decisions/purge-doublons-herites-729.md) | `merge_pivot_profile` |
 | [La qualification d'un scrutin se perdait entre la collecte et le profil brut (#639, rang 1) (2026-08-31)](decisions/qualification-perdue-a-la-fusion-639.md) | `CHAMPS_QUALIFICATION_VOTE`, `_pivot_vote_key`, `_vote_key`, `backfill_mandat_chambre`, `backfill_vote_qualification`, `merge_lists_by_key`, `merge_raw_profile` |
 | [Un projet de loi porté au nom du Gouvernement n'est pas une production personnelle (#689) (2026-09-01)](decisions/qualification-textes-portes-689.md) | `_dossier_key`, `backfill_dossier_nature`, `backfill_mandat_chambre`, `backfill_vote_qualification`, `merge_raw_profile` |
+| [Une question au gouvernement : un acte, et ses tours de parole reliés à lui (#1094) (2026-09-22)](decisions/question-au-gouvernement-acte-et-parole-1094.md) | `backfill_sujet_question`, `merge_pivot_profile` |
 | [Une somme de longueurs suppose que chaque entrée collectée est distincte, et le portail européen le dément (#888) (2026-09-13)](decisions/reduction-nommee-collecte-vs-publie-888.md) | `_repli_texte_key` |
 | [Le `texte_vise` fautif se reprend depuis l'archive figée, pas par une fusion plus permissive (#696, 01/09/2026)](decisions/report-texte-vise-source-696.md) | `backfill_dossier_nature` |
 | [Résilience de `generate-data.yml` face aux `shutdown signal` runner : continue-on-error généralisé, watchdog réseau, retry générique sur `_get_payload`, retry `retry-generate-data.yml` non-régressif, et appels NosDéputés morts pour les députés (dossiers, votes) (2026-08-16)](decisions/resilience-generate-data-shutdown-signal.md) | `merge_raw_dirs` |
@@ -1041,7 +1065,7 @@ Le mentionnent sans le gouverner : [`investigation-sources-ue`](decisions/invest
 | [Syceron publie l'identifiant d'orateur NU, et n'a donc jamais rien indexé (#510) (2026-08-20)](decisions/syceron-acteur-ref-nu-510.md) | `_parse_interventions`, `_parse_orateur` |
 | [Suite du 26/08/2026 : les trois archives vérifiées, les deux défauts de parseur corrigés](decisions/syceron-archives-verifiees-parseur-510.md) | `_parse_orateur` |
 
-Le mentionnent sans le gouverner : [`cle-fusion-interventions-540`](decisions/cle-fusion-interventions-540.md), [`conformite-index-syceron-719`](decisions/conformite-index-syceron-719.md), [`syceron`](decisions/syceron.md).
+Le mentionnent sans le gouverner : [`cle-fusion-interventions-540`](decisions/cle-fusion-interventions-540.md), [`conformite-index-syceron-719`](decisions/conformite-index-syceron-719.md), [`lien-vers-la-prise-de-parole-1087`](decisions/lien-vers-la-prise-de-parole-1087.md), [`syceron`](decisions/syceron.md).
 
 ## `src/perimetre_candidats.py`
 
@@ -1180,7 +1204,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 
 ## `src/schema_pivot.py`
 
-51 décision(s) le gouvernent ; le module en cite 5.
+55 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1201,6 +1225,8 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 | [Une exception n'est pas une preuve, et un défaut de notre code n'est pas une panne de l'Assemblée nationale (#562) (2026-08-28)](decisions/defaut-collecte-vs-panne-562.md) | `marqueur_defaut_code`, `validate_profil`, `valider_couverture` |
 | [`meta.warnings[]` déclare son destinataire, dans un jumeau typé et aligné (#642) (2026-08-31)](decisions/destinataire-avertissements-642.md) | `KNOWN_SOURCE_TYPES`, `validate_profil`, `valider_avertissements` |
 | [Un amendement retrouve son dossier, et la clé qu'on lui avait retirée (#639, rang 3)](decisions/dossier-des-amendements-639.md) | `validate_amendements_index` |
+| [La parole des membres de groupe et de gouvernement publie un extrait de 280 caractères (#1029) (2026-09-22)](decisions/extrait-de-la-parole-des-rosters-1029.md) | `KNOWN_COLLECTES_INTERVENTION`, `extrait_de_texte` |
+| [Ce qui a été dit, sur les fiches de gouvernement et de groupe (#1029) (2026-09-22)](decisions/extraits-de-parole-sur-les-fiches-1029.md) | `extrait_de_texte`, `url_seance_an` |
 | [La fiche de gouvernement dit d'abord où elle se situe (#330)](decisions/fiche-de-gouvernement-330.md) | `deriver_tags_thematiques` |
 | [Un filtre de publication posé avant la fusion ne filtre rien (#641, réouverture) (2026-08-31)](decisions/filtre-publication-apres-fusion-641.md) | `CHAMPS_IDENTITE_TEXTE_LIBRE` |
 | [Deferred / out-of-scope investigations](decisions/hors-perimetre.md) | `KNOWN_CATEGORIES` |
@@ -1209,6 +1235,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 | [Rien ne vérifiait que les clés publiées résolvent : le contrôle d'invariance (#485) (2026-08-20)](decisions/integrite-referentielle-pivot.md) | `validate_profil` |
 | [Données UE — investigation des sources (2026-08-04)](decisions/investigation-sources-ue.md) | `validate_profil` |
 | [Trois lectures du corpus passent à la projection, et chacune a son plafond dans un test (#635, 2026-08-30)](decisions/lectures-pipeline-par-projection-635.md) | `lire_chambres` |
+| [Chaque prise de parole porte l'ancre de sa page de séance à l'AN (#1087) (2026-09-22)](decisions/lien-vers-la-prise-de-parole-1087.md) | `url_seance_an` |
 | [Les mandats antérieurs à la couverture de l'Assemblée entrent par une table relue (#860)](decisions/mandats-anterieurs-couverture-860.md) | `KNOWN_INSTITUTIONS_ANTERIEURES`, `validate_profil` |
 | [Normaliser les amendements : le coût n'est pas l'amendement, c'est sa liste de cosignataires (#431) (2026-08-19)](decisions/normalisation-amendements.md) | `validate_amendements_index`, `validate_profil` |
 | [Normaliser les votes : une liste partagée, un mapping, et deux invariants devenus des jointures (#432) (2026-08-19)](decisions/normalisation-votes.md) | `validate_profil`, `validate_scrutins_index` |
@@ -1222,6 +1249,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 | [La qualification d'un scrutin se perdait entre la collecte et le profil brut (#639, rang 1) (2026-08-31)](decisions/qualification-perdue-a-la-fusion-639.md) | `validate_scrutins_index` |
 | [La qualification d'un scrutin et la clé de son dossier étaient lues puis jetées (#639, rangs 1 et 2)](decisions/qualification-scrutins-et-cle-dossier-639.md) | `KNOWN_TYPES_SCRUTIN`, `validate_scrutins_index` |
 | [Un projet de loi porté au nom du Gouvernement n'est pas une production personnelle (#689) (2026-09-01)](decisions/qualification-textes-portes-689.md) | `KNOWN_ROLES_TEXTE`, `validate_profil` |
+| [Une question au gouvernement : un acte, et ses tours de parole reliés à lui (#1094) (2026-09-22)](decisions/question-au-gouvernement-acte-et-parole-1094.md) | `rattacher_parole_aux_questions` |
 | [Rattacher une intervention ou un scrutin à son dossier : les deux volets restants sont écartés, mesure à l'appui (#639) (2026-09-01)](decisions/rattachement-au-dossier-interventions-et-scrutins-639.md) | `LISTES_COUVERTES` |
 | [Restaurer 789 interventions sans revenir sur le reste du schéma (#460) (2026-08-19)](decisions/restauration-interventions.md) | `validate_profil` |
 | [NosDéputés sort du pipeline (#529, lot 5 de l'épic « une seule source AN ») (2026-08-27)](decisions/retrait-nosdeputes-529.md) | `KNOWN_SOURCE_TYPES`, `validate_profil` |

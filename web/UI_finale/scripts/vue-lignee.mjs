@@ -34,6 +34,7 @@ import {
 } from '../src/utils/groupe.js';
 import { isWholeTextVote } from '../src/utils/lecture.js';
 import { personnesParMaillon, serieEffectif, signalementsDuMaillon } from '../src/utils/lignee.js';
+import { construireExtraits, extraitDeLIntervention } from '../src/utils/extraits.js';
 
 /* Les amendements d'un maillon : le total distinct publié, et la répartition
  * par commission des deux types de déposant qu'un groupe porte, VÉRIFIÉE contre
@@ -251,17 +252,88 @@ export function construireVueLignee({ fichier, lignee, fiches, idsDeFiche, scrut
  * quand un mot est tapé.
  *
  * Même règle que la projection (`etiquettesThematiques`), sans limite ; une
- * entrée compacte `[intitulé, porteurs]`, le dénominateur une fois par maillon. */
+ * entrée compacte `[intitulé, porteurs, porteurs sur 6 mois, sur 12 mois]`, le
+ * dénominateur une fois par maillon.
+ *
+ * LES FENÊTRES (#1074) viennent de Backend (#1077) : `fenetres_parole` donne,
+ * par fenêtre, ses bornes et son dénominateur ; chaque débat, le nombre de
+ * membres distincts intervenus dedans, pendant leur appartenance au groupe.
+ * Aucune date par membre : un compte de membres distincts ne se recompose pas
+ * côté interface, et il n'y a donc rien d'individuel à transporter. Une fiche
+ * que Backend n'a pas encore fenêtrée n'en porte pas : `null`, jamais zéro. */
 export function construireDebatsLignee({ fichier, lignee, fiches, idsDeFiche }) {
   const maillons = {};
   for (const maillon of lignee.maillons || []) {
     const groupe = fiches.get(maillon.fichier);
     if (!groupe) throw new Error(`vue-lignee : ${fichier} nomme ${maillon.fichier}, absent de pivot_data/groupes/`);
     const debats = etiquettesThematiques(groupe, Infinity);
+    const parFenetre = new Map((groupe.tags_thematiques_agreges || [])
+      .map((t) => [t.tag, t.nb_membres_porteurs_par_fenetre || null]));
+    const fen = groupe.fenetres_parole || null;
     maillons[idsDeFiche.get(maillon.fichier)] = {
       denominateur: (groupe.membres || []).length,
-      debats: debats.map((d) => [d.label, d.porteurs]),
+      fenetres: fen && {
+        '6m': fen['6_mois'] ?? null,
+        '12m': fen['12_mois'] ?? null,
+      },
+      debats: debats.map((d) => {
+        const f = parFenetre.get(d.label);
+        return [d.label, d.porteurs, f ? (f['6_mois'] ?? null) : null, f ? (f['12_mois'] ?? null) : null];
+      }),
     };
   }
-  return { schema_version: 'debats-lignee-v1', id: idDePage(fichier), maillons };
+  return { schema_version: 'debats-lignee-v2', id: idDePage(fichier), maillons };
+}
+
+/* ── CE QUI A ÉTÉ DIT, DÉBAT PAR DÉBAT (#1029) ────────────────────────────────
+ *
+ * Arbitré par la propriétaire le 22/09/2026 (option A) : sur la fiche de
+ * groupe, l'extrait d'une prise de parole NOMME le député et la date de sa
+ * séance — une citation sourcée, lue un débat à la fois, est un fait, comme la
+ * position d'un membre sur un scrutin (§2 règle 7). Rien n'en est COMPTÉ par
+ * personne : ni nombre d'extraits, ni rang, ni fréquence.
+ *
+ * Une intervention n'entre que si elle tombe dans une période d'appartenance du
+ * membre AU MAILLON (`membres[].periodes`) : c'est la même population que les
+ * débats de la fiche, sous le même intitulé (`theme_officiel` en minuscules,
+ * la clé de `tags_thematiques_agreges`).
+ *
+ * `orateur` est le rang de la personne dans `personnes` de la vue (l'ordre de
+ * `lignee.membres`) : le nom n'est transporté qu'une fois, dans la projection.
+ *
+ * Rend `{ [id de maillon]: { index, paquets } }`. */
+export function construireExtraitsLignee({ lignee, fiches, idsDeFiche, lireProfil, debuts = null }) {
+  // Chaque profil est lu UNE fois pour toute la lignée, puis relâché : les
+  // garder en cache ferait tenir en mémoire des centaines de profils (#635).
+  const maillons = (lignee.maillons || []).map((maillon) => {
+    const groupe = fiches.get(maillon.fichier);
+    if (!groupe) throw new Error(`vue-lignee : ${maillon.fichier} absent de pivot_data/groupes/`);
+    const periodes = new Map();
+    for (const membre of groupe.membres || []) {
+      const liste = (membre.periodes?.length ? membre.periodes
+        : [{ debut: membre.debut_dans_groupe, fin: membre.fin_dans_groupe }]).filter((p) => p.debut);
+      if (liste.length) periodes.set(membre.membre_id, liste);
+    }
+    return { id: idsDeFiche.get(maillon.fichier), periodes, entrees: [] };
+  });
+  (lignee.membres || []).forEach((personne, rang) => {
+    const siens = maillons.filter((m) => m.periodes.has(personne.membre_id));
+    if (!siens.length) return;
+    const profil = lireProfil(personne.membre_id);
+    if (!profil) return;
+    for (const i of profil.interventions || []) {
+      const date = typeof i.date === 'string' ? i.date.slice(0, 10) : null;
+      const theme = typeof i.theme_officiel === 'string' ? i.theme_officiel.trim().toLowerCase() : '';
+      if (!date || !theme) continue;
+      const maillon = siens.find((m) => m.periodes.get(personne.membre_id)
+        .some((p) => date >= p.debut && (!p.fin || date <= p.fin)));
+      if (!maillon) continue;
+      const [texte, tronque] = extraitDeLIntervention(i);
+      maillon.entrees.push({
+        sujet: theme, orateur: rang, date, texte, tronque,
+        id: i.intervention_id ?? null, ancre: i.id_syceron ?? null,
+      });
+    }
+  });
+  return Object.fromEntries(maillons.map((m) => [m.id, construireExtraits(m.entrees, debuts)]));
 }

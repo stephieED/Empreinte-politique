@@ -232,7 +232,7 @@ def test_les_deux_index_vivent_dans_deux_repertoires(tmp_path, monkeypatch):
         "17", {"PA1": [{"id": "a", "collecte": COLLECTE_THEME_SEUL}]}, theme_seul=True
     )
     assert (racine / "17" / "index_par_acteur" / "PA1.json").is_file()
-    assert (racine / "17" / "index_par_acteur_theme" / "PA1.json").is_file()
+    assert (racine / "17" / "index_par_acteur_extrait" / "PA1.json").is_file()
 
 
 def test_le_mode_complet_ne_lit_jamais_l_index_reduit(tmp_path, monkeypatch):
@@ -266,6 +266,7 @@ def test_le_mode_reduit_lit_l_index_complet_et_le_reduit(tmp_path, monkeypatch):
         {"PA1": [{"id": "a", "date": "2025-01-01", "sujet": "Un sujet",
                   "sujet_code_grammaire": "DISC_ARTICLES_1_1",
                   "session_ref": "S", "url": "https://x", "legislature": "17",
+                  "id_syceron": "4166184",  # #1087 : ce qui qualifie l'index
                   "texte": "un très long verbatim"}]},
     )
     entrees = cp._read_cached_interventions_syceron_acteur("17", "PA1", theme_seul=True)
@@ -280,7 +281,10 @@ def test_le_mode_reduit_lit_l_index_complet_et_le_reduit(tmp_path, monkeypatch):
         # #719 refuse en amont.
         "sujet_code_grammaire": "DISC_ARTICLES_1_1",
         "session_ref": "S", "url": "https://x", "legislature": "17",
-        "collecte": COLLECTE_THEME_SEUL,
+        "id_syceron": "4166184",
+        # #1029 — la forme réduite garde désormais un EXTRAIT du verbatim.
+        "texte": "un très long verbatim", "texte_tronque": False,
+        "collecte": "extrait",
     }]
 
 

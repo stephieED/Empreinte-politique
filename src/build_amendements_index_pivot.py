@@ -60,7 +60,44 @@ from amendements_index import (  # noqa: E402
     DEFAULT_AMENDEMENTS_DIR,
     rafraichir,
 )
+from amendements_contenu import (  # noqa: E402
+    articles_du_document,
+    charger as charger_contenu,
+    chemin_cache,
+    chemin_publie,
+)
+from json_io import dumps_ligne, ecrire_index_json  # noqa: E402
 from textes_dossiers_an import charger_table  # noqa: E402
+
+#: Où `extract-amendements-an` dépose le contenu (#1029) ; l'artifact
+#: `amendements-index-an` le ramène ici dans `merge-and-pivot`.
+DEFAUT_CACHE_AMENDEMENTS = Path(".cache") / "amendements_an"
+LEGISLATURES_CONTENU = ("14", "15", "16", "17")
+
+
+def publier_contenus(out: Path, cache: Path = DEFAUT_CACHE_AMENDEMENTS) -> dict[str, list]:
+    """Publie le contenu que ce run a construit, et rend les articles de TOUTES
+    les législatures qui en ont un — construit ici, ou publié par un run
+    précédent (#1029).
+
+    Le contenu d'une législature close ne se construit qu'une fois : ensuite,
+    c'est le fichier publié qui sert. Celui de la XVIIe est reconstruit avec son
+    index, et n'est réécrit que si son contenu change (`ecrire_index_json`).
+    """
+    articles: dict[str, list] = {}
+    for legislature in LEGISLATURES_CONTENU:
+        publie = chemin_publie(legislature, out)
+        construit = charger_contenu(chemin_cache(legislature, cache))
+        if construit is not None:
+            ecrit = ecrire_index_json(publie, construit, dumps_ligne)
+            print(f"      contenu {legislature} (#1029) : {len(construit['ids'])} amendement(s), "
+                  f"{len(construit['mots'])} mot(s) — {'publié' if ecrit else 'inchangé'}")
+            doc = construit
+        else:
+            doc = charger_contenu(publie)
+        if doc is not None:
+            articles.update(articles_du_document(doc))
+    return articles
 from textes_vises_figes import lire_textes_vises  # noqa: E402
 
 DEFAUT_PROFILS_DIR = Path("raw_data") / "profiles"
@@ -99,6 +136,7 @@ def main(argv: list[str] | None = None) -> int:
               "texte → dossier ajouté à ce run (les rattachements publiés sont conservés).")
 
     comptes: dict[str, int] = {}
+    articles = publier_contenus(Path(args.out))
     index = rafraichir(
         Path(args.profils_dir),
         Path(args.out),
@@ -107,9 +145,11 @@ def main(argv: list[str] | None = None) -> int:
         table_textes=table_textes,
         lire_textes_vises=None if args.sans_report_texte_vise else lire_textes_vises,
         comptes=comptes,
+        articles=articles,
     )
 
     print(f"  ✓ {len(index)} amendement(s) distinct(s) → {args.out}")
+    print(f"      article visé (#1029) : {comptes.get('articles_poses', 0)} amendement(s)")
     for legislature in index.legislatures():
         n = len(index.ids_de_legislature(legislature))
         print(f"      législature {legislature} : {n} amendement(s)")

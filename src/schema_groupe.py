@@ -264,8 +264,10 @@ Format d'un profil de groupe v1 :
     "fenetres_parole": {                # #1073 — absent sans date de référence
         "12_mois": {"debut": "2025-09-21", "fin": "2026-09-21", "nb_membres": 128},
         "6_mois": {"debut": "2026-03-21", "fin": "2026-09-21", "nb_membres": 127}
-                                         # comptées depuis date_reference.date, jamais
-                                         # avant periode.debut ; nb_membres = dénominateur
+                                         # comptées depuis la date des données (génération),
+                                         # jamais depuis date_reference (#1081), jamais
+                                         # avant periode.debut ; nb_membres = dénominateur ;
+                                         # fiche close → fenêtres vides
                                          # (appartenance qui croise la fenêtre)
     },
 
@@ -297,7 +299,9 @@ Format d'un profil de groupe v1 :
                                          # QUI Y EST PASSÉ : membres distincts (éligibles, cf.
                                          # chevauchement mandat/appartenance) ayant occupé ce
                                          # mandat au moins une fois, adhésions d'un jour
-                                         # comprises. Cumul, jamais un effectif.
+                                         # comprises. Cumul, jamais un effectif. Depuis #853,
+                                         # PENDANT leur appartenance au groupe (membres[].periodes),
+                                         # et non sur toute leur carrière de député.
             "effectif_reference": 64,    # dénominateur des deux compteurs = len(membres),
                                          # couverture disponible — jamais confondue avec
                                          # meta.couverture_roster.roster_total. Publié plutôt

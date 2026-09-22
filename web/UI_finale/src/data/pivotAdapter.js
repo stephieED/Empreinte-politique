@@ -61,6 +61,7 @@ import {
   plafondParPeriode,
   plafondToutesPeriodes,
   qualifierInterventions,
+  rattacherQuestions,
 } from '../utils/parolesParPeriode';
 
 // Ordre d'affichage + libellés (singulier/pluriel) des comptages par statut
@@ -476,7 +477,9 @@ export function buildCandidateView(
    * dans `mandats[].position_dans_hemicycle`, le gouvernement EN PLACE lu dans
    * la chronologie complète —, et par les mêmes fonctions : deux sections qui
    * découpent le temps pareil doivent le faire au même endroit. */
-  const parolesQualifiees = qualifierInterventions(interventions, {
+  // Une question au gouvernement, une entrée (#1094) : l'acte se rattache à ses tours.
+  const parolesUniques = rattacherQuestions(interventions);
+  const parolesQualifiees = qualifierInterventions(parolesUniques, {
     roles: roles.filter((r) => r.institution === INSTITUTION_PARLEMENT),
     gouvernements: tousLesGouvernements || [],
   });
@@ -485,7 +488,7 @@ export function buildCandidateView(
      endroit selon qu'on siège à Paris, qu'on gouverne ou qu'on siège à
      Strasbourg. `periodes` reste servi pour les vues qui lisent tout d'un bloc
      (la couverture, les plafonds) ; la section, elle, lit les qualités. */
-  const qualitesDeParole = parolesParQualite(interventions, {
+  const qualitesDeParole = parolesParQualite(parolesUniques, {
     roles: roles.filter((r) => r.institution === INSTITUTION_PARLEMENT),
     gouvernements: tousLesGouvernements || [],
   });

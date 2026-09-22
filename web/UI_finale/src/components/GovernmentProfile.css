@@ -604,3 +604,22 @@
   .gvp-texte { grid-template-columns: 1fr; gap: 4px; }
   .gvp-orga { flex-direction: column; }
 }
+
+/* Ce qui a été dit (#1029), forme A : le membre à gauche, ses propos datés à
+   droite ; les membres séparés d'un pointillé. */
+.gvp-membre-bloc {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 8px 32px;
+  padding: 14px 0 18px;
+  border-top: 1px dashed var(--gouv-line);
+}
+.gvp-membre-bloc:first-child { border-top: 0; }
+.gvp-membre-tete { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; color: var(--texte-2); min-width: 0; }
+.gvp-membre-tete .gvp-intervention-membre { font-size: 15px; font-weight: 800; }
+.gvp-membre-tete .gvp-intervention-qualite { max-width: none; line-height: 1.45; }
+.gvp-membre-bloc > .gvp-source { align-self: start; }
+.gvp-sujet-via { font-size: 12px; font-weight: 500; color: var(--muted); }
+@media (max-width: 720px) {
+  .gvp-membre-bloc { grid-template-columns: 1fr; }
+}

@@ -100,6 +100,17 @@ See `AN_AMENDEMENTS_PATH` / `fetch_amendements_officiels` in
 
 ### Key JSON fields (empirical observations on legislature 17)
 
+- `.pointeurFragmentTexte.division` — the **article aimed at** (#1029, measured
+  22/09/2026): `titre` (« Article 3 », « ÉTAT B » for a finance-law annex,
+  « Chapitre Ier », a title's own wording) and `avant_A_Apres` (« A », « Après »,
+  « Avant » — an additional article). Present on 768 013 of 768 072 amendments
+  across the four archives. Same place in the legacy XIV schema.
+- `.corps.contenuAuteur.exposeSommaire` — the **statement of reasons**, HTML;
+  under `.corps.exposeSommaire` in the legacy XIV schema.
+- **The readable page of an amendment** is built from its `uid`:
+  `https://www.assemblee-nationale.fr/dyn/{legislature}/amendements/{uid}`, which the
+  AN redirects to its titled address (tested 200 on 22/09/2026).
+
 - `amendement.signataires.auteur.acteurRef` (`PAxxxxx`): linked against
   `identite.url_an_ou_senat` in raw profiles (which already contains the AN ID)
   via `_extract_acteur_ref()`.
@@ -523,7 +534,8 @@ Useful fields:
 - `question.auteur.identite.acteurRef`: direct elected-official ID.
 - `question.auteur.groupe.*`: group at question date.
 - `question.minInt.developpe`: queried ministry.
-- `question.indexationAN.analyses.analyse`: short subject summary.
+- `question.indexationAN.analyses.analyse`: short subject summary. **Trap: legislature XV publishes it as `indexationAN.ANALYSE.ANA`, in capitals, and never under `analyses`** — 52 213 of 52 213 questions (QE, QG, QOSD), measured 22/09/2026; XVI and XVII use `analyses.analyse` only (#1094).
+- A QG record carries **no séance reference**: author, subject, ministry and the JO date of its compte rendu only. Pairing it with the Syceron speaking turns goes through the subject and the date (`schema_pivot.rattacher_parole_aux_questions`), and the subject is sometimes misspelt at the source (« ventre de la branche énergie d'Alstom », « oubre-mer »).
 - `question.textesQuestion...` and `question.textesReponse...`: full texts and
   publication dates.
 
@@ -564,6 +576,23 @@ Structure utile de contenu:
 - `contenu/point` pour le bloc d'ordre du jour
 - `paragraphe/orateurs/orateur/{id,nom,qualite}` pour l'orateur
 - `paragraphe/texte` pour le texte (avec balises inline)
+- `paragraphe/@id_syceron` — l'identifiant du paragraphe, **et l'ancre de la prise
+  de parole sur la page publique** (#1087, mesuré le 22/09/2026)
+
+**La page lisible d'une séance** se construit depuis l'`uid` du compte rendu :
+`https://www.assemblee-nationale.fr/dyn/{legislature}/comptes-rendus/seance/{uid}`,
+que l'AN redirige vers l'adresse titrée (« deuxième séance du lundi 20 juillet
+2026 »), et `#{id_syceron}` mène à la prise de parole elle-même.
+
+| Mesuré le 22/09/2026 | Résultat |
+| --- | --- |
+| Paragraphes portant `id_syceron` | 100 % — 62 535 sur 120 comptes rendus de la XVII, 22 237 et 21 676 sur 40 de la XV et de la XVI |
+| Séances tirées au hasard (30 par législature) | 90 / 90 répondent 200 |
+| Ancre présente sur la page | vérifiée sur un exemple par législature |
+
+**Un compte rendu mal rangé chez l'AN** : `CRSANR5L16S2021O1N144` est dans l'archive
+de la **XVI**, daté du 01/02/2021 (XVe législature), et sa page répond **500**. Seul
+des 605 comptes rendus de l'archive XVI dans ce cas.
 
 Intégration pipeline (active):
 - fetch/cache XML via `src/syceron_debates.py`

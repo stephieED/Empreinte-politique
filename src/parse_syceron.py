@@ -534,6 +534,11 @@ def _parse_interventions(
             # C'est la preuve du préfixage de #510 — et, quand les deux se
             # contredisent, le refus d'attribution de la source elle-même.
             "orateur_id_acteur": paragraphe.get("id_acteur") or None,
+            # #1087 — l'identifiant du paragraphe chez l'AN. La page de compte
+            # rendu de la séance porte une ancre à ce numéro exact : c'est le
+            # lien vers la prise de parole elle-même, là où `source_url` ne
+            # mène qu'à l'archive de la législature.
+            "id_syceron": paragraphe.get("id_syceron") or None,
             "orateur_nom": nom_orateur,
             "point_ordre_du_jour": chemin,
             "point_code_grammaire": (chaine[-1][1] if chaine else None),

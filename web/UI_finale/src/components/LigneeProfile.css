@@ -1176,3 +1176,17 @@ button.lp-part[aria-pressed='true'] {
 .lp-textes {
   margin-bottom: 14px;
 }
+
+/* Un débat s'ouvre sur ce qui y a été dit (#1029) : la ligne devient un bouton,
+   sans rien changer de sa grille. */
+.lp-sujet--bouton {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.lp-chevron { display: inline-block; width: 1em; color: var(--muted); }
+.lp-sujet-via { font-size: 12px; font-weight: 500; color: var(--muted); }

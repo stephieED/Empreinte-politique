@@ -153,3 +153,25 @@ def test_la_fiche_publie_les_fenetres_et_leurs_comptes():
         "restaurer un système de retraite plus juste"]
     assert set(fiche["tags_thematiques_agreges"][0]["nb_membres_porteurs_par_fenetre"]) == {
         "12_mois", "6_mois"}
+
+
+def test_une_fiche_close_a_des_fenetres_vides_datees_du_jour_des_donnees():
+    """#1081 — les fenêtres se comptent depuis la date des données, pas depuis
+    la clôture de la fiche. Une fiche dont tous les membres sont partis (ici
+    Christine Engrand seule, sortie le 19/11/2024) : date de référence à la
+    clôture, fenêtres au jour de génération, et personne dedans."""
+    import time
+
+    profil = {**ENGRAND, "nom": MEMBRE_ENGRAND["nom"], "mandats": [], "votes": [],
+              "amendements": [], "sources": []}
+    fiche = gp.build_groupe_profile(
+        "AN:RN", "RN", "Rassemblement national", "AN", "17", [profil],
+        appartenances={"christine-engrand": {"debut": "2024-07-19", "fin": "2024-11-19",
+                                             "periodes": MEMBRE_ENGRAND["periodes"]}})
+
+    aujourd_hui = time.strftime("%Y-%m-%d")
+    assert fiche["date_reference"]["date"] == "2024-11-19"
+    for fenetre in fiche["fenetres_parole"].values():
+        assert fenetre["fin"] == aujourd_hui
+        assert fenetre["debut"] > "2024-11-19"
+        assert fenetre["nb_membres"] == 0

@@ -8,8 +8,8 @@
 > être incomplètes, et certaines absences portent encore une explication
 > imprécise — ne pas conclure d'une liste vide sans lire son bloc `couverture`.
 >
-> L'état courant se lit dans les
-> [issues ouvertes](https://github.com/stephieED/Empreinte-politique/issues).
+> Ce que le corpus contient, et depuis quand, se lit sur la page
+> [Sources](https://empreinte-politique.fr/sources) du site.
 
 **Empreinte politique** produit des « CV politiques » factuels et sourcés —
 mandats, responsabilités, votes, textes portés, interventions en séance — pour
@@ -53,7 +53,7 @@ Le détail et le raisonnement : [`AGENTS.md`](AGENTS.md) §2 et §6.
 | [Parlement européen](https://data.europarl.europa.eu/) | Le mandat européen | en direct, à chaque run | CC BY 4.0 — attribution, `User-Agent` identifiant le réutilisateur, 500 requêtes / 5 min |
 | [EuroVoc](https://publications.europa.eu/webapi/rdf/sparql) | Le **nom français** d'une matière européenne, quand le Parlement n'en donne que l'identifiant, et son **domaine** (« 08 RELATIONS INTERNATIONALES »), lu dans le thésaurus | en direct, à chaque run | CC BY 4.0 — attribution, et indication des modifications |
 | [Sycomore](https://www2.assemblee-nationale.fr/sycomore/recherche) (Assemblée nationale) | **Citée, pas collectée** : les mandats de député antérieurs au 19/06/2002, relus à la main un par un (#860) | aucune — table relue | tous droits réservés — **seuls des faits** (fonction, dates) repris, avec leur lien |
-| Journal officiel ([Légifrance](https://www.legifrance.gouv.fr/)) | **Cité, pas collecté** : les fonctions gouvernementales antérieures au corpus, décret par décret (#860) | aucune — table relue | Licence Ouverte 2.0 (Etalab) — attribution |
+| Journal officiel ([DILA](https://echanges.dila.gouv.fr/OPENDATA/JORF/), [Légifrance](https://www.legifrance.gouv.fr/)) | **Collecté depuis le 22/09/2026** : les décrets, arrêtés et ordonnances parus depuis 2007, pour retrouver ce qu'un gouvernement a pris sur un sujet. Le texte des actes n'est pas republié, il se lit chez Légifrance. **Aucun rattachement à une personne** : la source ne publie pas le signataire. Les fonctions gouvernementales antérieures au corpus restent, elles, **citées** décret par décret (#860) | 389 397 actes, relus sur les deux derniers mois à chaque run | Licence Ouverte 2.0 (Etalab) — attribution |
 | [Répertoire national des élus](https://www.data.gouv.fr/datasets/repertoire-national-des-elus-1) + sortants 2026 | **Les mandats locaux** des candidats déclarés depuis #922 — municipaux, maires, départementaux, régionaux, communautaires. La couverture **commence en 2020** ; avant, l'absence est déclarée et jamais lue comme « aucun mandat ». La source ne publie **aucune date de fin** | à chaque run, par l'API tabulaire | Licence Ouverte 2.0 (Etalab) — attribution |
 | Wikipédia / Wikidata | Le suivi des candidatures déclarées | immédiate | CC BY-SA 4.0 / CC0 |
 | [Conseil constitutionnel](https://www.conseil-constitutionnel.fr/) | **À venir** : la liste officielle des candidats et les parrainages, qui remplaceront Wikipédia pour dire qui est candidat. La loi du 6/11/1962 (art. 3) fixe les bornes — parrainages publiés au moins deux fois par semaine jusqu'au 12/03/2027, liste au plus tard le 26/03/2027 ; aucune date n'est annoncée | — | non connue à ce jour |

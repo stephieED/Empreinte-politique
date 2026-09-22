@@ -82,6 +82,23 @@ les charger, ni à les faire grossir. -->
   reduced**: additive merge keeps the *older* entry, so a reduced entry would freeze his
   full form forever.
   → `docs/decisions/collecte-interventions-reduite-au-theme-657.md`
+- **Roster members publish an EXCERPT, not the theme alone (#1029).** Groups and
+  government alike: the reduced form keeps `texte` cut to 280 characters at a sentence
+  or word end (`schema_pivot.extrait_de_texte`, nothing appended) and `texte_tronque`,
+  with `collecte: "extrait"`. The full text stays at the Assemblée (#1087). The index
+  directory is `index_par_acteur_extrait` — renamed with the form, so no cache of the
+  old form is read. The merge carries the richer form onto a poorer published entry
+  (`merge_profile.promouvoir_forme_complete`: theme < excerpt < full), **one way only**,
+  and `meta.collecte_reduite` states the poorest form still published.
+  → `docs/decisions/extrait-de-la-parole-des-rosters-1029.md`
+- **Every Syceron entry carries `id_syceron`, the anchor of its speech on the AN page
+  (#1087)** — in every form, full, excerpt or theme. The link is built, never stored:
+  `schema_pivot.url_seance_an` (séance uid = prefix of `intervention_id`). The key is
+  written **only when the parser read it**: set to `None` on an entry from an old index,
+  it would make that index pass `_syceron_index_qualifie`, whose witness field is now
+  `id_syceron`. Entries published before #1087 receive it by
+  `merge_profile.reporter_id_syceron`.
+  → `docs/decisions/lien-vers-la-prise-de-parole-1087.md`
 - **An INTEGER `intervention_id` is NosDéputés-era sediment, and nothing else (#839).**
   Syceron renders `syceron_…`, official questions `question_…`, the European Parliament
   `europarl_…`: no live source renders an integer. #529 changed the source and therefore

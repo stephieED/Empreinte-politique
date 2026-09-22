@@ -21,6 +21,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { legislatureDeAmendementId } from '../src/utils/lecture.js';
 import { TYPES_DEPOSANT_GROUPE, qualiteDuRole, repartitionParCommission, textesDuMaillon } from '../src/utils/lignee.js';
+import { vocabulairesDesFiches } from '../src/utils/amendementsMots.js';
 
 const lire = (p) => JSON.parse(readFileSync(p, 'utf-8'));
 
@@ -75,6 +76,13 @@ export function repartitionsDesMaillons({ fiches, profilesDir, amendementsDir, c
     }
 
     const index = lire(indexPath);
+    // Le contenu des exposés (#1029, voie 2), s'il est publié pour cette
+    // législature : le vocabulaire de chaque maillon, sur ses seuls amendements.
+    const contenuPath = path.join(amendementsDir, `${leg}.contenu.json`);
+    const vocabulaires = existsSync(contenuPath)
+      // L'index de contenu porte l'uid AN, sans le préfixe `an:` du pivot.
+      ? vocabulairesDesFiches(lire(contenuPath), new Map(maillons.map((m) => [m.fichier, new Set([...m.ids].map((id) => id.replace(/^an:/, '')))])))
+      : new Map();
     for (const m of maillons) {
       const { types } = repartitionParCommission(m.ids, index.amendements, index.textes, commissionDuDossier, statutDuDossier);
       const publie = m.groupe.amendements_agreges?.par_type_deposant || {};
@@ -86,8 +94,50 @@ export function repartitionsDesMaillons({ fiches, profilesDir, amendementsDir, c
         if (recompte !== attendu) ecarts.push({ type, recompte, attendu });
         else if (types[type]) verifies[type] = types[type];
       }
-      resultat.set(m.fichier, { types: verifies, ecarts, textes: textesDuMaillon(m.textes, commissionDuDossier) });
+      resultat.set(m.fichier, {
+        types: verifies,
+        ecarts,
+        textes: textesDuMaillon(m.textes, commissionDuDossier),
+        parAmendement: tableDesAmendements(m.ids, index, commissionDuDossier, statutDuDossier, vocabulaires.get(m.fichier)),
+      });
     }
   }
   return resultat;
+}
+
+/* ── LA TABLE DES AMENDEMENTS D'UN MAILLON (#1029, voie 2) ────────────────────
+ *
+ * De quoi RECOMPTER la répartition sous un mot ou une période, par la même
+ * règle (`repartitionParCommission`) : pour chaque amendement distinct du
+ * maillon, son type de déposant, son sort adopté ou non, sa date et le texte
+ * visé ; pour chaque texte, son dossier, son titre, sa commission et le sort du
+ * texte. Plus, quand l'exposé est indexé, le vocabulaire (`mots`) renuméroté sur
+ * `ids`. La page ne la charge qu'au premier mot ou à la première période.
+ *
+ * `rows[i]` : `[type (rang dans types), adopté (0/1), date, texte (rang dans textes)]`.
+ * `textes[j]` : `[texte_vise, dossier_id, titre, commission (sigle ou nom), statut]`. */
+function tableDesAmendements(ids, index, commissionDuDossier, statutDuDossier, vocabulaire) {
+  const types = [];
+  const rangType = new Map();
+  const textes = [];
+  const rangTexte = new Map();
+  const liste = [...ids].filter((id) => index.amendements?.[id]).sort();
+  const rows = liste.map((id) => {
+    const a = index.amendements[id];
+    const type = a.type_deposant || 'inconnu';
+    if (!rangType.has(type)) { rangType.set(type, types.length); types.push(type); }
+    let t = null;
+    if (a.texte_vise) {
+      if (!rangTexte.has(a.texte_vise)) {
+        const dossier = index.textes?.[a.texte_vise]?.dossier_id ?? null;
+        const c = dossier ? commissionDuDossier(dossier) : null;
+        rangTexte.set(a.texte_vise, textes.length);
+        textes.push([a.texte_vise, dossier, index.textes?.[a.texte_vise]?.titre ?? null,
+          c ? (c.sigle || c.nom || null) : null, dossier ? statutDuDossier(dossier) : null]);
+      }
+      t = rangTexte.get(a.texte_vise);
+    }
+    return [rangType.get(type), a.sort === 'adopté' ? 1 : 0, a.date ?? null, t];
+  });
+  return { ids: liste, types, rows, textes, vocabulaire: vocabulaire ?? null };
 }

@@ -43,11 +43,16 @@ Usage (depuis la racine du dépôt) :
 
 import argparse
 import sys
+from pathlib import Path
 
+from amendements_contenu import chemin_cache, chemin_publie, ecrire_contenu_cache
 from candidate_profile import (
+    AMENDEMENTS_CACHE_DIR,
     AN_AMENDEMENTS_LEGISLATURES_FIGEES,
     AN_AMENDEMENTS_PATH,
     AmendementsIndexError,
+    _amendements_zip_url,
+    _download_amendements_zip,
     _download_and_build_amendement_index,
     amendements_index_deja_figee,
     amendements_index_en_cache_utilisable,
@@ -82,6 +87,14 @@ def build_all_amendements_index() -> bool:
         # 0,28 s qui ne téléchargeait rien, et c'est ce log qui a rendu
         # invisible 18 jours sans une seule reconstruction.
         en_cache = amendements_index_en_cache_utilisable(legislature)
+        if (en_cache is not None and legislature not in AN_AMENDEMENTS_LEGISLATURES_FIGEES
+                and not chemin_cache(legislature, AMENDEMENTS_CACHE_DIR).is_file()):
+            # #1029 — un index en cache sans son contenu (écrit avant #1029) se
+            # reconstruit : c'est la même archive qui donne les deux.
+            print(f"-> Législature {legislature} : index en cache SANS contenu (#1029), "
+                  "reconstruction")
+            purger_cache_amendements_legislature(legislature)
+            en_cache = None
         if en_cache is not None:
             print(f"-> Législature {legislature} : index déjà en cache, non reconstruit "
                   f"({len(en_cache)} acteur(s))")
@@ -97,6 +110,45 @@ def build_all_amendements_index() -> bool:
     return ok
 
 
+#: Où l'index publié se lit pendant le run : le dépôt est extrait avant ce job.
+DOSSIER_PUBLIE = Path("pivot_data") / "amendements"
+
+
+def construire_un_contenu_fige(dossier_publie: Path = DOSSIER_PUBLIE) -> bool:
+    """Construit le contenu d'UNE législature figée qui n'en a pas encore (#1029).
+
+    Une législature close ne change plus : son contenu se construit une fois,
+    puis se lit dans le fichier publié. **Une seule par run** — les trois
+    archives pèsent 1,1 Go (XIVe 104 Mo, XVe 649 Mo, XVIe 363 Mo, mesuré le
+    22/09/2026) et la XVe demande 2,7 Go de mémoire et 150 s depuis un poste :
+    toutes à la fois menaceraient le plafond de 30 minutes du job. Les trois
+    sont faites en trois runs, une seule fois.
+
+    Retourne False sur un échec, sans lever : le job ne doit rien perdre d'autre.
+    """
+    for legislature in sorted(AN_AMENDEMENTS_LEGISLATURES_FIGEES):
+        if chemin_publie(legislature, dossier_publie).is_file():
+            continue
+        if chemin_cache(legislature, AMENDEMENTS_CACHE_DIR).is_file():
+            continue
+        url = _amendements_zip_url(legislature)
+        if not url:
+            continue
+        zip_path = AMENDEMENTS_CACHE_DIR / legislature / "amendements.zip"
+        print(f"-> Contenu des amendements (#1029), législature figée {legislature} : {url}")
+        try:
+            _download_amendements_zip(url, zip_path, legislature)
+            ecrire_contenu_cache(legislature, zip_path, AMENDEMENTS_CACHE_DIR)
+        except Exception as exc:  # noqa: BLE001 — non bloquant, nommé
+            print(f"  [!] Contenu de la législature {legislature} non construit : {exc}",
+                  file=sys.stderr)
+            return False
+        finally:
+            zip_path.unlink(missing_ok=True)
+        return True
+    return True
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[2])
     parser.add_argument(
@@ -106,7 +158,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     if args.reconstruire_actives:
         purger_legislatures_actives()
-    return 0 if build_all_amendements_index() else 1
+    ok = build_all_amendements_index()
+    ok = construire_un_contenu_fige() and ok
+    return 0 if ok else 1
 
 
 if __name__ == "__main__":

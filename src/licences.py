@@ -93,6 +93,14 @@ LICENCE_AN = "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationa
 #: il n'y entre pas.
 LICENCE_SENAT = "Licence Ouverte / Open Licence (Sénat) — data.senat.fr"
 
+#: #1029 voie 1 — le fonds du Journal officiel publié par la DILA
+#: (`echanges.dila.gouv.fr`, `fr-lo` dans l'API data.gouv). Attribution seule,
+#: sans partage à l'identique. Elle ne figure PAS dans
+#: `LICENCE_PAR_TYPE_SOURCE` : aucun `sources[]` de profil n'en dérive — elle
+#: est la licence de l'index des actes réglementaires, qui ne touche aucune
+#: fiche de personne.
+LICENCE_JORF = "Licence Ouverte / Open Licence (Etalab) — Journal officiel (DILA)"
+
 #: NosDéputés.fr / NosSénateurs.fr (Regards Citoyens). **Plus collectée**
 #: (#528, #529), mais toujours due aux champs déjà publiés qui en dérivent.
 #: https://opendatacommons.org/licenses/odbl/1-0/

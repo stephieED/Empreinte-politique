@@ -8,10 +8,12 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { cleLegislature, construireComparaisons } from './comparaison-groupes.mjs';
 import { construireCouverture } from './couverture-corpus.mjs';
-import { construireDebatsLignee, construireVueLignee, idDePage } from './vue-lignee.mjs';
-import { construireParolesDepuisDisque } from './vue-parole-gouvernement.mjs';
+import { construireDebatsLignee, construireExtraitsLignee, construireVueLignee, idDePage } from './vue-lignee.mjs';
+import { construireExtraitsGouvernement, construireParoles, lecteurDeProfils } from './vue-parole-gouvernement.mjs';
+import { debutDeFenetre } from '../src/utils/filtrePeriode.js';
 import { repartitionsDesMaillons } from './amendements-lignees.mjs';
-import { selectDerniereLectureVotes } from '../src/utils/lecture.js';
+import { legislatureDeAmendementId, selectDerniereLectureVotes } from '../src/utils/lecture.js';
+import { vocabulairesDesFiches } from '../src/utils/amendementsMots.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(here, '..');
@@ -47,14 +49,16 @@ if (existsSync(scrutinsPath)) {
 }
 
 // --- amendements/ (index partagé, #431) ---
-// Un fichier de méta par législature. Les fichiers `.cosignatures.json` ne sont
-// PAS copiés : ils pèsent 59 % de l'index et aucune vue ne les lit — les y
-// copier ferait porter au site 75,7 Mo d'un contenu jamais affiché. Ils restent
-// dans le dépôt, accessibles pour l'analyse (#324).
+// Un fichier de méta par législature, `<lég>.json`, et RIEN D'AUTRE : la liste
+// se construit par le nom, elle n'exclut pas. Les fichiers voisins ne sont pas
+// copiés tant qu'une vue ne les lit pas — `.cosignatures.json` (59 % de
+// l'index, 75,7 Mo, #324) et `.contenu.json` (#1029 voie 2, l'index de mots
+// des exposés : 93 Mo pour les quatre législatures). Ils restent dans le
+// dépôt, accessibles pour l'analyse.
+const INDEX_AMENDEMENTS = /^\d+\.json$/;
 if (existsSync(amendementsDir)) {
   mkdirSync(path.join(outDir, 'amendements'), { recursive: true });
-  const metaFiles = readdirSync(amendementsDir)
-    .filter((f) => f.endsWith('.json') && !f.endsWith('.cosignatures.json'));
+  const metaFiles = readdirSync(amendementsDir).filter((f) => INDEX_AMENDEMENTS.test(f));
   for (const file of metaFiles) {
     cpSync(path.join(amendementsDir, file), path.join(outDir, 'amendements', file));
   }
@@ -282,6 +286,50 @@ const manifestCandidates = candidats
  *
  * Le retrait est NOMMÉ au build, comme les fiches masquées : une page qui
  * disparaît en silence est une page qu'on croit encore publiée. */
+/* ── LE VOCABULAIRE DES AMENDEMENTS DE CHAQUE CANDIDAT (#1029, voie 2) ────────
+ * Les mots des exposés de SES amendements, législature par législature, tirés
+ * de `<lég>.contenu.json` : le filtre de la fiche y cherche un sujet que
+ * l'intitulé du dossier ne nomme pas. Un fichier par candidat, chargé au
+ * premier mot tapé. Une législature à la fois : l'index de la XVe pèse 37 Mo. */
+{
+  const parLegislature = new Map();
+  for (const c of manifestCandidates) {
+    const profil = JSON.parse(readFileSync(path.join(pivotProfilesDir, `${c.slug}.pivot.json`), 'utf-8'));
+    for (const a of profil.amendements || []) {
+      const leg = legislatureDeAmendementId(a?.amendement_id);
+      if (!leg) continue;
+      if (!parLegislature.has(leg)) parLegislature.set(leg, new Map());
+      const fiches = parLegislature.get(leg);
+      if (!fiches.has(c.slug)) fiches.set(c.slug, new Set());
+      // L'index de contenu porte l'uid AN, sans le préfixe `an:` du pivot.
+      fiches.get(c.slug).add(String(a.amendement_id).replace(/^an:/, ''));
+    }
+  }
+  const parCandidat = new Map();
+  for (const [leg, fiches] of parLegislature) {
+    const chemin = path.join(amendementsDir, `${leg}.contenu.json`);
+    if (!existsSync(chemin)) continue;
+    const vocabulaires = vocabulairesDesFiches(JSON.parse(readFileSync(chemin, 'utf-8')), fiches);
+    for (const [slug, v] of vocabulaires) {
+      if (!v.ids.length) continue;
+      if (!parCandidat.has(slug)) parCandidat.set(slug, {});
+      parCandidat.get(slug)[leg] = v;
+    }
+  }
+  let octets = 0;
+  for (const c of manifestCandidates) {
+    const cible = path.join(outDir, 'profiles', `${c.slug}.amendements-mots.json`);
+    if (!parCandidat.has(c.slug)) {
+      if (existsSync(cible)) rmSync(cible);
+      continue;
+    }
+    const texte = JSON.stringify({ legislatures: parCandidat.get(c.slug) });
+    octets += Buffer.byteLength(texte);
+    writeFileSync(cible, texte);
+  }
+  console.log(`sync-data : vocabulaire des amendements de ${parCandidat.size} candidat(s) — ${(octets / 1e6).toFixed(1)} Mo écrits.`);
+}
+
 const CHAMBRE_HORS_INTERFACE = 'Senat';
 const slugByMembreId = new Map(manifestCandidates.map((c) => [c.slug, c]));
 const groupeFiles = readdirSync(pivotGroupesDir).filter((f) => f.endsWith('.json'));
@@ -369,6 +417,9 @@ for (const file of lignesFiles) {
     // Les débats complets, pour la recherche sur la fiche (#979) : chargés
     // seulement quand un mot est tapé.
     debats: `${id}.debats.json`,
+    // Ce qui a été dit (#1029) : par maillon, `<maillon>.extraits.index.json`
+    // pour le filtre et `<maillon>.extraits.<paquet>.json` pour un débat ouvert.
+    extraits: true,
     ligneeId: lignee.lignee_id,
     nom: lignee.lignee_nom,
     chambre: lignee.chambre,
@@ -417,6 +468,40 @@ const plusRecent = (...chemins) => chemins.reduce((max, c) => {
 // LE CACHE EST SUR LES DATES, comme `couverture.json` : la répartition des
 // amendements par commission relit les profils des membres et les quatre index
 // (une minute), et la refaire à chaque `npm run dev` serait insupportable.
+/* LA DATE DES DONNÉES (#1074), lue une fois : les extraits (#1029) en tirent
+ * les débuts de fenêtre de leur vocabulaire, et `donnees.json` la publie plus
+ * bas. Elle est lue LÀ OÙ BACKEND COMPTE SES PROPRES FENÊTRES — la
+ * `date_reference.date` des fiches de groupe (#1077), la plus récente. */
+const dateDesDonnees = (() => {
+  const dates = readdirSync(pivotGroupesDir)
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => JSON.parse(readFileSync(path.join(pivotGroupesDir, f), 'utf-8'))?.date_reference?.date)
+    .filter((d) => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d))
+    .sort();
+  if (dates.length) return dates.at(-1).slice(0, 10);
+  return null;
+})();
+const debutsDesFenetres = dateDesDonnees
+  ? { '12m': debutDeFenetre(dateDesDonnees, '12m'), '6m': debutDeFenetre(dateDesDonnees, '6m') }
+  : null;
+
+/* Les extraits d'une fiche (#1029) : l'index, que le filtre charge au premier
+ * mot, et les paquets non vides, dont un seul se charge quand un débat s'ouvre.
+ * Rend le poids écrit, pour le journal du build. */
+function ecrireExtraits(dossier, base, { index, paquets }) {
+  let octets = 0;
+  const ecrire = (nom, contenu) => {
+    const texte = JSON.stringify(contenu);
+    octets += Buffer.byteLength(texte);
+    writeFileSync(path.join(dossier, nom), texte);
+  };
+  ecrire(`${base}.extraits.index.json`, index);
+  paquets.forEach((paquet, k) => {
+    if (Object.keys(paquet).length) ecrire(`${base}.extraits.${k}.json`, paquet);
+  });
+  return octets;
+}
+
 const entreesLignees = plusRecent(
   pivotLigneesDir,
   pivotGroupesDir,
@@ -432,17 +517,22 @@ const entreesLignees = plusRecent(
   path.join(projectRoot, 'src', 'utils', 'lignee.js'),
   path.join(projectRoot, 'src', 'utils', 'groupe.js'),
   path.join(projectRoot, 'src', 'utils', 'lecture.js'),
+  path.join(projectRoot, 'src', 'utils', 'extraits.js'),
+  path.join(projectRoot, 'src', 'utils', 'amendementsMots.js'),
 );
 const vuesAJour = manifestLignees.length > 0 && manifestLignees.every((l) => {
   const f = path.join(outDir, 'lignees', l.fichier);
   const d = path.join(outDir, 'lignees', l.debats);
+  const x = path.join(outDir, 'lignees', `${l.id}.extraits.json`);
   return existsSync(f) && statSync(f).mtimeMs >= entreesLignees
-    && existsSync(d) && statSync(d).mtimeMs >= entreesLignees;
+    && existsSync(d) && statSync(d).mtimeMs >= entreesLignees
+    && existsSync(x) && statSync(x).mtimeMs >= entreesLignees;
 });
 if (vuesAJour) {
   console.log('sync-data : vues de lignée à jour, reconstruction sautée.');
 } else {
   const debut = Date.now();
+  let octetsExtraitsLignees = 0;
   const repartitions = repartitionsDesMaillons({
     fiches: ficheParFichier,
     profilesDir: pivotProfilesDir,
@@ -457,6 +547,19 @@ if (vuesAJour) {
       console.warn(`sync-data : ${fichier} — ${e.type} recompté ${e.recompte}, publié ${e.attendu} : répartition par commission non servie.`);
     }
   }
+  /* LA TABLE DES AMENDEMENTS DE CHAQUE MAILLON (#1029, voie 2) : de quoi
+   * recompter la répartition sous un mot — par l'exposé — ou sous une période
+   * — par la date de chaque amendement. Chargée au premier mot ou à la première
+   * période seulement. */
+  let octetsAmendements = 0;
+  for (const [fichier, r] of repartitions) {
+    const maillon = idDeFicheParFichier.get(fichier);
+    if (!maillon || !r.parAmendement) continue;
+    const texte = JSON.stringify(r.parAmendement);
+    octetsAmendements += Buffer.byteLength(texte);
+    writeFileSync(path.join(outDir, 'lignees', `${maillon}.amendements.json`), texte);
+  }
+  console.log(`sync-data : tables d'amendements des maillons — ${(octetsAmendements / 1e6).toFixed(1)} Mo écrits.`);
   const scrutinsListe = existsSync(scrutinsPath)
     ? Object.values(JSON.parse(readFileSync(scrutinsPath, 'utf-8')).scrutins || {})
     : [];
@@ -490,22 +593,44 @@ if (vuesAJour) {
       idsDeFiche: idDeFicheParFichier,
     });
     writeFileSync(path.join(outDir, 'lignees', entree.debats), JSON.stringify(debats));
+    // Ce qui a été dit (#1029), maillon par maillon. Le témoin
+    // `<lignée>.extraits.json` nomme les maillons servis ; il est écrit en
+    // dernier, pour qu'un build interrompu se refasse.
+    const extraits = construireExtraitsLignee({
+      lignee,
+      fiches: ficheParFichier,
+      idsDeFiche: idDeFicheParFichier,
+      lireProfil: lecteurDeProfils(pivotProfilesDir, { cache: false }),
+      debuts: debutsDesFenetres,
+    });
+    for (const [maillon, x] of Object.entries(extraits)) {
+      octetsExtraitsLignees += ecrireExtraits(path.join(outDir, 'lignees'), maillon, x);
+    }
+    writeFileSync(path.join(outDir, 'lignees', `${entree.id}.extraits.json`), JSON.stringify({ maillons: Object.keys(extraits) }));
   }
+  console.log(`sync-data : extraits de parole des lignées — ${(octetsExtraitsLignees / 1e6).toFixed(1)} Mo écrits.`);
   console.log(`sync-data : ${manifestLignees.length} vues de lignée écrites en ${((Date.now() - debut) / 1000).toFixed(1)} s.`);
 }
 
 // --- profils de gouvernement réels ---
 const debutParoles = Date.now();
 let sujetsEcrits = 0;
+let octetsExtraitsGouvernements = 0;
 const gouvernementFiles = readdirSync(pivotGouvernementsDir).filter((f) => f.endsWith('.json'));
 const manifestGouvernements = [];
 for (const file of gouvernementFiles) {
   cpSync(path.join(pivotGouvernementsDir, file), path.join(outDir, 'gouvernements', file));
   const gouvernement = JSON.parse(readFileSync(path.join(pivotGouvernementsDir, file), 'utf-8'));
   const id = file.replace(/^gouvernement-/, '').replace(/\.json$/, '');
-  const paroles = construireParolesDepuisDisque(gouvernement, pivotProfilesDir);
+  const lireProfil = lecteurDeProfils(pivotProfilesDir);
+  const paroles = construireParoles(gouvernement, lireProfil);
   sujetsEcrits += Object.keys(paroles).length;
   writeFileSync(path.join(outDir, 'gouvernements', `${id}.paroles.json`), JSON.stringify(paroles));
+  // Ce qui a été dit (#1029) : les extraits des membres, pendant leurs fonctions.
+  octetsExtraitsGouvernements += ecrireExtraits(
+    path.join(outDir, 'gouvernements'), id,
+    construireExtraitsGouvernement(gouvernement, lireProfil, debutsDesFenetres),
+  );
 
   manifestGouvernements.push({
     id,
@@ -523,13 +648,16 @@ for (const file of gouvernementFiles) {
     // #330 : le détail d'un sujet de parole — qui, quand, où le vérifier.
     // Chargé au premier clic, jamais avec la fiche : 2,6 Mo sur Borne.
     paroles: `${id}.paroles.json`,
+    // #1029 : ce qui a été dit, par débat — `<id>.extraits.index.json` pour le
+    // filtre, `<id>.extraits.<paquet>.json` pour un débat ouvert.
+    extraits: id,
   });
 }
 manifestGouvernements.sort((a, b) => (b.debut || '').localeCompare(a.debut || ''));
 
 console.log(
   `sync-data : ${sujetsEcrits} sujets de parole de gouvernement écrits en `
-  + `${((Date.now() - debutParoles) / 1000).toFixed(1)} s.`,
+  + `${((Date.now() - debutParoles) / 1000).toFixed(1)} s ; extraits : ${(octetsExtraitsGouvernements / 1e6).toFixed(1)} Mo.`,
 );
 
 /* ── Ce que le dépôt porte, tous profils confondus (/couverture) ────────────
@@ -588,4 +716,22 @@ if (groupesRetires.length || ligneesRetirees.length) {
 }
   // distinguer d'une fiche qu'on a oublié de produire (#510).
   console.log(`sync-data : ${slugsMasques.size} fiche(s) masquée(s) — ${[...slugsMasques].join(', ')} (statut masqué, profil conservé dans pivot_data/).`);
+}
+
+/* ── LA DATE DES DONNÉES (#1074) ───────────────────────────────────────────────
+ * Les cases « 6 derniers mois » et « 12 derniers mois » se comptent depuis
+ * elle, pas depuis le jour. Elle est lue LÀ OÙ BACKEND COMPTE SES PROPRES
+ * FENÊTRES : la `date_reference.date` des fiches de groupe (#1077), la plus
+ * récente. Une seule date pour toutes les fiches — sinon deux fiches
+ * afficheraient « depuis le » à deux dates différentes.
+ * Sans aucune date lisible, le fichier n'est pas écrit : les cases ne
+ * filtrent alors rien, plutôt que de compter depuis une date inventée. */
+{
+  if (dateDesDonnees) {
+    const au = dateDesDonnees;
+    writeFileSync(path.join(outDir, 'donnees.json'), JSON.stringify({ au }));
+    console.log(`sync-data : données au ${au} — les fenêtres de période se comptent depuis cette date.`);
+  } else {
+    console.log('sync-data : aucune date de référence lisible — donnees.json non écrit, les cases de période ne filtrent rien.');
+  }
 }

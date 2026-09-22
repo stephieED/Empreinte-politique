@@ -960,13 +960,19 @@ FENETRES_PAROLE: tuple[tuple[str, int], ...] = (("12_mois", 12), ("6_mois", 6))
 
 
 def bornes_des_fenetres(
-    date_reference: Optional[str], debut_periode: Optional[str]
+    date_des_donnees: Optional[str], debut_periode: Optional[str]
 ) -> Optional[dict[str, dict[str, str]]]:
-    """`{nom: {debut, fin}}`, comptées depuis la date de référence de la fiche
-    et jamais avant le début de sa période. `None` sans date de référence."""
-    if not date_reference:
+    """`{nom: {debut, fin}}`, comptées depuis la DATE DES DONNÉES — la date de
+    génération, la même pour toutes les fiches — et jamais avant le début de la
+    période de la fiche. `None` sans date.
+
+    **Pas depuis `date_reference` (#1081).** Sur une fiche close, celle-ci est
+    la date de clôture : RN-16 publiait « 6 mois » du 09/12/2023 au 09/06/2024,
+    que l'interface lit « les six derniers mois des données ». Une fiche close
+    a donc des fenêtres VIDES — aucun membre, et des bornes qui le montrent."""
+    if not date_des_donnees:
         return None
-    fin = date.fromisoformat(date_reference[:10])
+    fin = date.fromisoformat(date_des_donnees[:10])
     fenetres: dict[str, dict[str, str]] = {}
     for nom, mois in FENETRES_PAROLE:
         debut = _date_moins_mois(fin, mois).isoformat()
@@ -1361,6 +1367,15 @@ def _aggregate_mandats(
     Si le membre n'a aucun mandat électif renseigné, il est considéré éligible
     par défaut (même approche conservatrice que ``_is_eligible_at``).
 
+    **Et une de ses périodes d'appartenance AU GROUPE (#853).** Le mandat
+    électif seul laissait passer la carrière entière : mesuré le 11/09/2026 sur
+    les 28 fiches AN, 38 835 des 82 233 entrées membre × mandat n'avaient aucun
+    jour commun avec l'appartenance du membre — Gérald Darmanin et son groupe
+    d'amitié de 2012-2016 dans EPR (2024-2025). Même règle que la parole (#1073),
+    les amendements (#821) et les tags (#825). Un membre dont l'appartenance
+    n'est pas datée garde le seul filtre électif : rien ne prouve qu'il n'était
+    pas membre (§2 règle 5).
+
     Args:
         profils: liste de profils pivot v1 des membres du groupe.
         membres: sortie de ``[_derive_membre_entry(p) for p in profils]``
@@ -1426,6 +1441,10 @@ def _aggregate_mandats(
     membre_present_par_id = {
         m["membre_id"]: m.get("present_a_la_date_de_reference", False) for m in membres
     }
+    appartenance_par_id = {
+        m["membre_id"]: [(_parse_date(d), _parse_date(f)) for d, f in (periodes_d_appartenance(m) or [])]
+        for m in membres
+    }
     ref = _parse_date(date_reference)
 
     buckets: dict[tuple[str, str], list[dict[str, Any]]] = {}
@@ -1451,6 +1470,12 @@ def _aggregate_mandats(
             if eligibility_intervals is not None and not any(
                 _intervals_overlap(m_debut, m_fin, e_debut, e_fin)
                 for e_debut, e_fin in eligibility_intervals
+            ):
+                continue
+            appartenance = appartenance_par_id.get(membre_id)
+            if appartenance and not any(
+                _intervals_overlap(m_debut, m_fin, a_debut, a_fin)
+                for a_debut, a_fin in appartenance
             ):
                 continue
 
@@ -2439,7 +2464,9 @@ def build_groupe_profile(
     # --- Tags thématiques ---
     # #1073 — la parole d'un groupe est celle que ses membres ont tenue PENDANT
     # leur appartenance, et elle se compte aussi sur deux fenêtres fixes.
-    fenetres_bornes = bornes_des_fenetres(date_ref, periode_debut) if legislature else None
+    # #1081 — depuis la date des données, jamais depuis la date de référence :
+    # sur une fiche close, celle-ci est la clôture.
+    fenetres_bornes = bornes_des_fenetres(genere_le, periode_debut) if legislature else None
     agregat_tags = aggregate_tags_thematiques(
         profils, legislature=legislature,
         appartenances={m["membre_id"]: periodes_d_appartenance(m) for m in membres},

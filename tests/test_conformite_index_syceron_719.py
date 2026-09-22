@@ -55,11 +55,14 @@ def _entree(avec_qualification: bool, sujet="Motions de censure"):
     }
     if avec_qualification:
         e["sujet_code_grammaire"] = "TITRE_TEXTE_DISCUSSION"
+        # #1087 — le champ qui qualifie un index est désormais l'ancre AN,
+        # que le parseur écrit avec la clé de #710.
+        e["id_syceron"] = "4166184"
     return e
 
 
 def _ecrire_index(racine, legislature, tranches, *, theme=False):
-    dirname = "index_par_acteur_theme" if theme else "index_par_acteur"
+    dirname = "index_par_acteur_extrait" if theme else "index_par_acteur"
     d = racine / legislature / dirname
     d.mkdir(parents=True, exist_ok=True)
     for acteur_ref, entrees in tranches.items():
@@ -87,7 +90,7 @@ def test_la_cle_suffit_meme_a_none(cache):
     """`sujet_code_grammaire` vaut légitimement `None` sur un point dont la
     grammaire ne porte pas de sujet : exiger une valeur refuserait un index
     correct. Même règle que `_scrutins_store_qualifie` (#639)."""
-    entree = dict(_entree(True), sujet=None, sujet_code_grammaire=None)
+    entree = dict(_entree(True), sujet=None, sujet_code_grammaire=None, id_syceron=None)
     d = _ecrire_index(cache, "17", {"PA1": [entree]})
     assert cp._syceron_index_qualifie(d) is True
 
@@ -195,4 +198,4 @@ def test_la_publication_reduite_noublie_que_sa_forme(cache):
 
     # La forme COMPLÈTE reste jugée périmée : sa réécriture n'a pas eu lieu.
     assert cp._syceron_index_qualifie(complet) is False
-    assert cp._syceron_index_qualifie(cache / "17" / "index_par_acteur_theme") is True
+    assert cp._syceron_index_qualifie(cache / "17" / "index_par_acteur_extrait") is True

@@ -21,8 +21,11 @@
  */
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { EtiquetteFiltre, MOT } from './Recherche';
-import { getParolesDuGouvernement } from '../data';
+import { Condition, EtiquetteFiltre, useFiltreActif } from './Recherche';
+import { getPaquetExtraitsGouvernement, getParolesDuGouvernement } from '../data';
+import { ProposDuMembre, usePaquetExtraits } from './ExtraitsDuDebat';
+import { extraitsDuDebat, paquetDe } from '../utils/extraits';
+import { motsDuFiltre } from '../utils/filtreIntitule';
 import { sankey, sankeyLinkHorizontal } from 'd3-sankey';
 import '../styles/shell.css';
 import './GovernmentProfile.css';
@@ -387,7 +390,8 @@ function QuiLeComposait({ government }) {
  * sections d'intitulés se recalculent, figure et liste ensemble
  * (`filtrerGouvernement`). Chaque figure porte le mot en tête, pour qu'une
  * capture ne circule pas sans lui. */
-function SurQuoiIlsOntPrisLaParole({ government, mot = '' }) {
+function SurQuoiIlsOntPrisLaParole({ government, mot = '', debut = null }) {
+  const actif = useFiltreActif(mot);
   const { liste, total, denominateur, membres } = government.paroles;
   const [ouvert, setOuvert] = useState(null);
   const [detail, setDetail] = useState(null);
@@ -408,7 +412,23 @@ function SurQuoiIlsOntPrisLaParole({ government, mot = '' }) {
     return () => { vivant = false; };
   }, [ouvert, detail, government.id]);
 
-  const interventionsDe = (sujet) => (detail ? (detail[sujet] || []) : null);
+  /* CE QUI A ÉTÉ DIT (#1029) : le paquet d'extraits du débat ouvert, rangé
+     sous chaque membre — ses propos sous sa ligne, jamais une liste à part. */
+  const mots = motsDuFiltre(mot);
+  const cleOuvert = ouvert === null ? null : `${government.id}:${paquetDe(ouvert)}`;
+  const paquet = usePaquetExtraits(cleOuvert, () => getPaquetExtraitsGouvernement(government.id, paquetDe(ouvert)));
+
+  const interventionsDe = (sujet) => {
+    if (!detail) return null;
+    const tous = detail[sujet] || [];
+    if (!debut) return tous;
+    // Sous une période, chaque membre ne garde que ses séances dans la fenêtre.
+    return tous.map((i) => {
+      const dedans = (i.seances || []).filter(([d]) => d >= debut);
+      if (!dedans.length) return null;
+      return { ...i, premiere: dedans[0][0], derniere: dedans.at(-1)[0], tours: dedans.reduce((n, [, t]) => n + t, 0) };
+    }).filter(Boolean);
+  };
 
   return (
     <section className="gvp-section" data-section="Sur quoi ils ont pris la parole" id="section-paroles">
@@ -419,9 +439,9 @@ function SurQuoiIlsOntPrisLaParole({ government, mot = '' }) {
       <h2 className="gvp-section-titre"><span>Sur quoi ils ont pris la parole</span></h2>
 
       <div className="gvp-carte">
-        {mot && <EtiquetteFiltre mot={mot} />}
-        {liste.length === 0 && mot ? (
-          <p className="cp-filtre-vide">Aucun débat dont l’intitulé contient {MOT(mot)}.</p>
+        <EtiquetteFiltre mot={mot} />
+        {liste.length === 0 && actif ? (
+          <p className="cp-filtre-vide">Aucun débat<Condition critere="dont l’intitulé contient" mot={mot} />.</p>
         ) : liste.length === 0 ? (
           <p className="gvp-vide">
             Aucun débat ne porte d’intitulé pour les membres de ce gouvernement — voir
@@ -429,7 +449,20 @@ function SurQuoiIlsOntPrisLaParole({ government, mot = '' }) {
           </p>
         ) : liste.map((sujet) => {
           const choisi = ouvert === sujet.label;
-          const interventions = choisi ? interventionsDe(sujet.label) : null;
+          const parIntitule = sujet.parIntitule !== false;
+          // Les extraits du débat, dans la fenêtre ; sous un mot que l'intitulé
+          // ne porte pas, ceux-là seuls qui le portent.
+          const extraits = choisi && paquet
+            ? extraitsDuDebat(paquet[sujet.label], { mots, debut, parIntitule })
+            : [];
+          // Une ligne de membre garde les siens : même nom, et une date dans
+          // l'intervalle de la ligne — deux portefeuilles, deux lignes.
+          const siens = (i) => extraits.filter((e) => e.orateur === i.membre && e.date >= i.premiere && e.date <= i.derniere);
+          const toutes = choisi ? interventionsDe(sujet.label) : null;
+          // Retenu par ses propos seuls : seuls les membres qui ont porté le mot.
+          const interventions = toutes && !parIntitule && paquet !== undefined
+            ? toutes.filter((i) => siens(i).length > 0)
+            : toutes;
           return (
             <div className="gvp-sujet-bloc" key={sujet.label}>
               <button
@@ -441,6 +474,9 @@ function SurQuoiIlsOntPrisLaParole({ government, mot = '' }) {
                 <span className="gvp-sujet-lib">
                   <span className="gvp-chevron" aria-hidden="true">{choisi ? '▾' : '▸'}</span>
                   {sujet.label}
+                  {/* Retenu par les propos seuls (#1029) : l'intitulé ne porte
+                      pas le mot, le lecteur doit le savoir avant d'ouvrir. */}
+                  {sujet.parIntitule === false && <span className="gvp-sujet-via"> · le mot est dans les propos</span>}
                 </span>
                 <span className="gvp-sujet-n">
                   <b>{sujet.porteurs}</b> <small>/ {denominateur}</small>
@@ -459,29 +495,36 @@ function SurQuoiIlsOntPrisLaParole({ government, mot = '' }) {
                   ) : (
                     <>
                       {interventions.map((i) => (
-                        <p className="gvp-intervention" key={`${i.membre}-${i.premiere}`}>
-                          <span className="gvp-intervention-membre">{i.membre}</span>
-                          {/* En qualité de quoi : le portefeuille exercé À LA
-                              DATE de ses prises de parole, lu sur la fiche et
-                              jamais déduit. */}
-                          {i.portefeuille && (
-                            <span className="gvp-intervention-qualite">{i.portefeuille}</span>
-                          )}
-                          <span className="gvp-intervention-date">
-                            {i.premiere === i.derniere
-                              ? jour(i.premiere)
-                              : `du ${jour(i.premiere)} au ${jour(i.derniere)}`}
-                          </span>
-                          <span className="gvp-intervention-type">
-                            {i.tours > 1 ? `${formatNumber(i.tours)} prises de parole` : '1 prise de parole'}
-                            {i.types.length > 0 && ` · ${i.types.map((t) => LIBELLE_TYPE_PAROLE[t] || t).join(', ')}`}
-                          </span>
-                          {i.url && (
+                        <div className="gvp-membre-bloc" key={`${i.membre}-${i.premiere}`}>
+                          {/* FORME A (maquette du 22/09/2026) : le membre à
+                              gauche, ses propos datés à droite. */}
+                          <div className="gvp-membre-tete">
+                            <span className="gvp-intervention-membre">{i.membre}</span>
+                            {/* En qualité de quoi : le portefeuille exercé À LA
+                                DATE de ses prises de parole, lu sur la fiche et
+                                jamais déduit. */}
+                            {i.portefeuille && (
+                              <span className="gvp-intervention-qualite">{i.portefeuille}</span>
+                            )}
+                            <span className="gvp-intervention-date">
+                              {i.premiere === i.derniere
+                                ? jour(i.premiere)
+                                : `du ${jour(i.premiere)} au ${jour(i.derniere)}`}
+                            </span>
+                            <span className="gvp-intervention-type">
+                              {i.tours > 1 ? `${formatNumber(i.tours)} prises de parole` : '1 prise de parole'}
+                              {i.types.length > 0 && ` · ${i.types.map((t) => LIBELLE_TYPE_PAROLE[t] || t).join(', ')}`}
+                            </span>
+                          </div>
+                          {siens(i).length > 0 ? (
+                            <ProposDuMembre extraits={siens(i)} mots={mots} saisie={mot} />
+                          ) : i.url ? (
+                            // Sans extraits servis : le lien de la ligne, seul.
                             <a className="gvp-source" href={i.url} target="_blank" rel="noreferrer">
                               <VerifiedIcon /> {SOURCE_BADGE_VERIFIED}
                             </a>
-                          )}
-                        </p>
+                          ) : null}
+                        </div>
                       ))}
                     </>
                   )}
@@ -605,6 +648,7 @@ function FluxDesTextes({ textes, selection, onSelection }) {
 }
 
 function CeQuIlAFaitDeposer({ government, mot = '' }) {
+  const actif = useFiltreActif(mot);
   const couverture = government.textesCouverture || {};
   const horsCouverture = couverture.statut === 'hors_couverture';
   const partielle = couverture.statut === 'partielle';
@@ -617,9 +661,9 @@ function CeQuIlAFaitDeposer({ government, mot = '' }) {
       </div>
       <h2 className="gvp-section-titre"><span>Ce qu’il a fait déposer</span></h2>
       <div className="gvp-carte">
-        {mot && <EtiquetteFiltre mot={mot} />}
-        {government.textes.length === 0 && mot ? (
-          <p className="cp-filtre-vide">Aucun texte déposé dont l’intitulé contient {MOT(mot)}.</p>
+        <EtiquetteFiltre mot={mot} />
+        {government.textes.length === 0 && actif ? (
+          <p className="cp-filtre-vide">Aucun texte déposé<Condition critere="dont l’intitulé contient" mot={mot} />.</p>
         ) : government.textes.length === 0 ? (
           <p className="gvp-vide">
             {horsCouverture || partielle
@@ -646,13 +690,14 @@ function CeQuIlAFaitDeposer({ government, mot = '' }) {
 /* La liste ne s'ouvre qu'au clic sur un brin : 282 cartes sous la figure
    étaient un mur, et la figure servait d'index sans qu'on puisse y entrer. */
 function FluxEtListe({ textes, mot = '' }) {
+  const actif = useFiltreActif(mot);
   const [selection, setSelection] = useState(null);
   /* Sous un mot, la liste est DÉPLIÉE : les textes retenus s'affichent sans
      qu'il faille cliquer un brin, et un clic les restreint encore. */
   const choisis = selection
     ? textes.filter((t) => matiereDeFigure({ commission: t.commission }) === selection.matiere
       && t.statut === selection.statut)
-    : mot ? textes : [];
+    : actif ? textes : [];
 
   return (
     <>
@@ -669,7 +714,7 @@ function FluxEtListe({ textes, mot = '' }) {
           </p>
           <ListeDesTextes textes={choisis} />
         </div>
-      ) : mot ? (
+      ) : actif ? (
         <div className="gvp-selection">
           <p className="gvp-selection-tete">
             <span className="gvp-nombre">{choisis.length}</span>
@@ -826,7 +871,8 @@ function CeQuOnNaPasPuLire({ government }) {
 
 /* ── La fiche ────────────────────────────────────────────────────────────── */
 
-export default function GovernmentProfile({ government, chronologie = [], mot = '' }) {
+export default function GovernmentProfile({ government, chronologie = [], mot = '', debut = null }) {
+  const actif = useFiltreActif(mot);
   return (
     <main className="gvp-main">
       <div className="gvp-breadcrumb">
@@ -863,9 +909,9 @@ export default function GovernmentProfile({ government, chronologie = [], mot = 
         </p>
       </header>
 
-      {!mot && <EnBref chronologie={chronologie} government={government} />}
-      {!mot && <QuiLeComposait government={government} />}
-      <SurQuoiIlsOntPrisLaParole government={government} key={`paroles-${mot}`} mot={mot} />
+      {!actif && <EnBref chronologie={chronologie} government={government} />}
+      {!actif && <QuiLeComposait government={government} />}
+      <SurQuoiIlsOntPrisLaParole debut={debut} government={government} key={`paroles-${mot}-${debut}`} mot={mot} />
       <CeQuIlAFaitDeposer government={government} key={`textes-${mot}`} mot={mot} />
       <CeQuOnNaPasPuLire government={government} />
     </main>

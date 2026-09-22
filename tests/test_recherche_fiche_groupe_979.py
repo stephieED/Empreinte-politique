@@ -117,6 +117,23 @@ def _sans_commentaires(source: str) -> str:
     return re.sub(r"^\s*//.*$", "", source, flags=re.MULTILINE)
 
 
+CRITERES = ("dont l’intitulé contient", "dont le sujet ou le propos contient")
+
+
+def _message_present(message: str, source: str) -> bool:
+    """Une phrase vide s'écrit d'un seul tenant, ou en deux temps depuis #1074."""
+    if message in source:
+        return True
+    for critere in CRITERES:
+        if message.endswith(critere):
+            quoi = message[: -len(critere)].strip()
+            if f'{quoi}<Condition critere="{critere}"' in source:
+                return True
+            if f'critere="{critere}" quoi="{quoi}"' in source:
+                return True
+    return False
+
+
 def _lire(chemin: Path) -> str:
     return _sans_commentaires(chemin.read_text(encoding="utf-8"))
 
@@ -189,8 +206,9 @@ def test_un_mot_absent_vide_chaque_section():
 
 def test_en_bref_et_qui_sont_ils_se_retirent_la_couverture_reste():
     source = _lire(FICHE)
-    assert "{!mot && (\n      <section className=\"lp-section lp-section--bref\"" in source
-    assert "{!mot && <QuiSontIls lignee={lignee} />}" in source
+    # #1074 : elles se retirent sous un filtre actif — un mot OU une période.
+    assert "{!filtreActif && (\n      <section className=\"lp-section lp-section--bref\"" in source
+    assert "{!filtreActif && <QuiSontIls lignee={lignee} />}" in source
     corps = source[source.index("export default function LigneeProfile"):]
     # « Ce qu'on n'a pas pu lire » est rendue hors de toute condition sur le mot.
     ligne = [l for l in corps.splitlines() if "<CeQuOnNaPasPuLire" in l][0]
@@ -215,19 +233,24 @@ def test_les_groupes_s_empilent_sans_fleches():
     ],
 )
 def test_un_mot_sans_resultat_a_son_message(message):
-    assert message in _lire(FICHE)
+    # #1074 : la phrase se compose désormais en deux temps — le nom de la liste,
+    # puis `Condition`, qui dit le mot, la période ou les deux. Sous une période
+    # seule, « dont l'intitulé contient « » » aurait été faux.
+    assert _message_present(message, _lire(FICHE)), message
 
 
 def test_ce_qui_ne_se_recompte_pas_se_tait_sous_un_mot():
     source = _lire(FICHE)
-    assert "{mot ? '' : `, sur ${formatNumber(q.agreges)}`}" in source
-    assert "if (m.amendements.sansType && !mot)" in source
+    # #1074 : sous un filtre actif — un mot OU une période.
+    assert "{filtreActif ? '' : `, sur ${formatNumber(q.agreges)}`}" in source
+    assert "if (m.amendements.sansType && !filtreActif)" in source
 
 
 def test_les_listes_se_deplient_sous_un_mot():
     source = _lire(FICHE)
-    assert "const ouvert = ouverte === l.commission || Boolean(mot);" in source
-    assert '<details className="lp-tous" open={Boolean(mot)}>' in source
+    # #1074 : sous un filtre actif — un mot OU une période.
+    assert "const ouvert = ouverte === l.commission || filtreActif;" in source
+    assert '<details className="lp-tous" open={filtreActif}>' in source
     assert "...(m.partageListes?.une_seule_voix || [])" in source
 
 
@@ -248,7 +271,10 @@ def test_les_debats_complets_sont_ecrits_a_part():
 def test_la_page_ne_charge_les_debats_qu_au_premier_mot():
     page = _lire(PAGE)
     assert "cherche && data?.lignee ? getDebatsLignee(data.lignee.id) : null" in page
-    assert "filtrerLignee(data?.lignee, motDiffere, debats)" in page
+    # #1074 : la période passe au même filtre ; sous une case, les débats
+    # complets se chargent aussi — ce sont eux qui portent les fenêtres de #1077.
+    assert "filtrerLignee(data?.lignee, motDiffere, debats, debut ? periode : null, debut, extraits, tables)" in page
+    assert "motDiffere.trim().length > 0 || Boolean(periode)" in page
     assert "etiquettesThematiques({" in _lire(CHARGEUR)
 
 

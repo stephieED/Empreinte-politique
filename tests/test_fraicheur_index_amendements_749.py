@@ -108,7 +108,13 @@ def test_un_cache_au_format_herite_doit_etre_reconstruit(tmp_path, monkeypatch):
 # 2. Le log dit lequel des deux a eu lieu
 # ---------------------------------------------------------------------------
 
-def test_un_index_servi_par_le_cache_le_dit_et_n_appelle_pas_la_fonction_lourde(capsys):
+def _fichier(tmp_path):
+    chemin = tmp_path / "contenu.json"
+    chemin.write_text("{}", encoding="utf-8")
+    return chemin
+
+
+def test_un_index_servi_par_le_cache_le_dit_et_n_appelle_pas_la_fonction_lourde(capsys, tmp_path):
     """Le défaut qui a caché la panne 18 jours : « Construction de l'index
     amendements, législature 17 » puis un compte d'acteurs, pour 0,28 s sans un
     octet téléchargé."""
@@ -120,6 +126,8 @@ def test_un_index_servi_par_le_cache_le_dit_et_n_appelle_pas_la_fonction_lourde(
                      return_value=[Path("PA1.json"), Path("PA2.json")]),
         patch.object(build_amendements_index, "_download_and_build_amendement_index",
                      side_effect=lambda leg: appels.append(leg) or {}),
+        # #1029 — un cache servable porte aussi son contenu.
+        patch.object(build_amendements_index, "chemin_cache", return_value=_fichier(tmp_path)),
     ):
         assert build_all_amendements_index() is True
 
@@ -219,6 +227,8 @@ def test_le_drapeau_existe_vraiment_dans_le_script():
     with (
         patch.object(build_amendements_index, "purger_legislatures_actives") as purge,
         patch.object(build_amendements_index, "build_all_amendements_index", return_value=True),
+        # #1029 — hors sujet ici, et il téléchargerait.
+        patch.object(build_amendements_index, "construire_un_contenu_fige", return_value=True),
     ):
         assert main(["--reconstruire-actives"]) == 0
         assert purge.called

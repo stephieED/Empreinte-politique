@@ -117,6 +117,7 @@ def test_main_returns_exit_code_1_on_partial_failure():
         patch("build_amendements_index._download_and_build_amendement_index", side_effect=fake_index),
         patch("build_amendements_index.amendements_index_en_cache_utilisable", return_value=None),
         patch("build_amendements_index.amendements_index_deja_figee", return_value=False),
+        patch("build_amendements_index.construire_un_contenu_fige", return_value=True),
     ):
         assert main([]) == 1
 
@@ -126,5 +127,6 @@ def test_main_returns_exit_code_0_when_all_succeed():
         patch("build_amendements_index._download_and_build_amendement_index", return_value={}),
         patch("build_amendements_index.amendements_index_en_cache_utilisable", return_value=None),
         patch("build_amendements_index.amendements_index_deja_figee", return_value=False),
+        patch("build_amendements_index.construire_un_contenu_fige", return_value=True),
     ):
         assert main([]) == 0

@@ -309,6 +309,32 @@ La fusion est additive : un run sans archive lisible conserve la table publiée.
 lues.
 → `docs/decisions/vivier-de-points-et-empreinte-de-commission-328.md`.
 
+### Les actes réglementaires du Journal officiel (#1029 voie 1)
+
+```bash
+# Ce qu'un run fait : relire les livraisons des deux derniers mois.
+python3 src/actes_reglementaires.py
+python3 src/actes_reglementaires.py --budget-secondes 900
+
+# Un mois précis, répétable — pour reprendre un mois qu'un run a manqué.
+python3 src/actes_reglementaires.py --mois 2026-08 --mois 2026-09
+
+# Le remplissage complet depuis 2007. À NE FAIRE QU'UNE FOIS, en local :
+# ~45 min, 3,8 Go lus en flux, rien mis en cache. Le dump global de la DILA est
+# une livraison unique du 13/07/2025 qu'elle ne renouvelle pas.
+python3 src/actes_reglementaires.py --depuis-dump
+```
+
+Produit : `pivot_data/actes_reglementaires/<AAAA-MM>.json` — un fichier par mois
+de publication, avec les décrets, arrêtés et ordonnances du mois et l'index de
+mots de leur titre et de leurs articles. Chercher un mot s'y fait comme dans
+`<lég>.contenu.json` : normaliser, ramener à sa forme indexée, décoder les
+renvois (`amendements_contenu.decoder`).
+
+Un acte déjà publié que la relecture ne retrouve pas arrête la publication
+(`ActesPerdus`) : élargir alors la fenêtre avec `--mois`.
+→ `docs/decisions/actes-reglementaires-du-journal-officiel-1029.md`.
+
 ### Un profil d'eurodéputé (Parltrack), et la date de son cache
 
 ```bash

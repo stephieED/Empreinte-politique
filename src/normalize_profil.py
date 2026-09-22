@@ -58,6 +58,7 @@ from typing import Any, Optional
 
 from schema_pivot import (
     CHAMBRE_COLLECTE_VERS_PIVOT,
+    COLLECTE_EXTRAIT,
     COLLECTE_THEME_SEUL,
     KNOWN_NATURES_TEXTE,
     ROLE_INITIATEUR_PAR_NATURE,
@@ -465,8 +466,8 @@ def _normalize_intervention(i: dict[str, Any]) -> dict[str, Any]:
     # parole n'a pas de verbatim » — un fait sur la personne — là où le fait
     # porte sur le run (AGENTS.md §2 règle 5). Aucun consommateur n'indexe ces
     # clés en dur ; `validate_profil` n'en exige aucune.
-    if i.get("collecte") == COLLECTE_THEME_SEUL:
-        return {
+    if i.get("collecte") in (COLLECTE_THEME_SEUL, COLLECTE_EXTRAIT):
+        reduite = {
             "intervention_id": i.get("id") if i.get("id") not in (None, "") else None,
             "date": _first(i.get("date"), i.get("created_at")),
             "type_detail": i.get("type_detail"),
@@ -485,6 +486,15 @@ def _normalize_intervention(i: dict[str, Any]) -> dict[str, Any]:
             },
             "collecte": COLLECTE_THEME_SEUL,
         }
+        # #1029 — l'EXTRAIT : la forme réduite, plus les premiers caractères du
+        # verbatim et `texte_tronque`, qui dit si le texte continue chez l'AN.
+        if i.get("collecte") == COLLECTE_EXTRAIT and isinstance(i.get("texte"), str):
+            reduite["texte"] = i["texte"]
+            reduite["texte_tronque"] = bool(i.get("texte_tronque"))
+            reduite["collecte"] = COLLECTE_EXTRAIT
+        if i.get("id_syceron"):
+            reduite["id_syceron"] = str(i["id_syceron"])  # #1087, même règle qu'en forme complète
+        return reduite
 
     result: dict[str, Any] = {
         "intervention_id": i.get("id") if i.get("id") not in (None, "") else None,
@@ -530,6 +540,11 @@ def _normalize_intervention(i: dict[str, Any]) -> dict[str, Any]:
         result["ministere"] = i.get("ministere")       # ministère interrogé
         result["reponse"] = i.get("reponse")           # texte de la réponse (si disponible)
         result["date_reponse"] = i.get("date_reponse") # date JO de la réponse
+    # #1087 — l'ancre de la prise de parole sur la page de séance de l'AN
+    # (`schema_pivot.url_seance_an`). Absente, elle n'est pas publiée à `null` :
+    # l'entrée a été collectée avant que le parseur ne la lise.
+    if i.get("id_syceron"):
+        result["id_syceron"] = str(i["id_syceron"])
     return result
 
 

@@ -20,9 +20,10 @@ qui démarre à froid doit savoir avant de rouvrir un sujet.
 dérivait en moins d'une heure : un tableau qui recopie l'état de GitHub se périme
 à chaque lot livré, et un tableau faux est pire qu'un tableau absent — on le croit.
 
-- **L'état à jour** : les [issues](https://github.com/stephieED/Empreinte-politique/issues)
-  et les [milestones](https://github.com/stephieED/Empreinte-politique/milestones)
-  du dépôt, qui sont la source de vérité.
+- **L'état à jour** : les [issues](https://github.com/stephieED/Empreinte-politique-src/issues)
+  et les [milestones](https://github.com/stephieED/Empreinte-politique-src/milestones)
+  du dépôt de développement, qui sont la source de vérité — le dépôt public n'a
+  pas d'issues depuis la bascule à deux dépôts (21/09/2026).
 - **En session Claude Code** : `/etat-issues` rend la synthèse par milestone et par
   priorité, mesurée à l'instant.
 
@@ -51,10 +52,10 @@ serait un squelette, et sur la XIIIe elle n'aurait aucune matière.
 **Ce que ça interdit concrètement**, mesuré sur les mandats de groupe des 13
 candidats déclarés : parmi les 9 groupes qu'ils ont touchés, quatre sont hors
 d'atteinte — `UMP` (2007-2015), `Les Républicains` (2015-2017),
-`Rassemblement-UMP` (2012-2013) et `SRC` (2012-2014). Deux sont atteignables et
-ne le sont pas encore : `FI` (Mélenchon, 2017-2022) et `LaREM` (Attal,
-2017-2018), tous deux dans la XVe, qui est complète. Les trois derniers ont déjà
-leur fiche.
+`Rassemblement-UMP` (2012-2013) et `SRC` (2012-2014). Les cinq autres ont leur
+fiche : `FI` (Mélenchon, 2017-2022) et `LaREM` (Attal, 2017-2018), atteignables
+dans la XVe qui est complète, sont publiés depuis #777 (08/09/2026,
+`groupe-AN-FI-15.json`, `groupe-AN-LAREM-15.json`).
 
 **Ne rouvrez pas « et si on remontait plus loin » sans regarder ce tableau
 d'abord** : la limite n'est pas un arbitrage de périmètre, c'est ce que la source
@@ -140,7 +141,7 @@ Convention d'écriture : `AGENTS.md` §8.
 - **Le téléphone : ça tient dans l'écran, ça ne s'y lit pas (#867, mesuré le
   12/09/2026).** Sept pages relevées à 360, 400 et 768 px — le relevé complet,
   avec ses captures et ses causes, est le
-  [commentaire du 12/09 sur #867](https://github.com/stephieED/Empreinte-politique/issues/867#issuecomment-5645223332)
+  [commentaire du 12/09 sur #867](https://github.com/stephieED/Empreinte-politique-src/issues/867#issuecomment-5645223332)
   et l'artifact qu'il cite. **Ne pas re-mesurer avant de corriger** ; trois
   constats seulement sont à connaître avant de rouvrir le sujet :
   **1.** « aucun débordement horizontal » était faux — deux causes nommées,

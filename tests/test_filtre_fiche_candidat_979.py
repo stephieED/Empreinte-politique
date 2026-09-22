@@ -94,6 +94,23 @@ INTERVENTION = {
 MANDAT = {"label": "Commission des affaires européennes", "categorie": "commission"}
 
 
+CRITERES = ("dont l’intitulé contient", "dont le sujet ou le propos contient")
+
+
+def _message_present(message: str, source: str) -> bool:
+    """Une phrase vide s'écrit d'un seul tenant, ou en deux temps depuis #1074."""
+    if message in source:
+        return True
+    for critere in CRITERES:
+        if message.endswith(critere):
+            quoi = message[: -len(critere)].strip()
+            if f'{quoi}<Condition critere="{critere}"' in source:
+                return True
+            if f'critere="{critere}" quoi="{quoi}"' in source:
+                return True
+    return False
+
+
 def _sans_commentaires(source: str) -> str:
     """Une règle citée en commentaire n'est pas une règle appliquée."""
     source = re.sub(r"/\*.*?\*/", "", source, flags=re.DOTALL)
@@ -245,7 +262,8 @@ def test_la_fiche_est_calculee_sur_le_profil_filtre():
     assert corps.index("filtrerProfil(") < corps.index("buildCandidateView(")
     assert "periodeCumulee(view.votes.periodes)" in corps
     # Le chargement ne se refait pas à chaque mot.
-    assert "useMemo(() => vueCandidat(sources, motDiffere)" in _lire(PAGE)
+    # #1074 : la période entre dans le même calcul, juste après le mot.
+    assert "vueCandidat(sources && { ...sources, amendementsMots }, motDiffere, debut)" in _lire(PAGE)
 
 
 def test_les_intitules_compares_sont_ceux_que_la_fiche_affiche():
@@ -270,8 +288,11 @@ def test_trois_sections_se_retirent_sous_un_mot():
 
 def test_chaque_figure_porte_le_mot():
     source = _lire(FICHE)
-    assert source.count("{mot && <EtiquetteFiltre mot={mot} />}") == 3  # textes, amendements, amendements vides
-    assert source.count("etiquette={mot ? <EtiquetteFiltre mot={mot} /> : null}") == 3  # votes, écarts, dit
+    # #1074 : l'étiquette se tait d'elle-même sans mot ni période
+    # (`EtiquetteFiltre`), la garde `{mot && …}` est donc tombée ; les figures
+    # qui la reçoivent en propriété la reçoivent sous un filtre ACTIF.
+    assert source.count("<EtiquetteFiltre mot={mot} />") >= 6
+    assert source.count("etiquette={actif ? <EtiquetteFiltre mot={mot} /> : null}") == 3  # votes, écarts, dit
     for composant in (VOTES, PAROLES, ECARTS):
         assert "{etiquette}" in _lire(composant)
 
@@ -291,21 +312,25 @@ def test_chaque_figure_porte_le_mot():
     ],
 )
 def test_un_mot_sans_resultat_a_son_message(message):
-    assert message in _lire(FICHE)
+    # #1074 : la phrase se compose désormais en deux temps — le nom de la liste,
+    # puis `Condition`, qui dit le mot, la période ou les deux. Sous une période
+    # seule, « dont l'intitulé contient « » » aurait été faux.
+    assert _message_present(message, _lire(FICHE)), message
 
 
 def test_un_vide_du_filtre_passe_avant_le_vide_de_collecte():
     """« Non collecté » sous un mot serait faux : la branche du filtre vient d'abord."""
     source = _lire(FICHE)
-    assert source.index("textes.total === 0 && europe.total === 0 && mot") < source.index(
+    # #1074 : « un filtre actif » — un mot OU une période — et plus le mot seul.
+    assert source.index("textes.total === 0 && europe.total === 0 && actif") < source.index(
         'source="Textes portés comme auteur ou rapporteur"'
     )
     amdt = source[source.index("amdt.totalAuteur === 0 ? ("):]
-    assert amdt.index("{mot ? (") < amdt.index("source={`Amendements déposés comme auteur principal")
+    assert amdt.index("{actif ? (") < amdt.index("source={`Amendements déposés comme auteur principal")
     paroles = source[source.index("function Paroles("):]
-    assert paroles.index("!interventions.total && mot") < paroles.index("<ListeVide")
+    assert paroles.index("!interventions.total && actif") < paroles.index("<ListeVide")
     votes = source[source.index("function Votes("):]
-    assert votes.index("if (mot &&") < votes.index("<ListeVide")
+    assert votes.index("if (actif &&") < votes.index("<ListeVide")
 
 
 def test_les_listes_se_deplient_sous_un_mot():

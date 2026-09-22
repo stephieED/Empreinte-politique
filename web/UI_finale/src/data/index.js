@@ -1,6 +1,8 @@
+import { amendementsQuiPortent } from '../utils/amendementsMots';
 import { INSTITUTION_PARLEMENT, sigleDuSiege } from '../utils/profilCandidat';
 import { etiquettesThematiques } from '../utils/groupe';
 import { filtrerProfil, motsDuFiltre, periodeCumulee } from '../utils/filtreIntitule';
+import { filtrerProfilParPeriode } from '../utils/filtrePeriode';
 import { porteeCommune } from '../utils/votesParPeriode';
 import { titreDuTexteVote } from '../utils/lecture';
 import { cheminDuPoint } from '../utils/parolesParPeriode';
@@ -376,6 +378,12 @@ function lecteursDIntitule(sources) {
       const brut = scrutin?.texte ?? scrutin?.titre ?? null;
       return titreDuTexteVote(brut) || brut;
     },
+    /* L'EXPOSÉ (#1029, voie 2) : les uid dont l'exposé porte le mot, tirés du
+     * vocabulaire de la fiche. `null` sans vocabulaire chargé, ou sans mot
+     * cherchable — le filtre s'en tient alors à l'intitulé du dossier. */
+    amendementsParContenu: (saisie) => (sources.amendementsMots
+      ? amendementsQuiPortent(Object.values(sources.amendementsMots.legislatures || {}), saisie)
+      : null),
     intituleDeLAmendement: (a) => {
       const europeen = a.amendement_non_resolu;
       if (europeen) return dossiersEuropeens?.[europeen.texte_vise]?.titre ?? null;
@@ -390,13 +398,44 @@ function lecteursDIntitule(sources) {
   };
 }
 
-export function vueCandidat(sources, mot = '') {
+/* LES DATES DE CE QUE LA FICHE MONTRE (#1074). Celles des votes et des
+ * amendements vivent dans les index partagés, comme leurs intitulés — le profil
+ * ne porte que l'identifiant. */
+function lecteursDeDate(sources) {
+  const { scrutins, amendements } = sources;
+  return {
+    dateDuVote: (v) => (scrutins && v.scrutin_id && scrutins[v.scrutin_id]?.date) || null,
+    dateDeLAmendement: (a) => {
+      const index = amendements?.[legislatureDeAmendementId(a.amendement_id)];
+      return index?.amendements?.[a.amendement_id]?.date ?? null;
+    },
+  };
+}
+
+/** La date des données, `AAAA-MM-JJ` : celle depuis laquelle les fenêtres de
+ *  période se comptent (#1074). Écrite par `sync-data` dans `donnees.json` ; son
+ *  absence rend null, et les cases ne filtrent alors rien — jamais une date
+ *  inventée à la place (§2 règle 5). */
+export async function getDonneesAu() {
+  try {
+    const r = await fetch('/data/donnees.json');
+    return r.ok ? (await r.json()).au ?? null : null;
+  } catch {
+    return null;
+  }
+}
+
+export function vueCandidat(sources, mot = '', debut = null) {
   if (!sources) return null;
   const {
     manifest, entry, scrutins, fichesGroupe, commissions, scrutinsDossiers,
     dossiersEuropeens, documentsEuropeens, scrutinsEuropeens, amendements,
   } = sources;
-  const pivot = filtrerProfil(sources.pivot, mot, lecteursDIntitule(sources));
+  const pivot = filtrerProfilParPeriode(
+    filtrerProfil(sources.pivot, mot, lecteursDIntitule(sources)),
+    debut,
+    lecteursDeDate(sources),
+  );
   const view = buildCandidateView(
     pivot,
     entry,
@@ -415,7 +454,7 @@ export function vueCandidat(sources, mot = '') {
     documentsEuropeens,
     scrutinsEuropeens,
   );
-  if (!view || !motsDuFiltre(mot).length) return avecSiglesDeSiege(view, manifest);
+  if (!view || (!motsDuFiltre(mot).length && !debut)) return avecSiglesDeSiege(view, manifest);
   /* SOUS UN MOT, « Ce qu'il a voté » cumule ses périodes (`periodeCumulee`) :
    * la figure montre alors ce que sa liste montre. L'échelle est recalculée sur
    * ce seul cumul. `filtre` porte ce que les messages « aucun résultat » disent
@@ -433,6 +472,12 @@ export function vueCandidat(sources, mot = '') {
       amendementsEuropeens: (sources.pivot.amendements || []).some((a) => a.amendement_non_resolu),
     },
   }, manifest);
+}
+
+/** Le vocabulaire des exposés des amendements d'un candidat (#1029, voie 2),
+ *  ou `null` s'il n'est pas publié. */
+export async function getAmendementsMotsCandidat(slug) {
+  return fetchJson(`/data/profiles/${slug}.amendements-mots.json`).catch(() => null);
 }
 
 export async function getCandidateProfile(id) {
@@ -490,13 +535,29 @@ export async function getDebatsLignee(id) {
   if (!entry?.debats) return null;
   const brut = await fetchJson(`/data/lignees/${entry.debats}`);
   if (!brut?.maillons) return null;
-  return Object.fromEntries(Object.entries(brut.maillons).map(([maillon, m]) => [
-    maillon,
-    etiquettesThematiques({
+  /* Chaque maillon : la liste complète, et ses fenêtres (#1074). Un débat porte
+   * `parFenetre` — ses membres distincts sur 6 et 12 mois, `null` quand Backend
+   * n'a pas fenêtré la fiche. */
+  return Object.fromEntries(Object.entries(brut.maillons).map(([maillon, m]) => {
+    const liste = etiquettesThematiques({
       tags_thematiques_agreges: m.debats.map(([tag, n]) => ({ tag, nb_membres_porteurs: n })),
       membres: { length: m.denominateur },
-    }, Infinity),
-  ]));
+    }, Infinity);
+    m.debats.forEach(([, , n6, n12], i) => { liste[i].parFenetre = { '6m': n6 ?? null, '12m': n12 ?? null }; });
+    liste.fenetres = m.fenetres || null;
+    return [maillon, liste];
+  }));
+}
+
+/* La table des amendements de chaque maillon (#1029, voie 2) :
+ * `{ [id de maillon]: table }`, `null` pour un maillon sans table. */
+export async function getTablesAmendementsLignee(id) {
+  const manifest = await loadManifest();
+  const entry = (manifest.lignees || []).find((l) => l.id === id);
+  if (!entry) return null;
+  const maillons = entry.fiches || [];
+  const tables = await Promise.all(maillons.map((m) => fetchJson(`/data/lignees/${m}.amendements.json`).catch(() => null)));
+  return Object.fromEntries(maillons.map((m, i) => [m, tables[i]]));
 }
 
 /**
@@ -533,6 +594,47 @@ export async function getParolesDuGouvernement(id) {
   const entry = (manifest.gouvernements || []).find((g) => g.id === id);
   if (!entry?.paroles) return {};
   return (await fetchJson(`/data/gouvernements/${entry.paroles}`)) || {};
+}
+
+/* ── Ce qui a été dit (#1029) ─────────────────────────────────────────────────
+ *
+ * Écrits par `sync-data` (`src/utils/extraits.js`) : un INDEX par fiche — le
+ * vocabulaire des extraits de chaque débat, que le filtre par mot interroge —,
+ * et des PAQUETS d'extraits, dont un seul se charge quand un débat s'ouvre.
+ * `null` quand le fichier manque : la fiche filtre alors sur les seuls
+ * intitulés, comme avant. */
+const cacheExtraits = new Map();
+function fetchExtraits(url) {
+  if (!cacheExtraits.has(url)) cacheExtraits.set(url, fetchJson(url).catch(() => null));
+  return cacheExtraits.get(url);
+}
+
+export async function getIndexExtraitsGouvernement(id) {
+  const manifest = await loadManifest();
+  const entry = (manifest.gouvernements || []).find((g) => g.id === id);
+  if (!entry?.extraits) return null;
+  return fetchExtraits(`/data/gouvernements/${entry.extraits}.extraits.index.json`);
+}
+
+export async function getPaquetExtraitsGouvernement(id, paquet) {
+  const manifest = await loadManifest();
+  const entry = (manifest.gouvernements || []).find((g) => g.id === id);
+  if (!entry?.extraits) return null;
+  return fetchExtraits(`/data/gouvernements/${entry.extraits}.extraits.${paquet}.json`);
+}
+
+/** `{ [id de maillon]: index }` pour toute la lignée, ou `null`. */
+export async function getIndexExtraitsLignee(id) {
+  const manifest = await loadManifest();
+  const entry = (manifest.lignees || []).find((l) => l.id === id);
+  if (!entry?.extraits) return null;
+  const maillons = entry.fiches || [];
+  const index = await Promise.all(maillons.map((m) => fetchExtraits(`/data/lignees/${m}.extraits.index.json`)));
+  return Object.fromEntries(maillons.map((m, i) => [m, index[i]]));
+}
+
+export function getPaquetExtraitsMaillon(maillon, paquet) {
+  return fetchExtraits(`/data/lignees/${maillon}.extraits.${paquet}.json`);
 }
 
 export async function getGovernmentProfile(id) {

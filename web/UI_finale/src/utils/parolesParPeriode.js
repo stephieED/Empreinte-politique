@@ -53,6 +53,8 @@
  *   banc du gouvernement et une intervention depuis les bancs ne se comptent
  *   pas dans la même unité.
  */
+import { urlSeanceAn } from './extraits.js';
+import { lienDocumentaire } from './lecture.js';
 import { bancALaDate, gouvernementALaDate } from './votesParPeriode';
 
 /** Les types dont le sujet est la FEUILLE du chemin, et non sa racine. */
@@ -104,6 +106,35 @@ export function dateISO(brute) {
   return m ? `${m[3]}-${m[2]}-${m[1]}` : null;
 }
 
+/* ── Une question au gouvernement, comptée une fois (#1094, option A) ───────
+ *
+ * Deux sources publient la même question au gouvernement : l'ACTE, sur
+ * questions.assemblee-nationale.fr (`type_detail: "question"`, `sous_type:
+ * "QG"`, avec le ministère et la réponse, mais jamais le texte), et ses TOURS
+ * DE PAROLE, au compte rendu (`type_detail: "question_gouvernement"`, avec le
+ * verbatim). Backend relie un tour à son acte par `question_ref` quand le thème
+ * le confirme — jamais par la seule date.
+ *
+ * Arbitré le 22/09/2026 : UNE entrée par question. Les tours portent le texte ;
+ * l'acte leur apporte son ministère et le lien vers sa page, puis se retire. Un
+ * acte qu'aucun tour ne nomme reste seul, rangé sous « Questions au
+ * gouvernement » — c'en est une, quelle que soit la source. */
+export function rattacherQuestions(interventions) {
+  const liste = interventions || [];
+  const actes = new Map(liste
+    .filter((i) => i?.type_detail === 'question' && i?.sous_type === 'QG' && i?.intervention_id)
+    .map((i) => [i.intervention_id, i]));
+  if (!actes.size) return liste;
+  const nommes = new Set(liste.map((i) => i?.question_ref).filter((r) => actes.has(r)));
+  return liste.flatMap((i) => {
+    if (actes.has(i?.intervention_id)) {
+      return nommes.has(i.intervention_id) ? [] : [{ ...i, type_detail: 'question_gouvernement' }];
+    }
+    const acte = i?.question_ref ? actes.get(i.question_ref) : null;
+    return acte ? [{ ...i, question: acte }] : [i];
+  });
+}
+
 /* ── La qualification d'une intervention ────────────────────────────────────
  *
  * Six faits, chacun de sa source, aucun deviné. Une clé qu'on ne peut pas
@@ -126,9 +157,23 @@ export function qualifierInterventions(interventions, { roles = [], gouvernement
       fonction: i?.fonction ?? null,
       verbatim: i?.texte ?? null,
       sourceUrl: i?.source_url ?? null,
+      // L'acte de la question au gouvernement dont ce tour fait partie
+      // (#1094) : son ministère et sa page, que le compte rendu ne porte pas.
+      question: i?.question
+        ? { ministere: i.question.ministere ?? null, lien: lienDocumentaire(i.question.source_url) }
+        : null,
+      // La prise de parole à son ancre sur la page de séance de l'AN (#1087) :
+      // `source_url` est l'archive de la législature, pas un lien à montrer.
+      lien: urlSeanceAn(i),
       // Régime de collecte déclaré (#657) : la date, la nature et le thème, et
       // rien d'autre. Un verbatim absent n'y est pas un silence de la personne.
       themeSeul: i?.collecte === 'theme_seul',
+      // Régime de collecte déclaré (#1086) : les 280 premiers caractères du
+      // verbatim, coupés en fin de phrase ou entre deux mots. `verbatim` porte
+      // alors un EXTRAIT, jamais le compte rendu entier ; `texteTronque` dit
+      // s'il continue — la source n'ajoute pas de « … », c'est à l'affichage.
+      extrait: i?.collecte === 'extrait',
+      texteTronque: i?.texte_tronque === true,
       banc: banc?.position ?? null,
       groupe: banc?.groupe ?? null,
       gouvernementId: gouvernement?.id ?? null,
@@ -324,8 +369,11 @@ export function couvertureDesParoles(qualifiees) {
     total: liste.length,
     datees: liste.filter((i) => i.date).length,
     sujet: liste.filter((i) => i.sujet).length,
-    verbatim: liste.filter((i) => i.verbatim).length,
+    // Un extrait n'est pas le verbatim du compte rendu (#1086) : il est compté
+    // à part, et jamais parmi les verbatims entiers.
+    verbatim: liste.filter((i) => i.verbatim && !i.extrait).length,
     fonction: liste.filter((i) => i.fonction).length,
     themeSeul: liste.filter((i) => i.themeSeul).length,
+    extrait: liste.filter((i) => i.extrait).length,
   };
 }

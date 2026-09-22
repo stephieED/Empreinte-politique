@@ -57,6 +57,11 @@ concurrency:
 
 jobs:
   build:
+    # Le site est servi par le dépôt PUBLIC ; le privé n'a pas de Pages, et
+    # « Get Pages site failed … Not Found » y mettait `main` en rouge à chaque
+    # push depuis la bascule à deux dépôts (21/09/2026). `deploy` dépend de ce
+    # job : il est sauté avec lui.
+    if: github.repository == 'stephieED/Empreinte-politique'
     runs-on: ubuntu-latest
     # ~35 s observées avant #329 ; la projection de lignée (`vue-lignee.mjs`,
     # qui relit les profils et les quatre index d'amendements) y ajoute une

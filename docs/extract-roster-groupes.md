@@ -78,7 +78,11 @@ désormais `collect_interventions`, sous la forme **réduite au thème**
 (`--interventions-theme-seul`) : débats Syceron sans verbatim, questions
 officielles toujours écartées (elles ne portent aucun thème). Un candidat
 déclaré traité par ce job en est **exempté** — c'est `extract-an` qui le
-collecte en entier. Voir
+collecte en entier. Depuis #1029, la forme réduite garde un **extrait** de
+280 caractères du verbatim (`collecte: "extrait"`, `texte_tronque`), pour les
+membres de groupe comme pour les membres du gouvernement ; les entrées déjà
+publiées réduites au thème le reçoivent à la fusion (`promouvoir_forme_complete`).
+Voir
 `docs/decisions/collecte-interventions-reduite-au-theme-657.md`. Voir aussi
 `--skip-dossiers-legislatifs` dans `generate_all_profiles.py` : il saute
 `fetch_textes_portes_officiels` (`candidate_profile.build_profile`, étape 8),

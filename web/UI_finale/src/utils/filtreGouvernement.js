@@ -19,6 +19,7 @@
  * affichée : ses limites portent sur la collecte, jamais sur le mot.
  */
 import { contientLesMots, motsDuFiltre } from './filtreIntitule.js';
+import { extraitsPortentLesMots } from './extraits.js';
 
 /**
  * La fiche réduite à ce que le mot porte. Rend la vue INCHANGÉE sans mot.
@@ -29,12 +30,17 @@ import { contientLesMots, motsDuFiltre } from './filtreIntitule.js';
  * effectifs de membres, pas des intitulés (§2 règle 7 — un numérateur filtré
  * sur un dénominateur filtré ne dirait plus de quoi il est le ratio).
  */
-export function filtrerGouvernement(gouvernement, saisie) {
+export function filtrerGouvernement(gouvernement, saisie, extraits = null, periode = null) {
   const mots = motsDuFiltre(saisie);
   if (!mots.length || !gouvernement) return gouvernement;
   const ok = (texte) => contientLesMots(texte, mots);
+  /* CE QUI A ÉTÉ DIT (#1029) : un débat reste aussi quand ses EXTRAITS portent
+     le mot — dans la période cochée —, même si son intitulé ne le porte pas.
+     `parIntitule` le dit au débat ouvert, qui ne montre alors que les extraits
+     qui portent le mot. Sans index chargé, l'intitulé seul décide. */
   const debats = (gouvernement.paroles?.tous || gouvernement.paroles?.liste || [])
-    .filter((s) => ok(s.label));
+    .map((s) => ({ ...s, parIntitule: ok(s.label) }))
+    .filter((s) => s.parIntitule || extraitsPortentLesMots(extraits, s.label, mots, periode));
   return {
     ...gouvernement,
     paroles: { ...gouvernement.paroles, liste: debats, tous: debats, total: debats.length },

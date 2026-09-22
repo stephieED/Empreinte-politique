@@ -647,8 +647,10 @@ function champsInterventions(lot, dateDe, origine) {
     champ('avec l’intitulé de l’ordre du jour', [
       apport('cand', origine, lot, sujetIntervention, dateDe),
     ]),
+    // Un extrait de 280 caractères (#1086) porte un `texte`, mais pas le
+    // verbatim du compte rendu : il ne compte pas ici.
     champ('avec le verbatim du compte rendu', [
-      apport('cand', origine, lot, (i) => i.texte, dateDe),
+      apport('cand', origine, lot, (i) => i.texte && i.collecte !== 'extrait', dateDe),
     ]),
     champ('avec la qualité de l’orateur', [
       apport('cand', origine, lot, (i) => i.fonction, dateDe),

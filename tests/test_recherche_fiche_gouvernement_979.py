@@ -77,6 +77,23 @@ def _sans_commentaires(source: str) -> str:
     return re.sub(r"^\s*//.*$", "", source, flags=re.MULTILINE)
 
 
+CRITERES = ("dont l’intitulé contient", "dont le sujet ou le propos contient")
+
+
+def _message_present(message: str, source: str) -> bool:
+    """Une phrase vide s'écrit d'un seul tenant, ou en deux temps depuis #1074."""
+    if message in source:
+        return True
+    for critere in CRITERES:
+        if message.endswith(critere):
+            quoi = message[: -len(critere)].strip()
+            if f'{quoi}<Condition critere="{critere}"' in source:
+                return True
+            if f'critere="{critere}" quoi="{quoi}"' in source:
+                return True
+    return False
+
+
 def _lire(chemin: Path) -> str:
     return _sans_commentaires(chemin.read_text(encoding="utf-8", errors="replace"))
 
@@ -152,14 +169,16 @@ def test_un_mot_absent_vide_les_deux_sections():
 
 def test_deux_sections_se_retirent_la_couverture_reste():
     source = _lire(FICHE)
-    assert "{!mot && <EnBref" in source
-    assert "{!mot && <QuiLeComposait" in source
+    # #1074 : elles se retirent sous un filtre actif — un mot OU une période.
+    assert "{!actif && <EnBref" in source
+    assert "{!actif && <QuiLeComposait" in source
     ligne = [l for l in source.splitlines() if "<CeQuOnNaPasPuLire" in l][0]
     assert ligne.strip() == "<CeQuOnNaPasPuLire government={government} />"
 
 
 def test_chaque_figure_porte_le_mot():
-    assert _lire(FICHE).count("{mot && <EtiquetteFiltre mot={mot} />}") == 2
+    # #1074 : l'étiquette se tait d'elle-même sans mot ni période.
+    assert _lire(FICHE).count("<EtiquetteFiltre mot={mot} />") == 2
 
 
 @pytest.mark.parametrize(
@@ -170,17 +189,21 @@ def test_chaque_figure_porte_le_mot():
     ],
 )
 def test_un_mot_sans_resultat_a_son_message(message):
-    assert message in _lire(FICHE)
+    # #1074 : la phrase se compose désormais en deux temps — le nom de la liste,
+    # puis `Condition`, qui dit le mot, la période ou les deux. Sous une période
+    # seule, « dont l'intitulé contient « » » aurait été faux.
+    assert _message_present(message, _lire(FICHE)), message
 
 
 def test_la_liste_des_textes_se_deplie_et_le_pied_ne_ment_pas():
     source = _lire(FICHE)
-    assert ": mot ? textes : [];" in source, "les textes retenus s'affichent sans clic dans la figure"
+    # #1074 : sous un filtre actif, mot ou période.
+    assert ": actif ? textes : [];" in source, "les textes retenus s'affichent sans clic dans la figure"
     assert "débat${liste.length > 1 ? 's' : ''} · membres qui y sont intervenus" in source
 
 
 def test_la_page_lit_le_mot_et_le_tiroir_porte_le_champ():
     page = _lire(PAGE)
-    assert "filtrerGouvernement(government, motDiffere)" in page
+    assert "filtrerGouvernement(government, motDiffere, extraits, periode)" in page
     assert "useDeferredValue(params.get('mot') ?? '')" in page
     assert "const FICHES_FILTRABLES = ['/candidats', '/groupes', '/gouvernements'];" in _lire(TIROIR)

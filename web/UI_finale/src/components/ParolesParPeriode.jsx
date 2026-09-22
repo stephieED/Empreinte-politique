@@ -102,6 +102,19 @@ function Intervention({ i, mot = '' }) {
             <span className="pp-reste">{SUJET_NON_PUBLIE} par la source</span>
           )}
         </p>
+        {/* La question au gouvernement dont ce tour fait partie (#1094) : le
+            ministère interrogé et la page de la question, lus sur l'acte. */}
+        {i.question && (
+          <p className="pp-question">
+            Question au gouvernement{i.question.ministere ? ` · ${i.question.ministere}` : ''}
+            {i.question.lien && (
+              <>
+                {' · '}
+                <a href={i.question.lien} target="_blank" rel="noreferrer">Voir la question ↗</a>
+              </>
+            )}
+          </p>
+        )}
         {i.fonction && (
           <p className="pp-qualite">
             prononcé comme <b>{i.fonction}</b>
@@ -122,7 +135,14 @@ function Intervention({ i, mot = '' }) {
               : 'Le compte rendu ne porte pas de verbatim pour cette entrée.'}
           </p>
         )}
-        {lienDocumentaire(i.sourceUrl) && (
+        {/* LE LIEN DE LA PRISE DE PAROLE (#1087) : la page de séance, à
+            l'ancre de l'intervention — même libellé que sur les fiches de
+            gouvernement et de groupe. Une question écrite garde sa page. */}
+        {i.lien ? (
+          <a className="pp-source" href={i.lien} target="_blank" rel="noreferrer">
+            Lire au compte rendu ↗
+          </a>
+        ) : lienDocumentaire(i.sourceUrl) && (
           <a className="pp-source" href={lienDocumentaire(i.sourceUrl)} target="_blank" rel="noreferrer">
             Source · Assemblée nationale
           </a>

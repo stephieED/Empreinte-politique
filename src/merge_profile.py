@@ -100,6 +100,8 @@ from profil_brut import (
     ecrire_profil_brut,
 )
 from schema_pivot import (
+    COLLECTE_EXTRAIT,
+    COLLECTE_THEME_SEUL,
     CAUSE_DEFAUT_COLLECTE,
     CAUSE_PANNE,
     ETAT_COUVERT,
@@ -109,10 +111,113 @@ from schema_pivot import (
     LISTES_COUVERTES,
     appliquer_chambres,
     deriver_tags_thematiques,
+    rattacher_parole_aux_questions,
 )
 from titres_europeens import titre_sans_boutons
 
 Key = Any
+
+
+#: Rang d'une forme de collecte d'intervention : plus il est haut, plus
+#: l'entrée porte de la prise de parole. L'absence de `collecte` est la forme
+#: complète (#657) ; `sans_verbatim_source` n'a pas de rang — c'est un fait sur
+#: la source, qu'aucune collecte ne changera.
+_RANG_FORME = {COLLECTE_THEME_SEUL: 0, COLLECTE_EXTRAIT: 1, None: 2}
+
+
+def _rang_forme(item: dict[str, Any]) -> Optional[int]:
+    return _RANG_FORME.get(item.get("collecte"))
+
+
+def promouvoir_forme_complete(
+    merged: list[dict[str, Any]],
+    new_list: Optional[list[dict[str, Any]]],
+    key_fn: Callable[[dict[str, Any]], Key],
+) -> list[dict[str, Any]]:
+    """Remplace une intervention publiée sous une forme PLUS PAUVRE par celle,
+    plus riche, que la collecte neuve apporte (#1029).
+
+    Trois formes, dans cet ordre : réduite au thème (#657), extrait (#1029),
+    complète. La fusion est additive : l'entrée ancienne gagne, et une entrée
+    réduite le resterait pour toujours — c'est pourquoi #657 exemptait les
+    candidats déclarés de la réduction. Quand les membres de roster passent à
+    l'extrait, leurs 1 183 561 entrées publiées réduites au thème (22/09/2026,
+    groupes et gouvernement) ne changeraient jamais sans ce report.
+
+    **Dans un seul sens.** Une forme n'est jamais remplacée par une plus pauvre :
+    un candidat déclaré, publié complet, qui entre dans un roster ne perd pas
+    son verbatim.
+    """
+    neuves = {
+        key_fn(item): item for item in (new_list or [])
+        if isinstance(item, dict) and _rang_forme(item) is not None
+    }
+    if not neuves:
+        return merged
+    resultat = []
+    for item in merged:
+        neuve = neuves.get(key_fn(item)) if isinstance(item, dict) else None
+        rang = _rang_forme(item) if isinstance(item, dict) else None
+        if neuve is not None and rang is not None and _rang_forme(neuve) > rang:
+            resultat.append(neuve)
+        else:
+            resultat.append(item)
+    return resultat
+
+
+def aligner_collecte_reduite(profil: dict[str, Any]) -> dict[str, Any]:
+    """Aligne `meta.collecte_reduite.interventions` sur les entrées publiées
+    (#1029).
+
+    La déclaration suit `_declaration_du_run` : elle dit la forme du DERNIER
+    run, et garde celle du précédent quand un run complet ne pose pas la clé.
+    Après `promouvoir_forme_complete`, elle peut contredire les entrées. Elle
+    dit désormais la forme LA PLUS PAUVRE encore publiée — `theme_seul` tant
+    qu'une entrée l'est, sinon `extrait` —, et disparaît quand toutes sont
+    complètes.
+    """
+    meta = profil.get("meta")
+    reduite = meta.get("collecte_reduite") if isinstance(meta, dict) else None
+    if not isinstance(reduite, dict) or "interventions" not in reduite:
+        return profil
+    formes = {i.get("collecte") for i in profil.get("interventions") or [] if isinstance(i, dict)}
+    for forme in (COLLECTE_THEME_SEUL, COLLECTE_EXTRAIT):
+        if forme in formes:
+            reduite["interventions"] = forme
+            return profil
+    reste = {k: v for k, v in reduite.items() if k != "interventions"}
+    if reste:
+        meta["collecte_reduite"] = reste
+    else:
+        meta.pop("collecte_reduite")
+    return profil
+
+
+def reporter_id_syceron(
+    merged: list[dict[str, Any]],
+    new_list: Optional[list[dict[str, Any]]],
+    key_fn: Callable[[dict[str, Any]], Key],
+) -> list[dict[str, Any]]:
+    """Reporte `id_syceron` d'une intervention neuve sur l'entrée publiée qui ne
+    l'a pas (#1087).
+
+    La fusion est additive et l'entrée ancienne gagne : sans ce report, aucune
+    des interventions publiées avant #1087 ne recevrait jamais son ancre. Le
+    report ne touche QUE cette clé, et seulement quand elle manque : c'est un
+    fait de la source (l'identifiant du paragraphe), pas une correction.
+    """
+    ancres = {
+        key_fn(item): item["id_syceron"] for item in (new_list or [])
+        if isinstance(item, dict) and item.get("id_syceron")
+    }
+    if not ancres:
+        return merged
+    for item in merged:
+        if isinstance(item, dict) and not item.get("id_syceron"):
+            ancre = ancres.get(key_fn(item))
+            if ancre:
+                item["id_syceron"] = ancre
+    return merged
 
 
 def merge_lists_by_key(
@@ -348,6 +453,36 @@ def normaliser_dates_interventions(entrees: list[dict[str, Any]]) -> list[dict[s
         if not entree.get("date") and entree.get("sous_type") == "QG" and entree.get("date_reponse"):
             entree["date"] = entree["date_reponse"]
     return entrees
+
+
+def backfill_sujet_question(
+    merged: list[dict[str, Any]],
+    new_list: Optional[list[dict[str, Any]]],
+    key_fn: Callable[[dict[str, Any]], Key],
+) -> list[dict[str, Any]]:
+    """Reporte le sujet d'une question neuve sur la question publiée sans sujet (#1094).
+
+    La XVe législature range le sujet d'une question sous `ANALYSE.ANA`, que le
+    parseur ne lisait pas : ses questions ont été publiées `sujet: null`, et la
+    fusion additive, où l'entrée ancienne gagne, les y aurait laissées. Le
+    report ne remplit qu'un sujet ABSENT, et seulement sur une question
+    officielle (`type_detail == "question"`) : il n'a rien à dire d'une
+    intervention de séance, dont le sujet relève de `backfill_sujet_seance`.
+    """
+    sujets = {
+        key_fn(i): i["sujet"] for i in (new_list or [])
+        if isinstance(i, dict) and i.get("type_detail") == "question" and i.get("sujet")
+    }
+    if not sujets:
+        return merged
+    resultat: list[dict[str, Any]] = []
+    for i in merged:
+        if isinstance(i, dict) and i.get("type_detail") == "question" and not i.get("sujet"):
+            sujet = sujets.get(key_fn(i))
+            if sujet:
+                i = {**i, "sujet": sujet}
+        resultat.append(i)
+    return resultat
 
 
 def backfill_sujet_seance(
@@ -1643,12 +1778,16 @@ def merge_raw_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> dic
     # Sans lui, l'entrée ancienne gagne et le profil brut garderait indéfiniment
     # le nom d'un créneau de séance — donc `normalize_profil` republierait le faux
     # thème dans `theme_officiel` puis dans `tags_thematiques`.
-    merged["interventions"] = normaliser_dates_interventions(backfill_sujet_seance(
-        merge_lists_by_key(old.get("interventions"), new.get("interventions"), _intervention_key),
+    merged["interventions"] = normaliser_dates_interventions(backfill_sujet_question(backfill_sujet_seance(
+        reporter_id_syceron(promouvoir_forme_complete(
+            merge_lists_by_key(old.get("interventions"), new.get("interventions"), _intervention_key),
+            new.get("interventions"),
+            _intervention_key,
+        ), new.get("interventions"), _intervention_key),
         new.get("interventions"),
         _intervention_key,
         preuve=lambda i: CLE_PREUVE_SUJET in i,
-    ))
+    ), new.get("interventions"), _intervention_key))
     # merge_dossier_records (nouvelle valeur gagne en cas de collision, aucune perte
     # sinon) : un echec/vide transitoire de l'open data amendements ne doit pas
     # effacer des amendements deja collectes lors d'une regeneration precedente.
@@ -1674,6 +1813,7 @@ def merge_raw_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> dic
     # bloc qui fait franchir au destinataire l'aller-retour JSON jusqu'à la
     # passe pivot.
     deriver_avertissements(merged.get("meta"))
+    aligner_collecte_reduite(merged)  # #1029 voie 3 : la déclaration suit les entrées
     return merged
 
 
@@ -2504,6 +2644,9 @@ def merge_pivot_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> d
         # #642 : même raison encore — un premier pivot doit publier le même
         # bloc `avertissements` qu'un pivot régénéré au même contenu.
         deriver_avertissements(new.get("meta"))
+        # #1094 : même raison — `question_ref` est dérivé.
+        if new.get("interventions"):
+            new["interventions"] = rattacher_parole_aux_questions(new["interventions"])
         # #603 : même raison. Un profil écrit pour la première fois a une
         # provenance — celle de son unique écrivain — et la lui refuser
         # publierait deux profils de même contenu dont un seul est traçable.
@@ -2671,12 +2814,17 @@ def merge_pivot_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> d
     # renormalisation identifiée. Voir sa docstring pour la preuve de non-perte.
     merged["interventions"] = normaliser_dates_interventions(clean_stale_interventions(
         backfill_sujet_europeen(
-            backfill_sujet_seance(
-                merge_lists_by_key(old.get("interventions"), new.get("interventions"), _pivot_intervention_key),
+            backfill_sujet_question(backfill_sujet_seance(
+                reporter_id_syceron(promouvoir_forme_complete(
+                    merge_lists_by_key(old.get("interventions"), new.get("interventions"),
+                                       _pivot_intervention_key),
+                    new.get("interventions"),
+                    _pivot_intervention_key,
+                ), new.get("interventions"), _pivot_intervention_key),
                 new.get("interventions"),
                 _pivot_intervention_key,
                 preuve=_entree_syceron_publiee,
-            ),
+            ), new.get("interventions"), _pivot_intervention_key),
             new.get("interventions"),
             _pivot_intervention_key,
         )
@@ -2701,6 +2849,9 @@ def merge_pivot_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> d
     # aucune (`--skip-interventions`) laisse `merged["interventions"]` égal à
     # l'ancien, donc les tags aussi.
     merged["tags_thematiques"] = deriver_tags_thematiques(merged.get("interventions"))
+    # #1094 — `question_ref` est dérivé des interventions fusionnées, même règle.
+    if merged.get("interventions"):
+        merged["interventions"] = rattacher_parole_aux_questions(merged["interventions"])
 
     if isinstance(merged.get("meta"), dict):
         # Politique de fusion provenance (#189) : un profil déjà enrichi via
@@ -2861,6 +3012,7 @@ def merge_pivot_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> d
     # cette famille : sans cette reprise, la fiche publierait « aucune donnée
     # trouvée » à côté de 1 926 votes.
     retirer_constats_parltrack_perimes(merged)
+    aligner_collecte_reduite(merged)  # #1029 voie 3 : la déclaration suit les entrées
     return merged
 
 

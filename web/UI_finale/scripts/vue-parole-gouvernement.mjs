@@ -20,10 +20,12 @@
  * Même geste que `vue-lignee.mjs` pour les débats d'une lignée (#979).
  *
  * CE QUE LA PROJECTION NE PORTE PAS : le verbatim. Les membres de gouvernement
- * sont collectés en mode réduit au thème (`meta.collecte_reduite`), et leurs
- * interventions n'ont pas de texte — mesuré le 20/09/2026 : `texte` n'existe
- * que sur les profils de candidats déclarés. La fiche dit donc QUI a parlé et
- * OÙ le lire, jamais ce qui a été dit.
+ * sont collectés en mode réduit (`meta.collecte_reduite`) : au thème seul
+ * jusqu'au 22/09/2026 — `texte` n'existait que sur les profils de candidats
+ * déclarés —, puis en EXTRAIT de 280 caractères (#1086), au fil des
+ * recollectes. Cette projection-ci ne le porte pas : elle dit QUI a parlé et
+ * OÙ le lire. Ce qui a été dit vit à part (`construireExtraitsGouvernement`),
+ * chargé quand un débat s'ouvre ou qu'un mot est tapé.
  *
  * LA FENÊTRE EST CELLE DE CHAQUE MEMBRE, pas celle du gouvernement — même
  * règle que l'agrégat qu'elle détaille (#1020) : Yaël Braun-Pivet, ministre
@@ -31,6 +33,7 @@
  */
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import { construireExtraits, extraitDeLIntervention, urlSeanceAn } from '../src/utils/extraits.js';
 
 /* LA CLÉ EST CELLE DE L'AGRÉGAT, PAS LE LIBELLÉ BRUT. `deriver_tags_thematiques`
    (schema_pivot.py) range un thème en `theme.strip().lower()`, et c'est cette
@@ -110,14 +113,20 @@ export function construireParoles(gouvernement, lireProfil) {
         premiere: date,
         derniere: date,
         tours: 0,
+        seances: new Map(),
         types: new Set(),
         url: null,
       };
       connu.tours += 1;
+      connu.seances.set(date, (connu.seances.get(date) || 0) + 1);
       if (date < connu.premiere) connu.premiere = date;
       if (date > connu.derniere) connu.derniere = date;
       if (intervention.type_detail) connu.types.add(intervention.type_detail);
-      connu.url = connu.url || lienLisible(intervention.source_url);
+      // Le lien de la ligne : la prise de parole la plus récente, à son ancre
+      // sur la page de séance (#1087) ; l'archive n'est pas un lien lisible.
+      if (date >= connu.derniere || !connu.url) {
+        connu.url = urlSeanceAn(intervention) || connu.url || lienLisible(intervention.source_url);
+      }
       parMembre.set(cle, connu);
       parSujet.set(sujet, parMembre);
     }
@@ -132,6 +141,12 @@ export function construireParoles(gouvernement, lireProfil) {
         premiere: e.premiere,
         derniere: e.derniere,
         tours: e.tours,
+        /* LA DATE DE CHAQUE SÉANCE, avec ses tours (#1073, #1074) : sans elle,
+           un intervalle qui chevauche le début d'une fenêtre ne dit pas combien
+           de tours tombent dedans — 26 couples membre × débat sur 1 427 chez
+           Lecornu II pour six mois. Individuel sans difficulté : la fiche publie
+           déjà chaque ministre par son nom, avec ses tours. */
+        seances: [...e.seances].sort((a, b) => a[0].localeCompare(b[0])),
         types: [...e.types].sort(),
         url: e.url,
       }))
@@ -148,12 +163,45 @@ export function construireParoles(gouvernement, lireProfil) {
   return sujets;
 }
 
-/** La même chose, en lisant les profils sur disque, un par un — les garder
- *  tous en mémoire a coûté un OOM au pipeline (#635). */
-export function construireParolesDepuisDisque(gouvernement, dossierProfils) {
+/**
+ * CE QUI A ÉTÉ DIT (#1029) : l'extrait de chaque prise de parole d'un membre,
+ * pendant ses fonctions, sous le même intitulé que `construireParoles` — un
+ * débat ouvert sur la fiche montre ainsi les propos des membres qu'il nomme.
+ * `orateur` est le nom du membre, tel que la ligne du débat l'affiche.
+ * Rend `{ index, paquets }` (`src/utils/extraits.js`).
+ */
+export function construireExtraitsGouvernement(gouvernement, lireProfil, debuts = null) {
+  const entrees = [];
+  for (const [membreId, fenetresDuMembre] of fenetresParMembre(gouvernement)) {
+    const profil = lireProfil(membreId);
+    if (!profil) continue;
+    const nom = fenetresDuMembre[0]?.nom || profil.nom || membreId;
+    for (const intervention of profil.interventions || []) {
+      const date = intervention.date;
+      const sujet = cleDeSujet(intervention);
+      if (!sujet || !date || !fenetreDe(date, fenetresDuMembre)) continue;
+      const [texte, tronque] = extraitDeLIntervention(intervention);
+      entrees.push({
+        sujet,
+        orateur: nom,
+        date,
+        texte,
+        tronque,
+        id: intervention.intervention_id ?? null,
+        ancre: intervention.id_syceron ?? null,
+      });
+    }
+  }
+  return construireExtraits(entrees, debuts);
+}
+
+/** Un lecteur de profils sur disque, un par un, gardé en cache pour les deux
+ *  passes d'un même gouvernement — les garder TOUS en mémoire a coûté un OOM
+ *  au pipeline (#635). */
+export function lecteurDeProfils(dossierProfils, { cache: garder = true } = {}) {
   const cache = new Map();
-  return construireParoles(gouvernement, (membreId) => {
-    if (!cache.has(membreId)) {
+  return (membreId) => {
+    if (!garder || !cache.has(membreId)) {
       const chemin = path.join(dossierProfils, `${membreId}.pivot.json`);
       try {
         const profil = JSON.parse(readFileSync(chemin, 'utf-8'));
@@ -162,6 +210,13 @@ export function construireParolesDepuisDisque(gouvernement, dossierProfils) {
         cache.set(membreId, null);
       }
     }
-    return cache.get(membreId);
-  });
+    const profil = cache.get(membreId);
+    if (!garder) cache.delete(membreId);
+    return profil;
+  };
+}
+
+/** La même chose, en lisant les profils sur disque. */
+export function construireParolesDepuisDisque(gouvernement, dossierProfils) {
+  return construireParoles(gouvernement, lecteurDeProfils(dossierProfils));
 }

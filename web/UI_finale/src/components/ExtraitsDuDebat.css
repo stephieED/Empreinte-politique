@@ -1,0 +1,62 @@
+/* Ce qui a été dit, dans un débat ouvert (#1029). Le verbatim reprend la
+   citation de « Ce qu'il a dit » (.pp-verbatim), le surlignage celui du mot
+   filtré (.pp-mot). */
+.xd-date { color: var(--muted); font-variant-numeric: tabular-nums; }
+.xd-mot { background: linear-gradient(transparent 62%, var(--accent) 62%); color: inherit; }
+.xd-source { display: inline-block; margin-top: 6px; font-size: 11.5px; color: var(--muted); }
+.xd-plus {
+  margin-top: 10px;
+  padding: 4px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+.xd-attente { font-size: 12.5px; color: var(--muted); }
+
+/* Forme A (#1029, maquette du 22/09/2026) : les propos d'un membre, datés. */
+.xd-propos { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.xd-cite { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 4px 16px; }
+.xd-cite-corps { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.xd-texte--nu { margin: 0; padding: 0; border: 0; font-size: 14.5px; line-height: 1.6; color: var(--ink); }
+.xd-cite .xd-source { margin-top: 0; font-size: 12px; color: #6e6a78; }
+.xd-seances { display: flex; flex-direction: column; gap: 6px; }
+.xd-muet { font-size: 12.5px; color: var(--muted); }
+.xd-chip {
+  display: inline-block;
+  margin: 0 6px 6px 0;
+  padding: 2px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--ink);
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+}
+a.xd-chip:hover { border-color: var(--ink); }
+@media (max-width: 720px) {
+  .xd-cite { grid-template-columns: 1fr; }
+}
+.xd-cite .xd-date { font-size: 12.5px; padding-top: 3px; }
+.xd-propos .xd-plus { align-self: flex-start; margin-top: 0; }
+
+/* Fiche de groupe, forme A : le député à gauche, ses propos à droite — même
+   grille que la fiche de gouvernement (.gvp-membre-bloc). */
+.xd-orateurs { padding: 4px 0 10px 18px; margin-left: 4px; border-left: 2px solid var(--border-strong); }
+.xd-membre {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 8px 32px;
+  padding: 14px 0 18px;
+  border-top: 1px dashed var(--border-strong);
+}
+.xd-membre:first-child { border-top: 0; }
+.xd-membre-tete { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.xd-membre-nom { font-size: 15px; font-weight: 800; color: var(--ink); }
+@media (max-width: 720px) {
+  .xd-membre { grid-template-columns: 1fr; }
+}
+.xd-membre-tete .xd-date { font-size: 12.5px; }

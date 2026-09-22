@@ -1847,11 +1847,13 @@ def main() -> None:
                         help="Ne pas extraire les interventions (ni les débats Syceron ni les questions officielles AN). "
                              "Accélère fortement l'extraction ; les interventions existantes restent intactes en mode fusion.")
     parser.add_argument("--interventions-theme-seul", action="store_true",
-                        help="Collecte RÉDUITE AU THÈME des interventions (#657) : les débats "
-                             "Syceron sont collectés sans leur verbatim, et les questions "
-                             "officielles ne sont pas collectées du tout (elles ne portent aucun "
-                             "thème). Chaque entrée publiée porte `collecte: \"theme_seul\"`, qui "
-                             "dit que le verbatim n'a pas été DEMANDÉ — et non qu'il n'existe pas. "
+                        help="Collecte RÉDUITE des interventions (#657, #1029) : les débats "
+                             "Syceron sont collectés avec un EXTRAIT de leur verbatim (280 "
+                             "caractères, coupés en fin de phrase ou de mot, `texte_tronque`), et "
+                             "les questions officielles ne sont pas collectées du tout (elles ne "
+                             "portent aucun thème). Chaque entrée publiée porte "
+                             "`collecte: \"extrait\"`, qui dit que le verbatim entier n'a pas été "
+                             "DEMANDÉ — il reste chez l'Assemblée. "
                              "Mode du job extract-roster-groupes : il peuple `tags_thematiques` "
                              "des membres de groupe, dont l'empreinte thématique était portée par "
                              "une seule personne par fiche. Sans effet sur un slug de "

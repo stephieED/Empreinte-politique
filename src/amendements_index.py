@@ -117,6 +117,8 @@ LEGISLATURE_INCONNUE = "inconnue"
 _RE_LEGISLATURE_UID = re.compile(r"^AMANR5L(\d+)")
 
 _SUFFIXE_COSIGNATURES = ".cosignatures.json"
+#: Le contenu lu dans l'archive — article visé et mots de l'exposé (#1029).
+_SUFFIXE_CONTENU = ".contenu.json"
 
 
 def cle_amendement(uid: Any) -> Optional[str]:
@@ -640,7 +642,9 @@ def charger(
     textes: dict[str, dict[str, Any]] = {}
     demandees = set(legislatures) if legislatures is not None else None
     for chemin in sorted(dossier.glob("*.json")):
-        if chemin.name.endswith(_SUFFIXE_COSIGNATURES):
+        # Ni les cosignatures, ni le contenu de l'archive (#1029) : ce ne sont
+        # pas des fichiers de législature, et `15.contenu` n'en est pas une.
+        if chemin.name.endswith((_SUFFIXE_COSIGNATURES, _SUFFIXE_CONTENU)):
             continue
         legislature = chemin.stem
         if demandees is not None and legislature not in demandees:
@@ -796,9 +800,15 @@ def rafraichir(
     table_textes: Optional[dict[str, dict[str, Any]]] = None,
     lire_textes_vises: Optional[LecteurTextesVises] = None,
     comptes: Optional[dict[str, int]] = None,
+    articles: Optional[dict[str, list[Any]]] = None,
 ) -> AmendementsIndex:
     """Reconstruit l'index depuis `profils_dir` et l'écrit, en fusionnant avec
     l'existant par défaut.
+
+    `articles` (#1029) : `{uid AN: [titre, position]}`, lu dans le contenu de
+    l'archive. Posé sur chaque amendement qui en a un, comme `article` ; un
+    amendement dont le contenu n'est pas (encore) construit n'en reçoit pas —
+    jamais un `null` qui dirait « la source ne vise aucun article ».
 
     `fusionner=True` est le défaut **et le mode sûr** : un run qui ne régénère
     qu'une tranche de profils ne voit qu'une partie des amendements, et écraser
@@ -835,5 +845,23 @@ def rafraichir(
         releve = resoudre_textes(index, table_textes)
         if comptes is not None:
             comptes.update(releve)
+    if articles:
+        poses = poser_articles(index, articles)
+        if comptes is not None:
+            comptes["articles_poses"] = poses
     ecrire(dossier, index, genere_le=genere_le)
     return index
+
+
+def poser_articles(index: "AmendementsIndex", articles: dict[str, list[Any]]) -> int:
+    """Pose `article` (#1029) sur les amendements de l'index ; rend leur nombre.
+
+    L'index a pour clé `an:<uid>`, le contenu de l'archive l'uid nu.
+    """
+    poses = 0
+    for cle, amendement in index.par_id.items():
+        article = articles.get(cle[3:] if cle.startswith("an:") else cle)
+        if article and isinstance(amendement, dict):
+            amendement["article"] = article
+            poses += 1
+    return poses

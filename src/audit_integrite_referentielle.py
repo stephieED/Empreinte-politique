@@ -139,6 +139,9 @@ INDEX_AMENDEMENTS = "amendements"
 #: censé ne retenir que `14.json` attraperait aussi `14.cosignatures.json` —
 #: écrit dans l'autre sens, l'exclusion serait silencieusement annulée.
 SUFFIXE_COSIGNATURES = ".cosignatures.json"
+#: `*.contenu.json` (#1029) non plus : l'article visé et l'index de mots d'une
+#: législature, rangés par position, sans référence à vérifier.
+SUFFIXE_CONTENU = ".contenu.json"
 
 
 @dataclass(frozen=True)
@@ -258,7 +261,7 @@ def charger_index_amendements(repertoire: Path) -> Index:
         return index
     index.present = True
     for chemin in sorted(repertoire.iterdir()):
-        if not chemin.is_file() or chemin.name.endswith(SUFFIXE_COSIGNATURES):
+        if not chemin.is_file() or chemin.name.endswith((SUFFIXE_COSIGNATURES, SUFFIXE_CONTENU)):
             continue
         if chemin.suffix != ".json":
             continue

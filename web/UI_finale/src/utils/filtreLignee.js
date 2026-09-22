@@ -22,6 +22,10 @@
  *
  * Arbitré sur maquette le 17/09/2026 (Socialistes, « retraite »). */
 import { contientLesMots, motsDuFiltre } from './filtreIntitule.js';
+import { dansLaFenetre } from './filtrePeriode.js';
+import { extraitsPortentLesMots } from './extraits.js';
+import { amendementsQuiPortent } from './amendementsMots.js';
+import { repartitionParCommission } from './lignee.js';
 
 const somme = (liste, cle) => liste.reduce((a, x) => a + (x[cle] || 0), 0);
 
@@ -50,29 +54,104 @@ function amendementsRetenus(parType, ok) {
   return out;
 }
 
+/* La répartition d'un maillon recomptée sur les amendements retenus. `table` :
+ * `<maillon>.amendements.json` (scripts/amendements-lignees.mjs). */
+function repartitionDesRetenus(table, parTypePublie, { mots, saisie, ok, periode, debut }) {
+  const parContenu = mots.length && table.vocabulaire ? amendementsQuiPortent([table.vocabulaire], saisie) : null;
+  const amendements = {};
+  const textes = {};
+  const commissions = new Map();
+  const statuts = new Map();
+  for (const [texte, dossier, titre, commission, statut] of table.textes) {
+    textes[texte] = { dossier_id: dossier, titre };
+    if (dossier) { commissions.set(dossier, commission); statuts.set(dossier, statut); }
+  }
+  const retenus = [];
+  table.ids.forEach((id, i) => {
+    const [type, adopte, date, t] = table.rows[i];
+    const texte = t === null ? null : table.textes[t];
+    if (periode && !dansLaFenetre(date, debut)) return;
+    if (mots.length && !ok(texte?.[2]) && !parContenu?.has(id.replace(/^an:/, ''))) return;
+    amendements[id] = { type_deposant: table.types[type], sort: adopte ? 'adopté' : null, date, texte_vise: texte?.[0] ?? null };
+    retenus.push(id);
+  });
+  const { types } = repartitionParCommission(
+    retenus, amendements, textes,
+    (dossier) => (commissions.get(dossier) ? { sigle: commissions.get(dossier) } : null),
+    (dossier) => statuts.get(dossier) ?? null,
+  );
+  // Seuls les types dont la répartition a été vérifiée au build restent.
+  return Object.fromEntries(Object.entries(types).filter(([type]) => parTypePublie?.[type]));
+}
+
 /**
- * La lignée réduite à ce que le mot porte. Rend l'objet INCHANGÉ sans mot.
+ * La lignée réduite à ce que le mot et la période portent. Rend l'objet
+ * INCHANGÉ sans l'un ni l'autre.
  * `debats` : `{ [id de maillon]: sujets.liste complète }`, ou `null`.
+ * `periode` / `debut` : la case cochée (`6m`, `12m`) et la date où sa fenêtre
+ * commence (#1074).
+ *
+ * SOUS UNE PÉRIODE, LA PAROLE SE LIT DANS LES FENÊTRES DE BACKEND (#1077) : le
+ * nombre de membres distincts intervenus sur chaque débat pendant la fenêtre,
+ * sur le dénominateur de cette fenêtre. Les scrutins et les textes se datent
+ * eux-mêmes. LES AMENDEMENTS SE RETIRENT : la projection les compte par
+ * dossier sur toute la législature, avec la seule date du dernier — les
+ * recompter dans une fenêtre serait inventer. C'est le composant qui le dit.
  */
-export function filtrerLignee(lignee, saisie, debats = null) {
+export function filtrerLignee(lignee, saisie, debats = null, periode = null, debut = null, extraits = null, tablesAmendements = null) {
   const mots = motsDuFiltre(saisie);
-  if (!mots.length || !lignee) return lignee;
-  const ok = (texte) => contientLesMots(texte, mots);
+  if ((!mots.length && !periode) || !lignee) return lignee;
+  const ok = (texte) => !mots.length || contientLesMots(texte, mots);
+  const date = (d) => !periode || dansLaFenetre(d, debut);
   return {
     ...lignee,
     maillons: lignee.maillons.map((m) => {
-      const intituleOk = ([id]) => ok(m.scrutins?.[id]?.texte);
+      const intituleOk = ([id]) => ok(m.scrutins?.[id]?.texte) && date(m.scrutins?.[id]?.date);
       const listes = Object.fromEntries(
         Object.entries(m.partageListes || {}).map(([part, l]) => [part, l.filter(intituleOk)]),
       );
       const uneSeuleVoix = (listes.une_seule_voix || []).length;
       const partages = (listes.partages || []).length;
-      const parType = amendementsRetenus(m.amendements?.parType, ok);
-      const sujets = (debats?.[m.id] || m.sujets.liste).filter((s) => ok(s.label));
+      /* AMENDEMENT PAR AMENDEMENT (#1029, voie 2), quand la table du maillon
+         est chargée : un amendement reste si l'intitulé de son dossier OU son
+         exposé porte le mot, et s'il est daté dans la fenêtre — la période
+         redevient possible. La répartition se recompte par LA règle du build
+         (`repartitionParCommission`), sur les seuls types vérifiés. Sans table,
+         l'ancien geste : par dossier, et rien sous une période. */
+      const table = tablesAmendements?.[m.id] ?? null;
+      const parType = table
+        ? repartitionDesRetenus(table, m.amendements?.parType, { mots, saisie, ok, periode, debut })
+        : periode ? {} : amendementsRetenus(m.amendements?.parType, ok);
+      const complete = debats?.[m.id] || m.sujets.liste;
+      /* UNE FENÊTRE QUI NE RECOUPE PAS CELLE DU SITE NE COMPTE PAS. Sur une
+         fiche close — XVe, XVIe législature —, Backend compte « 6 mois » depuis
+         la fin de la fiche : 2023-12-09 → 2024-06-09 pour le RN de la XVIe.
+         Mesuré le 22/09/2026 : 16 des 29 fiches AN dans ce cas. Sous la case,
+         ces débats de 2024 s'afficheraient sous « depuis le 22/03/2026 ». Une
+         fenêtre qui finit avant le début de celle du site n'a donc rien dedans. */
+      const brute = periode ? (complete.fenetres?.[periode] ?? null) : null;
+      const fenetre = brute && (!debut || (brute.fin && brute.fin >= debut)) ? brute : null;
+      /* CE QUI A ÉTÉ DIT (#1029) : un débat reste aussi quand les EXTRAITS de
+         ses membres portent le mot, dans la période cochée. `parIntitule` le
+         dit au débat ouvert, qui ne montre alors que ces extraits-là. */
+      const retenu = (s) => ok(s.label)
+        || (mots.length > 0 && extraitsPortentLesMots(extraits?.[m.id], s.label, mots, periode));
+      const marque = (s) => ({ ...s, parIntitule: ok(s.label) });
+      const sujets = periode
+        ? (fenetre ? complete : [])
+          .map((s) => ({ ...s, porteurs: s.parFenetre?.[periode] ?? null, denominateur: fenetre?.nb_membres ?? null }))
+          .filter((s) => s.porteurs > 0 && retenu(s)).map(marque)
+        : complete.filter(retenu).map(marque);
       return {
         ...m,
-        sujets: { ...m.sujets, liste: sujets, total: sujets.length },
-        textes: m.textes ? m.textes.filter((t) => ok(t.titre)) : m.textes,
+        sujets: {
+          ...m.sujets,
+          liste: sujets,
+          total: sujets.length,
+          ...(periode ? { denominateur: fenetre?.nb_membres ?? null } : {}),
+        },
+        amendementsHorsPeriode: Boolean(periode) && !table,
+        textes: m.textes ? m.textes.filter((t) => ok(t.titre) && date(t.date_max ?? t.date_min)) : m.textes,
         amendements: {
           ...m.amendements,
           parType,

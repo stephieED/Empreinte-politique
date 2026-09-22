@@ -3460,6 +3460,29 @@ jobs:
             --profils-dir pivot_data/profiles \
             --out pivot_data/documents_europeens.json
 
+      # #1029 voie 1 — les actes réglementaires du Journal officiel (DILA).
+      #   entrée   : src/actes_reglementaires.py
+      #   consomme : echanges.dila.gouv.fr (Licence Ouverte), livraisons quotidiennes
+      #   produit  : pivot_data/actes_reglementaires/<AAAA-MM>.json
+      #
+      # Ne relit QUE les livraisons des deux derniers mois (~50, ~150 s
+      # mesurés depuis un poste le 22/09/2026) : un mois clos ne change plus,
+      # et son fichier n'est pas réécrit. Le fonds 2007 → aujourd'hui a été
+      # construit une seule fois en local (`--depuis-dump`), parce que le dump
+      # global de la DILA est une livraison unique du 13/07/2025 qu'elle ne
+      # renouvelle pas.
+      #
+      # BUDGET EN TEMPS, pas en requêtes (#1064) : le débit d'un runner est ~3,5
+      # fois plus lent qu'un poste, et c'est la durée du job qui est bornée.
+      # `continue-on-error` : la DILA indisponible ne doit pas coûter le commit
+      # des profils, qui sont corrects. Un mois relu sans acte n'écrase rien, et
+      # un acte déjà publié absent de la relecture arrête la publication plutôt
+      # que de disparaître (`ActesPerdus`).
+      - name: Mettre à jour les actes réglementaires (Journal officiel)
+        continue-on-error: true
+        run: |
+          python3 src/actes_reglementaires.py --budget-secondes 900
+
       - name: Générer les profils de groupe parlementaire réel
         env:
           OVERWRITE: ${{ inputs.existing_profiles == 'overwrite' }}
@@ -4135,6 +4158,14 @@ jobs:
           # qui le construit est `continue-on-error`, le fichier peut manquer.
           if [ -f pivot_data/scrutins_dossiers.json ]; then
             git add pivot_data/scrutins_dossiers.json
+          fi
+          # Actes réglementaires (#1029 voie 1) : même garde, le step qui les
+          # met à jour est `continue-on-error`. Le répertoire existe dans le
+          # dépôt — il est commité depuis le remplissage initial —, mais un
+          # `git add` sur un chemin absent échouerait si un jour il ne l'était
+          # plus.
+          if [ -d pivot_data/actes_reglementaires ]; then
+            git add pivot_data/actes_reglementaires
           fi
           if git diff --cached --quiet; then
             echo "Aucun changement de données à committer."

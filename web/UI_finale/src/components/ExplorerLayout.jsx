@@ -6,6 +6,7 @@ import GovernmentsBar from './GovernmentsBar';
 import CandidatesBar from './CandidatesBar';
 import SommaireSections from './SommaireSections';
 import { BarreFiltre } from './Recherche';
+import { PERIODES, periodeValide } from '../utils/filtrePeriode';
 import { GroupFilterProvider } from '../context/GroupFilterContext';
 import '../styles/shell.css';
 import PiedDeSite from './PiedDeSite';
@@ -46,6 +47,10 @@ import './ExplorerLayout.css';
 /** Les fiches qui lisent `?mot=` — les trois depuis #979. */
 const FICHES_FILTRABLES = ['/candidats', '/groupes', '/gouvernements'];
 
+/** Les fiches qui portent les dates de ce qu'elles montrent (#1074) — la fiche
+ *  de groupe depuis que #1077 lui a donné ses fenêtres de parole. */
+const FICHES_DATEES = ['/candidats', '/groupes', '/gouvernements'];
+
 export default function ExplorerLayout() {
   const [tiroirOuvert, setTiroirOuvert] = useState(false);
   const { pathname } = useLocation();
@@ -64,6 +69,25 @@ export default function ExplorerLayout() {
     }, { replace: true });
   };
   const filtrable = FICHES_FILTRABLES.some((racine) => pathname.startsWith(racine));
+
+  /* LA PÉRIODE (#1074) : deux cases, « 6 derniers mois » et « 12 derniers mois ».
+   * De vraies cases à cocher, arbitré le 22/09/2026 sur maquette — mais
+   * EXCLUSIVES : cocher l'une décoche l'autre, décocher la case active revient
+   * à tout montrer. Elle vit dans l'adresse (`?periode=6m`), comme le mot.
+   *
+   * Seulement là où elle filtre : les fiches qui portent les dates de ce
+   * qu'elles montrent (`FICHES_DATEES`) — des cases qui ne filtrent rien
+   * seraient du mobilier. */
+  const periode = periodeValide(params.get('periode'));
+  const periodeDisponible = FICHES_DATEES.some((racine) => pathname.startsWith(racine));
+  const changerPeriode = (valeur) => {
+    setParams((p) => {
+      const suivant = new URLSearchParams(p);
+      if (valeur !== periode) suivant.set('periode', valeur);
+      else suivant.delete('periode');
+      return suivant;
+    }, { replace: true });
+  };
 
   // Changer de fiche referme le tiroir : on vient de s'en servir. Taper un mot
   // ne change que la partie `?mot=` de l'adresse, et le laisse donc ouvert.
@@ -116,6 +140,21 @@ export default function ExplorerLayout() {
                     <div className="explorer-tiroir-recherche">
                       <p className="explorer-tiroir-titre">Sur cette page</p>
                       <BarreFiltre onSaisie={changerMot} saisie={mot} />
+                      {periodeDisponible && (
+                        <div className="periode" role="group" aria-label="Période">
+                          {Object.entries(PERIODES).map(([cle, p]) => (
+                            <label className="periode-case" key={cle}>
+                              <input
+                                checked={periode === cle}
+                                id={`periode-${cle}`}
+                                onChange={() => changerPeriode(cle)}
+                                type="checkbox"
+                              />
+                              {p.libelle}
+                            </label>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   )}
                   <p className="explorer-tiroir-titre">Changer de fiche</p>
