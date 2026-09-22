@@ -83,6 +83,26 @@ elective mandate** (38/38, 85/85, 60/60 on `LR`, `REN`, `LFI` — re-elected in
   **seule** entrée dont `validate_profil_groupe` vérifie le contenu, parce que des
   périodes qui contrediraient leurs bornes ne se rattraperaient nulle part en aval.
   → `docs/decisions/periodes-appartenance-809.md`
+### 4a′. A group's speech is what its members said while in it, over three windows (#1073)
+
+- **`tags_thematiques_agreges` counts only speech held during membership.** An
+  intervention dated outside the member's `periodes[]` (or
+  `debut_dans_groupe`/`fin_dans_groupe`) is not the group's: measured on
+  22/09/2026, 7 308 such interventions fed EPR-17. A member whose membership is
+  not dated keeps the whole legislature, and is counted in `meta.warnings`.
+  Lineages apply the same rule, on the union of a member's periods across
+  same-legislature links.
+- **`fenetres_parole`** — `{"12_mois"|"6_mois": {debut, fin, nb_membres}}`,
+  counted back from `date_reference.date`, never before `periode.debut`.
+  `nb_membres` is the window's denominator (members whose membership crosses it,
+  or is undated) — §2 rule 7.
+- **`tags_thematiques_agreges[].nb_membres_porteurs_par_fenetre`** — distinct
+  members per window; `nb_membres_porteurs` stays the whole period. A monthly
+  count would not recompose (a member speaking two months running counts twice),
+  and **no per-member date is ever published**: roster profiles are not
+  published pages (§2 rules 3 and 7).
+- An undated intervention counts over the whole period, never in a window.
+
 ### 4b. One sheet per group AND per legislature — and `succede_a` is ours, not the AN's (#700)
 
 `groupes_reels.json` carries **12 entries** since #700 (5 AN-XVIe, 5 AN-XVIIe,

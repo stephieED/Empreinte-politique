@@ -330,8 +330,12 @@ def normaliser_dates_interventions(entrees: list[dict[str, Any]]) -> list[dict[s
     **reformatée** — le jour désigné ne change pas, et la transformation se
     vérifie à l'œil. C'est pourquoi elle s'applique sans regarder `new`.
 
-    **Les 167 dates vides ne se réparent pas** : la source ne les porte pas.
-    Elles restent une absence (§2 règle 5), et cette passe n'en invente aucune.
+    **Les 167 dates vides étaient des questions au gouvernement** (mesuré le
+    22/09/2026, toutes `sous_type: "QG"`) : la source ne publie jamais le texte
+    d'une QG, posée à l'oral, et la date se lisait là. Elles reçoivent la date
+    de parution au Journal officiel de leur compte rendu — `date_reponse`, que
+    la source publie pour la question et la réponse à la fois (arbitré le
+    22/09/2026). Une autre question sans date reste une absence (§2 règle 5).
     """
     for entree in entrees:
         if not isinstance(entree, dict):
@@ -341,6 +345,8 @@ def normaliser_dates_interventions(entrees: list[dict[str, Any]]) -> list[dict[s
             if m:
                 jour, mois, annee = m.groups()
                 entree[champ] = f"{annee}-{mois}-{jour}"
+        if not entree.get("date") and entree.get("sous_type") == "QG" and entree.get("date_reponse"):
+            entree["date"] = entree["date_reponse"]
     return entrees
 
 

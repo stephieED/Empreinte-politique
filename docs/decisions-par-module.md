@@ -7,7 +7,7 @@
 [`docs/technical_decisions.md`](technical_decisions.md) va des décisions vers le
 code et se lit par date. Cette table va dans l'autre sens : **ce module → ces
 décisions**, pour qu'un agent qui ouvre un fichier de `src/` sache ce qui le
-gouverne sans avoir à fouiller les 397 décisions
+gouverne sans avoir à fouiller les 403 décisions
 du répertoire. Le critère, ce qu'il rate et pourquoi la table est générée :
 [`docs/decisions/table-inversee-decisions-par-module.md`](decisions/table-inversee-decisions-par-module.md).
 
@@ -46,6 +46,7 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/audit_gouvernement_dataset.py` | 2 |
 | `src/avertissements.py` | 2 |
 | `src/fetch_candidats_declares.py` | 2 |
+| `src/json_io.py` | 2 |
 | `src/titres_europeens.py` | 2 |
 | `src/build_amendements_index.py` | 1 |
 | `src/candidate_profile_ue.py` | 1 |
@@ -54,7 +55,6 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/generate_lignee_profiles.py` | 1 |
 | `src/gouvernement_roster_an.py` | 1 |
 | `src/identifiants_wikidata.py` | 1 |
-| `src/json_io.py` | 1 |
 | `src/lignee_profile.py` | 1 |
 | `src/mandats_anterieurs.py` | 1 |
 | `src/normalize_europarl.py` | 1 |
@@ -79,7 +79,7 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | [Un amendement retrouve son dossier, et la clé qu'on lui avait retirée (#639, rang 3)](decisions/dossier-des-amendements-639.md) | `AmendementsIndex`, `resoudre_textes` |
 | [Le `texte_vise` fautif se reprend depuis l'archive figée, pas par une fusion plus permissive (#696, 01/09/2026)](decisions/report-texte-vise-source-696.md) | `backfill_texte_vise`, `merge_amendements_index`, `resoudre_textes` |
 
-Le mentionnent sans le gouverner : [`fiche-de-lignee-836`](decisions/fiche-de-lignee-836.md), [`lectures-pipeline-par-projection-635`](decisions/lectures-pipeline-par-projection-635.md), [`normalisation-amendements`](decisions/normalisation-amendements.md), [`partition-profils-legislature-580`](decisions/partition-profils-legislature-580.md), [`point-de-sauvegarde-dans-les-profils-518`](decisions/point-de-sauvegarde-dans-les-profils-518.md), [`reconstruction-tranches-depuis-archive-691`](decisions/reconstruction-tranches-depuis-archive-691.md).
+Le mentionnent sans le gouverner : [`fiche-de-lignee-836`](decisions/fiche-de-lignee-836.md), [`index-reecrits-seulement-si-le-contenu-change-1075`](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md), [`lectures-pipeline-par-projection-635`](decisions/lectures-pipeline-par-projection-635.md), [`normalisation-amendements`](decisions/normalisation-amendements.md), [`partition-profils-legislature-580`](decisions/partition-profils-legislature-580.md), [`point-de-sauvegarde-dans-les-profils-518`](decisions/point-de-sauvegarde-dans-les-profils-518.md), [`reconstruction-tranches-depuis-archive-691`](decisions/reconstruction-tranches-depuis-archive-691.md).
 
 ## `src/an_roster.py`
 
@@ -270,7 +270,7 @@ Le mentionnent sans le gouverner : [`dossier-des-amendements-639`](decisions/dos
 
 ## `src/build_commissions_dossiers.py`
 
-Le mentionnent sans le gouverner : [`mise-en-oeuvre-des-grands-chiffres-328`](decisions/mise-en-oeuvre-des-grands-chiffres-328.md), [`vivier-de-points-et-empreinte-de-commission-328`](decisions/vivier-de-points-et-empreinte-de-commission-328.md).
+Le mentionnent sans le gouverner : [`index-reecrits-seulement-si-le-contenu-change-1075`](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md), [`mise-en-oeuvre-des-grands-chiffres-328`](decisions/mise-en-oeuvre-des-grands-chiffres-328.md), [`vivier-de-points-et-empreinte-de-commission-328`](decisions/vivier-de-points-et-empreinte-de-commission-328.md).
 
 ## `src/build_correspondance_acteurs_an.py`
 
@@ -290,7 +290,7 @@ Le mentionnent sans le gouverner : [`bascule-roster-an-amo30-527`](decisions/bas
 
 ## `src/build_scrutins_dossiers.py`
 
-Le mentionnent sans le gouverner : [`rattachement-scrutin-dossier-758`](decisions/rattachement-scrutin-dossier-758.md).
+Le mentionnent sans le gouverner : [`index-reecrits-seulement-si-le-contenu-change-1075`](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md), [`rattachement-scrutin-dossier-758`](decisions/rattachement-scrutin-dossier-758.md).
 
 ## `src/build_scrutins_index.py`
 
@@ -310,7 +310,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 
 ## `src/candidate_profile.py`
 
-89 décision(s) le gouvernent ; le module en cite 14.
+90 décision(s) le gouvernent ; le module en cite 14.
 
 | Décision | Nomme |
 | --- | --- |
@@ -350,6 +350,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [Un index Syceron en cache est un parsage en cache, et l'existence n'y est pas la conformité (#719) (2026-09-02)](decisions/conformite-index-syceron-719.md) | `SYCERON_CHAMP_QUALIFICATION`, `_reduire_au_theme`, `_scrutins_store_qualifie`, `_syceron_index_qualifie`, `_write_syceron_index_par_acteur` |
 | [La correspondance slug ↔ acteur AN devient un artefact committé (#525, lot 2 de l'épic « une seule source AN ») (2026-08-26)](decisions/correspondance-acteurs-an-525.md) | `_resolve_acteur_ref_par_slug` |
 | [Ce qu'une liste vide veut dire : les quatre états de couverture (#539) (2026-08-28)](decisions/couverture-listes-539.md) | `AN_AMENDEMENTS_PATH`, `AN_SCRUTINS_LEGISLATURES`, `WARNING_PREFIX_VOTES_INTROUVABLES`, `_resolve_acteur_ref_par_slug` |
+| [Une question au gouvernement est datée par la parution de son compte rendu au JO (#1044) (2026-09-22)](decisions/date-des-questions-au-gouvernement-1044.md) | `_parse_question_entry` |
 | [`debut_dans_groupe` se lit sur le mandat de groupe, plus sur le premier mandat électif (#653) (2026-08-31)](decisions/dates-appartenance-groupe-653.md) | `fetch_positions_hemicycle_officielles` |
 | [882 interventions portaient une date que tout filtre écartait en silence (#1044) (2026-09-20)](decisions/dates-des-questions-en-iso-1044.md) | `normaliser_date_jo` |
 | [`membres[]` publiait deux fois le même fait : dédupliquer sans effacer les changements de portefeuille (#480) (2026-08-20)](decisions/deduplication-entrees-membres.md) | `_build_acteur_positions_hemicycle_index` |
@@ -503,11 +504,11 @@ Le mentionnent sans le gouverner : [`couverture-remplacee-par-liste-602`](decisi
 | --- | --- |
 | [Un délai dépassé chez EuroVoc a coûté toute la publication d'un run (#901) (2026-09-17)](decisions/eurovoc-muet-ne-bloque-pas-le-corpus-901.md) | `LibellesEurovocIndisponibles`, `_interroger_sparql`, `resoudre_domaines` |
 
-Le mentionnent sans le gouverner : [`domaines-eurovoc-familles-oeil-901`](decisions/domaines-eurovoc-familles-oeil-901.md), [`matieres-eurovoc-documents-901`](decisions/matieres-eurovoc-documents-901.md).
+Le mentionnent sans le gouverner : [`domaines-eurovoc-familles-oeil-901`](decisions/domaines-eurovoc-familles-oeil-901.md), [`index-reecrits-seulement-si-le-contenu-change-1075`](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md), [`matieres-eurovoc-documents-901`](decisions/matieres-eurovoc-documents-901.md).
 
 ## `src/dossiers_europeens.py`
 
-5 décision(s) le gouvernent ; le module en cite 3.
+6 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -515,9 +516,10 @@ Le mentionnent sans le gouverner : [`domaines-eurovoc-familles-oeil-901`](decisi
 | [L'index des dossiers européens lit aussi les dossiers que les votes citent (#901) (2026-09-17)](decisions/dossiers-europeens-votes-901.md) | `references_visees` |
 | [L'index européen ne lisait que les amendements, et 34 références ne résolvaient nulle part (#901) (2026-09-16)](decisions/index-europeen-lit-aussi-les-textes-portes-901.md) | `references_visees` |
 | [L'index européen relit ce qu'il a publié : le cache n'est pas une mémoire (#1062) (2026-09-21)](decisions/index-europeen-reprend-ses-acquis-1062.md) | `reprendre_acquis` |
+| [Les textes adoptés se lisent par liste annuelle, plus un par un (#1069) (2026-09-21)](decisions/textes-adoptes-par-liste-annuelle-1069.md) | `precharger_textes_adoptes` |
 | [Les quatre saisines au fond européennes se distinguent, elles ne se fondent pas (#901) (2026-09-14)](decisions/trois-saisines-au-fond-europeennes-901.md) | `KNOWN_STATUTS_COMMISSION_AU_FOND`, `commissions_au_fond_non_resolu` |
 
-Le mentionnent sans le gouverner : [`cascade-europeenne-une-porte-901`](decisions/cascade-europeenne-une-porte-901.md), [`domaines-eurovoc-familles-oeil-901`](decisions/domaines-eurovoc-familles-oeil-901.md), [`filtre-par-intitule-fiche-candidat-979`](decisions/filtre-par-intitule-fiche-candidat-979.md), [`index-dossiers-europeens-901`](decisions/index-dossiers-europeens-901.md), [`matieres-eurovoc-documents-901`](decisions/matieres-eurovoc-documents-901.md), [`portail-europeen-hors-chemin-critique-1064`](decisions/portail-europeen-hors-chemin-critique-1064.md).
+Le mentionnent sans le gouverner : [`cascade-europeenne-une-porte-901`](decisions/cascade-europeenne-une-porte-901.md), [`domaines-eurovoc-familles-oeil-901`](decisions/domaines-eurovoc-familles-oeil-901.md), [`filtre-par-intitule-fiche-candidat-979`](decisions/filtre-par-intitule-fiche-candidat-979.md), [`index-dossiers-europeens-901`](decisions/index-dossiers-europeens-901.md), [`index-reecrits-seulement-si-le-contenu-change-1075`](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md), [`matieres-eurovoc-documents-901`](decisions/matieres-eurovoc-documents-901.md), [`portail-europeen-hors-chemin-critique-1064`](decisions/portail-europeen-hors-chemin-critique-1064.md).
 
 ## `src/download_watchdog.py`
 
@@ -531,7 +533,7 @@ Le mentionnent sans le gouverner : [`budget-collecte-interventions`](decisions/b
 
 ## `src/europarl_documents.py`
 
-7 décision(s) le gouvernent ; le module en cite 3.
+8 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -539,6 +541,7 @@ Le mentionnent sans le gouverner : [`budget-collecte-interventions`](decisions/b
 | [Un dossier européen reçoit ses domaines EuroVoc de son texte adopté (#901) (2026-09-17)](decisions/domaines-eurovoc-des-dossiers-901.md) | `ResolveurDocuments` |
 | [L'index européen relit ce qu'il a publié : le cache n'est pas une mémoire (#1062) (2026-09-21)](decisions/index-europeen-reprend-ses-acquis-1062.md) | `ResolveurDocuments` |
 | [628 textes européens sans dossier, et le portail les classait déjà (#901) (2026-09-16)](decisions/matieres-eurovoc-documents-901.md) | `DOCEO_BASE`, `ResolveurDocuments` |
+| [Les textes adoptés se lisent par liste annuelle, plus un par un (#1069) (2026-09-21)](decisions/textes-adoptes-par-liste-annuelle-1069.md) | `ResolveurDocuments` |
 | [Le titre français cherchait sa référence là où elle n'est jamais (#901) (2026-09-16)](decisions/titre-francais-lu-dans-source-url-901.md) | `reference_doceo` |
 | [Le titre français était téléchargé puis jeté (#901) (2026-09-16)](decisions/titre-francais-textes-europeens-901.md) | `ResolveurDocuments` |
 | [L'adresse est dérivée, l'existence est prouvée (#827)](decisions/urls-explications-vote-europeennes-827.md) | `ResolveurDocuments` |
@@ -739,7 +742,7 @@ Le mentionnent sans le gouverner : [`liste-gouvernements-amo30-996`](decisions/l
 
 ## `src/group_profile.py`
 
-30 décision(s) le gouvernent ; le module en cite 4.
+31 décision(s) le gouvernent ; le module en cite 4.
 
 | Décision | Nomme |
 | --- | --- |
@@ -762,6 +765,7 @@ Le mentionnent sans le gouverner : [`liste-gouvernements-amo30-996`](decisions/l
 | [Normaliser les amendements : le coût n'est pas l'amendement, c'est sa liste de cosignataires (#431) (2026-08-19)](decisions/normalisation-amendements.md) | `_aggregate_amendements` |
 | [Normalisation de `par_fonction` dans `mandats_agreges`, et requalification du défaut « catégorie commission » (#379) (2026-08-17)](decisions/normalisation-fonction-mandats-agreges.md) | `_aggregate_mandats`, `_normalize_fonction_mandat` |
 | [Normaliser les votes : une liste partagée, un mapping, et deux invariants devenus des jointures (#432) (2026-08-19)](decisions/normalisation-votes.md) | `_votes_de_legislature` |
+| [La parole d'un groupe est celle tenue pendant l'appartenance, comptée sur 6 et 12 mois (#1073) (2026-09-22)](decisions/parole-de-groupe-par-appartenance-et-fenetre-1073.md) | `CLES_LUES_PAR_ENTREE`, `_interventions_retenues`, `_tags_du_membre`, `periodes_d_appartenance` |
 | [L'appartenance publiée cesse d'être une enveloppe (#809)](decisions/periodes-appartenance-809.md) | `_appartenance_couvre` |
 | [Un champ traverse la chaîne, ou il n'existe pas (#809)](decisions/periodes-jetees-par-le-filtre-809.md) | `_appartenance_couvre`, `appartenances_depuis_roster`, `projeter_profil_membre` |
 | [Un profil de roster ne porte pas une liste que sa propre collecte déclare écartée — purge des 49 `textes_portes` résiduels (#747)](decisions/purge-textes-portes-roster-747.md) | `BLOCS_LUS_MEMBRE` |
@@ -818,11 +822,12 @@ Le mentionnent sans le gouverner : [`cloisonnement-branche-roster-524`](decision
 
 ## `src/json_io.py`
 
-1 décision(s) le gouvernent ; le module en cite 0.
+2 décision(s) le gouvernent ; le module en cite 0.
 
 | Décision | Nomme |
 | --- | --- |
 | [Un timeout ne peut plus écraser le roster, et rien de collecté ne reste non publié (#511) (2026-08-20)](decisions/collecte-non-publiee.md) | `ecrire_profil_json` |
+| [Un index partagé ne se réécrit que si son contenu change (#1075) (2026-09-22)](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md) | `ecrire_index_json` |
 
 Le mentionnent sans le gouverner : [`profils-json-compact`](decisions/profils-json-compact.md).
 
@@ -871,7 +876,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 
 ## `src/merge_profile.py`
 
-69 décision(s) le gouvernent ; le module en cite 5.
+70 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -894,6 +899,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [Ce qu'une liste vide veut dire : les quatre états de couverture (#539) (2026-08-28)](decisions/couverture-listes-539.md) | `_prefer_non_empty` |
 | [La couverture se remplace à la maille où #539 la publie, et un cas non tranchable se déclare (#602) (2026-08-30)](decisions/couverture-remplacee-par-liste-602.md) | `FAMILLES_WARNINGS`, `_prefer_non_empty`, `fusionner_couverture` |
 | [Un créneau de séance n'est pas un sujet, et le discriminant reste structurel (#710, 02/09/2026)](decisions/creneau-de-seance-nest-pas-un-sujet-710.md) | `backfill_mandat_chambre`, `backfill_sujet_seance`, `backfill_vote_qualification`, `merge_pivot_profile` |
+| [Une question au gouvernement est datée par la parution de son compte rendu au JO (#1044) (2026-09-22)](decisions/date-des-questions-au-gouvernement-1044.md) | `normaliser_dates_interventions` |
 | [882 interventions portaient une date que tout filtre écartait en silence (#1044) (2026-09-20)](decisions/dates-des-questions-en-iso-1044.md) | `merge_lists_by_key`, `normaliser_dates_interventions` |
 | [`meta.warnings[]` déclare son destinataire, dans un jumeau typé et aligné (#642) (2026-08-31)](decisions/destinataire-avertissements-642.md) | `_prune_stale_warnings`, `unir_warnings` |
 | [Le passé sénatorial est un fait de carrière, pas une donnée d'activité : bicaméral pour les candidats seulement (#488) (2026-08-20)](decisions/deux-chambres-interrogees.md) | `_prefer_non_empty`, `merge_raw_profile` |
@@ -1242,7 +1248,7 @@ Le mentionnent sans le gouverner : [`gouvernement-premier-ministre-portefeuille`
 
 ## `src/scrutins_europeens.py`
 
-Le mentionnent sans le gouverner : [`cascade-europeenne-une-porte-901`](decisions/cascade-europeenne-une-porte-901.md), [`index-scrutins-europeens-901`](decisions/index-scrutins-europeens-901.md), [`lecture-europeenne-themes-et-votes-901`](decisions/lecture-europeenne-themes-et-votes-901.md), [`pas-d-ecarts-groupe-europeens-901`](decisions/pas-d-ecarts-groupe-europeens-901.md).
+Le mentionnent sans le gouverner : [`cascade-europeenne-une-porte-901`](decisions/cascade-europeenne-une-porte-901.md), [`index-reecrits-seulement-si-le-contenu-change-1075`](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md), [`index-scrutins-europeens-901`](decisions/index-scrutins-europeens-901.md), [`lecture-europeenne-themes-et-votes-901`](decisions/lecture-europeenne-themes-et-votes-901.md), [`pas-d-ecarts-groupe-europeens-901`](decisions/pas-d-ecarts-groupe-europeens-901.md).
 
 ## `src/scrutins_index.py`
 
@@ -1257,7 +1263,7 @@ Le mentionnent sans le gouverner : [`cascade-europeenne-une-porte-901`](decision
 | [La qualification d'un scrutin et la clé de son dossier étaient lues puis jetées (#639, rangs 1 et 2)](decisions/qualification-scrutins-et-cle-dossier-639.md) | `merge_scrutins_index` |
 | [Un scrutin ne dit pas quel texte il tranche : le lien se lit à l'envers (#758), 07/09/2026](decisions/rattachement-scrutin-dossier-758.md) | `MOTIF_TEXTE_LIE_NON_SOURCE` |
 
-Le mentionnent sans le gouverner : [`normalisation-votes`](decisions/normalisation-votes.md), [`point-de-sauvegarde-dans-les-profils-518`](decisions/point-de-sauvegarde-dans-les-profils-518.md).
+Le mentionnent sans le gouverner : [`index-reecrits-seulement-si-le-contenu-change-1075`](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md), [`normalisation-votes`](decisions/normalisation-votes.md), [`point-de-sauvegarde-dans-les-profils-518`](decisions/point-de-sauvegarde-dans-les-profils-518.md).
 
 ## `src/scrutins_legislature.py`
 

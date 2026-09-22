@@ -141,6 +141,11 @@ les charger, ni à les faire grossir. -->
   state, re-measured that day: deploy key `data-push` in **write**, secret present, ruleset
   `20260729_ruleset` active with `Suite complète` required and `DeployKey` + admin in
   `bypass_actors`, and the data commit `98e6479d2` carries a **successful** `tests.yml` run.
+  **The private repository has no branch protection at all**: rulesets and
+  classic protection require GitHub Pro on a private repository, and the
+  ruleset of the former repository did not survive its switch to private
+  (measured 21/09/2026, `HTTP 403`). Its `main` accepts a direct push — which
+  is what `scripts/sync_depots.sh --recuperer-donnees` relies on.
   `merge-and-pivot` keeps **measuring the remote it actually pushed to** and says so in an
   annotation and in the job summary, non-blocking — because the gestures live outside the
   repository, the measurement is the only thing that can tell you they are gone.

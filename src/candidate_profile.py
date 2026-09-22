@@ -5009,6 +5009,15 @@ def _parse_question_entry(data: dict, sous_type: str) -> Optional[tuple[str, dic
         info_jo_r = texte_r_block.get("infoJO") or {}
         date_reponse = normaliser_date_jo(info_jo_r.get("dateJO"))
 
+    # Une question au gouvernement est posée à l'oral : la source ne publie
+    # jamais son `textesQuestion` (8 574 QG sur 8 574, législatures 15 à 17,
+    # mesuré le 22/09/2026). La question paraît au Journal officiel dans le
+    # même compte rendu que la réponse : sa date de parution est celle-là, écrite
+    # par la source — arbitré le 22/09/2026 (#1044). Sans elle, les 167 QG des
+    # candidats déclarés ne tombaient dans aucun filtre par période.
+    if date_question is None and sous_type == "QG":
+        date_question = date_reponse
+
     # Ministère interrogé.
     min_int = question.get("minInt") or {}
     ministere = min_int.get("developpe") if isinstance(min_int.get("developpe"), str) else None

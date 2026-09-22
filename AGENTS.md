@@ -302,10 +302,13 @@ too long. Sorting is the agent's work, not hers.
   Section 2, new warnings or errors introduced.
 - **End every reply with what remains.** Never present partial work as done:
   the last lines say what is still open, so nothing silently drops.
-- **A PR touching `src/` or `raw_data/*.json` pushed while a data run is going
-  says "do not merge"** — first line of the reply and of the PR body. The run
-  commits data built from the code it started with; merging under it mixes two
-  states.
+- **A PR touching `.github/workflows/generate-data.yml` or
+  `.github/actions/code-du-prive/` says so, first line of the reply and of the
+  PR body: it must be published by hand before the run that needs it.** The
+  public repository reads those two from its own tree; everything else a run
+  takes from the private `main`, pinned once at its start (#1059). A PR touching
+  `src/` may be merged during a run — the rule that forbade it fell with that
+  pin (21/09/2026).
 
 ## 10. A subagent's report is a claim, not a result
 

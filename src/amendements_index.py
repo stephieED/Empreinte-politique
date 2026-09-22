@@ -76,7 +76,7 @@ import sys
 from pathlib import Path
 from typing import Any, Callable, Iterable, Iterator, Optional
 
-from json_io import ecrire_profil_json
+from json_io import ecrire_index_json
 from licences import LICENCE_AN
 from profil_brut import iter_amendements_du_profil
 from textes_vises_figes import est_uid_texte
@@ -727,7 +727,7 @@ def ecrire(
             for texte_vise in sorted(v for v in vises if isinstance(v, str) and v)
             if texte_vise in index.par_texte
         }
-        ecrire_profil_json(chemin, {
+        ecrire_index_json(chemin, {
             "schema_version": SCHEMA_VERSION,
             "legislature": legislature,
             "genere_le": genere_le,
@@ -741,7 +741,7 @@ def ecrire(
         ecrits.append(chemin)
 
         chemin_cosign = _fichier_cosignatures(dossier, legislature)
-        ecrire_profil_json(chemin_cosign, {
+        ecrire_index_json(chemin_cosign, {
             "schema_version": COSIGNATURES_SCHEMA_VERSION,
             "legislature": legislature,
             "genere_le": genere_le,

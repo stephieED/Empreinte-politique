@@ -74,9 +74,15 @@ class _Portail:
     def __init__(self, documents):
         self.documents = documents
         self.demandes = []
+        self.listes = []
 
     def get(self, url, params=None, timeout=None):
         doceo = url.rsplit("/", 1)[-1]
+        if doceo == "adopted-texts":
+            # La liste annuelle (#1069) : ce portail-ci n'en publie aucune,
+            # comme le vrai pour une année qu'il ne couvre pas.
+            self.listes.append((params or {}).get("year"))
+            return _Reponse(204)
         self.demandes.append(doceo)
         if doceo in self.documents:
             return _Reponse(200, self.documents[doceo])
@@ -195,12 +201,12 @@ def test_le_budget_en_temps_arrete_la_passe_quel_que_soit_le_plafond(tmp_path):
     entrees = [_entree("A-AMENDE"), _entree("B-VOTE")]
     resolveur = _resolveur(tmp_path, {"TA-8-2018-0286": REPONSE_TA, "TA-9-2020-0001": REPONSE_TA})
     documents = {"A-AMENDE": ["TA-8-2018-0286"], "B-VOTE": ["TA-9-2020-0001"]}
-    temps = iter([0.0, 0.0, 1300.0, 1300.0, 1300.0])  # début, 1er dossier, 2e dossier…
 
     compteurs = domaines_des_dossiers(
         entrees, documents, resolveur, _SessionSparql({}, domaines=DOMAINES),
         prioritaires={"A-AMENDE"}, plafond=10_000, budget_secondes=1200,
-        horloge=lambda: next(temps))
+        # Le budget s'épuise dès la première réponse du portail.
+        horloge=lambda: 1300.0 if resolveur.session.demandes else 0.0)
 
     assert entrees[0]["domaines_document"] == "TA-8-2018-0286"
     assert entrees[1]["domaines_non_resolu"] == {"motif": "question_non_posee"}

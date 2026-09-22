@@ -34,6 +34,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from commissions_dossiers_an import charger_table  # noqa: E402
+from json_io import dumps_indente, ecrire_index_json  # noqa: E402
 from licences import LICENCE_AN  # noqa: E402
 
 SCHEMA_VERSION = "commissions-dossiers-v1"
@@ -87,19 +88,16 @@ def main(argv: list[str] | None = None) -> int:
         print("  [!] Table vide et rien de publié : aucun fichier écrit.")
         return 0
 
-    chemin.parent.mkdir(parents=True, exist_ok=True)
-    with open(chemin, "w", encoding="utf-8") as f:
-        json.dump(
-            {
-                "schema_version": SCHEMA_VERSION,
-                "genere_le": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
-                "licence_donnees": LICENCE_AN,
-                "commissions": table,
-            },
-            f,
-            ensure_ascii=False,
-            indent=2,
-        )
+    ecrire_index_json(
+        chemin,
+        {
+            "schema_version": SCHEMA_VERSION,
+            "genere_le": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+            "licence_donnees": LICENCE_AN,
+            "commissions": table,
+        },
+        dumps_indente,
+    )
     conservees = len(table) - len(collectee)
     print(f"  ✓ {len(table)} dossier(s) avec commission saisie au fond → {chemin}")
     if conservees > 0:

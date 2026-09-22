@@ -50,7 +50,7 @@ import json
 from pathlib import Path
 from typing import Any, Iterable, Iterator, Optional
 
-from json_io import ecrire_profil_json
+from json_io import ecrire_index_json
 from licences import LICENCE_AN
 from scrutins_legislature import (
     LegislatureIrresoluble,
@@ -342,7 +342,7 @@ def ecrire(chemin: Path, index: ScrutinsIndex, *, genere_le: Optional[str] = Non
     """Écrit l'index en JSON compact (#433) : 17 422 scrutins, ~8,7 Mo."""
     chemin = Path(chemin)
     chemin.parent.mkdir(parents=True, exist_ok=True)
-    ecrire_profil_json(chemin, {
+    ecrire_index_json(chemin, {
         "schema_version": SCHEMA_VERSION,
         "genere_le": genere_le,
         "licence_donnees": LICENCE_AN,

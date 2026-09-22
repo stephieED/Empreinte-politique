@@ -958,6 +958,15 @@ scripts/sync_depots.sh --tout v1.0.1
 | `--publier-code <version>` | dev → public | publie le code en **un** commit de publication |
 | `--tout <version>` | les deux | récupère, pousse vers le dev, puis publie |
 
+**Depuis #1059, un run publie lui-même le code avec ses données** — tout le
+code, `web/UI_finale` compris. `--publier-code` ne reste nécessaire que dans
+**un** cas, mais il revient à chaque fois : **une modification de
+`.github/workflows/generate-data.yml` ou de `.github/actions/code-du-prive/`**.
+GitHub lit le workflow sur le dépôt public, et l'action de superposition est
+exécutée depuis le checkout public avant de se remplacer elle-même : le run
+suivant tournerait sur l'ancienne version. Publier d'abord, lancer ensuite —
+c'est ce qu'ont exigé #1067 et v1.0.4 le 21/09/2026.
+
 **L'ordre compte, et c'est tout l'intérêt du script.** `--publier-code` pousse
 un arbre **entier** : parti d'un dépôt de développement aux données périmées,
 il écraserait celles qu'un run vient de produire. D'où « récupérer les données

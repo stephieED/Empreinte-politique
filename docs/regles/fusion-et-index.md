@@ -24,6 +24,18 @@ les charger, ni à les faire grossir. -->
   — purging them by hand would write, one run early, what the pipeline writes anyway.
   → `docs/decisions/retrait-marqueur-regards-citoyens-deputes-890.md`
 
+- **A shared index is written only when its content changes; `genere_le` is the date of
+  the last real change, not of the last run (#1075).** Write it through
+  `json_io.ecrire_index_json`, with the serialiser that matches its published format: the
+  document is serialised with the old `genere_le` and, if byte-identical to the file in
+  place, nothing is written. Measured on 21/09/2026, 13 of the 18 non-profile files a run
+  committed changed only by that date — `amendements/15.json`, 70 MB of a closed
+  legislature, among them. The criterion is **content**, never « the legislature is
+  closed »: an index holds what the collected profiles cite, and a new profile that sat in
+  the 15th must still move `15.json`. Profiles follow the same contract through
+  `preserve_stable_freshness_timestamps` (#343).
+  → `docs/decisions/index-reecrits-seulement-si-le-contenu-change-1075.md`
+
 - **A closed legislature's amendments are already stored, deduplicated and inverted — the
   raw slices only recopy them (#691).** `raw_data/profiles/` weighs 9.7 GiB, 89 % of it
   amendment slices, and no single field is large: `co_signataires` is **79.5 %** of a

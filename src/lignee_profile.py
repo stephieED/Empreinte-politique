@@ -269,6 +269,7 @@ def composer_lignee(
 def recalculer_agregats(
     profils_projetes: Iterable[tuple[Optional[str], dict[str, Any]]],
     amendements_index: Any = None,
+    appartenances: Optional[dict[tuple[str, Optional[str]], Any]] = None,
 ) -> dict[str, Any]:
     """`tags_thematiques_agreges` et `amendements_agreges` d'une lignée.
 
@@ -309,6 +310,10 @@ def recalculer_agregats(
             législature ; sous deux maillons de la MÊME législature, une seule.
         amendements_index: index partagé (#431), passé à `_aggregate_amendements`
             pour les profils qui porteraient encore leurs entrées.
+        appartenances: `{(membre, législature): périodes}` — l'union des
+            périodes du membre dans les maillons de cette législature (#1073).
+            Sa parole ne compte que pendant qu'il appartenait à la lignée ;
+            `None`, ou un couple absent, garde toute sa législature.
 
     Returns:
         Les deux agrégats, plus `nb_amendements_non_resolus` — les entrées
@@ -332,7 +337,14 @@ def recalculer_agregats(
         # qu'une fois : c'est la PERSONNE qui porte l'étiquette, pas la fiche.
         # D'où le relevé par membre, et `nb_membres_porteurs` reconstruit sur
         # l'union.
-        for tag in aggregate_tags_thematiques([profil], legislature=legislature).tags:
+        agregat = aggregate_tags_thematiques(
+            [profil], legislature=legislature,
+            appartenances=(
+                {profil.get("id") or "": appartenances.get((profil.get("id") or "", legislature))}
+                if appartenances is not None else None
+            ),
+        )
+        for tag in agregat.tags:
             tags_par_membre.setdefault(tag["tag"], set()).add(profil.get("id"))
 
     # `_aggregate_amendements` somme les signatures de chaque contribution et

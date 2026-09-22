@@ -183,8 +183,9 @@ les charger, ni à les faire grossir. -->
   writes the `origine: "sourcee"` correspondence entries **offline** before the gate, then
   commits the list with the data. **The network lives in the head job and nowhere else** —
   a third-party outage must never cost the commit of a run whose data is good (#524), and
-  the head job never pushes: `GENERATION_CODE_CHANGED_DURING_RUN` would cancel the commit
-  if `raw_data/*.json` moved on the branch mid-run. **An entry is written only when the
+  the head job never pushes: the list travels in the artifact and is committed with the
+  data it scoped (the mid-run guard `GENERATION_CODE_CHANGED_DURING_RUN` was retired by
+  #1059, the run's code being pinned at its start). **An entry is written only when the
   external identifier and the published profile agree**; a negative fact (`hors_an`)
   requires *both* sources to be silent, and any disagreement writes nothing, names the
   slug, and lets §5b block.

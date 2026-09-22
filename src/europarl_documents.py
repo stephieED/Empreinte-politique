@@ -118,6 +118,20 @@ MAX_ESSAIS = 4
 MAX_ECHECS_CONSECUTIFS = 5
 TIMEOUT = 30
 
+#: La liste des textes adoptés d'une année, `is_about` compris (#1069).
+#:
+#: Mesuré le 21/09/2026 depuis un poste : 35 pages de 200 pour 2014 → 2026,
+#: **5 196 textes en 9 minutes**, là où la passe document par document en
+#: obtient ~650 par run. Rendu identique à la requête unitaire sur 10 textes
+#: tirés au hasard (6 classés, 4 non classés). La liste commence en 2014 :
+#: 2013 n'y porte qu'un texte, 2012 répond `204`, et les textes de la 7e
+#: législature, absents de la liste, répondent aussi `404` à l'unité.
+PORTAIL_TEXTES_ADOPTES = f"{PORTAIL_API}/adopted-texts"
+TAILLE_PAGE_LISTE = 200
+#: Une page de 200 pèse ~8 Mo et a mis jusqu'à 24 s à venir.
+TIMEOUT_LISTE = 120
+PAUSE_REESSAI_LISTE = 5
+
 #: La référence telle que l'intitulé la cite, entre parenthèses.
 #: `(A8-0196/2017 - Petri Sarvamaa)` ou `(RC-B8-0292/2018)`.
 _RE_REFERENCE = re.compile(r"\((RC-)?([ABC])(\d{1,2})-(\d{4})/(\d{4})")
@@ -313,6 +327,11 @@ class ResolveurDocuments:
         entree = self._entree(doceo, complete=True)
         return None if entree is None else entree.get("titre_fr")
 
+    def concepts_connus(self, doceo: str) -> bool:
+        """Le cache sait-il déjà si ce document est classé ? Sans interroger (#1069)."""
+        entree = self._cache.get(doceo)
+        return entree is not None and (not entree.get("existe") or entree.get("concepts") is not None)
+
     def concepts_eurovoc(self, doceo: str) -> Optional[list[str]]:
         """Les identifiants EuroVoc du document — `None` si la question n'a pas
         pu être posée, `[]` si le portail n'en publie aucun (#901).
@@ -410,6 +429,99 @@ class ResolveurDocuments:
                         "titre_fr": self._titre_fr(charge),
                         "concepts": self._concepts(charge)}
             return None
+        return None
+
+    def precharger_textes_adoptes(
+        self,
+        annees: Any,
+        *,
+        budget_secondes: Optional[float] = None,
+        horloge: Any = time.monotonic,
+    ) -> dict[str, int]:
+        """Remplit le cache avec les textes adoptés de ces années, par liste (#1069).
+
+        Une page rend 200 textes avec leurs concepts : c'est la même réponse que
+        `_interroger`, document par document, pour deux cents fois moins de
+        requêtes. Chaque texte listé entre au cache comme s'il avait été demandé
+        seul — `concepts` vaut `[]` quand le portail ne le classe pas, et c'est
+        une réponse, pas une ignorance.
+
+        **Un texte absent de la liste n'est rien écrit.** L'absence est vraie
+        pour la 7e législature, qui répond aussi `404` à l'unité, mais une liste
+        de l'année en cours peut retarder sur la publication : l'en déduire
+        publierait une inexistence que la source n'a pas dite (§2 règle 5). La
+        passe unitaire reste là pour ces documents-là.
+
+        Hors ligne, sans session ou disjoncté : rien n'est demandé.
+        """
+        compteurs = {"annees": 0, "pages": 0, "textes": 0, "avec_concepts": 0}
+        if self.hors_ligne or self.session is None or self._disjoncte:
+            return compteurs
+        debut = horloge()
+        for annee in sorted({int(a) for a in annees}, reverse=True):
+            decalage = 0
+            while True:
+                if budget_secondes is not None and horloge() - debut >= budget_secondes:
+                    return compteurs
+                charge = self._page_textes_adoptes(annee, decalage)
+                if charge is None:
+                    break
+                compteurs["pages"] += 1
+                textes = charge.get("data") if isinstance(charge, dict) else None
+                if not isinstance(textes, list):
+                    textes = []
+                for texte in textes:
+                    doceo = texte.get("identifier") if isinstance(texte, dict) else None
+                    if not isinstance(doceo, str) or not doceo:
+                        continue
+                    enveloppe = {"data": texte}
+                    concepts = self._concepts(enveloppe)
+                    self._cache[doceo] = {"existe": True,
+                                          "titre_fr": self._titre_fr(enveloppe),
+                                          "concepts": concepts}
+                    compteurs["textes"] += 1
+                    compteurs["avec_concepts"] += bool(concepts)
+                if len(textes) < TAILLE_PAGE_LISTE:
+                    break
+                decalage += TAILLE_PAGE_LISTE
+            compteurs["annees"] += 1
+        return compteurs
+
+    def _page_textes_adoptes(self, annee: int, decalage: int) -> Optional[dict[str, Any]]:
+        """Une page de la liste annuelle ; `None` quand il n'y a rien de plus.
+
+        `204` : l'année n'a pas (ou plus) de texte. Une autre réponse se
+        réessaie — un `404` passager a été vu en pleine liste de 2015, la page
+        suivante répondant normalement —, puis arrête l'année : la passe
+        unitaire prend le relais sur ce qui manque. Un `429` s'attend, comme
+        partout dans ce module.
+        """
+        params = {"year": annee, "format": "application/ld+json",
+                  "offset": decalage, "limit": TAILLE_PAGE_LISTE}
+        for _ in range(MAX_ESSAIS):
+            try:
+                reponse = self.session.get(PORTAIL_TEXTES_ADOPTES, params=params, timeout=TIMEOUT_LISTE)
+            except Exception:
+                return None
+            self._interroges += 1
+            if reponse.status_code == 429:
+                self._refuses += 1
+                try:
+                    delai = int(reponse.headers.get("Retry-After"))
+                except (TypeError, ValueError):
+                    delai = DELAI_REPLI_429
+                time.sleep(delai + 1)
+                continue
+            time.sleep(PAUSE_ENTRE_REQUETES)
+            if reponse.status_code == 204:
+                return None
+            if reponse.status_code != 200:
+                time.sleep(PAUSE_REESSAI_LISTE)
+                continue
+            try:
+                return reponse.json()
+            except Exception:
+                return None
         return None
 
     def url_verifiee(self, intitule: Any) -> Optional[str]:

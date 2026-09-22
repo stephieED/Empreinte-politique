@@ -231,10 +231,9 @@ def main(argv: Optional[list[str]] = None) -> int:
     if manquants:
         print(f"  [!] {manquants} cité(s) absent(s) du dump — publiés nulle part "
               "plutôt que fabriqués (§2 règle 5).", file=sys.stderr)
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(
-        json.dumps(document(entrees), ensure_ascii=False, separators=(",", ":")) + "\n",
-        encoding="utf-8")
+    from json_io import dumps_ligne, ecrire_index_json  # noqa: PLC0415
+
+    ecrire_index_json(args.out, document(entrees), dumps_ligne)
     poids = args.out.stat().st_size / 1024 / 1024
     print(f"  ✓ {len(entrees)} scrutin(s) écrit(s) dans {args.out} ({poids:.2f} Mo)")
     return 0

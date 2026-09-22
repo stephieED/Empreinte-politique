@@ -268,6 +268,13 @@ domaines EuroVoc pesait **21,5 des 52,5 minutes** de `merge-and-pivot` (run
 `35563358605`) — et ce n'est pas un calcul : c'est un **budget**, 685 requêtes
 au portail à 1,85 s l'une, consommé en entier tant que la file n'est pas vidée.
 
+**Les textes adoptés se lisent par liste annuelle** (#1069) : une page de
+`/adopted-texts` rend 200 textes avec leurs concepts, et seules les années d'un
+texte encore inconnu du cache sont demandées. Le reste — rapports, propositions
+de résolution, textes absents de la liste — passe à l'unité, **des plus récents
+aux plus anciens**.
+([décision](decisions/textes-adoptes-par-liste-annuelle-1069.md))
+
 **Ce job ne produit pas l'index, il produit le cache.** Il interroge le portail
 sur les références que les profils **déjà publiés** citent, et publie
 `.cache/europarl` en artifact. `merge-and-pivot` le télécharge et reconstruit
@@ -716,6 +723,29 @@ profil partiel et déclare la troncature dans `meta.warnings[]`. Gardé par
 `tests/test_ci_budget_interventions.py`, voir
 `docs/decisions/budget-collecte-interventions.md`.
 
+### Le checkout complet, et pourquoi on n'en retire pas les données
+
+**Mesuré le 21/09/2026** sur tous les workflows du dépôt public, déploiement du
+site compris : un checkout complet prenait **43 à 59 s** tant que le dépôt ne
+portait que des commits de publication, puis **211 à 359 s** à partir du
+premier commit de données écrit par un run (`98e6479d2`, 06h36). Ce n'est pas
+une régression : l'ancien dépôt mesurait déjà **4 min 52 à 6 min 03**
+(run `33404236969`). Le dépôt neuf, né d'un commit unique poussé en un seul
+paquet, était l'exception ; qu'un commit de données disperse les objets entre
+plusieurs paquets est une **hypothèse**, cohérente avec les chiffres et non
+démontrée.
+
+**Retirer les données des checkouts a été examiné et écarté** (21/09/2026).
+Les deux répertoires `profiles/` pèsent 6,8 des 7,3 Go de données, mais
+quatre jobs les lisent — `merge-and-pivot`, `rechauffer-le-portail-europeen`,
+`extract-roster-groupes` (ses modes `--skip-existing` / `--refresh-existing`
+décident sur les profils déjà écrits) et `extract-mandats-locaux`. Les quatre
+autres (`extract-amendements-an`, `extract-ue-officiel`, `extract-parltrack`,
+`extract-senat`) s'en passeraient, pour ~20 minutes-runner par run et **aucune
+minute de chemin critique** : le chemin passe par les shards roster puis par
+`merge-and-pivot`, qui ont tous deux besoin des profils. Sur un dépôt public,
+le runner ne coûte rien ; une liste blanche par job, si.
+
 ## 6. Le push
 
 `merge-and-pivot` checkoute avec
@@ -925,7 +955,8 @@ d'une famille OEIL (`6` → « External relations of the Union ») n'apparaît q
 pour les **domaines EuroVoc** d'un dossier : EuroVoc est attaché à un document, pas
 à une procédure. Il lit les documents de séance du dossier dans le dump, demande au
 portail du Parlement les concepts du **texte adopté** d'abord (le rapport de
-commission n'est presque jamais classé), puis leurs domaines par SPARQL. **Budget : 20 minutes
+commission n'est presque jamais classé) — par **liste annuelle** pour les
+textes adoptés depuis #1069, à l'unité pour le reste —, puis leurs domaines par SPARQL. **Budget : 20 minutes
 par run** (`--budget-secondes`, borne haute `--plafond-requetes` 1 500), les dossiers
 amendés en premier ; le cache `.cache/europarl`, restauré et cumulé d'un run à
 l'autre, répond sans compter. Au-delà du budget, un dossier porte

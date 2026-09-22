@@ -168,6 +168,27 @@ visait **notre adresse, sur cette ressource**. Deux conséquences dans le code :
 après cinq silences (`MAX_ECHECS_CONSECUTIFS`), et aucune mesure en boucle depuis la machine
 de développement — vérifier un document isolé passe par un autre réseau.
 
+## `data.europarl.europa.eu/api/v2/adopted-texts?year=…` — la même réponse, deux cents à la fois
+
+Mesuré le 21/09/2026 (#1069) depuis un poste. La liste des **textes adoptés** d'une année porte,
+pour chacun, les mêmes champs que `/documents/{id}` — `identifier`, `is_about`, `title_dcterms` —
+et se pagine par `offset` et `limit`.
+
+| | |
+| --- | --- |
+| Années servies | **2014 → 2026**. 2013 n'y porte qu'un texte, 2012 répond `204` |
+| Volume | 5 196 textes, dont 3 989 classés (`is_about` présent) |
+| Coût | 35 pages de 200, **9 minutes** ; une page pèse ~8 Mo (toutes les manifestations, dans toutes les langues) et a mis de 7 à 24 s |
+| Concordance | `is_about` identique à la requête unitaire sur **10 textes sur 10** tirés au hasard (6 classés, 4 non) |
+
+**La 7e législature n'y est pas, et elle n'est pas non plus à l'unité** : `TA-7-2014-0429` et
+`TA-7-2014-0345`, absents de la liste, répondent `404` sur `/documents/{id}`. Ce que le portail
+ne liste pas, il ne le sert pas — constaté sur ces deux-là, pas prouvé en général : le code
+n'en déduit donc aucune inexistence.
+
+**Un `404` passager en pleine liste** : la page `offset=200` de 2015 a répondu `404`, puis `200`
+au nouvel essai. Une erreur de page se réessaie.
+
 ## Ce que ces sources ne portent pas
 
 - **Le `sort` d'un amendement** — aucun champ, dans aucun dump.

@@ -524,6 +524,37 @@ def documents_de_seance(dossier: dict[str, Any]) -> list[str]:
 ESSAIS_PAR_DOSSIER = 2
 
 
+def precharger_textes_adoptes(
+    entrees: list[dict[str, Any]],
+    documents: dict[str, list[str]],
+    resolveur: Any,
+    *,
+    plafond: int,
+    budget_secondes: float,
+    horloge: Callable[[], float] = time.monotonic,
+) -> dict[str, int]:
+    """Charge par liste annuelle les textes adoptés que la passe va demander (#1069).
+
+    Seules les années d'un texte adopté **encore inconnu** du cache sont
+    demandées : une fois la liste passée, un run ne relit que l'année qui
+    s'écrit. Rien n'est demandé quand la passe ne doit pas interroger
+    (`plafond` ou budget nul : c'est `merge-and-pivot`, qui lit le cache chaud).
+    """
+    vide = {"annees": 0, "pages": 0, "textes": 0, "avec_concepts": 0}
+    if plafond <= 0 or budget_secondes <= 0 or not hasattr(resolveur, "precharger_textes_adoptes"):
+        return vide
+    annees = set()
+    for entree in entrees:
+        for doceo in (documents.get(entree["reference"]) or [])[:ESSAIS_PAR_DOSSIER]:
+            if doceo.startswith("TA-") and not resolveur.concepts_connus(doceo):
+                annees.add(int(doceo.split("-")[2]))
+    if not annees:
+        return vide
+    compteurs = resolveur.precharger_textes_adoptes(annees, budget_secondes=budget_secondes, horloge=horloge)
+    print(f"  textes adoptés lus par liste annuelle : {compteurs}")
+    return compteurs
+
+
 def domaines_des_dossiers(
     entrees: list[dict[str, Any]],
     documents: dict[str, list[str]],
@@ -555,9 +586,17 @@ def domaines_des_dossiers(
       domaine_eurovoc_introuvable : les concepts sont là, sans domaine
     """
     prioritaires = set(prioritaires)
-    ordre = sorted(entrees, key=lambda e: (e["reference"] not in prioritaires, e["reference"]))
-    depart = resolveur.statistiques.get("requetes", 0)
+    # Les plus récents d'abord (#1069) : par ordre croissant, la passe
+    # commençait par les dossiers de 1992, que le portail ne classe pas — 297
+    # « non classés » sur 304 réponses au run du 21/09/2026.
+    ordre = sorted(entrees, key=lambda e: e["reference"], reverse=True)
+    ordre.sort(key=lambda e: e["reference"] not in prioritaires)
     debut = horloge()
+    # La liste partage le budget en temps, pas le plafond : le plafond borne
+    # les requêtes UNITAIRES, et une page en vaut deux cents.
+    liste = precharger_textes_adoptes(entrees, documents, resolveur, plafond=plafond,
+                                      budget_secondes=budget_secondes, horloge=horloge)
+    depart = resolveur.statistiques.get("requetes", 0)
     hors_ligne_initial = getattr(resolveur, "hors_ligne", False)
     concepts_par_doc: dict[str, list[str]] = {}
     etat: dict[str, Any] = {}
@@ -618,6 +657,8 @@ def domaines_des_dossiers(
         else:
             entree["domaines_non_resolu"] = {"motif": motif}
             compteurs[motif] = compteurs.get(motif, 0) + 1
+    compteurs["pages_de_liste"] = liste["pages"]
+    compteurs["textes_adoptes_par_liste"] = liste["textes"]
     compteurs["requetes"] = resolveur.statistiques.get("requetes", 0) - depart
     compteurs["secondes"] = int(horloge() - debut)
     return compteurs
@@ -823,10 +864,9 @@ def main(argv: Optional[list[str]] = None) -> int:
               "absentes, jamais fabriquées (§2 règle 5) :", file=sys.stderr)
         for reference in manquantes[:10]:
             print(f"        {reference}", file=sys.stderr)
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(
-        json.dumps(document(entrees), ensure_ascii=False, separators=(",", ":")) + "\n",
-        encoding="utf-8")
+    from json_io import dumps_ligne, ecrire_index_json  # noqa: PLC0415
+
+    ecrire_index_json(args.out, document(entrees), dumps_ligne)
     poids = args.out.stat().st_size / 1024
     print(f"  ✓ {len(entrees)} dossier(s) écrit(s) dans {args.out} ({poids:.0f} Ko)")
     return 0

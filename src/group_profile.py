@@ -911,6 +911,69 @@ class TagsAgreges:
     #: **Conservées** — rien ne prouve qu'elles soient hors période, et les
     #: écarter ferait passer une ignorance pour un fait (§2 règle 5).
     sans_legislature: int = 0
+    #: Interventions DATÉES hors des périodes d'appartenance du membre au
+    #: groupe (#1073) : la parole d'un député parti n'est plus celle du groupe.
+    hors_appartenance: int = 0
+    #: Membres dont l'appartenance n'est pas datée : leurs interventions de la
+    #: législature restent comptées, rien ne prouvant qu'ils n'étaient pas
+    #: membres (§2 règle 5).
+    appartenance_non_datee: int = 0
+    #: Interventions sans date d'un membre à l'appartenance datée : gardées
+    #: sur toute la période, jamais placées dans une fenêtre.
+    sans_date: int = 0
+    #: Les fenêtres comptées (#1073) : `{nom: {debut, fin, nb_membres}}`, et
+    #: pour chacune le nombre de membres porteurs par clé d'étiquette.
+    fenetres: Optional[dict[str, dict[str, Any]]] = None
+
+
+def _dans_periodes(jour: str, periodes: list[tuple[Optional[str], Optional[str]]]) -> bool:
+    """`jour` (ISO) tombe-t-il dans l'une des périodes `(debut, fin)` ? Une
+    borne `None` est ouverte."""
+    return any((debut or "") <= jour <= (fin or "9999-12-31") for debut, fin in periodes)
+
+
+def periodes_d_appartenance(membre: dict[str, Any]) -> Optional[list[tuple[Optional[str], Optional[str]]]]:
+    """Les périodes d'appartenance d'une entrée `membres[]`, ou `None` si elle
+    n'est pas datée (#1073). `periodes[]` quand la source les donne (#809),
+    sinon le couple `debut_dans_groupe`/`fin_dans_groupe`."""
+    brutes = membre.get("periodes")
+    if isinstance(brutes, list) and brutes:
+        periodes = [(p.get("debut"), p.get("fin")) for p in brutes if isinstance(p, dict) and p.get("debut")]
+        if periodes:
+            return periodes
+    if membre.get("debut_dans_groupe"):
+        return [(membre["debut_dans_groupe"], membre.get("fin_dans_groupe"))]
+    return None
+
+
+def _date_moins_mois(jour: date, mois: int) -> date:
+    """`jour` moins `mois` mois, au même quantième — ramené au dernier jour du
+    mois quand il n'existe pas (31 août − 6 mois = 28 ou 29 février)."""
+    annee, rang = divmod(jour.year * 12 + jour.month - 1 - mois, 12)
+    import calendar  # noqa: PLC0415
+    return date(annee, rang + 1, min(jour.day, calendar.monthrange(annee, rang + 1)[1]))
+
+
+#: Les fenêtres de la parole d'un groupe (#1073), arbitrées le 22/09/2026 :
+#: 6 mois, 12 mois, et toute la période — celle-ci est `nb_membres_porteurs`.
+FENETRES_PAROLE: tuple[tuple[str, int], ...] = (("12_mois", 12), ("6_mois", 6))
+
+
+def bornes_des_fenetres(
+    date_reference: Optional[str], debut_periode: Optional[str]
+) -> Optional[dict[str, dict[str, str]]]:
+    """`{nom: {debut, fin}}`, comptées depuis la date de référence de la fiche
+    et jamais avant le début de sa période. `None` sans date de référence."""
+    if not date_reference:
+        return None
+    fin = date.fromisoformat(date_reference[:10])
+    fenetres: dict[str, dict[str, str]] = {}
+    for nom, mois in FENETRES_PAROLE:
+        debut = _date_moins_mois(fin, mois).isoformat()
+        if debut_periode and debut_periode > debut:
+            debut = debut_periode
+        fenetres[nom] = {"debut": debut, "fin": fin.isoformat()}
+    return fenetres
 
 
 def _tags_du_membre(
@@ -970,9 +1033,49 @@ def _tags_du_membre(
     )
 
 
+def _interventions_retenues(
+    profil: dict[str, Any],
+    legislature: Optional[str],
+    periodes: Optional[list[tuple[Optional[str], Optional[str]]]],
+) -> tuple[list[dict[str, Any]], int, int, int, int]:
+    """Les interventions d'un membre qui sont la parole du GROUPE (#1073).
+
+    Celles de la législature de la fiche (#825), puis, quand l'appartenance est
+    datée, celles tenues **pendant** l'appartenance. Mesuré le 22/09/2026 sur
+    EPR-17 : 7 311 interventions de 28 membres partis ou arrivés en cours de
+    législature nourrissaient l'empreinte du groupe, et changeaient le compte
+    de 710 débats sur 1 953.
+
+    Rend `(retenues, hors_periode, sans_legislature, hors_appartenance, sans_date)`.
+    """
+    retenues: list[dict[str, Any]] = []
+    hors_periode = sans_legislature = hors_appartenance = sans_date = 0
+    for interv in (profil.get("interventions") or []):
+        if not isinstance(interv, dict):
+            continue
+        leg = legislature_de_intervention(interv.get("intervention_id"))
+        if leg is None:
+            sans_legislature += 1
+        elif leg != str(legislature):
+            hors_periode += 1
+            continue
+        if periodes is not None:
+            jour = str(interv.get("date") or "")[:10]
+            if not jour:
+                sans_date += 1
+            elif not _dans_periodes(jour, periodes):
+                hors_appartenance += 1
+                continue
+        retenues.append(interv)
+    return retenues, hors_periode, sans_legislature, hors_appartenance, sans_date
+
+
 def aggregate_tags_thematiques(
     profils: list[dict[str, Any]],
     legislature: Optional[str] = None,
+    *,
+    appartenances: Optional[dict[str, Optional[list[tuple[Optional[str], Optional[str]]]]]] = None,
+    fenetres: Optional[dict[str, dict[str, str]]] = None,
 ) -> TagsAgreges:
     """Agrège les tags thématiques de tous les profils membres.
 
@@ -996,10 +1099,21 @@ def aggregate_tags_thematiques(
         profils: liste de profils pivot v1.
         legislature: législature de la fiche (ex. "16"), ou None.
 
+    **`appartenances`** (#1073) — `{id de profil: périodes}` : un membre ne
+    compte que sa parole tenue pendant son appartenance au groupe. Un membre
+    absent de la table, ou à `None`, n'a pas d'appartenance datée : sa parole de
+    la législature reste comptée, et le membre est compté à part.
+
+    **`fenetres`** — `{nom: {debut, fin}}` : pour chacune, le nombre de membres
+    DISTINCTS porteurs de chaque étiquette sur la fenêtre, et le dénominateur
+    (membres dont l'appartenance croise la fenêtre, ou n'est pas datée). Des
+    comptes par mois ne se recomposeraient pas : un membre intervenu deux mois
+    de suite compterait deux fois.
+
     Returns:
         Un `TagsAgreges` : les étiquettes triées par `nb_membres_porteurs`
-        décroissant, leur `source`, et les deux comptes d'interventions que le
-        filtre a écartées ou retenues sans preuve.
+        décroissant, leur `source`, et les comptes d'interventions que les
+        filtres ont écartées ou retenues sans preuve.
     """
     n = len(profils)
     if n == 0:
@@ -1014,8 +1128,35 @@ def aggregate_tags_thematiques(
     hors_periode = 0
     sans_legislature = 0
 
+    hors_appartenance = 0
+    sans_date = 0
+    appartenance_non_datee = 0
+    porteurs_fenetre: dict[str, dict[str, int]] = {nom: {} for nom in (fenetres or {})}
+    membres_fenetre: dict[str, int] = {nom: 0 for nom in (fenetres or {})}
+
     for profil in profils:
-        tags, source, n_hors, n_sans = _tags_du_membre(profil, legislature)
+        if appartenances is not None and legislature:
+            periodes = appartenances.get(profil.get("id") or "")
+            if periodes is None:
+                appartenance_non_datee += 1
+            retenues, n_hors, n_sans, n_hors_app, n_sans_date = _interventions_retenues(
+                profil, legislature, periodes)
+            tags, source = deriver_tags_thematiques(retenues), "interventions_de_la_legislature"
+            hors_appartenance += n_hors_app
+            sans_date += n_sans_date
+            for nom, bornes in (fenetres or {}).items():
+                if periodes is not None and not any(
+                    (d or "") <= bornes["fin"] and (f or "9999-12-31") >= bornes["debut"]
+                    for d, f in periodes
+                ):
+                    continue
+                membres_fenetre[nom] += 1
+                dans = [i for i in retenues
+                        if bornes["debut"] <= str(i.get("date") or "")[:10] <= bornes["fin"]]
+                for cle in {cle_tag_thematique(t) for t in deriver_tags_thematiques(dans) if t}:
+                    porteurs_fenetre[nom][cle] = porteurs_fenetre[nom].get(cle, 0) + 1
+        else:
+            tags, source, n_hors, n_sans = _tags_du_membre(profil, legislature)
         hors_periode += n_hors
         sans_legislature += n_sans
         if tags:
@@ -1052,8 +1193,15 @@ def aggregate_tags_thematiques(
         for cle in cles_du_membre:
             porteurs_par_cle[cle] = porteurs_par_cle.get(cle, 0) + 1
 
+    comptes_fenetres = None
+    if fenetres:
+        comptes_fenetres = {
+            nom: {**bornes, "nb_membres": membres_fenetre[nom], "porteurs": porteurs_fenetre[nom]}
+            for nom, bornes in fenetres.items()
+        }
     if not porteurs_par_cle:
-        return TagsAgreges([], None, hors_periode, sans_legislature)
+        return TagsAgreges([], None, hors_periode, sans_legislature,
+                           hors_appartenance, appartenance_non_datee, sans_date, comptes_fenetres)
 
     tag_source: Optional[str] = None
     if len(sources_used) == 1:
@@ -1067,12 +1215,16 @@ def aggregate_tags_thematiques(
                 "tag": forme_publiee(formes_par_cle[cle]),
                 "nb_membres_porteurs": count,
                 "poids_relatif": round(count / n, 4),
+                **({"nb_membres_porteurs_par_fenetre": {
+                    nom: porteurs_fenetre[nom].get(cle, 0) for nom in fenetres
+                }} if fenetres else {}),
             }
             for cle, count in porteurs_par_cle.items()
         ],
         key=lambda x: (-x["nb_membres_porteurs"], x["tag"]),
     )
-    return TagsAgreges(result, tag_source, hors_periode, sans_legislature)
+    return TagsAgreges(result, tag_source, hors_periode, sans_legislature,
+                       hors_appartenance, appartenance_non_datee, sans_date, comptes_fenetres)
 
 
 # ---------------------------------------------------------------------------
@@ -1951,8 +2103,9 @@ CLES_LUES_PAR_ENTREE: dict[str, tuple[str, ...]] = {
     "votes": ("scrutin_id", "position"),
     # `intervention_id` depuis #825 : c'est lui qui porte la législature
     # (`syceron_CRSANR5L16S…`), et sans elle l'empreinte thématique d'une
-    # fiche compte la carrière entière de ses membres.
-    "interventions": ("intervention_id", "theme_officiel", "mots_cles"),
+    # fiche compte la carrière entière de ses membres. `date` depuis #1073 :
+    # elle place la parole dans l'appartenance au groupe et dans les fenêtres.
+    "interventions": ("intervention_id", "date", "theme_officiel", "mots_cles"),
 }
 
 
@@ -2284,8 +2437,39 @@ def build_groupe_profile(
         )
 
     # --- Tags thématiques ---
-    agregat_tags = aggregate_tags_thematiques(profils, legislature=legislature)
+    # #1073 — la parole d'un groupe est celle que ses membres ont tenue PENDANT
+    # leur appartenance, et elle se compte aussi sur deux fenêtres fixes.
+    fenetres_bornes = bornes_des_fenetres(date_ref, periode_debut) if legislature else None
+    agregat_tags = aggregate_tags_thematiques(
+        profils, legislature=legislature,
+        appartenances={m["membre_id"]: periodes_d_appartenance(m) for m in membres},
+        fenetres=fenetres_bornes,
+    )
     tags_agreges, tag_source = agregat_tags.tags, agregat_tags.source
+    fenetres_parole = None
+    if agregat_tags.fenetres:
+        fenetres_parole = {
+            nom: {k: v for k, v in f.items() if k != "porteurs"}
+            for nom, f in agregat_tags.fenetres.items()
+        }
+    if agregat_tags.hors_appartenance:
+        warnings.append(
+            f"tags_thematiques_agreges : {agregat_tags.hors_appartenance} intervention(s) "
+            "tenue(s) hors des périodes d'appartenance de leur auteur au groupe n'ont pas "
+            "nourri l'empreinte thématique — la parole d'un membre parti, ou pas encore "
+            "arrivé, n'est pas celle du groupe (#1073)."
+        )
+    if agregat_tags.appartenance_non_datee:
+        warnings.append(
+            f"tags_thematiques_agreges : {agregat_tags.appartenance_non_datee} membre(s) "
+            "sans appartenance datée : leur parole de la législature reste comptée, rien "
+            "ne prouvant qu'ils n'étaient pas membres (§2 règle 5, #1073)."
+        )
+    if agregat_tags.sans_date and fenetres_parole:
+        warnings.append(
+            f"tags_thematiques_agreges : {agregat_tags.sans_date} intervention(s) sans date "
+            "comptée(s) sur toute la période, jamais dans une fenêtre de 6 ou 12 mois (#1073)."
+        )
     # #825 — L'EMPREINTE THÉMATIQUE D'UNE FICHE EST CELLE DE SA LÉGISLATURE.
     # Quatrième occurrence du même motif après #657, #817 et #821 : un agrégat
     # de fiche parcourait la carrière entière de ses membres. Mesuré avant
@@ -2417,6 +2601,8 @@ def build_groupe_profile(
     profil_groupe["effectif"] = effectif
     profil_groupe["cohesion_votes"] = cohesion_votes
     profil_groupe["tags_thematiques_agreges"] = tags_agreges
+    if fenetres_parole:
+        profil_groupe["fenetres_parole"] = fenetres_parole
     profil_groupe["mandats_agreges"] = mandats_agreges
     profil_groupe["amendements_agreges"] = amendements_agreges
     profil_groupe["sources"] = sources

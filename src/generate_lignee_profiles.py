@@ -175,6 +175,7 @@ def generer_une_lignee(
     from group_profile import (  # noqa: PLC0415 — import tardif : group_profile est lourd
         CumulAmendementsDistincts,
         load_profil_from_file,
+        periodes_d_appartenance,
     )
 
     absents = [g for g in groupe_ids if g not in fiches]
@@ -194,6 +195,9 @@ def generer_une_lignee(
     # (#821).
     couples: list[tuple[str, Optional[str]]] = []
     vus: set[tuple[str, Optional[str]]] = set()
+    # #1073 — l'union des périodes d'appartenance d'un membre dans les maillons
+    # d'une même législature ; `None` dès qu'une de ses entrées n'est pas datée.
+    appartenances: dict[tuple[str, Optional[str]], Any] = {}
     for fiche in fiches_ordonnees:
         legislature = fiche.get("legislature")
         for membre in fiche.get("membres") or []:
@@ -201,9 +205,13 @@ def generer_une_lignee(
             if not membre_id:
                 continue
             cle = (str(membre_id), legislature)
+            periodes = periodes_d_appartenance(membre)
             if cle not in vus:
                 vus.add(cle)
                 couples.append(cle)
+                appartenances[cle] = periodes
+            elif appartenances[cle] is not None:
+                appartenances[cle] = appartenances[cle] + periodes if periodes else None
 
     # UN cumul pour toute la lignée : c'est lui qui rend le compte en
     # amendements DISTINCTS et non en signatures (#643).
@@ -223,7 +231,7 @@ def generer_une_lignee(
             ),
         ))
 
-    agregats = recalculer_agregats(profils_projetes, amendements_index)
+    agregats = recalculer_agregats(profils_projetes, amendements_index, appartenances)
     non_resolus = agregats.pop("nb_amendements_non_resolus", 0)
 
     profil = composer_lignee(

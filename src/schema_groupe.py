@@ -252,10 +252,22 @@ Format d'un profil de groupe v1 :
     "tags_thematiques_agreges": [       # agrégation des tags individuels, triés par poids desc
         {
             "tag": "budget",
-            "nb_membres_porteurs": 14,  # nombre de membres ayant ce tag
-            "poids_relatif": 0.218      # nb_membres_porteurs / len(membres)
+            "nb_membres_porteurs": 14,  # nombre de membres ayant ce tag, parole tenue
+                                         # PENDANT leur appartenance au groupe (#1073)
+            "poids_relatif": 0.218,     # nb_membres_porteurs / len(membres)
+            "nb_membres_porteurs_par_fenetre": {"12_mois": 9, "6_mois": 4}
+                                         # membres DISTINCTS sur chaque fenêtre de
+                                         # `fenetres_parole` (#1073)
         }
     ],
+
+    "fenetres_parole": {                # #1073 — absent sans date de référence
+        "12_mois": {"debut": "2025-09-21", "fin": "2026-09-21", "nb_membres": 128},
+        "6_mois": {"debut": "2026-03-21", "fin": "2026-09-21", "nb_membres": 127}
+                                         # comptées depuis date_reference.date, jamais
+                                         # avant periode.debut ; nb_membres = dénominateur
+                                         # (appartenance qui croise la fenêtre)
+    },
 
     "mandats_agreges": [                # agrégation catégorielle des mandats[] (commission,
                                          # groupe_amitie, extra_parlementaire — voir

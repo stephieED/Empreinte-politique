@@ -336,9 +336,10 @@ def main(argv: Optional[list[str]] = None) -> int:
     entrees = construire(references, resolveur, requests.Session())
     resolveur.enregistrer()
 
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(
-        json.dumps(document(entrees), ensure_ascii=False), encoding="utf-8")
+    from json_io import ecrire_index_json  # noqa: PLC0415
+
+    ecrire_index_json(args.out, document(entrees),
+                      lambda d: json.dumps(d, ensure_ascii=False))
 
     avec = sum(1 for e in entrees if e["matieres"])
     print(f"  {len(entrees)} document(s) → {args.out}")

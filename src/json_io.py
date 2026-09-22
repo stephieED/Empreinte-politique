@@ -47,8 +47,9 @@ donc « contenu identique » reste détecté indépendamment de l'indentation.
 """
 
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable, Optional
 import json
+import re
 
 # Pas d'espace après `,` ni `:` — les valeurs par défaut de `json.dumps` en
 # ajoutent un, soit ~1 octet par champ sur des profils qui en portent des
@@ -76,3 +77,62 @@ def ecrire_profil_json(chemin: Path, document: Any) -> None:
     chemin = Path(chemin)
     chemin.parent.mkdir(parents=True, exist_ok=True)
     chemin.write_text(dumps_profil_json(document), encoding="utf-8")
+
+
+#: `genere_le` d'un index, lu dans son entête sans désérialiser le fichier :
+#: `pivot_data/amendements/15.json` pèse 70 Mo, et le charger pour y lire une
+#: date coûterait plusieurs centaines de Mo de mémoire au job qui l'écrit.
+_GENERE_LE = re.compile(rb'"genere_le"\s*:\s*("(?:[^"\\]|\\.)*"|null)')
+#: L'entête de tous les index publiés tient dans ces octets : `genere_le` y
+#: est la deuxième ou troisième clé.
+_TAILLE_ENTETE = 4096
+
+
+def ecrire_index_json(
+    chemin: Path,
+    document: dict[str, Any],
+    serialiser: Callable[[Any], str] = dumps_profil_json,
+) -> bool:
+    """Écrit un index partagé, **sauf si seul son `genere_le` changerait** (#1075).
+
+    Mesuré sur le commit du run `35648745220` (21/09/2026) : sur les 18 fichiers
+    de `pivot_data/` modifiés hors profils, **13 ne changeaient que par
+    `genere_le`** — les huit fichiers d'amendements, législatures closes
+    comprises, les index de scrutins, `documents_europeens.json`,
+    `commissions_dossiers.json`. Chaque run republiait ~70 Mo pour une date.
+
+    Le document est sérialisé avec l'ancien `genere_le` ; s'il est alors
+    identique **octet pour octet** au fichier en place, rien n'est écrit, et
+    `genere_le` garde la date du dernier changement réel. Le même
+    `serialiser` que l'écriture sert à la comparaison : un changement de format
+    compte comme un changement. Même contrat que
+    `merge_profile.preserve_stable_freshness_timestamps` (#343) pour les
+    profils.
+
+    Rend `True` si le fichier a été écrit.
+    """
+    chemin = Path(chemin)
+    texte = serialiser(document)
+    try:
+        ancien = chemin.read_bytes()
+    except OSError:
+        ancien = None
+    if ancien is not None and "genere_le" in document:
+        m = _GENERE_LE.search(ancien[:_TAILLE_ENTETE])
+        if m:
+            candidat = serialiser({**document, "genere_le": json.loads(m.group(1))})
+            if candidat.encode("utf-8") == ancien:
+                return False
+    chemin.parent.mkdir(parents=True, exist_ok=True)
+    chemin.write_text(texte, encoding="utf-8")
+    return True
+
+
+def dumps_indente(document: Any) -> str:
+    """La forme indentée des index relus à la main (`json.dump(…, indent=2)`)."""
+    return json.dumps(document, ensure_ascii=False, indent=2)
+
+
+def dumps_ligne(document: Any) -> str:
+    """Forme compacte suivie d'un saut de ligne, celle des index européens."""
+    return dumps_profil_json(document) + "\n"
