@@ -83,6 +83,12 @@ def publier_contenus(out: Path, cache: Path = DEFAUT_CACHE_AMENDEMENTS) -> dict[
     Le contenu d'une législature close ne se construit qu'une fois : ensuite,
     c'est le fichier publié qui sert. Celui de la XVIIe est reconstruit avec son
     index, et n'est réécrit que si son contenu change (`ecrire_index_json`).
+
+    **Ce qu'elle ne trouve pas, elle le dit** (#1101). Le run 35767700159 a
+    publié zéro contenu et posé zéro `article` : l'artifact qui porte le cache
+    arrivait 11 minutes après cette fonction, et son silence ressemblait
+    exactement à un succès. Une législature sans contenu ni en cache ni publié
+    imprime désormais le chemin qu'elle a cherché.
     """
     articles: dict[str, list] = {}
     for legislature in LEGISLATURES_CONTENU:
@@ -95,6 +101,9 @@ def publier_contenus(out: Path, cache: Path = DEFAUT_CACHE_AMENDEMENTS) -> dict[
             doc = construit
         else:
             doc = charger_contenu(publie)
+            if doc is None:
+                print(f"      contenu {legislature} (#1029) : AUCUN — ni en cache "
+                      f"({chemin_cache(legislature, cache)}), ni publié ({publie})")
         if doc is not None:
             articles.update(articles_du_document(doc))
     return articles

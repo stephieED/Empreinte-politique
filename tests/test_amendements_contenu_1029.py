@@ -168,7 +168,9 @@ def test_une_seule_legislature_close_est_construite_par_run(tmp_path, monkeypatc
     monkeypatch.setattr(bai, "AMENDEMENTS_CACHE_DIR", tmp_path / "cache")
     telechargees = []
 
-    def telecharger(url, chemin, leg):
+    def telecharger(url, chemin, leg, **bornes):
+        # `**bornes` : le téléchargeur reçoit `budget_secondes` depuis #1100, et
+        # un faux à la signature figée ferait échouer la construction.
         telechargees.append(leg)
         chemin.parent.mkdir(parents=True, exist_ok=True)
         chemin.write_bytes(b"")

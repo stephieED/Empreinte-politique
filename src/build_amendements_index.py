@@ -42,7 +42,9 @@ Usage (depuis la racine du dépôt) :
 """
 
 import argparse
+import os
 import sys
+import time
 from pathlib import Path
 
 from amendements_contenu import chemin_cache, chemin_publie, ecrire_contenu_cache
@@ -114,6 +116,41 @@ def build_all_amendements_index() -> bool:
 DOSSIER_PUBLIE = Path("pivot_data") / "amendements"
 
 
+#: Plafond du job `extract-amendements-an` dans `.github/workflows/generate-data.yml`.
+#: Recopié ici parce que le YAML est lu sur le dépôt PUBLIC et se publie à la
+#: main : une valeur lue à l'exécution serait celle d'un autre dépôt. La copie
+#: est tenue par `tests/test_budget_archive_figee_1100.py`, qui la compare au
+#: `timeout-minutes` du YAML.
+JOB_TIMEOUT_MINUTES = 30
+
+#: Ce qu'on garde pour la suite du job après le téléchargement : construire le
+#: contenu de la XVe demande ~150 s et 2,7 Go depuis un poste (mesuré le
+#: 22/09/2026), et l'artifact reste à téléverser.
+MARGE_APRES_TELECHARGEMENT_SECONDES = 420
+
+
+def budget_telechargement_secondes(maintenant: float | None = None) -> float | None:
+    """Le temps qu'il reste au job pour télécharger une archive figée (#1100).
+
+    `JOB_START_EPOCH` est posé par `.github/actions/bootstrap-extraction` au
+    début du job. Hors CI, il est absent : le budget est alors `None`, et le
+    téléchargeur retombe sur son compte de cycles — hors CI, attendre longtemps
+    est précisément le seul remède qui marche, et personne ne tue le processus.
+
+    Rend `None` s'il n'y a rien à borner, `0` s'il ne reste plus rien : dans ce
+    cas le téléchargement n'est même pas tenté.
+    """
+    depart = os.environ.get("JOB_START_EPOCH")
+    if not depart:
+        return None
+    try:
+        debut = float(depart)
+    except ValueError:
+        return None
+    fin = debut + JOB_TIMEOUT_MINUTES * 60 - MARGE_APRES_TELECHARGEMENT_SECONDES
+    return max(0.0, fin - (time.time() if maintenant is None else maintenant))
+
+
 def construire_un_contenu_fige(dossier_publie: Path = DOSSIER_PUBLIE) -> bool:
     """Construit le contenu d'UNE législature figée qui n'en a pas encore (#1029).
 
@@ -135,9 +172,17 @@ def construire_un_contenu_fige(dossier_publie: Path = DOSSIER_PUBLIE) -> bool:
         if not url:
             continue
         zip_path = AMENDEMENTS_CACHE_DIR / legislature / "amendements.zip"
-        print(f"-> Contenu des amendements (#1029), législature figée {legislature} : {url}")
+        budget = budget_telechargement_secondes()
+        if budget is not None and budget <= 0:
+            print(f"  [!] Contenu de la législature {legislature} non tenté : plus de budget "
+                  f"dans le job ({JOB_TIMEOUT_MINUTES} min) — reprise au run suivant.",
+                  file=sys.stderr)
+            return True
+        borne = "sans borne de temps" if budget is None else f"budget {budget:.0f}s"
+        print(f"-> Contenu des amendements (#1029), législature figée {legislature} "
+              f"({borne}) : {url}")
         try:
-            _download_amendements_zip(url, zip_path, legislature)
+            _download_amendements_zip(url, zip_path, legislature, budget_secondes=budget)
             ecrire_contenu_cache(legislature, zip_path, AMENDEMENTS_CACHE_DIR)
         except Exception as exc:  # noqa: BLE001 — non bloquant, nommé
             print(f"  [!] Contenu de la législature {legislature} non construit : {exc}",

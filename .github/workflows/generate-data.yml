@@ -3182,6 +3182,37 @@ jobs:
       # --parltrack-status-out : fichier JSON lu par check_quality_gate.py §5.
       # existing_profiles=overwrite → --no-merge : recréation complète des pivots.
       # sinon                        → fusion additive des pivots (défaut).
+      # #1101 — CETTE ÉTAPE PASSE AVANT LA GÉNÉRATION PIVOT, et l'ordre est le
+      # fait à tenir. Elle était placée juste avant le quality gate, pour qui
+      # elle a été écrite (§3d) ; depuis #1092 c'est aussi `publier_contenus`,
+      # dans la génération pivot, qui lit ce cache pour publier
+      # `pivot_data/amendements/<lég>.contenu.json` et poser `article`. Mesuré
+      # sur le run 35767700159 : index pivot construit à 19h54 et 20h03,
+      # artifact téléchargé à 20h14 — la voie 2 de #1029 n'a rien publié, sans
+      # rien dire. `tests/test_ordre_artifact_amendements_1101.py` verrouille
+      # l'ordre des deux étapes.
+      # Cache-only : cet artifact provient du job extract-amendements-an (#251),
+      # qui n'est PAS dans le `needs:` de ce job (#413 §4) : le téléchargement ne
+      # fonctionne que parce que extract-roster-groupes, lui, en dépend, et que
+      # ce job dépend de extract-roster-groupes. Dépendance transitive, donc
+      # fragile si un `needs:` bouge — l'artifact étant optionnel
+      # (continue-on-error + dégradation gracieuse ci-dessous), la casse serait
+      # silencieuse. Documenté plutôt que corrigé : ajouter le `needs:` direct
+      # changerait le graphe de dépendances pour un gain nul tant que la chaîne
+      # tient.
+      # continue-on-error: true — même pattern que l'étape homonyme d'extract-an/
+      # extract-roster-groupes (#252) : en cas d'échec/absence, la section 3d du
+      # quality gate signale simplement chaque législature "jamais construite"
+      # au lieu de lire une fraîcheur réelle (dégradation gracieuse, pas un échec
+      # de job). Alimente check_quality_gate.py --amendements-cache-dir (défaut
+      # .cache/amendements_an, section 3d, issue #254).
+      - name: Download artifact amendements AN (optionnel)
+        uses: actions/download-artifact@v7
+        continue-on-error: true
+        with:
+          name: amendements-index-an
+          path: .cache/amendements_an
+
       - name: Normalisation pivot + enrichissement ParlTrack
         env:
           OVERWRITE: ${{ inputs.existing_profiles == 'overwrite' }}
@@ -3564,27 +3595,6 @@ jobs:
             --out-dir pivot_data/gouvernements \
             --validate
 
-      # Cache-only : cet artifact provient du job extract-amendements-an (#251),
-      # qui n'est PAS dans le `needs:` de ce job (#413 §4) : le téléchargement ne
-      # fonctionne que parce que extract-roster-groupes, lui, en dépend, et que
-      # ce job dépend de extract-roster-groupes. Dépendance transitive, donc
-      # fragile si un `needs:` bouge — l'artifact étant optionnel
-      # (continue-on-error + dégradation gracieuse ci-dessous), la casse serait
-      # silencieuse. Documenté plutôt que corrigé : ajouter le `needs:` direct
-      # changerait le graphe de dépendances pour un gain nul tant que la chaîne
-      # tient.
-      # continue-on-error: true — même pattern que l'étape homonyme d'extract-an/
-      # extract-roster-groupes (#252) : en cas d'échec/absence, la section 3d du
-      # quality gate signale simplement chaque législature "jamais construite"
-      # au lieu de lire une fraîcheur réelle (dégradation gracieuse, pas un échec
-      # de job). Alimente check_quality_gate.py --amendements-cache-dir (défaut
-      # .cache/amendements_an, section 3d, issue #254).
-      - name: Download artifact amendements AN (optionnel)
-        uses: actions/download-artifact@v7
-        continue-on-error: true
-        with:
-          name: amendements-index-an
-          path: .cache/amendements_an
 
       # Entrées dérivées de la table de correspondance (#715), AVANT le portail
       # et après que les pivots sont écrits — les deux conditions comptent.

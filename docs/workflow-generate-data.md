@@ -25,7 +25,7 @@ Ce fichier existe pour être lu **avant** d'ouvrir
 | `extract-roster-groupes` | les quatre `extract-*` + `prepare-roster-matrix` | l'artifact `roster-candidats`, les mêmes sources | un artifact `raw-profiles-roster-groupes-<shard>` par shard |
 | `extract-senat` | `epingler-le-code` | `export_sens.zip` de `data.senat.fr` (#885) | artifact `raw-profiles-senat`, cache `public-data-cache-senat-<date>` |
 | `extract-mandats-locaux` | `epingler-le-code` | le Répertoire national des élus et les sortants 2026, par `tabular-api.data.gouv.fr` (#922) | artifact `raw-profiles-mandats-locaux`, **aucun cache** |
-| `merge-and-pivot` | `extract-an`, `extract-ue-officiel`, `extract-parltrack`, `extract-roster-groupes`, `extract-senat` | tous les artifacts ci-dessus, et les **quatre archives de dossiers** (XIV à XVII, deux formats depuis #1019) | le contrôle du transport, la fusion, les deux passes pivot, les fiches de groupe, de lignée et **de gouvernement** (rattachement par `organe_ref`, #996 lot 4), les quatre contrôles, le commit et le push |
+| `merge-and-pivot` | `extract-an`, `extract-ue-officiel`, `extract-parltrack`, `extract-roster-groupes`, `extract-senat` | tous les artifacts ci-dessus, et les **quatre archives de dossiers** (XIV à XVII, deux formats depuis #1019) | le contrôle du transport, la fusion, les deux passes pivot, les fiches de groupe, de lignée et **de gouvernement** (rattachement par `organe_ref`, #996 lot 4), **les actes réglementaires du Journal officiel** (#1029 voie 1 — seul appel réseau de ce job hors portail européen), les quatre contrôles, le commit et le push |
 
 Sept jobs n'ont aucun `needs:` et démarrent ensemble (`rafraichir-candidats` en
 fait partie depuis #757, `extract-senat` depuis #885, `extract-mandats-locaux`
@@ -708,6 +708,13 @@ ne pas budgéter un run à partir d'elles.
 | `extract-mandats-locaux` | 20 |
 | `merge-and-pivot` | 120 (60 jusqu'à #827, voir plus bas) |
 
+**L'étape des actes réglementaires (#1029 voie 1) se borne elle-même** à 900 s
+(`--budget-secondes`), et n'a donc pas rouvert la question du plafond : elle
+relit une cinquantaine de livraisons DILA, ~150 s mesurées depuis un poste le
+22/09/2026, et le budget couvre un runner nettement plus lent. Au-delà, les
+livraisons non lues sont dites sur la sortie d'erreur et reprises au run
+suivant ; l'étape est `continue-on-error`.
+
 Mesures utiles : un shard roster ≈ **200 s**, dont ~130 s de frais fixes (~110 s
 de `actions/checkout` seul — le dépôt porte les profils) et ~65 s d'extraction
 pour 24 membres. Sharder ×8 paie donc huit fois ces 130 s ; c'est pourquoi la
@@ -1010,6 +1017,18 @@ nominative ni de `sort` déduit des totaux — le Parlement vote aussi à la maj
 qualifiée, et le dump ne dit pas quelle règle s'appliquait. Les dossiers portent
 titre, type de procédure, stade et **commissions saisies au fond** (341 sur 355).
 
+### L'artifact des amendements, et l'ordre qui compte (#1101)
+
+`merge-and-pivot` télécharge `amendements-index-an` dans `.cache/amendements_an`.
+**Deux étapes le lisent** : `publier_contenus`, dans la génération pivot, qui
+publie `pivot_data/amendements/<lég>.contenu.json` et pose `article` (#1092), et
+le quality gate, pour la fraîcheur des index (§3d). L'étape de téléchargement
+passe donc **avant les deux passes pivot** — elle était placée juste avant le
+quality gate, son premier lecteur, et le run `35767700159` a publié zéro
+contenu : l'artifact arrivait 11 minutes trop tard, et son silence ressemblait à
+un succès. `tests/test_ordre_artifact_amendements_1101.py` verrouille l'ordre.
+→ `docs/decisions/artifact-amendements-avant-la-passe-pivot-1101.md`
+
 ### Les actes réglementaires du Journal officiel, dans `merge-and-pivot` (#1029 voie 1)
 
 Une étape, après les index européens et avant les fiches de groupe.
@@ -1039,6 +1058,20 @@ mois est réécrit, pas fusionné, donc rien d'autre ne rattraperait la perte (�
 
 **Ce que l'étape ne fait pas** : rattacher un acte à une personne. La source
 laisse `<AUTORITE>` vide sur tous les décrets (#664).
+
+### La reprise d'une archive figée, bornée en temps (#1100)
+
+`extract-amendements-an` construit **une** législature close par run (#1029
+voie 2). Le téléchargement de son archive se borne sur le **temps restant du
+job** — `JOB_START_EPOCH`, moins le plafond de 30 min, moins 420 s de marge pour
+construire le contenu et téléverser l'artifact. Tant qu'il reste du budget, la
+reprise réessaie ; épuisé, elle déclare les octets obtenus et le temps écoulé.
+
+Pourquoi : au run `35767700159`, l'archive de la XIVe a été abandonnée après
+**5 minutes sur 30**, avec le message « la source semble indisponible ». La
+source coupe par intermittence — remesuré le même jour, la troisième tentative
+sur la même plage la rend entière.
+→ `docs/decisions/reprise-archive-figee-bornee-en-temps-1100.md`
 
 ### `extract-mandats-locaux` — le versant local d'un parcours (#922)
 

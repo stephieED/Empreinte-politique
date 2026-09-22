@@ -2435,7 +2435,7 @@ def _tenter_get_sequentiel(
 def _download_amendements_zip(
     url: str, zip_path: Path, legislature: str, chunk_bytes: Optional[int] = None,
     max_attempts: Optional[int] = None, stall_max_cycles: Optional[int] = None,
-    stall_wait_seconds: Optional[int] = None,
+    stall_wait_seconds: Optional[int] = None, budget_secondes: Optional[float] = None,
 ) -> None:
     """Télécharge l'archive zip des amendements en arbitrant **à l'exécution**
     entre deux modes de transfert, sans jamais jeter un préfixe valide.
@@ -2494,6 +2494,18 @@ def _download_amendements_zip(
     l'état 3, volontairement courte en CI et augmentable hors CI, où attendre est
     le seul remède qui fonctionne.
 
+    **`budget_secondes` borne l'état 3 EN TEMPS, et remplace alors le compte de
+    cycles** (#1100). La source ne tombe pas : elle coupe par intermittence.
+    Mesuré le 22/09/2026 sur la plage qui avait fait échouer le run
+    `35767700159` (offset 12 224 778, 4 194 192 octets) : 722 945 octets à la
+    première tentative, 2 892 049 à la deuxième, **la plage entière à la
+    troisième**. En CI, trois cycles de trois tentatives ont abandonné en
+    5 minutes sur un job qui en a 30 — 25 minutes inutilisées. Tant qu'il reste
+    du budget, on réessaie ; épuisé, on déclare la source indisponible pour ce
+    run, sans rien inventer (§2 règle 5). Même principe que le budget réseau du
+    portail européen (#1064) : en temps, parce que c'est le job qui est borné en
+    temps.
+
     Lève `SourceAmendementsIndisponibleError` (sous-classe d'`OSError`) quand
     plus aucun octet nouveau n'est obtenu, ou `OSError` si la taille finale ne
     correspond pas à la taille annoncée — jamais d'archive tronquée rendue
@@ -2541,6 +2553,7 @@ def _download_amendements_zip(
     segments_total = 0
     segments_retried = 0
     cycles_sans_progres = 0
+    depart = time.monotonic()
     identite_archive: Optional[str] = None
     redemarrages_version = 0
 
@@ -2659,24 +2672,35 @@ def _download_amendements_zip(
 
             # --- Mode 3 : aucun des deux modes ne délivre quoi que ce soit ---
             cycles_sans_progres += 1
-            if cycles_sans_progres >= stall_max_cycles:
-                attendu = f"/{total_size}" if total_size is not None else ""
+            ecoule = time.monotonic() - depart
+            if budget_secondes is None:
+                reste = None
+                epuise = cycles_sans_progres >= stall_max_cycles
+            else:
+                reste = budget_secondes - ecoule
+                epuise = reste <= 0
+            if epuise:
+                attendu = f" sur {total_size}" if total_size is not None else ""
+                borne = (f"budget de {budget_secondes:.0f}s épuisé" if budget_secondes is not None
+                         else f"{cycles_sans_progres} cycle(s) sans progrès")
                 raise SourceAmendementsIndisponibleError(
-                    f"source data.assemblee-nationale.fr indisponible pour l'archive amendements "
-                    f"législature {legislature} : aucun octet nouveau obtenu en "
-                    f"{cycles_sans_progres} cycle(s), ni par plages HTTP Range ni par GET "
-                    f"séquentiel ({offset}{attendu} octets obtenus). Ce n'est pas un échec de "
-                    "téléchargement à relancer : les deux modes de transfert sont sans effet "
-                    "tant que la source ne redevient pas disponible — attendre et réessayer "
-                    "plus tard, ou utiliser un index figé déjà committé."
+                    f"archive amendements législature {legislature} : {offset} octet(s) obtenu(s)"
+                    f"{attendu} en {ecoule:.0f}s, puis plus aucun octet nouveau ni par plages HTTP "
+                    f"Range ni par GET séquentiel ({borne}). La source COUPE par intermittence, "
+                    "elle ne répond pas « indisponible » : réessayer plus tard, avec un budget plus "
+                    "large, ou utiliser un index figé déjà committé."
                 )
+            # L'attente ne dépasse jamais ce qui reste : sinon la dernière sieste
+            # ferait dépasser le budget, et le job serait tué au lieu d'échouer.
+            attente = stall_wait_seconds if reste is None else max(0, min(stall_wait_seconds, reste))
+            reste_dit = "" if reste is None else f", {reste:.0f}s de budget restant"
             print(
                 f"  [!] Législature {legislature} : aucun octet obtenu par aucun mode "
-                f"(cycle {cycles_sans_progres}/{stall_max_cycles}) — la source semble "
-                f"indisponible, attente de {stall_wait_seconds}s avant un nouveau cycle "
-                "(inutile de marteler : aucun repli réseau ne fonctionne dans cet état)"
+                f"(cycle {cycles_sans_progres}, {offset} octet(s) obtenu(s) en {ecoule:.0f}s"
+                f"{reste_dit}) — la source coupe, attente de {attente:.0f}s avant un nouveau "
+                "cycle (inutile de marteler : aucun repli réseau ne fonctionne dans cet état)"
             )
-            time.sleep(stall_wait_seconds)
+            time.sleep(attente)
     finally:
         session.close()
 

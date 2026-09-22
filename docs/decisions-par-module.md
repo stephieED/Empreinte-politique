@@ -7,7 +7,7 @@
 [`docs/technical_decisions.md`](technical_decisions.md) va des décisions vers le
 code et se lit par date. Cette table va dans l'autre sens : **ce module → ces
 décisions**, pour qu'un agent qui ouvre un fichier de `src/` sache ce qui le
-gouverne sans avoir à fouiller les 414 décisions
+gouverne sans avoir à fouiller les 415 décisions
 du répertoire. Le critère, ce qu'il rate et pourquoi la table est générée :
 [`docs/decisions/table-inversee-decisions-par-module.md`](decisions/table-inversee-decisions-par-module.md).
 
@@ -47,9 +47,9 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/rne_opendata.py` | 3 |
 | `src/audit_gouvernement_dataset.py` | 2 |
 | `src/avertissements.py` | 2 |
+| `src/build_amendements_index.py` | 2 |
 | `src/fetch_candidats_declares.py` | 2 |
 | `src/titres_europeens.py` | 2 |
-| `src/build_amendements_index.py` | 1 |
 | `src/candidate_profile_ue.py` | 1 |
 | `src/collecte_mandats_locaux.py` | 1 |
 | `src/documents_europeens.py` | 1 |
@@ -267,11 +267,12 @@ Le mentionnent sans le gouverner : [`budget-collecte-interventions`](decisions/b
 
 ## `src/build_amendements_index.py`
 
-1 décision(s) le gouvernent ; le module en cite 0.
+2 décision(s) le gouvernent ; le module en cite 0.
 
 | Décision | Nomme |
 | --- | --- |
 | [Job CI dédié `extract-amendements-an` : construction inconditionnelle des 3 index de législature (#251) (2026-08-13)](decisions/amendements-index-job-dedie-ci.md) | `build_all_amendements_index` |
+| [La reprise d'une archive figée se borne en temps, et le message ne dit plus « indisponible » (#1100) (2026-09-22)](decisions/reprise-archive-figee-bornee-en-temps-1100.md) | `JOB_TIMEOUT_MINUTES`, `budget_telechargement_secondes` |
 
 Le mentionnent sans le gouverner : [`amendements-index-cache-only-consumers`](decisions/amendements-index-cache-only-consumers.md), [`cache-amendements-existence-nest-pas-conformite`](decisions/cache-amendements-existence-nest-pas-conformite.md), [`deux-versions-archive-amendements-1050`](decisions/deux-versions-archive-amendements-1050.md), [`fraicheur-index-amendements-749`](decisions/fraicheur-index-amendements-749.md), [`index-amendements-sharde-par-acteur`](decisions/index-amendements-sharde-par-acteur.md), [`oom-lecture-amendements-par-candidat`](decisions/oom-lecture-amendements-par-candidat.md), [`oom-reconstruction-amendements-figees`](decisions/oom-reconstruction-amendements-figees.md), [`pythonunbuffered-generate-data`](decisions/pythonunbuffered-generate-data.md).
 
@@ -280,6 +281,12 @@ Le mentionnent sans le gouverner : [`amendements-index-cache-only-consumers`](de
 Le mentionnent sans le gouverner : [`amendements-cle-uid`](decisions/amendements-cle-uid.md), [`amendements-legislatures-figees`](decisions/amendements-legislatures-figees.md), [`defaut-collecte-vs-panne-562`](decisions/defaut-collecte-vs-panne-562.md), [`deux-versions-archive-amendements-1050`](decisions/deux-versions-archive-amendements-1050.md), [`telechargement-an-prefixe-valide-443`](decisions/telechargement-an-prefixe-valide-443.md).
 
 ## `src/build_amendements_index_pivot.py`
+
+1 décision(s) le gouvernent ; le module en cite 1.
+
+| Décision | Nomme |
+| --- | --- |
+| [L'artifact des amendements passe avant la génération pivot, et son absence se dit (#1101) (2026-09-22)](decisions/artifact-amendements-avant-la-passe-pivot-1101.md) | `publier_contenus` |
 
 Le mentionnent sans le gouverner : [`dossier-des-amendements-639`](decisions/dossier-des-amendements-639.md), [`fenetre-historique-donnees`](decisions/fenetre-historique-donnees.md), [`integrite-referentielle-pivot`](decisions/integrite-referentielle-pivot.md), [`reconstruction-tranches-depuis-archive-691`](decisions/reconstruction-tranches-depuis-archive-691.md), [`report-texte-vise-source-696`](decisions/report-texte-vise-source-696.md).
 
@@ -325,7 +332,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 
 ## `src/candidate_profile.py`
 
-93 décision(s) le gouvernent ; le module en cite 14.
+94 décision(s) le gouvernent ; le module en cite 14.
 
 | Décision | Nomme |
 | --- | --- |
@@ -405,6 +412,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [Une question au gouvernement : un acte, et ses tours de parole reliés à lui (#1094) (2026-09-22)](decisions/question-au-gouvernement-acte-et-parole-1094.md) | `FORMAT_INDEX_QUESTIONS`, `_parse_question_entry` |
 | [Rattacher une intervention ou un scrutin à son dossier : les deux volets restants sont écartés, mesure à l'appui (#639) (2026-09-01)](decisions/rattachement-au-dossier-interventions-et-scrutins-639.md) | `_parse_scrutins_zip`, `_reduire_au_theme` |
 | [Le `texte_vise` fautif se reprend depuis l'archive figée, pas par une fusion plus permissive (#696, 01/09/2026)](decisions/report-texte-vise-source-696.md) | `fetch_amendements_officiels` |
+| [La reprise d'une archive figée se borne en temps, et le message ne dit plus « indisponible » (#1100) (2026-09-22)](decisions/reprise-archive-figee-bornee-en-temps-1100.md) | `AMENDEMENTS_SOURCE_STALL_MAX_CYCLES`, `_download_amendements_zip` |
 | [Résilience de `generate-data.yml` face aux `shutdown signal` runner : continue-on-error généralisé, watchdog réseau, retry générique sur `_get_payload`, retry `retry-generate-data.yml` non-régressif, et appels NosDéputés morts pour les députés (dossiers, votes) (2026-08-16)](decisions/resilience-generate-data-shutdown-signal.md) | `WARNING_PREFIX_VOTES_INTROUVABLES`, `build_profile`, `fetch_textes_portes_officiels`, `fetch_votes_officiels` |
 | [Bug de résolution AN pour les prénoms composés, et gel runner déplacé sur l'étape 0 (run #47) (2026-08-17)](decisions/resolution-an-prenom-compose-et-gel-runner-etape0.md) | `_build_acteur_nom_index`, `_ensure_acteurs_historique_zip_downloaded`, `_normalize_search_query`, `fetch_identite_officielle_par_slug` |
 | [Retrait de `fetch_activity_synthesis` (#356) (2026-08-16)](decisions/retrait-fetch-activity-synthesis.md) | `build_profile` |

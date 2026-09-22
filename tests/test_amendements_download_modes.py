@@ -312,9 +312,12 @@ def test_etat_3_leve_une_erreur_de_source_indisponible(tmp_path, cdn):
         _telecharger(serveur, zip_path, stall_max_cycles=2)
 
     message = str(exc_info.value)
-    assert "source" in message.lower() and "indisponible" in message.lower()
-    assert "data.assemblee-nationale.fr" in message
-    assert "pas un échec de téléchargement à relancer" in message
+    # #1100 — le message ne dit plus « la source est indisponible » mais ce qui a
+    # été obtenu et en combien de temps : la source COUPE, elle ne tombe pas, et
+    # l'ancien libellé a fait conclure à une panne le 22/09/2026.
+    assert "octet(s) obtenu(s)" in message and "COUPE par intermittence" in message
+    assert "cycle(s) sans progrès" in message
+    assert "réessayer plus tard" in message
     assert "15" in message, "La législature concernée doit figurer dans le message"
 
 
