@@ -112526,90 +112526,6 @@
       ]
     },
     {
-      "categorie": "groupe_etudes",
-      "label": "Ruralité",
-      "nb_membres_a_la_date_de_reference": 8,
-      "nb_membres_cumul_historique": 9,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 9
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2008-04-18",
-          "fin": "2012-06-19",
-          "actif": false
-        },
-        {
-          "membre_id": "vincent-trebuchet",
-          "nom": "Vincent Trébuchet",
-          "fonction": "Membre",
-          "debut": "2025-02-04",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "marc-chavent",
-          "nom": "Marc Chavent",
-          "fonction": "Membre",
-          "debut": "2025-02-05",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "bartolome-lenoir",
-          "nom": "Bartolomé Lenoir",
-          "fonction": "Membre",
-          "debut": "2025-01-27",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "alexandre-allegret-pilot",
-          "nom": "Alexandre Allegret-Pilot",
-          "fonction": "Membre",
-          "debut": "2025-02-05",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "hanane-mansouri",
-          "nom": "Hanane Mansouri",
-          "fonction": "Membre",
-          "debut": "2025-01-15",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "maxime-michelet",
-          "nom": "Maxime Michelet",
-          "fonction": "Membre",
-          "debut": "2025-01-15",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "eric-michoux",
-          "nom": "Éric Michoux",
-          "fonction": "Membre",
-          "debut": "2025-02-11",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "pierre-henri-carbonnel",
-          "nom": "Pierre-Henri Carbonnel",
-          "fonction": "Membre",
-          "debut": "2026-02-04",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
       "categorie": "extra_parlementaire",
       "label": "Commission régionale du fonds pour le développement de la vie associative",
       "nb_membres_a_la_date_de_reference": 8,
@@ -112834,6 +112750,82 @@
           "nom": "Éric Michoux",
           "fonction": "Membre",
           "debut": "2025-02-11",
+          "fin": null,
+          "actif": true
+        }
+      ]
+    },
+    {
+      "categorie": "groupe_etudes",
+      "label": "Ruralité",
+      "nb_membres_a_la_date_de_reference": 8,
+      "nb_membres_cumul_historique": 8,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre": 8
+      },
+      "membres": [
+        {
+          "membre_id": "vincent-trebuchet",
+          "nom": "Vincent Trébuchet",
+          "fonction": "Membre",
+          "debut": "2025-02-04",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "marc-chavent",
+          "nom": "Marc Chavent",
+          "fonction": "Membre",
+          "debut": "2025-02-05",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "bartolome-lenoir",
+          "nom": "Bartolomé Lenoir",
+          "fonction": "Membre",
+          "debut": "2025-01-27",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "alexandre-allegret-pilot",
+          "nom": "Alexandre Allegret-Pilot",
+          "fonction": "Membre",
+          "debut": "2025-02-05",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "hanane-mansouri",
+          "nom": "Hanane Mansouri",
+          "fonction": "Membre",
+          "debut": "2025-01-15",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "maxime-michelet",
+          "nom": "Maxime Michelet",
+          "fonction": "Membre",
+          "debut": "2025-01-15",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "eric-michoux",
+          "nom": "Éric Michoux",
+          "fonction": "Membre",
+          "debut": "2025-02-11",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "pierre-henri-carbonnel",
+          "nom": "Pierre-Henri Carbonnel",
+          "fonction": "Membre",
+          "debut": "2026-02-04",
           "fin": null,
           "actif": true
         }
@@ -113570,66 +113562,6 @@
     },
     {
       "categorie": "groupe_amitie",
-      "label": "France-Québec",
-      "nb_membres_a_la_date_de_reference": 4,
-      "nb_membres_cumul_historique": 6,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 6
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2025-01-30",
-          "fin": "2025-07-11",
-          "actif": false
-        },
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2009-10-08",
-          "fin": "2012-06-19",
-          "actif": false
-        },
-        {
-          "membre_id": "vincent-trebuchet",
-          "nom": "Vincent Trébuchet",
-          "fonction": "Membre",
-          "debut": "2025-02-04",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "hanane-mansouri",
-          "nom": "Hanane Mansouri",
-          "fonction": "Membre",
-          "debut": "2025-01-23",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "maxime-michelet",
-          "nom": "Maxime Michelet",
-          "fonction": "Membre",
-          "debut": "2025-01-23",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "eric-michoux",
-          "nom": "Éric Michoux",
-          "fonction": "Membre",
-          "debut": "2025-02-11",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_amitie",
       "label": "France-Espagne",
       "nb_membres_a_la_date_de_reference": 4,
       "nb_membres_cumul_historique": 5,
@@ -113675,6 +113607,58 @@
           "nom": "Pierre-Henri Carbonnel",
           "fonction": "Membre",
           "debut": "2026-02-04",
+          "fin": null,
+          "actif": true
+        }
+      ]
+    },
+    {
+      "categorie": "groupe_amitie",
+      "label": "France-Québec",
+      "nb_membres_a_la_date_de_reference": 4,
+      "nb_membres_cumul_historique": 5,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre": 5
+      },
+      "membres": [
+        {
+          "membre_id": "brigitte-bareges",
+          "nom": "Brigitte Barèges",
+          "fonction": "Membre",
+          "debut": "2025-01-30",
+          "fin": "2025-07-11",
+          "actif": false
+        },
+        {
+          "membre_id": "vincent-trebuchet",
+          "nom": "Vincent Trébuchet",
+          "fonction": "Membre",
+          "debut": "2025-02-04",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "hanane-mansouri",
+          "nom": "Hanane Mansouri",
+          "fonction": "Membre",
+          "debut": "2025-01-23",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "maxime-michelet",
+          "nom": "Maxime Michelet",
+          "fonction": "Membre",
+          "debut": "2025-01-23",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "eric-michoux",
+          "nom": "Éric Michoux",
+          "fonction": "Membre",
+          "debut": "2025-02-11",
           "fin": null,
           "actif": true
         }
@@ -113912,20 +113896,12 @@
       "categorie": "commission",
       "label": "Commission de la défense nationale et des forces armées",
       "nb_membres_a_la_date_de_reference": 3,
-      "nb_membres_cumul_historique": 4,
+      "nb_membres_cumul_historique": 3,
       "effectif_reference": 18,
       "par_fonction": {
-        "membre": 4
+        "membre": 3
       },
       "membres": [
-        {
-          "membre_id": "christelle-d-intorni",
-          "nom": "Christelle D'Intorni",
-          "fonction": "Membre",
-          "debut": "2022-06-30",
-          "fin": "2024-06-09",
-          "actif": false
-        },
         {
           "membre_id": "bernard-chaix",
           "nom": "Bernard Chaix",
@@ -114406,90 +114382,6 @@
     },
     {
       "categorie": "commission",
-      "label": "Commission des affaires culturelles et de l'éducation",
-      "nb_membres_a_la_date_de_reference": 2,
-      "nb_membres_cumul_historique": 9,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 9
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2010-02-10",
-          "fin": "2010-02-22",
-          "actif": false
-        },
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2010-06-02",
-          "fin": "2010-06-29",
-          "actif": false
-        },
-        {
-          "membre_id": "sophie-ricourt-vaginay",
-          "nom": "Sophie Ricourt Vaginay",
-          "fonction": "Membre",
-          "debut": "2025-03-19",
-          "fin": "2025-03-19",
-          "actif": false
-        },
-        {
-          "membre_id": "vincent-trebuchet",
-          "nom": "Vincent Trébuchet",
-          "fonction": "Membre",
-          "debut": "2026-05-27",
-          "fin": "2026-06-02",
-          "actif": false
-        },
-        {
-          "membre_id": "olivier-fayssat",
-          "nom": "Olivier Fayssat",
-          "fonction": "Membre",
-          "debut": "2025-06-04",
-          "fin": "2025-06-27",
-          "actif": false
-        },
-        {
-          "membre_id": "bartolome-lenoir",
-          "nom": "Bartolomé Lenoir",
-          "fonction": "Membre",
-          "debut": "2025-06-28",
-          "fin": "2026-05-26",
-          "actif": false
-        },
-        {
-          "membre_id": "hanane-mansouri",
-          "nom": "Hanane Mansouri",
-          "fonction": "Membre",
-          "debut": "2026-07-08",
-          "fin": "2026-07-08",
-          "actif": false
-        },
-        {
-          "membre_id": "charles-alloncle",
-          "nom": "Charles Alloncle",
-          "fonction": "Membre",
-          "debut": "2026-06-03",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "maxime-michelet",
-          "nom": "Maxime Michelet",
-          "fonction": "Membre",
-          "debut": "2026-07-09",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
-      "categorie": "commission",
       "label": "Commission des affaires économiques",
       "nb_membres_a_la_date_de_reference": 2,
       "nb_membres_cumul_historique": 8,
@@ -114566,83 +114458,7 @@
     },
     {
       "categorie": "commission",
-      "label": "Commission des lois constitutionnelles, de la législation et de l'administration générale de la République",
-      "nb_membres_a_la_date_de_reference": 2,
-      "nb_membres_cumul_historique": 8,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 8
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2025-07-11",
-          "fin": "2025-07-11",
-          "actif": false
-        },
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2022-06-30",
-          "fin": "2024-06-09",
-          "actif": false
-        },
-        {
-          "membre_id": "sophie-ricourt-vaginay",
-          "nom": "Sophie Ricourt Vaginay",
-          "fonction": "Membre",
-          "debut": "2026-07-01",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "olivier-fayssat",
-          "nom": "Olivier Fayssat",
-          "fonction": "Membre",
-          "debut": "2025-07-09",
-          "fin": "2025-07-10",
-          "actif": false
-        },
-        {
-          "membre_id": "bartolome-lenoir",
-          "nom": "Bartolomé Lenoir",
-          "fonction": "Membre",
-          "debut": "2026-06-03",
-          "fin": "2026-06-30",
-          "actif": false
-        },
-        {
-          "membre_id": "hanane-mansouri",
-          "nom": "Hanane Mansouri",
-          "fonction": "Membre",
-          "debut": "2026-07-09",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "maxime-michelet",
-          "nom": "Maxime Michelet",
-          "fonction": "Membre",
-          "debut": "2026-07-08",
-          "fin": "2026-07-08",
-          "actif": false
-        },
-        {
-          "membre_id": "eric-michoux",
-          "nom": "Éric Michoux",
-          "fonction": "Membre",
-          "debut": "2026-06-25",
-          "fin": "2026-06-30",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "commission",
-      "label": "Commission des affaires étrangères",
+      "label": "Commission des affaires culturelles et de l'éducation",
       "nb_membres_a_la_date_de_reference": 2,
       "nb_membres_cumul_historique": 7,
       "effectif_reference": 18,
@@ -114651,60 +114467,60 @@
       },
       "membres": [
         {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
+          "membre_id": "sophie-ricourt-vaginay",
+          "nom": "Sophie Ricourt Vaginay",
           "fonction": "Membre",
-          "debut": "2010-01-26",
-          "fin": "2010-01-28",
+          "debut": "2025-03-19",
+          "fin": "2025-03-19",
           "actif": false
-        },
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2026-06-03",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "christelle-d-intorni",
-          "nom": "Christelle D'Intorni",
-          "fonction": "Membre",
-          "debut": "2024-07-20",
-          "fin": null,
-          "actif": true
         },
         {
           "membre_id": "vincent-trebuchet",
           "nom": "Vincent Trébuchet",
-          "fonction": "Membre",
-          "debut": "2026-04-09",
-          "fin": "2026-05-19",
-          "actif": false
-        },
-        {
-          "membre_id": "bartolome-lenoir",
-          "nom": "Bartolomé Lenoir",
           "fonction": "Membre",
           "debut": "2026-05-27",
           "fin": "2026-06-02",
           "actif": false
         },
         {
-          "membre_id": "alexandre-allegret-pilot",
-          "nom": "Alexandre Allegret-Pilot",
+          "membre_id": "olivier-fayssat",
+          "nom": "Olivier Fayssat",
           "fonction": "Membre",
-          "debut": "2025-06-18",
-          "fin": "2025-06-20",
+          "debut": "2025-06-04",
+          "fin": "2025-06-27",
           "actif": false
+        },
+        {
+          "membre_id": "bartolome-lenoir",
+          "nom": "Bartolomé Lenoir",
+          "fonction": "Membre",
+          "debut": "2025-06-28",
+          "fin": "2026-05-26",
+          "actif": false
+        },
+        {
+          "membre_id": "hanane-mansouri",
+          "nom": "Hanane Mansouri",
+          "fonction": "Membre",
+          "debut": "2026-07-08",
+          "fin": "2026-07-08",
+          "actif": false
+        },
+        {
+          "membre_id": "charles-alloncle",
+          "nom": "Charles Alloncle",
+          "fonction": "Membre",
+          "debut": "2026-06-03",
+          "fin": null,
+          "actif": true
         },
         {
           "membre_id": "maxime-michelet",
           "nom": "Maxime Michelet",
           "fonction": "Membre",
-          "debut": "2026-04-08",
-          "fin": "2026-04-08",
-          "actif": false
+          "debut": "2026-07-09",
+          "fin": null,
+          "actif": true
         }
       ]
     },
@@ -114778,6 +114594,134 @@
     },
     {
       "categorie": "commission",
+      "label": "Commission des lois constitutionnelles, de la législation et de l'administration générale de la République",
+      "nb_membres_a_la_date_de_reference": 2,
+      "nb_membres_cumul_historique": 7,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre": 7
+      },
+      "membres": [
+        {
+          "membre_id": "brigitte-bareges",
+          "nom": "Brigitte Barèges",
+          "fonction": "Membre",
+          "debut": "2025-07-11",
+          "fin": "2025-07-11",
+          "actif": false
+        },
+        {
+          "membre_id": "sophie-ricourt-vaginay",
+          "nom": "Sophie Ricourt Vaginay",
+          "fonction": "Membre",
+          "debut": "2026-07-01",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "olivier-fayssat",
+          "nom": "Olivier Fayssat",
+          "fonction": "Membre",
+          "debut": "2025-07-09",
+          "fin": "2025-07-10",
+          "actif": false
+        },
+        {
+          "membre_id": "bartolome-lenoir",
+          "nom": "Bartolomé Lenoir",
+          "fonction": "Membre",
+          "debut": "2026-06-03",
+          "fin": "2026-06-30",
+          "actif": false
+        },
+        {
+          "membre_id": "hanane-mansouri",
+          "nom": "Hanane Mansouri",
+          "fonction": "Membre",
+          "debut": "2026-07-09",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "maxime-michelet",
+          "nom": "Maxime Michelet",
+          "fonction": "Membre",
+          "debut": "2026-07-08",
+          "fin": "2026-07-08",
+          "actif": false
+        },
+        {
+          "membre_id": "eric-michoux",
+          "nom": "Éric Michoux",
+          "fonction": "Membre",
+          "debut": "2026-06-25",
+          "fin": "2026-06-30",
+          "actif": false
+        }
+      ]
+    },
+    {
+      "categorie": "commission",
+      "label": "Commission des affaires étrangères",
+      "nb_membres_a_la_date_de_reference": 2,
+      "nb_membres_cumul_historique": 6,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre": 6
+      },
+      "membres": [
+        {
+          "membre_id": "eric-ciotti",
+          "nom": "Éric Ciotti",
+          "fonction": "Membre",
+          "debut": "2026-06-03",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "christelle-d-intorni",
+          "nom": "Christelle D'Intorni",
+          "fonction": "Membre",
+          "debut": "2024-07-20",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "vincent-trebuchet",
+          "nom": "Vincent Trébuchet",
+          "fonction": "Membre",
+          "debut": "2026-04-09",
+          "fin": "2026-05-19",
+          "actif": false
+        },
+        {
+          "membre_id": "bartolome-lenoir",
+          "nom": "Bartolomé Lenoir",
+          "fonction": "Membre",
+          "debut": "2026-05-27",
+          "fin": "2026-06-02",
+          "actif": false
+        },
+        {
+          "membre_id": "alexandre-allegret-pilot",
+          "nom": "Alexandre Allegret-Pilot",
+          "fonction": "Membre",
+          "debut": "2025-06-18",
+          "fin": "2025-06-20",
+          "actif": false
+        },
+        {
+          "membre_id": "maxime-michelet",
+          "nom": "Maxime Michelet",
+          "fonction": "Membre",
+          "debut": "2026-04-08",
+          "fin": "2026-04-08",
+          "actif": false
+        }
+      ]
+    },
+    {
+      "categorie": "commission",
       "label": "Commission du développement durable et de l'aménagement du territoire",
       "nb_membres_a_la_date_de_reference": 2,
       "nb_membres_cumul_historique": 5,
@@ -114829,42 +114773,6 @@
       ]
     },
     {
-      "categorie": "extra_parlementaire",
-      "label": "Commission départementale prévue à l'article L. 2334-37 du code général des collectivités territoriales",
-      "nb_membres_a_la_date_de_reference": 2,
-      "nb_membres_cumul_historique": 3,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre titulaire": 3
-      },
-      "membres": [
-        {
-          "membre_id": "christelle-d-intorni",
-          "nom": "Christelle D'Intorni",
-          "fonction": "Membre titulaire",
-          "debut": "2022-11-10",
-          "fin": "2024-06-09",
-          "actif": false
-        },
-        {
-          "membre_id": "vincent-trebuchet",
-          "nom": "Vincent Trébuchet",
-          "fonction": "Membre titulaire",
-          "debut": "2024-12-06",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "alexandre-allegret-pilot",
-          "nom": "Alexandre Allegret-Pilot",
-          "fonction": "Membre titulaire",
-          "debut": "2024-12-06",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
       "categorie": "groupe_amitie",
       "label": "France-Afghanistan",
       "nb_membres_a_la_date_de_reference": 2,
@@ -114896,42 +114804,6 @@
           "nom": "Bartolomé Lenoir",
           "fonction": "Président",
           "debut": "2025-01-29",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_amitie",
-      "label": "France-Kenya Ouganda Tanzanie",
-      "nb_membres_a_la_date_de_reference": 2,
-      "nb_membres_cumul_historique": 3,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 3
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2017-09-29",
-          "fin": "2022-06-21",
-          "actif": false
-        },
-        {
-          "membre_id": "alexandre-allegret-pilot",
-          "nom": "Alexandre Allegret-Pilot",
-          "fonction": "Membre",
-          "debut": "2025-02-05",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "hanane-mansouri",
-          "nom": "Hanane Mansouri",
-          "fonction": "Membre",
-          "debut": "2025-01-23",
           "fin": null,
           "actif": true
         }
@@ -115024,6 +114896,34 @@
           "nom": "Antoine Valentin",
           "fonction": "Membre",
           "debut": "2026-06-19",
+          "fin": null,
+          "actif": true
+        }
+      ]
+    },
+    {
+      "categorie": "extra_parlementaire",
+      "label": "Commission départementale prévue à l'article L. 2334-37 du code général des collectivités territoriales",
+      "nb_membres_a_la_date_de_reference": 2,
+      "nb_membres_cumul_historique": 2,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre titulaire": 2
+      },
+      "membres": [
+        {
+          "membre_id": "vincent-trebuchet",
+          "nom": "Vincent Trébuchet",
+          "fonction": "Membre titulaire",
+          "debut": "2024-12-06",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "alexandre-allegret-pilot",
+          "nom": "Alexandre Allegret-Pilot",
+          "fonction": "Membre titulaire",
+          "debut": "2024-12-06",
           "fin": null,
           "actif": true
         }
@@ -115220,6 +115120,34 @@
           "nom": "Éric Michoux",
           "fonction": "Membre",
           "debut": "2025-02-11",
+          "fin": null,
+          "actif": true
+        }
+      ]
+    },
+    {
+      "categorie": "groupe_amitie",
+      "label": "France-Kenya Ouganda Tanzanie",
+      "nb_membres_a_la_date_de_reference": 2,
+      "nb_membres_cumul_historique": 2,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre": 2
+      },
+      "membres": [
+        {
+          "membre_id": "alexandre-allegret-pilot",
+          "nom": "Alexandre Allegret-Pilot",
+          "fonction": "Membre",
+          "debut": "2025-02-05",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "hanane-mansouri",
+          "nom": "Hanane Mansouri",
+          "fonction": "Membre",
+          "debut": "2025-01-23",
           "fin": null,
           "actif": true
         }
@@ -115635,118 +115563,6 @@
           "debut": "2025-01-15",
           "fin": null,
           "actif": true
-        },
-        {
-          "membre_id": "eric-michoux",
-          "nom": "Éric Michoux",
-          "fonction": "Membre",
-          "debut": "2025-02-11",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_amitie",
-      "label": "France-Sénégal",
-      "nb_membres_a_la_date_de_reference": 1,
-      "nb_membres_cumul_historique": 2,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 2
-      },
-      "membres": [
-        {
-          "membre_id": "christelle-d-intorni",
-          "nom": "Christelle D'Intorni",
-          "fonction": "Membre",
-          "debut": "2022-12-12",
-          "fin": "2024-06-09",
-          "actif": false
-        },
-        {
-          "membre_id": "alexandre-allegret-pilot",
-          "nom": "Alexandre Allegret-Pilot",
-          "fonction": "Membre",
-          "debut": "2025-02-05",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Antisémitisme",
-      "nb_membres_a_la_date_de_reference": 1,
-      "nb_membres_cumul_historique": 2,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 2
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2015-01-27",
-          "fin": "2017-06-20",
-          "actif": false
-        },
-        {
-          "membre_id": "christelle-d-intorni",
-          "nom": "Christelle D'Intorni",
-          "fonction": "Membre",
-          "debut": "2025-01-30",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Commerce, artisanat et métiers d'art",
-      "nb_membres_a_la_date_de_reference": 1,
-      "nb_membres_cumul_historique": 2,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 2
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2023-03-21",
-          "fin": "2024-06-09",
-          "actif": false
-        },
-        {
-          "membre_id": "eric-michoux",
-          "nom": "Éric Michoux",
-          "fonction": "Membre",
-          "debut": "2025-02-11",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Sécurité routière",
-      "nb_membres_a_la_date_de_reference": 1,
-      "nb_membres_cumul_historique": 2,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 2
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2023-03-21",
-          "fin": "2024-06-09",
-          "actif": false
         },
         {
           "membre_id": "eric-michoux",
@@ -116580,6 +116396,26 @@
     },
     {
       "categorie": "groupe_amitie",
+      "label": "France-Sénégal",
+      "nb_membres_a_la_date_de_reference": 1,
+      "nb_membres_cumul_historique": 1,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre": 1
+      },
+      "membres": [
+        {
+          "membre_id": "alexandre-allegret-pilot",
+          "nom": "Alexandre Allegret-Pilot",
+          "fonction": "Membre",
+          "debut": "2025-02-05",
+          "fin": null,
+          "actif": true
+        }
+      ]
+    },
+    {
+      "categorie": "groupe_amitie",
       "label": "France-Tchad",
       "nb_membres_a_la_date_de_reference": 1,
       "nb_membres_cumul_historique": 1,
@@ -116660,6 +116496,26 @@
     },
     {
       "categorie": "groupe_etudes",
+      "label": "Antisémitisme",
+      "nb_membres_a_la_date_de_reference": 1,
+      "nb_membres_cumul_historique": 1,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre": 1
+      },
+      "membres": [
+        {
+          "membre_id": "christelle-d-intorni",
+          "nom": "Christelle D'Intorni",
+          "fonction": "Membre",
+          "debut": "2025-01-30",
+          "fin": null,
+          "actif": true
+        }
+      ]
+    },
+    {
+      "categorie": "groupe_etudes",
       "label": "Arctique, Antarctique, Terres australes et antarctiques françaises et grands fonds océaniques",
       "nb_membres_a_la_date_de_reference": 1,
       "nb_membres_cumul_historique": 1,
@@ -116681,6 +116537,26 @@
     {
       "categorie": "groupe_etudes",
       "label": "Cinéma et production audiovisuelle",
+      "nb_membres_a_la_date_de_reference": 1,
+      "nb_membres_cumul_historique": 1,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre": 1
+      },
+      "membres": [
+        {
+          "membre_id": "eric-michoux",
+          "nom": "Éric Michoux",
+          "fonction": "Membre",
+          "debut": "2025-02-11",
+          "fin": null,
+          "actif": true
+        }
+      ]
+    },
+    {
+      "categorie": "groupe_etudes",
+      "label": "Commerce, artisanat et métiers d'art",
       "nb_membres_a_la_date_de_reference": 1,
       "nb_membres_cumul_historique": 1,
       "effectif_reference": 18,
@@ -116940,6 +116816,26 @@
     },
     {
       "categorie": "groupe_etudes",
+      "label": "Sécurité routière",
+      "nb_membres_a_la_date_de_reference": 1,
+      "nb_membres_cumul_historique": 1,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre": 1
+      },
+      "membres": [
+        {
+          "membre_id": "eric-michoux",
+          "nom": "Éric Michoux",
+          "fonction": "Membre",
+          "debut": "2025-02-11",
+          "fin": null,
+          "actif": true
+        }
+      ]
+    },
+    {
+      "categorie": "groupe_etudes",
       "label": "Énergies durables et hydrogène",
       "nb_membres_a_la_date_de_reference": 1,
       "nb_membres_cumul_historique": 1,
@@ -117115,146 +117011,6 @@
       ]
     },
     {
-      "categorie": "groupe_etudes",
-      "label": "Chasse et territoires",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 2,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 2
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2008-02-28",
-          "fin": "2012-06-19",
-          "actif": false
-        },
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2008-02-28",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Dépendance des personnes âgées, Alzheimer",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 2,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 2
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2008-01-08",
-          "fin": "2012-06-19",
-          "actif": false
-        },
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2008-01-25",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Enseignement privé sous contrat et hors contrat",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 2,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 2
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2011-02-04",
-          "fin": "2012-06-19",
-          "actif": false
-        },
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2013-01-20",
-          "fin": "2017-06-20",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Intégration des personnes fragilisées et handicapées",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 2,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 2
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2008-04-16",
-          "fin": "2012-06-19",
-          "actif": false
-        },
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2008-04-16",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Rapatriés",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 2,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 2
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2008-07-07",
-          "fin": "2012-06-19",
-          "actif": false
-        },
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2008-07-07",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
       "categorie": "commission",
       "label": "Commission chargée de l'application de l'article 26 de la Constitution",
       "nb_membres_a_la_date_de_reference": 0,
@@ -117276,26 +117032,6 @@
     },
     {
       "categorie": "commission_enquete",
-      "label": "Commission d'enquête chargée de faire la lumière sur les dysfonctionnements ayant conduit aux attaques commises à la préfecture de police de Paris le jeudi 3 octobre 2019",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2019-10-18",
-          "fin": "2020-06-10",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "commission_enquete",
       "label": "Commission d'enquête concernant l’organisation des élections en France",
       "nb_membres_a_la_date_de_reference": 0,
       "nb_membres_cumul_historique": 1,
@@ -117310,46 +117046,6 @@
           "fonction": "Membre",
           "debut": "2025-04-23",
           "fin": "2025-05-28",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "commission_enquete",
-      "label": "Commission d'enquête sur la situation de l'industrie ferroviaire française : production de matériels roulants \"voyageurs\" et fret",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2010-12-14",
-          "fin": "2011-06-15",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "commission_enquete",
-      "label": "Commission d'enquête sur la surveillance des filières et des individus djihadistes",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2014-12-10",
-          "fin": "2015-06-02",
           "actif": false
         }
       ]
@@ -117595,146 +117291,6 @@
       ]
     },
     {
-      "categorie": "commission_enquete",
-      "label": "Commission spéciale chargée d'examiner la proposition de loi sur l'enfance délaissée et l'adoption",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2011-10-12",
-          "fin": "2012-05-21",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "commission_enquete",
-      "label": "Commission spéciale chargée d'examiner le projet de loi confortant le respect des principes de la République",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2020-12-13",
-          "fin": "2021-08-24",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "commission_enquete",
-      "label": "Commission spéciale chargée d’examiner le projet de loi visant à sécuriser et réguler l’espace numérique",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "christelle-d-intorni",
-          "nom": "Christelle D'Intorni",
-          "fonction": "Membre",
-          "debut": "2023-07-14",
-          "fin": "2024-04-10",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "delegation",
-      "label": "Délégation chargée de l'application du statut du député",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2018-01-29",
-          "fin": "2022-06-21",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "delegation",
-      "label": "Délégation chargée de la communication et de la presse",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2018-01-29",
-          "fin": "2022-06-21",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "delegation",
-      "label": "Délégation chargée de la transparence et des représentants d’intérêts",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2022-09-14",
-          "fin": "2024-06-09",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "delegation",
-      "label": "Délégation chargée de l’application du statut du député",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2022-09-14",
-          "fin": "2024-06-09",
-          "actif": false
-        }
-      ]
-    },
-    {
       "categorie": "delegation",
       "label": "Délégation de l'Assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes",
       "nb_membres_a_la_date_de_reference": 0,
@@ -117755,206 +117311,6 @@
       ]
     },
     {
-      "categorie": "delegation",
-      "label": "Délégation française à l' Assemblée de l'U.E.O.",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "représentant suppléant": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Représentant suppléant",
-          "debut": "2007-10-01",
-          "fin": "2008-11-18",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "delegation",
-      "label": "Délégation française à l'Assemblée parlementaire du Conseil de l'Europe",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre suppléant": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre suppléant",
-          "debut": "2007-10-01",
-          "fin": "2008-11-18",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "extra_parlementaire",
-      "label": "Conseil d'administration de l'Office français de protection des réfugiés et apatrides",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre titulaire": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre titulaire",
-          "debut": "2017-11-10",
-          "fin": "2022-06-21",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_amitie",
-      "label": "France République Italienne",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2002-11-08",
-          "fin": "2007-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_amitie",
-      "label": "France royaume d'Espagne",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2002-11-08",
-          "fin": "2007-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_amitie",
-      "label": "France-République algérienne démocratique et populaire",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2011-06-07",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Biocarburants",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2008-04-15",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Cancer et causes sanitaires nationales",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2008-01-30",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Cheval",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2008-06-24",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Conditions d'accueil des migrants",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2018-03-15",
-          "fin": "2022-06-21",
-          "actif": false
-        }
-      ]
-    },
-    {
       "categorie": "groupe_etudes",
       "label": "Eau et biodiversité",
       "nb_membres_a_la_date_de_reference": 0,
@@ -117970,506 +117326,6 @@
           "fonction": "Membre",
           "debut": "2025-01-30",
           "fin": "2025-07-11",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Energies",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2008-01-15",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Fruits et légumes",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2008-02-13",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Gens du voyage",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2023-03-21",
-          "fin": "2024-06-09",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Groupe d'études sur la chasse",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2003-04-25",
-          "fin": "2007-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Groupe d'études sur la lutte contre la contrefaçon",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2005-05-04",
-          "fin": "2007-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Groupe d'études sur la sécurité intérieure",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "secrétaire": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Secrétaire",
-          "debut": "2003-02-04",
-          "fin": "2007-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Groupe d'études sur le financement de la production audiovisuelle",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2005-03-29",
-          "fin": "2007-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Groupe d'études sur le problème du Tibet",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2005-12-22",
-          "fin": "2007-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Groupe d'études sur le scoutisme",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2003-03-11",
-          "fin": "2007-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Groupe d'études sur les gens du voyage",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2003-01-29",
-          "fin": "2007-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Groupe d'études sur les sans-abri",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2003-07-16",
-          "fin": "2007-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Industries agro-alimentaires et filière agricole",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2008-01-11",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Inondations, risques naturels et calamités agricoles",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2008-03-25",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Jardins, paysages et horticulture",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2008-01-14",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Métiers de l'hôtellerie, de la restauration et des loisirs",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2008-01-01",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "PME",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2008-04-17",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Pics pétroliers et gaziers",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2007-12-20",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Politique portuaire",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2008-01-15",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Question du Tibet",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2008-04-10",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Réserve citoyenne",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2011-02-01",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Tourisme",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2008-01-22",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Vie associative et bénévolat",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2008-01-20",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Villes d'art et d'histoire, villes à secteur sauvegardé",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2011-01-18",
-          "fin": "2012-06-19",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "mission_information",
-      "label": "Mission d'information commune sur les droits de l'individu dans la révolution numérique",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2010-04-07",
-          "fin": "2011-06-22",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "mission_information",
-      "label": "Mission d'information sur la justice des mineurs",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2018-11-28",
-          "fin": "2019-02-20",
           "actif": false
         }
       ]
@@ -118536,26 +117392,6 @@
     },
     {
       "categorie": "mission_information",
-      "label": "Mission d’information sur l’impact, la gestion et les conséquences dans toutes ses dimensions de l’épidémie de Coronavirus-Covid 19",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2020-03-30",
-          "fin": "2021-01-27",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "mission_information",
       "label": "Mission d’information sur « création, diffusion et acquisition des connaissances : comment l’intelligence artificielle transforme notre éducation et notre culture »",
       "nb_membres_a_la_date_de_reference": 0,
       "nb_membres_cumul_historique": 1,
@@ -118580,8 +117416,8 @@
     "nb_adoptes": 118,
     "nb_rejetes": 1417,
     "nb_irrecevables": 584,
-    "nb_retires_ou_tombes": 1835,
-    "nb_sort_non_renseigne": 509,
+    "nb_retires_ou_tombes": 1836,
+    "nb_sort_non_renseigne": 508,
     "nb_sort_non_reconnu": 0,
     "taux_adoption": 0.0264,
     "nb_sans_identifiant": 0,
@@ -118601,8 +117437,8 @@
         "nb_adoptes": 97,
         "nb_rejetes": 1409,
         "nb_irrecevables": 584,
-        "nb_retires_ou_tombes": 1831,
-        "nb_sort_non_renseigne": 509,
+        "nb_retires_ou_tombes": 1832,
+        "nb_sort_non_renseigne": 508,
         "nb_sort_non_reconnu": 0,
         "taux_adoption": 0.0219
       },
@@ -118651,97 +117487,97 @@
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA267561",
-      "synchro_le": "2026-09-21T23:37:39+0000"
+      "synchro_le": "2026-09-22T19:33:08+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA330240",
-      "synchro_le": "2026-09-21T23:37:11+0000"
+      "synchro_le": "2026-09-22T19:32:45+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793322",
-      "synchro_le": "2026-09-21T23:37:13+0000"
+      "synchro_le": "2026-09-22T19:32:46+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840657",
-      "synchro_le": "2026-09-21T23:37:24+0000"
+      "synchro_le": "2026-09-22T19:33:52+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840685",
-      "synchro_le": "2026-09-21T23:38:41+0000"
+      "synchro_le": "2026-09-22T19:34:35+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840701",
-      "synchro_le": "2026-09-21T23:37:46+0000"
+      "synchro_le": "2026-09-22T19:33:43+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840721",
-      "synchro_le": "2026-09-21T23:29:06+0000"
+      "synchro_le": "2026-09-22T19:24:57+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840773",
-      "synchro_le": "2026-09-21T23:29:27+0000"
+      "synchro_le": "2026-09-22T19:25:09+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840809",
-      "synchro_le": "2026-09-21T23:29:48+0000"
+      "synchro_le": "2026-09-22T19:25:45+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840889",
-      "synchro_le": "2026-09-21T23:29:46+0000"
+      "synchro_le": "2026-09-22T19:24:31+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840983",
-      "synchro_le": "2026-09-21T23:37:39+0000"
+      "synchro_le": "2026-09-22T19:33:08+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841067",
-      "synchro_le": "2026-09-21T23:37:24+0000"
+      "synchro_le": "2026-09-22T19:33:52+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841183",
-      "synchro_le": "2026-09-21T23:38:41+0000"
+      "synchro_le": "2026-09-22T19:34:35+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841207",
-      "synchro_le": "2026-09-21T23:37:46+0000"
+      "synchro_le": "2026-09-22T19:33:43+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841395",
-      "synchro_le": "2026-09-21T23:29:07+0000"
+      "synchro_le": "2026-09-22T19:24:57+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841769",
-      "synchro_le": "2026-09-21T23:29:27+0000"
+      "synchro_le": "2026-09-22T19:25:09+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841973",
-      "synchro_le": "2026-09-21T23:29:48+0000"
+      "synchro_le": "2026-09-22T19:25:45+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA878242",
-      "synchro_le": "2026-09-21T23:29:46+0000"
+      "synchro_le": "2026-09-22T19:24:31+0000"
     }
   ],
   "meta": {
     "schema_version": "1",
-    "genere_le": "2026-09-22T00:10:50+0000",
+    "genere_le": "2026-09-22T20:12:44+0000",
     "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
     "profils_sources": [
       "brigitte-bareges",
