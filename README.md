@@ -175,12 +175,12 @@ Trois limites, déclarées plutôt que contournées :
   étaient déjà citées par un acte. Cette part se corrige au fil des runs ;
 - **le texte des actes n'est pas republié** : il se lit chez Légifrance.
 
-## Les instantanés
+## Les articles
 
-`/rapports` réunit les instantanés thématiques : ce que les fiches disent d'un
-sujet, au jour des données qui l'ont produit, chaque fait lié à sa source. Ce
-sont des pages statiques de `web/UI_finale/public/rapports/`, servies telles
-quelles — leur adresse ne bouge pas, et un instantané n'est jamais mis à jour :
+`/rapports` réunit les articles : ce que les fiches disent d'un sujet, au jour
+des données qui l'ont produit, chaque fait lié à sa source. Ils portent un
+**type** — « instantané » pour ceux qui mesurent un instant. Ce sont des pages
+statiques de `web/UI_finale/public/rapports/`, servies telles quelles — leur adresse ne bouge pas, et un instantané n'est jamais mis à jour :
 un sujet repris plus tard en donne un nouveau, à une nouvelle adresse. L'index
 se construit depuis le dossier (`node web/UI_finale/scripts/index-rapports.mjs`),
 la barre du site y mène, et `tests/test_rapports_publies.py` refuse un index

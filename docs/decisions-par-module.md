@@ -7,7 +7,7 @@
 [`docs/technical_decisions.md`](technical_decisions.md) va des décisions vers le
 code et se lit par date. Cette table va dans l'autre sens : **ce module → ces
 décisions**, pour qu'un agent qui ouvre un fichier de `src/` sache ce qui le
-gouverne sans avoir à fouiller les 421 décisions
+gouverne sans avoir à fouiller les 423 décisions
 du répertoire. Le critère, ce qu'il rate et pourquoi la table est générée :
 [`docs/decisions/table-inversee-decisions-par-module.md`](decisions/table-inversee-decisions-par-module.md).
 
@@ -542,10 +542,11 @@ Le mentionnent sans le gouverner : [`domaines-eurovoc-familles-oeil-901`](decisi
 
 ## `src/dossiers_europeens.py`
 
-6 décision(s) le gouvernent ; le module en cite 3.
+7 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
+| [La couverture EuroVoc est plafonnée, et la limite est datée (#1052) (2026-09-23)](decisions/couverture-eurovoc-limite-datee-1052.md) | `ESSAIS_PAR_DOSSIER` |
 | [Un dossier européen reçoit ses domaines EuroVoc de son texte adopté (#901) (2026-09-17)](decisions/domaines-eurovoc-des-dossiers-901.md) | `documents_de_seance` |
 | [L'index des dossiers européens lit aussi les dossiers que les votes citent (#901) (2026-09-17)](decisions/dossiers-europeens-votes-901.md) | `references_visees` |
 | [L'index européen ne lisait que les amendements, et 34 références ne résolvaient nulle part (#901) (2026-09-16)](decisions/index-europeen-lit-aussi-les-textes-portes-901.md) | `references_visees` |

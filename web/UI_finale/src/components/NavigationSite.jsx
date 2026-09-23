@@ -4,14 +4,14 @@ import './NavigationSite.css';
 
 /* ── La barre des pages du site (#951) ────────────────────────────────────────
  *
- * Quatre liens, dans le style discret retenu le 16/09/2026 : gris, la page
+ * Cinq liens, dans le style discret retenu le 16/09/2026 : gris, la page
  * courante en encre soulignée de jaune. Le jaune est un TRAIT sous le mot,
  * jamais la couleur du texte — 1,05:1 sur le fond clair (DESIGN_SYSTEM §2).
  *
- * Sous 720 px les quatre liens ne tiennent plus à côté du logo et du tiroir :
+ * Sous 720 px les cinq liens ne tiennent plus à côté du logo et du tiroir :
  * ils passent dans un menu.
  *
- * « LES INSTANTANÉS » EST UNE PAGE STATIQUE, PAS UNE ROUTE (#1029) : elle est
+ * « ARTICLES » EST UNE PAGE STATIQUE, PAS UNE ROUTE (#1029) : elle est
  * servie telle quelle par GitHub Pages, donc son lien est un `<a href>` et non
  * un `<Link>` — un `<Link>` ferait démarrer le routeur sur une adresse qu'il
  * ne connaît pas. Elle n'est jamais « courante » au sens de la barre : quand
@@ -27,7 +27,7 @@ const PAGES = [
   { libelle: 'Explorateur', vers: '/candidats', racines: ['/candidats', '/groupes', '/gouvernements'] },
   { libelle: 'Méthodologie', vers: '/methodologie', racines: ['/methodologie'] },
   { libelle: 'Sources', vers: '/sources', racines: ['/sources'] },
-  { libelle: 'Instantanés', vers: '/rapports', racines: [], statique: true },
+  { libelle: 'Articles', vers: '/rapports', racines: [], statique: true },
   { libelle: 'FAQ', vers: '/faq', racines: ['/faq'] },
 ];
 

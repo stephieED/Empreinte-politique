@@ -953,23 +953,25 @@ données pivot vers `public/data/` (généré, git-ignoré) puis démarre Vite. 
 couverture affichée se limite aux candidats, groupes et gouvernements qui ont un
 fichier pivot en local.
 
-### Publier un instantané thématique
+### Publier un article
 
 ```bash
 node web/UI_finale/scripts/index-rapports.mjs
 ```
 
-Un instantané est une page statique déposée dans
+Un article est une page statique déposée dans
 `web/UI_finale/public/rapports/`, nommée `<date des données>-<sujet>.html` —
 par exemple `2026-09-23-prix-des-carburants.html`. Elle porte son `<title>`, sa
-`<meta name="description">` et sa `<meta name="instantane:periode">` : la
-commande les lit pour reconstruire l'index `/rapports`, du plus récent au plus
-ancien.
+`<meta name="description">`, sa `<meta name="article:periode">` et sa
+`<meta name="article:type">` — « Instantané » pour un article qui mesure un
+instant : la commande les lit pour reconstruire l'index `/rapports`, du plus
+récent au plus ancien. Le type n'est jamais deviné : une page qui n'en déclare
+pas n'en affiche pas.
 
 Elle **réécrit aussi le bandeau et le pied du site** dans chaque page du
 dossier, entre leurs marqueurs (`/*chrome:style*/`, `<!--chrome:bandeau-->`,
 `<!--chrome:pied-->`) : une nouvelle page doit les porter, sinon la commande la
-refuse. Le chrome suit le site, le contenu de l'instantané ne bouge pas.
+refuse. Le chrome suit le site, le contenu de l'article ne bouge pas.
 
 À lancer après avoir ajouté ou retiré une page, et après toute modification de
 la barre du site ou du pied ; `tests/test_rapports_publies.py` échoue si l'index

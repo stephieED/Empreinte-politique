@@ -42,7 +42,7 @@ export const PAGES = [
   { libelle: 'Explorateur', vers: '/candidats' },
   { libelle: 'Méthodologie', vers: '/methodologie' },
   { libelle: 'Sources', vers: '/sources' },
-  { libelle: 'Instantanés', vers: '/rapports' },
+  { libelle: 'Articles', vers: '/rapports' },
   { libelle: 'FAQ', vers: '/faq' },
 ];
 

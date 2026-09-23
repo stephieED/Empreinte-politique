@@ -35,11 +35,11 @@ def _sans_commentaires(source: str) -> str:
 
 
 def test_les_cinq_pages_dans_l_ordre() -> None:
-    """« Instantanés » (#1029) s'insère avant la FAQ : les instantanés sont une
+    """« Articles » (#1029) s'insère avant la FAQ : les articles sont une
     lecture du corpus, la FAQ reste la dernière entrée."""
     source = _sans_commentaires(NAV.read_text(encoding="utf-8"))
     libelles = re.findall(r"libelle: '([^']+)'", source)
-    assert libelles == ["Explorateur", "Méthodologie", "Sources", "Instantanés", "FAQ"]
+    assert libelles == ["Explorateur", "Méthodologie", "Sources", "Articles", "FAQ"]
 
 
 def test_les_instantanes_sont_une_page_statique_pas_une_route() -> None:

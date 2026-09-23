@@ -1,15 +1,18 @@
 /*
- * L'INDEX DES INSTANTANÉS, CONSTRUIT DEPUIS LE DOSSIER (#1029).
+ * L'INDEX DES ARTICLES, CONSTRUIT DEPUIS LE DOSSIER (#1029).
  *
- * Un instantané est une page STATIQUE de `public/rapports/`, servie telle
+ * Un article est une page STATIQUE de `public/rapports/`, servie telle
  * quelle par GitHub Pages : son adresse répond 200 sans dépendre du repli de
  * routage, et elle ne bouge plus une fois partagée.
  *
  * L'index, lui, était écrit à la main — et un index écrit à la main oublie un
  * fichier le jour où on est pressé. Il se construit donc ICI, en lisant le
  * dossier : le nom du fichier donne la date des DONNÉES, son `<title>` le
- * sujet, sa `<meta name="description">` la phrase de présentation, et sa
- * `<meta name="instantane:periode">` la période couverte.
+ * sujet, sa `<meta name="description">` la phrase de présentation, sa
+ * `<meta name="article:periode">` la période couverte et sa
+ * `<meta name="article:type">` son type — « Instantané » pour ceux qui
+ * mesurent un instant. LE TYPE N'EST PAS DEVINÉ : une page qui n'en déclare
+ * pas n'en affiche pas (§2 règle 5), parce que d'autres types viendront.
  *
  * Écrit dans `public/`, pas dans `dist/` : la page est donc servie en
  * développement comme en production, et sa version committée se relit dans la
@@ -41,8 +44,9 @@ export function instantanes(dossier = DOSSIER) {
       if (!titre) throw new Error(`${fichier} n'a pas de <title> lisible.`);
       const description = lire(source, /<meta name="description" content="(.*?)">/s);
       if (!description) throw new Error(`${fichier} n'a pas de <meta name="description">.`);
-      const periode = lire(source, /<meta name="instantane:periode" content="(.*?)">/s);
-      return { fichier, titre, description, periode, date: fichier.slice(0, 10) };
+      const periode = lire(source, /<meta name="article:periode" content="(.*?)">/s);
+      const type = lire(source, /<meta name="article:type" content="(.*?)">/s);
+      return { fichier, titre, description, periode, type, date: fichier.slice(0, 10) };
     });
 }
 
@@ -51,7 +55,7 @@ const echappe = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>
 export function page(liste) {
   const lignes = liste.map((i) => `      <li>
         <a href="/rapports/${i.fichier}">${echappe(i.titre)}</a>
-        <span class="quand">Données au ${enClair(i.date)}${i.periode ? ` · ${echappe(i.periode)}` : ''}</span>
+        <span class="quand">${i.type ? `${echappe(i.type)} · d` : 'D'}onnées au ${enClair(i.date)}${i.periode ? ` · ${echappe(i.periode)}` : ''}</span>
         <p>${echappe(i.description)}</p>
       </li>`).join('\n');
   return `<!doctype html>
@@ -59,8 +63,8 @@ export function page(liste) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Les instantanés · Empreinte politique</title>
-<meta name="description" content="Les instantanés thématiques d'Empreinte politique : ce que les fiches du site disent d'un sujet, à une date donnée, chaque fait lié à sa source.">
+<title>Les articles · Empreinte politique</title>
+<meta name="description" content="Les articles d'Empreinte politique : ce que les fiches du site disent d'un sujet, à une date donnée, chaque fait lié à sa source.">
 <link rel="canonical" href="${SITE}/rapports">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -97,13 +101,13 @@ ${bandeau('/rapports')}
 <div class="page">
   <div>
     <p class="eyebrow">Empreinte politique</p>
-    <h1>Les instantanés</h1>
+    <h1>Les articles</h1>
   </div>
   <p class="chapeau">Ce que les fiches du site disent d'un sujet, au jour des données qui l'ont produit. Chaque fait y est lié à sa source — un compte rendu de séance, un dossier législatif, un texte au Journal officiel.</p>
   <ul class="liste">
 ${lignes}
   </ul>
-  <p class="note">Un instantané n'est jamais mis à jour : il dit l'état du corpus à sa date. Un sujet repris plus tard donne un nouvel instantané, à une nouvelle adresse.</p>
+  <p class="note">Un instantané est un article qui mesure un instant : il dit l'état du corpus à sa date, et n'est jamais mis à jour. Un sujet repris plus tard donne un nouvel instantané, à une nouvelle adresse.</p>
   <p class="note">Données publiques de l'Assemblée nationale et du Journal officiel · <a href="/sources">Les sources</a> · <a href="/methodologie">La méthodologie</a></p>
 </div>
 <!--chrome:pied-->
@@ -154,6 +158,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const touches = rafraichirLeChrome();
   const liste = instantanes();
   writeFileSync(INDEX, page(liste));
-  console.log(`index-rapports : ${liste.length} instantané(s) → public/rapports.html`);
+  console.log(`index-rapports : ${liste.length} article(s) → public/rapports.html`);
   if (touches.length) console.log(`chrome rafraîchi : ${touches.join(', ')}`);
 }

@@ -46,6 +46,7 @@ def test_un_instantane_porte_sa_date_et_se_presente(instantane: Path) -> None:
     source = instantane.read_text(encoding="utf-8")
     assert re.search(r"<title>.+</title>", source), "titre absent"
     assert 'name="description"' in source, "description absente : l'index la reprend"
+    assert 'name="article:type"' in source, "type absent : l'index ne le devine pas"
     assert 'href="https://empreinte-politique.fr/rapports"' in source, "retour à l'index absent"
     for bloc, ouvre in (("style", "/*chrome:style*/"), ("bandeau", "<!--chrome:bandeau-->"), ("pied", "<!--chrome:pied-->")):
         assert ouvre in source, f"le bloc de chrome « {bloc} » manque : la page n'est pas une page du site"
@@ -119,3 +120,22 @@ def test_le_serveur_de_developpement_resout_les_adresses_sans_extension() -> Non
     assert "public" in config and ".html" in config, (
         "le serveur de développement ne résout plus `/x` en `public/x.html`"
     )
+
+
+def test_un_instantane_ne_se_nomme_pas_autrement_dans_son_texte() -> None:
+    """Un article de type instantané : ni « rapport », ni « panorama » dans le texte visible.
+
+    Le 23/09/2026 la même page se nommait de trois façons — « instantané » dans
+    la barre, « ce rapport » dans un titre, « ce panorama » dans le chapeau.
+    L'adresse `/rapports` reste, elle : c'est un identifiant, pas un mot lu.
+    """
+    for page in instantanes():
+        visible = re.sub(r"<[^>]*>", " ", page.read_text(encoding="utf-8"))
+        visible = re.sub(r"\s+", " ", visible)
+        for mot in ("rapport", "panorama"):
+            # Le nom seul, jamais un mot qui le contient : « rien n'est rapporté
+            # à un possible » est une phrase de la page, et elle est juste.
+            trouve = re.search(rf"\b{mot}s?\b", visible, re.IGNORECASE)
+            assert trouve is None, (
+                f"{page.name} nomme son objet « {mot} » : le mot publié est « article », de type « instantané »"
+            )

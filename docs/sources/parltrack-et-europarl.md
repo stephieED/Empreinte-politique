@@ -8,6 +8,29 @@
 > Il n'existait pas avant le 14/09/2026, et c'est ce qui a coûté le plus cher sur ce versant :
 > le format des dumps a été supposé pendant toute la vie du module.
 
+
+## La couverture EuroVoc est plafonnée, et par période (23/09/2026)
+
+EuroVoc est attaché à un **document**, jamais à une procédure. Le portail répond
+donc pour les documents de séance d'un dossier — et il ne les classe pas tous :
+
+| Décennie de la référence de procédure | Dossiers publiés | Avec domaines | % |
+| --- | ---: | ---: | ---: |
+| 2020s | 1 288 | 1 032 | **80 %** |
+| 2010s | 2 667 | 1 514 | 56 % |
+| **2000s** | 684 | **8** | **1 %** |
+
+676 des 2 084 dossiers sans domaine sont des procédures des années 2000 : le
+Parlement a commencé à indexer avec EuroVoc bien après. Ce n'est pas un retard de
+notre collecte — les dossiers jamais interrogés sont épuisés depuis le
+23/09/2026, et 40 dossiers réinterrogés **à neuf, hors cache**, dont 25 en
+essayant tous leurs documents (jusqu'à 10), ne rendent aucun concept.
+
+**Ce que le fournisseur ne dit pas** : quand un document sera classé. Un document
+classé tardivement ne serait pas revu par notre collecte, dont le cache de
+documents ne se périme jamais.
+→ `docs/decisions/couverture-eurovoc-limite-datee-1052.md`
+
 ## Producteurs et licences
 
 | Source | Producteur | Licence | Contrainte |
