@@ -1,0 +1,78 @@
+{
+ "dossierParlementaire": {
+  "uid": "DLR5L17N53940",
+  "titreDossier": {
+   "titre": "Projet de loi sur la justice criminelle et le respect des victimes",
+   "titreChemin": "DLR5L17N53940",
+   "senatChemin": "http://www.senat.fr/dossier-legislatif/pjl25-456.html"
+  },
+  "procedureParlementaire": {
+   "code": "1",
+   "libelle": "Projet de loi ordinaire"
+  },
+  "actesLegislatifs": {
+   "acteLegislatif": [
+    {
+     "@xsi:type": "DepotInitiative_Type",
+     "uid": "L17-VD230983DI",
+     "codeActe": "SN1-DEPOT",
+     "libelleActe": {
+      "nomCanonique": "1er dépôt d'une initiative.",
+      "libelleCourt": "1er dépôt d'une initiative."
+     },
+     "organeRef": "PO78718",
+     "dateActe": "2026-03-18T00:00:00.000+01:00",
+     "texteAssocie": "PRJLSNR5S479B0456"
+    },
+    {
+     "@xsi:type": "DepotInitiativeNavette_Type",
+     "uid": "L17-VD231474DIN",
+     "codeActe": "AN1-DEPOT",
+     "libelleActe": {
+      "nomCanonique": "Dépôt d'une initiative en navette",
+      "libelleCourt": "Dépôt d'une initiative en navette"
+     },
+     "organeRef": "PO838901",
+     "dateActe": "2026-04-15T00:00:00.000+02:00",
+     "texteAssocie": "PRJLANR5L17B2681",
+     "provenance": "PO78718",
+     "depotInitialLectureDefinitiveRef": null
+    },
+    {
+     "@xsi:type": "SaisieComFond_Type",
+     "uid": "L17-VD231475CFS",
+     "codeActe": "AN1-COM-FOND-SAISIE",
+     "libelleActe": {
+      "nomCanonique": "Renvoi en commission au fond",
+      "libelleCourt": "Renvoi en commission au fond"
+     },
+     "organeRef": "PO59051",
+     "dateActe": "2026-04-15T00:00:00.000+02:00"
+    },
+    {
+     "@xsi:type": "Promulgation_Type",
+     "uid": "L17-VD233379PL",
+     "codeActe": "PROM-PUB",
+     "libelleActe": {
+      "nomCanonique": "Promulgation d'une loi",
+      "libelleCourt": "Promulgation d'une loi"
+     },
+     "organeRef": "PO717136",
+     "dateActe": "2026-07-23T00:00:00.000+02:00",
+     "texteLoiRef": "RAPPSNR5S479BTA0160",
+     "infoJO": {
+      "typeJO": "JO_LOI_DECRET",
+      "dateJO": "2026-07-24+02:00",
+      "pageJO": null,
+      "numJO": "171",
+      "urlLegifrance": "http://www.legifrance.gouv.fr/WAspad/UnTexteDeJorf?numjo=JUSD2604940L",
+      "referenceNOR": "JUSD2604940L"
+     },
+     "urlEcheancierLoi": null,
+     "codeLoi": "2026-651",
+     "titreLoi": "sur la justice criminelle et le respect des victimes"
+    }
+   ]
+  }
+ }
+}

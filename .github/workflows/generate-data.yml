@@ -3375,6 +3375,23 @@ jobs:
       #
       # Non bloquant, et fusion additive : un run sans archive lisible conserve
       # la table publiée au lieu de la vider (AGENTS.md §3a).
+      # Les textes promulgués, et leur matière — besoin de l'interface du
+      # 23/09/2026 pour la section « La loi et le décret » d'une fiche de
+      # gouvernement.
+      #   entrée   : src/textes_promulgues.py
+      #   consomme : les archives de dossiers déjà en cache, et la table des
+      #              commissions construite juste au-dessus (la matière de chaque ligne)
+      #   produit  : pivot_data/textes_promulgues.json
+      #
+      # APRÈS les commissions, et l'ordre est le fait à tenir : la commission
+      # saisie au fond donne la matière, et une matière absente reste `null`,
+      # jamais rattrapée depuis l'intitulé. Aucun appel réseau si les archives
+      # sont en cache. Additif : un run sans archive lisible conserve le fichier
+      # publié.
+      - name: Construire la table des textes promulgués
+        run: |
+          python3 src/textes_promulgues.py
+
       - name: Construire le rattachement des scrutins aux dossiers
         continue-on-error: true
         run: python3 src/build_scrutins_dossiers.py
@@ -4168,6 +4185,11 @@ jobs:
           # qui le construit est `continue-on-error`, le fichier peut manquer.
           if [ -f pivot_data/scrutins_dossiers.json ]; then
             git add pivot_data/scrutins_dossiers.json
+          fi
+          # Textes promulgués : même garde, l'étape qui les construit peut ne
+          # rien écrire si les archives sont illisibles.
+          if [ -f pivot_data/textes_promulgues.json ]; then
+            git add pivot_data/textes_promulgues.json
           fi
           # Actes réglementaires (#1029 voie 1) : même garde, le step qui les
           # met à jour est `continue-on-error`. Le répertoire existe dans le

@@ -1026,8 +1026,29 @@ le quality gate, pour la fraîcheur des index (§3d). L'étape de téléchargeme
 passe donc **avant les deux passes pivot** — elle était placée juste avant le
 quality gate, son premier lecteur, et le run `35767700159` a publié zéro
 contenu : l'artifact arrivait 11 minutes trop tard, et son silence ressemblait à
-un succès. `tests/test_ordre_artifact_amendements_1101.py` verrouille l'ordre.
+un succès. `tests/test_ordre_artifact_amendements_1101.py` verrouille l'ordre — **et les deux
+chemins d'appel** : la CI ne passe pas par `build_amendements_index_pivot.py`,
+où la publication du contenu était câblée, donc elle ne publiait rien même une
+fois l'ordre corrigé (run `35792678909`).
 → `docs/decisions/artifact-amendements-avant-la-passe-pivot-1101.md`
+
+### Les textes promulgués, et leur matière, dans `merge-and-pivot`
+
+Une étape, **après** la table des commissions saisies au fond et avant les index
+européens. `src/textes_promulgues.py` lit les archives de dossiers déjà en cache
+et publie `pivot_data/textes_promulgues.json` : un enregistrement par dossier
+promulgué, avec sa date, son numéro de loi, sa nature, sa commission au fond et
+sa chambre de première lecture. Aucun appel réseau si les archives sont en cache.
+
+**L'ordre compte** : la commission donne la matière de chaque ligne, et une
+matière absente reste `null` — jamais rattrapée depuis l'intitulé. Additif : un
+run sans archive lisible conserve le fichier publié (§3a).
+
+Pourquoi cette population : ni les `textes[]` d'une fiche de gouvernement (ceux
+qu'un membre a initiés : 1 promulgué sur la fenêtre de LECORNU_II) ni l'union des
+`textes_portes` des profils (13 sur la même fenêtre, soit « ce que nos rosters
+portent ») ne disent ce que le Parlement a promulgué.
+→ `docs/decisions/textes-promulgues-population-du-parlement.md`
 
 ### Les actes réglementaires du Journal officiel, dans `merge-and-pivot` (#1029 voie 1)
 
@@ -1058,6 +1079,20 @@ mois est réécrit, pas fusionné, donc rien d'autre ne rattraperait la perte (�
 
 **Ce que l'étape ne fait pas** : rattacher un acte à une personne. La source
 laisse `<AUTORITE>` vide sur tous les décrets (#664).
+
+**Ce qu'elle tient au passage** : `raw_data/lois_jorf.json`, la table `numéro de
+loi → identifiant JORFTEXT`. Une loi paraît dans les mêmes livraisons que les
+actes ; l'étape la note en chemin et fusionne avec la table committée, sans
+appel réseau de plus. C'est par elle que `textes_promulgues.json` résout son
+`jorftext`, et donc que la jointure loi → acte est exacte (1 015 / 1 015, quand
+le NOR n'en résoudrait que 603).
+
+**Ce qu'elle corrige dans les mois déjà clos** : les liens d'un acte vers une
+loi, et eux seuls. Légifrance pose la qualification « application » longtemps
+après la parution — aucune loi promulguée depuis 2024 n'en portait au 23/09/2026
+—, et redélivre alors l'acte. Ces redélivrances sont dans les livraisons que
+l'étape lit déjà : elle reprend leurs liens dans le fichier du mois concerné
+(`liens_revus_le`), sans reconstruire ce mois.
 
 ### La reprise d'une archive figée, bornée en temps (#1100)
 

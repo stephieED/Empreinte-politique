@@ -7,6 +7,18 @@ from pathlib import Path
 
 import pytest
 
+
+@pytest.fixture(autouse=True)
+def _cache_contenu_amendements_isole(tmp_path_factory, monkeypatch):
+    """Le contenu des amendements (#1029 voie 2) est publié depuis
+    `.cache/amendements_an`, et c'est la CI qui le fait depuis #1101 : sans cette
+    isolation, ces tests liraient le cache RÉEL du poste (#721) et passeraient ou
+    échoueraient selon ce qu'une collecte locale y a laissé."""
+    import generate_all_profiles
+
+    monkeypatch.setattr(generate_all_profiles, "CACHE_CONTENU_AMENDEMENTS",
+                        tmp_path_factory.mktemp("cache-contenu"))
+
 @pytest.fixture(autouse=True)
 def _cache_amo30_isole(tmp_path_factory, monkeypatch):
     """Le cache AMO30 de ce fichier est un répertoire jetable, jamais celui du poste (#767).

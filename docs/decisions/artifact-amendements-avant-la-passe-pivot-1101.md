@@ -36,9 +36,28 @@ dans la génération pivot — sans déplacer l'étape.
    `continue-on-error` est toujours là. Vérifié par l'échec : replacé à son
    ancienne position, le test tombe sur les deux passes pivot.
 
+## Deuxième cause, trouvée au run suivant : la CI n'appelle pas le script
+
+Le run `35792678909` (23/09/2026, 00h29), avec l'étape remise dans le bon ordre,
+a **encore** publié zéro contenu — et sans même la ligne « AUCUN » ajoutée
+ci-dessus. `extract-amendements-an` avait pourtant construit deux contenus
+(XVIIe : 125 057 amendements, 35 064 mots ; XIVe : 167 420 et 32 836).
+
+La raison est écrite dans le code depuis #696 : **la CI n'appelle jamais
+`build_amendements_index_pivot.py`**, elle passe par
+`generate_all_profiles._rafraichir_index_amendements`. `publier_contenus` était
+câblée dans le seul `main()` du script, donc sur un chemin que le run ne prend
+pas. `articles` n'était pas passé non plus : aucun `article` posé sur l'index.
+
+La fonction de la CI publie donc le contenu et pose l'article, et
+`tests/test_ordre_artifact_amendements_1101.py` vérifie les **deux** chemins —
+le même garde-fou que #696 s'était donné, pour le même piège.
+
 ## Ce que cet incident dit, au-delà du lot
 
-**Un consommateur ajouté à un cache déplace le moment où ce cache doit exister.**
+**Un consommateur ajouté à un cache déplace le moment où ce cache doit exister
+— et un chemin d'appel qui n'est pas celui de la CI ne publie rien.** Les deux
+causes étaient dans le même lot, et la première masquait la seconde.
 C'est la même famille que #726 (« un audit est un consommateur comme un autre, et
 rien ne l'avertit qu'un champ a bougé ») : le lecteur neuf n'a pas de raison de
 savoir pour qui l'étape avait été écrite.

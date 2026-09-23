@@ -7,7 +7,7 @@
 [`docs/technical_decisions.md`](technical_decisions.md) va des décisions vers le
 code et se lit par date. Cette table va dans l'autre sens : **ce module → ces
 décisions**, pour qu'un agent qui ouvre un fichier de `src/` sache ce qui le
-gouverne sans avoir à fouiller les 416 décisions
+gouverne sans avoir à fouiller les 421 décisions
 du répertoire. Le critère, ce qu'il rate et pourquoi la table est générée :
 [`docs/decisions/table-inversee-decisions-par-module.md`](decisions/table-inversee-decisions-par-module.md).
 
@@ -50,6 +50,7 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/build_amendements_index.py` | 2 |
 | `src/fetch_candidats_declares.py` | 2 |
 | `src/titres_europeens.py` | 2 |
+| `src/actes_reglementaires.py` | 1 |
 | `src/candidate_profile_ue.py` | 1 |
 | `src/collecte_mandats_locaux.py` | 1 |
 | `src/documents_europeens.py` | 1 |
@@ -65,6 +66,7 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/scrutins_dossiers_an.py` | 1 |
 | `src/scrutins_legislature.py` | 1 |
 | `src/senat_mandats.py` | 1 |
+| `src/textes_promulgues.py` | 1 |
 | `src/textes_vises_figes.py` | 1 |
 | `src/verifier_transport_artifacts.py` | 1 |
 
@@ -72,7 +74,13 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 
 ## `src/actes_reglementaires.py`
 
-Le mentionnent sans le gouverner : [`actes-reglementaires-du-journal-officiel-1029`](decisions/actes-reglementaires-du-journal-officiel-1029.md).
+1 décision(s) le gouvernent ; le module en cite 0.
+
+| Décision | Nomme |
+| --- | --- |
+| [Un acte publie les lois qu'il applique et celles qu'il cite, et ces liens se corrigent après coup (2026-09-23)](decisions/liens-des-actes-vers-les-lois.md) | `corriger_les_liens` |
+
+Le mentionnent sans le gouverner : [`actes-reglementaires-du-journal-officiel-1029`](decisions/actes-reglementaires-du-journal-officiel-1029.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
 
 ## `src/amendements_contenu.py`
 
@@ -598,11 +606,12 @@ Le mentionnent sans le gouverner : [`collecte-interventions-reduite-au-theme-657
 
 ## `src/generate_all_profiles.py`
 
-28 décision(s) le gouvernent ; le module en cite 3.
+29 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
 | [Un membre de roster est collecté sous l'acteur que son roster nomme, jamais re-deviné par son nom (#850)](decisions/acteur-du-roster-850.md) | `process_candidat` |
+| [L'artifact des amendements passe avant la génération pivot, et son absence se dit (#1101) (2026-09-22)](decisions/artifact-amendements-avant-la-passe-pivot-1101.md) | `_rafraichir_index_amendements` |
 | [Un bloc structuré sans fond n'écrase plus un bloc collecté (#484) (2026-08-30)](decisions/bloc-sans-fond-484.md) | `build_minimal_profile` |
 | [La boucle du périmètre a cassé quatre fois au même endroit (#771, #775, #781)](decisions/boucle-candidats-quatre-corrections-781.md) | `_normaliser_en_pivot` |
 | [Une source injoignable ne consomme plus le timeout d'un job, et son silence cesse de se lire comme un constat (#514) (2026-08-21)](decisions/budget-collecte-source-injoignable-514.md) | `_manifest_append`, `build_profile_any_chambre`, `process_candidat`, `valider_budgets` |
@@ -882,6 +891,10 @@ Le mentionnent sans le gouverner : [`contact-et-comptes-publics-328`](decisions/
 | Décision | Nomme |
 | --- | --- |
 | [Les dix lignées sont écrites, et une mesure corrige le motif du recalcul (#836)](decisions/generation-fiches-lignees-836.md) | `recalculer_agregats` |
+
+## `src/lois_jorf.py`
+
+Le mentionnent sans le gouverner : [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
 
 ## `src/mandats_anterieurs.py`
 
@@ -1350,6 +1363,16 @@ Le mentionnent sans le gouverner : [`boucle-perimetre-candidats-757`](decisions/
 ## `src/textes_dossiers_an.py`
 
 Le mentionnent sans le gouverner : [`archive-dossiers-xiv-1019`](decisions/archive-dossiers-xiv-1019.md), [`dossier-des-amendements-639`](decisions/dossier-des-amendements-639.md), [`fraicheur-dossiers-762`](decisions/fraicheur-dossiers-762.md).
+
+## `src/textes_promulgues.py`
+
+1 décision(s) le gouvernent ; le module en cite 0.
+
+| Décision | Nomme |
+| --- | --- |
+| [Les textes promulgués sont une population du Parlement, pas d'un gouvernement (2026-09-23)](decisions/textes-promulgues-population-du-parlement.md) | `chambre_premiere_lecture` |
+
+Le mentionnent sans le gouverner : [`liens-des-actes-vers-les-lois`](decisions/liens-des-actes-vers-les-lois.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
 
 ## `src/textes_vises_figes.py`
 

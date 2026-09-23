@@ -39,12 +39,15 @@ names what governs it.
 the current production interface, wired to real pivot data (`docs/decisions/web-v3-ui.md`). Earlier design
 generations — `v1`-`v7`, including the `v3` editorial reference — are archived under `web/old/`.
 `web/UI_finale` navigation: **Candidats** · **Groupes** (real parliamentary groups) ·
-**Gouvernement** (real governments) — no Partis tab. Three tabs, but **seven published
-pages**: `/a-propos`, `/methodologie`, `/mentions-legales`, `/sources` and `/faq` live outside
-the tabs. `/a-propos` says what the site is and who edits it; `/methodologie` says how each
+**Gouvernement** (real governments) — no Partis tab. Three tabs, but **eight published
+pages**: `/a-propos`, `/methodologie`, `/mentions-legales`, `/sources`, `/faq` and `/rapports`
+live outside the tabs. `/a-propos` says what the site is and who edits it; `/methodologie` says how each
 fiche is made, and the manifesto lives on **one** of the two, never both (#1032).
 `/sources` (formerly `/couverture`, which redirects to it — #951) says which source brings what, and once, for the whole corpus, what every fiche used to repeat — what the
-repository holds and since when (#328).
+repository holds and since when (#328). `/rapports` lists the dated thematic snapshots — static pages of
+`web/UI_finale/public/rapports/`, outside the React routes, reached from the site bar; a snapshot
+is never updated, a subject revisited gets a new one at a new address, and its index is generated
+from the folder by `scripts/index-rapports.mjs` (`tests/test_rapports_publies.py` fails on drift).
 Positioning, naming, target audience: `docs/decisions/direction-artistique-empreinte.md`.
 
 ## 2. Non-negotiable editorial rules
@@ -178,6 +181,8 @@ invented, and never silently dropped** — it is published `null` alongside its
 | A member's position beside their group's majority position, **one sourced ballot at a time** | Public — never counted, never rated |
 | `mandats[].notableCount` | Internal only (display ordering) |
 | `tags_thematiques[]` — the **titles of the sitting items** spoken under (`theme_officiel`), deduplicated per profile; never a closed list of categories | Public — reading aids, never declared positions (rule 8) |
+| Regulatory acts (`pivot_data/actes_reglementaires/`) — decrees, orders, ordinances | Public, attached to a **government by publication date** and to a **ministry by its organe**. **Never to a person**: the source leaves `<AUTORITE>` empty, so « N decrees signed by X » is not constructible (#664) |
+| `liens_lois` — the laws an act **applies** (`APPLICATION`) or **cites** (`CITATION`) | Public, the two kept apart. **A missing key is « no declared link », never « no law »**: the qualification is editorial and late — 0 of the laws promulgated since 2024 carried one on 23/09/2026, while 56 % were already cited. The share is re-measured, never frozen |
 
 Full rationale: `web/old/v3/methodologie.html` — do not duplicate prose here.
 

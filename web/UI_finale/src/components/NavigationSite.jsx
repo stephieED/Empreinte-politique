@@ -11,16 +11,23 @@ import './NavigationSite.css';
  * Sous 720 px les quatre liens ne tiennent plus à côté du logo et du tiroir :
  * ils passent dans un menu.
  *
+ * « LES INSTANTANÉS » EST UNE PAGE STATIQUE, PAS UNE ROUTE (#1029) : elle est
+ * servie telle quelle par GitHub Pages, donc son lien est un `<a href>` et non
+ * un `<Link>` — un `<Link>` ferait démarrer le routeur sur une adresse qu'il
+ * ne connaît pas. Elle n'est jamais « courante » au sens de la barre : quand
+ * on y est, on a quitté l'application.
+ *
  * L'ONGLET DE LA PAGE COURANTE PEUT CÉDER SA PLACE À UN OUTIL (#1025).
  * L'explorateur y pose son tiroir : sur une fiche, « Explorateur » était déjà
  * la page courante, et son clic renvoyait à la fiche par défaut. Le lien reste
  * partout ailleurs, où il sert. C'est un remplacement, jamais un ajout : la
- * barre porte quatre entrées, pas cinq.
+ * barre porte le même nombre d'entrées avant et après.
  */
 const PAGES = [
   { libelle: 'Explorateur', vers: '/candidats', racines: ['/candidats', '/groupes', '/gouvernements'] },
   { libelle: 'Méthodologie', vers: '/methodologie', racines: ['/methodologie'] },
   { libelle: 'Sources', vers: '/sources', racines: ['/sources'] },
+  { libelle: 'Instantanés', vers: '/rapports', racines: [], statique: true },
   { libelle: 'FAQ', vers: '/faq', racines: ['/faq'] },
 ];
 
@@ -61,6 +68,13 @@ export default function NavigationSite({ outilExplorateur = null }) {
         return className === 'nav-site-lien'
           ? <span key={page.libelle} className="nav-site-outil">{outilExplorateur}</span>
           : null;
+      }
+      if (page.statique) {
+        return (
+          <a key={page.libelle} href={page.vers} className={className}>
+            {page.libelle}
+          </a>
+        );
       }
       return (
         <Link

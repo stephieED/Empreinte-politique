@@ -309,6 +309,24 @@ La fusion est additive : un run sans archive lisible conserve la table publiée.
 lues.
 → `docs/decisions/vivier-de-points-et-empreinte-de-commission-328.md`.
 
+### Les textes promulgués, et leur matière
+
+```bash
+python3 src/textes_promulgues.py
+python3 src/textes_promulgues.py --no-merge
+```
+
+Produit : `pivot_data/textes_promulgues.json` — un enregistrement par dossier
+promulgué des archives de l'Assemblée (1 015 au 23/09/2026, de 2012 à 2026), avec
+sa date de promulgation, son numéro de loi, son intitulé, sa nature (projet,
+proposition, ratification de traité…), sa commission saisie au fond et sa chambre
+de première lecture.
+
+À lancer **après** `build_commissions_dossiers.py` : c'est de lui que vient la
+matière de chaque ligne. Sans lui, les lignes sont publiées avec `commission:
+null`, jamais avec une matière devinée.
+→ `docs/decisions/textes-promulgues-population-du-parlement.md`.
+
 ### Les actes réglementaires du Journal officiel (#1029 voie 1)
 
 ```bash
@@ -318,6 +336,10 @@ python3 src/actes_reglementaires.py --budget-secondes 900
 
 # Un mois précis, répétable — pour reprendre un mois qu'un run a manqué.
 python3 src/actes_reglementaires.py --mois 2026-08 --mois 2026-09
+
+# La table `numéro de loi -> identifiant JORFTEXT` se tient à jour toute seule,
+# dans le même passage : --table-lois dit où elle vit.
+python3 src/actes_reglementaires.py --table-lois raw_data/lois_jorf.json
 
 # Le remplissage complet depuis 2007. À NE FAIRE QU'UNE FOIS, en local :
 # ~45 min, 3,8 Go lus en flux, rien mis en cache. Le dump global de la DILA est
@@ -930,6 +952,32 @@ npm run dev
 données pivot vers `public/data/` (généré, git-ignoré) puis démarre Vite. La
 couverture affichée se limite aux candidats, groupes et gouvernements qui ont un
 fichier pivot en local.
+
+### Publier un instantané thématique
+
+```bash
+node web/UI_finale/scripts/index-rapports.mjs
+```
+
+Un instantané est une page statique déposée dans
+`web/UI_finale/public/rapports/`, nommée `<date des données>-<sujet>.html` —
+par exemple `2026-09-23-prix-des-carburants.html`. Elle porte son `<title>`, sa
+`<meta name="description">` et sa `<meta name="instantane:periode">` : la
+commande les lit pour reconstruire l'index `/rapports`, du plus récent au plus
+ancien.
+
+Elle **réécrit aussi le bandeau et le pied du site** dans chaque page du
+dossier, entre leurs marqueurs (`/*chrome:style*/`, `<!--chrome:bandeau-->`,
+`<!--chrome:pied-->`) : une nouvelle page doit les porter, sinon la commande la
+refuse. Le chrome suit le site, le contenu de l'instantané ne bouge pas.
+
+À lancer après avoir ajouté ou retiré une page, et après toute modification de
+la barre du site ou du pied ; `tests/test_rapports_publies.py` échoue si l'index
+ou le chrome committés ont dérivé, et
+`tests/test_chrome_instantanes_1029.py` si la copie statique du bandeau s'écarte
+des composants React.
+→ `docs/decisions/instantanes-publies-1029.md`,
+  `docs/decisions/chrome-du-site-sur-les-instantanes-1029.md`
 
 ### Ce qu'un moteur de recherche voit du site en ligne
 

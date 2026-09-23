@@ -138,6 +138,15 @@ Convention d'écriture : `AGENTS.md` §8.
 
 ## Known bugs
 
+- **`/couverture` ne décrit aucune des quatre sources arrivées le 22-23/09/2026** :
+  l'extrait de parole des rosters (#1086), l'ancre de la prise de parole (#1087),
+  l'index de mots des exposés d'amendements (#1092) et les actes réglementaires du
+  Journal officiel (#1098). La page continue de ne compter que les régimes
+  d'avant, si bien qu'un lecteur y voit « collecte réduite au thème » là où un
+  quart des entrées porte désormais un extrait. À reprendre quand les quatre sont
+  stabilisées dans les données — la couverture des extraits bouge à chaque run,
+  et une page qui la fige mentira le lendemain.
+
 - **Le téléphone : ça tient dans l'écran, ça ne s'y lit pas (#867, mesuré le
   12/09/2026).** Sept pages relevées à 360, 400 et 768 px — le relevé complet,
   avec ses captures et ses causes, est le

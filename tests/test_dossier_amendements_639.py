@@ -39,6 +39,18 @@ from unittest.mock import patch
 
 import pytest
 
+
+@pytest.fixture(autouse=True)
+def _cache_contenu_amendements_isole(tmp_path_factory, monkeypatch):
+    """Le contenu des amendements (#1029 voie 2) est publié depuis
+    `.cache/amendements_an`, et c'est la CI qui le fait depuis #1101 : sans cette
+    isolation, ces tests liraient le cache RÉEL du poste (#721) et passeraient ou
+    échoueraient selon ce qu'une collecte locale y a laissé."""
+    import generate_all_profiles
+
+    monkeypatch.setattr(generate_all_profiles, "CACHE_CONTENU_AMENDEMENTS",
+                        tmp_path_factory.mktemp("cache-contenu"))
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 import textes_dossiers_an  # noqa: E402

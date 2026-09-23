@@ -179,3 +179,103 @@ def test_la_licence_du_journal_officiel_ne_touche_aucun_profil():
     assert LICENCE_JORF not in LICENCE_PAR_TYPE_SOURCE.values()
     assert LICENCE_JORF not in LICENCES_SHARE_ALIKE
     assert json.loads(json.dumps({"licence_donnees": LICENCE_JORF}))["licence_donnees"]
+
+
+# ---------------------------------------------------------------------------
+# Les liens vers une loi, et leur correction après coup (arbitré le 23/09/2026)
+# ---------------------------------------------------------------------------
+
+DECRET_2013 = "JORFTEXT000027904809"   # décret de 2013, REDÉLIVRÉ le 21/09/2026
+ARRETE_CITANT = "JORFTEXT000054861494"  # arrêté du 18/09/2026, cite une loi en visa
+
+
+def _xml(cid: str) -> str:
+    return (FIXTURES / f"{cid}.xml").read_text(encoding="utf-8")
+
+
+def test_la_source_distingue_appliquer_et_citer():
+    """Un décret qui cite une loi en visa n'en est pas un décret d'application
+    (§2 règle 2) : la source pose deux `typelien`, on publie deux listes."""
+    appliquees, citees = ar.liens_vers_une_loi(_xml(DECRET_2013))
+    assert appliquees == ["JORFTEXT000000869866", "JORFTEXT000000869867"]
+    assert citees == []
+
+    appliquees, citees = ar.liens_vers_une_loi(_xml(ARRETE_CITANT))
+    assert appliquees == []
+    assert citees == ["JORFTEXT000051538879"], "dédoublonné : la source répète le lien"
+
+
+def test_un_acte_sans_lien_n_a_pas_de_cle():
+    """Une clé absente est « aucun lien déclaré », jamais « aucune loi » : la
+    source ne qualifie plus depuis 2024 (docs/sources/jorf-dila.md)."""
+    assert ar.liens_vers_une_loi(_xml(ARRETE_ARMEES)) == ([], [])
+
+    doc = ar.document("2026-09", {ARRETE_ARMEES: {"nature": "ARRETE", "mots": set()}})
+
+    assert doc["liens_lois"] == {}
+
+
+def _archive_avec(chemin: Path, cid: str) -> str:
+    with tarfile.open(chemin, "w:gz") as tar:
+        tar.add(FIXTURES / f"{cid}.xml",
+                arcname=f"20260921-220149/jorf/global/texte/version/JORF/TEXT/00/{cid}.xml")
+    return chemin.parent.as_uri() + "/"
+
+
+def test_un_acte_d_un_mois_clos_est_garde_pour_ses_seuls_liens(tmp_path):
+    """La redélivrance d'un décret de 2013 ne reconstruit pas août 2013 — ses
+    articles ne sont pas relus —, mais ses liens sont repris."""
+    base = _archive_avec(tmp_path / "JORF_20260921-220149.tar.gz", DECRET_2013)
+
+    moisson, _ = ar.collecter(["JORF_20260921-220149.tar.gz"], tmp_path / "spool",
+                              mois_retenus={"2026-09"}, base=base)
+
+    assert dict(moisson.par_mois()) == {}, "aucun mois reconstruit"
+    assert list(moisson.redelivres) == [DECRET_2013]
+    assert moisson.redelivres[DECRET_2013]["date_publi"] == "2013-08-29"
+
+
+def test_la_correction_ecrit_les_liens_dans_le_mois_deja_publie(tmp_path):
+    publie = tmp_path / "actes"
+    publie.mkdir()
+    (publie / "2013-08.json").write_text(json.dumps({
+        "schema_version": ar.SCHEMA_VERSION, "mois": "2013-08",
+        "genere_le": "2026-09-22T00:00:00+0200", "prefixe_ids": "JORFTEXT",
+        "ids": [DECRET_2013[8:]], "actes": [[1, "Décret n° 2013-776", "2013-08-29", None, None, "2013-776"]],
+        "liens_lois": {}, "mots": {},
+    }, ensure_ascii=False), encoding="utf-8")
+    redelivres = {DECRET_2013: {"date_publi": "2013-08-29",
+                                "lois_appliquees": ["JORFTEXT000000869866"], "lois_citees": []}}
+
+    assert ar.corriger_les_liens(redelivres, publie) == ["2013-08"]
+
+    doc = json.loads((publie / "2013-08.json").read_text(encoding="utf-8"))
+    assert doc["liens_lois"] == {DECRET_2013[8:]: [["JORFTEXT000000869866"], []]}
+    assert doc["liens_revus_le"], "le jour du constat est publié avec la correction"
+
+
+def test_la_correction_retire_un_lien_que_la_source_ne_pose_plus(tmp_path):
+    publie = tmp_path / "actes"
+    publie.mkdir()
+    (publie / "2013-08.json").write_text(json.dumps({
+        "schema_version": ar.SCHEMA_VERSION, "mois": "2013-08", "prefixe_ids": "JORFTEXT",
+        "genere_le": "2026-09-22T00:00:00+0200", "ids": [DECRET_2013[8:]],
+        "actes": [[1, "Décret", "2013-08-29", None, None, None]],
+        "liens_lois": {DECRET_2013[8:]: [["JORFTEXT000000869866"], []]}, "mots": {},
+    }, ensure_ascii=False), encoding="utf-8")
+    redelivres = {DECRET_2013: {"date_publi": "2013-08-29", "lois_appliquees": [], "lois_citees": []}}
+
+    ar.corriger_les_liens(redelivres, publie)
+
+    doc = json.loads((publie / "2013-08.json").read_text(encoding="utf-8"))
+    assert doc["liens_lois"] == {}, "publier une qualification retirée serait la nôtre"
+
+
+def test_un_mois_jamais_publie_n_est_pas_fabrique_par_la_correction(tmp_path):
+    publie = tmp_path / "actes"
+    publie.mkdir()
+    redelivres = {DECRET_2013: {"date_publi": "2013-08-29",
+                                "lois_appliquees": ["JORFTEXT000000869866"], "lois_citees": []}}
+
+    assert ar.corriger_les_liens(redelivres, publie) == []
+    assert list(publie.iterdir()) == [], "un mois absent se construit entier, pas par un patch"

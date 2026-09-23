@@ -64,3 +64,35 @@ def test_le_telechargement_reste_une_degradation_gracieuse():
     rang = _rang_dans_merge_and_pivot(TELECHARGEMENT)
 
     assert any("continue-on-error: true" in ligne for ligne in lignes[rang:rang + 6])
+
+
+# ---------------------------------------------------------------------------
+# Les deux chemins d'appel — la CI ne passe pas par le script
+# ---------------------------------------------------------------------------
+
+SRC = RACINE / "src"
+
+
+def test_les_deux_chemins_dappel_publient_le_contenu():
+    """`build_amendements_index_pivot.py` est le script en ligne de commande ;
+    `generate_all_profiles._rafraichir_index_amendements` est ce que la CI
+    appelle — sa propre docstring le dit déjà pour le report de #696.
+
+    `publier_contenus` n'était branchée que sur le premier : deux runs ont donc
+    publié zéro `<lég>.contenu.json` et posé zéro `article`, alors que
+    `extract-amendements-an` construisait bien le contenu (125 057 amendements
+    pour la XVIIe, 167 420 pour la XIVe, run 35792678909 du 23/09/2026)."""
+    for module in ("build_amendements_index_pivot.py", "generate_all_profiles.py"):
+        source = (SRC / module).read_text(encoding="utf-8")
+        assert "publier_contenus(" in source, (
+            f"{module} ne publie pas le contenu des amendements (#1029 voie 2)")
+        assert "articles=articles" in source, (
+            f"{module} ne pose pas l'article visé sur l'index")
+
+
+def test_la_ci_publie_le_contenu_avant_de_rafraichir_l_index():
+    """L'ordre dans la fonction compte : `articles` est un argument de
+    `rafraichir`, donc la publication le précède."""
+    source = (SRC / "generate_all_profiles.py").read_text(encoding="utf-8")
+
+    assert source.index("articles = publier_contenus(") < source.index("articles=articles")

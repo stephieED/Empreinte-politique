@@ -54,9 +54,32 @@ Une archive porte deux arborescences utiles : `.../texte/version/JORF/TEXT/.../J
   8 926 sur 22 595 textes lus dans six mois de livraisons. Le filtre est `DATE_PUBLI`, jamais
   la date de la livraison.
 - **`typelien="APPLICATION"`**, qui relie une loi à ses décrets d'application, **n'est plus posé
-  depuis 2024** : 0 des 188 lois du fonds promulguées depuis le 01/01/2024 en porte un, contre
-  68,6 % des lois de 2015. La qualification est un travail éditorial différé, de délai non
-  publié. `CITATION` n'en est pas un substitut (#664).
+  depuis 2024**, et c'est un **retard de qualification, pas une absence de décrets**. Remesuré le
+  23/09/2026 sur les 13 267 lois du fonds (dump global + 803 livraisons, 431 976 liens lus) :
+
+  | Année de promulgation | Lois du fonds | Avec un lien `APPLICATION` | Avec au moins un acte qui les **cite** |
+  | --- | ---: | ---: | ---: |
+  | 2019 | 76 | 36 (47 %) | 48 (63 %) |
+  | 2021 | 96 | 37 (38 %) | 60 (62 %) |
+  | 2023 | 79 | 28 (35 %) | 52 (65 %) |
+  | **2024** | 50 | **0** | **28 (56 %)** |
+  | **2025** | 84 | **0** | **52 (61 %)** |
+
+  Une loi de 2024 est citée par un acte aussi souvent qu'une loi de 2023 : les décrets sont là,
+  la source ne les a pas encore qualifiés. Le taux décroît d'ailleurs bien avant 2024 — 71 % en
+  2015 —, ce qui fait de la qualification un travail éditorial différé, de délai non publié.
+
+  **Cette couverture se remesure, elle ne se fige jamais** : le trou se referme par l'arrière, des
+  liens apparaissant sur des lois promulguées des mois plus tôt. Tout chiffre de couverture par
+  année porte donc la date où il a été pris, ici le 23/09/2026.
+
+  `CITATION` **n'est pas un substitut** : un décret qui cite une loi dans ses visas n'en est pas un
+  décret d'application, et publier l'un pour l'autre affirmerait une relation que la source ne
+  déclare pas (§2 règle 2). Il sert à mesurer le retard, jamais à combler le trou.
+- **L'intitulé déclaratif ne rattrape rien.** Un acte écrit parfois « pris pour l'application de la
+  loi n° 2024-42 » : 353 actes du fonds le font, pour 103 lois, et l'usage s'effondre après 2012
+  (35 actes cette année-là, 8 en 2024). Sur nos dossiers promulgués, cette voie gagne **5** lois,
+  dont **une seule** promulguée depuis 2024 (mesuré le 23/09/2026).
 - **Les coquilles du titre** : « ventre de la branche énergie d'Alstom », « oubre-mer ». Un
   index de mots les porte telles quelles ; rien n'est rapproché.
 - **Légifrance en 403** (Cloudflare) et l'API PISTE en OAuth : l'`ID_ELI` publié par la DILA
@@ -65,6 +88,26 @@ Une archive porte deux arborescences utiles : `.../texte/version/JORF/TEXT/.../J
   `?format=JSON` et l'opérateur n'annonce aucune licence (#644).
 - **`tarfile` en mode flux** garde la fiche de chaque membre lu : sur le dump global, le
   processus atteint 1,5 Go avant d'avoir rien produit si la liste n'est pas vidée.
+
+## La jointure loi → actes d'application, et sa population
+
+La jointure se fait par **identifiant**, jamais par ressemblance : le NOR de la loi, que l'acte
+publie dans son lien, ou le numéro de loi (`2024-42`) quand l'acte le cite dans son intitulé.
+
+**La population à joindre est celle des dossiers promulgués des archives de l'AN**, pas celle des
+`textes[]` des fiches de gouvernement : 607 dossiers portent un NOR de parution, dont **259 qu'une
+fiche de gouvernement ne porte pas** — un texte promulgué peut être porté par un parlementaire.
+Mesuré le 23/09/2026 sur les 10 967 dossiers des archives.
+
+| Mesure du 23/09/2026 | Résultat |
+| --- | ---: |
+| Nos dossiers promulgués retrouvés dans le fonds, par égalité de NOR | 607 / 608 |
+| Avec au moins un acte d'application qualifié | **209**, pour 1 493 actes |
+| Promulgués depuis 2024 | 175, dont **0** qualifiés et **90** cités par au moins un acte (678 actes citants) |
+
+**Un acte s'attribue au gouvernement en fonction à sa date de parution, pas à celui qui a fait voter
+la loi** : le délai médian loi → premier acte est de 57 jours, quartile haut 115 (#664), donc une
+loi de fin de mandature voit ses décrets pris par le gouvernement suivant.
 
 ## Volumétrie mesurée le 22/09/2026
 

@@ -51,6 +51,7 @@ import {
   metaLignee,
 } from './metadonnees-pages.mjs';
 import { avecBloc, blocCandidat, blocGouvernement, blocLignee } from './bloc-sans-js.mjs';
+import { entreesDeSitemap } from './index-rapports.mjs';
 import { robots, sitemap } from './sitemap-et-robots.mjs';
 import {
   baliseJsonld,
@@ -191,9 +192,14 @@ for (const [depuis, vers] of Object.entries(redirections)) {
   ecrire(depuis, gabarit.replace('</head>', `  <link rel="canonical" href="https://${domaine}/${vers}" />\n  </head>`));
 }
 
-/* Le sitemap ne liste QUE les pages publiées, jamais les redirections (#969). */
+/* Le sitemap ne liste QUE les pages publiées, jamais les redirections (#969).
+   LES INSTANTANÉS EN FONT PARTIE (#1029) : ce sont des pages statiques que Vite
+   recopie depuis `public/rapports/`, donc ce script n'en écrit aucune — sans
+   cette ligne elles répondraient 200 sans qu'aucun moteur ait de chemin vers
+   elles, et rien d'indexé ne pointe dessus. */
 const entrees = [{ chemin: '', lastmod: dateDuBuild }]
-  .concat([...publiees].map((chemin) => ({ chemin, lastmod: datesDesDonnees.get(chemin) || dateDuBuild })));
+  .concat([...publiees].map((chemin) => ({ chemin, lastmod: datesDesDonnees.get(chemin) || dateDuBuild })))
+  .concat(entreesDeSitemap());
 writeFileSync(join(dist, 'sitemap.xml'), sitemap(domaine, entrees));
 writeFileSync(join(dist, 'robots.txt'), robots(domaine));
 
@@ -203,6 +209,6 @@ console.log(
   + `${pages.groupes.length} fiches de lignée, ${pages.gouvernements.length} fiches de gouvernement ; `
   + `${Object.keys(redirections).length} adresses de redirection, canonical vers leur arrivée ; `
   + `${blocs.size} fiches portent leurs faits en clair, lisibles sans JavaScript ; `
-  + `sitemap.xml en liste ${entrees.length}, robots.txt le désigne ; `
+  + `sitemap.xml en liste ${entrees.length}, instantanés compris, robots.txt le désigne ; `
   + `${jsonld.size + 1} pages portent leur balisage Schema.org.`,
 );

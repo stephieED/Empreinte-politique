@@ -163,6 +163,15 @@ from amendements_index import (
     DEFAULT_AMENDEMENTS_DIR,
     rafraichir as rafraichir_amendements,
 )
+# #1101 — la CI n'appelle jamais `build_amendements_index_pivot.py` : elle passe
+# par `reconstruire_index_amendements` ci-dessous. La publication du contenu des
+# amendements (#1029 voie 2) était câblée dans le seul `main()` du script, donc
+# elle n'a jamais atteint le corpus. Même famille que le report de #696, que la
+# docstring de cette fonction nomme déjà.
+from build_amendements_index_pivot import (
+    DEFAUT_CACHE_AMENDEMENTS as CACHE_CONTENU_AMENDEMENTS,
+    publier_contenus,
+)
 from scrutins_index import DEFAULT_SCRUTINS_PATH, ScrutinsIndex, charger as charger_scrutins, rafraichir as rafraichir_scrutins
 from textes_dossiers_an import charger_table as charger_table_textes
 from textes_vises_figes import lire_textes_vises
@@ -1669,6 +1678,13 @@ def _rafraichir_index_amendements(args: argparse.Namespace, out_dir: Path) -> No
             print("Index des amendements : archives de dossiers indisponibles, aucun "
                   "rattachement texte → dossier ajouté ; les rattachements publiés sont conservés.")
     comptes: dict[str, int] = {}
+    # #1101 — publie `<lég>.contenu.json` (l'index de mots de l'exposé) et rend
+    # l'article visé de chaque amendement, à poser sur l'index. Le cache vient
+    # de l'artifact `amendements-index-an`, téléchargé avant les passes pivot.
+    # Le cache est passé EXPLICITEMENT, et non laissé au défaut de la fonction :
+    # un test isole ce chemin en réglant `CACHE_CONTENU_AMENDEMENTS`, sans quoi
+    # il lirait le cache réel du poste (#721, conftest).
+    articles = publier_contenus(dossier, CACHE_CONTENU_AMENDEMENTS)
     index = rafraichir_amendements(
         out_dir, dossier,
         # Fusion additive sauf --no-merge : un run qui ne régénère qu'une
@@ -1683,12 +1699,14 @@ def _rafraichir_index_amendements(args: argparse.Namespace, out_dir: Path) -> No
         # figées. Aucune archive ouverte s'il n'y a rien à réparer.
         lire_textes_vises=lire_textes_vises,
         comptes=comptes,
+        articles=articles,
     )
     detail = ", ".join(
         f"{legislature}: {len(index.ids_de_legislature(legislature))}"
         for legislature in index.legislatures()
     )
     print(f"Index des amendements : {len(index)} amendement(s) → {dossier} ({detail})")
+    print(f"  article visé (#1029) : {comptes.get('articles_poses', 0)} amendement(s)")
     if comptes.get("entrees_a_reparer"):
         # Idem pour le report #696 : ce qu'il n'a pas pu réparer est nommé.
         print(f"  texte visé : {comptes['entrees_a_reparer']} entrée(s) sans uid de document, "

@@ -19,6 +19,15 @@
 - Plusieurs mots sont cherchés dans le même exposé, sans ordre ni proximité.
 - Les XIVe à XVIe arrivent une par run (#1092) : avant, leurs amendements ne se trouvent que par l'intitulé.
 
+## Ce que le site ne copie pas
+
+`sync-data` copiait dans le site tout `pivot_data/amendements/*.json` sauf les
+`.cosignatures.json`, exclus un à un. L'index de mots (#1092) serait donc parti
+avec — 93 Mo pour les quatre législatures, servis sans qu'aucune page les lise.
+La liste se construit désormais **par le nom** (`/^\d+\.json$/`) au lieu
+d'exclure : un fichier voisin qui apparaît demain reste dehors tant qu'une vue
+ne le demande pas. `tests/test_sync_amendements_contenu_1029.py` le tient.
+
 ## Les alternatives écartées
 
 - **Charger l'index de la législature dans la page** : 17 à 37 Mo.

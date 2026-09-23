@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les instantanés · Empreinte politique</title>
+<meta name="description" content="Les instantanés thématiques d'Empreinte politique : ce que les fiches du site disent d'un sujet, à une date donnée, chaque fait lié à sa source.">
+<link rel="canonical" href="https://empreinte-politique.fr/rapports">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+:root {
+  color-scheme: light;
+  --bg:#f7f6f4; --card:#ffffff; --ink:#17141f; --muted:#6e6a78; --faible:#8b8794;
+  --border:#eae7e2; --border-fort:#ddd9d2; --accent:#dfff00;
+}
+body { margin:0; background:var(--bg); color:var(--ink); font-family:Manrope,'Segoe UI',system-ui,sans-serif; font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+.page { max-width:760px; margin:0 auto; padding-block:48px 64px; padding-inline:20px; display:flex; flex-direction:column; gap:32px; }
+h1 { margin:0; font-size:clamp(30px,5vw,44px); font-weight:800; letter-spacing:-0.025em; line-height:1.08; text-wrap:balance; }
+.eyebrow { margin:0; font-size:11.5px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--faible); }
+.chapeau { margin:0; font-size:17.5px; color:var(--muted); max-width:66ch; }
+ul.liste { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px; }
+ul.liste li { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px 20px; display:flex; flex-direction:column; gap:6px; }
+ul.liste a { font-size:18px; font-weight:800; color:var(--ink); text-decoration:none; }
+ul.liste a:hover { text-decoration:underline; }
+ul.liste .quand { font-size:12.5px; color:var(--faible); font-variant-numeric:tabular-nums; }
+ul.liste p { margin:0; font-size:14.5px; color:var(--muted); }
+.note { margin:0; font-size:13.5px; color:var(--muted); }
+.note a { color:inherit; }
+/*chrome:style*/
+:root { --notice:#00e5ff; }
+body {
+  background-color: var(--bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000'%3E%3Cg fill='none' stroke='rgb(20,21,26)' stroke-width='1.5' opacity='0.055'%3E%3Cellipse cx='150' cy='1000' rx='100' ry='92'/%3E%3Cellipse cx='150' cy='1000' rx='200' ry='184'/%3E%3Cellipse cx='150' cy='1000' rx='300' ry='276'/%3E%3Cellipse cx='150' cy='1000' rx='400' ry='368'/%3E%3Cellipse cx='150' cy='1000' rx='500' ry='460'/%3E%3Cellipse cx='150' cy='1000' rx='600' ry='552'/%3E%3Cellipse cx='150' cy='1000' rx='700' ry='644'/%3E%3Cellipse cx='150' cy='1000' rx='800' ry='736'/%3E%3Cellipse cx='150' cy='1000' rx='900' ry='828'/%3E%3Cellipse cx='150' cy='1000' rx='1000' ry='920'/%3E%3Cellipse cx='150' cy='1000' rx='1100' ry='1012'/%3E%3Cellipse cx='150' cy='1000' rx='1200' ry='1104'/%3E%3Cellipse cx='150' cy='1000' rx='1300' ry='1196'/%3E%3Cellipse cx='150' cy='1000' rx='1400' ry='1288'/%3E%3Cellipse cx='150' cy='1000' rx='1500' ry='1380'/%3E%3Cellipse cx='150' cy='1000' rx='1600' ry='1472'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: left bottom;
+}
+.construction-banner { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:center; gap:0.5rem 1rem; padding:0.875rem 1.25rem; background:var(--notice); color:#17141f; font-size:0.9375rem; line-height:1.45; text-align:center; }
+.construction-banner__text { margin:0; max-width:78ch; }
+.construction-banner__link { color:#17141f; font-weight:600; text-underline-offset:0.25em; white-space:nowrap; }
+.construction-banner__link:hover, .construction-banner__link:focus-visible { text-decoration-thickness:2px; }
+@media (max-width:34rem) { .construction-banner { text-align:left; justify-content:flex-start; } }
+
+.entete-site { --entete-hauteur:80px; position:sticky; top:0; z-index:5; height:var(--entete-hauteur); display:flex; align-items:center; gap:16px; padding-right:40px; background:var(--bg); border-bottom:1px solid var(--border); }
+.entete-site-actions { margin-left:auto; display:flex; align-items:center; gap:22px; }
+.brand { display:flex; align-items:center; padding-inline:40px; height:80px; text-decoration:none; transition:opacity 0.15s; flex:none; }
+.brand:hover, .brand:focus-visible { opacity:0.75; }
+.brand-lockup { display:block; height:58px; width:auto; }
+.brand-symbol { display:none; height:40px; width:40px; }
+
+.nav-site { display:flex; align-items:center; gap:22px; }
+.nav-site-lien { font-size:13px; font-weight:600; color:var(--faible); text-decoration:none; padding:4px 0; white-space:nowrap; }
+.nav-site-lien:hover { color:var(--ink); }
+.nav-site-lien--courante { color:var(--ink); font-weight:800; box-shadow:inset 0 -3px 0 var(--accent); }
+.nav-site-lien:focus-visible, .nav-site-menu-lien:focus-visible, .nav-site-menu-bouton:focus-visible { outline:2px solid var(--ink); outline-offset:2px; }
+.nav-site-menu { position:relative; display:none; }
+.nav-site-menu-bouton { display:inline-flex; align-items:center; gap:8px; font:inherit; font-size:12.5px; font-weight:600; border:1px solid var(--border-fort); background:var(--card); color:var(--ink); border-radius:999px; padding:5px 12px; cursor:pointer; white-space:nowrap; list-style:none; }
+.nav-site-menu-bouton::-webkit-details-marker { display:none; }
+.nav-site-menu-bouton:hover { border-color:var(--faible); }
+.nav-site-menu-icone { position:relative; width:13px; height:9px; border-top:2px solid currentColor; border-bottom:2px solid currentColor; box-sizing:border-box; }
+.nav-site-menu-icone::after { content:''; position:absolute; left:0; right:0; top:1.5px; border-top:2px solid currentColor; }
+.nav-site-menu-liste { position:absolute; right:0; top:calc(100% + 8px); z-index:10; min-width:200px; display:flex; flex-direction:column; padding:8px; background:var(--card); border:1px solid var(--border); border-radius:14px; box-shadow:0 10px 30px rgba(23,20,31,0.14); }
+.nav-site-menu-lien { padding:10px 12px; border-radius:10px; font-size:14px; font-weight:700; color:var(--ink); text-decoration:none; }
+.nav-site-menu-lien:hover { background:var(--bg); }
+.nav-site-menu-lien--courante, .nav-site-menu-lien--courante:hover { background:var(--accent); color:#17141f; }
+@media (max-width:720px) {
+  .entete-site { padding-right:16px; gap:8px; }
+  .entete-site-actions { gap:8px; }
+  .nav-site { display:none; }
+  .nav-site-menu { display:block; }
+}
+@media (max-width:480px) {
+  .entete-site { --entete-hauteur:56px; }
+  .brand { height:56px; padding-inline:16px; }
+  .brand-lockup { display:none; }
+  .brand-symbol { display:block; }
+}
+
+.pds { display:grid; line-height:1.4; grid-template-columns:1.4fr 1fr auto; gap:26px 40px; align-items:start; width:100%; max-width:1600px; margin:0 auto; padding:26px 40px 30px; border-top:1px solid var(--border); font-size:13px; color:var(--faible); }
+.pds-marque { line-height:1.55; }
+.pds-marque b { display:block; font-size:13px; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink); margin-bottom:6px; }
+.pds-colonne { display:flex; flex-direction:column; align-items:flex-start; gap:7px; }
+.pds-titre { font-size:10.5px; font-weight:800; letter-spacing:0.11em; text-transform:uppercase; color:#b6b1bd; margin-bottom:2px; }
+.pds a { color:var(--faible); text-decoration:none; }
+.pds a:hover, .pds a:focus-visible { color:var(--ink); text-decoration:underline; }
+.pds a:focus-visible { outline:2px solid var(--ink); outline-offset:3px; border-radius:2px; }
+.pds-comptes { display:flex; gap:4px; margin-top:1px; }
+.pds-icone { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:4px; transition:background 0.12s ease, color 0.12s ease; }
+.pds-icone svg { width:16px; height:16px; display:block; }
+.pds-icone:hover, .pds-icone:focus-visible { background:#f2f0ed; color:var(--ink); text-decoration:none; }
+.pds-icone:focus-visible { outline-offset:1px; }
+.baseline { margin:0; display:flex; flex-wrap:wrap; font-variant-numeric:tabular-nums; }
+.baseline-mention { white-space:nowrap; }
+.baseline-puce { padding:0 6px; color:var(--faible); }
+.baseline--pied { font-size:13px; font-weight:600; color:var(--faible); }
+@media (max-width:760px) { .pds { grid-template-columns:1fr; gap:22px; padding:24px 20px 28px; } }
+@media (prefers-reduced-motion:reduce) { .pds-icone { transition:none; } }
+/*/chrome:style*/
+</style>
+</head>
+<body>
+<!--chrome:bandeau-->
+<aside class="construction-banner" role="note" aria-label="État du projet">
+  <p class="construction-banner__text"><strong>En construction.</strong> Ce site est publié pendant son développement. Ce qui s'affiche est sourcé et vérifiable, mais des données peuvent manquer, et certaines absences sont encore mal expliquées.</p>
+  <a class="construction-banner__link" href="https://empreinte-politique.fr/methodologie">Méthodologie</a>
+</aside>
+<header class="entete-site">
+  <a class="brand" href="https://empreinte-politique.fr/" aria-label="Empreinte politique — retour à l'accueil">
+    <img src="https://empreinte-politique.fr/brand/empreinte-lockup-light.svg" alt="" class="brand-lockup">
+    <img src="https://empreinte-politique.fr/brand/empreinte-symbol-light.svg" alt="" class="brand-symbol">
+  </a>
+  <div class="entete-site-actions">
+    <nav class="nav-site" aria-label="Pages du site">
+      <a href="https://empreinte-politique.fr/candidats" class="nav-site-lien">Explorateur</a>
+      <a href="https://empreinte-politique.fr/methodologie" class="nav-site-lien">Méthodologie</a>
+      <a href="https://empreinte-politique.fr/sources" class="nav-site-lien">Sources</a>
+      <a href="https://empreinte-politique.fr/rapports" class="nav-site-lien nav-site-lien--courante" aria-current="page">Instantanés</a>
+      <a href="https://empreinte-politique.fr/faq" class="nav-site-lien">FAQ</a>
+    </nav>
+    <details class="nav-site-menu">
+      <summary class="nav-site-menu-bouton"><span class="nav-site-menu-icone" aria-hidden="true"></span>Menu</summary>
+      <nav class="nav-site-menu-liste" aria-label="Pages du site">
+      <a href="https://empreinte-politique.fr/candidats" class="nav-site-menu-lien">Explorateur</a>
+      <a href="https://empreinte-politique.fr/methodologie" class="nav-site-menu-lien">Méthodologie</a>
+      <a href="https://empreinte-politique.fr/sources" class="nav-site-menu-lien">Sources</a>
+      <a href="https://empreinte-politique.fr/rapports" class="nav-site-menu-lien nav-site-menu-lien--courante" aria-current="page">Instantanés</a>
+      <a href="https://empreinte-politique.fr/faq" class="nav-site-menu-lien">FAQ</a>
+      </nav>
+    </details>
+  </div>
+</header>
+<!--/chrome:bandeau-->
+<div class="page">
+  <div>
+    <p class="eyebrow">Empreinte politique</p>
+    <h1>Les instantanés</h1>
+  </div>
+  <p class="chapeau">Ce que les fiches du site disent d'un sujet, au jour des données qui l'ont produit. Chaque fait y est lié à sa source — un compte rendu de séance, un dossier législatif, un texte au Journal officiel.</p>
+  <ul class="liste">
+      <li>
+        <a href="/rapports/2026-09-23-prix-des-carburants.html">Le prix des carburants</a>
+        <span class="quand">Données au 23 septembre 2026 · période du 23 mars au 23 septembre 2026</span>
+        <p>Ce qui s'est dit et ce qui s'est fait sur le prix des carburants du 23 mars au 23 septembre 2026 : onze séances, quatre textes déposés, vingt actes au Journal officiel, aucune loi.</p>
+      </li>
+  </ul>
+  <p class="note">Un instantané n'est jamais mis à jour : il dit l'état du corpus à sa date. Un sujet repris plus tard donne un nouvel instantané, à une nouvelle adresse.</p>
+  <p class="note">Données publiques de l'Assemblée nationale et du Journal officiel · <a href="/sources">Les sources</a> · <a href="/methodologie">La méthodologie</a></p>
+</div>
+<!--chrome:pied-->
+<footer class="pds">
+  <div class="pds-marque">
+    <b>Empreinte politique</b>
+    <p class="baseline baseline--pied"><span class="baseline-mention">100 % automatisé</span><span class="baseline-mention"><span aria-hidden="true" class="baseline-puce">•</span>100 % sourcé</span><span class="baseline-mention"><span aria-hidden="true" class="baseline-puce">•</span>0 score</span><span class="baseline-mention"><span aria-hidden="true" class="baseline-puce">•</span>0 filtre</span></p>
+  </div>
+  <nav class="pds-colonne" aria-label="Pages du site">
+    <span class="pds-titre">Le site</span>
+    <a href="https://empreinte-politique.fr/a-propos">À propos</a>
+    <a href="https://empreinte-politique.fr/sources">Sources</a>
+    <a href="https://empreinte-politique.fr/methodologie">Méthodologie</a>
+    <a href="https://empreinte-politique.fr/mentions-legales">Mentions légales</a>
+  </nav>
+  <div class="pds-colonne">
+    <span class="pds-titre">Nous joindre</span>
+    <a href="mailto:contact@empreinte-politique.fr">contact@empreinte-politique.fr</a>
+    <div class="pds-comptes">
+      <a class="pds-icone" href="https://www.linkedin.com/company/empreinte-politique" target="_blank" rel="noopener noreferrer" aria-label="Empreinte politique sur LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.5h4v11H3v-11Zm6.5 0h3.8v1.5h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.76v5.69h-4v-5.05c0-1.2-.02-2.75-1.7-2.75-1.7 0-1.96 1.31-1.96 2.66v5.14h-4v-11Z"/></svg></a>
+      <a class="pds-icone" href="https://x.com/EmpreintePol" target="_blank" rel="noopener noreferrer" aria-label="Empreinte politique sur X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.6 3h3.1l-6.77 7.74L22 21h-6.2l-4.86-6.35L5.37 21H2.26l7.24-8.28L2 3h6.36l4.4 5.82L17.6 3Zm-1.09 16.1h1.72L7.57 4.8H5.72l10.79 14.3Z"/></svg></a>
+    </div>
+  </div>
+</footer>
+<!--/chrome:pied-->
+</body>
+</html>

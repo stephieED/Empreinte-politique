@@ -1,0 +1,78 @@
+{
+ "dossierParlementaire": {
+  "uid": "DLR5L17N52781",
+  "titreDossier": {
+   "titre": "Assurer le droit de chaque enfant à disposer d’un avocat dans le cadre d’une mesure d’assistance éducative et de protection de l’enfance",
+   "titreChemin": "_droit_avocat_mesure_assistance_educative_17e",
+   "senatChemin": "http://www.senat.fr/dossier-legislatif/ppl25-214.html"
+  },
+  "procedureParlementaire": {
+   "code": "2",
+   "libelle": "Proposition de loi ordinaire"
+  },
+  "actesLegislatifs": {
+   "acteLegislatif": [
+    {
+     "@xsi:type": "DepotInitiative_Type",
+     "uid": "L17-VD227750DI",
+     "codeActe": "AN1-DEPOT",
+     "libelleActe": {
+      "nomCanonique": "1er dépôt d'une initiative.",
+      "libelleCourt": "1er dépôt d'une initiative."
+     },
+     "organeRef": "PO838901",
+     "dateActe": "2025-09-16T00:00:00.000+02:00",
+     "texteAssocie": "PIONANR5L17B1831"
+    },
+    {
+     "@xsi:type": "SaisieComFond_Type",
+     "uid": "L17-VD227751CFS",
+     "codeActe": "AN1-COM-FOND-SAISIE",
+     "libelleActe": {
+      "nomCanonique": "Renvoi en commission au fond",
+      "libelleCourt": "Renvoi en commission au fond"
+     },
+     "organeRef": "PO59051",
+     "dateActe": "2025-09-16T00:00:00.000+02:00"
+    },
+    {
+     "@xsi:type": "DepotInitiativeNavette_Type",
+     "uid": "L17-VD229543DIN",
+     "codeActe": "SN1-DEPOT",
+     "libelleActe": {
+      "nomCanonique": "Dépôt d'une initiative en navette",
+      "libelleCourt": "Dépôt d'une initiative en navette"
+     },
+     "organeRef": "PO78718",
+     "dateActe": "2025-12-11T00:00:00.000+01:00",
+     "texteAssocie": "PIONSNR5S479B0214",
+     "provenance": "PO838901",
+     "depotInitialLectureDefinitiveRef": null
+    },
+    {
+     "@xsi:type": "Promulgation_Type",
+     "uid": "L17-VD233231PL",
+     "codeActe": "PROM-PUB",
+     "libelleActe": {
+      "nomCanonique": "Promulgation d'une loi",
+      "libelleCourt": "Promulgation d'une loi"
+     },
+     "organeRef": "PO717136",
+     "dateActe": "2026-07-13T00:00:00.000+02:00",
+     "texteLoiRef": "PIONANR5L17BTA0324",
+     "infoJO": {
+      "typeJO": "JO_LOI_DECRET",
+      "dateJO": "2026-07-14+02:00",
+      "pageJO": null,
+      "numJO": "163",
+      "urlLegifrance": "http://www.legifrance.gouv.fr/WAspad/UnTexteDeJorf?numjo=JUSF2534988L",
+      "referenceNOR": "JUSF2534988L"
+     },
+     "urlEcheancierLoi": null,
+     "codeLoi": "2026-630",
+     "titreLoi": "visant à assurer le droit de chaque enfant à être assisté d’un avocat dans le cadre d’une mesure d’assistance éducative et de protection de l’enfance"
+    }
+   ]
+  }
+ }
+}

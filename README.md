@@ -110,6 +110,7 @@ cite ni un script disparu ni une option qui n'existe plus.
 ```
 raw_data/      Entrées déclaratives + collecte brute (proche de la source)
   candidats.json            la liste éditoriale des candidats déclarés
+  lois_jorf.json            numéro de loi → identifiant au Journal officiel (23/09/2026)
   groupes_reels.json        les groupes parlementaires à produire
   gouvernements_reels.json  les gouvernements à produire, lus dans AMO30 à chaque run
   profiles/                 <slug>.json + une tranche par législature (#580)
@@ -122,6 +123,10 @@ pivot_data/    Le format pivot — la SEULE couche que web/ lit
   scrutins_europeens.json  les scrutins du PE cités, avec leurs effectifs par groupe (#901)
   dossiers_europeens.json  référence de procédure → titre, stade, commission au fond (#901)
   amendements/    index partagé des amendements, un fichier par législature (#431)
+  actes_reglementaires/  décrets, arrêtés et ordonnances du Journal officiel,
+                  un fichier par mois de parution, avec un index de mots (#1029)
+  textes_promulgues.json  les textes que le Parlement a promulgués, avec leur
+                  commission saisie au fond (23/09/2026)
 src/           Le pipeline (collecte, normalisation, agrégation, audits, gate)
 scripts/       Les scripts d'exploitation (run local, bornage, rendu du formulaire)
 web/UI_finale/ L'interface de production : React 19 + Vite
@@ -150,6 +155,36 @@ depuis #901. Pourquoi, et ce que ça a fait gagner :
 | **« Où cette source publie-t-elle ce champ ? »** — Assemblée, Sénat, ParlTrack et Parlement européen : les références qui dérivent avec leur fournisseur, pas avec notre code | [`docs/sources/`](docs/sources/) |
 | **Les règles non négociables, pour un agent comme pour un humain** | [`AGENTS.md`](AGENTS.md) |
 | **Ce qui est planifié, et les défauts connus restés ouverts** | [`ROADMAP.md`](ROADMAP.md) |
+
+## Ce que le Journal officiel ajoute, et ce qu'il ne dit pas
+
+Depuis le 22/09/2026, le dépôt porte aussi ce que l'exécutif prend **seul** :
+**389 456 décrets, arrêtés et ordonnances** parus depuis 2007, et depuis le
+23/09/2026 les lois que chacun **applique** ou **cite**. En regard, les **1 015
+textes promulgués** par le Parlement, avec la commission qui les a examinés.
+
+Trois limites, déclarées plutôt que contournées :
+
+- **le signataire d'un décret n'est pas publié par la source.** Un acte se
+  rattache donc à un gouvernement par sa **date de parution** et à un ministère
+  par son organe, jamais à une personne : « N décrets signés par X » n'est pas
+  constructible, et c'est la source qui ferme ce piège ;
+- **un acte sans lien vers une loi n'est pas un acte pris sans loi.** Légifrance
+  pose la qualification « application » longtemps après la parution — aucune loi
+  promulguée depuis 2024 n'en portait au 23/09/2026, alors que 56 % d'entre elles
+  étaient déjà citées par un acte. Cette part se corrige au fil des runs ;
+- **le texte des actes n'est pas republié** : il se lit chez Légifrance.
+
+## Les instantanés
+
+`/rapports` réunit les instantanés thématiques : ce que les fiches disent d'un
+sujet, au jour des données qui l'ont produit, chaque fait lié à sa source. Ce
+sont des pages statiques de `web/UI_finale/public/rapports/`, servies telles
+quelles — leur adresse ne bouge pas, et un instantané n'est jamais mis à jour :
+un sujet repris plus tard en donne un nouveau, à une nouvelle adresse. L'index
+se construit depuis le dossier (`node web/UI_finale/scripts/index-rapports.mjs`),
+la barre du site y mène, et `tests/test_rapports_publies.py` refuse un index
+qui a dérivé.
 
 ## Ce que la couverture ne couvre pas encore
 

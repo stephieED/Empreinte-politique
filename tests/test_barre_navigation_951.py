@@ -34,10 +34,20 @@ def _sans_commentaires(source: str) -> str:
     return re.sub(r"(?<!:)//[^\n]*", "", source)
 
 
-def test_les_quatre_pages_dans_l_ordre() -> None:
+def test_les_cinq_pages_dans_l_ordre() -> None:
+    """« Instantanés » (#1029) s'insère avant la FAQ : les instantanés sont une
+    lecture du corpus, la FAQ reste la dernière entrée."""
     source = _sans_commentaires(NAV.read_text(encoding="utf-8"))
     libelles = re.findall(r"libelle: '([^']+)'", source)
-    assert libelles == ["Explorateur", "Méthodologie", "Sources", "FAQ"]
+    assert libelles == ["Explorateur", "Méthodologie", "Sources", "Instantanés", "FAQ"]
+
+
+def test_les_instantanes_sont_une_page_statique_pas_une_route() -> None:
+    """Servie telle quelle par Pages : un `<Link>` ferait démarrer le routeur
+    sur une adresse qu'il ne connaît pas."""
+    source = _sans_commentaires(NAV.read_text(encoding="utf-8"))
+    assert "statique: true" in source
+    assert re.search(r"<a key=\{page\.libelle\} href=\{page\.vers\}", source)
 
 
 def test_la_page_courante_est_annoncee() -> None:
