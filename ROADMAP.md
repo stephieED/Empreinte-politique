@@ -152,23 +152,27 @@ Convention d'écriture : `AGENTS.md` §8.
   productives pour la XVIe. **Le corpus n'attend donc plus rien** ; ce qui suit
   ne se paie que le jour où une archive close devra être reconstruite.
 
-  **1. La forme de la requête.** Le téléchargeur demande des segments bornés
-  (`AMENDEMENTS_DOWNLOAD_CHUNK_BYTES`, 32 Mo), ce qui plafonne chaque réussite
-  alors qu'une plage ouverte rend parfois 200 Mo d'un coup. C'est le levier qui
-  a fait passer les deux archives.
+  **1. ~~La forme de la requête~~ — réglé le 24/09/2026 (#1123).** Les archives
+  figées demandent désormais une plage **sans borne** (`bytes=<offset>-`), ce
+  qui ne plafonne plus les réponses chanceuses : mesuré, elles vont de 0 à
+  211 Mo. La 17e garde le segment borné, son archive n'ayant jamais posé ce
+  problème. **Ce qui n'est pas mesuré : le rendement depuis un runner GitHub.**
+  Les 12,6 Mo par tentative viennent d'un poste, et le premier run qui
+  reconstruira une archive figée sera la vraie mesure.
 
-  **2. La conservation du préfixe entre deux runs, qui n'existe pas.** Trois
-  obstacles se cumulent : `construire_un_contenu_fige` supprime l'archive
-  partielle dans son `finally` ; le `Post Run actions/cache` est sauté
-  **précisément** quand l'étape échoue ou est annulée, donc sur les seuls runs
-  qui ont un préfixe à sauver ; et la clé hebdomadaire n'est pas réécrite quand
-  elle existe déjà. Le téléchargeur, lui, sait déjà reprendre un fichier partiel
-  entre deux invocations : cette partie-là est faite.
+  **2. La conservation du préfixe entre deux runs — LAISSÉE OUVERTE, arbitré le
+  24/09/2026 (#1125).** Trois obstacles, dont un qui n'est pas un réglage : la
+  clé hebdomadaire **est** la politique de fraîcheur, donc il faudrait un second
+  cache. Non construit tant que le corpus est complet et qu'aucune mesure en CI
+  ne confirme le besoin. **Le raisonnement ne se refait pas** — les trois
+  obstacles, le coût, et ce qui rouvrirait le sujet sont dans
+  `docs/decisions/conservation-du-prefixe-laissee-ouverte-1125.md`.
 
-  **3. La construction tient tout en mémoire** — ~3,9 Go pour la XVe, mesurés
-  après qu'un premier essai a été tué par le noyau à 2,87 Go. `lire_archive`
-  garde les mots de tous les amendements à la fois ; l'étaler sur disque est le
-  remède que le dépôt applique déjà aux actes du Journal officiel.
+  **3. ~~La construction tient tout en mémoire~~ — réglé le 24/09/2026 (#1121).**
+  `document_depuis_archive` étale l'inversion sur disque, par seaux : **315 Mo
+  de pic sur la XVe contre ~3,9 Go**, pour 157 s au lieu de 131, et un document
+  identique à celui de la fabrique en mémoire sur les deux archives vérifiées.
+  Il ne reste donc que les deux points ci-dessus, qui sont du réseau.
 
 - **`/couverture` ne décrit aucune des quatre sources arrivées le 22-23/09/2026** :
   l'extrait de parole des rosters (#1086), l'ancre de la prise de parole (#1087),

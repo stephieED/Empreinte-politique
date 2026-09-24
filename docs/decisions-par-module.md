@@ -37,7 +37,7 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 
 | Module | Décisions qui le gouvernent |
 | --- | ---: |
-| `src/amendements_contenu.py` | 4 |
+| `src/build_amendements_index.py` | 4 |
 | `src/parse_syceron.py` | 4 |
 | `src/perimetre_candidats.py` | 4 |
 | `src/audit_pipeline.py` | 3 |
@@ -47,7 +47,6 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/rne_opendata.py` | 3 |
 | `src/audit_gouvernement_dataset.py` | 2 |
 | `src/avertissements.py` | 2 |
-| `src/build_amendements_index.py` | 2 |
 | `src/fetch_candidats_declares.py` | 2 |
 | `src/titres_europeens.py` | 2 |
 | `src/actes_reglementaires.py` | 1 |
@@ -80,16 +79,17 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | --- | --- |
 | [Un acte publie les lois qu'il applique et celles qu'il cite, et ces liens se corrigent après coup (2026-09-23)](decisions/liens-des-actes-vers-les-lois.md) | `corriger_les_liens` |
 
-Le mentionnent sans le gouverner : [`actes-reglementaires-du-journal-officiel-1029`](decisions/actes-reglementaires-du-journal-officiel-1029.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
+Le mentionnent sans le gouverner : [`actes-reglementaires-du-journal-officiel-1029`](decisions/actes-reglementaires-du-journal-officiel-1029.md), [`etalement-disque-index-de-mots-1121`](decisions/etalement-disque-index-de-mots-1121.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
 
 ## `src/amendements_contenu.py`
 
-4 décision(s) le gouvernent ; le module en cite 0.
+5 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
 | [Les actes réglementaires du Journal officiel, par mois et par mots (#1029 voie 1) (2026-09-22)](decisions/actes-reglementaires-du-journal-officiel-1029.md) | `forme_indexee`, `mots_du_texte` |
 | [Trouver les amendements d'un sujet par leur exposé, sur les fiches (#1029) (2026-09-22)](decisions/amendements-par-mot-sur-les-fiches-1029.md) | `forme_indexee` |
+| [L'index de mots des amendements s'étale sur disque, et la fabrique de référence reste (#1121) (2026-09-24)](decisions/etalement-disque-index-de-mots-1121.md) | `NB_SEAUX`, `document_depuis_archive`, `ecrire_contenu_cache`, `hash_seau`, `lire_archive` |
 | [Les identifiants d'amendements sont pris pour des jetons, et le chemin sort du scanner (#1119) (2026-09-24)](decisions/identifiants-an-pris-pour-des-jetons-1119.md) | `uid_complet` |
 | [Trouver les amendements d'un sujet : l'article visé et un index de mots de l'exposé (#1029) (2026-09-22)](decisions/index-de-mots-des-amendements-1029.md) | `forme_indexee` |
 
@@ -276,18 +276,20 @@ Le mentionnent sans le gouverner : [`budget-collecte-interventions`](decisions/b
 
 ## `src/build_amendements_index.py`
 
-2 décision(s) le gouvernent ; le module en cite 0.
+4 décision(s) le gouvernent ; le module en cite 0.
 
 | Décision | Nomme |
 | --- | --- |
 | [Job CI dédié `extract-amendements-an` : construction inconditionnelle des 3 index de législature (#251) (2026-08-13)](decisions/amendements-index-job-dedie-ci.md) | `build_all_amendements_index` |
+| [La conservation du préfixe entre deux runs reste ouverte, et c'est une décision (#1125) (2026-09-24)](decisions/conservation-du-prefixe-laissee-ouverte-1125.md) | `construire_un_contenu_fige` |
+| [Les archives figées se demandent en plage sans borne, la législature en cours garde ses segments (#1123) (2026-09-24)](decisions/plage-sans-borne-archives-figees-1123.md) | `construire_un_contenu_fige` |
 | [La reprise d'une archive figée se borne en temps, et le message ne dit plus « indisponible » (#1100) (2026-09-22)](decisions/reprise-archive-figee-bornee-en-temps-1100.md) | `JOB_TIMEOUT_MINUTES`, `budget_telechargement_secondes` |
 
 Le mentionnent sans le gouverner : [`amendements-index-cache-only-consumers`](decisions/amendements-index-cache-only-consumers.md), [`cache-amendements-existence-nest-pas-conformite`](decisions/cache-amendements-existence-nest-pas-conformite.md), [`deux-versions-archive-amendements-1050`](decisions/deux-versions-archive-amendements-1050.md), [`fraicheur-index-amendements-749`](decisions/fraicheur-index-amendements-749.md), [`index-amendements-sharde-par-acteur`](decisions/index-amendements-sharde-par-acteur.md), [`oom-lecture-amendements-par-candidat`](decisions/oom-lecture-amendements-par-candidat.md), [`oom-reconstruction-amendements-figees`](decisions/oom-reconstruction-amendements-figees.md), [`pythonunbuffered-generate-data`](decisions/pythonunbuffered-generate-data.md).
 
 ## `src/build_amendements_index_figees.py`
 
-Le mentionnent sans le gouverner : [`amendements-cle-uid`](decisions/amendements-cle-uid.md), [`amendements-legislatures-figees`](decisions/amendements-legislatures-figees.md), [`defaut-collecte-vs-panne-562`](decisions/defaut-collecte-vs-panne-562.md), [`deux-versions-archive-amendements-1050`](decisions/deux-versions-archive-amendements-1050.md), [`telechargement-an-prefixe-valide-443`](decisions/telechargement-an-prefixe-valide-443.md).
+Le mentionnent sans le gouverner : [`amendements-cle-uid`](decisions/amendements-cle-uid.md), [`amendements-legislatures-figees`](decisions/amendements-legislatures-figees.md), [`defaut-collecte-vs-panne-562`](decisions/defaut-collecte-vs-panne-562.md), [`deux-versions-archive-amendements-1050`](decisions/deux-versions-archive-amendements-1050.md), [`plage-sans-borne-archives-figees-1123`](decisions/plage-sans-borne-archives-figees-1123.md), [`telechargement-an-prefixe-valide-443`](decisions/telechargement-an-prefixe-valide-443.md).
 
 ## `src/build_amendements_index_pivot.py`
 
@@ -341,7 +343,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 
 ## `src/candidate_profile.py`
 
-94 décision(s) le gouvernent ; le module en cite 14.
+96 décision(s) le gouvernent ; le module en cite 14.
 
 | Décision | Nomme |
 | --- | --- |
@@ -379,6 +381,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [La civilité et la nomenclature PCS de l'INSEE traversaient le pipeline sans y laisser de trace (#659) (2026-08-31)](decisions/civilite-et-pcs-insee-659.md) | `NOM_INDEX_IDENTITE`, `_build_acteur_identite_index`, `_champ_identite_an`, `_profession_an`, `_socproc_insee_an` |
 | [Un cache porte le code qui l'a écrit : le correctif de #997 n'atteignait rien (2026-09-18)](decisions/cle-index-textes-portes-997.md) | `_build_acteur_textes_portes_index`, `_collect_acteur_roles`, `fetch_textes_portes_officiels` |
 | [Un index Syceron en cache est un parsage en cache, et l'existence n'y est pas la conformité (#719) (2026-09-02)](decisions/conformite-index-syceron-719.md) | `SYCERON_CHAMP_QUALIFICATION`, `_reduire_au_theme`, `_scrutins_store_qualifie`, `_syceron_index_qualifie`, `_write_syceron_index_par_acteur` |
+| [La conservation du préfixe entre deux runs reste ouverte, et c'est une décision (#1125) (2026-09-24)](decisions/conservation-du-prefixe-laissee-ouverte-1125.md) | `AMENDEMENTS_SOURCE_STALL_MAX_CYCLES`, `_download_amendements_zip` |
 | [La correspondance slug ↔ acteur AN devient un artefact committé (#525, lot 2 de l'épic « une seule source AN ») (2026-08-26)](decisions/correspondance-acteurs-an-525.md) | `_resolve_acteur_ref_par_slug` |
 | [Ce qu'une liste vide veut dire : les quatre états de couverture (#539) (2026-08-28)](decisions/couverture-listes-539.md) | `AN_AMENDEMENTS_PATH`, `AN_SCRUTINS_LEGISLATURES`, `WARNING_PREFIX_VOTES_INTROUVABLES`, `_resolve_acteur_ref_par_slug` |
 | [Une question au gouvernement est datée par la parution de son compte rendu au JO (#1044) (2026-09-22)](decisions/date-des-questions-au-gouvernement-1044.md) | `_parse_question_entry` |
@@ -415,6 +418,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [OOM lors de la relecture d'un index amendements figé déjà en cache (exécution locale) (2026-08-17)](decisions/oom-reconstruction-amendements-figees.md) | `AN_AMENDEMENTS_LEGISLATURES_FIGEES`, `AN_AMENDEMENTS_PATH`, `_download_and_build_amendement_index`, `amendements_index_deja_figee` |
 | [`_build_organe_index` : résoudre `organeRef` via `AMO30` (historique) sans filtrage par `codeType` (#353) (2026-08-16)](decisions/organe-index-organeref.md) | `AN_ACTEURS_HISTORIQUE_ZIP_URL`, `_ACTEURS_HISTORIQUE_ZIP_LOCK`, `_build_acteur_positions_hemicycle_index`, `_build_organe_index`, `_build_organe_positions_index`, `_ensure_acteurs_historique_zip_downloaded`, `fetch_positions_hemicycle_officielles` |
 | [Parallèle RAM entre l'exécution locale et les runners GitHub Actions hébergés, diagnostic ajouté (2026-08-17)](decisions/parallele-oom-local-runner-ci.md) | `build_profile`, `fetch_amendements_officiels` |
+| [Les archives figées se demandent en plage sans borne, la législature en cours garde ses segments (#1123) (2026-09-24)](decisions/plage-sans-borne-archives-figees-1123.md) | `AMENDEMENTS_DOWNLOAD_CHUNK_BYTES`, `AMENDEMENTS_DOWNLOAD_CHUNK_BYTES_FIGEES`, `_telecharger_flux` |
 | [Un code de nomenclature n'est pas une profession, et « sans activité professionnelle » n'en est pas une (#641) (2026-08-31)](decisions/profession-code-nomenclature-641.md) | `_profession_an` |
 | [La qualification d'un scrutin et la clé de son dossier étaient lues puis jetées (#639, rangs 1 et 2)](decisions/qualification-scrutins-et-cle-dossier-639.md) | `_load_frozen_scrutins_index`, `_parse_scrutins_zip`, `_scrutins_store_qualifie` |
 | [Un projet de loi porté au nom du Gouvernement n'est pas une production personnelle (#689) (2026-09-01)](decisions/qualification-textes-portes-689.md) | `_build_acteur_textes_portes_index` |

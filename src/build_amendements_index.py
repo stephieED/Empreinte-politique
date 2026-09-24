@@ -54,6 +54,7 @@ from candidate_profile import (
     AN_AMENDEMENTS_PATH,
     AmendementsIndexError,
     _amendements_zip_url,
+    AMENDEMENTS_DOWNLOAD_CHUNK_BYTES_FIGEES,
     _download_amendements_zip,
     _download_and_build_amendement_index,
     amendements_index_deja_figee,
@@ -182,7 +183,10 @@ def construire_un_contenu_fige(dossier_publie: Path = DOSSIER_PUBLIE) -> bool:
         print(f"-> Contenu des amendements (#1029), législature figée {legislature} "
               f"({borne}) : {url}")
         try:
-            _download_amendements_zip(url, zip_path, legislature, budget_secondes=budget)
+            _download_amendements_zip(
+                url, zip_path, legislature, budget_secondes=budget,
+                chunk_bytes=AMENDEMENTS_DOWNLOAD_CHUNK_BYTES_FIGEES,
+            )
             ecrire_contenu_cache(legislature, zip_path, AMENDEMENTS_CACHE_DIR)
         except Exception as exc:  # noqa: BLE001 — non bloquant, nommé
             print(f"  [!] Contenu de la législature {legislature} non construit : {exc}",

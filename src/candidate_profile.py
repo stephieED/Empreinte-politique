@@ -356,6 +356,21 @@ AMENDEMENTS_DOWNLOAD_READ_TIMEOUT_SECONDS = 120
 # 283-618 Mo), assez petite pour qu'un retry de segment reste marginal.
 AMENDEMENTS_DOWNLOAD_CHUNK_BYTES = 32 * 1024 * 1024
 
+# 0 = plage SANS BORNE (`bytes=<offset>-`), pour les archives figees. Mesure le
+# 24/09/2026 sur Amendements_XV.json.zip depuis un poste : la source coupe
+# CHAQUE reponse par une erreur de flux HTTP/2, a n'importe quel decalage, mais
+# ce qu'elle delivre avant de couper va de 0 a 211 Mo. Un segment borne a 32 Mo
+# plafonne donc les reponses chanceuses, et chaque segment suivant est un
+# nouveau tirage qui peut rendre zero. Sur 46 plages ouvertes : 577 Mo cumules,
+# 12,6 Mo par tentative ; l'archive entiere est venue en 352 tentatives dont 6
+# productives, quand le job de CI en segments bornes plafonnait a 35 Mo en
+# 1 300 s.
+#
+# Ne s'applique QU'AUX ARCHIVES FIGEES. La 17e passe par le meme telechargeur
+# dans un job qui n'a pas le meme budget, et son archive n'a jamais pose ce
+# probleme : lui changer sa forme de requete sans mesure serait un pari.
+AMENDEMENTS_DOWNLOAD_CHUNK_BYTES_FIGEES = 0
+
 # Nombre de segments ayant necessite au moins un retry au-dela duquel un
 # warning "doux" est journalise (jamais ajoute a meta.warnings : ceci est un
 # signal de qualite de flux, pas un echec de collecte) — permet de distinguer
@@ -2322,7 +2337,11 @@ def _tenter_segments_range(
     for tentative in range(1, max_attempts + 1):
         tentatives = tentative
         debut = offset + gagne
-        fin = debut + chunk_bytes - 1
+        # `chunk_bytes = 0` demande une plage SANS BORNE : on ne plafonne pas ce
+        # qu'une reponse chanceuse delivre. La source coupe de toute facon
+        # chaque reponse, et `_telecharger_flux` ecrit au fil de l'eau — une
+        # plage ouverte tronquee se traite exactement comme un segment tronque.
+        fin = debut + chunk_bytes - 1 if chunk_bytes else ""
         entetes = {**HEADERS, "Range": f"bytes={debut}-{fin}"}
         if identite_attendue is not None:
             entetes["If-Range"] = identite_attendue
@@ -2485,11 +2504,22 @@ def _download_amendements_zip(
     ou taille locale incohérente -> redémarrage depuis le début plutôt que de
     deviner un offset.
 
+    **`chunk_bytes = 0` demande une plage SANS BORNE** (`bytes=<offset>-`), et
+    c'est ce que les archives figées passent depuis #1123. Ce n'est pas en
+    contradiction avec ce qui précède : l'observation « 8 Kio échouent autant
+    que 32 Mio » porte sur les ÉCHECS, celle-ci sur le rendement quand ça
+    passe. Mesuré le 24/09/2026 sur la XVe depuis un poste, la même plage rend
+    0 ou 211 Mo selon la tentative — un segment borné tronque donc le bon cas,
+    et chaque segment suivant est un nouveau tirage qui peut rendre zéro. Sur
+    46 plages ouvertes : 12,6 Mo par tentative, et l'archive entière en 352
+    tentatives dont 6 productives, quand la CI en segments bornés plafonnait à
+    35 Mo en 1 300 s.
+
     `chunk_bytes` / `max_attempts` (défauts `AMENDEMENTS_DOWNLOAD_CHUNK_BYTES`,
     32 Mo, et `AMENDEMENTS_DOWNLOAD_MAX_ATTEMPTS`, 3) restent réglables pour ne
-    pas toucher au chemin réseau partagé de la législature 17 ; ils ne sont plus
-    le levier principal, la taille de segment n'étant pas la dimension en cause
-    dans les états 2 et 3. `stall_max_cycles` / `stall_wait_seconds` (défauts
+    pas toucher au chemin réseau partagé de la législature 17, qui garde le
+    segment borné : son archive n'a jamais posé ce problème, et lui changer sa
+    forme de requête sans mesure serait un pari. `stall_max_cycles` / `stall_wait_seconds` (défauts
     `AMENDEMENTS_SOURCE_STALL_MAX_CYCLES` / `_WAIT_SECONDS`) bornent l'attente de
     l'état 3, volontairement courte en CI et augmentable hors CI, où attendre est
     le seul remède qui fonctionne.
@@ -2511,7 +2541,9 @@ def _download_amendements_zip(
     correspond pas à la taille annoncée — jamais d'archive tronquée rendue
     silencieusement pour complète.
     """
-    chunk_bytes = chunk_bytes or AMENDEMENTS_DOWNLOAD_CHUNK_BYTES
+    # `or` ecraserait 0, qui est une valeur demandee (plage sans borne) et non
+    # une absence : la distinction se fait sur None.
+    chunk_bytes = AMENDEMENTS_DOWNLOAD_CHUNK_BYTES if chunk_bytes is None else chunk_bytes
     max_attempts = max_attempts or AMENDEMENTS_DOWNLOAD_MAX_ATTEMPTS
     stall_max_cycles = stall_max_cycles or AMENDEMENTS_SOURCE_STALL_MAX_CYCLES
     stall_wait_seconds = (

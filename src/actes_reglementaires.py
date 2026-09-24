@@ -116,11 +116,13 @@ from typing import Any, Iterator, Optional
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from amendements_contenu import (  # noqa: E402
+    NB_SEAUX,
     SEUIL_AVANT_FUSION,
     SEUIL_FREQUENCE,
     FUSION_DES_FORMES,
     _encoder,
     forme_indexee,
+    hash_seau,
     mots_du_texte,
 )
 from json_io import ecrire_index_json  # noqa: E402
@@ -159,7 +161,6 @@ MOIS_RELUS = 2
 #: de mois porte des actes publiés le lendemain.
 MARGE_JOURS = 7
 
-NB_SEAUX = 256
 PREFIXE_IDS = "JORFTEXT"
 REPERTOIRE_PUBLIE = Path("pivot_data") / "actes_reglementaires"
 GABARIT_PUBLIE = "{mois}.json"
@@ -412,12 +413,6 @@ class Moisson:
                 acte["mots"] = mots_lus.get(cid, set()) | mots_du_texte(acte.get("titre"))
                 actes[cid] = acte
             yield mois, actes
-
-
-def hash_seau(cid: str) -> int:
-    """Le seau d'un acte : stable d'un processus à l'autre, contrairement à
-    `hash()` d'une chaîne, que Python randomise."""
-    return sum(cid.encode()) % NB_SEAUX
 
 
 def document(

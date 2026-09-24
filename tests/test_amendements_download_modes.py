@@ -96,9 +96,15 @@ class _FauxCDN(BaseHTTPRequestHandler):
             self.server.range_refuses += 1
             entete_range = None
         if entete_range:
-            debut, fin = (int(x) for x in entete_range.removeprefix("bytes=").split("-"))
+            # `bytes=<debut>-` SANS borne est une plage valide, et c'est celle
+            # que les archives figées demandent depuis #1123 : la borne haute
+            # est alors la fin du fichier.
+            debut_txt, _, fin_txt = entete_range.removeprefix("bytes=").partition("-")
+            debut = int(debut_txt)
+            fin = int(fin_txt) if fin_txt else len(payload) - 1
             fin = min(fin, len(payload) - 1)
             self.server.appels_range.append(debut)
+            self.server.plages_demandees.append(entete_range)
             attendu = payload[debut : fin + 1]
             livres = self.server.octets_range(debut, fin)
             self.send_response(206)
@@ -147,6 +153,7 @@ def _demarrer_serveur(payload, octets_range, octets_sequentiel, choisir_version=
     serveur.octets_sequentiel = octets_sequentiel
     serveur.choisir_version = choisir_version
     serveur.appels_range = []
+    serveur.plages_demandees = []
     serveur.appels_sequentiels = 0
     serveur.connexions = 0
     serveur.range_refuses = 0
@@ -548,3 +555,67 @@ def test_etat_4_une_source_durablement_incoherente_echoue_en_le_disant(tmp_path,
         "Même en échec, les octets laissés sur disque doivent être le préfixe d'UNE "
         "version, jamais un mélange des deux"
     )
+
+
+# ---------------------------------------------------------------------------
+# La plage SANS BORNE des archives figées (#1123)
+# ---------------------------------------------------------------------------
+
+def test_la_plage_sans_borne_ne_plafonne_pas_une_reponse_genereuse(tmp_path, cdn):
+    """Ce que le segment borné coûtait : une réponse chanceuse tronquée.
+
+    Mesuré le 24/09/2026 sur la source réelle, la même plage rend 0 octet ou
+    211 Mo selon la tentative. Un segment de 32 Mo plafonne le bon cas, et
+    chaque segment suivant est un nouveau tirage qui peut rendre zéro.
+    """
+    serveur = cdn(
+        octets_range=lambda debut, fin: fin - debut + 1,
+        octets_sequentiel=lambda n: 0,
+    )
+    zip_path = tmp_path / "amendements.zip"
+
+    _telecharger(serveur, zip_path, chunk_bytes=0)
+
+    assert zip_path.read_bytes() == PAYLOAD
+    assert serveur.plages_demandees == ["bytes=0-"], (
+        "une seule requête, sans borne haute : le fichier entier est venu d'un coup"
+    )
+
+
+def test_la_plage_sans_borne_reprend_a_l_octet_obtenu(tmp_path, cdn):
+    """La source coupe de toute façon : une plage ouverte tronquée doit se
+    traiter exactement comme un segment tronqué, sans rien jeter."""
+    serveur = cdn(
+        octets_range=lambda debut, fin: min(300, fin - debut + 1),  # coupe à 300 octets
+        octets_sequentiel=lambda n: 0,
+    )
+    zip_path = tmp_path / "amendements.zip"
+
+    _telecharger(serveur, zip_path, chunk_bytes=0)
+
+    assert zip_path.read_bytes() == PAYLOAD
+    assert serveur.plages_demandees == ["bytes=0-", "bytes=300-", "bytes=600-", "bytes=900-"], (
+        "chaque reprise repart de l'octet réellement obtenu, sans borne haute"
+    )
+
+
+def test_le_segment_borne_reste_le_defaut_du_telechargeur(tmp_path, cdn):
+    """La 17e passe par le même téléchargeur, dans un job qui n'a pas le même
+    budget, et son archive n'a jamais posé ce problème : changer sa forme de
+    requête sans mesure serait un pari."""
+    import candidate_profile as cp
+
+    serveur = cdn(
+        octets_range=lambda debut, fin: fin - debut + 1,
+        octets_sequentiel=lambda n: 0,
+    )
+    zip_path = tmp_path / "amendements.zip"
+
+    with patch("candidate_profile.time.sleep", return_value=None):
+        cp._download_amendements_zip(_url(serveur), zip_path, "17", max_attempts=2)
+
+    assert all(p.endswith("-1023") or "-" in p and p.split("-")[1] for p in serveur.plages_demandees), (
+        "sans chunk_bytes explicite, le téléchargeur borne toujours ses segments"
+    )
+    assert cp.AMENDEMENTS_DOWNLOAD_CHUNK_BYTES == 32 * 1024 * 1024
+    assert cp.AMENDEMENTS_DOWNLOAD_CHUNK_BYTES_FIGEES == 0

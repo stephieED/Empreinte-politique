@@ -183,3 +183,50 @@ def test_une_seule_legislature_close_est_construite_par_run(tmp_path, monkeypatc
 
     assert bai.construire_un_contenu_fige(publie) is True
     assert telechargees == ["15"]  # la XIVe est déjà publiée ; une seule par run
+
+
+# ── L'étalement sur disque (#1115 bis) ───────────────────────────────────
+
+
+def test_les_deux_fabriques_rendent_le_meme_document(tmp_path):
+    """La garde de l'étalement : même archive, même document, au bit près.
+
+    `document_depuis_archive` réordonne tout le calcul — comptage avant
+    fusion, inversion par seaux — pour ne plus tenir l'archive en mémoire. Un
+    seul écart, et le corpus publié dépendrait de la fabrique employée.
+    """
+    entrees = {"Amendements_XIV.json": LEG14}
+    for n in range(40):
+        entrees[f"json/A{n:03d}.json"] = {"amendement": {
+            "uid": f"AMANR5L17X{n:03d}",
+            "pointeurFragmentTexte": {"division": {"titre": f"Article {n}", "avant_A_Apres": "A"}},
+            "corps": {"contenuAuteur": {"exposeSommaire":
+                      f"<p>Le présent amendement vise les carburants fiscaux du sujet{n:03d}.</p>"}},
+        }}
+    chemin = _zip(tmp_path, entrees)
+
+    en_memoire = ac.document("17", ac.lire_archive(chemin), genere_le="2026-09-24")
+    par_seaux = ac.document_depuis_archive("17", chemin, genere_le="2026-09-24")
+
+    assert par_seaux == en_memoire
+
+
+def test_le_temporaire_ne_survit_pas_a_la_construction(tmp_path):
+    """Un seau oublié, et un run de CI remplit son disque au fil des archives."""
+    chemin = _zip(tmp_path, {"json/A000.json": LEG17})
+    atelier = tmp_path / "atelier"
+
+    ac.document_depuis_archive("17", chemin, repertoire=atelier)
+
+    assert atelier.exists(), "un répertoire fourni par l'appelant lui appartient"
+    assert list(atelier.glob("seau-*.tsv")) == [], "les seaux ne sont pas nettoyés"
+    assert not (atelier / "exposes.tsv").exists(), "le fichier d'exposés reste sur disque"
+
+
+def test_le_seau_d_une_forme_ne_depend_pas_du_processus():
+    """`hash()` d'une chaîne est randomisé par Python : deux exécutions
+    rangeraient la même forme dans deux seaux, et les positions d'un mot
+    seraient réparties sur plusieurs fichiers."""
+    assert ac.hash_seau("carburant") == ac.hash_seau("carburant")
+    assert 0 <= ac.hash_seau("carburant") < ac.NB_SEAUX
+    assert ac.hash_seau("fiscal") == sum(b"fiscal") % ac.NB_SEAUX

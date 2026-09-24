@@ -2,6 +2,20 @@
 """amendements_contenu.py — l'article visé et les mots de l'exposé de chaque
 amendement, lus dans l'archive AN (#1029, voie 2).
 
+## Ce qui gouverne ce module
+
+Cinq décisions le touchent ; trois se lisent avant d'y changer quoi que ce soit
+(les deux autres ne font qu'emprunter `forme_indexee` et `mots_du_texte`) :
+
+- `docs/decisions/index-de-mots-des-amendements-1029.md` — **pourquoi un index
+  de mots et pas l'exposé**, et les seuils qui le rendent tenable ;
+- `docs/decisions/etalement-disque-index-de-mots-1121.md` — **pourquoi deux
+  fabriques**, `document` en référence et `document_depuis_archive` en
+  production, et pourquoi le vocabulaire doit être arrêté avant l'inversion ;
+- `docs/decisions/identifiants-an-pris-pour-des-jetons-1119.md` — l'uid publié
+  amputé de son préfixe fait 24 caractères, que le scanner de secrets de GitHub
+  prend pour un jeton. Avant de toucher à `prefixe_ids`, lire cette page.
+
 ## Le besoin
 
 Retrouver les amendements d'un sujet — « carburant » : TICPE, ticket
@@ -38,6 +52,17 @@ l'exposé a été mesuré et écarté : ÷ 7 sur les renvois, mais 182 amendemen
 Aucun mot n'est rangé sous un thème : sa présence dans l'exposé est un fait de
 la source, pas une lecture (§2 règle 8). Le texte entier se lit chez l'AN :
 `https://www.assemblee-nationale.fr/dyn/<lég>/amendements/<uid>`.
+
+## La mémoire, et pourquoi un étalement sur disque
+
+`lire_archive` rend `{uid: (article, mots)}` pour TOUS les amendements à la
+fois : 3,9 Go sur les 311 934 de la XVe, et un premier essai tué par le noyau à
+2,87 Go (24/09/2026). `document_depuis_archive` fait le même document sans
+jamais tenir l'archive — **315 Mo de pic sur la XVe, 197 sur la XVIe**, pour
+157 s au lieu de 131. Le temps payé, la mémoire divisée par douze, et une
+construction qui ne dépend plus de ce qui tourne à côté. C'est elle que la CI
+et la ligne de commande empruntent ; `document` reste la fabrique de référence,
+celle contre laquelle un test compare archive en main.
 
 ## Le fichier, un par législature
 
@@ -244,6 +269,152 @@ def document(
     }
 
 
+#: Seaux temporaires d'un étalement sur disque. **Défini ici et importé par
+#: `actes_reglementaires`**, qui applique le même remède à son propre index de
+#: mots : deux définitions du même nom dans `src/` rendent le symbole ambigu
+#: pour `scripts/generer_decisions_par_module.py`, qui le laisse alors tomber
+#: de la table — une décision qui le nommerait serait silencieusement amputée.
+NB_SEAUX = 256
+
+
+def hash_seau(cle: str) -> int:
+    """Le seau d'une clé — une forme indexée ici, un identifiant d'acte chez
+    `actes_reglementaires` : stable d'un processus à l'autre, contrairement à
+    `hash()` d'une chaîne, que Python randomise."""
+    return sum(cle.encode()) % NB_SEAUX
+
+
+def document_depuis_archive(
+    legislature: str,
+    zip_path: Path,
+    *,
+    repertoire: Optional[Path] = None,
+    genere_le: Optional[str] = None,
+) -> dict[str, Any]:
+    """Le même document que `document`, construit **sans tenir l'archive en
+    mémoire** (#1121).
+
+    `lire_archive` rend `{uid: (article, mots)}` pour tous les amendements à la
+    fois : mesuré le 24/09/2026, 3,9 Go pour les 311 934 amendements de la XVe,
+    et un premier essai tué par le noyau à 2,87 Go sur une machine de 7,8 Go.
+    La construction ne tenait donc que si la machine était par ailleurs au
+    repos — ce n'est pas une propriété qu'on peut supposer, et la CI ne l'a
+    jamais.
+
+    Trois passes, et ce qui reste en mémoire est nommé à chaque fois :
+
+    1. **Lire l'archive une fois.** On garde les uid et leur article — les
+       seuls faits qu'on ne peut pas recalculer — et un simple COMPTE par mot.
+       Les mots de chaque exposé partent sur disque, une ligne par amendement.
+    2. **Arrêter le vocabulaire**, puis relire ces lignes pour ranger chaque
+       `(forme indexée, position)` dans l'un des `NB_SEAUX` seaux. La fusion
+       des formes exige le vocabulaire ENTIER — `fiscaux` ne devient `fiscal`
+       que si `fiscal` existe —, d'où une passe qui ne peut pas commencer
+       avant que la première soit finie.
+    3. **Regrouper seau par seau.** Un seau tient seul en mémoire, et les
+       positions d'une forme sont toutes dans le même : c'est ce que garantit
+       `hash_seau`.
+
+    Le document rendu est **identique** à `document(lire_archive(zip))`, ce
+    qu'un test compare archive en main. Le temporaire vit hors du dépôt et hors
+    de `.cache/`, et disparaît même en cas d'erreur.
+
+    Un uid vu deux fois n'est compté qu'une fois, sa première occurrence
+    faisant foi. Aucune archive n'en présente : mesuré le 24/09/2026, 311 934
+    uid distincts pour 311 934 fichiers sur la XVe.
+    """
+    import shutil  # noqa: PLC0415
+    import tempfile  # noqa: PLC0415
+
+    propre = repertoire is None
+    racine = Path(repertoire) if repertoire else Path(tempfile.mkdtemp(prefix="amendements-contenu-"))
+    racine.mkdir(parents=True, exist_ok=True)
+    try:
+        articles: dict[str, Optional[list[str]]] = {}
+        compte: dict[str, int] = defaultdict(int)
+        exposes = racine / "exposes.tsv"
+
+        # ── 1. l'archive, une fois ───────────────────────────────────────
+        with open(exposes, "w", encoding="utf-8") as flux:
+            for amendement in _amendements_de_l_archive(zip_path):
+                uid = str(amendement["uid"])
+                if uid in articles:
+                    continue
+                corps = amendement.get("corps") or {}
+                auteur = corps.get("contenuAuteur") if isinstance(corps, dict) else None
+                expose = (auteur.get("exposeSommaire") if isinstance(auteur, dict)
+                          else corps.get("exposeSommaire") if isinstance(corps, dict) else None)
+                articles[uid] = article_vise(amendement)
+                mots = mots_du_texte(expose)
+                for mot in mots:
+                    compte[mot] += 1
+                flux.write(uid + "\t" + " ".join(sorted(mots)) + "\n")
+
+        ids = sorted(articles)
+        total = len(ids) or 1
+        position = {uid: rang for rang, uid in enumerate(ids)}
+
+        # ── 2. le vocabulaire, puis les seaux ────────────────────────────
+        vocabulaire = {mot for mot, n in compte.items() if n <= SEUIL_AVANT_FUSION * total}
+        compte.clear()
+        retenue: dict[str, str] = {}
+        seaux = [open(racine / f"seau-{i:03d}.tsv", "w", encoding="utf-8") for i in range(NB_SEAUX)]
+        try:
+            with open(exposes, encoding="utf-8") as flux:
+                for ligne in flux:
+                    uid, _, mots = ligne.rstrip("\n").partition("\t")
+                    rang = position.get(uid)
+                    if rang is None:
+                        continue
+                    for mot in mots.split():
+                        if mot not in vocabulaire:
+                            continue
+                        forme = retenue.get(mot)
+                        if forme is None:
+                            forme = retenue[mot] = forme_indexee(mot, vocabulaire)
+                        seaux[hash_seau(forme)].write(f"{forme}\t{rang}\n")
+        finally:
+            for flux in seaux:
+                flux.close()
+        exposes.unlink(missing_ok=True)
+        vocabulaire.clear()
+        retenue.clear()
+
+        # ── 3. un seau à la fois ─────────────────────────────────────────
+        plafond = SEUIL_FREQUENCE * total
+        mots_publies: dict[str, str] = {}
+        for i in range(NB_SEAUX):
+            groupes: dict[str, set[int]] = defaultdict(set)
+            chemin = racine / f"seau-{i:03d}.tsv"
+            with open(chemin, encoding="utf-8") as flux:
+                for ligne in flux:
+                    forme, _, rang = ligne.rstrip("\n").partition("\t")
+                    groupes[forme].add(int(rang))
+            chemin.unlink(missing_ok=True)
+            for forme, positions in groupes.items():
+                if len(positions) <= plafond:
+                    mots_publies[forme] = _encoder(sorted(positions))
+
+        prefixe = f"AMANR5L{legislature}"
+        if not all(uid.startswith(prefixe) for uid in ids):
+            prefixe = ""
+        return {
+            "schema_version": SCHEMA_VERSION,
+            "legislature": legislature,
+            "genere_le": genere_le or time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+            "licence_donnees": LICENCE_AN,
+            "seuil_frequence": SEUIL_FREQUENCE,
+            "fusion_des_formes": [list(r) for r in FUSION_DES_FORMES],
+            "prefixe_ids": prefixe,
+            "ids": [uid[len(prefixe):] for uid in ids],
+            "articles": [articles[uid] for uid in ids],
+            "mots": {forme: mots_publies[forme] for forme in sorted(mots_publies)},
+        }
+    finally:
+        if propre:
+            shutil.rmtree(racine, ignore_errors=True)
+
+
 #: Où le job `extract-amendements-an` dépose le contenu d'une législature, à
 #: côté de son index : l'artifact `amendements-index-an` emporte tout
 #: `.cache/amendements_an/`, donc `merge-and-pivot` le reçoit sans rien changer
@@ -262,10 +433,14 @@ def chemin_publie(legislature: str, amendements_dir: Path) -> Path:
 
 
 def ecrire_contenu_cache(legislature: str, zip_path: Path, cache_dir: Path) -> Path:
-    """Lit l'archive et dépose le document de la législature dans le cache."""
+    """Lit l'archive et dépose le document de la législature dans le cache.
+
+    Passe par `document_depuis_archive` : c'est ici que la mémoire comptait, la
+    XIVe et la XVIIe se construisant dans le même job que la XVe.
+    """
     from json_io import dumps_ligne, ecrire_index_json  # noqa: PLC0415
 
-    doc = document(legislature, lire_archive(zip_path))
+    doc = document_depuis_archive(legislature, zip_path)
     chemin = chemin_cache(legislature, cache_dir)
     ecrire_index_json(chemin, doc, dumps_ligne)
     print(f"  ✓ contenu des amendements, législature {legislature} : {len(doc['ids'])} "
@@ -308,8 +483,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     args = parser.parse_args(argv)
 
     debut = time.monotonic()
-    contenu = lire_archive(args.zip)
-    doc = document(args.legislature, contenu)
+    doc = document_depuis_archive(args.legislature, args.zip)
     ecrit = ecrire_index_json(args.out, doc, dumps_ligne)
     poids = args.out.stat().st_size / 1048576 if args.out.exists() else 0
     print(f"  ✓ {len(doc['ids'])} amendement(s), {len(doc['mots'])} mot(s) indexé(s), "

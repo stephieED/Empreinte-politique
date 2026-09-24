@@ -78,6 +78,7 @@ from candidate_profile import (  # noqa: E402
     SourceAmendementsIndisponibleError,
     _aggregate_amendements_index,
     _amendements_zip_url,
+    AMENDEMENTS_DOWNLOAD_CHUNK_BYTES_FIGEES,
     _download_amendements_zip,
     _parse_amendements_zip,
 )
@@ -112,8 +113,9 @@ def main() -> int:
         type=float,
         default=None,
         help=(
-            "Taille de segment HTTP Range en Mo pour --download (défaut : 32, voir "
-            "AMENDEMENTS_DOWNLOAD_CHUNK_BYTES). À réduire (ex. 1-2) quand le CDN AN "
+            "Taille de segment HTTP Range en Mo pour --download. DÉFAUT : aucune borne "
+            "(`bytes=<offset>-`), ce qui ne plafonne pas les réponses chanceuses de la "
+            "source — mesuré le 24/09/2026, elles vont de 0 à 211 Mo. À fixer (ex. 1-2) quand le CDN AN "
             "traverse une fenêtre où même une requête de quelques Ko échoue "
             "systématiquement au-delà des tout premiers Mo du fichier (observé le "
             "14/08/2026) — un petit segment a une chance de passer là où un segment "
@@ -167,7 +169,11 @@ def main() -> int:
             print(f"Aucune URL connue pour la législature {args.legislature}", file=sys.stderr)
             return 1
         zip_path = AMENDEMENTS_CACHE_DIR / args.legislature / "amendements.zip"
-        chunk_bytes = int(args.chunk_size_mb * 1024 * 1024) if args.chunk_size_mb else None
+        # Sans --chunk-size-mb : plage SANS BORNE, comme la passe de CI sur les
+        # archives figées (#1123). `--chunk-size-mb 0` demande la même chose
+        # explicitement ; une valeur > 0 revient aux segments bornés.
+        chunk_bytes = (int(args.chunk_size_mb * 1024 * 1024) if args.chunk_size_mb
+                       else AMENDEMENTS_DOWNLOAD_CHUNK_BYTES_FIGEES)
         print(f"-> Téléchargement de {url} vers {zip_path}...")
         try:
             # Toujours appelée, même si zip_path existe déjà : c'est
