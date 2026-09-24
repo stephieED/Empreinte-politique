@@ -37,9 +37,9 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 
 | Module | Décisions qui le gouvernent |
 | --- | ---: |
+| `src/amendements_contenu.py` | 4 |
 | `src/parse_syceron.py` | 4 |
 | `src/perimetre_candidats.py` | 4 |
-| `src/amendements_contenu.py` | 3 |
 | `src/audit_pipeline.py` | 3 |
 | `src/budget_collecte.py` | 3 |
 | `src/json_io.py` | 3 |
@@ -84,12 +84,13 @@ Le mentionnent sans le gouverner : [`actes-reglementaires-du-journal-officiel-10
 
 ## `src/amendements_contenu.py`
 
-3 décision(s) le gouvernent ; le module en cite 0.
+4 décision(s) le gouvernent ; le module en cite 0.
 
 | Décision | Nomme |
 | --- | --- |
 | [Les actes réglementaires du Journal officiel, par mois et par mots (#1029 voie 1) (2026-09-22)](decisions/actes-reglementaires-du-journal-officiel-1029.md) | `forme_indexee`, `mots_du_texte` |
 | [Trouver les amendements d'un sujet par leur exposé, sur les fiches (#1029) (2026-09-22)](decisions/amendements-par-mot-sur-les-fiches-1029.md) | `forme_indexee` |
+| [Les identifiants d'amendements sont pris pour des jetons, et le chemin sort du scanner (#1119) (2026-09-24)](decisions/identifiants-an-pris-pour-des-jetons-1119.md) | `uid_complet` |
 | [Trouver les amendements d'un sujet : l'article visé et un index de mots de l'exposé (#1029) (2026-09-22)](decisions/index-de-mots-des-amendements-1029.md) | `forme_indexee` |
 
 ## `src/amendements_index.py`
