@@ -1,6 +1,6 @@
 {
   "schema_version": "correspondance-acteurs-an-v2",
-  "genere_le": "2026-09-18T14:15:53+0000",
+  "genere_le": "2026-09-24T08:22:49+0000",
   "source_referentiel": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
   "correspondances": {
     "abdelkader-lahmar": {
@@ -8685,6 +8685,26 @@
       "motif": null,
       "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA773443",
       "verifie_le": "2026-09-18",
+      "origine": "derivee"
+    },
+    "eric-gerard": {
+      "identifiants": {
+        "an": "PA642734",
+        "senat": null,
+        "europarl": null,
+        "hatvp": null
+      },
+      "etat_civil": {
+        "civilite": "M.",
+        "prenom": null,
+        "nom": null,
+        "nom_complet": "Eric Gérard",
+        "date_naissance": "1962-01-19"
+      },
+      "ecart": null,
+      "motif": null,
+      "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA642734",
+      "verifie_le": "2026-09-24",
       "origine": "derivee"
     },
     "eric-girardin": {
