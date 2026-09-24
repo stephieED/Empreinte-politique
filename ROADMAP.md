@@ -138,16 +138,37 @@ Convention d'écriture : `AGENTS.md` §8.
 
 ## Known bugs
 
-- **L'archive d'amendements de la XVe ne se télécharge pas dans les 30 minutes du
-  job (mesuré les 23 et 24/09/2026)** : `data.assemblee-nationale.fr` coupe à
-  l'octet 35 668 290 sur les 648 539 281, par plages comme en séquentiel, et le
-  budget en temps de #1100 s'épuise à 5,5 % du fichier — 1 300 s pour 35 Mo. La
-  XIVe (104 Mo) est passée d'un coup, la XVIIe se construit avec son index : il ne
-  manque que la XVe et la XVIe, donc l'index de mots des exposés reste incomplet
-  sur deux législatures. **Ce qui manque n'est pas du budget mais la CONSERVATION
-  du préfixe entre deux runs** : chaque run repart de zéro, alors que le
-  téléchargeur sait déjà reprendre un fichier partiel entre deux invocations — le
-  préfixe vit dans un cache que la clé hebdomadaire ne réécrit pas.
+- **La CI ne sait pas ramener les archives d'amendements des législatures
+  closes, et c'est désormais le seul reste (mesuré les 23 et 24/09/2026).**
+  `data.assemblee-nationale.fr` coupe **chaque** réponse par une erreur de flux
+  HTTP/2, à n'importe quel décalage. Ce n'est ni un débit trop faible ni un mur :
+  le rendement d'une plage va de **0 à 211 Mo** selon la tentative, et le job de
+  30 minutes n'en voit qu'une poignée.
+
+  **Les quatre législatures ont leur `<lég>.contenu.json`.** La XVe et la XVIe
+  ont été tirées hors CI le 24/09 avec des plages **ouvertes** (`bytes=<offset>-`)
+  au lieu des segments bornés de 32 Mo du téléchargeur : 648 Mo en 89 minutes et
+  352 tentatives dont 6 productives pour la XVe, 363 Mo en 19 tentatives dont 6
+  productives pour la XVIe. **Le corpus n'attend donc plus rien** ; ce qui suit
+  ne se paie que le jour où une archive close devra être reconstruite.
+
+  **1. La forme de la requête.** Le téléchargeur demande des segments bornés
+  (`AMENDEMENTS_DOWNLOAD_CHUNK_BYTES`, 32 Mo), ce qui plafonne chaque réussite
+  alors qu'une plage ouverte rend parfois 200 Mo d'un coup. C'est le levier qui
+  a fait passer les deux archives.
+
+  **2. La conservation du préfixe entre deux runs, qui n'existe pas.** Trois
+  obstacles se cumulent : `construire_un_contenu_fige` supprime l'archive
+  partielle dans son `finally` ; le `Post Run actions/cache` est sauté
+  **précisément** quand l'étape échoue ou est annulée, donc sur les seuls runs
+  qui ont un préfixe à sauver ; et la clé hebdomadaire n'est pas réécrite quand
+  elle existe déjà. Le téléchargeur, lui, sait déjà reprendre un fichier partiel
+  entre deux invocations : cette partie-là est faite.
+
+  **3. La construction tient tout en mémoire** — ~3,9 Go pour la XVe, mesurés
+  après qu'un premier essai a été tué par le noyau à 2,87 Go. `lire_archive`
+  garde les mots de tous les amendements à la fois ; l'étaler sur disque est le
+  remède que le dépôt applique déjà aux actes du Journal officiel.
 
 - **`/couverture` ne décrit aucune des quatre sources arrivées le 22-23/09/2026** :
   l'extrait de parole des rosters (#1086), l'ancre de la prise de parole (#1087),

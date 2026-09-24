@@ -73,6 +73,30 @@ Une archive porte deux arborescences utiles : `.../texte/version/JORF/TEXT/.../J
   liens apparaissant sur des lois promulguées des mois plus tôt. Tout chiffre de couverture par
   année porte donc la date où il a été pris, ici le 23/09/2026.
 
+  **Le même trou, vu depuis les actes** (24/09/2026). Sur les **31 199 décrets numérotés** du
+  fonds — la population à nommer : les 45 478 décrets sans numéro, nominations et mutations, n'en
+  sont pas —, par **année de publication** :
+
+  | Année | Décrets numérotés | applique | cite | aucun lien déclaré |
+  | --- | ---: | ---: | ---: | ---: |
+  | 2012 | 1 474 | **42 %** | 17 % | 41 % |
+  | 2016 | 1 860 | 26 % | 34 % | 40 % |
+  | 2020 | 1 681 | **4 %** | 47 % | 50 % |
+  | 2023 | 1 345 | 1 % | 40 % | 59 % |
+  | 2024 | 1 227 | **0 %** | 43 % | 57 % |
+  | 2026 | 848 | **0 %** | 39 % | 61 % |
+
+  Deux choses s'y lisent que la table des lois ne montre pas. La chute commence **bien avant le
+  retard** — 42 % en 2012, 26 % en 2016, 4 % en 2020 —, et **« cite » monte pendant que
+  « applique » descend** : une part de ce qui était qualifié d'application est désormais
+  enregistré comme un simple visa. Retard de qualification et changement de pratique se
+  superposent, et **rien dans les données ne permet de les séparer**. C'est la raison pour
+  laquelle aucune figure publiée ne repose sur la part d'application
+  (`docs/decisions/part-d-application-non-publiable-1029.md`).
+
+  L'axe est l'**année de publication de l'acte**, jamais une législature : un décret n'appartient
+  à aucune, il se rattache au gouvernement en fonction à sa parution.
+
   `CITATION` **n'est pas un substitut** : un décret qui cite une loi dans ses visas n'en est pas un
   décret d'application, et publier l'un pour l'autre affirmerait une relation que la source ne
   déclare pas (§2 règle 2). Il sert à mesurer le retard, jamais à combler le trou.
