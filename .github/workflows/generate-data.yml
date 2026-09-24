@@ -638,6 +638,26 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   extract-an:
     needs: [extract-amendements-an, prepare-an-matrix, epingler-le-code]
+    # if: !cancelled() (#412 §2.1) — le MÊME garde-fou que extract-roster-groupes
+    # et merge-and-pivot portent déjà ; ce job est le seul de la chaîne à l'avoir
+    # manqué, et le run 35926731615 en a payé le prix.
+    #
+    # `continue-on-error: true` sur extract-amendements-an couvre l'ÉCHEC, pas
+    # l'ANNULATION — or un dépassement de `timeout-minutes` est une annulation.
+    # Les deux cas se sont produits à deux heures d'intervalle le 23/09/2026 sur
+    # la même archive de la XVe législature, et n'ont pas eu le même effet :
+    #   - run 35910007684, échec à 29 min 22 s -> les 20 shards ont tourné ;
+    #   - run 35926731615, annulation à 30 min 36 s -> les 20 shards SAUTÉS,
+    #     donc zéro collecte de candidat déclaré et zéro intervention sur un run
+    #     lancé avec `collect_interventions=true`.
+    # Le seuil des 30 minutes décidait donc, au hasard de quelques secondes, si
+    # le run collectait l'Assemblée nationale.
+    #
+    # Rien dans ce job ne dépend du succès du précédent : l'artifact
+    # `amendements-index-an` s'y télécharge déjà en `continue-on-error: true`,
+    # avec un repli sur le cache (#424). Les deux besoins réels sont le sha
+    # épinglé et la matrice, et c'est ce que la condition exige.
+    if: ${{ !cancelled() && needs.epingler-le-code.result == 'success' && needs.prepare-an-matrix.result == 'success' }}
     name: extract-an (${{ matrix.slug }})
     runs-on: ubuntu-latest
     # TIMEOUT CONDITIONNEL AU MODE (#498). Une seule valeur ne peut pas couvrir

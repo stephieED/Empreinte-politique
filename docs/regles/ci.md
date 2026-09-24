@@ -30,6 +30,18 @@ les charger, ni à les faire grossir. -->
   "nothing to collect" (#510, #771).
   → `docs/decisions/run-de-test-perimetre-reduit-792.md`,
     `docs/decisions/cout-reel-du-run-de-test-792.md`
+- **A timeout is a cancellation, not a failure, and `continue-on-error` does not cover it
+  (#1115).** Every job of the chain carries `if: ${{ !cancelled() }}` (#412 §2.1) — and
+  `extract-an` was the one that missed it. Measured on the same XVe archive, two hours
+  apart on 23/09/2026: run `35910007684` saw `extract-amendements-an` **fail** at 29 min
+  22 s and its 20 shards ran; run `35926731615` saw it **time out** at 30 min 36 s, and the
+  20 shards were **skipped** — zero declared candidate collected, zero intervention, on a
+  run launched with `collect_interventions=true`. A few seconds either side of the
+  `timeout-minutes` decided whether the run collected the Assemblée at all. **A `needs:`
+  onto a job that may time out is therefore never enough**: state what the dependent
+  genuinely requires (`needs.<job>.result == 'success'`), and let the rest be cancelled
+  without taking the run down. Held by `tests/test_ci_boucle_candidats_757.py`.
+
 - **An artifact that was published and did not arrive is a failure, not an absent source
   (#786).** Run `34241352524` is **green and collected nobody**: its four extraction
   downloads left within the same second and all took a **403 "secondary rate limit"** on

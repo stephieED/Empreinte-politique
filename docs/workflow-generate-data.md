@@ -351,6 +351,17 @@ au run de conclure vert quand la source est délibérément suspendue
 
 #### `extract-an`
 
+**Ce job ne dépend pas du SUCCÈS d'`extract-amendements-an` (#1115).** Il porte
+`if: ${{ !cancelled() && needs.epingler-le-code.result == 'success' &&
+needs.prepare-an-matrix.result == 'success' }}` : le sha épinglé et la matrice
+sont ses deux besoins réels, l'index d'amendements y arrive en artifact
+`continue-on-error` avec repli sur le cache (#424). Le garde-fou n'est pas
+décoratif — `continue-on-error` couvre l'échec et **pas l'annulation**, or un
+dépassement de `timeout-minutes` en est une : le 23/09/2026, le run
+`35910007684` a vu les amendements échouer à 29 min 22 s et ses 20 shards ont
+tourné, le run `35926731615` les a vus annulés à 30 min 36 s et ses 20 shards
+ont été sautés, sur un run lancé avec `collect_interventions=true`.
+
 Un shard par candidat, séquencés un par un (`max-parallel: 1`) :
 
 ```
@@ -982,6 +993,14 @@ amendés en premier ; le cache `.cache/europarl`, restauré et cumulé d'un run 
 l'autre, répond sans compter. Au-delà du budget, un dossier porte
 `domaines_non_resolu.motif = "question_non_posee"` et attend le run suivant.
 
+**Ces dossiers sont épuisés depuis le 23/09/2026 : il n'en reste aucun.** La
+couverture s'est arrêtée à **2 555 dossiers sur 4 642**, et ce qui reste est un
+plafond de la source, pas un retard de collecte — 676 des 2 084 dossiers sans
+domaine sont des procédures des années 2000, que le Parlement n'indexait pas
+(1 % de résolus, contre 80 % sur les années 2020). Un run n'a donc plus rien à
+gagner sur cette passe, et son budget de 20 minutes ne sert plus qu'aux dossiers
+nouveaux. → `docs/decisions/couverture-eurovoc-limite-datee-1052.md`
+
 **Le budget est en temps, et le cache est sauvegardé tout de suite après l'étape.**
 Le run `35231390627` (17/09/2026) a consommé 1 500 requêtes en **88 minutes** —
 3,5 s par requête en CI, contre 0,9 s depuis un poste —, `merge-and-pivot` a
@@ -1106,6 +1125,15 @@ Pourquoi : au run `35767700159`, l'archive de la XIVe a été abandonnée après
 **5 minutes sur 30**, avec le message « la source semble indisponible ». La
 source coupe par intermittence — remesuré le même jour, la troisième tentative
 sur la même plage la rend entière.
+
+**Ce que le budget a donné, mesuré ensuite.** Run `35792678909` (23/09, 00h29) :
+la XIVe (103 716 698 octets) passe **d'un coup**, en quatre segments, budget
+annoncé 1 197 s. Run `35910007684` (23/09, 21h32) : la XVe (648 539 281 octets)
+**échoue à 5,5 %** — 35 668 290 octets en 1 300 s, la source coupant toujours au
+même offset. Le budget fait donc son travail sur une archive de 100 Mo et ne
+suffit pas sur une de 650 Mo. Ce qui manquerait n'est pas du budget mais la
+**conservation du préfixe entre deux runs** : chaque run repart de zéro
+(`ROADMAP.md`, Known bugs).
 → `docs/decisions/reprise-archive-figee-bornee-en-temps-1100.md`
 
 ### `extract-mandats-locaux` — le versant local d'un parcours (#922)

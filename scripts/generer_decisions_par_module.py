@@ -222,8 +222,15 @@ def rendre(analyse):
         "[`docs/technical_decisions.md`](technical_decisions.md) va des décisions vers le",
         "code et se lit par date. Cette table va dans l'autre sens : **ce module → ces",
         "décisions**, pour qu'un agent qui ouvre un fichier de `src/` sache ce qui le",
-        f"gouverne sans avoir à fouiller les {len(list(DECISIONS.glob('*.md')))} décisions",
-        "du répertoire. Le critère, ce qu'il rate et pourquoi la table est générée :",
+        # Le COMPTE des décisions ne figure plus ici (24/09/2026). Il changeait à
+        # chaque décision ajoutée, donc deux branches parallèles écrivaient deux
+        # valeurs au même endroit : la fusion en gardait une, et le test de
+        # non-dérive échouait sur un fichier que personne n'avait touché. Trois
+        # fois le 23/09, dont un contrôle rouge sur le dépôt public. AGENTS.md §8
+        # dit déjà de ne jamais écrire un compte qu'un lot déplace ; un fichier
+        # généré n'y échappe pas.
+        "gouverne sans avoir à fouiller le répertoire des décisions.",
+        "Le critère, ce qu'il rate et pourquoi la table est générée :",
         "[`docs/decisions/table-inversee-decisions-par-module.md`]"
         "(decisions/table-inversee-decisions-par-module.md).",
         "",

@@ -138,6 +138,17 @@ Convention d'écriture : `AGENTS.md` §8.
 
 ## Known bugs
 
+- **L'archive d'amendements de la XVe ne se télécharge pas dans les 30 minutes du
+  job (mesuré les 23 et 24/09/2026)** : `data.assemblee-nationale.fr` coupe à
+  l'octet 35 668 290 sur les 648 539 281, par plages comme en séquentiel, et le
+  budget en temps de #1100 s'épuise à 5,5 % du fichier — 1 300 s pour 35 Mo. La
+  XIVe (104 Mo) est passée d'un coup, la XVIIe se construit avec son index : il ne
+  manque que la XVe et la XVIe, donc l'index de mots des exposés reste incomplet
+  sur deux législatures. **Ce qui manque n'est pas du budget mais la CONSERVATION
+  du préfixe entre deux runs** : chaque run repart de zéro, alors que le
+  téléchargeur sait déjà reprendre un fichier partiel entre deux invocations — le
+  préfixe vit dans un cache que la clé hebdomadaire ne réécrit pas.
+
 - **`/couverture` ne décrit aucune des quatre sources arrivées le 22-23/09/2026** :
   l'extrait de parole des rosters (#1086), l'ancre de la prise de parole (#1087),
   l'index de mots des exposés d'amendements (#1092) et les actes réglementaires du

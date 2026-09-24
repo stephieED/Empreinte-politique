@@ -265,3 +265,43 @@ def test_le_telechargement_des_resolutions_ne_fait_pas_echouer_le_shard():
     steps = _steps(_bloc_job("extract-an"))
     step = next(s for s in steps if "candidats-a-jour" in s)
     assert "continue-on-error: true" in step
+
+
+# ---------------------------------------------------------------------------
+# L'extraction ne dépend pas du succès des amendements (#1115)
+# ---------------------------------------------------------------------------
+
+
+def test_l_extraction_an_survit_a_une_annulation_des_amendements():
+    """Un dépassement de `timeout-minutes` est une ANNULATION, pas un échec.
+
+    `continue-on-error: true` sur extract-amendements-an ne couvre que l'échec :
+    le 23/09/2026, deux runs sur la même archive de la XVe ont divergé à
+    quelques secondes près — 35910007684 a échoué à 29 min 22 s et les 20
+    shards ont tourné, 35926731615 a été annulé à 30 min 36 s et les 20 shards
+    ont été sautés.
+    """
+    entete = _sans_commentaires(_bloc_job("extract-an").split("steps:")[0])
+    assert "!cancelled()" in entete.replace(" ", ""), (
+        "extract-an redevient sautable dès qu'extract-amendements-an dépasse "
+        "son timeout : le run ne collecterait plus aucun candidat déclaré."
+    )
+
+
+def test_l_extraction_an_exige_encore_ce_dont_elle_a_vraiment_besoin():
+    """Le garde-fou ne doit pas faire tourner le job sans sha ni matrice."""
+    entete = _sans_commentaires(_bloc_job("extract-an").split("steps:")[0])
+    compacte = entete.replace(" ", "")
+    for besoin in ("epingler-le-code", "prepare-an-matrix"):
+        assert f"needs.{besoin}.result=='success'" in compacte, (
+            f"la condition n'exige plus le succès de {besoin}"
+        )
+
+
+def test_l_artifact_amendements_reste_optionnel_dans_extract_an():
+    """Ce qui rend le découplage légitime : l'absence d'amendements y est déjà
+    une dégradation gracieuse, jamais un blocage."""
+    steps = _steps(_bloc_job("extract-an"))
+    amendements = [s for s in steps if "amendements-index-an" in s]
+    assert amendements, "extract-an ne télécharge plus l'artifact amendements"
+    assert "continue-on-error: true" in amendements[0]
