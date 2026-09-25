@@ -40,6 +40,7 @@ import {
   matiereDeFigure,
   organigramme,
 } from '../utils/gouvernement';
+import ActesDuGouvernement from './ActesDuGouvernement';
 
 const MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
   'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
@@ -842,13 +843,30 @@ function limitesDeLaFiche(government) {
   return lignes;
 }
 
+/* 05 — Ce qu'il a fait entrer en vigueur (#1029 voie 1). La section ne porte
+   que son cadre : tout le reste vit dans `ActesDuGouvernement`. */
+function CeQuIlAFaitEntrerEnVigueur({ government }) {
+  return (
+    <section className="gvp-section" data-section="Ce qu’il a fait entrer en vigueur" id="section-actes">
+      <div className="gvp-section-tete">
+        <span className="gvp-section-numero">05</span>
+        <span className="gvp-section-trait" />
+      </div>
+      <h2 className="gvp-section-titre"><span>Ce qu’il a fait entrer en vigueur</span></h2>
+      <div className="gvp-carte">
+        <ActesDuGouvernement id={government.id} />
+      </div>
+    </section>
+  );
+}
+
 function CeQuOnNaPasPuLire({ government }) {
   const lignes = limitesDeLaFiche(government);
 
   return (
     <section className="gvp-section" data-section="Ce qu’on n’a pas pu lire" id="section-limites">
       <div className="gvp-section-tete">
-        <span className="gvp-section-numero">05</span>
+        <span className="gvp-section-numero">06</span>
         <span className="gvp-section-trait" />
       </div>
       <h2 className="gvp-section-titre"><span>Ce qu’on n’a pas pu lire</span></h2>
@@ -913,6 +931,7 @@ export default function GovernmentProfile({ government, chronologie = [], mot = 
       {!actif && <QuiLeComposait government={government} />}
       <SurQuoiIlsOntPrisLaParole debut={debut} government={government} key={`paroles-${mot}-${debut}`} mot={mot} />
       <CeQuIlAFaitDeposer government={government} key={`textes-${mot}`} mot={mot} />
+      <CeQuIlAFaitEntrerEnVigueur government={government} />
       <CeQuOnNaPasPuLire government={government} />
     </main>
   );

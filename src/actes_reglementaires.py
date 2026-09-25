@@ -108,6 +108,7 @@ import tarfile
 import tempfile
 import time
 import urllib.request
+from xml.etree import ElementTree
 from collections import defaultdict
 from datetime import date, timedelta
 from pathlib import Path
@@ -272,7 +273,10 @@ def parcourir_archive(url: str, *, timeout: int = 300) -> Iterator[tuple[str, st
                 archive.members.clear()
                 if not membre.isfile() or not membre.name.endswith(".xml"):
                     continue
-                if "/texte/version/" not in membre.name and "/article/" not in membre.name:
+                # `/conteneur/` depuis #1134 : la table des matières du JO, qui
+                # range chaque texte sous sa rubrique. Elle ne porte aucun acte,
+                # seulement des renvois — quelques dizaines de Ko par livraison.
+                if not any(d in membre.name for d in ("/texte/version/", "/article/", "/conteneur/")):
                     continue
                 flux = archive.extractfile(membre)
                 if flux is None:
@@ -280,6 +284,44 @@ def parcourir_archive(url: str, *, timeout: int = 300) -> Iterator[tuple[str, st
                 yield membre.name, flux.read().decode("utf-8", "replace")
     except (OSError, tarfile.TarError) as exc:
         raise SourceIndisponible(f"{url} illisible : {exc}") from exc
+
+
+def rubriques_du_conteneur(xml: str) -> Iterator[tuple[str, str]]:
+    """`(identifiant, rubrique)` pour chaque texte de la table des matières du JO.
+
+    Le conteneur d'une livraison est le SOMMAIRE du Journal officiel du jour :
+    des `<TM>` imbriqués, chacun avec son `<TITRE_TM>`, et pour feuilles des
+    `<LIEN_TXT idtxt="JORFTEXT…">`. C'est là, et NULLE PART dans le fichier de
+    l'acte, que la source distingue « Textes généraux » de « Mesures
+    nominatives » et de « Conventions collectives » (#1134).
+
+    **La chaîne est rendue telle que la source la compose**, racine retirée :
+    « Décrets, arrêtés, circulaires > Mesures nominatives > Ministère de la
+    santé… ». On n'en extrait pas un niveau « utile », et on n'invente pas de
+    nomenclature : un lecteur qui cherche les actes de personne demande si
+    « Mesures nominatives » est dans la chaîne. La racine — « Journal officiel
+    "Lois et Décrets" » — ne distingue rien et n'est pas publiée.
+    """
+    try:
+        racine = ElementTree.fromstring(xml)
+    except ElementTree.ParseError:
+        return
+    structure = racine.find(".//STRUCTURE_TXT")
+    if structure is None:
+        return
+
+    def parcours(noeud, chemin: list[str]) -> Iterator[tuple[str, str]]:
+        for enfant in noeud:
+            if enfant.tag == "TM":
+                titre = enfant.find("TITRE_TM")
+                libelle = (titre.text or "").strip() if titre is not None else ""
+                yield from parcours(enfant, chemin + ([libelle] if libelle else []))
+            elif enfant.tag == "LIEN_TXT":
+                cid = enfant.get("idtxt")
+                if cid and len(chemin) > 1:
+                    yield cid, " > ".join(chemin[1:])
+
+    yield from parcours(structure, [])
 
 
 class Moisson:
@@ -305,11 +347,18 @@ class Moisson:
         self._seaux = [open(self.repertoire / f"seau-{i:03d}.tsv", "w", encoding="utf-8")
                        for i in range(NB_SEAUX)]
         self.articles = 0
+        #: `identifiant -> rubrique du JO`, lue dans les conteneurs (#1134).
+        #: Un acte dont la livraison n'a pas apporté le conteneur reste sans
+        #: rubrique : absence déclarée, jamais devinée depuis le titre.
+        self.rubriques: dict[str, str] = {}
 
     def _garde_le_mois(self, date_publi: Optional[str]) -> bool:
         return self.mois_retenus is None or mois_de(date_publi) in self.mois_retenus
 
     def ajouter(self, nom: str, xml: str) -> None:
+        if "/conteneur/" in nom:
+            self.rubriques.update(rubriques_du_conteneur(xml))
+            return
         if "/texte/version/" in nom:
             nature, date_publi = _lire("NATURE", xml), _lire("DATE_PUBLI", xml)
             if nature in lois_jorf.NATURES:
@@ -421,6 +470,7 @@ def document(
     *,
     derniere_livraison: Optional[str] = None,
     genere_le: Optional[str] = None,
+    rubriques: Optional[dict[str, str]] = None,
 ) -> dict[str, Any]:
     """Le fichier publié d'un mois (voir la docstring du module).
 
@@ -442,6 +492,19 @@ def document(
 
     ministeres = sorted({a["ministere"] for a in actes.values() if a.get("ministere")})
     rang_ministere = {m: i for i, m in enumerate(ministeres)}
+    # #1134 — la rubrique du JO, quand la livraison a apporté son conteneur.
+    # Un acte sans rubrique porte `null` : la source ne l'a pas dite, on ne la
+    # devine pas depuis le titre (§2 règle 5).
+    #
+    # PUBLIÉE À CÔTÉ DES LIGNES, PAS DEDANS. Ajouter une 7e colonne à `actes`
+    # aurait cassé tout lecteur qui dépaquette six valeurs — le test du dépôt
+    # l'a fait immédiatement, et une section d'interface en cours de relecture
+    # les lit aussi. `rubrique_des_actes` est aligné sur `ids`, comme
+    # `articles` l'est dans `amendements_contenu` : un lecteur qui l'ignore ne
+    # voit aucun changement.
+    rubriques = rubriques or {}
+    vocab_rubriques = sorted({r for cid in ids if (r := rubriques.get(cid))})
+    rang_rubrique = {r: i for i, r in enumerate(vocab_rubriques)}
     return {
         "schema_version": SCHEMA_VERSION,
         "mois": None if mois == MOIS_SANS_DATE else mois,
@@ -454,6 +517,8 @@ def document(
         "prefixe_ids": PREFIXE_IDS,
         "natures": list(NATURES_RETENUES),
         "ministeres": ministeres,
+        "rubriques": vocab_rubriques,
+        "rubrique_des_actes": [rang_rubrique.get(rubriques.get(cid)) for cid in ids],
         "liens_lois": {
             cid[len(PREFIXE_IDS):]: [actes[cid].get("lois_appliquees") or [],
                                      actes[cid].get("lois_citees") or []]
@@ -622,6 +687,7 @@ def publier(
     repertoire: Path,
     *,
     derniere_livraison: Optional[str],
+    rubriques: Optional[dict[str, str]] = None,
     controler_les_pertes: bool = True,
     journal=sys.stdout,
 ) -> list[str]:
@@ -638,7 +704,8 @@ def publier(
             continue
         if controler_les_pertes:
             verifier_sans_perte(mois, actes, repertoire)
-        doc = document(mois, actes, derniere_livraison=derniere_livraison)
+        doc = document(mois, actes, derniere_livraison=derniere_livraison,
+                       rubriques=rubriques)
         if ecrire_index_json(chemin_publie(mois, repertoire), doc):
             ecrits.append(mois)
             print(f"-> {chemin_publie(mois, repertoire)} : {len(actes)} actes, "
@@ -682,6 +749,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         moisson, derniere = collecter(urls, temporaire, mois_retenus=mois_retenus,
                                       budget_secondes=args.budget_secondes, base=args.base)
         ecrits = publier(moisson.par_mois(), args.repertoire, derniere_livraison=derniere,
+                         rubriques=moisson.rubriques,
                          controler_les_pertes=not args.depuis_dump)
         # La table des lois croisées en chemin, fusionnée avec celle déjà
         # committée : un run qui ne lit que deux mois de livraisons n'y voit que

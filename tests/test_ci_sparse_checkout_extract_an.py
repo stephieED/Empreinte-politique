@@ -54,7 +54,9 @@ _LITTERAL_PLAT = re.compile(r'"raw_data/([\w./-]+)"?')
 #: oublié — la cause n'est pas propre à un job, c'est le poids de l'arbre.
 #: Trois depuis #757 : `rafraichir-candidats` lit la liste éditoriale et la table
 #: de correspondance, et il est au budget le plus serré du premier étage.
-JOBS_AVEC_LISTE_BLANCHE = ("rafraichir-candidats", "prepare-an-matrix", "extract-an")
+JOBS_AVEC_LISTE_BLANCHE = ("rafraichir-candidats", "prepare-an-matrix", "extract-an",
+                           "extract-actes-jo", "extract-gouvernements",
+                           "extract-amendements-an")
 
 
 def _tranche_du_job(job: str) -> str:
@@ -305,3 +307,50 @@ def test_le_timeout_du_shard_est_inchange():
     assert "timeout-minutes: ${{ inputs.collect_interventions && 10 || 5 }}" in texte, (
         "le `timeout-minutes` d'extract-an a changé : relire #498 et "
         "docs/decisions/budget-collecte-interventions.md avant de le valider")
+
+
+# ---------------------------------------------------------------------------
+# Les deux jobs sortis de la fusion (#1129)
+# ---------------------------------------------------------------------------
+
+
+def test_le_job_des_actes_prend_les_mois_deja_publies():
+    """`actes_reglementaires.py` relit les mois publiés pour reprendre les liens
+    d'un mois clos que la source redélivre (`corriger_les_liens`). Un checkout
+    qui les omettrait produirait un fonds amputé sans qu'aucune étape échoue."""
+    tranche = _tranche_du_job("extract-actes-jo")
+    for chemin in ("src", "pivot_data/actes_reglementaires", "raw_data/lois_jorf.json"):
+        assert chemin in tranche, f"`{chemin}` manque à la liste blanche du job des actes"
+    assert "raw_data/profiles" not in tranche, (
+        "les profils font l'essentiel du dépôt et ne concernent pas ce job — "
+        "un checkout plein coûte 451 s (mesuré, run 36040086663)"
+    )
+
+
+def test_le_job_des_gouvernements_ne_prend_que_ce_qu_il_ecrit():
+    tranche = _tranche_du_job("extract-gouvernements")
+    assert "src" in tranche
+    assert "raw_data/gouvernements_reels.json" in tranche
+    assert "pivot_data" not in tranche, (
+        "ce job ne lit pas le corpus pivot — zéro occurrence de `pivot_data` "
+        "dans gouvernements_amo30.py, c'est la raison même de l'avoir sorti"
+    )
+
+
+def test_le_job_des_amendements_garde_ses_deux_replis(tmp_path):
+    """Les deux chemins dont l'absence ne fait ÉCHOUER personne — elle fait
+    retélécharger. `construire_un_contenu_fige` saute une législature déjà
+    pourvue en lisant `chemin_publie` ; `_load_frozen_amendement_index` reprend
+    une législature figée depuis les tranches committées quand le cache a été
+    purgé, et rend `None` sans lever quand elles manquent."""
+    chemins = _liste_blanche("extract-amendements-an", tmp_path)
+    assert "pivot_data/amendements/*.contenu.json" in chemins, (
+        "sans les contenus publiés, le job retélécharge les archives figées"
+    )
+    assert "raw_data/amendements_an_figes" in chemins, (
+        "sans les tranches committées, un cache purgé renvoie le job au réseau — "
+        "648 Mo pour la seule XVe, en silence"
+    )
+    assert not [c for c in chemins if c.endswith("profiles") or "/profiles/" in c], (
+        "ce job ne lit pas un octet des profils, qui pèsent 7,2 Go des 8,1 Go suivis"
+    )

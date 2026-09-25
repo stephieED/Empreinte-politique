@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { cleLegislature, construireComparaisons } from './comparaison-groupes.mjs';
 import { construireCouverture } from './couverture-corpus.mjs';
+import { accumulateurs, projection, ranger } from './actes-gouvernement.mjs';
 import { construireDebatsLignee, construireExtraitsLignee, construireVueLignee, idDePage } from './vue-lignee.mjs';
 import { construireExtraitsGouvernement, construireParoles, lecteurDeProfils } from './vue-parole-gouvernement.mjs';
 import { debutDeFenetre } from '../src/utils/filtrePeriode.js';
@@ -23,6 +24,7 @@ const outDir = path.join(projectRoot, 'public', 'data');
 const pivotProfilesDir = path.join(repoRoot, 'pivot_data', 'profiles');
 const pivotGroupesDir = path.join(repoRoot, 'pivot_data', 'groupes');
 const pivotGouvernementsDir = path.join(repoRoot, 'pivot_data', 'gouvernements');
+const actesDir = path.join(repoRoot, 'pivot_data', 'actes_reglementaires');
 const pivotLigneesDir = path.join(repoRoot, 'pivot_data', 'lignees');
 const candidatsPath = path.join(repoRoot, 'raw_data', 'candidats.json');
 const scrutinsPath = path.join(repoRoot, 'pivot_data', 'scrutins.json');
@@ -612,12 +614,71 @@ if (vuesAJour) {
   console.log(`sync-data : ${manifestLignees.length} vues de lignée écrites en ${((Date.now() - debut) / 1000).toFixed(1)} s.`);
 }
 
+/* ── CE QUE L'EXÉCUTIF A FAIT ENTRER EN VIGUEUR (#1029 voie 1) ──────────────
+ *
+ * 238 fichiers mensuels, 389 000 actes : ils sont lus UNE SEULE FOIS, et
+ * chaque acte est rangé dans les gouvernements dont la fenêtre le couvre. Une
+ * passe par gouvernement relirait 197 Mo dix-sept fois.
+ *
+ * Les fichiers eux-mêmes ne sont pas copiés vers `public/` : seule la
+ * projection l'est, un fichier par gouvernement.
+ */
+function projeterLesActes(gouvernements) {
+  if (!existsSync(actesDir)) return { par: new Map(), lus: 0 };
+  const textes = (() => {
+    const chemin = path.join(repoRoot, 'pivot_data', 'textes_promulgues.json');
+    if (!existsSync(chemin)) return {};
+    const doc = JSON.parse(readFileSync(chemin, 'utf-8'));
+    const par = {};
+    for (const t of Object.values(doc.textes || {})) if (t.numero_loi) par[t.numero_loi] = t;
+    return par;
+  })();
+  const acc = accumulateurs(gouvernements);
+  let lus = 0;
+  for (const fichier of readdirSync(actesDir).filter((f) => f.endsWith('.json')).sort()) {
+    const doc = JSON.parse(readFileSync(path.join(actesDir, fichier), 'utf-8'));
+    const natures = doc.natures || [];
+    const ministeres = doc.ministeres || [];
+    const ids = doc.ids || [];
+    // Le rangement du sommaire du JO (#1134), aligné sur `ids` et non sur la
+    // ligne d'`actes` : la forme d'une ligne n'a pas bougé.
+    const rubriques = doc.rubriques || [];
+    const rubriqueDesActes = doc.rubrique_des_actes || [];
+    (doc.actes || []).forEach((ligne, i) => {
+      lus += 1;
+      const r = rubriqueDesActes[i];
+      ranger(acc, {
+        date: ligne[2],
+        titre: ligne[1] || '',
+        ministere: ligne[3] === null || ligne[3] === undefined ? null : ministeres[ligne[3]],
+        id: ids[i],
+        nature: natures[ligne[0]],
+        rubrique: r === null || r === undefined ? null : rubriques[r],
+      });
+    });
+  }
+  const par = new Map();
+  for (const a of acc) par.set(a.id, projection(a, textes));
+  return { par, lus };
+}
+
 // --- profils de gouvernement réels ---
 const debutParoles = Date.now();
 let sujetsEcrits = 0;
 let octetsExtraitsGouvernements = 0;
 const gouvernementFiles = readdirSync(pivotGouvernementsDir).filter((f) => f.endsWith('.json'));
 const manifestGouvernements = [];
+const debutActes = Date.now();
+const fenetres = gouvernementFiles.map((file) => {
+  const g = JSON.parse(readFileSync(path.join(pivotGouvernementsDir, file), 'utf-8'));
+  return {
+    id: file.replace(/^gouvernement-/, '').replace(/\.json$/, ''),
+    debut: g.periode?.debut ?? null,
+    fin: g.periode?.fin ?? null,
+  };
+});
+const { par: actesParGouvernement, lus: actesLus } = projeterLesActes(fenetres);
+let octetsActes = 0;
 for (const file of gouvernementFiles) {
   cpSync(path.join(pivotGouvernementsDir, file), path.join(outDir, 'gouvernements', file));
   const gouvernement = JSON.parse(readFileSync(path.join(pivotGouvernementsDir, file), 'utf-8'));
@@ -626,6 +687,14 @@ for (const file of gouvernementFiles) {
   const paroles = construireParoles(gouvernement, lireProfil);
   sujetsEcrits += Object.keys(paroles).length;
   writeFileSync(path.join(outDir, 'gouvernements', `${id}.paroles.json`), JSON.stringify(paroles));
+  // Ce que l'exécutif a fait entrer en vigueur (#1029 voie 1).
+  const actes = actesParGouvernement.get(id);
+  if (actes) {
+    const cible = path.join(outDir, 'gouvernements', `${id}.actes.json`);
+    const contenu = JSON.stringify(actes);
+    writeFileSync(cible, contenu);
+    octetsActes += contenu.length;
+  }
   // Ce qui a été dit (#1029) : les extraits des membres, pendant leurs fonctions.
   octetsExtraitsGouvernements += ecrireExtraits(
     path.join(outDir, 'gouvernements'), id,
@@ -648,6 +717,9 @@ for (const file of gouvernementFiles) {
     // #330 : le détail d'un sujet de parole — qui, quand, où le vérifier.
     // Chargé au premier clic, jamais avec la fiche : 2,6 Mo sur Borne.
     paroles: `${id}.paroles.json`,
+    // #1029 voie 1 : ce que l'exécutif a fait entrer en vigueur, chargé au
+    // déploiement de la section et pas avec la fiche (0,4 Mo).
+    actes: actesParGouvernement.has(id) ? `${id}.actes.json` : null,
     // #1029 : ce qui a été dit, par débat — `<id>.extraits.index.json` pour le
     // filtre, `<id>.extraits.<paquet>.json` pour un débat ouvert.
     extraits: id,
@@ -658,6 +730,11 @@ manifestGouvernements.sort((a, b) => (b.debut || '').localeCompare(a.debut || ''
 console.log(
   `sync-data : ${sujetsEcrits} sujets de parole de gouvernement écrits en `
   + `${((Date.now() - debutParoles) / 1000).toFixed(1)} s ; extraits : ${(octetsExtraitsGouvernements / 1e6).toFixed(1)} Mo.`,
+);
+console.log(
+  `sync-data : ${actesLus.toLocaleString('fr-FR')} actes réglementaires lus une fois, `
+  + `projetés sur ${actesParGouvernement.size} gouvernement(s) — ${(octetsActes / 1e6).toFixed(1)} Mo écrits `
+  + `en ${((Date.now() - debutActes) / 1000).toFixed(1)} s.`,
 );
 
 /* ── Ce que le dépôt porte, tous profils confondus (/couverture) ────────────

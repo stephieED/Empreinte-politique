@@ -9,6 +9,11 @@ formulaire de lancement, le push, et la relance automatique. Ce que devient la
 Ce fichier existe pour être lu **avant** d'ouvrir
 `.github/workflows/generate-data.yml`, qui fait plus de 4 000 lignes.
 
+**La même chose en figure** : `docs/fabrique-du-jeu-de-donnees.html`, à ouvrir
+dans un navigateur — les jobs dans l'ordre de leurs `needs:`, `merge-and-pivot`
+ouvert en ses huit phases, et une fiche au clic sur chaque job. Relevée à une
+date qu'elle porte : un job ajouté ici ne s'y ajoute pas seul.
+
 ## 1. Les jobs, dans l'ordre
 
 | Job | `needs:` | Consomme | Produit |
@@ -25,11 +30,14 @@ Ce fichier existe pour être lu **avant** d'ouvrir
 | `extract-roster-groupes` | les quatre `extract-*` + `prepare-roster-matrix` | l'artifact `roster-candidats`, les mêmes sources | un artifact `raw-profiles-roster-groupes-<shard>` par shard |
 | `extract-senat` | `epingler-le-code` | `export_sens.zip` de `data.senat.fr` (#885) | artifact `raw-profiles-senat`, cache `public-data-cache-senat-<date>` |
 | `extract-mandats-locaux` | `epingler-le-code` | le Répertoire national des élus et les sortants 2026, par `tabular-api.data.gouv.fr` (#922) | artifact `raw-profiles-mandats-locaux`, **aucun cache** |
-| `merge-and-pivot` | `extract-an`, `extract-ue-officiel`, `extract-parltrack`, `extract-roster-groupes`, `extract-senat` | tous les artifacts ci-dessus, et les **quatre archives de dossiers** (XIV à XVII, deux formats depuis #1019) | le contrôle du transport, la fusion, les deux passes pivot, les fiches de groupe, de lignée et **de gouvernement** (rattachement par `organe_ref`, #996 lot 4), **les actes réglementaires du Journal officiel** (#1029 voie 1 — seul appel réseau de ce job hors portail européen), les quatre contrôles, le commit et le push |
+| `extract-actes-jo` | `epingler-le-code` | les livraisons quotidiennes de `echanges.dila.gouv.fr` (#1029 voie 1) | artifact `actes-jo` — **seulement les fichiers que le run change**, `pivot_data/actes_reglementaires/<AAAA-MM>.json` des mois relus et `raw_data/lois_jorf.json` |
+| `extract-gouvernements` | `epingler-le-code` | l'archive AMO30 | artifact `gouvernements-amo30` : `raw_data/gouvernements_reels.json` (6 Ko) |
+| `merge-and-pivot` | `extract-an`, `extract-ue-officiel`, `extract-parltrack`, `extract-roster-groupes`, `extract-senat`, `extract-actes-jo`, `extract-gouvernements` | tous les artifacts ci-dessus, et les **quatre archives de dossiers** (XIV à XVII, deux formats depuis #1019) | le contrôle du transport, la fusion, les deux passes pivot, les fiches de groupe, de lignée et **de gouvernement** (rattachement par `organe_ref`, #996 lot 4), les fiches de gouvernement à partir de la liste que `extract-gouvernements` a collectée, les quatre contrôles, le commit et le push |
 
-Sept jobs n'ont aucun `needs:` et démarrent ensemble (`rafraichir-candidats` en
-fait partie depuis #757, `extract-senat` depuis #885, `extract-mandats-locaux`
-depuis #922 ; `prepare-an-matrix` attend le premier). Le **chemin critique réel,
+Neuf jobs ne dépendent que de l'épinglage du code et démarrent ensemble
+(`rafraichir-candidats` en fait partie depuis #757, `extract-senat` depuis #885,
+`extract-mandats-locaux` depuis #922, `extract-actes-jo` et
+`extract-gouvernements` depuis #1129 ; `prepare-an-matrix` attend le premier). Le **chemin critique réel,
 ce sont les deux matrices en série** (`extract-an` en `max-parallel: 1`, puis la
 matrice roster en `max-parallel: 4`), pas le nombre de jobs.
 
@@ -484,6 +492,69 @@ frais fixes de `actions/checkout`, pas le temps de calcul
 combinaisons des deux axes du formulaire, les trois codes de sortie du roster :
 → [`extract-roster-groupes.md`](./extract-roster-groupes.md)
 
+#### `extract-actes-jo`
+
+```
+python3 src/actes_reglementaires.py --budget-secondes 900
+```
+
+Les décrets, arrêtés et ordonnances parus depuis le 01/01/2007, lus dans les
+livraisons quotidiennes de la DILA (`echanges.dila.gouv.fr`). Un fichier par
+**mois de parution** sous `pivot_data/actes_reglementaires/`, et la table
+`numéro de loi → JORFTEXT` dans `raw_data/lois_jorf.json`, relevée en chemin.
+Modules : `actes_reglementaires.py`, qui emprunte à `amendements_contenu.py` son
+index de mots et ses seuils, et `lois_jorf.py`.
+
+**Pourquoi un job et non une étape de la fusion (#1129).** Ce n'est pas une
+question de propreté : dans le même job, `textes_promulgues.py` posait
+`jorftext` en lisant `lois_jorf.json` **avant** que `actes_reglementaires.py` ne
+mette cette table à jour. Chaque run résolvait donc les textes promulgués contre
+la table du run **précédent**. En amont, la table est fraîche quand la fusion la
+lit. Le module ne lit rien du corpus pivot hors son propre répertoire de sortie,
+il n'avait donc aucune raison d'attendre la fusion.
+
+**Ce qui transite n'est pas le fonds.** Le répertoire publié pèse 196,4 Mo sur
+238 fichiers, mais un run ne relit que `MOIS_RELUS` mois : mesuré sur les trois
+derniers commits de données, il en change **0 ou 2**. L'artifact ne porte que ce
+que `git status` déclare modifié, chemins conservés — la fusion le télécharge
+avec `path: .`, directement sur son checkout.
+
+**Checkout CREUX, et ce n'est pas un détail.** Mesuré sur le run
+`36040086663`, un `actions/checkout` **plein** de ce dépôt coûte **451 s** — il
+porte ses données. Les deux jobs de ce lot ne prennent donc que le code et ce
+qu'ils lisent : les mois d'actes déjà publiés ici, rien d'autre que `src/` pour
+les gouvernements. Même idiome qu'`extract-an`.
+
+**Ce que le lot gagne, et ce qu'il coûte.** Les deux étapes pesaient **8,6 min**
+dans `merge-and-pivot` (512 s et 2 s au run `36040086663`), sur le chemin
+critique. En amont elles tournent en parallèle d'une première vague qui dure de
+toute façon plus longtemps : le temps mur du run baisse d'autant. En revanche le
+temps de runner FACTURÉ monte, de deux préambules de job — c'est l'échange, et
+le checkout creux est ce qui le rend modeste.
+
+**Consomme** les livraisons DILA et les mois déjà publiés (pour reprendre les
+liens d'un mois clos que la source redélivre). **Produit** l'artifact `actes-jo`.
+→ `docs/decisions/actes-reglementaires-du-journal-officiel-1029.md`,
+  `docs/decisions/dila-et-amo30-en-jobs-1129.md`
+
+#### `extract-gouvernements`
+
+```
+python3 src/gouvernements_amo30.py --out raw_data/gouvernements_reels.json
+```
+
+Les 17 gouvernements depuis 2007, lus dans l'archive AMO30. Module :
+`gouvernements_amo30.py`, qui **ne lit pas une ligne du corpus pivot** — zéro
+occurrence de `pivot_data` — et n'avait donc rien à faire dans la fusion (#1129).
+
+Sa sortie pèse 6 Ko. Pas de `continue-on-error` sur l'étape elle-même : une
+archive illisible lève avant toute écriture, et la liste committée reste. Le job,
+lui, est `continue-on-error` — son échec laisse la fusion travailler sur la liste
+du run précédent, qui est committée.
+
+**Consomme** l'archive AMO30. **Produit** l'artifact `gouvernements-amo30`, que
+`generate_gouvernement_profiles.py` lit en `--config` dans la fusion.
+
 #### `merge-and-pivot`
 
 **Le seul job qui écrit dans le dépôt.** Il enchaîne, dans cet ordre : **le contrôle du transport des artifacts** (`verifier_transport_artifacts.py`, #786 — un artifact que le run a publié et qui n'est pas sur le disque est rattrapé par `gh run download`, puis bloque ; une source qui n'a rien publié reste silencieuse, et un inventaire illisible n'échoue pas) ; fusion
@@ -504,17 +575,17 @@ rien. C'est la seule trace observable de la bascule dans un run de test, qui ne
 committe pas ;
 **première** passe `--pivot-only` sur `raw_data/candidats.json`, avec
 `--enrich-parltrack` ; **seconde** passe `--pivot-only` sur le
-`roster_candidats.json` du run ; profils de parti ; **la table des commissions
+`roster_candidats.json` du run ; **la table des commissions
 saisies au fond** (`build_commissions_dossiers.py`, #328 — non bloquante, elle
 dérive du référentiel et non du corpus) ; profils de groupe parlementaire réel, **fiches de lignée de groupe**
 (`generate_lignee_profiles.py`, #836 — lues sur les fiches de groupe que le step
 précédent vient d'écrire, jamais du réseau, donc APRÈS lui et insensibles à son
 code 2 ; `continue-on-error`, même arbitrage que le step gouvernement, la §4c du
 portail hard-failant sur une fiche absente ou invalide ; **104 s et 1 453 Mio de
-RSS** mesurés pour les 10 lignées), **la liste des gouvernements lue dans AMO30**
-(`gouvernements_amo30.py`, #996 — réécrit `raw_data/gouvernements_reels.json`, 17
-gouvernements depuis 2007 ; sans `continue-on-error` : une archive illisible lève
-avant toute écriture et la liste committée reste), profils
+RSS** mesurés pour les 10 lignées), **la liste des gouvernements** — lue et
+non plus collectée : `extract-gouvernements` la produit en amont depuis #1129, la
+fusion télécharge son artifact par-dessus `raw_data/gouvernements_reels.json` et
+retombe sur la version committée quand il manque —, profils
 de gouvernement (`generate_gouvernement_profiles.py` → `gouvernement_profile.py`
 + `gouvernement_roster.py` ; **`--rosters-bruts raw_data/rosters_bruts.json`
 depuis #996 lot 4**, qui rattache les membres par `organe_ref` au lieu de
@@ -929,12 +1000,18 @@ Les **règles** qu'ils imposent sont dans `AGENTS.md` §3c ; ici, leur ordre, le
 coût et leur placement dans le job. Chacun tourne dans un **processus séparé**,
 pour que le pic mémoire du job reste celui du plus gourmand et non leur somme.
 
-| Ordre | Contrôle | Placement | Coût mesuré |
-|---|---|---|---|
-| 1 | `audit_collecte_non_publiee.py` (#511) | **après les deux passes `--pivot-only`**, celle de `candidats.json` et celle du roster — placé *entre* elles, tout membre de roster serait un faux manque, puisqu'il est alors légitimement sans pivot. Emplacement vérifié par `tests/test_ci_collecte_non_publiee.py::test_le_controle_suit_les_deux_passes_de_normalisation_pivot` | 0,08 s / 13,9 Mio à 752 profils ; ne parse aucun profil (deux listages de noms de fichiers) |
-| 2 | `audit_diff_profils.py --ref HEAD` (#460/#470) | après les deux passes, avant le commit, sur **tout** `pivot_data/` | pic du job à 186,6 Mio |
-| 3 | `audit_integrite_referentielle.py` (#485) | juste après le contrôle de perte | 3,02 s / 162,0 Mio ; 0 orphelin sur 1 347 451 références à `01ffa7f` |
-| 4 | `audit_collecte_vs_publie.py` (#545) | après les deux passes, avant le commit | 58,7 s / 158,2 Mio sur 4,3 Go de profils bruts, sans en matérialiser un seul (`object_pairs_hook`) ; 0 déficit et 0 surplus sur 2 380 paires à `3104e37` |
+**L'ordre ci-dessous est celui du YAML**, et non un classement logique : la
+colonne donnait jusqu'au 25/09/2026 un ordre qui n'était celui d'aucune
+exécution. `tests/test_ci_ordre_des_controles.py` la compare désormais aux
+étapes du workflow. Les quatre sont précédés du **portail qualité**
+(« Quality gate — résumé et contrôle qualité »), qui n'est pas l'un d'eux.
+
+| Ordre | Contrôle | Étape du workflow | Placement | Coût mesuré |
+|---|---|---|---|---|
+| 1 | `audit_diff_profils.py --ref HEAD` (#460/#470) | Contrôle de perte sur pivot_data (avant commit) | après les deux passes, avant le commit, sur **tout** `pivot_data/` | pic du job à 186,6 Mio |
+| 2 | `audit_integrite_referentielle.py` (#485) | Intégrité référentielle de pivot_data (avant commit) | juste après le contrôle de perte | 3,02 s / 162,0 Mio ; 0 orphelin sur 1 347 451 références à `01ffa7f` |
+| 3 | `audit_collecte_non_publiee.py` (#511) | Collecté mais non publié (avant commit) | **après les deux passes `--pivot-only`**, celle de `candidats.json` et celle du roster — placé *entre* elles, tout membre de roster serait un faux manque, puisqu'il est alors légitimement sans pivot. Emplacement vérifié par `tests/test_ci_collecte_non_publiee.py::test_le_controle_suit_les_deux_passes_de_normalisation_pivot` | 0,08 s / 13,9 Mio à 752 profils ; ne parse aucun profil (deux listages de noms de fichiers) |
+| 4 | `audit_collecte_vs_publie.py` (#545) | Collecté vs publié, liste par liste (avant commit) | après les deux passes, avant le commit | 58,7 s / 158,2 Mio sur 4,3 Go de profils bruts, sans en matérialiser un seul (`object_pairs_hook`) ; 0 déficit et 0 surplus sur 2 380 paires à `3104e37` |
 
 Quatre inputs de tolérance, **cloisonnés** : `allow_declared_losses`,
 `allow_broken_references`, `allow_unpublished_profiles`,

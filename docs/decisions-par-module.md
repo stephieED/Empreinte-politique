@@ -37,6 +37,7 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 
 | Module | Décisions qui le gouvernent |
 | --- | ---: |
+| `src/actes_reglementaires.py` | 4 |
 | `src/build_amendements_index.py` | 4 |
 | `src/parse_syceron.py` | 4 |
 | `src/perimetre_candidats.py` | 4 |
@@ -49,7 +50,6 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/avertissements.py` | 2 |
 | `src/fetch_candidats_declares.py` | 2 |
 | `src/titres_europeens.py` | 2 |
-| `src/actes_reglementaires.py` | 1 |
 | `src/candidate_profile_ue.py` | 1 |
 | `src/collecte_mandats_locaux.py` | 1 |
 | `src/documents_europeens.py` | 1 |
@@ -73,11 +73,14 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 
 ## `src/actes_reglementaires.py`
 
-1 décision(s) le gouvernent ; le module en cite 0.
+4 décision(s) le gouvernent ; le module en cite 0.
 
 | Décision | Nomme |
 | --- | --- |
+| [Ce qu'un gouvernement a fait entrer en vigueur (#1029) (2026-09-25)](decisions/actes-sur-la-fiche-de-gouvernement-1029.md) | `corriger_les_liens` |
+| [Les actes du Journal officiel et la liste des gouvernements sortent de la fusion (#1129) (2026-09-25)](decisions/dila-et-amo30-en-jobs-1129.md) | `MOIS_RELUS` |
 | [Un acte publie les lois qu'il applique et celles qu'il cite, et ces liens se corrigent après coup (2026-09-23)](decisions/liens-des-actes-vers-les-lois.md) | `corriger_les_liens` |
+| [La rubrique du Journal officiel se lit dans le conteneur, et ne se devine pas dans les titres (#1134) (2026-09-25)](decisions/rubrique-du-journal-officiel-1134.md) | `MOIS_RELUS`, `rubriques_du_conteneur` |
 
 Le mentionnent sans le gouverner : [`actes-reglementaires-du-journal-officiel-1029`](decisions/actes-reglementaires-du-journal-officiel-1029.md), [`etalement-disque-index-de-mots-1121`](decisions/etalement-disque-index-de-mots-1121.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
 
@@ -92,6 +95,8 @@ Le mentionnent sans le gouverner : [`actes-reglementaires-du-journal-officiel-10
 | [L'index de mots des amendements s'étale sur disque, et la fabrique de référence reste (#1121) (2026-09-24)](decisions/etalement-disque-index-de-mots-1121.md) | `NB_SEAUX`, `document_depuis_archive`, `ecrire_contenu_cache`, `hash_seau`, `lire_archive` |
 | [Les identifiants d'amendements sont pris pour des jetons, et le chemin sort du scanner (#1119) (2026-09-24)](decisions/identifiants-an-pris-pour-des-jetons-1119.md) | `uid_complet` |
 | [Trouver les amendements d'un sujet : l'article visé et un index de mots de l'exposé (#1029) (2026-09-22)](decisions/index-de-mots-des-amendements-1029.md) | `forme_indexee` |
+
+Le mentionnent sans le gouverner : [`rubrique-du-journal-officiel-1134`](decisions/rubrique-du-journal-officiel-1134.md).
 
 ## `src/amendements_index.py`
 
@@ -543,7 +548,7 @@ Le mentionnent sans le gouverner : [`couverture-remplacee-par-liste-602`](decisi
 | --- | --- |
 | [Un délai dépassé chez EuroVoc a coûté toute la publication d'un run (#901) (2026-09-17)](decisions/eurovoc-muet-ne-bloque-pas-le-corpus-901.md) | `LibellesEurovocIndisponibles`, `_interroger_sparql`, `resoudre_domaines` |
 
-Le mentionnent sans le gouverner : [`domaines-eurovoc-familles-oeil-901`](decisions/domaines-eurovoc-familles-oeil-901.md), [`index-reecrits-seulement-si-le-contenu-change-1075`](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md), [`matieres-eurovoc-documents-901`](decisions/matieres-eurovoc-documents-901.md).
+Le mentionnent sans le gouverner : [`dila-et-amo30-en-jobs-1129`](decisions/dila-et-amo30-en-jobs-1129.md), [`domaines-eurovoc-familles-oeil-901`](decisions/domaines-eurovoc-familles-oeil-901.md), [`index-reecrits-seulement-si-le-contenu-change-1075`](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md), [`matieres-eurovoc-documents-901`](decisions/matieres-eurovoc-documents-901.md).
 
 ## `src/dossiers_europeens.py`
 
@@ -779,7 +784,7 @@ Le mentionnent sans le gouverner : [`audit-pipeline-gouvernement`](decisions/aud
 
 ## `src/gouvernements_amo30.py`
 
-Le mentionnent sans le gouverner : [`liste-gouvernements-amo30-996`](decisions/liste-gouvernements-amo30-996.md), [`rattachement-des-membres-par-organe-996`](decisions/rattachement-des-membres-par-organe-996.md), [`repertoire-config-1057`](decisions/repertoire-config-1057.md).
+Le mentionnent sans le gouverner : [`dila-et-amo30-en-jobs-1129`](decisions/dila-et-amo30-en-jobs-1129.md), [`liste-gouvernements-amo30-996`](decisions/liste-gouvernements-amo30-996.md), [`rattachement-des-membres-par-organe-996`](decisions/rattachement-des-membres-par-organe-996.md), [`repertoire-config-1057`](decisions/repertoire-config-1057.md).
 
 ## `src/group_profile.py`
 
@@ -900,7 +905,7 @@ Le mentionnent sans le gouverner : [`contact-et-comptes-publics-328`](decisions/
 
 ## `src/lois_jorf.py`
 
-Le mentionnent sans le gouverner : [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
+Le mentionnent sans le gouverner : [`dila-et-amo30-en-jobs-1129`](decisions/dila-et-amo30-en-jobs-1129.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
 
 ## `src/mandats_anterieurs.py`
 
@@ -1378,7 +1383,7 @@ Le mentionnent sans le gouverner : [`archive-dossiers-xiv-1019`](decisions/archi
 | --- | --- |
 | [Les textes promulgués sont une population du Parlement, pas d'un gouvernement (2026-09-23)](decisions/textes-promulgues-population-du-parlement.md) | `chambre_premiere_lecture` |
 
-Le mentionnent sans le gouverner : [`liens-des-actes-vers-les-lois`](decisions/liens-des-actes-vers-les-lois.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
+Le mentionnent sans le gouverner : [`actes-sur-la-fiche-de-gouvernement-1029`](decisions/actes-sur-la-fiche-de-gouvernement-1029.md), [`dila-et-amo30-en-jobs-1129`](decisions/dila-et-amo30-en-jobs-1129.md), [`liens-des-actes-vers-les-lois`](decisions/liens-des-actes-vers-les-lois.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
 
 ## `src/textes_vises_figes.py`
 

@@ -279,3 +279,108 @@ def test_un_mois_jamais_publie_n_est_pas_fabrique_par_la_correction(tmp_path):
 
     assert ar.corriger_les_liens(redelivres, publie) == []
     assert list(publie.iterdir()) == [], "un mois absent se construit entier, pas par un patch"
+
+
+# ---------------------------------------------------------------------------
+# La rubrique du Journal officiel (#1134)
+# ---------------------------------------------------------------------------
+
+#: Extrait RÉEL du conteneur de la livraison JORF_20260909-003012, réduit à
+#: quatre textes. Recopié et non inventé : c'est la structure exacte que la
+#: DILA publie — un `<TM>` de niveau 1 (« Décrets, arrêtés, circulaires »), un
+#: de niveau 2 (la rubrique), un de niveau 3 (le ministère), et des feuilles
+#: `<LIEN_TXT>`. Une fixture écrite de mémoire aurait pu rater l'imbrication,
+#: qui est tout ce que ce lecteur exploite.
+CONTENEUR_REEL = """<?xml version="1.0" encoding="UTF-8"?>
+<JO>
+  <STRUCTURE_TXT>
+    <TM>
+      <TITRE_TM>Journal officiel "Lois et Décrets"</TITRE_TM>
+      <TM>
+        <TITRE_TM>Décrets, arrêtés, circulaires</TITRE_TM>
+        <TM>
+          <TITRE_TM>Textes généraux</TITRE_TM>
+          <TM>
+            <TITRE_TM>Ministère du travail</TITRE_TM>
+            <LIEN_TXT idtxt="JORFTEXT000054811342" titretxt="Arrêté du 16 juillet 2026 portant habilitation"/>
+          </TM>
+        </TM>
+        <TM>
+          <TITRE_TM>Mesures nominatives</TITRE_TM>
+          <TM>
+            <TITRE_TM>Ministère de la santé</TITRE_TM>
+            <LIEN_TXT idtxt="JORFTEXT000054811930" titretxt="Arrêté du 7 septembre 2026 portant nomination"/>
+            <LIEN_TXT idtxt="JORFTEXT000054812249" titretxt="Arrêté du 28 août 2026 fixant la liste des personnes autorisées à exercer en France la profession de médecin"/>
+          </TM>
+        </TM>
+      </TM>
+      <TM>
+        <TITRE_TM>Informations parlementaires</TITRE_TM>
+        <LIEN_TXT idtxt="JORFTEXT000054811999" titretxt="Ordre du jour"/>
+      </TM>
+    </TM>
+  </STRUCTURE_TXT>
+</JO>"""
+
+
+def test_la_rubrique_se_lit_dans_le_conteneur_et_pas_dans_l_acte():
+    rubriques = dict(ar.rubriques_du_conteneur(CONTENEUR_REEL))
+
+    assert rubriques["JORFTEXT000054811342"].startswith("Décrets, arrêtés, circulaires > Textes généraux")
+    assert rubriques["JORFTEXT000054811930"].startswith("Décrets, arrêtés, circulaires > Mesures nominatives")
+    assert rubriques["JORFTEXT000054811999"] == "Informations parlementaires"
+
+
+def test_l_arrete_medecin_est_nominatif_SELON_LA_SOURCE():
+    """Le cas qui a motivé ce lot. 308 des 395 actes citant une loi par son
+    numéro, sur la fenêtre de Lecornu II, sont ces arrêtés — des autorisations
+    individuelles de praticiens. Leur TITRE n'emploie aucune des formules qui
+    reconnaissent un acte de personne ; le Journal officiel, lui, les range en
+    « Mesures nominatives ». C'est un fait de la source, pas notre lecture."""
+    rubriques = dict(ar.rubriques_du_conteneur(CONTENEUR_REEL))
+
+    assert "Mesures nominatives" in rubriques["JORFTEXT000054812249"]
+
+
+def test_la_racine_n_est_pas_publiee():
+    """« Journal officiel "Lois et Décrets" » ne distingue rien : tous les
+    textes en dépendent. La publier ferait porter un préfixe inutile à chaque
+    chaîne et gonflerait la table."""
+    for rubrique in dict(ar.rubriques_du_conteneur(CONTENEUR_REEL)).values():
+        assert not rubrique.startswith("Journal officiel")
+
+
+def test_un_conteneur_illisible_ne_leve_pas():
+    """Le conteneur est un bonus : son absence ou sa malformation laisse les
+    actes sans rubrique, elle ne doit jamais faire échouer une collecte."""
+    assert list(ar.rubriques_du_conteneur("<JO><STRUCTURE_TXT")) == []
+    assert list(ar.rubriques_du_conteneur("<JO></JO>")) == []
+
+
+def test_un_acte_sans_rubrique_porte_null_et_non_une_devinette():
+    """§2 règle 5 : la source ne l'a pas dite, on ne la déduit pas du titre."""
+    actes = {
+        ARRETE_ARMEES: {"nature": "ARRETE", "titre": "Arrêté portant nomination", "date_publi": "2026-09-09",
+                        "ministere": None, "nor": None, "num": None, "mots": set()},
+    }
+    doc = ar.document("2026-09", actes, rubriques={})
+
+    assert doc["rubriques"] == []
+    assert doc["rubrique_des_actes"] == [None]
+
+
+def test_la_rubrique_est_alignee_sur_ids_et_ne_touche_pas_les_lignes():
+    """La forme d'une ligne d'acte ne bouge pas : un lecteur qui dépaquette six
+    valeurs continue de marcher. C'est la raison du tableau parallèle."""
+    actes = {
+        cid: {"nature": "ARRETE", "titre": "t", "date_publi": "2026-09-09",
+              "ministere": None, "nor": None, "num": None, "mots": set()}
+        for cid in (ARRETE_ARMEES, ARRETE_FDES)
+    }
+    doc = ar.document("2026-09", actes, rubriques={ARRETE_FDES: "Décrets, arrêtés, circulaires > Textes généraux"})
+
+    assert len(doc["rubrique_des_actes"]) == len(doc["ids"])
+    for ligne in doc["actes"]:
+        _, _, _, _, _, _ = ligne  # six valeurs, comme avant #1134
+    rang = doc["rubrique_des_actes"][doc["ids"].index(ARRETE_FDES[len("JORFTEXT"):])]
+    assert doc["rubriques"][rang] == "Décrets, arrêtés, circulaires > Textes généraux"

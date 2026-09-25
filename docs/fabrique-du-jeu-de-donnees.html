@@ -1,0 +1,563 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Fabrique du jeu de données</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --encre:#14151A; --papier:#F7F6F4; --surface:#FFFFFF; --lavis:#EFEDE9;
+  --filet:#DAD6CF; --meta:#6F6B78; --signal:#DFFF00;
+  --parl:#803060; --pe:#003399; --senat:#169E9E; --gouv:#85510d; --neutre:#9A958D;
+  --ph1:#2E7D4F; --ph2:#1F63B8; --ph4:#C2410C;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark; --encre:#F7F6F4; --papier:#14151A; --surface:#1C1D24; --lavis:#24252D;
+  --filet:#33343D; --meta:#A6A2AE; --parl:#C98BAC; --pe:#7FA3E8; --senat:#4FC9C9; --gouv:#D79A4A; --neutre:#B5B0A7; --ph1:#5CC48A; --ph2:#6FA8F0; --ph4:#F08A5D;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark; --encre:#F7F6F4; --papier:#14151A; --surface:#1C1D24; --lavis:#24252D;
+  --filet:#33343D; --meta:#A6A2AE; --parl:#C98BAC; --pe:#7FA3E8; --senat:#4FC9C9; --gouv:#D79A4A; --neutre:#B5B0A7; --ph1:#5CC48A; --ph2:#6FA8F0; --ph4:#F08A5D;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--papier);color:var(--encre);font-family:Manrope,ui-sans-serif,system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.page{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:40px 72px}
+h1{font-size:clamp(26px,5vw,42px);font-weight:800;letter-spacing:-.025em;line-height:1.06;margin:0;text-wrap:balance}
+p{margin:0 0 12px;max-width:68ch}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--meta);margin:0 0 10px}
+.lede{font-size:16px;color:var(--meta);font-weight:500;max-width:66ch;margin-top:14px}
+header.hero{border-bottom:2px solid var(--encre);padding-bottom:24px;margin-bottom:26px}
+.cadre{overflow-x:auto;border:1px solid var(--filet);border-radius:3px;background:var(--surface);padding:18px 14px}
+svg.graphe{display:block;min-width:1060px;width:100%;height:auto}
+.legende{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:14px;font-size:12.5px;font-weight:600;color:var(--meta)}
+.legende span{display:inline-flex;align-items:center;gap:7px}
+.puce{width:11px;height:11px;border-radius:2px;flex:none}
+#detail{margin-top:16px;border:1px solid var(--filet);border-left:4px solid var(--encre);border-radius:3px;background:var(--surface);padding:16px 18px}
+.detail-tete{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:10px}
+.detail-tete h3{margin:0;font-size:17px;font-weight:800;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+#detail-fermer{font:inherit;font-size:12px;font-weight:700;border:1px solid var(--filet);background:var(--lavis);color:var(--encre);border-radius:999px;padding:4px 12px;cursor:pointer}
+#detail-corps{margin:0;display:grid;grid-template-columns:104px minmax(0,1fr);gap:7px 16px;font-size:13.5px}
+#detail-corps dt{font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--meta);padding-top:3px}
+#detail-corps dd{margin:0}
+.noeud:focus-visible rect{stroke-width:2.6}
+.quoi2{font-size:13.5px;color:var(--meta);margin:0 0 18px;max-width:70ch}
+.note{font-size:12.5px;color:var(--meta);margin-top:14px;max-width:74ch}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:var(--lavis);padding:1px 5px;border-radius:2px;white-space:nowrap}
+.regles{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:26px}
+.regles div{border-left:3px solid var(--encre);padding:8px 0 8px 12px;font-size:13.5px}
+.regles b{display:block;font-weight:800;margin-bottom:2px}
+.regles span{color:var(--meta)}
+/* graphe */
+.noeud rect{fill:var(--surface);stroke:var(--filet);stroke-width:1.2}
+.noeud text{font-weight:700;font-size:11.5px;fill:var(--encre)}
+.noeud tspan.sub{font-weight:600;font-size:10px;fill:var(--meta)}
+.lien{fill:none;stroke-width:1.3;opacity:.42}
+.colonne{font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;fill:var(--meta)}
+svg.actif .lien{opacity:.08}
+svg.actif .lien.on{opacity:.95;stroke-width:2.2}
+svg.actif .noeud{opacity:.25}
+svg.actif .noeud.on{opacity:1}
+.noeud{cursor:pointer}
+.noeud.phase rect{stroke:var(--encre);stroke-width:1.6}
+.bus{fill:none;stroke:var(--encre);stroke-width:1.6}
+.chaine{fill:none;stroke:var(--encre);stroke-width:1.4}
+svg.actif .bus,svg.actif .chaine{opacity:.07}
+svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
+</style>
+
+<div class="page">
+<header class="hero">
+  <p class="eyebrow">Empreinte politique · de la source publique à la fiche</p>
+  <h1>Fabrique du jeu de données</h1>
+  <p class="lede">Ce qui alimente quoi, trait par trait. Quatre colonnes : les sources publiques, ce qu'on dépose au brut, ce que le format pivot publie, et ce que le site en lit. <b>Survolez un nœud</b> pour ne garder que ce qui l'alimente et ce qu'il alimente.</p>
+</header>
+
+<div class="cadre"><svg class="graphe" id="g" viewBox="0 0 1060 760" role="img" aria-label="Graphe des sources vers les fiches publiées"></svg></div>
+
+<div class="legende">
+  <span><i class="puce" style="background:var(--parl)"></i>Assemblée nationale</span>
+  <span><i class="puce" style="background:var(--senat)"></i>Sénat</span>
+  <span><i class="puce" style="background:var(--pe)"></i>Parlement européen</span>
+  <span><i class="puce" style="background:var(--gouv)"></i>Journal officiel</span>
+  <span><i class="puce" style="background:var(--neutre)"></i>autres sources publiques</span>
+  <span>trait plein = la donnée circule · pointillé = table relue à la main</span>
+</div>
+
+<section id="ordre">
+  <h2 style="margin:44px 0 6px;font-size:clamp(18px,2.4vw,24px);font-weight:800;letter-spacing:-.015em">Le même jeu de données, dans l'ordre où il se construit</h2>
+  <p class="quoi2">Les colonnes sont les niveaux du graphe de dépendances du workflow : ce qui est dans une même colonne tourne <b>en parallèle</b>. La dernière ouvre <code>merge-and-pivot</code>, le seul job qui écrit dans le dépôt, en ses huit phases ; chaque job amont y arrive par la phase qui <b>télécharge</b> son artifact.</p>
+  <div class="cadre"><svg class="graphe" id="g2" viewBox="0 0 1072 600" role="img" aria-label="Les 15 jobs du workflow dans leur ordre d'exécution, et les huit phases de merge-and-pivot"></svg></div>
+  <div id="detail" hidden>
+    <div class="detail-tete"><h3 id="detail-titre"></h3><button type="button" id="detail-fermer" aria-label="Fermer le détail">Fermer</button></div>
+    <dl id="detail-corps"></dl>
+  </div>
+  <div class="legende">
+    <span><b>Cliquez un job ou une phase</b> pour lire ce qu'il fait</span>
+    <span>× N = le job est éclaté en N exécutions parallèles</span>
+    <span><i class="puce" style="background:var(--ph2)"></i>arrive dans Recevoir</span>
+    <span><i class="puce" style="background:var(--ph4)"></i>arrive dans Passer au pivot</span>
+    <span><i class="puce" style="background:var(--ph1)"></i>arrive dans Préparer</span>
+    <span><i class="puce" style="background:var(--neutre)"></i>entre jobs amont</span>
+  </div>
+  <p class="note">Relevé le 25/09/2026 dans <code>.github/workflows/generate-data.yml</code> (<code>origin/main</code> b38076708, après #1129 : 15 jobs, 52 étapes dans <code>merge-and-pivot</code>). Aucune durée n'est portée : aucun run n'a encore tourné avec ce workflow. L'ordre des nœuds et leurs positions sont calculés pour limiter les croisements.</p>
+</section>
+
+<div class="regles">
+  <div><b>Une collecte vide n'écrase rien</b><span>La fusion est additive : un run qui ne collecte pas une liste laisse celle de la veille. Un retrait doit être écrit, puis vérifié par un run.</span></div>
+  <div><b>Manquant s'écrit <code>null</code></b><span>Jamais <code>0</code>, jamais <code>""</code>. Une valeur hors vocabulaire arrête la passe au lieu d'être convertie.</span></div>
+  <div><b>Un agrégat se recompose</b><span>Groupes, lignées et gouvernements ne se fusionnent jamais : ils se recalculent depuis les profils, après chaque changement.</span></div>
+  <div><b>La garde bloque le commit</b><span><code>check_quality_gate.py</code> compare ce qui a été collecté à ce qui est publié. Ce qui ne passe pas n'est pas publié.</span></div>
+</div>
+
+<p class="note">Chiffres du corpus au 25/09/2026. Les deux tables en pointillé — appariement RNE et mandats antérieurs à juin 2002 — sont relues à la main : la source les cite, elle ne les publie pas sous une forme exploitable.</p>
+</div>
+
+<script>
+(function(){
+  var C = {parl:"--parl", pe:"--pe", senat:"--senat", gouv:"--gouv", neutre:"--neutre", encre:"--encre"};
+  // ── Le graphe, tel que le dépôt le décrit ───────────────────────────
+  var COLS = [
+    {t:"Sources publiques", x:8,   w:216},
+    {t:"Brut · raw_data",   x:272, w:208},
+    {t:"Pivot · pivot_data",x:528, w:224},
+    {t:"Publié · le site",  x:800, w:252}
+  ];
+  var N = [
+    // col 0
+    {id:"an",   c:0, k:"parl",   t:"Assemblée nationale", s:"acteurs, scrutins, comptes rendus"},
+    {id:"sen",  c:0, k:"senat",  t:"Sénat", s:"appartenances seules"},
+    {id:"pe",   c:0, k:"pe",     t:"Parlement européen", s:"Open Data Portal"},
+    {id:"plt",  c:0, k:"pe",     t:"Parltrack", s:"5 dumps · ODbL"},
+    {id:"evoc", c:0, k:"pe",     t:"EuroVoc", s:"libellés et domaines"},
+    {id:"jo",   c:0, k:"gouv",   t:"Journal officiel · DILA", s:"livraisons quotidiennes"},
+    {id:"rne",  c:0, k:"neutre", t:"Répertoire des élus", s:"data.gouv.fr · API tabulaire"},
+    {id:"wiki", c:0, k:"neutre", t:"Wikipédia · Wikidata", s:"faits seuls"},
+    // col 1
+    {id:"rprof",c:1, k:"encre",  t:"profiles/<slug>.json", s:"le brut d'une personne"},
+    {id:"rcand",c:1, k:"encre",  t:"candidats.json", s:"les candidatures déclarées"},
+    {id:"rrost",c:1, k:"encre",  t:"roster_candidats.json", s:"qui appartient à quel groupe"},
+    {id:"rlois",c:1, k:"encre",  t:"lois_jorf.json", s:"numéro de loi → identifiant JO"},
+    {id:"rtab", c:1, k:"neutre", t:"2 tables relues à la main", s:"appariement RNE · mandats anciens", d:1},
+    // col 2
+    {id:"pprof",c:2, k:"encre",  t:"profiles/ · 1 384", s:"candidats déclarés + rosters"},
+    {id:"pscr", c:2, k:"parl",   t:"scrutins · 18 066", s:"+ scrutins_europeens · 5 571"},
+    {id:"pamd", c:2, k:"parl",   t:"amendements/", s:"index par législature"},
+    {id:"pdoss",c:2, k:"pe",     t:"dossiers_europeens · 4 642", s:"+ documents, commissions"},
+    {id:"ptex", c:2, k:"gouv",   t:"textes_promulgues · 1 015", s:"lois, avec leur commission"},
+    {id:"pact", c:2, k:"gouv",   t:"actes_reglementaires/ · 389 506", s:"décrets, arrêtés, ordonnances"},
+    {id:"plig", c:2, k:"parl",   t:"lignees/ · 12", s:"agrégat recomposé"},
+    {id:"pgouv",c:2, k:"gouv",   t:"gouvernements/ · 17", s:"agrégat recomposé"},
+    // col 3
+    {id:"fc",   c:3, k:"encre",  t:"Fiche candidat", s:"mandats, votes, textes, amendements"},
+    {id:"fg",   c:3, k:"parl",   t:"Fiche de groupe", s:"cohésion, amendements, paroles"},
+    {id:"fgv",  c:3, k:"gouv",   t:"Fiche de gouvernement", s:"membres, paroles, actes du JO"},
+    {id:"fsrc", c:3, k:"neutre", t:"Sources et couverture", s:"ce que le dépôt porte, depuis quand"},
+    {id:"fart", c:3, k:"encre",  t:"Articles", s:"un sujet, une période, à une date"}
+  ];
+  var L = [
+    ["an","rprof","parl"],["an","rrost","parl"],["an","rlois","parl"],
+    ["sen","rprof","senat"],
+    ["pe","rprof","pe"],["plt","rprof","pe"],
+    ["jo","rlois","gouv"],["jo","pact","gouv"],
+    ["rne","rtab","neutre",1],["rne","rprof","neutre"],
+    ["wiki","rcand","neutre"],
+    ["rprof","pprof","encre"],["rcand","pprof","encre"],["rrost","pprof","encre"],
+    ["rtab","pprof","neutre",1],
+    ["rlois","ptex","gouv"],
+    ["an","pscr","parl"],["an","pamd","parl"],["pe","pdoss","pe"],["plt","pdoss","pe"],["evoc","pdoss","pe"],
+    ["pprof","plig","parl"],["pprof","pgouv","gouv"],["pscr","plig","parl"],["pamd","plig","parl"],
+    ["pprof","fc","encre"],["pscr","fc","parl"],["pamd","fc","parl"],["pdoss","fc","pe"],
+    ["plig","fg","parl"],
+    ["pgouv","fgv","gouv"],["ptex","fgv","gouv"],["pact","fgv","gouv"],
+    ["pprof","fsrc","neutre"],["pact","fsrc","gouv"],
+    ["pprof","fart","encre"],["pact","fart","gouv"]
+  ];
+
+  var ns = "http://www.w3.org/2000/svg";
+  function el(t,a){var e=document.createElementNS(ns,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+
+  /* Un seul dessinateur pour les deux graphes : colonnes, nœuds, liens
+     courbes, et l'isolement au survol. Les positions viennent des données —
+     rien n'est placé à la main, donc rien ne peut se chevaucher. */
+  function dessiner(svg, COLS, N, L, hauteur){
+    var HAUT = 46, TOP = 44;
+    var parCol = COLS.map(function(){ return []; });
+    N.forEach(function(n){ parCol[n.c].push(n); });
+    parCol.forEach(function(liste, c){
+      var espace = (hauteur - TOP - 26) / liste.length;
+      liste.forEach(function(n,i){
+        n.x = COLS[c].x; n.w = COLS[c].w;
+        n.y = TOP + i*espace + (espace - HAUT)/2;
+        n.cy = n.y + HAUT/2;
+      });
+    });
+    var index = {}; N.forEach(function(n){ index[n.id] = n; });
+
+    COLS.forEach(function(col){
+      var t = el("text",{x:col.x, y:22, class:"colonne"}); t.textContent = col.t; svg.appendChild(t);
+    });
+
+    var gLiens = el("g",{}); svg.appendChild(gLiens);
+    L.forEach(function(l){
+      var a = index[l[0]], b = index[l[1]];
+      if(!a || !b) return;
+      var x1 = a.x + a.w, x2 = b.x, m = (x1 + x2)/2;
+      var p = el("path",{ d:"M"+x1+","+a.cy+" C"+m+","+a.cy+" "+m+","+b.cy+" "+x2+","+b.cy,
+                          class:"lien", style:"stroke:var("+C[l[2]]+")" });
+      p.dataset.de = l[0]; p.dataset.vers = l[1];
+      if (l[3]) p.setAttribute("stroke-dasharray","4 3");
+      gLiens.appendChild(p);
+    });
+
+    N.forEach(function(n){
+      var g = el("g",{class:"noeud"}); g.dataset.id = n.id;
+      var r = el("rect",{x:n.x, y:n.y, width:n.w, height:HAUT, rx:3});
+      if (n.d) r.setAttribute("stroke-dasharray","4 3");
+      r.setAttribute("style","stroke:var("+C[n.k]+")");
+      g.appendChild(r);
+      var t = el("text",{x:n.x+11, y:n.y+19}); t.textContent = n.t; g.appendChild(t);
+      var s = el("text",{x:n.x+11, y:n.y+34});
+      var sp = el("tspan",{class:"sub"}); sp.textContent = n.s; s.appendChild(sp); g.appendChild(s);
+      svg.appendChild(g);
+    });
+
+    /* UN SEUL SAUT, dans les deux sens. Le graphe est d'un seul tenant : une
+       fermeture transitive rallume tout, et n'isole donc rien — mesuré. */
+    function voisins(id){
+      var vus = {}; vus[id] = 1;
+      L.forEach(function(l){
+        if (l[0] === id) vus[l[1]] = 1;
+        if (l[1] === id) vus[l[0]] = 1;
+      });
+      return vus;
+    }
+    function allumer(id){
+      var vus = voisins(id);
+      svg.classList.add("actif");
+      svg.querySelectorAll(".noeud").forEach(function(g){ g.classList.toggle("on", !!vus[g.dataset.id]); });
+      svg.querySelectorAll(".lien").forEach(function(p){ p.classList.toggle("on", !!(vus[p.dataset.de] && vus[p.dataset.vers])); });
+    }
+    function eteindre(){
+      svg.classList.remove("actif");
+      svg.querySelectorAll(".on").forEach(function(e){ e.classList.remove("on"); });
+    }
+    svg.querySelectorAll(".noeud").forEach(function(g){
+      g.addEventListener("mouseenter", function(){ allumer(g.dataset.id); });
+      g.addEventListener("mouseleave", eteindre);
+      g.addEventListener("click", function(){ allumer(g.dataset.id); });
+    });
+    svg.addEventListener("mouseleave", eteindre);
+  }
+
+  dessiner(document.getElementById("g"), COLS, N, L, 760);
+
+  // ── Le même jeu de données, dans l'ordre d'exécution ─────────────────
+  /* Jobs et phases de merge-and-pivot. Les positions viennent du calcul
+     (barycentre, puis échanges qui réduisent croisements et traversées, puis
+     dégagement des boîtes) : rien n'est placé à la main. */
+  var FICHES = {
+    epi:{titre:"epingler-le-code", lit:"L'API du dépôt privé, jeton de lecture seule", fait:"Résout <code>main</code> du privé et publie ce SHA. Chaque autre job superpose ce SHA exact sur son checkout : les données viennent du dépôt public, le code du privé.", ecrit:"Une sortie <code>sha</code>, dont les 14 autres jobs dépendent", garde:"Épinglé UNE fois : une fusion pendant le run donnerait des extractions faites avec un code et une fusion faite avec un autre."},
+    cand:{titre:"rafraichir-candidats", lit:"L'article Wikipédia des candidatures, puis Wikidata (<code>P4123</code>)", fait:"Décide du périmètre du run : il en tire les candidats déclarés, résout l'acteur AN de chacun, et fabrique le slug quand la chaîne aboutit.", ecrit:"<code>raw_data/candidats.json</code> et <code>raw_data/resolutions_candidats.json</code>", garde:"Ajout additif seul : une entrée existante n'est jamais écrasée par une lecture qui a échoué."},
+    amd:{titre:"extract-amendements-an", lit:"Les dumps d'amendements de l'Assemblée, législatures 17 à 14", fait:"Construit l'index des amendements <b>par acteur</b>, sans condition et indépendamment de toute liste de candidats.", ecrit:"L'artifact <code>amendements-index-an</code> (152 Mo) et son cache hebdomadaire", garde:"Une législature figée — 14, 15, 16, committées gzippées — est sautée : en pratique seule la 17e est rechargée."},
+    ue:{titre:"extract-ue-officiel", lit:"L'Open Data Portal du Parlement européen, et lui seul", fait:"Collecte les profils bruts des candidats dont l'identifiant de député européen est résolu. Aucune source française.", ecrit:"L'artifact <code>raw-profiles-ue-officiel</code>", garde:"Ne publie que les profils qu'il a <b>effectivement écrits</b> — un manifeste dit lesquels."},
+    plt:{titre:"extract-parltrack", lit:"Cinq dumps <code>.zst</code> de Parltrack (232 Mo)", fait:"Restaure le cache, puis télécharge les dumps manquants. La liste des dumps n'est pas dans le YAML : elle est lue dans le module, seule définition.", ecrit:"L'artifact <code>parltrack-dumps</code>", garde:"Un dump absent ne fait pas échouer la lecture : il rend un index vide, et c'est dit."},
+    sen:{titre:"extract-senat", lit:"<code>export_sens.zip</code> de data.senat.fr", fait:"Collecte les <b>appartenances</b> seules. Trois tables de présence individuelle sont refusées à l'entrée — la règle §2 n°3 s'applique à la collecte, pas seulement à l'affichage.", ecrit:"L'artifact <code>raw-profiles-senat</code>", garde:"Le jeu ne porte ni scrutin ni compte rendu : le manque est déclaré, jamais contourné."},
+    loc:{titre:"extract-mandats-locaux", lit:"Le Répertoire national des élus, par l'API tabulaire de data.gouv.fr", fait:"Interroge neuf fichiers ligne à ligne, filtrés par nom, prénom et date de naissance — ~160 requêtes au lieu des 76 Mo du fichier.", ecrit:"L'artifact <code>raw-profiles-mandats-locaux</code>", garde:"Aucun cache. Députés, sénateurs et députés européens sont refusés : ces mandats viennent de leur source institutionnelle."},
+    prr:{titre:"prepare-roster-matrix", lit:"<code>config/groupes_reels.json</code> et l'archive AMO30", fait:"Construit une fois pour tout le run la composition réelle des groupes, et celle des 17 gouvernements, puis calcule la liste des 8 shards.", ecrit:"<code>roster_candidats.json</code> et <code>rosters_bruts.json</code>, dans un seul artifact", garde:"Un membre déjà porté par un roster de groupe n'est pas repris côté gouvernement."},
+    pra:{titre:"prepare-an-matrix", lit:"<code>raw_data/candidats.json</code>", fait:"Ne collecte rien : il publie la matrice d'<code>extract-an</code>, un shard par candidat du périmètre.", ecrit:"La matrice des shards", garde:"Un candidat au statut <code>decline</code> n'a pas de shard — sa fiche reste publiée telle quelle, et il est nommé dans le journal."},
+    rech:{titre:"rechauffer-le-portail-europeen", lit:"Le portail du Parlement européen et le dump des dossiers", fait:"Vingt minutes de réseau sorties du chemin critique : la passe des domaines EuroVoc pesait 21,5 des 52,5 minutes de la fusion. Ce n'est pas un calcul, c'est un budget de requêtes.", ecrit:"L'artifact <code>portail-europeen-chaud</code> — le cache des réponses", garde:"Son échec ne bloque pas le run : la fusion repart du cache qu'elle a."},
+    ean:{titre:"extract-an × 32", lit:"L'open data de l'Assemblée, un shard par candidat", fait:"Collecte le volet français : identité, mandats, votes, amendements, textes portés, interventions.", ecrit:"L'artifact <code>raw-profiles-an</code>", garde:"Il ne dépend pas du SUCCÈS de l'index d'amendements : celui-ci arrive en <code>continue-on-error</code>, avec repli sur le cache."},
+    erg:{titre:"extract-roster-groupes × 8", lit:"La composition réelle des groupes (~750 membres)", fait:"La même chaîne qu'<code>extract-an</code>, mais pilotée par le roster plutôt que par la liste éditoriale, et en <b>mode léger</b>.", ecrit:"L'artifact <code>raw-profiles-roster</code> (217 Mo)", garde:"Ces profils alimentent les agrégats de groupe et de gouvernement ; leur bloc d'identité n'est jamais lu."},
+    jo:{titre:"extract-actes-jo", lit:"Les livraisons quotidiennes de la DILA (<code>echanges.dila.gouv.fr</code>), et les mois déjà publiés", fait:"Les décrets, arrêtés et ordonnances parus depuis 2007, un fichier par mois de parution ; relève en chemin la table <code>numéro de loi → JORFTEXT</code>.", ecrit:"L'artifact <code>actes-jo</code> : les seuls fichiers modifiés (0 ou 2 mois par run), et <code>lois_jorf.json</code>", garde:"Sorti de la fusion par #1129 : les textes promulgués y lisaient la table du run <b>précédent</b>. En amont, elle arrive fraîche."},
+    amo:{titre:"extract-gouvernements", lit:"L'archive AMO30 de l'Assemblée", fait:"Liste les 17 gouvernements depuis 2007. Ne lit pas une ligne du corpus pivot, donc n'a pas à attendre la fusion (#1129).", ecrit:"L'artifact <code>gouvernements-amo30</code> (6 Ko) : <code>raw_data/gouvernements_reels.json</code>", garde:"Une archive illisible lève avant toute écriture : la liste committée reste, et la fusion travaille dessus."},
+    mrg:{titre:"merge-and-pivot", lit:"Tous les artifacts du run", fait:"Le seul job qui écrit dans le dépôt. Dans l'ordre : contrôle du transport des artifacts, <b>fusion additive</b> des profils bruts, passage au format pivot, recomposition des agrégats — groupes, lignées, gouvernements —, puis le portail qualité.", ecrit:"<code>pivot_data/</code>, et le commit du run", garde:"Le portail qualité <b>bloque le commit</b> : ce qui ne passe pas n'est pas publié."}
+  }
+  var PHASES = {  
+    p1:["1 Préparer",{lit:"Le dépôt public (données), le code du privé au SHA épinglé, le cache <code>.cache/dossiers_an</code>", fait:"Superpose le code, installe les dépendances, restaure les archives de dossiers de la semaine et reprend la seule législature encore vivante.", ecrit:"Rien dans le dépôt", garde:"La reprise des archives est absorbée si elle échoue (<code>continue-on-error</code>)."}],
+    p2:["2 Recevoir",{lit:"Les artifacts de dix jobs amont : AN, UE, roster, Sénat, mandats locaux, actes du JO, gouvernements, ParlTrack, portail européen, candidats", fait:"Télécharge chaque artifact, tous optionnels ; dit le périmètre publié ; puis contrôle le transport.", ecrit:"<code>_artifacts/</code> ; les actes du JO et <code>lois_jorf.json</code> directement à leur place, la liste des gouvernements dans <code>raw_data/</code>", garde:"<code>verifier_transport_artifacts.py</code> : un artifact publié mais absent du disque est rattrapé, puis bloque. Une source qui n'a rien publié reste silencieuse."}],
+    p3:["3 Fusionner",{lit:"<code>_artifacts/an</code>, <code>ue</code>, <code>roster</code>, <code>senat</code>, <code>mandats-locaux</code>", fait:"<b>Fusion additive</b> des profils bruts, et reconduction des tranches d'amendements closes.", ecrit:"<code>raw_data/profiles/</code>", garde:"Une collecte vide n'écrase rien : seuls les slugs présents dans les artifacts sont réécrits."}],
+    p4:["4 Passer au pivot",{lit:"<code>raw_data/profiles/</code>, <code>candidats.json</code>, le roster du run, l'artifact d'amendements, les dumps ParlTrack", fait:"Télécharge l'index d'amendements <b>avant</b> les passes (#1101), puis deux passes <code>--pivot-only</code> : les candidats avec ParlTrack, puis le roster.", ecrit:"<code>pivot_data/profiles/</code>, <code>scrutins.json</code>, <code>amendements/</code>", garde:"Sans artifact de roster, la liste est reconstruite en repli."}],
+    p5:["5 Indexer",{lit:"Les archives de dossiers, les dumps ParlTrack, le cache du portail européen, et <code>lois_jorf.json</code> tout juste livré par <code>extract-actes-jo</code>", fait:"Commissions au fond, textes promulgués, scrutins → dossiers, trois index européens. Seul réseau restant : les libellés EuroVoc, par SPARQL, qui dérivent de l'index qu'on vient de composer.", ecrit:"<code>commissions_dossiers.json</code>, <code>textes_promulgues.json</code>, <code>scrutins_dossiers.json</code>, <code>*_europeens.json</code>", garde:"Aucune tolérance sur les index européens : un dump absent fait échouer l'étape plutôt que d'écrire un index vide."}],
+    p6:["6 Recomposer",{lit:"<code>pivot_data/profiles/</code>, <code>scrutins.json</code>, <code>amendements/</code>, <code>rosters_bruts.json</code>, <code>gouvernements_reels.json</code>", fait:"Recompose groupes, lignées et gouvernements, et tient la table de correspondance des acteurs AN.", ecrit:"<code>groupes/</code>, <code>lignees/</code>, <code>gouvernements/</code>, <code>correspondance_acteurs_an.json</code>", garde:"Un agrégat se recompose, il ne se fusionne jamais."}],
+    p7:["7 Contrôler",{lit:"Tout <code>pivot_data/</code>, et <code>raw_data/profiles/</code> pour la comparaison", fait:"Le portail qualité, puis quatre contrôles cloisonnés, chacun dans son processus.", ecrit:"Quatre rapports en artifact, même après un échec", garde:"Perte, intégrité référentielle, collecté non publié, collecté vs publié : aucune tolérance ne désarme celle d'un autre."}],
+    p8:["8 Publier",{lit:"L'état de la branche pendant le run", fait:"Commit et push sous la clé de déploiement, signal <code>tests.yml</code>, fenêtre de rétention, déploiement du site.", ecrit:"Le commit de données sur <code>main</code>", garde:"Un run de test désarme le commit. Un build dont les entrées ont bougé pendant le run ne se committe pas."}]
+  };
+  Object.keys(PHASES).forEach(function(k){ var f=PHASES[k][1]; FICHES[k]={titre:PHASES[k][0], lit:f.lit, fait:f.fait, ecrit:f.ecrit, garde:f.garde, phase:1}; });
+  var panneau = document.getElementById("detail");
+  var titre = document.getElementById("detail-titre");
+  var corps = document.getElementById("detail-corps");
+  function ouvrir(id){
+    var f = FICHES[id]; if (!f) return;
+    titre.textContent = f.titre;
+    corps.innerHTML = "";
+    var il = f.phase ? "Elle" : "Il";
+    [[il+" lit", f.lit], [il+" fait", f.fait], [il+" écrit", f.ecrit], ["La garde", f.garde]].forEach(function(paire){
+      if (!paire[1]) return;
+      var dt = document.createElement("dt"); dt.textContent = paire[0];
+      var dd = document.createElement("dd"); dd.innerHTML = paire[1];
+      corps.appendChild(dt); corps.appendChild(dd);
+    });
+    panneau.hidden = false;
+  }
+  document.getElementById("detail-fermer").addEventListener("click", function(){ panneau.hidden = true; });
+  (function(){
+    var C = {parl:"--parl", pe:"--pe", senat:"--senat", gouv:"--gouv", neutre:"--neutre", encre:"--encre", p1:"--ph1", p2:"--ph2", p4:"--ph4"};
+    var ns = "http://www.w3.org/2000/svg";
+    function el(t,a){var e=document.createElementNS(ns,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  var COLS = [
+    {t:"1 · Épingler", x:6, w:130}, {t:"2 · Collecter", x:164, w:180}, {t:"3 · Préparer", x:372, w:168},
+    {t:"4 · Profils AN", x:568, w:140}, {t:"5 · Rosters", x:736, w:118}, {t:"6 · merge-and-pivot", x:900, w:154}
+  ];
+  var BASE = [
+    {id:"epi", c:0, k:"encre", t:"epingler-le-code", s:"fige le SHA du privé"},
+    {id:"cand",c:1, k:"neutre",t:"rafraichir-candidats", s:"Wikipédia · Wikidata"},
+    {id:"amd", c:1, k:"parl",  t:"extract-amendements-an", s:"index des amendements"},
+    {id:"ue",  c:1, k:"pe",    t:"extract-ue-officiel", s:"Open Data Portal"},
+    {id:"plt", c:1, k:"pe",    t:"extract-parltrack", s:"5 dumps"},
+    {id:"sen", c:1, k:"senat", t:"extract-senat", s:"appartenances"},
+    {id:"loc", c:1, k:"neutre",t:"extract-mandats-locaux", s:"RNE · API tabulaire"},
+    {id:"prr", c:1, k:"parl",  t:"prepare-roster-matrix", s:"la matrice des groupes"},
+    {id:"jo",  c:1, k:"gouv",  t:"extract-actes-jo", s:"DILA · actes, lois"},
+    {id:"amo", c:1, k:"gouv",  t:"extract-gouvernements", s:"AMO30 · 17 gouvernements"},
+    {id:"pra", c:2, k:"parl",  t:"prepare-an-matrix", s:"la matrice des profils"},
+    {id:"rech",c:2, k:"pe",    t:"rechauffer-le-portail", s:"cache du portail européen"},
+    {id:"ean", c:3, k:"parl",  t:"extract-an × 32", s:"un shard par candidat"},
+    {id:"erg", c:4, k:"parl",  t:"extract-roster × 8", s:"les groupes réels"},
+    {id:"p1", c:5, t:"1 Préparer", s:"7 étapes · caches, code"},
+    {id:"p2", c:5, t:"2 Recevoir", s:"13 étapes · 10 artifacts"},
+    {id:"p3", c:5, t:"3 Fusionner", s:"1 étape · merge_profile"},
+    {id:"p4", c:5, t:"4 Passer au pivot", s:"5 étapes · 2 passes"},
+    {id:"p5", c:5, t:"5 Indexer", s:"7 étapes · AN, UE"},
+    {id:"p6", c:5, t:"6 Recomposer", s:"5 étapes · agrégats"},
+    {id:"p7", c:5, t:"7 Contrôler", s:"9 étapes · 5 gardes"},
+    {id:"p8", c:5, t:"8 Publier", s:"5 étapes · commit, push"}
+  ];
+  var LIENS = [
+    ["epi","cand","encre"],["epi","amd","encre"],["epi","ue","encre"],["epi","plt","encre"],
+    ["epi","sen","encre"],["epi","loc","encre"],["epi","prr","encre"],["epi","jo","encre"],["epi","amo","encre"],["epi","p1","encre"],
+    ["cand","pra","neutre"],["plt","rech","pe"],["amd","ean","parl"],["pra","ean","parl"],
+    ["ean","erg","parl"],["amd","erg","parl"],["ue","erg","pe"],["plt","erg","pe"],["prr","erg","parl"],
+    ["ean","p2","parl"],["erg","p2","parl"],["ue","p2","pe"],["sen","p2","senat"],["loc","p2","neutre"],
+    ["plt","p2","pe"],["rech","p2","pe"],["cand","p2","neutre"],["jo","p2","gouv"],["amo","p2","gouv"],
+    ["amd","p4","parl"],["prr","p4","parl"]
+  ];
+  var H = 42, TOP = 44, HAUT = 600;
+
+  function cloner(){ return BASE.map(function(n){ var o={}; for (var k in n) o[k]=n[k]; return o; }); }
+  function placer(N){
+    var par = COLS.map(function(){return [];}); N.forEach(function(n){ par[n.c].push(n); });
+    par.forEach(function(l,c){ var e=(HAUT-TOP-20)/l.length;
+      l.forEach(function(n,i){ n.x=COLS[c].x; n.w=COLS[c].w; n.y=TOP+i*e+(e-H)/2; n.cy=n.y+H/2; }); });
+  }
+  function reordonner(N, ordre){ // ordre : {1:[ids], 2:[ids]}
+    var pos = {}; [1,2].forEach(function(c){ ordre[c].forEach(function(id,i){ pos[id]=i; }); });
+    N.sort(function(a,b){ return a.c-b.c || ((pos[a.id]||0)-(pos[b.id]||0)); });
+  }
+  function barycentre(N, L){
+    var idx={}; N.forEach(function(n){ idx[n.id]=n; });
+    for (var it=0; it<6; it++){ placer(N);
+      [1,2].forEach(function(c){
+        N.forEach(function(n){ if(n.c!==c) return; var ys=[];
+          L.forEach(function(l){ if(l[0]==="epi") return;
+            if(l[0]===n.id && idx[l[1]].c>c) ys.push(idx[l[1]].cy);
+            if(l[1]===n.id && idx[l[0]].c<c) ys.push(idx[l[0]].cy); });
+          n.clef = ys.length ? ys.reduce(function(a,b){return a+b;},0)/ys.length : n.cy; });
+        N.sort(function(a,b){ return a.c-b.c || (a.c===c ? a.clef-b.clef : a.y-b.y); });
+      });
+    }
+    placer(N);
+  }
+
+  /* La géométrie, calculée sans le DOM pour pouvoir être évaluée vite :
+     chaque trait est une liste de points, avec les nœuds qu'il relie. */
+  function bez(x1,y1,x2,y2){ var m=(x1+x2)/2, o=[]; for (var k=0;k<=24;k++){ var t=k/24, u=1-t;
+    o.push([u*u*u*x1+3*u*u*t*m+3*u*t*t*m+t*t*t*x2, u*u*u*y1+3*u*u*t*y1+3*u*t*t*y2+t*t*t*y2]); } return o; }
+  function geometrie(N, opt){
+    var idx={}; N.forEach(function(n){ idx[n.id]=n; });
+    var bus = {p2:(opt.busPivot?22:14)}; if (opt.busRoster) bus.erg = 14; if (opt.busPivot) bus.p4 = opt.busPivot;
+    var T = [];
+    LIENS.forEach(function(l){
+      var a=idx[l[0]], b=idx[l[1]];
+      if (l[0]==="epi" && opt.peigne && b.c===1){
+        var tx = a.x+a.w+14;
+        T.push({pts:[[tx,b.cy],[b.x,b.cy]], de:"peigne", vers:l[1], k:l[2], lien:l, d:"M"+tx+","+b.cy+" L"+b.x+","+b.cy});
+        return;
+      }
+      /* epingler → 1 Préparer contourne par le haut : il monte dans la marge
+         sous les titres de colonne, longe le haut, et descend dans la phase. */
+      if (l[0]==="epi" && l[1]==="p1"){
+        var X0=a.x+a.w/2, Y=32, XE=b.x+24, r=8;
+        var d="M"+X0+","+a.y+" L"+X0+","+(Y+r)+" Q"+X0+","+Y+" "+(X0+r)+","+Y+" L"+(XE-r)+","+Y+" Q"+XE+","+Y+" "+XE+","+(Y+r)+" L"+XE+","+b.y;
+        var pp=[]; for (var k=0;k<=12;k++) pp.push([X0, a.y+(Y-a.y)*k/12]);
+        for (k=1;k<=40;k++) pp.push([X0+(XE-X0)*k/40, Y]);
+        for (k=1;k<=6;k++) pp.push([XE, Y+(b.y-Y)*k/6]);
+        T.push({pts:pp, de:"epi", vers:"p1", k:l[2], lien:l, d:d});
+        return;
+      }
+      var x1=a.x+a.w, y1=a.cy, x2, y2, fin=l[1];
+      if (bus[l[1]]){ x2 = b.x-(b.c===5?8:0)-bus[l[1]]; y2 = a.cy; fin = "bus:"+l[1]; }
+      else { x2 = b.x-(b.c===5?8:0); y2 = b.cy; }
+      var m=(x1+x2)/2;
+      /* Segments droits, à angle droit comme les collecteurs : horizontal,
+         vertical au milieu de l'intervalle, horizontal. */
+      if (opt.droit && y1 !== y2){
+        var r=Math.min(6, Math.abs(y2-y1)/2), sy=y2>y1?1:-1, pp=[];
+        for (var k=0;k<=8;k++) pp.push([x1+(m-x1)*k/8, y1]);
+        for (k=1;k<=8;k++) pp.push([m, y1+(y2-y1)*k/8]);
+        for (k=1;k<=8;k++) pp.push([m+(x2-m)*k/8, y2]);
+        T.push({pts:pp, de:l[0], vers:fin, k:l[2], lien:l,
+          d:"M"+x1+","+y1+" L"+(m-r)+","+y1+" Q"+m+","+y1+" "+m+","+(y1+sy*r)+" L"+m+","+(y2-sy*r)+" Q"+m+","+y2+" "+(m+r)+","+y2+" L"+x2+","+y2});
+        return;
+      }
+      T.push({pts:bez(x1,y1,x2,y2), de:l[0], vers:fin, k:l[2], lien:l, d:"M"+x1+","+y1+" C"+m+","+y1+" "+m+","+y2+" "+x2+","+y2});
+    });
+    var troncs = [];
+    Object.keys(bus).forEach(function(id){
+      var b=idx[id], bx=b.x-(b.c===5?8:0)-bus[id], ys=[b.cy];
+      T.forEach(function(t){ if(t.vers==="bus:"+id) ys.push(t.pts[t.pts.length-1][1]); });
+      var y0=Math.min.apply(null,ys), y9=Math.max.apply(null,ys);
+      troncs.push({pts:[[bx,y0],[bx,y9]], de:"bus:"+id, vers:id, bus:1, d:"M"+bx+","+y0+" L"+bx+","+y9});
+      troncs.push({pts:[[bx,b.cy],[b.x-(b.c===5?8:0)-1,b.cy]], de:"bus:"+id, vers:id, bus:1, d:"M"+bx+","+b.cy+" L"+(b.x-(b.c===5?9:1))+","+b.cy});
+    });
+    if (opt.peigne){
+      var e=idx.epi, tx=e.x+e.w+14, ys=N.filter(function(n){return n.c===1;}).map(function(n){return n.cy;}).concat([e.cy]);
+      troncs.push({pts:[[e.x+e.w,e.cy],[tx,e.cy]], de:"epi", vers:"peigne", bus:1, d:"M"+(e.x+e.w)+","+e.cy+" L"+tx+","+e.cy});
+      troncs.push({pts:[[tx,Math.min.apply(null,ys)],[tx,Math.max.apply(null,ys)]], de:"epi", vers:"peigne", bus:1,
+                   d:"M"+tx+","+Math.min.apply(null,ys)+" L"+tx+","+Math.max.apply(null,ys)});
+    }
+    if (opt.parPhase){
+      T.forEach(function(t){ t.k = C[t.lien[1]] && /^p\d$/.test(t.lien[1]) ? t.lien[1] : "neutre"; });
+      troncs.forEach(function(t){ var cible = t.vers; t.k = /^p\d$/.test(cible) ? cible : "neutre"; });
+    }
+    return {T:T, troncs:troncs, idx:idx};
+  }
+  function mesurer(G, N){
+    var tous = G.T.concat(G.troncs);
+    function cr(a,b,c){ return (b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]); }
+    function sec(p,q,r,s){ return cr(r,s,p)*cr(r,s,q)<0 && cr(p,q,r)*cr(p,q,s)<0; }
+    var x=0;
+    for (var u=0;u<tous.length;u++) for (var v=u+1;v<tous.length;v++){
+      var A=tous[u], B=tous[v];
+      if (A.de===B.de||A.de===B.vers||A.vers===B.de||A.vers===B.vers) continue;
+      var hit=false;
+      for (var i=0;i<A.pts.length-1&&!hit;i++) for (var j=0;j<B.pts.length-1&&!hit;j++) if (sec(A.pts[i],A.pts[i+1],B.pts[j],B.pts[j+1])) hit=true;
+      if (hit) x++;
+    }
+    // traversées : un trait dont un point tombe dans une boîte qui n'est ni son départ ni son arrivée
+    var tr=0;
+    G.T.forEach(function(t){
+      var ext = [t.de, t.vers.replace("bus:","")];
+      var pts = t.pts.length > 2 ? t.pts : (function(){ var o=[],a=t.pts[0],b=t.pts[1]; for(var k=0;k<=24;k++) o.push([a[0]+(b[0]-a[0])*k/24, a[1]+(b[1]-a[1])*k/24]); return o; })();
+      var sous = N.some(function(n){ if (ext.indexOf(n.id)>=0) return false;
+        return pts.some(function(p){ return p[0]>n.x+2 && p[0]<n.x+n.w-2 && p[1]>n.y+2 && p[1]<n.y+H-2; }); });
+      if (sous) tr++;
+    });
+    return {croisements:x, traversees:tr, traits:G.T.length};
+  }
+  function optimiser(N, opt){
+    function cout(){ placer(N); var m=mesurer(geometrie(N,opt),N); return m.croisements + 2*m.traversees; }
+    var best = cout(), ameliore = true;
+    while (ameliore){ ameliore = false;
+      [1,2].forEach(function(c){
+        var ids = N.filter(function(n){return n.c===c;});
+        for (var i=0;i<ids.length;i++) for (var j=i+1;j<ids.length;j++){
+          var ii=N.indexOf(ids[i]), jj=N.indexOf(ids[j]); var t=N[ii]; N[ii]=N[jj]; N[jj]=t;
+          var v = cout();
+          if (v < best){ best=v; ameliore=true; ids = N.filter(function(n){return n.c===c;}); }
+          else { t=N[ii]; N[ii]=N[jj]; N[jj]=t; }
+        }
+      });
+    }
+    placer(N);
+  }
+
+  function dessiner(id, opt){
+    var svg = document.getElementById(id), N = cloner();
+    barycentre(N, LIENS);
+    if (opt.busPivot === "auto"){
+      var meilleur = null;
+      [8, 36].forEach(function(dx){
+        var o = {}; for (var k in opt) o[k]=opt[k]; o.busPivot = dx;
+        var M = cloner(); barycentre(M, LIENS); optimiser(M, o);
+        var m = mesurer(geometrie(M,o), M), c = m.croisements + 2*m.traversees;
+        if (!meilleur || c < meilleur.c) meilleur = {c:c, dx:dx};
+      });
+      opt.busPivot = meilleur.dx;
+    }
+    if (opt.optimiser) optimiser(N, opt);
+    /* Dégager les boîtes des colonnes 3 à 5 : une boîte sous laquelle passe
+       un trait horizontal qui n'est pas le sien glisse jusqu'à l'espace libre
+       le plus proche. La position se calcule ; elle n'est pas posée à la main. */
+    if (opt.eviter){
+      for (var passe=0; passe<3; passe++){
+        N.forEach(function(n){
+          if (n.c<2 || n.c>4) return;
+          var G0 = geometrie(N, opt), barres = [];
+          G0.T.concat(G0.troncs).forEach(function(t){
+            if (t.de===n.id || t.vers===n.id || t.vers==="bus:"+n.id) return;
+            t.pts.forEach(function(p){ if (p[0]>n.x && p[0]<n.x+n.w) barres.push(p[1]); });
+          });
+          /* Marge de 10 px ; à défaut de place, 4 px. */
+          var marges = [10, 4];
+          for (var mi=0; mi<marges.length; mi++){
+            var mg = marges[mi];
+            var libre = function(y){ return !barres.some(function(b){ return b>y-mg && b<y+H+mg; }); };
+            if (libre(n.y)) break;
+            var trouve = false;
+            for (var d=2; d<200; d+=2){
+              if (n.y-d>TOP && libre(n.y-d)){ n.y-=d; trouve=true; break; }
+              if (n.y+d<HAUT-20-H && libre(n.y+d)){ n.y+=d; trouve=true; break; }
+            }
+            if (trouve) break;
+          }
+          n.cy = n.y + H/2;
+        });
+      }
+    }
+    var G = geometrie(N, opt), idx = G.idx, m = mesurer(G, N);
+    COLS.forEach(function(c){ var t=el("text",{x:c.x,y:18,class:"colonne"}); t.textContent=c.t; svg.appendChild(t); });
+    var p1=idx.p1, p8=idx.p8;
+    svg.appendChild(el("rect",{x:p1.x-8,y:p1.y-8,width:p1.w+14,height:p8.y+H-p1.y+16,rx:4,fill:"none",stroke:"var(--filet)","stroke-width":1.2}));
+    var gl = el("g",{}); svg.appendChild(gl);
+    G.T.forEach(function(t){ var p=el("path",{d:t.d,class:"lien",style:"stroke:var("+C[t.k]+")"}); p.dataset.de=t.lien[0]; p.dataset.vers=t.lien[1]; gl.appendChild(p); });
+    G.troncs.forEach(function(t){
+      var b=el("path",{d:t.d,class:"bus"}); if (t.k) b.setAttribute("style","stroke:var("+C[t.k]+")");
+      /* Un tronc appartient à sa cible et à tout ce qui s'y déverse. */
+      var membres = [];
+      if (t.de==="epi" || t.vers==="peigne"){ membres = ["epi"].concat(G.T.filter(function(x){return x.de==="peigne";}).map(function(x){return x.vers;})); }
+      else { var cible = t.vers; membres = [cible].concat(G.T.filter(function(x){return x.vers==="bus:"+cible;}).map(function(x){return x.lien[0];})); }
+      b.dataset.membres = membres.join(" ");
+      svg.appendChild(b); });
+    for (var i=1;i<8;i++){ var a=idx["p"+i], b=idx["p"+(i+1)], x=a.x+a.w/2;
+      var c1=el("path",{d:"M"+x+","+(a.y+H)+" L"+x+","+(b.y-2),class:"chaine"}), c2=el("path",{d:"M"+(x-3.5)+","+(b.y-6)+" L"+x+","+(b.y-1)+" L"+(x+3.5)+","+(b.y-6),class:"chaine"});
+      [c1,c2].forEach(function(c){ c.dataset.membres = a.id+" "+b.id; svg.appendChild(c); }); }
+    N.forEach(function(n){
+      var g=el("g",{class:"noeud "+(n.c===5?"phase":"")}); g.dataset.id=n.id; g.setAttribute("tabindex","0");
+      var r=el("rect",{x:n.x,y:n.y,width:n.w,height:H,rx:3}); if(n.k) r.setAttribute("style","stroke:var("+C[n.k]+")"); if(opt.parPhase && C[n.id]) r.setAttribute("style","stroke:var("+C[n.id]+");stroke-width:2.2"); g.appendChild(r);
+      var t=el("text",{x:n.x+10,y:n.y+18}); t.textContent=n.t; g.appendChild(t);
+      var s=el("text",{x:n.x+10,y:n.y+32}); var sp=el("tspan",{class:"sub"}); sp.textContent=n.s; s.appendChild(sp); g.appendChild(s);
+      svg.appendChild(g);
+    });
+    function allumer(nid){
+      var vus={}; vus[nid]=1; LIENS.forEach(function(l){ if(l[0]===nid) vus[l[1]]=1; if(l[1]===nid) vus[l[0]]=1; });
+      svg.classList.add("actif");
+      svg.querySelectorAll(".noeud").forEach(function(g){ g.classList.toggle("on", !!vus[g.dataset.id]); });
+      svg.querySelectorAll(".lien").forEach(function(p){ p.classList.toggle("on", p.dataset.de===nid || p.dataset.vers===nid); });
+      svg.querySelectorAll(".bus,.chaine").forEach(function(p){ p.classList.toggle("on", (" "+p.dataset.membres+" ").indexOf(" "+nid+" ")>=0); });
+    }
+    function eteindre(){ svg.classList.remove("actif"); svg.querySelectorAll(".on").forEach(function(e){e.classList.remove("on");}); }
+    svg.querySelectorAll(".noeud").forEach(function(g){
+      g.addEventListener("mouseenter",function(){allumer(g.dataset.id);}); g.addEventListener("mouseleave",eteindre);
+      g.addEventListener("focus",function(){allumer(g.dataset.id);}); g.addEventListener("blur",eteindre);
+      g.setAttribute("role","button");
+      g.addEventListener("click",function(){ ouvrir(g.dataset.id); });
+      g.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){e.preventDefault();ouvrir(g.dataset.id);} });
+    });
+  }
+    dessiner("g2", {busRoster:true, peigne:true, optimiser:true, busPivot:"auto", droit:true, parPhase:true, eviter:true});
+  })();
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape") panneau.hidden = true; });
+})();
+</script>
+
+</body></html>

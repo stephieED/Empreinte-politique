@@ -149,8 +149,9 @@ depuis #901. Pourquoi, et ce que ça a fait gagner :
 |---|---|
 | **« Quelle était la commande, déjà ? »** | [`docs/commandes.md`](docs/commandes.md) |
 | **« Que devient la donnée ? »** — flux, schémas, les sorties de `pivot_data/`, volumétrie | [`docs/data-architecture.md`](docs/data-architecture.md) |
-| **« Que fait un run ? »** — les dix jobs, le formulaire de lancement, caches, artifacts, budgets, le push, la relance automatique | [`docs/workflow-generate-data.md`](docs/workflow-generate-data.md) |
-| **« Comment marche l'extraction pilotée par roster ? »** — le seul job qui a une page à lui, les neuf autres étant des blocs de la page ci-dessus | [`docs/extract-roster-groupes.md`](docs/extract-roster-groupes.md) |
+| **« Que fait un run ? »** — les jobs, le formulaire de lancement, caches, artifacts, budgets, le push, la relance automatique | [`docs/workflow-generate-data.md`](docs/workflow-generate-data.md) |
+| **« Comment marche l'extraction pilotée par roster ? »** — le seul job qui a une page à lui, les autres étant des blocs de la page ci-dessus | [`docs/extract-roster-groupes.md`](docs/extract-roster-groupes.md) |
+| **« Qu'est-ce qui alimente quoi ? »** — la carte des sources aux fiches publiées, et les jobs du run dans l'ordre de leurs `needs:`, en figure (à ouvrir dans un navigateur) | [`docs/fabrique-du-jeu-de-donnees.html`](docs/fabrique-du-jeu-de-donnees.html) |
 | **« Pourquoi c'est fait comme ça ? »** — une décision par fichier | [`docs/decisions/`](docs/decisions/), indexées par [`docs/technical_decisions.md`](docs/technical_decisions.md) |
 | **« Où cette source publie-t-elle ce champ ? »** — Assemblée, Sénat, ParlTrack et Parlement européen : les références qui dérivent avec leur fournisseur, pas avec notre code | [`docs/sources/`](docs/sources/) |
 | **Les règles non négociables, pour un agent comme pour un humain** | [`AGENTS.md`](AGENTS.md) |

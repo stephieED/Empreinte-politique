@@ -30,6 +30,38 @@ local et un index commité, plutôt qu'une reconstruction à chaque run.
 Une archive porte deux arborescences utiles : `.../texte/version/JORF/TEXT/.../JORFTEXT<id>.xml`
 (un texte) et `.../article/JORF/ARTI/.../JORFARTI<id>.xml` (un article, qui nomme son texte).
 
+## Le conteneur : la table des matières du JO (#1134)
+
+À côté des fichiers d'actes, chaque livraison porte un **conteneur** sous
+`.../jorf/global/conteneur/`. C'est le SOMMAIRE du Journal officiel du jour, et
+la seule pièce où la source déclare la **portée** d'un texte.
+
+```
+<STRUCTURE_TXT>
+  <TM><TITRE_TM>Journal officiel "Lois et Décrets"</TITRE_TM>
+    <TM><TITRE_TM>Décrets, arrêtés, circulaires</TITRE_TM>
+      <TM><TITRE_TM>Mesures nominatives</TITRE_TM>
+        <TM><TITRE_TM>Ministère de la santé…</TITRE_TM>
+          <LIEN_TXT idtxt="JORFTEXT000054812249" titretxt="Arrêté du 28 août 2026 fixant la liste…"/>
+```
+
+Trois rubriques sous « Décrets, arrêtés, circulaires » : **Textes généraux**,
+**Mesures nominatives**, **Conventions collectives**. Relevé le 25/09/2026 sur
+la livraison `JORF_20260909-003012` : 29 textes généraux, 52 mesures
+nominatives, 6 conventions collectives sur 105 textes rangés.
+
+**La jointure est directe** : `LIEN_TXT/@idtxt` est l'identifiant `JORFTEXT`,
+donc `prefixe_ids + ids[i]` de nos fichiers-mois. Rien à apparier par titre.
+
+**Ce que le conteneur permet, et que rien d'autre ne permet.** Les arrêtés
+« fixant la liste des personnes autorisées à exercer en France la profession de
+médecin » sont des autorisations individuelles, mais leur titre n'emploie aucune
+formule d'acte de personne. Le JO les classe en « Mesures nominatives ».
+
+**Ce qui ne marche pas.** Le **NOR** ne porte que la nature : sa dernière lettre
+est `A` pour un arrêté, `D` pour un décret — 76 622 et 19 992 sur les 97 423 NOR
+de 60 mois du fonds. Rien sur la portée.
+
 ## Les champs lus, et ce qu'ils valent
 
 | Champ | Où | Couverture mesurée |
@@ -93,6 +125,17 @@ Une archive porte deux arborescences utiles : `.../texte/version/JORF/TEXT/.../J
   superposent, et **rien dans les données ne permet de les séparer**. C'est la raison pour
   laquelle aucune figure publiée ne repose sur la part d'application
   (`docs/decisions/part-d-application-non-publiable-1029.md`).
+
+  **Ce que la livraison ne porte pas, et qui manquerait le plus** : la **rubrique**
+  du Journal officiel — « Textes généraux », « Mesures nominatives », « Conventions
+  collectives ». Le pivot n'a que la nature (`DECRET`, `ARRETE`, `ORDONNANCE`), donc
+  la distinction entre un acte réglementaire et un acte individuel se devine dans les
+  titres. Ce que ça coûte, mesuré le 25/09/2026 sur Lecornu II : **308 des 395 actes
+  qui nomment une loi** sont des arrêtés « fixant la liste des personnes autorisées à
+  exercer la profession de médecin », pris en application de la LFSS 2007 — des actes
+  nominatifs qu'aucune formule du filtre n'attrape. Question posée à la session
+  Backend le 25/09/2026 ; tant qu'elle n'est pas tranchée, le filtre par titres est la
+  règle et non un repli.
 
   L'axe est l'**année de publication de l'acte**, jamais une législature : un décret n'appartient
   à aucune, il se rattache au gouvernement en fonction à sa parution.

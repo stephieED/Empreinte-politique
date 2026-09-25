@@ -253,6 +253,29 @@ def test_chaque_job_du_yaml_est_decrit_par_la_doc(job: str):
         "qu'il fait, ce qu'il consomme, ce qu'il produit, son script d'entrée.")
 
 
+FABRIQUE_HTML = RACINE / "docs" / "fabrique-du-jeu-de-donnees.html"
+
+
+@pytest.mark.parametrize("job", _jobs_declares())
+def test_chaque_job_du_yaml_figure_dans_la_fabrique(job: str):
+    """Demandé par la propriétaire le 25/09/2026 : un changement du workflow met
+    à jour `docs/workflow-generate-data.md` ET la figure qui le dessine.
+
+    La figure porte ses nœuds en dur, relevés à une date : un job ajouté au
+    YAML ne s'y ajoute pas seul. Ce test ne vérifie pas le dessin, il vérifie
+    que chaque job **nommé par le YAML** a, dans la page, un nœud ou une fiche
+    à son nom.
+    """
+    # Un nom cité dans le texte d'une autre fiche ne compte pas : il faut un
+    # nœud ou une fiche à son nom (`t:"…"` ou `titre:"…"`).
+    motif = r'\b(?:t|titre):"' + re.escape(job) + r'(?:"| ×)'
+    assert re.search(motif, FABRIQUE_HTML.read_text(encoding="utf-8")), (
+        f"Le job `{job}` est déclaré dans generate-data.yml et absent de "
+        "docs/fabrique-du-jeu-de-donnees.html. L'ajouter à la figure d'exécution "
+        "(BASE, LIENS) avec sa fiche (FICHES), en reprenant le texte de son bloc "
+        "dans docs/workflow-generate-data.md, puis mettre à jour la date du relevé.")
+
+
 # --------------------------------------------------------------------------
 # Une valeur ajoutée au schéma est dite quelque part
 # --------------------------------------------------------------------------

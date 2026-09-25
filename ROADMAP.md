@@ -138,6 +138,17 @@ Convention d'écriture : `AGENTS.md` §8.
 
 ## Known bugs
 
+- **La rubrique du Journal officiel ne couvre pas tout le fonds, et son absence
+  ne se lit pas comme « acte général ».** Les actes de personne sortent du compte
+  d'un gouvernement par le rangement du sommaire du JO ; là où il manque, le titre
+  tranche. Couverture mesurée le 25/09/2026 sur les 389 506 actes : **98,4 % en
+  2025, 58,1 % en 2007**, 107 892 actes sans rubrique. Les fiches anciennes
+  dépendent donc largement du repli — 43 % des actes de Fillon II —, et la fiche
+  publie ce nombre plutôt que de le taire. **Rouvrir n'est utile que si la DILA
+  livre les sommaires anciens** : le rattrapage complet est une relecture des
+  livraisons, de l'ordre de vingt minutes par année.
+  → `docs/decisions/actes-nominatifs-sortent-par-la-rubrique-1029.md`
+
 - **La CI ne sait pas ramener les archives d'amendements des législatures
   closes, et c'est désormais le seul reste (mesuré les 23 et 24/09/2026).**
   `data.assemblee-nationale.fr` coupe **chaque** réponse par une erreur de flux
@@ -178,10 +189,20 @@ Convention d'écriture : `AGENTS.md` §8.
   l'extrait de parole des rosters (#1086), l'ancre de la prise de parole (#1087),
   l'index de mots des exposés d'amendements (#1092) et les actes réglementaires du
   Journal officiel (#1098). La page continue de ne compter que les régimes
-  d'avant, si bien qu'un lecteur y voit « collecte réduite au thème » là où un
-  quart des entrées porte désormais un extrait. À reprendre quand les quatre sont
-  stabilisées dans les données — la couverture des extraits bouge à chaque run,
-  et une page qui la fige mentira le lendemain.
+  d'avant, si bien qu'un lecteur y voit « collecte réduite au thème » là où la
+  quasi-totalité des entrées de roster porte désormais un extrait.
+
+  **Cette entrée portait « un quart des entrées », et ce chiffre a vieilli sous
+  elle** : vrai les 22-23/09, il était à 97 % le 25/09, trois runs plus tard.
+  C'est la règle d'`AGENTS.md` §8 — le ROADMAP ne porte jamais un compte qu'un
+  run déplace, parce qu'on le relit comme courant longtemps après. Le chiffre se
+  mesure quand on en a besoin, il ne se recopie pas : `collecte == "extrait"`
+  sur `pivot_data/profiles/`, et **trois faits distincts à ne pas confondre** —
+  le RÉGIME de collecte (`collecte`), la PRÉSENCE d'un verbatim (`texte`), et
+  le fait qu'il soit COUPÉ (`texte_tronque`), qui ne donnent pas les mêmes
+  proportions ni le même écart entre populations. À reprendre quand les quatre
+  sources sont stabilisées ; une page qui fige l'une de ces proportions mentira
+  le lendemain, ce qui est précisément arrivé à cette ligne.
 
 - **Le téléphone : ça tient dans l'écran, ça ne s'y lit pas (#867, mesuré le
   12/09/2026).** Sept pages relevées à 360, 400 et 768 px — le relevé complet,

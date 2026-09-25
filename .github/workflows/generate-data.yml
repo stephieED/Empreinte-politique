@@ -1716,7 +1716,34 @@ jobs:
     continue-on-error: true
 
     steps:
+      # Checkout CREUX (#1129). MESURÉ au run 36040086663 : le checkout PLEIN de
+      # ce job coûte ~496 s, sur les 14 minutes qu'il dure — parce que le dépôt
+      # porte ses données, et que `raw_data/profiles` pèse à lui seul 5,5 Go des
+      # 8,1 Go suivis. Ce job n'en lit pas un octet. Il est sur le CHEMIN
+      # CRITIQUE : `extract-an` l'attend, puis le roster, puis la fusion.
+      #
+      # La liste n'est pas déduite du nom du job, elle est tracée :
+      #   - `pivot_data/amendements/*.contenu.json` — `construire_un_contenu_fige`
+      #     y lit `chemin_publie` pour SAUTER une législature déjà pourvue. Sans
+      #     ces fichiers, il retéléchargerait les archives figées ;
+      #   - `raw_data/amendements_an_figes` — `_load_frozen_amendement_index` y
+      #     reprend une législature figée quand le cache a été purgé. Absent, il
+      #     rend `None` et l'appelant RETOMBE SUR LE RÉSEAU, soit 648 Mo pour la
+      #     seule XVe, sans qu'aucune étape n'échoue.
+      # Les index `<lég>.json` eux-mêmes ne sont pas pris : ce job écrit dans le
+      # cache, c'est la passe pivot de `merge-and-pivot` qui les publie.
       - uses: actions/checkout@v5
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            .gitignore
+            requirements.txt
+            scripts
+            src
+            pivot_data/amendements/*.contenu.json
+            raw_data/amendements_an_figes
 
       # Le CODE vient du dépôt privé, les DONNÉES du checkout ci-dessus (#1059).
       - uses: ./.github/actions/code-du-prive
@@ -2853,8 +2880,134 @@ jobs:
           path: _publish/profiles/
           if-no-files-found: warn
 
+  # ──────────────────────────────────────────────────────────────────────────
+  # JOB D'EXTRACTION — actes réglementaires du Journal officiel (#1129)
+  #
+  # Cette collecte était une ÉTAPE de `merge-and-pivot`, et l'en sortir corrige
+  # un défaut d'ordre, pas seulement la lisibilité du graphe : dans le même
+  # job, `textes_promulgues.py` posait `jorftext` en lisant
+  # `raw_data/lois_jorf.json` AVANT que `actes_reglementaires.py` ne mette
+  # cette table à jour. Chaque run résolvait donc les textes promulgués contre
+  # la table du run PRÉCÉDENT. En amont, la table est fraîche quand la fusion
+  # la lit.
+  #
+  # CE QUI TRANSITE N'EST PAS LE FONDS. Le répertoire publié pèse 196,4 Mo sur
+  # 238 fichiers, mais un run ne relit que `MOIS_RELUS` mois : mesuré sur les
+  # trois derniers commits de données, il en change 0 ou 2. L'artifact ne
+  # porte donc que ce que `git status` déclare modifié — quelques Mo.
+  # ──────────────────────────────────────────────────────────────────────────
+  extract-actes-jo:
+    needs: epingler-le-code
+    runs-on: ubuntu-latest
+    # 900 s de budget réseau, plus le checkout et la relecture des mois ouverts.
+    # MESURÉ sur le run 36040086663 : un `actions/checkout` PLEIN de ce dépôt
+    # coûte 451 s à lui seul — le dépôt porte ses données. D'où le checkout
+    # creux ci-dessous, et un plafond qui laisse de la marge au budget réseau
+    # même s'il est consommé en entier. Filet de sécurité, pas une valeur
+    # dimensionnante.
+    timeout-minutes: 30
+    continue-on-error: true
+
+    steps:
+      # Checkout CREUX, même idiome qu'`extract-an`. Ce job n'a besoin que du
+      # code et des mois d'actes déjà publiés — qu'il relit pour reprendre les
+      # liens d'un mois clos que la source redélivre. Les profils, qui font
+      # l'essentiel du dépôt, ne le concernent pas.
+      - uses: actions/checkout@v5
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            .gitignore
+            requirements.txt
+            scripts
+            src
+            pivot_data/actes_reglementaires
+            raw_data/lois_jorf.json
+
+      - uses: ./.github/actions/code-du-prive
+        with:
+          sha: ${{ needs.epingler-le-code.outputs.sha }}
+          token: ${{ secrets.SRC_READ_TOKEN }}
+
+      - uses: ./.github/actions/bootstrap-extraction
+
+      - name: Mettre à jour les actes réglementaires (Journal officiel)
+        run: python3 src/actes_reglementaires.py --budget-secondes 900
+
+      # `cp --parents` conserve le chemin, pour que le téléchargement se fasse
+      # à la racine du dépôt sans réécriture.
+      - name: N'emporter que ce que ce run a changé
+        if: always()
+        run: |
+          mkdir -p _actes
+          git status --porcelain -- pivot_data/actes_reglementaires raw_data/lois_jorf.json \
+            | awk '{print $2}' > _actes-modifies.txt
+          if [[ -s _actes-modifies.txt ]]; then
+            xargs -a _actes-modifies.txt cp --parents -t _actes
+            echo "Fichiers emportés :"; cat _actes-modifies.txt
+          else
+            echo "Aucun acte modifié par ce run : rien à emporter."
+          fi
+
+      - name: Upload artifact actes du Journal officiel
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: actes-jo
+          path: _actes/
+          if-no-files-found: ignore
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # JOB D'EXTRACTION — la liste des gouvernements, depuis AMO30 (#1129)
+  #
+  # Même raison de le sortir, sans le défaut d'ordre : `gouvernements_amo30.py`
+  # ne lit pas une ligne du corpus pivot (zéro occurrence de `pivot_data`), il
+  # n'avait donc rien à faire dans la fusion. Sa sortie pèse 6 Ko.
+  # ──────────────────────────────────────────────────────────────────────────
+  extract-gouvernements:
+    needs: epingler-le-code
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    continue-on-error: true
+
+    steps:
+      # Checkout CREUX : ce job ne lit que du code et écrit un fichier de 6 Ko.
+      # Un checkout plein lui coûterait 451 s pour 2 s de travail (mesuré sur
+      # le run 36040086663).
+      - uses: actions/checkout@v5
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            .gitignore
+            requirements.txt
+            scripts
+            src
+            raw_data/gouvernements_reels.json
+
+      - uses: ./.github/actions/code-du-prive
+        with:
+          sha: ${{ needs.epingler-le-code.outputs.sha }}
+          token: ${{ secrets.SRC_READ_TOKEN }}
+
+      - uses: ./.github/actions/bootstrap-extraction
+
+      - name: Lister les gouvernements depuis AMO30
+        run: python3 src/gouvernements_amo30.py --out raw_data/gouvernements_reels.json
+
+      - name: Upload artifact liste des gouvernements
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: gouvernements-amo30
+          path: raw_data/gouvernements_reels.json
+          if-no-files-found: warn
+
   merge-and-pivot:
-    needs: [extract-an, extract-ue-officiel, extract-parltrack, extract-roster-groupes, extract-senat, extract-mandats-locaux, epingler-le-code, rechauffer-le-portail-europeen]
+    needs: [extract-an, extract-ue-officiel, extract-parltrack, extract-roster-groupes, extract-senat, extract-mandats-locaux, extract-actes-jo, extract-gouvernements, epingler-le-code, rechauffer-le-portail-europeen]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     # 60 → 120 (#827). Le job tournait en 28 min ; la PREMIÈRE interrogation du
@@ -3054,6 +3207,25 @@ jobs:
         with:
           name: raw-profiles-mandats-locaux
           path: _artifacts/mandats-locaux
+
+      # #1129 — les actes du JO et la liste des gouvernements sont collectés
+      # en amont. Leur absence est une dégradation gracieuse et non un échec :
+      # les deux fichiers sont COMMITTÉS, la fusion retombe donc sur ceux du
+      # run précédent plutôt que sur rien. `path: .` parce que l'artifact des
+      # actes porte déjà ses chemins de dépôt.
+      - name: Download artifact actes du Journal officiel (optionnel)
+        uses: actions/download-artifact@v7
+        continue-on-error: true
+        with:
+          name: actes-jo
+          path: .
+
+      - name: Download artifact liste des gouvernements (optionnel)
+        uses: actions/download-artifact@v7
+        continue-on-error: true
+        with:
+          name: gouvernements-amo30
+          path: raw_data/
 
       - name: Download artifact ParlTrack (optionnel)
         uses: actions/download-artifact@v7
@@ -3546,11 +3718,6 @@ jobs:
       # des profils, qui sont corrects. Un mois relu sans acte n'écrase rien, et
       # un acte déjà publié absent de la relecture arrête la publication plutôt
       # que de disparaître (`ActesPerdus`).
-      - name: Mettre à jour les actes réglementaires (Journal officiel)
-        continue-on-error: true
-        run: |
-          python3 src/actes_reglementaires.py --budget-secondes 900
-
       - name: Générer les profils de groupe parlementaire réel
         env:
           OVERWRITE: ${{ inputs.existing_profiles == 'overwrite' }}
@@ -3619,9 +3786,6 @@ jobs:
       # avant toute écriture, et la liste committée reste en place.
       #   entrée   : src/gouvernements_amo30.py
       #   produit  : raw_data/gouvernements_reels.json
-      - name: Lister les gouvernements depuis AMO30
-        run: python3 src/gouvernements_amo30.py --out raw_data/gouvernements_reels.json
-
       - name: Générer les profils de gouvernement
         continue-on-error: true
         run: |

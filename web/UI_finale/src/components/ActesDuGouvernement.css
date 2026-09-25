@@ -1,0 +1,84 @@
+/* Ce que l'exécutif a fait entrer en vigueur (#1029 voie 1).
+   Voir l'en-tête d'ActesDuGouvernement.jsx pour ce que la section refuse de
+   laisser croire. */
+
+.adg { display: flex; flex-direction: column; gap: 16px; }
+
+.adg-vide { margin: 0; font-size: 14px; color: var(--muted); }
+
+.adg-entonnoir {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  border: 1px solid var(--border); border-radius: 3px; overflow: hidden;
+}
+.adg-entonnoir li { padding: 14px 16px; background: var(--card); border-right: 1px solid var(--border); }
+.adg-entonnoir li:last-child { border-right: 0; }
+.adg-entonnoir .adg-reste { background: #f2f0ed; }
+.adg-entonnoir b { display: block; font-size: 22px; font-weight: 800; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.adg-entonnoir span { display: block; font-size: 12.5px; color: var(--muted); }
+/* Le repli par le titre est une AUTRE façon de savoir, pas la même : il se lit
+   comme tel ou il se confond avec le rangement de la source (§2 règle 5). */
+.adg-entonnoir .adg-repli {
+  margin-top: 5px; padding-top: 5px; border-top: 1px dotted var(--border-strong);
+  font-size: 11.5px; font-style: italic;
+}
+
+.adg-cadre { border: 1px solid var(--border); border-radius: 3px; background: var(--card); padding: 14px; overflow-x: auto; }
+.adg-flux { display: block; width: 100%; min-width: 760px; height: auto; }
+.adg-etiquette { font-size: 12px; font-weight: 700; fill: var(--ink); }
+.adg-compte { font-size: 11px; font-weight: 800; fill: var(--muted); }
+
+.adg-filtres { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.adg-filtre-titre {
+  width: 100%; margin-top: 4px; font-size: 10.5px; font-weight: 800;
+  letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted);
+}
+.adg-bouton {
+  font: inherit; font-size: 12.5px; font-weight: 700; min-height: 36px;
+  border: 1px solid var(--border-strong); background: var(--card); color: var(--ink);
+  border-radius: 999px; padding: 7px 13px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.adg-bouton:hover { border-color: var(--muted); }
+.adg-bouton:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.adg-bouton i { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.adg-bouton b { font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+.adg-bouton--actif { background: var(--ink); color: #fff; border-color: var(--ink); }
+.adg-bouton--actif b { color: #fff; opacity: 0.75; }
+
+.adg-detail { border: 1px solid var(--border); border-radius: 3px; background: var(--card); padding: 16px 18px; }
+.adg-detail h3 { margin: 0 0 2px; font-size: 16px; font-weight: 800; }
+.adg-sous { margin: 0 0 14px; font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+
+.adg-loi { border: 1px solid var(--border); border-radius: 3px; margin-bottom: 9px; background: var(--card); }
+.adg-loi[open] { border-color: var(--muted); }
+.adg-loi summary { list-style: none; cursor: pointer; padding: 11px 13px 11px 32px; position: relative; }
+.adg-loi summary::-webkit-details-marker { display: none; }
+.adg-loi summary::before {
+  content: ''; position: absolute; left: 13px; top: 16px; width: 7px; height: 7px;
+  border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+  transform: rotate(-45deg); transition: transform 0.12s;
+}
+.adg-loi[open] summary::before { transform: rotate(45deg); top: 14px; }
+.adg-loi summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.adg-loi-titre { display: block; font-size: 13.5px; font-weight: 700; line-height: 1.35; }
+.adg-loi-meta {
+  display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 4px;
+  font-size: 11.5px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums;
+}
+.adg-loi-meta b { color: var(--ink); }
+.adg-ppl {
+  font-size: 10px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase;
+  border-radius: 999px; padding: 2px 8px; background: #803060; color: #fff;
+}
+.adg-dedans { padding: 2px 13px 10px 32px; border-top: 1px solid var(--border); margin-top: 2px; }
+
+.adg-acte { border-left: 3px solid var(--border-strong); padding: 7px 0 7px 12px; margin-bottom: 11px; }
+.adg-acte-titre { margin: 0; font-size: 13.5px; line-height: 1.42; }
+.adg-acte-meta { margin: 3px 0 0; font-size: 11.5px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
+.adg-acte-meta i { font-style: normal; text-transform: uppercase; letter-spacing: 0.06em; font-size: 10.5px; }
+.adg-acte-meta a { color: inherit; }
+
+.adg-note { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.55; max-width: 78ch; }
+
+@media (prefers-reduced-motion: reduce) { .adg-loi summary::before { transition: none; } }

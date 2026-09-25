@@ -596,6 +596,18 @@ export async function getParolesDuGouvernement(id) {
   return (await fetchJson(`/data/gouvernements/${entry.paroles}`)) || {};
 }
 
+/**
+ * CE QUE L'EXÉCUTIF A FAIT ENTRER EN VIGUEUR (#1029 voie 1), chargé au
+ * déploiement de la section et jamais avec la fiche : la projection pèse
+ * ~0,4 Mo par gouvernement, quand la fiche entière en fait 1.
+ */
+export async function getActesDuGouvernement(id) {
+  const manifest = await loadManifest();
+  const entry = (manifest.gouvernements || []).find((g) => g.id === id);
+  if (!entry?.actes) return null;
+  return (await fetchJson(`/data/gouvernements/${entry.actes}`)) || null;
+}
+
 /* ── Ce qui a été dit (#1029) ─────────────────────────────────────────────────
  *
  * Écrits par `sync-data` (`src/utils/extraits.js`) : un INDEX par fiche — le
