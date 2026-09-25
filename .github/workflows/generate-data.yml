@@ -117,6 +117,11 @@ concurrency:
 # « not saving cache » sur les 8 shards du run 32288588518) et #467 l'a donc
 # ouverte à max-parallel: 4. Voir
 # docs/decisions/budget-execution-pleine-echelle-467.md.
+# DEPUIS #1137, cet argument est ÉVALUÉ À CHAQUE RUN et non plus tenu pour
+# acquis : il ne vaut que sur une clé froide, c'est-à-dire au premier run de la
+# semaine. `prepare-an-matrix` sonde la clé et `extract-an` prend
+# max-parallel: 4 quand elle est déjà chaude, 1 sinon. Voir
+# docs/decisions/max-parallel-sur-cle-chaude-1137.md.
 #
 # ── LES 8 JOBS ──────────────────────────────────────────────────────────────
 # 2 préparatoires (prepare-an-matrix, prepare-roster-matrix), 5 d'extraction
@@ -397,6 +402,10 @@ jobs:
     timeout-minutes: 5
     outputs:
       slugs: ${{ steps.slugs.outputs.slugs }}
+      # #1137 — `true` quand la clé de cache AN de la semaine existe DÉJÀ, donc
+      # que les shards d'`extract-an` n'ont plus rien à se passer. Lu par le
+      # `max-parallel:` de ce job, qui est le seul endroit où il sert.
+      cache_chaud: ${{ steps.parallelisme.outputs.chaud }}
 
     steps:
       # SPARSE-CHECKOUT — MÊME CAUSE QUE DANS `extract-an`, MÊME CORRECTIF (#674).
@@ -448,6 +457,79 @@ jobs:
             echo "::warning::CANDIDATS_ARTIFACT_ABSENT — la matrice est construite sur la liste COMMITTÉE, pas sur celle du jour."
           fi
 
+      # ── #1137 — LA SÉRIALISATION D'`extract-an` NE SERT QUE SUR UNE CLÉ FROIDE
+      #
+      # `max-parallel: 1` est conservé par #412 sur l'argument *cache* et lui
+      # seul : les shards d'`extract-an` se passent le cache AN de proche en
+      # proche — le premier écrit la clé de la semaine, les suivants font un
+      # *exact key hit*. Cet argument ne vaut QUE tant que la clé est absente.
+      # Une fois écrite, la chaîne ne transmet plus rien : chaque shard fait un
+      # hit exact dès le premier, et le job roster est déjà ouvert à 4 pour
+      # cette raison précise (#467).
+      #
+      # Ce job SONDE donc la clé avant que la matrice ne démarre, et `extract-an`
+      # en tire son `max-parallel` : `jobs.<id>.strategy` accepte les
+      # expressions, à condition qu'elles viennent d'un `needs` et non d'un
+      # `steps` du même job.
+      #
+      # LE `path:` EST CELUI D'`extract-an`, À LA VIRGULE PRÈS. La *version*
+      # d'une entrée de cache est un hachage du `path` : une sonde qui diverge
+      # ne trouverait JAMAIS l'entrée, et le job resterait en série sans que
+      # rien ne le dise. C'est le même piège que #510, et les deux blocs sont
+      # comparés ligne à ligne par
+      # tests/test_ci_max_parallel_cle_chaude_1137.py.
+      #
+      # DEUX MODES RESTENT EN SÉRIE, délibérément :
+      #   - `cold_start` : rien n'est restauré ni sauvegardé, donc la chaîne ne
+      #     sert effectivement à rien — mais c'est aussi le mode où chaque shard
+      #     repart des archives, et on ne multiplie pas par 4 ce qu'on demande à
+      #     data.assemblee-nationale.fr ce jour-là.
+      #   - `collect_interventions` : la clé porte en plus l'empreinte de
+      #     complétude (#550), que seul `src/cache_an_empreinte.py` sait
+      #     calculer — or il importe `candidate_profile`, donc `requests`, que
+      #     ce job n'installe pas (il tourne en `python3` système, sans
+      #     dépendance, sous un `timeout-minutes: 5` qu'un `pip install`
+      #     entamerait ; #674 l'a déjà tué dans `actions/checkout`). Sonder une
+      #     clé fausse coûterait le cache ; ne pas sonder ne coûte que le statu
+      #     quo. Voir docs/decisions/max-parallel-sur-cle-chaude-1137.md.
+      - name: Semaine ISO courante (clé de cache AN, partagée avec extract-an)
+        id: week
+        if: ${{ !inputs.cold_start && !inputs.collect_interventions }}
+        run: echo "week=$(date +%G-W%V)" >> "$GITHUB_OUTPUT"
+
+      # `lookup-only: true` : on ne veut que la réponse, aucune extraction — et
+      # AUCUN `restore-keys`, le repli par préfixe servirait une entrée d'une
+      # autre semaine alors que la question posée est « la clé EXACTE que les
+      # shards écriraient existe-t-elle déjà ? ».
+      - uses: actions/cache/restore@v5
+        id: sonde_cache_an
+        if: ${{ !inputs.cold_start && !inputs.collect_interventions }}
+        with:
+          lookup-only: true
+          path: |
+            .cache/acteurs_historique_an
+            .cache/scrutins_an
+            .cache/questions_an/*/index_par_acteur.json
+            .cache/syceron_an/*/index_par_acteur
+          key: public-data-cache-an-${{ steps.week.outputs.week }}
+
+      # Le résultat se LIT dans l'interface : sans cette ligne, un run
+      # parallélisé ne se distingue pas d'un run qui ne l'est pas, et la seule
+      # façon de savoir ce que la sonde a répondu serait de compter les shards
+      # simultanés à l'œil.
+      - name: Parallélisme d'extract-an pour ce run (#1137)
+        id: parallelisme
+        env:
+          CHAUD: ${{ steps.sonde_cache_an.outputs.cache-hit == 'true' }}
+        run: |
+          set -euo pipefail
+          echo "chaud=${CHAUD}" >> "$GITHUB_OUTPUT"
+          if [ "${CHAUD}" = "true" ]; then
+            echo "Cache AN déjà chaud sur la clé de la semaine : les shards d'extract-an n'ont rien à se passer, ils tourneront en parallèle."
+          else
+            echo "Cache AN froid (ou mode cold_start/interventions) : les shards d'extract-an restent en série, le premier réchauffe la clé pour les suivants."
+          fi
+
       # set -euo pipefail (#412 §2.1) : sans lui, un python3 en échec
       # (candidats.json illisible/malformé) laissait SLUGS_JSON vide, écrivait
       # `slugs=` dans $GITHUB_OUTPUT et faisait échouer l'évaluation de
@@ -470,6 +552,13 @@ jobs:
           # moment précis où il sert. Cohérence vérifiée par
           # tests/test_ci_budget_interventions.py.
           AN_TIMEOUT_MINUTES: ${{ inputs.collect_interventions && 10 || 5 }}
+          # Le parallélisme RÉEL de ce run (#1137). Même expression que le
+          # `max-parallel:` d'extract-an, et pour la même raison qu'à
+          # AN_TIMEOUT_MINUTES : annoncer un temps mur série pendant qu'un run
+          # tourne à 4 rendrait l'avertissement faux au moment précis où il
+          # sert. Les deux expressions sont tenues égales par
+          # tests/test_ci_max_parallel_cle_chaude_1137.py.
+          AN_MAX_PARALLEL: ${{ steps.parallelisme.outputs.chaud == 'true' && 4 || 1 }}
           TEST_SLUGS: ${{ inputs.test_slugs }}
         run: |
           set -euo pipefail
@@ -521,13 +610,22 @@ jobs:
               echo "roster) et la fusion finale s'exécutent normalement."
             } >> "$GITHUB_STEP_SUMMARY"
           elif [[ "$COUNT" -gt "$AN_SHARDS_WARN" ]]; then
-            echo "::warning::${COUNT} shards extract-an (> ${AN_SHARDS_WARN}) — shards exécutés en série à ${AN_TIMEOUT_MINUTES} min chacun, soit ~$((COUNT * AN_TIMEOUT_MINUTES)) min de temps mur. Revoir max-parallel/timeout ou le volume de raw_data/candidats.json."
+            # Division ENTIÈRE ARRONDIE AU SUPÉRIEUR : à 4 en parallèle, 31
+            # shards font 8 vagues et non 7,75 — la dernière vague coûte un
+            # timeout plein même si elle ne porte qu'un shard.
+            VAGUES=$(( (COUNT + AN_MAX_PARALLEL - 1) / AN_MAX_PARALLEL ))
+            if [[ "$AN_MAX_PARALLEL" -gt 1 ]]; then
+              CADENCE="par vagues de ${AN_MAX_PARALLEL} (cache de la semaine déjà chaud, #1137)"
+            else
+              CADENCE="en série (\`max-parallel: 1\`)"
+            fi
+            echo "::warning::${COUNT} shards extract-an (> ${AN_SHARDS_WARN}) — shards exécutés ${CADENCE} à ${AN_TIMEOUT_MINUTES} min chacun, soit ~$((VAGUES * AN_TIMEOUT_MINUTES)) min de temps mur. Revoir max-parallel/timeout ou le volume de raw_data/candidats.json."
             {
               echo "### ⚠️ Budget de temps mur d'extract-an"
               echo ""
-              echo "${COUNT} shards (seuil d'alerte : ${AN_SHARDS_WARN}), exécutés en série"
-              echo "(\`max-parallel: 1\`) à ${AN_TIMEOUT_MINUTES} min de timeout chacun → jusqu'à"
-              echo "~$((COUNT * AN_TIMEOUT_MINUTES)) min de temps mur pour ce seul job."
+              echo "${COUNT} shards (seuil d'alerte : ${AN_SHARDS_WARN}), exécutés ${CADENCE}"
+              echo "à ${AN_TIMEOUT_MINUTES} min de timeout chacun → ${VAGUES} vague(s), jusqu'à"
+              echo "~$((VAGUES * AN_TIMEOUT_MINUTES)) min de temps mur pour ce seul job."
             } >> "$GITHUB_STEP_SUMMARY"
           fi
 
@@ -772,7 +870,24 @@ jobs:
       # clé est déjà chaude quand sa matrice commence, ses shards ne se passent
       # rien et n'ont donc rien à sérialiser. Voir
       # docs/decisions/budget-execution-pleine-echelle-467.md.
-      max-parallel: 1
+      #
+      # #1137 — CE N'EST PLUS UNE ASYMÉTRIE ENTRE DEUX JOBS, MAIS ENTRE DEUX
+      # ÉTATS DU CACHE. L'argument ci-dessus est intact, et il est daté : il
+      # décrit le run qui rencontre une clé NEUVE. Une fois la clé écrite —
+      # tous les autres runs de la semaine — la chaîne ne transmet rien, chaque
+      # shard faisant un hit exact dès le premier. C'est mot pour mot ce que
+      # #467 a constaté sur le roster, et la conclusion y est la même.
+      #
+      # `prepare-an-matrix` sonde donc la clé en `lookup-only` et publie
+      # `cache_chaud`. 4, comme le roster : la valeur n'a pas été re-arbitrée.
+      # Le repli est `1`, c'est-à-dire l'état d'avant ce lot — une sonde en
+      # échec, un mode non sondé (`cold_start`, `collect_interventions`) ou une
+      # sortie vide sérialisent, comme avant.
+      #
+      # GAIN PROJETÉ, JAMAIS MESURÉ : 31 min → ~8 min de temps mur à 31 shards.
+      # La médiane de 60 s par shard masque une dispersion (certains dépassent
+      # 3 min), donc le gain réel sera inférieur à la division par 4.
+      max-parallel: ${{ needs.prepare-an-matrix.outputs.cache_chaud == 'true' && 4 || 1 }}
       matrix:
         # `|| '[]'` : garde-fou de forme (#412 §2.1). Un prepare-an-matrix en
         # échec skippe déjà ce job — le repli évite en plus une erreur
@@ -2209,7 +2324,32 @@ jobs:
       # 13,6 Mo + scrutins XVII 26,3 Mo, relevé le 20/08/2026). 4 borne cette
       # rafale à la moitié pour ~3 min de temps mur en plus à pleine échelle.
       # Voir docs/decisions/budget-execution-pleine-echelle-467.md.
-      max-parallel: 4
+      #
+      # #1137 — CET ARGUMENT EST CONDITIONNEL, ET IL ÉTAIT APPLIQUÉ À TOUS LES
+      # RUNS. Relu de près, il ne parle que des modes où un shard va CHERCHER
+      # chez l'AN ce qu'un cache ne lui donne pas. Hors de ces modes, les 8
+      # shards restaurent la même entrée immuable de 21 Mo chez GitHub et ne
+      # demandent rien à data.assemblee-nationale.fr : rien ne justifie alors
+      # de les faire attendre. C'est la même forme de correction qu'au
+      # `max-parallel` d'`extract-an` — un argument juste, appliqué au-delà du
+      # cas qu'il décrit.
+      #
+      # LES DEUX MODES QUI GARDENT 4, et ce qu'ils déclenchent :
+      #   - `cold_start` : les steps de cache sont sautés, ~40 Mo d'archives AN
+      #     par shard (l'argument de #467, à la lettre) ;
+      #   - `collect_dossiers_legislatifs` : le roster couvre ~750 membres là où
+      #     `extract-an` en couvre 13, donc la part de dossiers qu'il télécharge
+      #     en plus n'est JAMAIS persistée — il reste en restauration seule, et
+      #     c'est délibéré (voir le bloc du cache dossiers plus bas). Ce qu'un
+      #     shard demande en plus, il le redemande à chaque run.
+      #
+      # MESURÉ, run 36153601970 (25/09/2026) : 8 shards de 558 à 676 s,
+      # 4 875 s cumulés, **1 306 s de temps mur** en deux vagues de 4. À 8, une
+      # seule vague : ~690 s, soit **~10 min de chemin critique en moins** —
+      # projection assise sur des durées mesurées, pas une mesure.
+      # Le pic de jobs simultanés du même run était de 9 ; il ne bouge pas, la
+      # vague roster étant la dernière avant `merge-and-pivot`.
+      max-parallel: ${{ (inputs.cold_start || inputs.collect_dossiers_legislatifs) && 4 || 8 }}
       matrix:
         # `|| '[0]'` : repli sur un shard unique si prepare-roster-matrix a
         # échoué (#412 §2.1). Combiné au if: !cancelled() ci-dessus, ce job

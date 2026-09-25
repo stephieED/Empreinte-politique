@@ -33,6 +33,26 @@ qui suivent, dont chacun a coûté assez cher pour ne pas être re-découvert.
 
 ### Constats de cadrage, à ne pas re-trancher
 
+**Le champ `article` des amendements est complet, et il ne sera pas publié
+(arbitré le 25/09/2026, sur maquette).** 685 723 amendements nomment la division
+du texte qu'ils visent, sur les quatre législatures, et la jointure vers les
+profils passe : la donnée n'est ni manquante ni défectueuse. Trois formes ont été
+maquettées sur données réelles — la géographie d'un texte, « amender ou ajouter »
+par personne, la personne dans la géographie d'un texte —, **et les trois ont été
+écartées**.
+
+Ce qui tranche est la **règle de forme 1** : un chiffre dont le lecteur ne peut
+rien tirer ne se publie pas. **Un numéro d'article ne dit rien hors de son
+texte**, et les 2 572 textes visés n'ont aucune page sur le site — les objets
+publiés sont les candidats, les groupes et les gouvernements.
+
+**Le champ reste collecté et publié dans le pivot** ; c'est sa publication dans
+l'interface qui est écartée. La seule condition qui rouvrirait le sujet est
+l'apparition d'un objet « texte » dans le site. Les mesures, les trois formes et
+leurs limites sont dans
+[`article-des-amendements-ecarte-1029`](docs/decisions/article-des-amendements-ecarte-1029.md)
+— elles ne se refont pas.
+
 **Le corpus a un plancher, et il n'est pas le même selon la matière
 (mesuré le 01/09/2026 sur les archives en cache et les index figés).** Aucune
 décision ne l'avait posé comme un choix éditorial ; il existait en fait, sans

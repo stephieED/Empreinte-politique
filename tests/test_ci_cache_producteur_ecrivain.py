@@ -80,6 +80,12 @@ INVENTAIRE_STEPS = {
     # pas exprimer. C'est ce qui empêche une entrée partielle d'occuper la clé
     # d'une entrée complète — et, une entrée de cache GitHub étant immuable, la
     # seule façon de reprendre la main sur une clé déjà écrite dans la semaine.
+    # #1137 : la SONDE de `prepare-an-matrix`. `lookup-only: true` — elle ne
+    # restaure rien et n'écrit rien, elle demande seulement si la clé de la
+    # semaine existe déjà, pour que `extract-an` sérialise ses shards quand la
+    # chaîne de réchauffement sert et les parallélise quand elle ne sert à rien.
+    # Un non-écrivain par construction : `lookup-only` n'a pas de sauvegarde.
+    ("prepare-an-matrix", 0): False,
     ("extract-an", 0): False,  # cache AN : restauration
     ("extract-an", 1): True,   # cache dossiers : produit aussi
     ("extract-ue-officiel", 0): True,

@@ -20,7 +20,7 @@ date qu'elle porte : un job ajouté ici ne s'y ajoute pas seul.
 |---|---|---|---|
 | `epingler-le-code` | — | l'API du dépôt **privé** (jeton `SRC_READ_TOKEN`) | le SHA de `main` du privé, en sortie `sha` — **tous les autres jobs en dépendent** et superposent ce code (#1059) |
 | `rafraichir-candidats` | `epingler-le-code` | l'article Wikipédia des candidatures, Wikidata (`P4123`) | `raw_data/candidats.json` à jour + `raw_data/resolutions_candidats.json` → artifact `candidats-a-jour` (#757) |
-| `prepare-an-matrix` | `rafraichir-candidats` | l'artifact `candidats-a-jour`, à défaut `raw_data/candidats.json` | la matrice `extract-an` (un shard par candidat à slug résolvable, #344) |
+| `prepare-an-matrix` | `rafraichir-candidats` | l'artifact `candidats-a-jour`, à défaut `raw_data/candidats.json` | la matrice `extract-an` (un shard par candidat à slug résolvable, #344) et sa **cadence** (`cache_chaud`, #1137) |
 | `extract-amendements-an` | `epingler-le-code` | AN open data (dumps amendements) | artifact `amendements-index-an` + cache `public-data-cache-amendements-<semaine>` |
 | `extract-ue-officiel` | `epingler-le-code` | Europarl Open Data | artifact `raw-profiles-ue-officiel`, cache `public-data-cache-ue-<semaine>` |
 | `extract-parltrack` | `epingler-le-code` | 5 dumps ParlTrack (232 Mio) | artifact `parltrack-dumps`, cache `public-data-cache-parltrack-<semaine>` |
@@ -38,8 +38,11 @@ Neuf jobs ne dépendent que de l'épinglage du code et démarrent ensemble
 (`rafraichir-candidats` en fait partie depuis #757, `extract-senat` depuis #885,
 `extract-mandats-locaux` depuis #922, `extract-actes-jo` et
 `extract-gouvernements` depuis #1129 ; `prepare-an-matrix` attend le premier). Le **chemin critique réel,
-ce sont les deux matrices en série** (`extract-an` en `max-parallel: 1`, puis la
-matrice roster en `max-parallel: 4`), pas le nombre de jobs.
+ce sont les deux matrices** (`extract-an` puis la matrice roster), pas le nombre
+de jobs. `extract-an` n'est **plus en série à tous les runs depuis #1137** : il
+l'est au premier run de la semaine, quand le cache AN est froid et que ses
+shards se le passent de proche en proche ; les autres runs le voient tourner à
+`max-parallel: 4`, comme la matrice roster.
 
 `extract-an`, `extract-ue-officiel`, `extract-parltrack`,
 `extract-amendements-an`, `extract-roster-groupes`, `extract-senat` et
@@ -141,9 +144,22 @@ ne collecte rien. Le périmètre vient de `src/perimetre_candidats.py`, partagé
 avec `generate_all_profiles` : un candidat à `statut: decline` **n'a pas de
 shard**, sa fiche restant publiée telle quelle, et il est **nommé**
 (`::notice::CANDIDAT_GELE`) là où le périmètre est calculé (#760). Il porte aussi deux garde-fous de lancement : un avertissement au-delà de
-16 shards (ils s'exécutent en série, donc 16 shards = 16 fois le timeout d'un
-shard), et le décompte chiffré des interventions qu'un run
-`existing_profiles=overwrite` sans `collect_interventions` effacerait.
+16 shards — qui annonce depuis #1137 le nombre de **vagues** et non de shards en
+file, puisque la cadence dépend du cache —, et le décompte chiffré des
+interventions qu'un run `existing_profiles=overwrite` sans
+`collect_interventions` effacerait.
+
+**Il décide aussi de la cadence d'`extract-an` (#1137).** Une sonde
+`actions/cache/restore` en `lookup-only: true` demande si la clé AN de la
+semaine existe déjà, et le job publie `cache_chaud`. Clé absente : les shards se
+suivent un par un, le premier réchauffant le cache pour les suivants (#412,
+#424). Clé présente : ils ne se passent rien et tournent par vagues de 4, comme
+la matrice roster (#467). Le `path:` de la sonde est celui d'`extract-an` **à la
+virgule près** — la version d'une entrée de cache est un hachage du `path`, donc
+une sonde qui diverge répondrait « froid » à tous les runs sans que rien ne le
+dise. Les modes `cold_start` et `collect_interventions` ne sont pas sondés et
+restent en série.
+→ `docs/decisions/max-parallel-sur-cle-chaude-1137.md`
 
 **Son checkout porte une liste blanche (#674).** Il ne lit que
 `raw_data/candidats.json`, et son `timeout-minutes: 5` ne survit pas au
@@ -370,7 +386,17 @@ dépassement de `timeout-minutes` en est une : le 23/09/2026, le run
 tourné, le run `35926731615` les a vus annulés à 30 min 36 s et ses 20 shards
 ont été sautés, sur un run lancé avec `collect_interventions=true`.
 
-Un shard par candidat, séquencés un par un (`max-parallel: 1`) :
+Un shard par candidat. **La cadence dépend du cache, pas du calendrier
+(#1137)** : `prepare-an-matrix` sonde la clé AN de la semaine en `lookup-only`
+et publie `cache_chaud` ; ce job prend `max-parallel: ${{ ... == 'true' && 4 ||
+1 }}`. Clé froide — le premier run de la semaine — les shards se suivent un par
+un, le premier écrivant la clé pour les suivants ; clé déjà chaude, ils ne se
+passent rien et tournent par vagues de 4. Les modes `cold_start` et
+`collect_interventions` ne sont **pas sondés** et restent en série : le premier
+parce que chaque shard y repart des archives, le second parce que la clé y porte
+l'empreinte de complétude (#550), que ce job ne sait pas calculer sans
+dépendances. Tout ce qui n'est pas un oui franc de la sonde sérialise.
+→ `docs/decisions/max-parallel-sur-cle-chaude-1137.md`
 
 ```
 python3 src/generate_all_profiles.py --source an --only <slug> \
@@ -462,8 +488,14 @@ débats Syceron avec un extrait de 280 caractères de leur verbatim depuis #1029
 laisse les questions officielles —, et les
 dossiers législatifs suivent `collect_dossiers_legislatifs` **depuis #817**.
 Les deux étaient posés en dur au même motif, « aucun agrégat de groupe ne les
-consomme », faux dans les deux cas. 8 shards découpés par modulo,
-`max-parallel: 4`.
+consomme », faux dans les deux cas. 8 shards découpés par modulo, **en une seule
+vague depuis #1137** (`max-parallel: 8`) : la borne à 4 de #467 protégeait
+`data.assemblee-nationale.fr` dans les modes où un shard va y chercher quelque
+chose, et elle y reste — `cold_start` (les caches sont sautés, ~40 Mo d'archives
+par shard) et `collect_dossiers_legislatifs` (la part de dossiers que le roster
+télécharge en plus n'est jamais persistée). Hors de ces deux modes, les shards
+restaurent la même entrée immuable de 21 Mo et ne demandent rien à l'AN.
+→ `docs/decisions/roster-une-seule-vague-hors-modes-reseau-1137.md`
 
 **Consomme** l'artifact `roster-candidats` — régénéré seulement s'il manque — et
 les mêmes sources qu'`extract-an`, dont les caches AN et amendements en
@@ -504,6 +536,15 @@ livraisons quotidiennes de la DILA (`echanges.dila.gouv.fr`). Un fichier par
 `numéro de loi → JORFTEXT` dans `raw_data/lois_jorf.json`, relevée en chemin.
 Modules : `actes_reglementaires.py`, qui emprunte à `amendements_contenu.py` son
 index de mots et ses seuils, et `lois_jorf.py`.
+
+**Le job lit DEUX sortes de membres de l'archive** (#1134). Les fichiers d'actes
+sous `/texte/version/` et `/article/`, et depuis le 25/09/2026 les **conteneurs**
+sous `/conteneur/` — la table des matières du Journal officiel du jour. C'est
+elle, et rien dans le fichier de l'acte, qui range un texte sous « Textes
+généraux », « Mesures nominatives » ou « Conventions collectives »
+(`rubriques_du_conteneur`). Elle ne pèse que quelques dizaines de Ko par
+livraison et ne porte aucun acte, seulement des renvois.
+→ `docs/decisions/rubrique-du-journal-officiel-1134.md`
 
 **Pourquoi un job et non une étape de la fusion (#1129).** Ce n'est pas une
 question de propreté : dans le même job, `textes_promulgues.py` posait
@@ -797,11 +838,21 @@ relit une cinquantaine de livraisons DILA, ~150 s mesurées depuis un poste le
 livraisons non lues sont dites sur la sortie d'erreur et reprises au run
 suivant ; l'étape est `continue-on-error`.
 
-Mesures utiles : un shard roster ≈ **200 s**, dont ~130 s de frais fixes (~110 s
-de `actions/checkout` seul — le dépôt porte les profils) et ~65 s d'extraction
-pour 24 membres. Sharder ×8 paie donc huit fois ces 130 s ; c'est pourquoi la
-matrice roster est en `max-parallel: 4` (#467,
-`docs/decisions/budget-roster-mesure.md`). `merge-and-pivot` : 7,5 min mesuré à
+Mesures utiles : un shard roster valait **≈ 200 s** en août 2026, dont ~130 s de
+frais fixes (~110 s de `actions/checkout` seul — le dépôt porte les profils) et
+~65 s d'extraction pour 24 membres. Sharder ×8 paie donc huit fois ces 130 s.
+**Le roster a grossi depuis** : 558 à 676 s par shard au run `36153601970`
+(25/09/2026), 4 875 s cumulés et **1 306 s de temps mur** tant que la matrice
+tournait en deux vagues (#467, `docs/decisions/budget-roster-mesure.md`) — d'où
+son ouverture à 8 par #1137, qui ramène le groupe à une vague.
+
+**Le checkout de `merge-and-pivot` (390 s au même run, 572 s au run
+`36040086663`) a été instruit et laissé tel quel** : un `filter: blob:none`
+ferait tomber le fetch de 514 Mo à 1 Mo, mais ce job a besoin du worktree
+complet — il committe le dépôt entier — et les 5 065 blobs écartés sont
+redemandés aussitôt, pour matérialiser 8,0 Go. Le temps est dans l'écriture
+disque, pas dans le réseau.
+→ `docs/decisions/checkout-de-merge-and-pivot-mesure-et-ecarte-1137.md` `merge-and-pivot` : 7,5 min mesuré à
 209 profils, **28 min** mesuré le 10/09/2026 sur le run `34472416487`.
 
 **Son plafond est passé de 60 à 120 min avec #827**, et c'est la première
