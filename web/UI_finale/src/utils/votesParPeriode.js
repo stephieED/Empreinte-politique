@@ -53,9 +53,15 @@ export const LIBELLE_POSITION = {
   pour: 'Pour',
 };
 
+/* LE FILTRE NOMME L'ORIGINE DU TEXTE, PAS LA FONCTION DE LA PERSONNE.
+ * « Gouvernement » seul se lisait comme un banc occupé : sur la fiche
+ * d'Emmanuel Maurel, qui n'a aucun mandat de catégorie
+ * `fonction_gouvernementale`, deux boutons semblaient dire le contraire
+ * (relevé de la propriétaire, 25/09/2026). Le calcul était juste ; c'est le mot
+ * qui trompait. Le mot « texte » lève l'ambiguïté sans toucher au reste. */
 export const LIBELLE_ORIGINE = {
-  [ORIGINE_GOUVERNEMENT]: 'Gouvernement',
-  [ORIGINE_PARLEMENT]: 'Parlement',
+  [ORIGINE_GOUVERNEMENT]: 'Texte du gouvernement',
+  [ORIGINE_PARLEMENT]: 'Texte du Parlement',
 };
 
 export const REPERE_NON_PUBLIE = 'Repère non publié';

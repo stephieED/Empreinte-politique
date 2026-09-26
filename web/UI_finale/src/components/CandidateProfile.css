@@ -410,6 +410,12 @@
 .cp-gc-tete-col--pe .cp-gc-col-nom i { background: var(--pe); }
 .cp-gc-tete-col--gouvernement .cp-gc-col-nom { color: var(--gouv); background: var(--gouv-wash); }
 .cp-gc-tete-col--gouvernement .cp-gc-col-nom i { background: var(--gouv); }
+/* L'INSTITUTION NON ÉTABLIE N'EST PAS UNE INSTITUTION : elle porte le gris des
+   métadonnées, jamais une quatrième teinte — une teinte la rangerait à côté des
+   trois autres, alors qu'elle dit précisément qu'on ne sait pas. */
+.cp-gc-tete-col--non_etablie .cp-gc-bandeau { background: var(--neutre); }
+.cp-gc-tete-col--non_etablie .cp-gc-col-nom { color: #6f6b78; background: var(--neutre-wash); }
+.cp-gc-tete-col--non_etablie .cp-gc-col-nom i { background: var(--neutre); }
 
 /* LE FILET COURT SUR TOUTE LA LIGNE : il est porté par le libellé ET par
    chaque cellule, sinon il s'arrête au bout de la première colonne. */

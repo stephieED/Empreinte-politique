@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
-import { extraitsDuDebat } from '../utils/extraits';
+import { extraitsDuDebat, CITATION_ELISION, CITATION_FERME, CITATION_OUVRE } from '../utils/extraits';
 import { segmentsSurlignes } from '../utils/filtreIntitule';
 import { formatNumber } from '../utils/lecture';
 import './ExtraitsDuDebat.css';
@@ -58,12 +58,14 @@ export function ProposDuMembre({ extraits, mots = [], saisie = '', parPage = 5 }
           <span className="xd-date">{jour(e.date)}</span>
           <div className="xd-cite-corps">
             <p className="xd-texte xd-texte--nu">
+              {CITATION_OUVRE}
               {mots.length
                 ? segmentsSurlignes(e.texte, saisie).map((s, k) => (s.marque
                   ? <mark className="xd-mot" key={k}>{s.texte}</mark>
                   : <Fragment key={k}>{s.texte}</Fragment>))
                 : e.texte}
-              {e.tronque && ' …'}
+              {e.tronque && ` ${CITATION_ELISION}`}
+              {CITATION_FERME}
             </p>
             {e.url && (
               <a className="xd-source" href={e.url} target="_blank" rel="noreferrer">

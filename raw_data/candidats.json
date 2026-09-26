@@ -7,7 +7,7 @@
       "decline",
       "officiel"
     ],
-    "derniere_verification": "2026-09-24",
+    "derniere_verification": "2026-09-26",
     "sources_de_veille": [
       "https://lcp.fr/actualites/presidentielle-2027-la-liste-des-candidats-deja-en-lice-et-des-pretendants-436373",
       "https://www.france24.com/fr/france/20260524-france-presidentielle-2027-qui-sont-les-candidats-officiellement-declares",
@@ -273,10 +273,10 @@
       "slug": "lydie-massard",
       "parti": "Union démocratique bretonne",
       "famille_politique": null,
-      "statut": "declare",
+      "statut": "decline",
       "date_declaration": null,
       "source": "https://fr.wikipedia.org/wiki/Lydie_Massard",
-      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré dans le cadre d'une primaire). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+      "notes": "Candidature retirée : figure sous « Candidatures retirées » de l'article des candidatures. Statut passé de declare à decline le 2026-09-26 par src/fetch_candidats_declares.py (#763). Entrée conservée : son slug est publié. Source : https://fr.wikipedia.org/wiki/Lydie_Massard."
     },
     {
       "nom": "François Ruffin",

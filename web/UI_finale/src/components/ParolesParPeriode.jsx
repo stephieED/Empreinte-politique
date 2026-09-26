@@ -23,6 +23,7 @@
  * et la première phrase visible deviendrait, de fait, une phrase mise en avant,
  * ce qu'aucune règle ne nous autorise à faire (§2 règle 1).
  */
+import { CITATION_ELISION, CITATION_FERME, CITATION_OUVRE } from '../utils/extraits';
 import { Fragment, useMemo, useState } from 'react';
 import { segmentsSurlignes } from '../utils/filtreIntitule';
 import { Link } from 'react-router-dom';
@@ -122,11 +123,18 @@ function Intervention({ i, mot = '' }) {
         )}
         {i.verbatim ? (
           <blockquote className="pp-verbatim">
+            {CITATION_OUVRE}
             {mot
               ? segmentsSurlignes(i.verbatim, mot).map((s, k) => (s.marque
                 ? <mark className="pp-mot" key={k}>{s.texte}</mark>
                 : <Fragment key={k}>{s.texte}</Fragment>))
               : i.verbatim}
+            {/* L'ÉLISION DIT QUE L'EXTRAIT EST COUPÉ, et elle manquait ici :
+                `texteTronque` était calculé et rendu nulle part. Refermer les
+                guillemets sans elle donnerait une citation complète là où la
+                collecte s'arrête à 280 caractères (§2 règle 5). */}
+            {i.texteTronque && ` ${CITATION_ELISION}`}
+            {CITATION_FERME}
           </blockquote>
         ) : (
           <p className="pp-sans-verbatim">

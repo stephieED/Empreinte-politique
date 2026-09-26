@@ -251,7 +251,12 @@ function Colonnes({ votes, positions, matiere, onIsoler, onToutAfficher, ue = fa
 /* `etiquette` (#979) : le rappel du mot du filtre, en tête de la carte.
  * `ue` (#901) : le versant européen — ni période, ni origine de texte. */
 export default function VotesParPeriode({ periodes, portee, reperes, regle, etiquette = null, ue = false }) {
-  const [index, setIndex] = useState(0);
+  /* LA PÉRIODE LA PLUS RÉCENTE D'ABORD. Les périodes sont rangées de la plus
+     ancienne à la plus récente ; ouvrir sur l'index 0 posait la fiche sur le
+     mandat le plus vieux, et « Ce qu'il a dit » ouvre déjà sur la dernière
+     (`ParolesParPeriode`, même composant de navigation). Deux sections voisines
+     n'ouvrent pas sur deux bouts de carrière différents. */
+  const [index, setIndex] = useState(() => Math.max(0, (periodes?.length || 1) - 1));
   const [positions, setPositions] = useState(() => new Set(POSITIONS_ORDONNEES));
   const [origine, setOrigine] = useState(null);
   const [matiere, setMatiere] = useState(null);

@@ -153,9 +153,20 @@ def test_la_limite_projets_de_loi_a_disparu(profil: str, fiche: str) -> None:
     # fiche de lignée dessine la même figure.
     liste = _sans_commentaires((SRC / "components" / "CascadeTextes.jsx").read_text(encoding="utf-8"))
     assert "from './CascadeTextes'" in fiche
-    assert "t.projetDeLoi" in liste, (
+    # LA DISTINCTION SURVIT, SON PORTEUR A CHANGÉ (25/09/2026). Elle se lisait
+    # `t.projetDeLoi` — la NATURE du texte —, ce qui rangeait un RAPPORTEUR d'un
+    # projet de loi sous « Au gouvernement » : 18 des 1 098 textes portés des 34
+    # candidats publiés, dont les deux lois de finances dont Emmanuel Maurel est
+    # co-rapporteur, alors qu'il n'a jamais exercé de fonction gouvernementale.
+    # Le test gardait la distinction par le symbole qui portait le contresens ;
+    # il la garde maintenant par l'attribution SOURCÉE (#689).
+    assert "t.institution === INSTITUTION_GOUVERNEMENT" in liste, (
         "la distinction projet / proposition a été supprimée au lieu de la seule "
         "affirmation fausse : la liste ne la rend plus"
+    )
+    assert "t.projetDeLoi" not in liste, (
+        "la colonne est revenue à la NATURE du texte : un rapporteur d'un projet "
+        "de loi y reprend une fonction gouvernementale qu'il n'a pas exercée"
     )
     assert "aucun champ ne la porte" not in fiche
     assert "même rôle" not in fiche

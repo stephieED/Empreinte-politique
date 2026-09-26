@@ -13,7 +13,14 @@ import './CandidateProfile.css';
 import { teinteMatiere, teinteThemeUe } from '../utils/matiere';
 import { croise, disposerCascade, textesDeLaSelection } from '../utils/cascadeTextes';
 import { LIBELLE_SORT_TEXTE, MOTIF_SORT, estProcedure49_3, formatNumber } from '../utils/lecture';
-import { LIBELLE_PISTE, LIBELLE_STADE } from '../utils/profilCandidat';
+import {
+  INSTITUTION_GOUVERNEMENT,
+  INSTITUTION_NON_ETABLIE,
+  INSTITUTION_PARLEMENT,
+  INSTITUTION_PE,
+  LIBELLE_PISTE,
+  LIBELLE_STADE,
+} from '../utils/profilCandidat';
 
 /*
  * LA CASCADE PROCÉDURALE — ce que sont devenus les textes qu'il a portés.
@@ -220,12 +227,23 @@ export function Cascade({ cascade, selection, onSelection, rangs = null, dispose
  * suivante. La liste nomme alors l'issue, et rien d'autre. */
 export function ListeCascade({ cascade, selection, onRaz, ordonnee = true }) {
   const sel = useMemo(() => textesDeLaSelection(cascade, selection), [cascade, selection]);
+  /* LA COLONNE SUIT L'INSTITUTION SOURCÉE, JAMAIS LA NATURE DU TEXTE.
+     Elle a filtré sur `projetDeLoi` : un RAPPORTEUR d'un projet de loi se
+     rangeait alors « Au gouvernement », ce qui prête une fonction
+     gouvernementale à qui n'en a jamais exercé — 18 des 1 098 textes portés
+     des 34 candidats publiés, dont les deux lois de finances d'Emmanuel
+     Maurel. `institutionDuTexte` lit `role` d'abord (#689).
+
+     Une institution non établie prend SA colonne : la fondre dans
+     « À l'Assemblée » inventerait une initiative personnelle (§2 règle 5),
+     et la taire ferait disparaître le texte de la liste. */
   const colonnes = useMemo(() => [
     /* Un texte européen se range sous « Au Parlement européen », jamais sous
-       « À l'Assemblée » (#901). */
-    { cle: 'pe', textes: sel.filter((t) => t.europeen) },
-    { cle: 'parlement', textes: sel.filter((t) => !t.projetDeLoi && !t.europeen) },
-    { cle: 'gouvernement', textes: sel.filter((t) => t.projetDeLoi) },
+       « À l'Assemblée » (#901) — sa chambre prime sur le banc qui le signe. */
+    { cle: INSTITUTION_PE, textes: sel.filter((t) => t.europeen) },
+    { cle: INSTITUTION_PARLEMENT, textes: sel.filter((t) => !t.europeen && t.institution === INSTITUTION_PARLEMENT) },
+    { cle: INSTITUTION_GOUVERNEMENT, textes: sel.filter((t) => !t.europeen && t.institution === INSTITUTION_GOUVERNEMENT) },
+    { cle: INSTITUTION_NON_ETABLIE, textes: sel.filter((t) => !t.europeen && !t.institution) },
   ].filter((c) => c.textes.length > 0), [sel]);
   if (!selection) {
     return (

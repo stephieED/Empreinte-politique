@@ -395,6 +395,25 @@ button.eg-col:focus-visible {
   background: #dcd9d3;
 }
 
+/* `.eg-rang` masque ce qui déborde : le repère est donc son VOISIN, pas son
+   enfant, et c'est la barre qui sert de repère de position. */
+.eg-lg-barre {
+  position: relative;
+}
+
+.eg-rang-sien {
+  position: absolute;
+  top: -4px;
+  width: 3px;
+  height: 26px;
+  border-radius: 2px;
+  transform: translateX(-1.5px);
+  /* L'anneau de la couleur du fond : le repère porte la teinte de son vote et
+     se pose sur un segment de la même teinte — sans lui, il y disparaît. */
+  box-shadow: 0 0 0 1.5px var(--card, #fff);
+  pointer-events: none;
+}
+
 /* ── Les vides ─────────────────────────────────────────────────────────────── */
 .eg-vide h3 {
   font-size: 14px;

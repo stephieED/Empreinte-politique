@@ -1699,9 +1699,10 @@ export function textesEuropeens(
       role: LIBELLE_ROLE_TEXTE[t.role] || t.role || null,
       url: t.source_url ?? null,
       an: t.date_max ? String(t.date_max).slice(0, 4) : null,
-      // Aucun texte européen n'est un projet de loi : la liste garde donc une
-      // seule colonne, et `ListeCascade` n'en ouvre pas une vide.
-      projetDeLoi: false,
+      // Un texte européen se range sous « Au Parlement européen » quel que
+      // soit son rôle : `europeen` décide avant l'institution, et
+      // `ListeCascade` n'ouvre pas de colonne vide.
+      institution: institutionDuTexte(t),
       europeen: true,
     };
   });
@@ -1797,11 +1798,20 @@ function cascadeDesTextes(publies, commissionDuDossier) {
       role: LIBELLE_ROLE_TEXTE[t.role] || t.role || null,
       url: t.source_url ?? null,
       an: t.date_max ? String(t.date_max).slice(0, 4) : null,
-      // L'INSTITUTION VOYAGE AVEC LE TEXTE, jusque dans la liste ouverte au clic
-      // sur la cascade : un projet de loi est signé comme MINISTRE, une
-      // proposition déposée comme PARLEMENTAIRE. `role` les sépare à la source
-      // (#689) et la liste les range en deux colonnes plutôt qu'en une phrase.
-      projetDeLoi: estProjetDeLoi(t),
+      /* L'INSTITUTION VOYAGE AVEC LE TEXTE, jusque dans la liste ouverte au
+         clic sur la cascade — et c'est `institutionDuTexte`, jamais la NATURE.
+         Le commentaire disait déjà « `role` les sépare à la source (#689) » ;
+         le code lisait `estProjetDeLoi`, qui est indifférent au rôle. Un
+         RAPPORTEUR d'un projet de loi se retrouvait donc « Au gouvernement » :
+         18 des 1 098 textes portés des 34 candidats publiés, dont les deux
+         lois de finances dont Emmanuel Maurel est co-rapporteur — et il n'a
+         jamais exercé de fonction gouvernementale. C'est le contresens exact
+         que #689 avait corrigé dans l'autre sens.
+
+         `null` est une TROISIÈME valeur, jamais « parlement » par défaut :
+         6 textes sur les 1 098 n'ont aucune attribution sourcée, et les
+         ranger inventerait une initiative personnelle (§2 règle 5). */
+      institution: institutionDuTexte(t),
     };
   });
   // L'ordre des matières fixe les teintes, et il suit le VOLUME : recalculé
@@ -2691,7 +2701,12 @@ export const CAS_RIEN_A_MONTRER = 'rien_a_montrer';
  * `ORDRE_COLONNES`, ajouté par #328, ne la ressuscite pas : il range les
  * colonnes, il ne fabrique aucune piste — la frise reste seule à le faire.
  */
+/* La colonne des textes dont AUCUNE source n'établit l'institution : elle se
+   nomme, elle ne se range pas sous une voisine (§2 règle 5). */
+export const INSTITUTION_NON_ETABLIE = 'non_etablie';
+
 export const LIBELLE_PISTE = {
+  [INSTITUTION_NON_ETABLIE]: 'Institution non établie',
   [INSTITUTION_PARLEMENT]: "À l'Assemblée",
   [INSTITUTION_SENAT]: 'Au Sénat',
   [INSTITUTION_PE]: 'Au Parlement européen',

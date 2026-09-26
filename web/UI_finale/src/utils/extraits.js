@@ -32,6 +32,34 @@ const ID_SYCERON = /^syceron_(CRSANR5L(\d+)S\w+?)_\d+$/;
  *  Même règle que `schema_pivot.url_seance_an` : l'uid du compte rendu est le
  *  préfixe de `intervention_id`, l'ancre est `id_syceron`. Sans ancre, la
  *  séance seule ; hors Syceron, `null`. */
+/* ── UNE PRISE DE PAROLE SE CITE, ET SE CITE PAREIL PARTOUT ─────────────────
+ *
+ * Les guillemets français, avec leurs espaces fines insécables, et l'élision
+ * qui dit qu'un extrait est COUPÉ. Trois fiches affichent du verbatim — le
+ * candidat (`ParolesParPeriode`), la lignée et le gouvernement (tous deux par
+ * `ExtraitsDuDebat`) — et elles ne le ponctuaient pas : rien ne séparait la
+ * parole rapportée du texte de la fiche.
+ *
+ * La convention vit ICI et pas dans chaque composant : recopiée trois fois,
+ * elle divergerait au premier ajustement. Demandé par la propriétaire le
+ * 25/09/2026, « et ça devrait être le cas partout ».
+ *
+ * L'ÉLISION EST DANS LES GUILLEMETS, jamais après : un extrait de 280
+ * caractères coupé au milieu d'une phrase ne doit pas se refermer comme s'il
+ * était complet (§2 règle 5 — une troncature est un fait, pas un silence).
+ *
+ * ELLE S'ÉCRIT « […] » ET NON « … », arbitré sur maquette le 25/09/2026. Une
+ * raison décide, et elle se voit : **le locuteur suspend lui-même sa phrase**
+ * — 1 072 des 352 564 extraits tronqués finissent déjà sur des points de
+ * suspension —, et « … » s'y colle sans que rien ne dise lequel est de lui.
+ * Les crochets disent que la marque est de NOUS. Le reste suit : 73,7 % des
+ * extraits tronqués finissent sur un point, où « articles. … » se lit comme
+ * une coquille. C'est aussi la convention française de l'omission dans une
+ * citation. */
+export const CITATION_OUVRE = '\u00ab\u202f';
+export const CITATION_FERME = '\u202f\u00bb';
+export const CITATION_ELISION = '[\u2026]';
+
 export function urlSeanceAn(intervention) {
   const m = ID_SYCERON.exec(String(intervention?.intervention_id ?? intervention?.id ?? ''));
   if (!m) return null;

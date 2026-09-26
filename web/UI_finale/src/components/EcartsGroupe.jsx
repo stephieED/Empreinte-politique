@@ -151,6 +151,24 @@ function lecture(x) {
 }
 
 function Ligne({ x }) {
+  const parts = [
+    ['pour', x.pour],
+    ['contre', x.contre],
+    ['abstention', x.abstention],
+  ];
+  /* Le centre de SA part, en % de la barre entière — les absents compris, parce
+     que la barre les montre : les retirer du dénominateur décalerait le repère
+     de tout ce que leur segment occupe. */
+  const total = parts.reduce((n, [, v]) => n + v, 0) + (x.absents || 0);
+  const centre = (() => {
+    if (!total) return null;
+    let avant = 0;
+    for (const [p, n] of parts) {
+      if (p === x.position) return n ? ((avant + n / 2) / total) * 100 : null;
+      avant += n;
+    }
+    return null;
+  })();
   return (
     <div className="eg-lg" id={`eg-lg-${x.scrutinId}`}>
       <div className="eg-lg-date cp-num">{jour(x.date)}</div>
@@ -190,15 +208,30 @@ function Ligne({ x }) {
       </div>
       <div className="eg-lg-barre">
         <span className="eg-rang">
-          {[
-            ['pour', x.pour],
-            ['contre', x.contre],
-            ['abstention', x.abstention],
-          ].map(([p, n]) => (n ? (
+          {parts.map(([p, n]) => (n ? (
             <span key={p} style={{ flex: n, background: teinte(p) }} />
           ) : null))}
           {x.absents ? <span className="eg-rang-absent" style={{ flex: x.absents }} /> : null}
         </span>
+        {/* OÙ SA VOIX SE SITUE DANS CELLE DE SON GROUPE. Le repère se pose au
+            CENTRE de la part qu'il a rejointe, et il porte la TEINTE DE SON
+            VOTE — arbitré par la propriétaire le 25/09/2026, contre la lecture
+            qui le voulait en encre au motif que les trois teintes sont prises
+            par les positions.
+
+            Il est donc de la même couleur que le segment sous lui : sans relief
+            il y disparaîtrait. Deux choses l'en détachent, et aucune n'est
+            décorative — il DÉBORDE la barre en haut et en bas, et il porte un
+            anneau de la couleur du fond.
+
+            `null` quand la part est vide : un repère posé au hasard dirait une
+            position qu'il n'a pas prise (§2 règle 5). */}
+        {centre === null ? null : (
+          <span
+            className="eg-rang-sien"
+            style={{ left: `${centre}%`, background: teinte(x.position) }}
+          />
+        )}
       </div>
     </div>
   );
@@ -314,7 +347,13 @@ export default function EcartsGroupe({ ecarts, voix, etiquette = null }) {
 
       {ecarts.ecarts.length > 0 && (
         <div className="cp-carte eg-carte">
-          <h3 className="eg-titre">Les scrutins où {voix.pronom} n’est pas du côté majoritaire</h3>
+          {/* « MAJORITAIRE » SEUL SE LIT COMME LA MAJORITÉ DE L'ASSEMBLÉE, ce qui
+          serait un fait politique tout autre : la section compare sa position à
+          celle de SON GROUPE. Le verbe reprend le mot de la légende juste en
+          dessous — « membres qui n'ont pas suivi ». */}
+      <h3 className="eg-titre">
+        Les scrutins où {voix.pronom} n’a pas voté comme la majorité de son groupe
+      </h3>
           <p className="eg-sous">
             Chacun avec la répartition réelle du groupe ce jour-là, et le sort du texte.
           </p>
