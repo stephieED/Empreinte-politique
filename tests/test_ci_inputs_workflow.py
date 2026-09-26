@@ -46,6 +46,21 @@ def _inputs_declares() -> set[str]:
     return set(re.findall(r"^      ([a-z_]+):$", bloc, re.MULTILINE))
 
 
+def _bloc_input(nom: str) -> str:
+    """Le bloc de déclaration d'un input, de son nom au suivant.
+
+    Écrit une fois ici plutôt que recopié : les tests qui lisaient un `default:`
+    le faisaient avec des bornes en dur (`index("      cold_start:")`), qui
+    cassent dès qu'un input est inséré entre les deux.
+    """
+    contenu = GENERATE.read_text(encoding="utf-8")
+    bloc = contenu[contenu.index("  workflow_dispatch:"):contenu.index("\n# Moindre privilège")]
+    debut = bloc.index(f"      {nom}:\n")
+    reste = bloc[debut + len(f"      {nom}:\n"):]
+    suite = re.search(r"^      [a-z_]+:$", reste, re.MULTILINE)
+    return bloc[debut:] if suite is None else bloc[debut: debut + len(f"      {nom}:\n") + suite.start()]
+
+
 def test_chaque_input_passe_a_la_relance_existe():
     """Un `-f` orphelin fait échouer le dispatch en 422, jamais avant."""
     passes = set(re.findall(r"-f ([a-z_]+)=", RETRY.read_text(encoding="utf-8")))
@@ -201,10 +216,15 @@ def _script_decision_roster() -> str:
     return script
 
 
-def _flags(tmp_path, existing: str, ajouter: bool, limit: str = "0"):
-    # `OVERWRITE` est calculé par GHA (`inputs.existing_profiles == 'overwrite'`) :
-    # la ligne est vérifiée juste en dessous pour que cette reproduction ne
-    # puisse pas diverger en silence.
+def _flags(tmp_path, existing: str, ajouter, limit: str = "0"):
+    """`ajouter` accepte `True`, `False` — et `""`, qui n'est pas un booléen mal
+    typé mais **le cas du déclenchement `schedule`** : GitHub n'y fournit aucune
+    valeur d'input, et les deux axes arrivent en chaîne vide (#1054).
+
+    `OVERWRITE` est calculé par GHA (`inputs.existing_profiles == 'overwrite'`) :
+    la ligne est vérifiée juste en dessous pour que cette reproduction ne
+    puisse pas diverger en silence. À vide, la comparaison rend `false`.
+    """
     script = _script_decision_roster() + (
         '\nprintf "FLAG:%s\\n" "${POP_FLAG[@]}" "${MERGE_FLAG[@]}" "${LIMIT_FLAG[@]}"\n'
     )
@@ -216,7 +236,7 @@ def _flags(tmp_path, existing: str, ajouter: bool, limit: str = "0"):
         env={
             "PATH": os.environ["PATH"],
             "EXISTING_PROFILES": existing,
-            "ADD_UNCOVERED": "true" if ajouter else "false",
+            "ADD_UNCOVERED": "" if ajouter == "" else ("true" if ajouter else "false"),
             "OVERWRITE": "true" if existing == "overwrite" else "false",
             "ROSTER_LIMIT": limit,
         },
@@ -326,4 +346,124 @@ def test_un_libelle_tient_sur_une_ligne():
         f"donc ce sont des phrases : {trop_longues}. Nommer le champ, ne pas "
         "l'expliquer — le pourquoi appartient à docs/technical_decisions.md. "
         "Voir le rendu : python3 scripts/rendu_formulaire.py"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Le septième cas : le déclenchement `schedule` (#1054)
+#
+# Les six combinaisons ci-dessus se demandent par le formulaire. Il en existe
+# une septième que PERSONNE ne demande et que GitHub produit tout seul : sur un
+# `schedule:`, aucun input n'est fourni et les `default:` de
+# `workflow_dispatch` ne s'appliquent pas. Les variables arrivent vides.
+#
+# Sans défaut appliqué en bash, ce cas-là descendait jusqu'à
+# `--refresh-existing` : un run programmé rafraîchissait l'existant et
+# n'ajoutait plus jamais un membre non couvert. La couverture se figeait, sans
+# erreur ni log alarmant — c'est le genre de défaut qu'un test doit porter,
+# parce qu'un run ne le dira pas.
+# ---------------------------------------------------------------------------
+
+
+def test_un_declenchement_programme_se_comporte_comme_le_formulaire(tmp_path):
+    """Inputs vides = les défauts déclarés. C'est tout ce que ce lot promet."""
+    programme, sortie = _flags(tmp_path, "", "")
+    formulaire, _ = _flags(tmp_path, "refresh", True)
+    assert programme == formulaire == [], (
+        f"Un run programmé produirait {programme} là où le formulaire, sur ses "
+        f"défauts, produit {formulaire}. Le cas le plus coûteux est "
+        "`--refresh-existing` : la couverture cesse de s'étendre, en silence."
+    )
+    assert "existing_profiles=refresh" in sortie and "add_uncovered_members=true" in sortie, (
+        "Le log d'un run programmé n'affiche pas les valeurs effectives : "
+        f"c'est la seule trace dont dispose retry-generate-data.yml.\n{sortie}"
+    )
+
+
+def test_les_defauts_en_bash_sont_ceux_du_formulaire():
+    """Les deux valeurs sont écrites à deux endroits — le `default:` que la
+    propriétaire lit dans le formulaire, et le `${VAR:-…}` qu'un run programmé
+    applique. Elles doivent dire la même chose, sinon le formulaire annonce un
+    comportement que le cron ne tient pas."""
+    contenu = GENERATE.read_text(encoding="utf-8")
+    bloc_axe1 = _bloc_input("existing_profiles")
+    bloc_axe2 = _bloc_input("add_uncovered_members")
+    defaut1 = re.search(r"default:\s*(\S+)", bloc_axe1).group(1)
+    defaut2 = re.search(r"default:\s*(\S+)", bloc_axe2).group(1)
+    for var, defaut in (("EXISTING_PROFILES", defaut1), ("ADD_UNCOVERED", defaut2)):
+        attendu = f'{var}="${{{var}:-{defaut}}}"'
+        assert attendu in contenu, (
+            f"`{attendu}` est absent de generate-data.yml : le défaut appliqué "
+            f"en bash a divergé du `default: {defaut}` du formulaire (#1054)."
+        )
+
+
+def test_aucun_autre_input_ne_diverge_a_vide():
+    """La mesure qui borne ce lot à deux inputs, et qui dira qu'un treizième est
+    arrivé. Un input divergent est un input dont la valeur VIDE ne produit pas
+    ce que son `default:` promet : un booléen `default: false` est sûr, un
+    `default: true` ne l'est pas ; un nombre ou un choix non vide ne l'est pas
+    non plus, sauf si un `${VAR:-…}` le rattrape quelque part."""
+    contenu = GENERATE.read_text(encoding="utf-8")
+    corps = contenu[contenu.index("\njobs:"):]
+    a_proteger = []
+    for nom in sorted(_inputs_declares()):
+        bloc = _bloc_input(nom)
+        defaut = re.search(r"default:\s*(\S+)", bloc)
+        if defaut is None or defaut.group(1) in ("false", "0", "''", '""'):
+            continue  # vide ⇒ même effet que le défaut
+        if f":-{defaut.group(1)}}}" in corps or f'"${{{nom.upper()}:-' in corps:
+            continue  # un défaut est appliqué en bash
+        a_proteger.append((nom, defaut.group(1)))
+    connus = {("existing_profiles", "refresh"), ("add_uncovered_members", "true"),
+              ("incomplete_read_threshold", "3"), ("roster_limit", "0")}
+    inconnus = [x for x in a_proteger if x not in connus]
+    assert not inconnus, (
+        f"Input(s) dont la valeur vide ne vaut pas le `default:` déclaré, et "
+        f"qu'aucun défaut bash ne rattrape : {inconnus}. Sur un déclenchement "
+        "`schedule` ils arriveront vides, et le run ne fera pas ce que le "
+        "formulaire annonce (#1054)."
+    )
+
+
+def test_un_cron_actif_ne_va_jamais_sans_ses_defauts_en_bash():
+    """La garde qui LIE les deux moitiés de #1054.
+
+    Le correctif et l'activation sont deux gestes, et le second est une ligne :
+    rien n'empêche de décommenter un `schedule:` dans un lot qui ignore que les
+    inputs y arrivent vides. Ce test refuse cette combinaison — pas le cron, pas
+    le correctif, mais l'un sans l'autre.
+
+    Il vaut aussi à l'envers : si le cron est un jour recommenté, les défauts
+    bash restent inoffensifs et ce test n'a rien à dire.
+    """
+    contenu = GENERATE.read_text(encoding="utf-8")
+    cron_actif = re.search(r"^  schedule:\s*$", contenu, re.MULTILINE) is not None
+    if not cron_actif:
+        return
+    for var, defaut in (("EXISTING_PROFILES", "refresh"), ("ADD_UNCOVERED", "true")):
+        assert f'{var}="${{{var}:-{defaut}}}"' in contenu, (
+            f"`schedule:` est actif mais {var} n'applique pas son défaut en "
+            "bash : un run programmé le recevra VIDE. Pour les deux axes du "
+            "job roster, cela veut dire `--refresh-existing`, donc une "
+            "couverture qui cesse de s'étendre sans qu'aucun log le dise "
+            "(#1054)."
+        )
+
+
+def test_le_cron_est_lu_en_utc_et_reste_une_seule_cadence():
+    """Deux choses qu'on ne veut pas découvrir à l'usage : que l'heure était
+    comprise comme locale — GitHub ne connaît que l'UTC — et qu'un second cron
+    se soit ajouté sans qu'on s'en aperçoive, un run de données n'étant pas
+    rejouable sans conséquence (il committe)."""
+    contenu = GENERATE.read_text(encoding="utf-8")
+    crons = re.findall(r"^    - cron: '([^']+)'\s*$", contenu, re.MULTILINE)
+    if not crons:
+        return
+    assert len(crons) == 1, f"{len(crons)} crons déclarés : {crons}."
+    champs = crons[0].split()
+    assert len(champs) == 5, f"cron mal formé : {crons[0]!r}"
+    assert "UTC" in contenu[: contenu.index("  workflow_dispatch:")], (
+        "le bloc `on:` ne dit plus que l'heure du cron est en UTC : c'est la "
+        "seule information qui manque pour lire la ligne correctement."
     )

@@ -1,8 +1,23 @@
 name: Génération des données
 
 on:
-  #schedule:
-  #  - cron: '0 6 * * *'
+  # ACTIVÉ PAR #1054. La ligne existait, commentée, avec sa cadence : un
+  # passage quotidien. Elle est reprise telle quelle.
+  #
+  # CE QU'IL A FALLU FAIRE AVANT DE LA DÉCOMMENTER : sur un déclenchement
+  # `schedule`, GitHub ne fournit AUCUNE valeur d'input et les `default:` de
+  # `workflow_dispatch` ci-dessous NE S'APPLIQUENT PAS. Deux d'entre eux
+  # arrivaient vides jusqu'au bloc de population du job roster, qui tombait
+  # alors sur `--refresh-existing` : la couverture cessait de s'étendre, sans
+  # erreur ni log. Les défauts s'appliquent désormais en bash, là où ils sont
+  # lus. Voir docs/decisions/defauts-d-inputs-sur-declenchement-programme-1054.md
+  # et tests/test_ci_inputs_workflow.py, qui refuse un cron actif sans eux.
+  #
+  # L'heure est en UTC — GitHub ne connaît pas d'autre fuseau — et un
+  # déclenchement programmé peut être servi avec du retard en heure de pointe :
+  # c'est une cadence, pas un rendez-vous.
+  schedule:
+    - cron: '0 6 * * *'
   workflow_dispatch:
     inputs:
       # These strings are the FORM LABELS: GitHub shows the description and
@@ -1968,8 +1983,10 @@ jobs:
   # progressif qu'il budgétait est terminé (roster couvert à 452/452), et un
   # plafond ferait mentir le défaut `existing_profiles=refresh`, qui promet
   # qu'un correctif de collecte atteint l'existant sans qu'on le demande.
-  # L'activation d'un run PLANIFIÉ reste une décision distincte (schedule:
-  # cron toujours commenté ci-dessus).
+  # Le run est PLANIFIÉ depuis #1054 (schedule: cron en tête de fichier), et ce
+  # job est celui que l'activation a obligé à revoir : ses deux axes de
+  # population arrivent vides sur un déclenchement programmé, d'où les défauts
+  # appliqués en bash dans son step d'extraction.
   #
   # Séquencé après les autres jobs d'extraction (needs: ci-dessous, #222). Ce
   # séquencement avait deux justifications ; une seule tient encore (#412 §2.5,
@@ -2709,6 +2726,31 @@ jobs:
           # #817 : même raison, même endroit.
           COLLECT_DOSSIERS: ${{ inputs.collect_dossiers_legislatifs }}
         run: |
+          # ── LES DÉFAUTS S'APPLIQUENT ICI, EN BASH, PAS DANS LE FORMULAIRE (#1054)
+          #
+          # Sur un déclenchement `schedule`, GitHub ne fournit AUCUNE valeur
+          # d'input : les `default:` de `workflow_dispatch` ne s'appliquent pas
+          # et ces deux variables arrivent VIDES. Le bloc ci-dessous les lit en
+          # comparant à des chaînes — vides, il descendait jusqu'à
+          # `--refresh-existing`, c'est-à-dire « ne traiter QUE l'existant » :
+          # un run programmé aurait rafraîchi les profils déjà écrits et
+          # **n'aurait plus jamais ajouté un membre non couvert**. Aucune
+          # erreur, aucun log alarmant — une couverture qui se figeait.
+          #
+          # Deux inputs étaient déjà protégés de cette façon et servent de
+          # modèle : `incomplete_read_threshold` (`${THRESHOLD:-3}`) et
+          # `ROSTER_LIMIT` (vide et zéro traités ensemble, plus bas). Les deux
+          # valeurs ci-dessous sont les `default:` du formulaire, et
+          # tests/test_ci_inputs_workflow.py refuse qu'elles en divergent.
+          #
+          # Mesuré sur les douze inputs du formulaire : seuls ces deux-là
+          # divergeaient. Les booléens `default: false` valent faux à vide,
+          # `test_slugs` vide signifie « aucune restriction », et
+          # `OVERWRITE` — calculé par GHA — rend `false` à vide, ce qui est
+          # bien ce que `refresh` doit produire.
+          EXISTING_PROFILES="${EXISTING_PROFILES:-refresh}"
+          ADD_UNCOVERED="${ADD_UNCOVERED:-true}"
+
           # ── DEUX AXES DISJOINTS (#578) ──────────────────────────────────
           # Axe 1 (`existing_profiles`) : ce qu'on fait des profils DÉJÀ
           # écrits. Axe 2 (`add_uncovered_members`) : si on en écrit de NOUVEAUX.

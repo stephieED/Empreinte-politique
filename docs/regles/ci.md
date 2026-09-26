@@ -30,6 +30,24 @@ les charger, ni à les faire grossir. -->
   "nothing to collect" (#510, #771).
   → `docs/decisions/run-de-test-perimetre-reduit-792.md`,
     `docs/decisions/cout-reel-du-run-de-test-792.md`
+- **An input's `default:` belongs to the form, not to the run — apply it in bash (#1054).**
+  On a `schedule:` trigger GitHub supplies **no** input at all, and the `default:` values
+  declared under `workflow_dispatch` **do not apply**: the variables arrive empty. Two of
+  the twelve diverged, and both are read by the roster job's decision block: empty,
+  `existing_profiles` and `add_uncovered_members` fell through to `--refresh-existing`,
+  i.e. "refresh what is already written and **never add an uncovered member again**".
+  No error, no alarming log — **a coverage that quietly stops growing**. The fix is the
+  one two inputs already used, `${VAR:-default}` in the step's script, and the rule now
+  holds for every input a job reads: **a `default:` that only exists in the form is a
+  promise the form cannot keep.** A boolean at `default: false` is safe (empty is falsy);
+  a boolean at `default: true`, a number or a non-empty choice is not.
+  `tests/test_ci_inputs_workflow.py` executes the real decision block for the six form
+  combinations **plus the empty one**, refuses a bash default that drifts from the
+  declared one, and names any thirteenth input that would arrive unprotected. **The cron
+  is live since that same lot** (`0 6 * * *`, UTC — GitHub knows no other zone, and a
+  scheduled trigger can be served late at peak hours), and one test refuses the
+  combination that would hurt: **a live `schedule:` without those bash defaults.**
+  → `docs/decisions/defauts-d-inputs-sur-declenchement-programme-1054.md`
 - **A timeout is a cancellation, not a failure, and `continue-on-error` does not cover it
   (#1115).** Every job of the chain carries `if: ${{ !cancelled() }}` (#412 §2.1) — and
   `extract-an` was the one that missed it. Measured on the same XVe archive, two hours

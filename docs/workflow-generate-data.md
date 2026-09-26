@@ -746,6 +746,23 @@ ensemble ou pas du tout, deux cases séparées autoriseraient « périmètre ré
 Les quatre tolérances sont **cloisonnées** : aucune ne désarme le contrôle d'une
 autre.
 
+**Le run est programmé depuis #1054** : `schedule: - cron: '0 6 * * *'`, un passage
+quotidien, **en UTC** — GitHub ne connaît pas d'autre fuseau, et un déclenchement
+programmé peut être servi avec du retard en heure de pointe. Le lancement à la main
+par le formulaire reste évidemment possible, et **la publication du code reste
+manuelle** : le cron ne porte que la génération des données.
+
+**Les défauts du tableau ci-dessus sont ceux du FORMULAIRE, et un déclenchement
+`schedule:` n'en reçoit aucun (#1054).** GitHub ne fournit pas d'input sur un déclenchement programmé : les
+variables arrivent vides, et les `default:` du tableau ci-dessus ne s'appliquent pas.
+Les deux axes du job roster appliquent donc leur défaut **en bash**
+(`${EXISTING_PROFILES:-refresh}`, `${ADD_UNCOVERED:-true}`), comme le faisaient déjà
+`incomplete_read_threshold` et `roster_limit`. Sans ça, un run programmé rafraîchissait
+l'existant et **n'ajoutait plus jamais un membre non couvert** — sans erreur ni log
+alarmant. Les autres inputs sont sûrs à vide : un booléen `default: false` vaut faux,
+et `test_slugs` vide veut dire « aucune restriction ».
+→ `docs/decisions/defauts-d-inputs-sur-declenchement-programme-1054.md`
+
 Les `description:` sont les **libellés affichés** : GitHub montre la description
 et masque le nom du champ. Ce sont des titres, pas de la documentation.
 **`python3 scripts/rendu_formulaire.py` rend le formulaire tel qu'il s'affiche** —
