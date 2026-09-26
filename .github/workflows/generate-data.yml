@@ -13,11 +13,19 @@ on:
   # lus. Voir docs/decisions/defauts-d-inputs-sur-declenchement-programme-1054.md
   # et tests/test_ci_inputs_workflow.py, qui refuse un cron actif sans eux.
   #
-  # L'heure est en UTC — GitHub ne connaît pas d'autre fuseau — et un
-  # déclenchement programmé peut être servi avec du retard en heure de pointe :
-  # c'est une cadence, pas un rendez-vous.
+  # L'HEURE EST EN UTC, et c'est le seul fuseau que GitHub connaisse. `0 2`
+  # vaut donc **4 h à Paris** en heure d'été et **3 h** en heure d'hiver : une
+  # valeur fixe décale d'une heure deux fois par an, et il n'existe aucun moyen
+  # de l'exprimer autrement côté GitHub. C'est l'heure LOCALE qui est visée, et
+  # la première rédaction de #1054 avait pris la valeur UTC pour telle.
+  #
+  # Le créneau laisse la place à une seconde exécution DEMANDÉE À LA MAIN dans
+  # la matinée : le run dure ~58 min depuis #1137, donc celui-ci est terminé
+  # vers 5 h locales et un second lancé en début de matinée l'est avant 9 h.
+  # Un déclenchement programmé peut par ailleurs être servi avec du retard en
+  # heure de pointe : c'est une cadence, pas un rendez-vous.
   schedule:
-    - cron: '0 6 * * *'
+    - cron: '0 2 * * *'
   workflow_dispatch:
     inputs:
       # These strings are the FORM LABELS: GitHub shows the description and

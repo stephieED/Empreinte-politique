@@ -3,7 +3,7 @@
 
 `2026-09-26`
 
-> **En bref** — sur un `schedule:`, GitHub ne fournit **aucune** valeur d'input et les `default:` de `workflow_dispatch` ne s'appliquent pas ; mesuré sur les **douze** inputs du formulaire, **deux** divergeaient — `existing_profiles` et `add_uncovered_members`, tous deux lus par le bloc de décision du job roster —, et vides ils tombaient sur `--refresh-existing`, c'est-à-dire « rafraîchir l'existant et **ne plus jamais ajouter un membre non couvert** », sans erreur ni log alarmant ; correctif : le défaut s'applique en bash (`${VAR:-…}`), le geste que `incomplete_read_threshold` et `roster_limit` utilisaient déjà. **Le cron est activé dans le même lot**, à la cadence déjà écrite dans le fichier (`0 6 * * *`, UTC), et un test refuse désormais un cron actif sans ces défauts.
+> **En bref** — sur un `schedule:`, GitHub ne fournit **aucune** valeur d'input et les `default:` de `workflow_dispatch` ne s'appliquent pas ; mesuré sur les **douze** inputs du formulaire, **deux** divergeaient — `existing_profiles` et `add_uncovered_members`, tous deux lus par le bloc de décision du job roster —, et vides ils tombaient sur `--refresh-existing`, c'est-à-dire « rafraîchir l'existant et **ne plus jamais ajouter un membre non couvert** », sans erreur ni log alarmant ; correctif : le défaut s'applique en bash (`${VAR:-…}`), le geste que `incomplete_read_threshold` et `roster_limit` utilisaient déjà. **Le cron est activé dans le même lot**, à **4 h heure de Paris** (`0 2 * * *` — GitHub ne lit que l'UTC), et un test refuse désormais un cron actif sans ces défauts.
 
 ## 1. Ce qui empêchait de décommenter le cron
 
@@ -61,15 +61,23 @@ formulaire ne peut pas tenir.* → `docs/regles/ci.md` §3b.
 
 ## 4. L'activation, et ce que le lot ne fait pas
 
-**Le cron est activé**, à la cadence qui était déjà écrite dans le fichier :
-`0 6 * * *`, un passage quotidien. La ligne existait, commentée, et elle est
-reprise **telle quelle** — l'horaire n'était pas une question ouverte, il
-attendait seulement que le filet du §3 existe.
+**Le cron est activé**, un passage quotidien à **4 h heure de Paris**.
 
-Deux choses que le bloc `on:` dit maintenant, parce qu'elles ne se lisent pas
-dans une expression cron : l'heure est en **UTC**, GitHub ne connaissant pas
-d'autre fuseau, et un déclenchement programmé peut être **servi en retard** en
-heure de pointe. C'est une cadence, pas un rendez-vous.
+La ligne existait déjà, commentée, à `0 6 * * *` — et c'est là qu'est la leçon du
+lot : **GitHub ne lit que l'UTC**, donc cette valeur valait 8 h locales, pas 6 h.
+La première rédaction l'a reprise telle quelle en la croyant locale. La cadence
+est désormais `0 2 * * *`, soit 4 h en heure d'été et 3 h en heure d'hiver : une
+valeur fixe décale d'une heure deux fois par an et rien, côté GitHub, ne permet
+de l'exprimer autrement.
+
+D'où ce que le bloc `on:` dit maintenant, et qu'aucune expression cron ne dit :
+le fuseau, **l'équivalent en heure locale**, et le fait qu'un déclenchement
+programmé peut être **servi en retard** en heure de pointe. C'est une cadence,
+pas un rendez-vous. `tests/test_ci_inputs_workflow.py` exige les deux mentions.
+
+Le créneau laisse la place à une seconde exécution demandée à la main dans la
+matinée : le run dure ~58 min depuis #1137, donc celui de la nuit est terminé
+vers 5 h locales.
 
 Il ne touche pas à la **publication du code**, qui reste manuelle : un
 job qui publierait l'arbre entier devrait le cloner (paquet git de 6,1 Gio,

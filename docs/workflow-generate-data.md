@@ -746,9 +746,10 @@ ensemble ou pas du tout, deux cases séparées autoriseraient « périmètre ré
 Les quatre tolérances sont **cloisonnées** : aucune ne désarme le contrôle d'une
 autre.
 
-**Le run est programmé depuis #1054** : `schedule: - cron: '0 6 * * *'`, un passage
-quotidien, **en UTC** — GitHub ne connaît pas d'autre fuseau, et un déclenchement
-programmé peut être servi avec du retard en heure de pointe. Le lancement à la main
+**Le run est programmé depuis #1054** : `schedule: - cron: '0 2 * * *'`, un passage
+quotidien à **4 h heure de Paris** — 3 h en heure d'hiver, GitHub ne lisant que l'**UTC**
+et aucune valeur fixe ne suivant le changement d'heure. Un déclenchement programmé peut
+par ailleurs être servi avec du retard en heure de pointe. Le lancement à la main
 par le formulaire reste évidemment possible, et **la publication du code reste
 manuelle** : le cron ne porte que la génération des données.
 

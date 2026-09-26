@@ -44,9 +44,13 @@ les charger, ni à les faire grossir. -->
   `tests/test_ci_inputs_workflow.py` executes the real decision block for the six form
   combinations **plus the empty one**, refuses a bash default that drifts from the
   declared one, and names any thirteenth input that would arrive unprotected. **The cron
-  is live since that same lot** (`0 6 * * *`, UTC — GitHub knows no other zone, and a
-  scheduled trigger can be served late at peak hours), and one test refuses the
-  combination that would hurt: **a live `schedule:` without those bash defaults.**
+  is live since that same lot**, and one test refuses the combination that would hurt:
+  **a live `schedule:` without those bash defaults.** A second one requires the `on:`
+  block to state both the zone and **the local time the cron amounts to**: GitHub reads
+  cron in **UTC only**, so `0 6` was 8 a.m. locally, not 6 — the lot's own first draft
+  read the value as local. A fixed value also shifts by an hour twice a year, and nothing
+  on GitHub's side can express it otherwise. A scheduled trigger can be served late at
+  peak hours: it is a cadence, not an appointment.
   → `docs/decisions/defauts-d-inputs-sur-declenchement-programme-1054.md`
 - **A timeout is a cancellation, not a failure, and `continue-on-error` does not cover it
   (#1115).** Every job of the chain carries `if: ${{ !cancelled() }}` (#412 §2.1) — and

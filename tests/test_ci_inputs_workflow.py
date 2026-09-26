@@ -463,7 +463,13 @@ def test_le_cron_est_lu_en_utc_et_reste_une_seule_cadence():
     assert len(crons) == 1, f"{len(crons)} crons déclarés : {crons}."
     champs = crons[0].split()
     assert len(champs) == 5, f"cron mal formé : {crons[0]!r}"
-    assert "UTC" in contenu[: contenu.index("  workflow_dispatch:")], (
+    entete = contenu[: contenu.index("  workflow_dispatch:")]
+    assert "UTC" in entete, (
         "le bloc `on:` ne dit plus que l'heure du cron est en UTC : c'est la "
         "seule information qui manque pour lire la ligne correctement."
+    )
+    assert "Paris" in entete, (
+        "le bloc `on:` ne donne plus l'heure LOCALE que vaut ce cron. C'est "
+        "exactement ce qui a manqué à la première rédaction de #1054 : `0 6` "
+        "avait été lu comme 6 h locales, alors qu'il en valait 8."
     )
