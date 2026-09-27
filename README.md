@@ -17,8 +17,8 @@ les candidats à l'élection présidentielle française de 2027, ainsi que pour 
 groupes parlementaires et les gouvernements réels.
 
 **Principe directeur** : tout fait affiché doit être traçable jusqu'à une source
-primaire (un scrutin officiel, un dossier législatif, une révision précise de
-Wikipédia). Le projet ne porte aucun jugement de valeur.
+primaire. Le projet agrège des faits ; il ne produit ni classement, ni score, ni
+appréciation des positions politiques.
 
 ---
 
@@ -45,27 +45,30 @@ Le détail et le raisonnement : [`AGENTS.md`](AGENTS.md) §2 et §6.
 
 ## D'où viennent les données
 
-| Source | Ce qu'elle apporte | Cadence | Licence |
-|---|---|---|---|
-| [Open data de l'Assemblée nationale](https://data.assemblee-nationale.fr/) | **La seule source de l'activité parlementaire française** depuis #529 : identité, mandats, votes, amendements, dossiers, comptes rendus Syceron, questions | quotidienne | Licence Ouverte (Etalab) — attribution |
-| [Open data du Sénat](https://data.senat.fr/) | **Les appartenances sénatoriales seulement** depuis #885 — mandats, groupes, commissions, datés au jour près. Le jeu ne porte **ni scrutin ni compte rendu** : l'activité en séance n'est pas publiée | à chaque run | Licence Ouverte 2.0 (Etalab) — attribution |
-| [Parltrack](https://parltrack.org) | Le volet européen des anciens eurodéputés | hebdomadaire (environ) | ODbL v1.0 — **partage à l'identique** |
-| [Parlement européen](https://data.europarl.europa.eu/) | Le mandat européen | en direct, à chaque run | CC BY 4.0 — attribution, `User-Agent` identifiant le réutilisateur, 500 requêtes / 5 min |
-| [EuroVoc](https://publications.europa.eu/webapi/rdf/sparql) | Le **nom français** d'une matière européenne, quand le Parlement n'en donne que l'identifiant, et son **domaine** (« 08 RELATIONS INTERNATIONALES »), lu dans le thésaurus | en direct, à chaque run | CC BY 4.0 — attribution, et indication des modifications |
-| [Sycomore](https://www2.assemblee-nationale.fr/sycomore/recherche) (Assemblée nationale) | **Citée, pas collectée** : les mandats de député antérieurs au 19/06/2002, relus à la main un par un (#860) | aucune — table relue | tous droits réservés — **seuls des faits** (fonction, dates) repris, avec leur lien |
-| Journal officiel ([DILA](https://echanges.dila.gouv.fr/OPENDATA/JORF/), [Légifrance](https://www.legifrance.gouv.fr/)) | **Collecté depuis le 22/09/2026** : les décrets, arrêtés et ordonnances parus depuis 2007, pour retrouver ce qu'un gouvernement a pris sur un sujet. Le texte des actes n'est pas republié, il se lit chez Légifrance. **Aucun rattachement à une personne** : la source ne publie pas le signataire. Les fonctions gouvernementales antérieures au corpus restent, elles, **citées** décret par décret (#860) | 389 397 actes, relus sur les deux derniers mois à chaque run | Licence Ouverte 2.0 (Etalab) — attribution |
-| [Répertoire national des élus](https://www.data.gouv.fr/datasets/repertoire-national-des-elus-1) + sortants 2026 | **Les mandats locaux** des candidats déclarés depuis #922 — municipaux, maires, départementaux, régionaux, communautaires. La couverture **commence en 2020** ; avant, l'absence est déclarée et jamais lue comme « aucun mandat ». La source ne publie **aucune date de fin** | à chaque run, par l'API tabulaire | Licence Ouverte 2.0 (Etalab) — attribution |
-| Wikipédia / Wikidata | Le suivi des candidatures déclarées | immédiate | CC BY-SA 4.0 / CC0 |
-| [Conseil constitutionnel](https://www.conseil-constitutionnel.fr/) | **À venir** : la liste officielle des candidats et les parrainages, qui remplaceront Wikipédia pour dire qui est candidat. La loi du 6/11/1962 (art. 3) fixe les bornes — parrainages publiés au moins deux fois par semaine jusqu'au 12/03/2027, liste au plus tard le 26/03/2027 ; aucune date n'est annoncée | — | non connue à ce jour |
-| NosDéputés / NosSénateurs | **Plus collectées** depuis #528/#529, mais des champs déjà publiés en dérivent | — | ODbL v1.0 — **partage à l'identique** |
+| Source | Ce qu'elle apporte | Licence |
+|---|---|---|
+| [Open data de l'Assemblée nationale](https://data.assemblee-nationale.fr/) | **La seule source de l'activité parlementaire française** : identité, mandats, votes, amendements, dossiers, comptes rendus Syceron, questions | Licence Ouverte (Etalab) — attribution |
+| [Open data du Sénat](https://data.senat.fr/) | **Les appartenances sénatoriales seulement** — mandats, groupes, commissions. Le jeu ne porte **ni scrutin ni compte rendu** | Licence Ouverte 2.0 (Etalab) — attribution |
+| [Parltrack](https://parltrack.org) | Le volet européen des anciens eurodéputés | ODbL v1.0 — **partage à l'identique** |
+| [Parlement européen](https://data.europarl.europa.eu/) | Le mandat européen, les scrutins et les dossiers cités | CC BY 4.0 — attribution, `User-Agent` identifiant le réutilisateur |
+| [EuroVoc](https://publications.europa.eu/webapi/rdf/sparql) | Le **nom français** d'une matière européenne quand le Parlement n'en donne que l'identifiant, et son domaine | CC BY 4.0 — attribution, indication des modifications |
+| [Sycomore](https://www2.assemblee-nationale.fr/sycomore/recherche) (Assemblée nationale) | **Citée, pas collectée** : les mandats de député antérieurs au 19/06/2002, relus à la main un par un | tous droits réservés — **seuls des faits** (fonction, dates) repris, avec leur lien |
+| Journal officiel ([DILA](https://echanges.dila.gouv.fr/OPENDATA/JORF/), [Légifrance](https://www.legifrance.gouv.fr/)) | Les décrets, arrêtés et ordonnances parus depuis 2007, et les lois que chacun applique ou cite. Le texte des actes n'est pas republié. **Aucun rattachement à une personne** : la source ne publie pas le signataire | Licence Ouverte 2.0 (Etalab) — attribution |
+| [Répertoire national des élus](https://www.data.gouv.fr/datasets/repertoire-national-des-elus-1) (RNE) + sortants 2026 | **Les mandats locaux** des candidats déclarés. La source ne publie **aucune date de fin** | Licence Ouverte 2.0 (Etalab) — attribution |
+| Wikipédia / Wikidata | Le suivi des candidatures déclarées | CC BY-SA 4.0 / CC0 |
+| [Conseil constitutionnel](https://www.conseil-constitutionnel.fr/) | **À venir** : la liste officielle des candidats et les parrainages, qui remplaceront Wikipédia pour dire qui est candidat. Aucune date n'est annoncée | non connue à ce jour |
+| NosDéputés / NosSénateurs | **Plus collectées**, mais des champs déjà publiés en dérivent | ODbL v1.0 — **partage à l'identique** |
 
-Le corpus **n'est pas** sous une licence unique, et avoir cessé de collecter
-Regards Citoyens n'y a rien changé (#530) : chaque profil déclare dans
+Ce que chaque fournisseur publie, ses pièges et ses URL :
+[`docs/sources/`](docs/sources/) — la seule documentation qui dérive avec lui,
+pas avec notre code.
+
+Le corpus **n'est pas** sous une licence unique : chaque profil déclare dans
 `meta.licence_donnees` les licences dont son propre contenu relève, dérivées de
-ses `sources[]` par `src/licences.py`. Le site HTML est une « œuvre dérivée »
-ODbL (attribution suffisante) ; une republication des données brutes
-téléchargeables déclenche le partage à l'identique.
-→ [`AGENTS.md`](AGENTS.md) §7, `docs/decisions/licence-lot-6-530.md`.
+ses `sources[]`. Le site HTML est une « œuvre dérivée » ODbL (attribution
+suffisante) ; une republication des données brutes téléchargeables déclenche le
+partage à l'identique.
+→ [`AGENTS.md`](AGENTS.md) §7, [`docs/decisions/licence-lot-6-530.md`](docs/decisions/licence-lot-6-530.md)
 
 ## Installation
 
@@ -101,36 +104,34 @@ npm run dev     # synchronise les données puis démarre Vite
 **Toutes les autres commandes du dépôt sont dans
 [`docs/commandes.md`](docs/commandes.md)** — générer, auditer, vérifier avant de
 committer, opérer, voir ce que voit l'utilisatrice. Une commande y est
-documentée si l'on peut avoir à la lancer soi-même, et
-`tests/test_commandes_documentees.py` vérifie à chaque run que ce fichier ne
-cite ni un script disparu ni une option qui n'existe plus.
+documentée si l'on peut avoir à la lancer soi-même, et un test vérifie que ce
+fichier ne cite ni un script disparu ni une option qui n'existe plus.
 
 ## Où vit quoi
 
 ```
 raw_data/      Entrées déclaratives + collecte brute (proche de la source)
   candidats.json            la liste éditoriale des candidats déclarés
-  lois_jorf.json            numéro de loi → identifiant au Journal officiel (23/09/2026)
+  lois_jorf.json            numéro de loi → identifiant au Journal officiel
   groupes_reels.json        les groupes parlementaires à produire
-  gouvernements_reels.json  les gouvernements à produire, lus dans AMO30 à chaque run
-  profiles/                 <slug>.json + une tranche par législature (#580)
+  gouvernements_reels.json  les gouvernements à produire, lus dans AMO30
+  profiles/                 <slug>.json + une tranche par législature
 pivot_data/    Le format pivot — la SEULE couche que web/ lit
   profiles/       <slug>.pivot.json
   groupes/        groupe-<SIGLE>-<leg>.json
   gouvernements/  gouvernement-<ID>.json
-  lignees/        une fiche par lignée de groupe — la seule que web/ lit (#836)
-  scrutins.json   index partagé des scrutins de l'Assemblée (#432)
-  scrutins_europeens.json  les scrutins du PE cités, avec leurs effectifs par groupe (#901)
-  dossiers_europeens.json  référence de procédure → titre, stade, commission au fond (#901)
-  amendements/    index partagé des amendements, un fichier par législature (#431)
-  actes_reglementaires/  décrets, arrêtés et ordonnances du Journal officiel,
-                  un fichier par mois de parution, avec un index de mots (#1029)
-  textes_promulgues.json  les textes que le Parlement a promulgués, avec leur
-                  commission saisie au fond (23/09/2026)
+  lignees/        une fiche par lignée de groupe — la seule que web/ lit
+  scrutins.json            index partagé des scrutins de l'Assemblée
+  scrutins_europeens.json  les scrutins du PE cités, effectifs par groupe
+  dossiers_europeens.json  référence de procédure → titre, stade, commission
+  amendements/             index partagé, un fichier par législature
+  actes_reglementaires/    décrets, arrêtés et ordonnances du Journal officiel,
+                           un fichier par mois, avec un index de mots
+  textes_promulgues.json   les textes promulgués, avec leur commission au fond
 src/           Le pipeline (collecte, normalisation, agrégation, audits, gate)
 scripts/       Les scripts d'exploitation (run local, bornage, rendu du formulaire)
 web/UI_finale/ L'interface de production : React 19 + Vite
-web/old/       Les générations de design archivées (v1–v7)
+web/old/       Les générations de design archivées
 docs/          La documentation (voir ci-dessous)
 tests/         La suite pytest
 ```
@@ -139,166 +140,64 @@ tests/         La suite pytest
 
 Un profil pivot ne se lit **plus seul** : ses votes et ses amendements ne sont
 que des renvois (`{scrutin_id, position}`, `{amendement_id, role_signataire}`)
-vers les index partagés — deux pour l'Assemblée, deux pour le Parlement européen
-depuis #901. Pourquoi, et ce que ça a fait gagner :
+vers les index partagés. Pourquoi, et ce que ça a fait gagner :
 [`docs/data-architecture.md`](docs/data-architecture.md).
 
 ## Où aller pour le reste
 
 | Question | Fichier |
 |---|---|
+| **« Qu'est-ce qui alimente quoi ? »** — la carte des sources aux fiches publiées, en figure | [`docs/fabrique-du-jeu-de-donnees.html`](docs/fabrique-du-jeu-de-donnees.html) |
 | **« Quelle était la commande, déjà ? »** | [`docs/commandes.md`](docs/commandes.md) |
-| **« Que devient la donnée ? »** — flux, schémas, les sorties de `pivot_data/`, volumétrie | [`docs/data-architecture.md`](docs/data-architecture.md) |
-| **« Que fait un run ? »** — les jobs, le formulaire de lancement, caches, artifacts, budgets, le push, la relance automatique | [`docs/workflow-generate-data.md`](docs/workflow-generate-data.md) |
-| **« Comment marche l'extraction pilotée par roster ? »** — le seul job qui a une page à lui, les autres étant des blocs de la page ci-dessus | [`docs/extract-roster-groupes.md`](docs/extract-roster-groupes.md) |
-| **« Qu'est-ce qui alimente quoi ? »** — la carte des sources aux fiches publiées, et les jobs du run dans l'ordre de leurs `needs:`, en figure (à ouvrir dans un navigateur) | [`docs/fabrique-du-jeu-de-donnees.html`](docs/fabrique-du-jeu-de-donnees.html) |
+| **« Que devient la donnée ? »** — flux, schémas, sorties de `pivot_data/`, volumétrie | [`docs/data-architecture.md`](docs/data-architecture.md) |
+| **« Que fait un run ? »** — les jobs, le formulaire, caches, artifacts, budgets, le push, la relance automatique | [`docs/workflow-generate-data.md`](docs/workflow-generate-data.md) |
+| **« Comment marche l'extraction pilotée par roster ? »** — le seul job qui a une page à lui | [`docs/extract-roster-groupes.md`](docs/extract-roster-groupes.md) |
 | **« Pourquoi c'est fait comme ça ? »** — une décision par fichier | [`docs/decisions/`](docs/decisions/), indexées par [`docs/technical_decisions.md`](docs/technical_decisions.md) |
-| **« Où cette source publie-t-elle ce champ ? »** — Assemblée, Sénat, ParlTrack et Parlement européen : les références qui dérivent avec leur fournisseur, pas avec notre code | [`docs/sources/`](docs/sources/) |
+| **« Où cette source publie-t-elle ce champ ? »** | [`docs/sources/`](docs/sources/) |
 | **Les règles non négociables, pour un agent comme pour un humain** | [`AGENTS.md`](AGENTS.md) |
 | **Ce qui est planifié, et les défauts connus restés ouverts** | [`ROADMAP.md`](ROADMAP.md) |
 
-## Ce que le Journal officiel ajoute, et ce qu'il ne dit pas
-
-Depuis le 22/09/2026, le dépôt porte aussi ce que l'exécutif prend **seul** :
-**389 456 décrets, arrêtés et ordonnances** parus depuis 2007, et depuis le
-23/09/2026 les lois que chacun **applique** ou **cite**. En regard, les **1 015
-textes promulgués** par le Parlement, avec la commission qui les a examinés.
-
-Trois limites, déclarées plutôt que contournées :
-
-- **le signataire d'un décret n'est pas publié par la source.** Un acte se
-  rattache donc à un gouvernement par sa **date de parution** et à un ministère
-  par son organe, jamais à une personne : « N décrets signés par X » n'est pas
-  constructible, et c'est la source qui ferme ce piège ;
-- **un acte sans lien vers une loi n'est pas un acte pris sans loi.** Légifrance
-  pose la qualification « application » longtemps après la parution — aucune loi
-  promulguée depuis 2024 n'en portait au 23/09/2026, alors que 56 % d'entre elles
-  étaient déjà citées par un acte. Cette part se corrige au fil des runs ;
-- **le texte des actes n'est pas republié** : il se lit chez Légifrance.
-
-## Les articles
-
-`/rapports` réunit les articles : ce que les fiches disent d'un sujet, au jour
-des données qui l'ont produit, chaque fait lié à sa source. Ils portent un
-**type** — « instantané » pour ceux qui mesurent un instant. Ce sont des pages
-statiques de `web/UI_finale/public/rapports/`, servies telles quelles — leur adresse ne bouge pas, et un instantané n'est jamais mis à jour :
-un sujet repris plus tard en donne un nouveau, à une nouvelle adresse. L'index
-se construit depuis le dossier (`node web/UI_finale/scripts/index-rapports.mjs`),
-la barre du site y mène, et `tests/test_rapports_publies.py` refuse un index
-qui a dérivé.
+`/rapports` réunit les articles publiés : ce que les fiches disent d'un sujet, au
+jour des données qui l'ont produit, chaque fait lié à sa source. Un instantané
+n'est jamais mis à jour — un sujet repris plus tard en donne un nouveau, à une
+nouvelle adresse.
 
 ## Ce que la couverture ne couvre pas encore
 
-Le site le publie, et pas seulement ce fichier : **[« Sources »](https://empreinte-politique.fr/#/sources)**
-(`#/sources`, anciennement `#/couverture`) montre, pour les trois populations publiées, ce que le dépôt
-porte et depuis quand, puis par liste les fiches où elle manque. L'accueil en
-donnait une version courte jusqu'à sa forme C (#951), qui l'a retirée. Deux tiers des
-limites de couverture étaient jusque-là recopiés à l'identique sous chaque fiche,
-où ils se lisaient comme des faits sur la personne affichée (#328).
-→ [`docs/decisions/page-couverture-commune-328.md`](docs/decisions/page-couverture-commune-328.md)
+**La page [« Sources »](https://empreinte-politique.fr/sources) du site est la
+référence** : elle dit, pour les trois populations publiées, ce que le dépôt
+porte, depuis quand, et les fiches où la donnée manque. Ce fichier n'en garde
+que la liste des limites — leur détail, leurs mesures et leurs dates vivent dans
+[`docs/data-architecture.md`](docs/data-architecture.md) et dans les décisions
+citées.
 
-- **Groupes** : seuls les groupes déclarés dans
-  `config/groupes_reels.json` sont produits, pas tous ceux qui existent — une
-  fiche par groupe **et par législature** (31 au 14/09/2026), que l'interface
-  publie en **une page par lignée** : 14 pages, la suite des fiches d'un même
-  groupe (#329, #836). Les **5 groupes de la XVIIe** y sont
-  entrés le 01/09/2026 (#700) ; leurs fiches paraissent au premier run qui
-  suit, et couvriront **305 des 461** membres, les autres n'ayant pas encore de
-  correspondance slug ↔ acteur AN. Les **2 groupes du Sénat restent suspendus**
-  depuis le 24/08/2026, et #885 ne les rouvre pas : le Sénat est rentré pour ses
-  **appartenances**, pas pour son activité, et `data.senat.fr` ne porte aucun
-  scrutin. Le cœur d'une fiche de groupe resterait donc vide. Leurs fiches
-  publiées restent en place, gelées.
-  → [`docs/decisions/fiches-groupe-17e-legislature-700.md`](docs/decisions/fiches-groupe-17e-legislature-700.md),
-  [`docs/decisions/retrait-senat-528.md`](docs/decisions/retrait-senat-528.md),
-  [`docs/decisions/extraction-groupe-suspendue-516.md`](docs/decisions/extraction-groupe-suspendue-516.md)
-- **Gouvernements** : ceux que le référentiel AMO30 de l'Assemblée publie, soit
-  **17 depuis Fillon I (17/05/2007)**, lus à chaque run (#996) ; pas toute la
-  Ve République. Aucune fonction gouvernementale du corpus n'est antérieure au
-  18/05/2007, et les
-  mandats 2002-2007 de Xavier Bertrand manquent dans une période que sa fiche
-  dit couverte : #859.
-  **Leur composition est complète depuis le 18/09/2026** : les 205 membres qui
-  n'avaient pas de profil ont été collectés, et les **650 personnes recensées
-  sur les 17 fiches sont toutes rattachées** — par `organe_ref`, plus par
-  comparaison de libellés entre deux sources (#996, lots 3 et 4).
-  `membres[]` porte une entrée **par période**, pas par personne : un ministre
-  qui change de portefeuille en a plusieurs. Les deux comptes sont publiés
-  côte à côte, `comptages.membres_distincts` et `membres_recenses`, et
-  `len(membres)` n'est ni l'un ni l'autre.
-  `membres[].portefeuille` et `premier_ministre` restent `null` quand aucun
-  pivot local ne les porte — jamais un « Ministre » générique ni un nom déduit
-  du libellé du gouvernement.
-  **Sur quoi les membres ont pris la parole** : `tags_thematiques_agreges`
-  (#1020) ne retient que ce qui a été dit **pendant le passage de chacun**, pas
-  pendant toute la période du gouvernement — sans quoi la parole d'un ministre
-  de trois jours devenu président de l'Assemblée serait comptée comme celle du
-  gouvernement. Sa couverture se lit dans `comptages.membres_avec_interventions`,
-  et elle est partielle tant que tous les membres n'ont pas leurs interventions
-  collectées.
-- **Membres des groupes** : l'extraction pilotée par roster vise la couverture
-  quasi complète des membres des groupes configurés, mais elle n'est pas encore
-  atteinte. Tant qu'elle ne l'est pas, `web/UI_finale` affiche un état « pas de
-  donnée » explicite plutôt qu'un zéro trompeur (règle 5).
-  → [`docs/decisions/seuil-couverture-groupe.md`](docs/decisions/seuil-couverture-groupe.md)
-- **Votes AN** : open data officiel, 14<sup>e</sup> à 17<sup>e</sup> législature
-  selon les dumps disponibles.
-- **Textes portés et textes d'un gouvernement** : les archives de dossiers
-  législatifs de l'Assemblée, **XIV<sup>e</sup> à XVII<sup>e</sup>** depuis
-  #1019 — la borne recule ainsi au **20/06/2012**, première séance de la XIV<sup>e</sup>.
-  Les XII<sup>e</sup> et XIII<sup>e</sup> **ne sont pas publiées** (404 au
-  18/09/2026) : les gouvernements **Fillon I, II et III** restent hors
-  couverture, et leur `textes: []` est une absence de source, jamais « aucun
-  texte porté ». **Ayrault I aussi**, sa période s'achevant avant l'ouverture
-  de la XIV<sup>e</sup>. L'interface porte la même borne
-  (`GOVERNMENT_TEXTS_COVERAGE_START`), et un test la tient alignée sur le code.
-  → [`docs/decisions/archive-dossiers-xiv-1019.md`](docs/decisions/archive-dossiers-xiv-1019.md)
-- **Sénat** : **les appartenances, jamais l'activité** (#885, 13/09/2026). Le job
-  `extract-senat` collecte mandats, groupes et commissions depuis `data.senat.fr`,
-  datés au jour près — 133 appartenances sur 2 candidats déclarés. Le jeu ne porte
-  **ni scrutin ni compte rendu** : la condition 2 de #528 §7 est **déclarée non
-  remplie**, pas contournée, et les fiches de groupe sénatorial publient toujours
-  0 vote de cohésion. La chambre `senateurs` du roster reste suspendue.
-  → [`docs/decisions/reouverture-partielle-senat-885.md`](docs/decisions/reouverture-partielle-senat-885.md)
-- **Parlement européen** : collecté via ParlTrack et le portail officiel, et lu
-  comme une **institution à part entière** sur la fiche — **7 des 32 candidats
-  déclarés** y ont siégé, et pour certains c'est **tout** leur mandat
-  parlementaire. Les cinq listes sont publiées, et depuis #1007 les trois
-  figures européennes se lisent comme leurs jumelles françaises, derrière le
-  même commutateur : textes portés, amendements et **votes**.
-  Ce que la fiche y range et comment, en une ligne chacun :
-  **un texte, une position** — par dossier, le dernier scrutin, date puis rang
-  dans la séance, faute de notion de lecture dans la nomenclature européenne ;
-  **un thème** — les domaines EuroVoc du dossier, à défaut ses familles OEIL,
-  jamais déduits d'un intitulé ; **une couleur par thème**, la même d'une figure
-  et d'une fiche à l'autre.
-  Quatre limites déclarées : les interventions et textes antérieurs au
-  22/11/2016 portent la date de leur **republication** par ParlTrack, pas celle
-  de la séance (#858) ; aucun dump ne porte le **sort** d'un amendement ni
-  l'issue d'un dossier ; la section « Où il s'est écarté des siens » n'a aucune
-  fiche de groupe européenne à quoi se comparer, et ne sera pas transposée ; et
-  la couverture EuroVoc des dossiers **monte d'un run à l'autre** — un dossier
-  que la collecte n'a pas encore interrogé n'est pas un dossier sans thème, sa
-  famille OEIL le range en attendant (§2 règle 5).
-  → [`docs/decisions/institution-dimension-de-la-fiche-328.md`](docs/decisions/institution-dimension-de-la-fiche-328.md),
-  [`docs/decisions/lecture-europeenne-themes-et-votes-901.md`](docs/decisions/lecture-europeenne-themes-et-votes-901.md),
-  [`docs/decisions/pas-d-ecarts-groupe-europeens-901.md`](docs/decisions/pas-d-ecarts-groupe-europeens-901.md),
-  [`docs/sources/parltrack-et-europarl.md`](docs/sources/parltrack-et-europarl.md)
-- **Interventions** : Syceron est la seule source depuis #529, et sa résolution
-  d'identifiants d'acteur nus reste livrée inactive (#510) — une collecte
-  fraîche ne rend donc que les questions officielles. Les prises de parole déjà
-  publiées sont conservées par la fusion additive.
-- **Mandats locaux** : publiés depuis #922 — **35 mandats sur 15 profils**,
-  mesuré le 18/09/2026. Cette ligne disait « aucun n'est publié », ce que la
-  table des sources ci-dessus contredisait quinze lignes plus haut. La
-  couverture **commence en 2020** : les jeux complets de 2014 et 2020 ne
-  déclarent aucune licence, et une absence avant cette borne se lit « non
-  couvert », jamais « aucun mandat local ». La source ne publie **aucune date
-  de fin** (#966). Le **portefeuille ministériel hors AN** reste, lui, hors
-  périmètre.
-  → [`docs/decisions/collecte-mandats-locaux-rne-922.md`](docs/decisions/collecte-mandats-locaux-rne-922.md),
-  [`docs/decisions/hors-perimetre.md`](docs/decisions/hors-perimetre.md)
-- **Biais de couverture** : un ancien parlementaire laisse des traces bien plus
+- **Groupes** — seuls ceux déclarés dans `raw_data/groupes_reels.json` sont
+  produits, une fiche par groupe **et par législature**, publiées en une page
+  par lignée. Les groupes du **Sénat restent gelés** : `data.senat.fr` ne porte
+  aucun scrutin, donc le cœur d'une fiche de groupe resterait vide.
+- **Gouvernements** — ceux que le référentiel AMO30 de l'Assemblée publie, depuis
+  Fillon I (17/05/2007) ; pas toute la Ve République. `membres[]` porte une
+  entrée **par période**, pas par personne.
+- **Textes portés** — les archives de dossiers de l'Assemblée s'arrêtent à la
+  XIV<sup>e</sup> législature, donc rien avant le **20/06/2012** : les
+  gouvernements Fillon et Ayrault I sont hors couverture, et leur `textes: []`
+  est une absence de source, jamais « aucun texte porté ».
+- **Sénat** — **les appartenances, jamais l'activité**. La condition posée pour
+  rouvrir la chambre est **déclarée non remplie**, pas contournée.
+- **Parlement européen** — lu comme une institution à part entière ; pour
+  certains candidats, c'est **tout** leur mandat parlementaire. Aucun dump ne
+  porte le **sort** d'un amendement, et les entrées antérieures au 22/11/2016
+  portent la date de leur **republication**, pas celle de la séance.
+- **Journal officiel** — le signataire d'un décret n'est pas publié par la
+  source : un acte se rattache à un gouvernement par sa **date de parution**,
+  jamais à une personne. Et un acte sans lien vers une loi n'est pas un acte pris
+  sans loi — Légifrance pose la qualification longtemps après la parution.
+- **Interventions** — Syceron est la seule source, et la résolution des
+  identifiants d'acteur nus reste livrée inactive : une collecte fraîche ne rend
+  que les questions officielles.
+- **Mandats locaux** — la couverture **commence en 2020** : avant cette borne,
+  une absence se lit « non couvert », jamais « aucun mandat local ».
+- **Biais de couverture** — un ancien parlementaire laisse des traces bien plus
   riches qu'un candidat qui ne l'a jamais été.
 
 ## Tests
@@ -307,21 +206,13 @@ où ils se lisaient comme des faits sur la personne affichée (#328).
 pytest -q
 ```
 
-La suite tourne en un peu plus d'une minute (**5 041 tests**, 79 s au 14/09/2026) et s'exécute sur chaque pull request
-et chaque push sur `main` (`.github/workflows/tests.yml`). Elle est **découplée
-du corpus vivant** : aucun test ne lit `pivot_data/` ni `raw_data/profiles/`,
-aucun n'écrit sous l'un des deux, aucun ne sort sur le réseau (#473). Le job CI
-le rend structurel — il ne pose sur le disque du runner qu'une liste blanche de
-chemins, si bien qu'un test qui se recouplerait au corpus y échoue en nommant le
-fichier. Les tests d'acceptation qui ont besoin de vrais profils lisent les
-fixtures figées de `tests/fixtures/`.
+La suite s'exécute sur chaque pull request et chaque push sur `main`. Elle est
+**découplée du corpus vivant** : aucun test ne lit `pivot_data/` ni
+`raw_data/profiles/`, aucun n'écrit sous l'un des deux, aucun ne sort sur le
+réseau. Le job CI le rend structurel — il ne pose sur le disque du runner qu'une
+liste blanche de chemins, si bien qu'un test qui se recouplerait au corpus y
+échoue en nommant le fichier.
 → [`docs/decisions/ci-tests-pytest.md`](docs/decisions/ci-tests-pytest.md)
-
-## Neutralité éditoriale
-
-Ce projet agrège des faits et des sources primaires. Il ne produit ni classement,
-ni score, ni appréciation des positions politiques. L'ensemble des règles :
-[`AGENTS.md`](AGENTS.md).
 
 ## Licence
 
@@ -335,6 +226,6 @@ la marque.
 
 **Les données, elles, gardent les licences de leurs sources** — et elles ne sont
 pas les mêmes d'un champ à l'autre : l'obligation de partage à l'identique de
-l'ODbL vit sur certains, pas sur tous (`AGENTS.md` §7, et
+l'ODbL vit sur certains, pas sur tous ([`AGENTS.md`](AGENTS.md) §7,
 [`docs/decisions/licences.md`](docs/decisions/licences.md)). La licence du code
 n'y change rien.
