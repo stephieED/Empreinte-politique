@@ -103,7 +103,19 @@ def test_une_entree_qui_nest_pas_un_objet_ne_casse_rien():
 # ---------------------------------------------------------------------------
 
 
-def test_les_deux_candidatures_declinees_sortent_du_perimetre():
+def test_les_candidatures_declinees_sortent_du_perimetre():
+    """Sur le corpus réel : **tout** ce qui est gelé sort du périmètre.
+
+    Ce test énumérait les deux slugs connus le 07/09/2026 — Wauquiez et
+    Bardella. Le 26/09, `lydie-massard` est passée à `decline` et il a échoué
+    **sur le dépôt public**, deux runs de suite : le mécanisme fonctionnait
+    parfaitement, c'est la liste écrite dans le test qui avait vieilli.
+
+    Une liste de candidatures déclinées est exactement ce qu'un run déplace
+    (elle est relue à chaque run depuis #753), donc ce qu'un test ne fige pas.
+    Ce qui se vérifie ici est la **règle** : gelé ⇒ hors périmètre, et l'entrée
+    reste dans le fichier. Les noms, eux, appartiennent au corpus.
+    """
     source = Path("raw_data/candidats.json")
     if not source.exists():  # checkout partiel
         pytest.skip("raw_data/candidats.json absent de ce checkout")
@@ -112,10 +124,20 @@ def test_les_deux_candidatures_declinees_sortent_du_perimetre():
     geles = dict(perimetre.slugs_geles(candidats))
     collectes = perimetre.slugs_a_collecter(candidats)
 
-    assert set(geles) == {"laurent-wauquiez", "jordan-bardella"}
-    assert not set(geles) & set(collectes)
+    # Aucun gelé n'est collecté, et réciproquement : les deux ensembles
+    # partitionnent les entrées à slug, sans exception ni chevauchement.
+    assert not set(geles) & set(collectes), (
+        f"Ces slugs sont à la fois gelés et collectés : "
+        f"{sorted(set(geles) & set(collectes))} — le gel ne retirerait plus du "
+        "périmètre (#760)."
+    )
     # Le gel retire du périmètre ; il ne supprime pas l'entrée du fichier.
     assert all(any(c["nom"] and c["slug"] == slug for c in candidats) for slug in geles)
+    # Et chaque gelé l'est pour un statut que le fichier déclare, jamais déduit.
+    statuts = {statut for _, statut in perimetre.slugs_geles(candidats)}
+    assert statuts <= set(perimetre.STATUTS_GELES), (
+        f"Statuts gelés inattendus : {sorted(statuts - set(perimetre.STATUTS_GELES))}"
+    )
 
 
 def test_le_gel_ne_retire_personne_du_fichier():
