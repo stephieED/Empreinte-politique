@@ -214,7 +214,7 @@ def _etat_de_production(lignes: list[str], repertoire: str) -> str:
     lignes_drapeau = [l for l in lignes if drapeau in l and not l.lstrip().startswith("#")]
     if not lignes_drapeau:
         return PRODUIT_TOUJOURS
-    if any("inputs.collect_interventions" in l for l in lignes_drapeau):
+    if any("needs.epingler-le-code.outputs.interventions == 'true'" in l for l in lignes_drapeau):
         return PRODUIT_SELON_MODE
     return JAMAIS_PRODUIT
 
@@ -291,7 +291,7 @@ def test_un_repertoire_produit_selon_le_mode_impose_le_mode_dans_la_cle():
                 r for r in step["repertoires"]
                 if _etat_de_production(lignes, r) == PRODUIT_SELON_MODE
             )
-            if selon_mode and "inputs.collect_interventions" not in step["cle"]:
+            if selon_mode and "needs.epingler-le-code.outputs.interventions == 'true'" not in step["cle"]:
                 fautes.append(
                     f"{job} sauvegarde `{step['cle']}` en couvrant "
                     f"{selon_mode} sans que le mode figure dans la clé"

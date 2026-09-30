@@ -117,7 +117,7 @@ def test_le_job_est_lisible():
 def test_la_cle_de_restauration_porte_la_completude_attendue():
     """Le mode y était depuis #505 ; c'est la complétude qui manquait."""
     cle = _valeur(_step_contenant("actions/cache/restore@v5\n        id: cache_an"), "key")
-    assert "inputs.collect_interventions" in cle, (
+    assert "needs.epingler-le-code.outputs.interventions == 'true'" in cle, (
         "La clé AN ne porte plus le mode : un run en mode interventions "
         "referait un exact key hit sur une entrée sans interventions (#505)."
     )
@@ -138,7 +138,7 @@ def test_la_cle_de_sauvegarde_porte_la_completude_atteinte():
         "La sauvegarde écrit la complétude ATTENDUE au lieu de l'ATTEINTE : "
         "c'est exactement l'entrée mensongère que #550 corrige."
     )
-    assert "inputs.collect_interventions" in cle
+    assert "needs.epingler-le-code.outputs.interventions == 'true'" in cle
 
 
 def test_les_deux_empreintes_viennent_du_meme_module():
@@ -197,7 +197,7 @@ def test_la_sauvegarde_ne_reecrit_pas_la_cle_qu_elle_vient_de_restaurer():
         "public-data-cache-an-",
         "steps.week.outputs.week",
         "steps.empreinte_obtenue.outputs.empreinte",
-        "inputs.collect_interventions",
+        "needs.epingler-le-code.outputs.interventions == 'true'",
         "-interv-",
     ):
         assert morceau in condition, (

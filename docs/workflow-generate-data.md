@@ -746,10 +746,17 @@ ensemble ou pas du tout, deux cases séparées autoriseraient « périmètre ré
 Les quatre tolérances sont **cloisonnées** : aucune ne désarme le contrôle d'une
 autre.
 
-**Le run est programmé depuis #1054** : `schedule: - cron: '0 2 * * *'`, un passage
-quotidien à **4 h heure de Paris** — 3 h en heure d'hiver, GitHub ne lisant que l'**UTC**
-et aucune valeur fixe ne suivant le changement d'heure. Un déclenchement programmé peut
-par ailleurs être servi avec du retard en heure de pointe. Le lancement à la main
+**Le run est programmé depuis #1054** : `schedule: - cron: '0 18 * * *'`, un passage
+quotidien à **20 h heure de Paris** — 19 h en heure d'hiver, GitHub ne lisant que l'**UTC**
+et aucune valeur fixe ne suivant le changement d'heure. **L'heure dit quand le run devient
+éligible, pas quand il démarre** : les deux premiers runs programmés ont été servis avec
+5 h 40 puis 6 h 19 de retard (27 et 28/09/2026).
+
+**Et il collecte comme un run complet depuis #1149** : `epingler-le-code` publie les deux
+modes effectifs du run (`interventions`, `dossiers_legislatifs`), vrais dès que le
+déclencheur est `schedule`, et les seize lectures du workflow passent par ses sorties —
+jamais par `inputs.collect_*`, dont des **clés de cache** dépendent.
+→ `docs/decisions/modes-du-run-programme-1149.md` Le lancement à la main
 par le formulaire reste évidemment possible, et **la publication du code reste
 manuelle** : le cron ne porte que la génération des données.
 

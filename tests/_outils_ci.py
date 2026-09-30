@@ -73,3 +73,15 @@ def lire_liste_blanche(workflow: Path | None = None) -> frozenset[str] | None:
         return frozenset(entrees) or None
     except Exception:
         return None
+
+
+#: #1149 — LES DEUX MODES DU RUN, TELS QUE LE WORKFLOW LES LIT.
+#:
+#: Ils ne se lisent plus dans `inputs.collect_*` : un déclenchement `schedule`
+#: ne fournit aucun input, donc les deux cases y valent `false` et le run
+#: nocturne ne collecterait rien de plus que le mode par défaut. `epingler-le-code`
+#: les calcule une fois et les publie ; tout le reste du workflow lit ses
+#: sorties. Ces deux constantes sont l'expression exacte à chercher dans le
+#: YAML — écrites ici pour que six fichiers de tests ne les recopient pas.
+MODE_INTERVENTIONS = "needs.epingler-le-code.outputs.interventions == 'true'"
+MODE_DOSSIERS = "needs.epingler-le-code.outputs.dossiers_legislatifs == 'true'"

@@ -33,7 +33,12 @@ WORKFLOW = RACINE / ".github" / "workflows" / "generate-data.yml"
 ROSTER_SHARDS = 8
 
 # Les modes où un shard roster télécharge chez l'AN, donc où la rafale se borne.
-MODES_BORNES = ("cold_start", "collect_dossiers_legislatifs")
+#: `cold_start` reste un input : c'est une case du formulaire, et rien d'autre
+#: ne la pose. Les dossiers, eux, sont passés aux sorties d'`epingler-le-code`
+#: avec #1149 — un run programmé les collecte sans qu'aucun input ne le dise, et
+#: la borne doit suivre ce mode-là aussi.
+MODES_BORNES = ("inputs.cold_start",
+                "needs.epingler-le-code.outputs.dossiers_legislatifs")
 
 
 def _yaml() -> str:
@@ -87,10 +92,11 @@ def test_la_borne_suit_exactement_les_modes_qui_telechargent():
     où un shard va chercher chez l'AN — et sur ceux-là seulement, sinon elle
     redevient le plafond permanent que #467 n'a jamais voulu."""
     expression = _max_parallel("extract-roster-groupes")
-    cites = set(re.findall(r"inputs\.(\w+)", expression))
-    assert cites == set(MODES_BORNES), (
-        f"La condition porte sur {sorted(cites)} au lieu de "
-        f"{sorted(MODES_BORNES)}.\n"
+    cites = {m for m in MODES_BORNES if m in expression}
+    autres = set(re.findall(r"inputs\.\w+|needs\.[\w-]+\.outputs\.\w+", expression)) - set(MODES_BORNES)
+    assert cites == set(MODES_BORNES) and not autres, (
+        f"La condition porte sur {sorted(cites)}, plus {sorted(autres)}, au lieu "
+        f"de {sorted(MODES_BORNES)}.\n"
         "- un mode en trop borne des runs qui ne téléchargent rien ;\n"
         "- un mode manquant lâche 8 shards sur data.assemblee-nationale.fr, "
         "dont ce dépôt a déjà documenté trois modes de défaillance (#443)."

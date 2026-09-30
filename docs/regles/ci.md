@@ -43,7 +43,14 @@ les charger, ni à les faire grossir. -->
   a boolean at `default: true`, a number or a non-empty choice is not.
   `tests/test_ci_inputs_workflow.py` executes the real decision block for the six form
   combinations **plus the empty one**, refuses a bash default that drifts from the
-  declared one, and names any thirteenth input that would arrive unprotected. **The cron
+  declared one, and names any thirteenth input that would arrive unprotected. **A mode a scheduled run must honour is computed once, in the head job, and read
+  through its outputs (#1149)** — never as `(inputs.X || github.event_name == 'schedule')`
+  repeated at each site. Two of them, `collect_interventions` and
+  `collect_dossiers_legislatifs`, are read at **sixteen** places, and some of those are
+  **cache keys**: one stale occurrence restores another mode's entry, `actions/cache`
+  skips saving what the run just built, and every shard re-downloads it — #424, #505 and
+  #657, the same defect three times, each time silent. `needs` is also the only context,
+  besides `github` and `inputs`, that `strategy` and `timeout-minutes` accept. **The cron
   is live since that same lot**, and one test refuses the combination that would hurt:
   **a live `schedule:` without those bash defaults.** A second one requires the `on:`
   block to state both the zone and **the local time the cron amounts to**: GitHub reads

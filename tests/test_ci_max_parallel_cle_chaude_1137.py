@@ -244,7 +244,7 @@ def test_la_sonde_ne_tourne_ni_en_cold_start_ni_en_mode_interventions():
     condition = re.search(r"\n\s+if: (.+)\n", sonde)
     assert condition, "La sonde n'a plus de `if:` : elle tournerait dans tous les modes."
     texte = condition.group(1)
-    assert "!inputs.cold_start" in texte and "!inputs.collect_interventions" in texte, (
+    assert "!inputs.cold_start" in texte and f"!(needs.epingler-le-code.outputs.interventions == 'true')" in texte, (
         f"Condition de la sonde : {texte}. Les deux modes doivent y rester "
         "exclus tant que ce job ne peut pas calculer l'empreinte de complétude."
     )

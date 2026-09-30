@@ -33,8 +33,13 @@ names what governs it.
 
 ## 1. Product
 
-**Empreinte politique** — "Politics made clear". Factual, sourced political CVs
-(mandates, votes, texts, interventions) for 2027 presidential candidates.
+**Empreinte politique** — "Politics made clear". Factual, sourced political records
+(mandates, votes, texts, interventions). **Its permanent core is parliamentary and
+governmental** — the real groups and the real governments, which the corpus covers
+since 2012 and will keep covering. **The declared 2027 candidates are a bounded
+add-on**, tied to one election: arbitrated 30/09/2026, because the site presented the
+lasting half as a complement to the temporary one.
+→ `docs/decisions/coeur-permanent-groupes-et-gouvernements.md`
 `CONTRECHAMP` (`web/`) is the interface design lab. `web/UI_finale` (React 19 + Vite) is
 the current production interface, wired to real pivot data (`docs/decisions/web-v3-ui.md`). Earlier design
 generations — `v1`-`v7`, including the `v3` editorial reference — are archived under `web/old/`.

@@ -13,19 +13,18 @@ on:
   # lus. Voir docs/decisions/defauts-d-inputs-sur-declenchement-programme-1054.md
   # et tests/test_ci_inputs_workflow.py, qui refuse un cron actif sans eux.
   #
-  # L'HEURE EST EN UTC, et c'est le seul fuseau que GitHub connaisse. `0 2`
-  # vaut donc **4 h à Paris** en heure d'été et **3 h** en heure d'hiver : une
+  # L'HEURE EST EN UTC, et c'est le seul fuseau que GitHub connaisse. `0 18`
+  # vaut donc **20 h à Paris** en heure d'été et **19 h** en heure d'hiver : une
   # valeur fixe décale d'une heure deux fois par an, et il n'existe aucun moyen
   # de l'exprimer autrement côté GitHub. C'est l'heure LOCALE qui est visée, et
   # la première rédaction de #1054 avait pris la valeur UTC pour telle.
   #
-  # Le créneau laisse la place à une seconde exécution DEMANDÉE À LA MAIN dans
-  # la matinée : le run dure ~58 min depuis #1137, donc celui-ci est terminé
-  # vers 5 h locales et un second lancé en début de matinée l'est avant 9 h.
-  # Un déclenchement programmé peut par ailleurs être servi avec du retard en
-  # heure de pointe : c'est une cadence, pas un rendez-vous.
+  # UN CRON EST UNE CADENCE, PAS UN RENDEZ-VOUS, et ce dépôt l'a mesuré : les
+  # deux premiers runs programmés ont été servis avec **5 h 40** puis **6 h 19**
+  # de retard sur l'heure demandée (27 et 28/09/2026). L'heure ci-dessus dit
+  # quand le run devient éligible, pas quand il démarre.
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '0 18 * * *'
   workflow_dispatch:
     inputs:
       # These strings are the FORM LABELS: GitHub shows the description and
@@ -272,6 +271,26 @@ jobs:
     timeout-minutes: 5
     outputs:
       sha: ${{ steps.resolu.outputs.sha }}
+      # #1149 — LES DEUX MODES EFFECTIFS DU RUN, CALCULÉS ICI ET NULLE PART
+      # AILLEURS. Un déclenchement `schedule` ne reçoit aucun input (#1054) :
+      # les cases du formulaire y valent `false`, et le run nocturne ne
+      # collecterait donc ni les prises de parole ni les textes portés du
+      # roster — la couverture des interventions n'avancerait jamais seule.
+      #
+      # POURQUOI UNE SORTIE DE JOB ET NON UNE EXPRESSION RÉPÉTÉE. Ces deux
+      # valeurs sont lues à seize endroits, dont des CLÉS DE CACHE : une
+      # occurrence oubliée ferait restaurer une entrée d'un autre mode, et
+      # `actions/cache` sauterait la sauvegarde de ce que le run a construit —
+      # #424, #505 et #657, trois fois le même défaut. Une seule définition ne
+      # peut pas diverger d'elle-même. Le contexte `needs` est par ailleurs le
+      # seul, avec `github` et `inputs`, que `strategy` et `timeout-minutes`
+      # acceptent.
+      #
+      # `tests/test_ci_modes_du_run_1149.py` refuse tout `inputs.collect_*` nu
+      # hors commentaire, et vérifie que les jobs qui les lisent dépendent bien
+      # de ce job.
+      interventions: ${{ inputs.collect_interventions || github.event_name == 'schedule' }}
+      dossiers_legislatifs: ${{ inputs.collect_dossiers_legislatifs || github.event_name == 'schedule' }}
     steps:
       - name: Résoudre main du dépôt privé
         id: resolu
@@ -517,7 +536,7 @@ jobs:
       #     quo. Voir docs/decisions/max-parallel-sur-cle-chaude-1137.md.
       - name: Semaine ISO courante (clé de cache AN, partagée avec extract-an)
         id: week
-        if: ${{ !inputs.cold_start && !inputs.collect_interventions }}
+        if: ${{ !inputs.cold_start && !(needs.epingler-le-code.outputs.interventions == 'true') }}
         run: echo "week=$(date +%G-W%V)" >> "$GITHUB_OUTPUT"
 
       # `lookup-only: true` : on ne veut que la réponse, aucune extraction — et
@@ -526,7 +545,7 @@ jobs:
       # shards écriraient existe-t-elle déjà ? ».
       - uses: actions/cache/restore@v5
         id: sonde_cache_an
-        if: ${{ !inputs.cold_start && !inputs.collect_interventions }}
+        if: ${{ !inputs.cold_start && !(needs.epingler-le-code.outputs.interventions == 'true') }}
         with:
           lookup-only: true
           path: |
@@ -574,7 +593,7 @@ jobs:
           # avec interventions en consomme 9 rendrait cet avertissement faux au
           # moment précis où il sert. Cohérence vérifiée par
           # tests/test_ci_budget_interventions.py.
-          AN_TIMEOUT_MINUTES: ${{ inputs.collect_interventions && 10 || 5 }}
+          AN_TIMEOUT_MINUTES: ${{ needs.epingler-le-code.outputs.interventions == 'true' && 10 || 5 }}
           # Le parallélisme RÉEL de ce run (#1137). Même expression que le
           # `max-parallel:` d'extract-an, et pour la même raison qu'à
           # AN_TIMEOUT_MINUTES : annoncer un temps mur série pendant qu'un run
@@ -685,7 +704,7 @@ jobs:
       - name: Garde-fou — écrasement sans collecte d'interventions (#460)
         env:
           OVERWRITE: ${{ inputs.existing_profiles == 'overwrite' }}
-          INTERVENTIONS: ${{ inputs.collect_interventions }}
+          INTERVENTIONS: ${{ needs.epingler-le-code.outputs.interventions == 'true' }}
         run: |
           set -euo pipefail
           # Condition alignée mot pour mot sur le calcul de MERGE_FLAG des jobs
@@ -871,7 +890,7 @@ jobs:
     # Toute modification de ces valeurs doit rester cohérente avec le budget du
     # step d'extraction et avec le message de temps mur de prepare-an-matrix —
     # les trois sont vérifiés ensemble par tests/test_ci_budget_interventions.py.
-    timeout-minutes: ${{ inputs.collect_interventions && 10 || 5 }}
+    timeout-minutes: ${{ needs.epingler-le-code.outputs.interventions == 'true' && 10 || 5 }}
     strategy:
       # fail-fast: false — un shard en échec/gelé (shutdown signal) ne doit
       # jamais annuler les shards restants : sinon le matrix n'apporte aucune
@@ -1138,9 +1157,9 @@ jobs:
             .cache/scrutins_an
             .cache/questions_an/*/index_par_acteur.json
             .cache/syceron_an/*/index_par_acteur
-          key: public-data-cache-an-${{ steps.week.outputs.week }}${{ inputs.collect_interventions && format('-interv-{0}', steps.empreinte_attendue.outputs.empreinte) || '' }}
+          key: public-data-cache-an-${{ steps.week.outputs.week }}${{ needs.epingler-le-code.outputs.interventions == 'true' && format('-interv-{0}', steps.empreinte_attendue.outputs.empreinte) || '' }}
           restore-keys: |
-            ${{ inputs.collect_interventions && format('public-data-cache-an-{0}-interv', steps.week.outputs.week) || '' }}
+            ${{ needs.epingler-le-code.outputs.interventions == 'true' && format('public-data-cache-an-{0}-interv', steps.week.outputs.week) || '' }}
             public-data-cache-an-
 
       # #555 — PÉREMPTION SÉLECTIVE, job PRODUCTEUR.
@@ -1337,7 +1356,7 @@ jobs:
           # plus `--no-merge` : purger le cache ne dit rien de ce qu'on écrit.
           [[ "$OVERWRITE" == "true" ]] && MERGE_FLAG=(--no-merge)
           INTERV_FLAG=()
-          [[ "${{ inputs.collect_interventions }}" != "true" ]] && INTERV_FLAG=(--skip-interventions)
+          [[ "${{ needs.epingler-le-code.outputs.interventions == 'true' }}" != "true" ]] && INTERV_FLAG=(--skip-interventions)
           # `--max-pages` a été RETIRÉ (#510) : il bornait la recherche
           # d'interventions NosDéputés, qui n'existe plus. Le repli qu'elle
           # alimentait est parti avec elle, et les 90 s qu'elle coûtait sur
@@ -1379,7 +1398,7 @@ jobs:
           # Doit rester cohérent avec le `timeout-minutes` de ce job (vérifié par
           # tests/test_ci_budget_interventions.py).
           BUDGET_FLAG=()
-          [[ "${{ inputs.collect_interventions }}" == "true" ]] && BUDGET_FLAG=(--budget-interventions-secondes 250)
+          [[ "${{ needs.epingler-le-code.outputs.interventions == 'true' }}" == "true" ]] && BUDGET_FLAG=(--budget-interventions-secondes 250)
           # `--budget-collecte-secondes 0` (#514) : absence de budget de
           # collecte globale, DÉCLARÉE. Ce n'est pas un oubli reconduit —
           # mesuré sur les 16 shards des runs 32233766814 et 32288588518, une
@@ -1465,7 +1484,7 @@ jobs:
           && steps.empreinte_obtenue.outputs.empreinte != ''
           && steps.cache_an.outputs.cache-matched-key !=
           format('public-data-cache-an-{0}{1}', steps.week.outputs.week,
-          inputs.collect_interventions &&
+          needs.epingler-le-code.outputs.interventions == 'true' &&
           format('-interv-{0}', steps.empreinte_obtenue.outputs.empreinte) || '') }}
         continue-on-error: true
         uses: actions/cache/save@v5
@@ -1475,7 +1494,7 @@ jobs:
             .cache/scrutins_an
             .cache/questions_an/*/index_par_acteur.json
             .cache/syceron_an/*/index_par_acteur
-          key: public-data-cache-an-${{ steps.week.outputs.week }}${{ inputs.collect_interventions && format('-interv-{0}', steps.empreinte_obtenue.outputs.empreinte) || '' }}
+          key: public-data-cache-an-${{ steps.week.outputs.week }}${{ needs.epingler-le-code.outputs.interventions == 'true' && format('-interv-{0}', steps.empreinte_obtenue.outputs.empreinte) || '' }}
 
       # Blocs factorisés en action composite (#412 §3). Le `if:` reste porté par
       # le step appelant : cancelled()/failure() évalués à l'intérieur de
@@ -2374,7 +2393,7 @@ jobs:
       # projection assise sur des durées mesurées, pas une mesure.
       # Le pic de jobs simultanés du même run était de 9 ; il ne bouge pas, la
       # vague roster étant la dernière avant `merge-and-pivot`.
-      max-parallel: ${{ (inputs.cold_start || inputs.collect_dossiers_legislatifs) && 4 || 8 }}
+      max-parallel: ${{ (inputs.cold_start || needs.epingler-le-code.outputs.dossiers_legislatifs == 'true') && 4 || 8 }}
       matrix:
         # `|| '[0]'` : repli sur un shard unique si prepare-roster-matrix a
         # échoué (#412 §2.1). Combiné au if: !cancelled() ci-dessus, ce job
@@ -2478,9 +2497,9 @@ jobs:
             .cache/scrutins_an
             .cache/questions_an/*/index_par_acteur.json
             .cache/syceron_an/*/index_par_acteur
-          key: public-data-cache-an-${{ steps.week.outputs.week }}${{ inputs.collect_interventions && format('-interv-{0}', steps.empreinte_attendue.outputs.empreinte) || '' }}
+          key: public-data-cache-an-${{ steps.week.outputs.week }}${{ needs.epingler-le-code.outputs.interventions == 'true' && format('-interv-{0}', steps.empreinte_attendue.outputs.empreinte) || '' }}
           restore-keys: |
-            ${{ inputs.collect_interventions && format('public-data-cache-an-{0}-interv', steps.week.outputs.week) || '' }}
+            ${{ needs.epingler-le-code.outputs.interventions == 'true' && format('public-data-cache-an-{0}-interv', steps.week.outputs.week) || '' }}
             public-data-cache-an-
 
       # #555 — DÉCLARATION SEULE, job CONSOMMATEUR (pas de `--perimer`).
@@ -2730,9 +2749,9 @@ jobs:
           # vérifier les six combinaisons, et une expression `${{ }}` le lui
           # rendrait illisible. Le log en garde la trace, ce dont
           # retry-generate-data.yml a besoin.
-          COLLECT_INTERVENTIONS: ${{ inputs.collect_interventions }}
+          COLLECT_INTERVENTIONS: ${{ needs.epingler-le-code.outputs.interventions == 'true' }}
           # #817 : même raison, même endroit.
-          COLLECT_DOSSIERS: ${{ inputs.collect_dossiers_legislatifs }}
+          COLLECT_DOSSIERS: ${{ needs.epingler-le-code.outputs.dossiers_legislatifs == 'true' }}
         run: |
           # ── LES DÉFAUTS S'APPLIQUENT ICI, EN BASH, PAS DANS LE FORMULAIRE (#1054)
           #

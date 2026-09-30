@@ -159,9 +159,9 @@ def _mode_observe(job: str, commande: str) -> str:
         tableau = motif_tableau.group(1)
         script = _script_du_job(job)
         assignation = re.search(
-            rf"inputs\.collect_interventions[^\n]*\)\s*&&\s*{tableau}=\(|"
-            rf"{tableau}=\([^)]*\)[^\n]*inputs\.collect_interventions|"
-            rf"inputs\.collect_interventions[^\n]*{tableau}=",
+            rf"needs\.epingler-le-code\.outputs\.interventions\s*==\s*'true'[^\n]*\)\s*&&\s*{tableau}=\(|"
+            rf"{tableau}=\([^)]*\)[^\n]*needs\.epingler-le-code\.outputs\.interventions\s*==\s*'true'|"
+            rf"needs\.epingler-le-code\.outputs\.interventions\s*==\s*'true'[^\\n]*{tableau}=",
             script,
         )
         if not assignation:
@@ -171,7 +171,7 @@ def _mode_observe(job: str, commande: str) -> str:
             # interdit donc toute expression `${{ }}` à l'intérieur. Le lien
             # input → tableau reste lisible, en deux sauts au lieu d'un.
             for var in re.findall(
-                r"^\s*([A-Z_]+): \$\{\{ inputs\.collect_interventions \}\}", script, re.M
+                r"^\s*([A-Z_]+): \$\{\{ needs\.epingler-le-code\.outputs\.interventions\s*==\s*'true' \}\}", script, re.M
             ):
                 if re.search(rf"\${var}\b[^\n]*{tableau}=|{tableau}=\([^)]*\)[^\n]*\${var}\b", script):
                     assignation = True

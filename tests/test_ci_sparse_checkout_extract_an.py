@@ -304,7 +304,7 @@ def test_le_timeout_du_shard_est_inchange():
     échoue parce que le timeout a été relevé, c'est que quelqu'un a soigné le
     symptôme : `AGENTS.md` §3b interdit de le faire seul (#498)."""
     texte = WORKFLOW.read_text(encoding="utf-8")
-    assert "timeout-minutes: ${{ inputs.collect_interventions && 10 || 5 }}" in texte, (
+    assert "timeout-minutes: ${{ needs.epingler-le-code.outputs.interventions == 'true' && 10 || 5 }}" in texte, (
         "le `timeout-minutes` d'extract-an a changé : relire #498 et "
         "docs/decisions/budget-collecte-interventions.md avant de le valider")
 

@@ -83,13 +83,13 @@ def _timeouts_extract_an() -> tuple[int, int]:
     bloc = re.search(r"^  extract-an:\n(.*?)(?=\n  [a-z][a-z0-9-]*:\n)", texte, flags=re.S | re.M)
     assert bloc, "Job `extract-an` introuvable dans generate-data.yml."
     motif = re.search(
-        r"^    timeout-minutes:\s*\$\{\{\s*inputs\.collect_interventions\s*&&\s*(\d+)\s*\|\|\s*(\d+)\s*\}\}",
+        r"^    timeout-minutes:\s*\$\{\{\s*needs\.epingler-le-code\.outputs\.interventions\s*==\s*'true'\s*&&\s*(\d+)\s*\|\|\s*(\d+)\s*\}\}",
         bloc.group(1),
         flags=re.M,
     )
     assert motif, (
         "Le `timeout-minutes` d'extract-an n'est plus conditionnel à "
-        "`inputs.collect_interventions`. Une valeur unique ne peut pas couvrir les "
+        "le mode du run (#1149). Une valeur unique ne peut pas couvrir les "
         "deux modes : c'est le défaut que #498 corrige (extraction mesurée à "
         "8-18 s sans interventions, 59-286 s avec)."
     )
@@ -126,7 +126,7 @@ def _executer_script(collect_interventions: str) -> str:
     script = _script_extraction()
     lignes = [ligne for ligne in script.split("\n") if "generate_all_profiles.py" not in ligne]
     corps = "\n".join(lignes)
-    corps = corps.replace("${{ inputs.collect_interventions }}", collect_interventions)
+    corps = corps.replace("${{ needs.epingler-le-code.outputs.interventions == 'true' }}", collect_interventions)
     corps = re.sub(r"\$\{\{[^}]*\}\}", "0", corps)
     corps += '\necho "BUDGET=${BUDGET_FLAG[*]-}"\necho "INTERV=${INTERV_FLAG[*]-}"\n'
     resultat = subprocess.run(
@@ -208,7 +208,7 @@ def test_le_message_de_temps_mur_annonce_le_timeout_du_mode_courant():
     avertissement faux au moment précis où il sert."""
     texte = _yaml()
     motif = re.search(
-        r"AN_TIMEOUT_MINUTES:\s*\$\{\{\s*inputs\.collect_interventions\s*&&\s*(\d+)\s*\|\|\s*(\d+)\s*\}\}",
+        r"AN_TIMEOUT_MINUTES:\s*\$\{\{\s*needs\.epingler-le-code\.outputs\.interventions\s*==\s*'true'\s*&&\s*(\d+)\s*\|\|\s*(\d+)\s*\}\}",
         texte,
     )
     assert motif, (

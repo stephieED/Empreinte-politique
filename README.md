@@ -11,10 +11,11 @@
 > Ce que le corpus contient, et depuis quand, se lit sur la page
 > [Sources](https://empreinte-politique.fr/sources) du site.
 
-**Empreinte politique** produit des « CV politiques » factuels et sourcés —
-mandats, responsabilités, votes, textes portés, interventions en séance — pour
-les candidats à l'élection présidentielle française de 2027, ainsi que pour les
-groupes parlementaires et les gouvernements réels.
+**Empreinte politique** produit des relevés factuels et sourcés — mandats,
+responsabilités, votes, textes portés, interventions en séance — pour les
+**groupes parlementaires** et les **gouvernements** réels, qui en sont le cœur
+permanent, et pour les **candidats déclarés à l'élection présidentielle de
+2027**, volet borné par ce scrutin.
 
 **Principe directeur** : tout fait affiché doit être traçable jusqu'à une source
 primaire. Le projet agrège des faits ; il ne produit ni classement, ni score, ni

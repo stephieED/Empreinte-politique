@@ -33,6 +33,22 @@ qui suivent, dont chacun a coûté assez cher pour ne pas être re-découvert.
 
 ### Constats de cadrage, à ne pas re-trancher
 
+**Le cœur du site est parlementaire et gouvernemental ; les candidats sont un
+volet borné (arbitré le 30/09/2026).** Le site s'était construit autour des
+candidats déclarés à 2027 — premier écran, onglet d'entrée, README, première
+phrase d'`AGENTS.md`. Or ce volet a une date de péremption : passé avril 2027,
+une liste de candidats déclarés ne décrit plus rien, quand les groupes et les
+gouvernements continuent.
+
+**Le périmètre ne bouge pas** : aucune fiche ne disparaît, aucune collecte ne
+s'arrête. C'est la hiérarchie de présentation qui change.
+
+Deux choses restent ouvertes et ne doivent pas être décidées en passant : la
+forme du bloc d'entrée de l'accueil, et le mot « parcours » du titre — un
+parcours est le mot d'une personne, il convient mal à un gouvernement et pas du
+tout à une lignée de groupe.
+→ [`coeur-permanent-groupes-et-gouvernements`](docs/decisions/coeur-permanent-groupes-et-gouvernements.md)
+
 **Le champ `article` des amendements est complet, et il ne sera pas publié
 (arbitré le 25/09/2026, sur maquette).** 685 723 amendements nomment la division
 du texte qu'ils visent, sur les quatre législatures, et la jointure vers les
