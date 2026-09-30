@@ -297,7 +297,7 @@
   },
   "succede_a": null,
   "date_reference": {
-    "date": "2026-09-29",
+    "date": "2026-09-30",
     "origine": "generation"
   },
   "effectif": {
@@ -113894,6 +113894,158 @@
     },
     {
       "categorie": "commission",
+      "label": "Commission des affaires sociales",
+      "nb_membres_a_la_date_de_reference": 3,
+      "nb_membres_cumul_historique": 10,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre": 10
+      },
+      "membres": [
+        {
+          "membre_id": "brigitte-bareges",
+          "nom": "Brigitte Barèges",
+          "fonction": "Membre",
+          "debut": "2025-07-09",
+          "fin": "2025-07-10",
+          "actif": false
+        },
+        {
+          "membre_id": "eric-ciotti",
+          "nom": "Éric Ciotti",
+          "fonction": "Membre",
+          "debut": "2026-05-20",
+          "fin": "2026-05-20",
+          "actif": false
+        },
+        {
+          "membre_id": "marc-chavent",
+          "nom": "Marc Chavent",
+          "fonction": "Membre",
+          "debut": "2026-09-30",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "olivier-fayssat",
+          "nom": "Olivier Fayssat",
+          "fonction": "Membre",
+          "debut": "2026-07-01",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "gerault-verny",
+          "nom": "Gérault Verny",
+          "fonction": "Membre",
+          "debut": "2025-02-19",
+          "fin": "2025-02-19",
+          "actif": false
+        },
+        {
+          "membre_id": "bartolome-lenoir",
+          "nom": "Bartolomé Lenoir",
+          "fonction": "Membre",
+          "debut": "2025-06-04",
+          "fin": "2025-06-27",
+          "actif": false
+        },
+        {
+          "membre_id": "hanane-mansouri",
+          "nom": "Hanane Mansouri",
+          "fonction": "Membre",
+          "debut": "2026-06-03",
+          "fin": "2026-06-30",
+          "actif": false
+        },
+        {
+          "membre_id": "charles-alloncle",
+          "nom": "Charles Alloncle",
+          "fonction": "Membre",
+          "debut": "2026-04-01",
+          "fin": "2026-04-01",
+          "actif": false
+        },
+        {
+          "membre_id": "maxime-michelet",
+          "nom": "Maxime Michelet",
+          "fonction": "Membre",
+          "debut": "2025-06-17",
+          "fin": "2025-06-20",
+          "actif": false
+        },
+        {
+          "membre_id": "eric-michoux",
+          "nom": "Éric Michoux",
+          "fonction": "Membre",
+          "debut": "2026-07-01",
+          "fin": null,
+          "actif": true
+        }
+      ]
+    },
+    {
+      "categorie": "commission",
+      "label": "Commission du développement durable et de l'aménagement du territoire",
+      "nb_membres_a_la_date_de_reference": 3,
+      "nb_membres_cumul_historique": 6,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre": 6
+      },
+      "membres": [
+        {
+          "membre_id": "sophie-ricourt-vaginay",
+          "nom": "Sophie Ricourt Vaginay",
+          "fonction": "Membre",
+          "debut": "2025-06-13",
+          "fin": "2025-06-27",
+          "actif": false
+        },
+        {
+          "membre_id": "vincent-trebuchet",
+          "nom": "Vincent Trébuchet",
+          "fonction": "Membre",
+          "debut": "2026-06-03",
+          "fin": "2026-06-30",
+          "actif": false
+        },
+        {
+          "membre_id": "marc-chavent",
+          "nom": "Marc Chavent",
+          "fonction": "Membre",
+          "debut": "2026-07-01",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "olivier-fayssat",
+          "nom": "Olivier Fayssat",
+          "fonction": "Membre",
+          "debut": "2026-09-30",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "eric-michoux",
+          "nom": "Éric Michoux",
+          "fonction": "Membre",
+          "debut": "2025-06-28",
+          "fin": "2025-09-30",
+          "actif": false
+        },
+        {
+          "membre_id": "pierre-henri-carbonnel",
+          "nom": "Pierre-Henri Carbonnel",
+          "fonction": "Membre",
+          "debut": "2025-10-15",
+          "fin": null,
+          "actif": true
+        }
+      ]
+    },
+    {
+      "categorie": "commission",
       "label": "Commission de la défense nationale et des forces armées",
       "nb_membres_a_la_date_de_reference": 3,
       "nb_membres_cumul_historique": 3,
@@ -114290,98 +114442,6 @@
     },
     {
       "categorie": "commission",
-      "label": "Commission des affaires sociales",
-      "nb_membres_a_la_date_de_reference": 2,
-      "nb_membres_cumul_historique": 10,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 10
-      },
-      "membres": [
-        {
-          "membre_id": "brigitte-bareges",
-          "nom": "Brigitte Barèges",
-          "fonction": "Membre",
-          "debut": "2025-07-09",
-          "fin": "2025-07-10",
-          "actif": false
-        },
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2026-05-20",
-          "fin": "2026-05-20",
-          "actif": false
-        },
-        {
-          "membre_id": "marc-chavent",
-          "nom": "Marc Chavent",
-          "fonction": "Membre",
-          "debut": "2026-06-03",
-          "fin": "2026-06-30",
-          "actif": false
-        },
-        {
-          "membre_id": "olivier-fayssat",
-          "nom": "Olivier Fayssat",
-          "fonction": "Membre",
-          "debut": "2026-07-01",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "gerault-verny",
-          "nom": "Gérault Verny",
-          "fonction": "Membre",
-          "debut": "2025-02-19",
-          "fin": "2025-02-19",
-          "actif": false
-        },
-        {
-          "membre_id": "bartolome-lenoir",
-          "nom": "Bartolomé Lenoir",
-          "fonction": "Membre",
-          "debut": "2025-06-04",
-          "fin": "2025-06-27",
-          "actif": false
-        },
-        {
-          "membre_id": "hanane-mansouri",
-          "nom": "Hanane Mansouri",
-          "fonction": "Membre",
-          "debut": "2026-06-03",
-          "fin": "2026-06-30",
-          "actif": false
-        },
-        {
-          "membre_id": "charles-alloncle",
-          "nom": "Charles Alloncle",
-          "fonction": "Membre",
-          "debut": "2026-04-01",
-          "fin": "2026-04-01",
-          "actif": false
-        },
-        {
-          "membre_id": "maxime-michelet",
-          "nom": "Maxime Michelet",
-          "fonction": "Membre",
-          "debut": "2025-06-17",
-          "fin": "2025-06-20",
-          "actif": false
-        },
-        {
-          "membre_id": "eric-michoux",
-          "nom": "Éric Michoux",
-          "fonction": "Membre",
-          "debut": "2026-07-01",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
-      "categorie": "commission",
       "label": "Commission des affaires économiques",
       "nb_membres_a_la_date_de_reference": 2,
       "nb_membres_cumul_historique": 8,
@@ -114717,58 +114777,6 @@
           "debut": "2026-04-08",
           "fin": "2026-04-08",
           "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "commission",
-      "label": "Commission du développement durable et de l'aménagement du territoire",
-      "nb_membres_a_la_date_de_reference": 2,
-      "nb_membres_cumul_historique": 5,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 5
-      },
-      "membres": [
-        {
-          "membre_id": "sophie-ricourt-vaginay",
-          "nom": "Sophie Ricourt Vaginay",
-          "fonction": "Membre",
-          "debut": "2025-06-13",
-          "fin": "2025-06-27",
-          "actif": false
-        },
-        {
-          "membre_id": "vincent-trebuchet",
-          "nom": "Vincent Trébuchet",
-          "fonction": "Membre",
-          "debut": "2026-06-03",
-          "fin": "2026-06-30",
-          "actif": false
-        },
-        {
-          "membre_id": "marc-chavent",
-          "nom": "Marc Chavent",
-          "fonction": "Membre",
-          "debut": "2026-07-01",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "eric-michoux",
-          "nom": "Éric Michoux",
-          "fonction": "Membre",
-          "debut": "2025-06-28",
-          "fin": "2025-09-30",
-          "actif": false
-        },
-        {
-          "membre_id": "pierre-henri-carbonnel",
-          "nom": "Pierre-Henri Carbonnel",
-          "fonction": "Membre",
-          "debut": "2025-10-15",
-          "fin": null,
-          "actif": true
         }
       ]
     },
@@ -117487,97 +117495,97 @@
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA267561",
-      "synchro_le": "2026-09-29T08:20:40+0000"
+      "synchro_le": "2026-09-30T02:42:55+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA330240",
-      "synchro_le": "2026-09-29T08:19:33+0000"
+      "synchro_le": "2026-09-30T02:42:37+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793322",
-      "synchro_le": "2026-09-29T08:19:34+0000"
+      "synchro_le": "2026-09-30T02:42:38+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840657",
-      "synchro_le": "2026-09-29T08:20:08+0000"
+      "synchro_le": "2026-09-30T02:43:23+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840685",
-      "synchro_le": "2026-09-29T08:19:30+0000"
+      "synchro_le": "2026-09-30T02:44:10+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840701",
-      "synchro_le": "2026-09-29T08:20:18+0000"
+      "synchro_le": "2026-09-30T02:43:18+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840721",
-      "synchro_le": "2026-09-29T08:19:29+0000"
+      "synchro_le": "2026-09-30T02:44:10+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840773",
-      "synchro_le": "2026-09-29T08:21:50+0000"
+      "synchro_le": "2026-09-30T02:44:29+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840809",
-      "synchro_le": "2026-09-29T08:20:37+0000"
+      "synchro_le": "2026-09-30T02:43:42+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840889",
-      "synchro_le": "2026-09-29T08:19:58+0000"
+      "synchro_le": "2026-09-30T02:43:05+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840983",
-      "synchro_le": "2026-09-29T08:20:40+0000"
+      "synchro_le": "2026-09-30T02:42:55+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841067",
-      "synchro_le": "2026-09-29T08:20:08+0000"
+      "synchro_le": "2026-09-30T02:43:23+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841183",
-      "synchro_le": "2026-09-29T08:19:31+0000"
+      "synchro_le": "2026-09-30T02:44:10+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841207",
-      "synchro_le": "2026-09-29T08:20:18+0000"
+      "synchro_le": "2026-09-30T02:43:19+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841395",
-      "synchro_le": "2026-09-29T08:19:29+0000"
+      "synchro_le": "2026-09-30T02:44:10+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841769",
-      "synchro_le": "2026-09-29T08:21:51+0000"
+      "synchro_le": "2026-09-30T02:44:29+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841973",
-      "synchro_le": "2026-09-29T08:20:37+0000"
+      "synchro_le": "2026-09-30T02:43:42+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA878242",
-      "synchro_le": "2026-09-29T08:19:58+0000"
+      "synchro_le": "2026-09-30T02:43:05+0000"
     }
   ],
   "meta": {
     "schema_version": "1",
-    "genere_le": "2026-09-29T08:49:48+0000",
+    "genere_le": "2026-09-30T03:17:34+0000",
     "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
     "profils_sources": [
       "brigitte-bareges",
@@ -117601,8 +117609,8 @@
     ],
     "seuil_quorum": 0.5,
     "warnings": [
-      "date_reference : tous les comptes de cette fiche se rapportent au 2026-09-29, date de génération — au moins une appartenance au groupe est encore ouverte, la législature court. La valeur bougera au prochain run (#653).",
-      "effectif_sur_la_periode : entre 2024-07-19 et 2026-09-29, le groupe a compté au minimum 15 membres (2025-07-12) et au maximum 17 (2026-02-02) — première date à laquelle chaque borne est atteinte. L'effectif est réévalué à chaque entrée et à chaque lendemain de sortie, jamais hors de cette fenêtre. `membres[]` ne porte qu'un intervalle par membre (périodes recollées, #526) : un départ suivi d'un retour n'y apparaît pas, et aucune de ces deux bornes ne le voit (#702).",
+      "date_reference : tous les comptes de cette fiche se rapportent au 2026-09-30, date de génération — au moins une appartenance au groupe est encore ouverte, la législature court. La valeur bougera au prochain run (#653).",
+      "effectif_sur_la_periode : entre 2024-07-19 et 2026-09-30, le groupe a compté au minimum 15 membres (2025-07-12) et au maximum 17 (2026-02-02) — première date à laquelle chaque borne est atteinte. L'effectif est réévalué à chaque entrée et à chaque lendemain de sortie, jamais hors de cette fenêtre. `membres[]` ne porte qu'un intervalle par membre (périodes recollées, #526) : un départ suivi d'un retour n'y apparaît pas, et aucune de ces deux bornes ne le voit (#702).",
       "tags_thematiques_agreges : 1559 intervention(s) tenue(s) sous une autre législature que la 17e n'ont pas nourri l'empreinte thématique — elles appartiennent à la carrière de leurs auteurs, pas à l'activité de ce groupe (#825, même règle que les votes depuis #403 et que les amendements depuis #821).",
       "amendements_agreges : 11268 signature(s) portant sur des amendements déposés sous une autre législature que la 17e ont été écartées — ils appartiennent à la carrière de leurs auteurs, pas à l'activité de ce groupe (#821, même règle que les votes depuis #403).",
       "fraicheur_donnees : composition dérivée du référentiel AMO30 de l'Assemblée nationale (data.assemblee-nationale.fr, Licence Ouverte), et non plus de www.nosdeputes.fr depuis #527. Une législature close y est complète : les mandats terminés en cours de législature y figurent, alors que la dernière composition connue d'un miroir les perd. La fiche reflète donc l'appartenance au groupe telle que l'Assemblée la publie à la date de meta.genere_le ; un membre sans profil publié n'y apparaît pas (voir meta.couverture_roster)."
@@ -117615,13 +117623,13 @@
   },
   "fenetres_parole": {
     "12_mois": {
-      "debut": "2025-09-29",
-      "fin": "2026-09-29",
+      "debut": "2025-09-30",
+      "fin": "2026-09-30",
       "nb_membres": 17
     },
     "6_mois": {
-      "debut": "2026-03-29",
-      "fin": "2026-09-29",
+      "debut": "2026-03-30",
+      "fin": "2026-09-30",
       "nb_membres": 17
     }
   }
