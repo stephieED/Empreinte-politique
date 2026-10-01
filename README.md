@@ -148,7 +148,7 @@ vers les index partagés. Pourquoi, et ce que ça a fait gagner :
 
 | Question | Fichier |
 |---|---|
-| **« Qu'est-ce qui alimente quoi ? »** — la carte des sources aux fiches publiées, en figure | [`docs/fabrique-du-jeu-de-donnees.html`](docs/fabrique-du-jeu-de-donnees.html) |
+| **« Comment se déroule un run ? »** — les jobs dans l'ordre, la fusion en huit phases, ce que dure un run, en figure | [`docs/fabrique-du-jeu-de-donnees.html`](docs/fabrique-du-jeu-de-donnees.html) |
 | **« Quelle était la commande, déjà ? »** | [`docs/commandes.md`](docs/commandes.md) |
 | **« Que devient la donnée ? »** — flux, schémas, sorties de `pivot_data/`, volumétrie | [`docs/data-architecture.md`](docs/data-architecture.md) |
 | **« Que fait un run ? »** — les jobs, le formulaire, caches, artifacts, budgets, le push, la relance automatique | [`docs/workflow-generate-data.md`](docs/workflow-generate-data.md) |

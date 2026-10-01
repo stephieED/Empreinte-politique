@@ -423,7 +423,7 @@ function QuiSontIls({ lignee }) {
 
   return (
     <Section
-      critere="Chaque personne passée par l'un des groupes de la lignée, et le chemin qu'elle y a fait."
+      critere="Chaque personne passée par l'un de ces groupes successifs, et le chemin qu'elle y a fait."
       numero="1"
       pied={(
         <>
@@ -435,7 +435,7 @@ function QuiSontIls({ lignee }) {
           )}
         </>
       )}
-      renvoi={{ ancre: 'lignee', texte: 'Comment les groupes d’une lignée sont reliés' }}
+      renvoi={{ ancre: 'lignee', texte: 'Comment les groupes successifs sont reliés' }}
       titre="Qui sont-ils"
     >
       <div className="lp-carte">
@@ -1163,7 +1163,7 @@ function CeQuOnNaPasPuLire({ lignee }) {
       titre="Ce qu’on n’a pas pu lire"
     >
       {total === 0 ? (
-        <p className="lp-rien">Aucun signalement propre aux fiches de cette lignée.</p>
+        <p className="lp-rien">Aucun signalement propre aux fiches de ce groupe.</p>
       ) : (
         <div className="lp-carte">
           <div className="lp-mat-tete">

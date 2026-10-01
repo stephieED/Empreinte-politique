@@ -259,10 +259,24 @@ def test_trois_vides_trois_causes(composant: str) -> None:
 
     Les confondre ferait lire « aucune fiche n'est publiée » comme « il n'a
     jamais divergé » (§2 règle 5).
+
+    LA PREMIÈRE CAUSE A DÉMÉNAGÉ LE 01/10/2026, elle n'a pas disparu. Sur la
+    fiche, elle tient en une ligne — « Rien à comparer. Pourquoi → » — parce que
+    quatre cartes d'absence à pleine taille faisaient scroller 2 725 px avant
+    d'atteindre le seul bloc qui explique. La cause ET la nuance vivent donc en
+    section 6, et ce test les y suit : sans elles, le vide se lirait comme
+    « il n'a jamais divergé ».
     """
-    assert "Rien n’est comparable" in composant
+    assert "Rien à comparer" in composant
     assert "ne recouvrent aucun de ses votes" in composant
     assert "sa position ne s’écarte jamais" in composant
+
+    fiche = FICHE.read_text(encoding="utf-8")
+    assert "cp-couv-ecarts" in fiche, "la première cause n'est plus dite nulle part"
+    assert "aucune fiche n’est publiée" in fiche
+    assert "ne dit pas qu’elle n’a jamais divergé" in fiche, (
+        "la nuance qui empêche de lire le vide comme une absence de divergence"
+    )
 
 
 # ── L'interactivité ne promet que ce qu'elle tient ─────────────────────────

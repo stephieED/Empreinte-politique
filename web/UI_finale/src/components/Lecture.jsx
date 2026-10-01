@@ -83,8 +83,37 @@ export function Troncature({ shown, total, rule }) {
  * Le vide dit pourquoi. La cause est celle du bloc `couverture` du profil, et
  * `motif` est la phrase que le pipeline a écrite pour ce profil-là.
  */
-export function ListeVide({ cause, motif, source }) {
+/* LA FORME D'UNE LIGNE (arbitrée le 01/10/2026, sur quatre rendus comparés).
+ *
+ * Sur une fiche sans donnée, la carte pleine était répétée section après
+ * section : quatre cartes quasi identiques sur 2 725 px, avant d'atteindre
+ * « Ce qu'on n'a pas pu lire », qui est le SEUL bloc à dire la cause — liste par
+ * liste, avec sa borne. L'absence n'est pas masquée, elle est dite UNE fois, là
+ * où elle s'explique : la ligne y renvoie.
+ *
+ * « AUCUNE DONNÉE TROUVÉE » NE VAUT PAS POUR `non_collecte`, et c'est §2 règle 5.
+ * « Trouvée » affirme une recherche ; sur une liste jamais interrogée, cette
+ * recherche n'a pas eu lieu, et le dire publierait un résultat là où il n'y a pas
+ * eu de mesure. Les deux causes gardent donc deux phrases.
+ *
+ * La carte pleine reste employée ailleurs — fiche de lignée —, où le problème
+ * de répétition ne se pose pas. */
+const PHRASE_COMPACTE = {
+  non_collecte: 'Liste non interrogée.',
+  defaut: 'Aucune donnée trouvée.',
+};
+
+export function ListeVide({ cause, motif, source, compacte = false, renvoi = null }) {
   const m = emptyListMessage(cause, motif);
+
+  if (compacte) {
+    const phrase = PHRASE_COMPACTE[cause] || PHRASE_COMPACTE.defaut;
+    return (
+      <p className="lec-vide-ligne">
+        {phrase}{renvoi && <> <a className="lec-vide-pourquoi" href={renvoi}>Pourquoi →</a></>}
+      </p>
+    );
+  }
 
   return (
     <div className={`lec-vide${m.known ? '' : ' lec-vide--inconnue'}`}>

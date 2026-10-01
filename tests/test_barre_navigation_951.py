@@ -202,19 +202,111 @@ def test_la_methodologie_s_ouvre_sur_les_blocs_de_l_accueil() -> None:
     assert page.index("<HowItWorks", debut) < page.index("<WhatYouWontFind", debut) < page.index("{ famille: 'Fiche candidat' }", debut)
 
 
-def test_l_accueil_est_le_hero_puis_les_candidats() -> None:
-    """Forme C, arbitrée le 16/09/2026 : le Hero sans ses trois boutons, puis les
-    candidats déclarés lus dans le manifeste."""
+def test_l_accueil_est_le_hero_puis_l_entree_en_deux_temps() -> None:
+    """Le Hero sans ses trois boutons, puis l'entrée refondue le 30/09/2026.
+
+    La forme C du 16/09 ouvrait sur la grille des 31 candidats. Le recadrage
+    éditorial en fait un volet borné : deux portes permanentes — groupes et
+    gouvernements — et les candidats sous leur date.
+    """
     accueil = _sans_commentaires(ACCUEIL.read_text(encoding="utf-8"))
     corps = accueil[accueil.index("<main"):accueil.index("</main>")]
-    assert re.findall(r"<([A-Z][A-Za-z]+) />", corps) == ["Hero", "CandidatsDeclares"]
+    assert re.findall(r"<([A-Z][A-Za-z]+) />", corps) == ["Hero", "CommencerAExplorer"]
     hero = _sans_commentaires((UI / "src" / "components" / "landing" / "Hero.jsx").read_text(encoding="utf-8"))
     assert "landing-cta" not in hero and "Voir un profil" not in hero
-    liste = (UI / "src" / "components" / "landing" / "CandidatsDeclares.jsx").read_text(encoding="utf-8")
-    assert "getCandidatesList" in liste
-    assert "Les candidats déclarés</h2>" in liste, "titre sans nombre, validé le 16/09/2026"
+    liste = (UI / "src" / "components" / "landing" / "CommencerAExplorer.jsx").read_text(encoding="utf-8")
+    # LES TROIS FAMILLES SONT LUES, jamais écrites à la main : un candidat qui se
+    # déclare, une lignée qui naît, un gouvernement qui tombe entrent au run suivant.
+    for source in ("getCandidatesList", "getGroupsList", "getGovernmentsList"):
+        assert source in liste, f"{source} n'alimente plus l'accueil"
+    # LE TITRE EST LE SIEN (30/09/2026) : « Commencer à explorer » nommait le
+    # geste, « Commencer l'exploration » la chose. Elle a donné le second.
+    assert "Commencer l’exploration</h2>" in liste
     assert "cb-chip--sans-mandat" in liste, "le grisé de la barre de l'explorateur, infobulle comprise"
-    assert 'to="/groupes"' in liste and 'to="/gouvernements"' in liste
+    assert 'to={`/groupes/${l.id}`}' in liste and 'to={`/gouvernements/${g.id}`}' in liste
+
+
+def test_le_volet_candidats_porte_sa_borne() -> None:
+    """« Ponctuel » se lit dans la FORME, pas dans une phrase explicative.
+
+    Sans sa date, l'encart ne dit plus qu'une chose — que les candidats sont en
+    dessous —, ce qui est une hiérarchie sans sa raison. La borne est ce qui
+    distingue « volet borné par une élection » de « rubrique secondaire ».
+    """
+    liste = (UI / "src" / "components" / "landing" / "CommencerAExplorer.jsx").read_text(encoding="utf-8")
+    assert "BORNE_CANDIDATS" in liste
+    assert "2027" in liste, "la borne a perdu sa date"
+
+
+def test_la_porte_des_groupes_garde_le_mot_du_lecteur() -> None:
+    """« GROUPES PARLEMENTAIRES », ET PAS « LIGNÉES » (fermé le 01/10/2026).
+
+    La porte mène aux 12 fiches de LIGNÉE, pas aux 29 groupes réels : le mot et
+    l'objet ne désignent donc pas la même chose, et le point est resté ouvert
+    depuis le 30/09. **La propriétaire l'a tranché** : « lignées, ça ne parle à
+    personne donc on reste sur groupes parlementaires ».
+
+    La raison n'est PAS que le concept serait obscur : l'histoire d'un groupe qui
+    change de nom d'une législature à l'autre est parfaitement connue. C'est le
+    MOT « lignée » qui est de nous — une terminologie que ce projet s'est donnée —,
+    et un mot que nous avons inventé n'a pas à paraître dans l'interface.
+
+    Ne pas « corriger » ce libellé en « lignées » au motif que c'est ainsi que la
+    donnée s'appelle : c'est précisément ce qui a été refusé.
+    """
+    source = _sans_commentaires(
+        (UI / "src" / "components" / "landing" / "CommencerAExplorer.jsx").read_text(encoding="utf-8"))
+    assert 'libelle="Groupes parlementaires"' in source
+    assert "ignée" not in source, "le mot du modèle de données a remplacé celui du lecteur"
+
+
+def test_la_liste_des_candidats_dit_d_ou_elle_vient() -> None:
+    """WIKIPÉDIA, ET JAMAIS WIKIDATA (30/09/2026).
+
+    La liste des candidats déclarés est la seule du site qui ne vienne pas d'une
+    source institutionnelle : elle est tenue à la main d'après l'article
+    Wikipédia « Candidatures à l'élection présidentielle française de 2027 ».
+
+    Wikidata ne fournit qu'une propriété — `P4123`, l'identifiant du candidat à
+    l'Assemblée —, et elle a été ESSAYÉE pour découvrir les candidatures puis
+    écartée sur mesure (#753) : la propriété qui les déclare rend 1 personne pour
+    2027 contre plus de trente déclarées. L'erreur a déjà été proposée une fois,
+    d'où cette garde : écrire « issue de Wikidata » contredirait `/sources` sur la
+    provenance d'une liste publiée, ce qui relève de §2 règle 2 et non du style.
+    """
+    source = (UI / "src" / "components" / "landing" / "CommencerAExplorer.jsx").read_text(encoding="utf-8")
+    rendu = _sans_commentaires(source)
+    assert "explorer-provenance" in rendu, "la liste des candidats ne dit plus d'où elle vient"
+    assert "Wikipédia" in rendu, "la provenance ne nomme plus sa source"
+    assert "Wikidata" not in rendu, (
+        "la liste vient de Wikipédia ; Wikidata ne fournit que l'identifiant AN (#753)"
+    )
+    # Elle ne vaut que pour la liste des candidats : au-dessus du bloc, elle
+    # qualifierait aussi les groupes et les gouvernements, qui sont institutionnels.
+    assert "hidden={ouverte !== 'candidats'}" in rendu
+
+    # LA DATE EST ÉCRITE À DEUX ENDROITS, DONC ELLE PEUT DÉRIVER. Elle vient de
+    # l'article 3 de la loi du 6 novembre 1962, et `/sources` la porte déjà sur
+    # son entrée « Conseil constitutionnel ». Si l'une des deux bouge sans
+    # l'autre, le site annonce deux dates pour le même fait.
+    date = re.search(r"const DATE_LISTE_OFFICIELLE = '([^']+)'", source)
+    assert date, "la mention n'annonce plus de date"
+    config = (UI / "src" / "data" / "sources.config.js").read_text(encoding="utf-8")
+    assert date.group(1) in config, (
+        f"l'accueil annonce {date.group(1)}, que /sources ne dit nulle part"
+    )
+
+
+def test_explorateur_ne_parait_pas_sur_l_accueil() -> None:
+    """Le lien menait à /candidats : il portait la hiérarchie que le recadrage défait.
+
+    Il RESTE sur les autres pages, où il est le seul raccourci vers les fiches —
+    d'où une règle conditionnelle à la route, et non une suppression.
+    """
+    nav = _sans_commentaires((UI / "src" / "components" / "NavigationSite.jsx").read_text(encoding="utf-8"))
+    assert "pathname === '/'" in nav and "Explorateur" in nav, (
+        "le lien a été retiré partout, ou la condition de route a disparu"
+    )
 
 
 def test_les_mandats_anterieurs_sont_nommes_sous_la_frise_de_sources() -> None:

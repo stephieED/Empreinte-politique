@@ -98,6 +98,27 @@
   border-style: dashed;
 }
 
+/* La forme d'une ligne : ni carte, ni filet, ni fond — ce n'est plus un objet à
+   lire, c'est une mention. Le gris est celui des métadonnées. */
+.lec-vide-ligne {
+  margin: 2px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.lec-vide-pourquoi {
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.lec-vide-pourquoi:hover,
+.lec-vide-pourquoi:focus-visible {
+  text-decoration: underline;
+}
+
 .lec-vide-titre {
   margin: 0 0 6px;
   font-size: 14px;

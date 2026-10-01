@@ -59,8 +59,15 @@ export default function NavigationSite({ outilExplorateur = null }) {
     };
   }, [menuOuvert]);
 
+  /* « EXPLORATEUR » NE PARAÎT PAS SUR L'ACCUEIL (30/09/2026) : les portes de
+     « Commencer l'exploration » y mènent, plus directement, et le lien pointait
+     `/candidats` — donc l'ancienne hiérarchie, celle que le recadrage défait.
+     Il reste sur les autres pages, où il est le seul raccourci vers les fiches.
+     → `docs/decisions/coeur-permanent-groupes-et-gouvernements.md` */
+  const pages = pathname === '/' ? PAGES.filter((p) => p.libelle !== 'Explorateur') : PAGES;
+
   const liens = (className) =>
-    PAGES.map((page) => {
+    pages.map((page) => {
       const courante = estCourante(page, pathname);
       // L'outil prend la place du lien dans la barre ; dans le menu replié, il
       // n'y a rien à mettre — le bouton est à côté de « Menu », pas dedans.

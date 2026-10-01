@@ -1,12 +1,18 @@
 import EnTeteSite from '../components/EnTeteSite';
 import PiedDeSite from '../components/PiedDeSite';
 import Hero from '../components/landing/Hero';
-import CandidatsDeclares from '../components/landing/CandidatsDeclares';
+import CommencerAExplorer from '../components/landing/CommencerAExplorer';
 import '../styles/shell.css';
 import '../components/landing/landing.css';
 
-// L'ACCUEIL, FORME C (#951, arbitrée le 16/09/2026) : le Hero sans ses boutons,
-// puis les candidats déclarés en accès direct. Les autres blocs ont leur page :
+// L'ACCUEIL, REFONDU LE 30/09/2026 : le Hero sans ses boutons, puis l'entrée en
+// deux temps — deux portes permanentes (groupes, gouvernements) et les candidats
+// dans un encart borné par l'élection. La forme C de #951 ouvrait sur la grille
+// des 31 candidats ; le recadrage éditorial du 30/09 en fait un volet ponctuel.
+// → `docs/decisions/accueil-deux-portes-et-le-concept-en-mots-cles.md`
+//
+// Ce qui suit décrit la forme C, conservé parce qu'il dit où sont parties les
+// autres sections : Les autres blocs ont leur page :
 // « Comment ça marche » et « Ce que vous ne trouverez pas ici » ouvrent
 // /methodologie, les questions fréquentes sont sur /faq, les sources et ce que le
 // dépôt porte sur /sources. La barre des pages du site les relie.
@@ -20,7 +26,7 @@ export default function LandingPage() {
         <EnTeteSite />
         <main className="landing-main">
           <Hero />
-          <CandidatsDeclares />
+          <CommencerAExplorer />
         </main>
         <PiedDeSite />
       </div>

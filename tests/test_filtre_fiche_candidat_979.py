@@ -322,8 +322,10 @@ def test_un_vide_du_filtre_passe_avant_le_vide_de_collecte():
     """« Non collecté » sous un mot serait faux : la branche du filtre vient d'abord."""
     source = _lire(FICHE)
     # #1074 : « un filtre actif » — un mot OU une période — et plus le mot seul.
+    # #1156 : le vide de collecte tient en une ligne depuis le 01/10/2026 ; ce
+    # qu'il faut tenir reste l'ORDRE, pas la forme de la carte disparue.
     assert source.index("textes.total === 0 && europe.total === 0 && actif") < source.index(
-        'source="Textes portés comme auteur ou rapporteur"'
+        "<ListeVide cause={causeTextes} compacte"
     )
     amdt = source[source.index("amdt.totalAuteur === 0 ? ("):]
     assert amdt.index("{actif ? (") < amdt.index("source={`Amendements déposés comme auteur principal")

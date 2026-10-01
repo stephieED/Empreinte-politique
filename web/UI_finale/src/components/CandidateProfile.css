@@ -2069,3 +2069,18 @@
   outline: 2px solid var(--ink);
   outline-offset: 2px;
 }
+
+/* La mention des écarts dans « Ce qu'on n'a pas pu lire » (01/10/2026). Ce n'est
+   ni une ligne du tableau — les écarts n'ont ni borne ni compte — ni un renvoi de
+   méthodologie : c'est la cause, écrite là où la section vide l'envoie chercher. */
+.cp-couv-ecarts {
+  margin: 14px 0 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.cp-couv-ecarts b {
+  color: var(--ink);
+  font-weight: 700;
+}

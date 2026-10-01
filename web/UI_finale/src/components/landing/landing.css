@@ -267,7 +267,10 @@
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 14px;
   padding: 14px 16px;
-  animation: hero-step-pulse 6s ease-in-out infinite;
+  /* LE BATTEMENT DES CASES EST RETIRÉ (30/09/2026) : la surbrillance tournante
+     est passée aux portes, où elle désigne un geste à faire. Sur les cases elle
+     n'appelait aucune action, et deux animations sur un écran se disputent
+     l'attention. */
 }
 
 .hero-pipeline-marker {
@@ -285,11 +288,51 @@
   letter-spacing: 0.04em;
 }
 
-.hero-pipeline-sample {
-  font-family: 'SFMono-Regular', Consolas, monospace;
+/* Une liste de mots-clés, pas du code : elle reprend la taille et la couleur de
+   l'ancien échantillon, jamais sa chasse fixe. */
+.hero-pipeline-mots {
   font-size: 11px;
+  line-height: 1.5;
   color: rgba(255, 255, 255, 0.65);
-  word-break: break-word;
+}
+
+/* Les cases 1 et 2 mènent quelque part. Un lien hérite de la couleur d'encre et
+   du soulignement d'`index.css` : sur le noir du Hero, l'un le rend illisible et
+   l'autre le déguise en lien de texte. */
+.hero-pipeline-step--lien {
+  position: relative;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.hero-pipeline-step--lien:hover {
+  text-decoration: none;
+  border-color: rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.hero-pipeline-step--lien:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.hero-pipeline-dest {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 0.14s;
+  pointer-events: none;
+}
+
+.hero-pipeline-step--lien:hover .hero-pipeline-dest,
+.hero-pipeline-step--lien:focus-visible .hero-pipeline-dest {
+  opacity: 1;
 }
 
 .hero-pipeline-verified {
@@ -325,27 +368,6 @@
 .hero-pipeline-arrow {
   flex-shrink: 0;
   color: rgba(255, 255, 255, 0.32);
-}
-
-@keyframes hero-step-pulse {
-  0%,
-  8%,
-  100% {
-    transform: scale(1);
-    border-color: rgba(255, 255, 255, 0.14);
-    background: rgba(255, 255, 255, 0.04);
-  }
-  4% {
-    transform: scale(1.03);
-    border-color: var(--accent);
-    background: rgba(223, 255, 0, 0.08);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-pipeline-step {
-    animation: none;
-  }
 }
 
 /* Below this width, HowItWorks' internal 4-column step grid gets cramped:
@@ -407,4 +429,239 @@
 .landing-candidats-aussi a {
   color: var(--ink);
   font-weight: 600;
+}
+
+
+/* ── COMMENCER À EXPLORER : deux portes permanentes, un encart daté ───────────
+ *
+ * → `docs/decisions/accueil-deux-portes-et-le-concept-en-mots-cles.md` */
+.explorer-titre {
+  /* C'ÉTAIT UN TITRE DE SECTION COMME LES AUTRES, à 16 px, alors que c'est
+     l'entrée du site. */
+  font-size: clamp(20px, 2.6vw, 25px);
+  font-weight: 800;
+  letter-spacing: -0.018em;
+  margin-bottom: 8px;
+}
+
+.explorer-amorce {
+  /* PAS DE LARGEUR DE LECTURE ICI (30/09/2026) : bornée à 64ch, l'amorce
+     s'arrêtait bien avant le bord de la carte, et la rupture se voyait
+     davantage que le confort de lecture ne se gagnait. */
+  margin: 0 0 18px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ink-2, #4a4452);
+}
+
+.explorer-amorce b {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.portes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+/* LES TROIS CARTES ONT LA MÊME LARGEUR (arbitré le 01/10/2026, sur quatre
+   rendus comparés puis précisé : « la largeur des 3 cartes doit être la même »).
+
+   La carte de l'événement était bornée à 340 px quand les deux cartes du haut en
+   font 641 : sous elles, elle se lisait comme un moignon. Elle a aussi été
+   essayée sur toute la rangée, à 1 292 px — c'était alors ELLE qui ne
+   s'alignait plus.
+
+   Elle reprend donc la grille de `.portes` et occupe la première colonne : sa
+   largeur est la même PAR CONSTRUCTION, et le restera si le nombre de colonnes
+   change. Ne pas y écrire une largeur en dur, ce serait deux sources pour un
+   même fait. */
+.portes--une {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.porte {
+  /* Référent de position de `.porte-borne`, qui déborde de la carte. */
+  position: relative;
+  font: inherit;
+  /* CONTENU CENTRÉ (forme A, arbitrée le 01/10/2026 entre quatre rendus). Sur une
+     carte de 641 px, le nom et le volume se lisent ensemble au centre ; la
+     pastille de borne reste posée au coin, donc rien ne se chevauche. */
+  text-align: center;
+  justify-items: center;
+  border: 1px solid var(--border-strong);
+  background: var(--card);
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  display: grid;
+  gap: 3px;
+  /* UNE SURBRILLANCE QUI TOURNE, pas un clignotement : chaque porte reste
+     allumée un tiers du cycle, si bien qu'une porte est toujours éclairée et
+     que le regard passe de l'une à l'autre. Le réglage du Hero — un éclat d'un
+     quart de seconde — ne se voyait pas sur des boutons à désigner. */
+  animation: porte-pulse 6s ease-in-out infinite;
+}
+
+.porte:hover {
+  border-color: var(--muted);
+}
+
+.porte:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.porte-nom {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.porte-n {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.porte--ouverte {
+  border-color: var(--ink);
+  box-shadow: inset 0 -3px 0 var(--accent);
+}
+
+/* L'ÉCLAT MONTRE L'ÉTAT OUVERT — filet d'encre et trait jaune sous la carte.
+   Le jaune signal est illisible en bordure sur fond clair (1,05:1) : il porte
+   sur le noir du Hero, pas ici. L'animation annonce donc l'affordance au lieu
+   d'inventer un signal qui n'existerait qu'à cet endroit. */
+@keyframes porte-pulse {
+  0%,
+  28% {
+    transform: scale(1.015);
+    border-color: var(--ink);
+    box-shadow: inset 0 -3px 0 var(--accent);
+  }
+  36%,
+  100% {
+    transform: scale(1);
+    border-color: var(--border-strong);
+    box-shadow: none;
+  }
+}
+
+/* Dès qu'une porte est choisie, le cycle s'arrête : il ne doit pas concurrencer
+   la sélection du lecteur. */
+.portes--touche .porte {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .porte {
+    animation: none;
+  }
+  .hero-pipeline-dest {
+    transition: none;
+  }
+}
+
+.landing-explorer-liste {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Les pastilles de groupe et de gouvernement sont des BOUTONS dans les barres de
+   l'explorateur (ce sont des filtres) ; ici ce sont des LIENS, et un lien hérite
+   du soulignement global d'`index.css`. Sans cette règle, les trois listes
+   portent deux rendus pour une même forme. */
+.landing-explorer-liste .cb-chip,
+.landing-explorer-liste .gb-chip,
+.landing-explorer-liste .gvb-chip,
+.landing-explorer-liste .cb-chip:hover,
+.landing-explorer-liste .gb-chip:hover,
+.landing-explorer-liste .gvb-chip:hover {
+  text-decoration: none;
+}
+
+/* LE VOLET CANDIDATS EST BORNÉ PAR L'ÉLECTION : le filet et la date le disent
+   ponctuel sans le dire secondaire, et aucune phrase n'a à l'expliquer. */
+.explorer-evenement {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+/* L'étiquette est sur sa ligne, le sujet en dessous : voir l'en-tête de
+   `CommencerAExplorer.jsx` pour la raison. */
+.explorer-etiquette {
+  display: block;
+  margin: 0 0 5px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.explorer-evenements {
+  list-style: none;
+  margin: 0 0 15px;
+  padding: 0;
+  display: grid;
+  gap: 3px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  color: var(--muted);
+}
+
+/* À CHEVAL SUR LE COIN SUPÉRIEUR DROIT DE LA CARTE. Elle DÉBORDE — rien ne la
+   clipe ici —, d'où le fond opaque : sans lui, le filet de la carte passerait
+   derrière le texte.
+
+   NI L'ACCENT NI LE CYAN. Le jaune signal vaut 1,05:1 en bordure sur fond clair
+   et ne colore jamais du texte (DESIGN_SYSTEM §2) ; le cyan `--notice` est
+   réservé aux bandeaux d'état du projet, et l'employer pour du contenu lui
+   retirerait ce qui le rend lisible. Restent des tokens déjà posés : le gris
+   #6f6b78 des pastilles sans mandat, 5,5:1 sur blanc, sur le fond de survol du
+   pied de page. */
+.porte-borne {
+  position: absolute;
+  top: -10px;
+  right: -9px;
+  z-index: 1;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6f6b78;
+  background: #f2f0ed;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+
+/* La provenance de la seule liste qui n'est pas institutionnelle. Le gris des
+   métadonnées, jamais une teinte d'alerte : ce n'est pas un avertissement sur
+   la donnée, c'est d'où elle vient. */
+.explorer-provenance {
+  margin: 14px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.explorer-provenance a {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .portes,
+  .portes--une {
+    grid-template-columns: 1fr;
+  }
 }

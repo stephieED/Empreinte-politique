@@ -377,12 +377,12 @@ const SECTIONS = [
   { famille: 'Fiche de groupe parlementaire' },
   {
     id: 'lignee',
-    heading: 'Une fiche par lignée',
+    heading: 'Une fiche par groupe, sur toute son histoire',
     body: (
       <>
         <p>
           L'Assemblée ouvre et ferme des groupes à chaque législature ; elle ne dit pas lequel
-          succède à lequel. Une <strong>lignée</strong> réunit les groupes successifs d'une même
+          succède à lequel. La fiche réunit les <strong>groupes successifs</strong> d'une même
           formation — « Nouvelle Gauche », puis « Socialistes et apparentés » sous trois
           législatures. Ce rattachement est une <strong>relecture humaine, datée</strong>, jamais
           une ressemblance de sigle : un groupe qui prend la suite d'un autre sans le déclarer n'y
@@ -396,10 +396,10 @@ const SECTIONS = [
           déclare pas.
         </p>
         <p>
-          Un point par personne et par groupe : « nouveau dans la lignée » ne veut pas dire
-          « nouveau député ». La personne a pu siéger ailleurs avant ; la donnée ne porte que la
-          lignée, et la fiche n'en dit pas plus. Aucun taux de renouvellement n'est calculé : il
-          deviendrait une note comparée d'un groupe à l'autre.
+          Un point par personne et par groupe : « nouveau dans le groupe » ne veut pas dire
+          « nouveau député ». La personne a pu siéger ailleurs avant ; la donnée ne porte que
+          ce groupe et ceux qui l'ont précédé, et la fiche n'en dit pas plus. Aucun taux de
+          renouvellement n'est calculé : il deviendrait une note comparée d'un groupe à l'autre.
         </p>
       </>
     ),

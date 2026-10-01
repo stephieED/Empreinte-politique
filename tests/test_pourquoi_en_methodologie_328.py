@@ -79,18 +79,26 @@ def test_la_methodologie_porte_une_ancre_par_section_de_la_fiche(methodo: str) -
 
 def test_chaque_ancre_est_atteinte_par_un_renvoi_de_la_fiche(fiche: str) -> None:
     """Une section de méthodologie que nul lien n'atteint est une section morte."""
-    liens = set(re.findall(r"/methodologie#([a-z]+)", fiche))
+    liens = set(re.findall(r"/methodologie#([a-z-]+)", fiche))
     for autre in (VOTES, SRC / "components" / "ParolesParPeriode.jsx",
                   SRC / "components" / "EcartsGroupe.jsx"):
-        liens |= set(re.findall(r"/methodologie#([a-z]+)", autre.read_text(encoding="utf-8")))
+        liens |= set(re.findall(r"/methodologie#([a-z-]+)", autre.read_text(encoding="utf-8")))
     manquantes = [a for a in ANCRES if a not in liens]
     assert not manquantes, f"ancres sans renvoi : {manquantes}"
 
 
 def test_aucun_renvoi_ne_pointe_vers_une_ancre_inexistante(methodo: str) -> None:
-    ids = set(re.findall(r"id: '([a-z]+)'", methodo))
+    """LE TIRET COMPTE (30/09/2026).
+
+    Les trois motifs de ce fichier lisaient `[a-z]+` : ils ne voyaient donc que
+    les ancres en UN MOT — `fonctions`, `votes`, `couverture` — et coupaient les
+    autres au premier tiret. `#comment-ca-marche` se lisait `#comment`, absent
+    des `id`, et la garde échouait sur un renvoi pourtant juste ; symétriquement
+    elle n'aurait pas vu un renvoi faux vers une ancre composée.
+    """
+    ids = set(re.findall(r"id: '([a-z-]+)'", methodo))
     for fichier in SRC.rglob("*.jsx"):
-        for ancre in re.findall(r"/methodologie#([a-z]+)", fichier.read_text(encoding="utf-8")):
+        for ancre in re.findall(r"/methodologie#([a-z-]+)", fichier.read_text(encoding="utf-8")):
             assert ancre in ids, f"{fichier.name} renvoie vers #{ancre}, qui n'existe pas"
 
 

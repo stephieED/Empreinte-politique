@@ -7,9 +7,6 @@ volumétrie, et ce que le web lit. Il couvre les sorties de `pivot_data/` :
 `scrutins_europeens.json`, `dossiers_europeens.json`,
 `actes_reglementaires/`, `textes_promulgues.json`.
 
-La carte de ce flux, des sources publiques aux fiches publiées, trait par
-trait : `docs/fabrique-du-jeu-de-donnees.html`.
-
 **Sans les compter.** Le titre a annoncé « huit » puis « neuf » sorties pendant
 que le disque en portait dix : `scrutins_dossiers.json` était décrit plus bas
 sans figurer dans l'énumération, et `partis/` y figurait encore après son

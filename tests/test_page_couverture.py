@@ -455,7 +455,18 @@ def test_l_accueil_ne_montre_plus_de_fait_fictif_ni_sa_frise() -> None:
     accueil = (SRC / "pages" / "LandingPage.jsx").read_text(encoding="utf-8")
     assert "<FactDemo" not in accueil and not (SRC / "components" / "landing" / "FactDemo.jsx").exists()
     assert not (SRC / "components" / "landing" / "CouvertureAccueil.jsx").exists()
-    assert "parcours politiques" in (SRC / "components" / "landing" / "Hero.jsx").read_text(encoding="utf-8")
+    # CETTE LIGNE ÉPINGLAIT UN TITRE, PAS UN FAIT FICTIF (corrigé le
+    # 30/09/2026). Elle lisait « parcours politiques » dans le H1, qui a
+    # changé le jour où la propriétaire a réécrit le titre — et elle aurait
+    # échoué sans que rien de fictif ne soit revenu. Ce que le test veut
+    # tenir, c'est l'ABSENCE de l'exemple inventé : le JSON de démonstration,
+    # l'avatar gris et le « Prénom Nom (exemple) » que le bloc « Le concept »
+    # portait avant de passer aux mots-clés.
+    hero = (SRC / "components" / "landing" / "Hero.jsx").read_text(encoding="utf-8")
+    # Des CLASSES et une chaîne de contenu, jamais le mot « exemple » : les
+    # commentaires du fichier racontent précisément le retrait de cet exemple.
+    for fictif in ("hero-pipeline-sample", "hero-pipeline-avatar", "hero-pipeline-card", "Prénom Nom"):
+        assert fictif not in hero, f"l'exemple inventé est revenu dans le Hero : {fictif}"
 
 
 def test_les_mandats_locaux_sont_comptes_avec_leur_borne(tmp_path: Path) -> None:

@@ -11,7 +11,8 @@ Ce fichier existe pour être lu **avant** d'ouvrir
 
 **La même chose en figure** : `docs/fabrique-du-jeu-de-donnees.html`, à ouvrir
 dans un navigateur — les jobs dans l'ordre de leurs `needs:`, `merge-and-pivot`
-ouvert en ses huit phases, et une fiche au clic sur chaque job. Relevée à une
+ouvert en ses huit phases, une fiche au clic sur chaque job, et ce que dure un
+run, option par option. Relevée à une
 date qu'elle porte : un job ajouté ici ne s'y ajoute pas seul.
 
 ## 1. Les jobs, dans l'ordre

@@ -20,13 +20,13 @@ export const sourcesConfig = [
     id: 'conseil-constitutionnel',
     aVenir: true,
     nom: 'Conseil constitutionnel',
-    type: 'À venir — site dédié à l’élection de 2027, non ouvert au 16/09/2026',
+    type: 'À venir — data.gouv.fr pour les parrainages, Journal officiel pour la liste',
     contenuCouvert:
-      "La liste officielle des candidats à l'élection présidentielle, et les parrainages validés. Elle remplacera Wikipédia pour dire qui est candidat.",
+      "Les parrainages validés, puis la liste officielle des candidats. Elle remplacera Wikipédia pour dire qui est candidat. Deux étapes, deux sources : le jeu de données du Conseil constitutionnel sur data.gouv.fr, puis sa décision « PDR » publiée au Journal officiel.",
     cadenceMiseAJour:
-      "À venir. Selon l'article 3 de la loi du 6 novembre 1962 : les parrainages sont rendus publics au moins deux fois par semaine, à mesure qu'ils arrivent et jusqu'au 12 mars 2027 à 18 h ; la liste des candidats est publiée au plus tard le 26 mars 2027, pour un premier tour le 18 avril 2027.",
-    licence: 'Non connue à ce jour',
-    implication: "Les conditions de réutilisation seront vérifiées à l'ouverture du site.",
+      "À venir. Article 3 de la loi du 6 novembre 1962 : les parrainages sont publiés au moins deux fois par semaine jusqu'au 12 mars 2027 à 18 h ; la liste des candidats, au plus tard le 26 mars 2027.",
+    licence: 'Licence Ouverte 2.0 (Etalab) pour la décision ; other-pd pour les parrainages',
+    implication: "La décision arrive par la DILA, comme les actes réglementaires. La forme 2027 n'est pas connue : data.gouv.fr ne publiait aucun jeu 2027 au 07/09/2026, et rien ne dit que 2027 reprendra celle de 2022.",
     perimetre: ['Suivi candidat'],
     couverturePeriode: null,
   },

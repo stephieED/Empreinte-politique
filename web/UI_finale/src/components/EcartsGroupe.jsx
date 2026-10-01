@@ -244,17 +244,10 @@ function Ligne({ x }) {
  * comme « il n'a jamais divergé » (§2 règle 5).
  */
 function Vide({ ecarts, voix }) {
-  if (!ecarts.fiches.length) {
-    return (
-      <div className="eg-vide">
-        <h3>Rien n’est comparable — ce n’est pas la même chose qu’« aucune divergence »</h3>
-        <p>
-          Aucune fiche de groupe n’est publiée pour les groupes où {voix.pronom} a siégé. Il n’y a
-          donc <b>rien à comparer</b> : la section ne dit rien de ses votes.
-        </p>
-      </div>
-    );
-  }
+  /* `EcartsGroupe` sort en une ligne AVANT d'arriver ici quand aucune fiche de
+     groupe n'est publiée : ce composant-ci ne voit plus que l'autre vide — des
+     fiches publiées qui ne recouvrent aucun vote sur l'ensemble d'un texte. Sa
+     cause n'est écrite nulle part ailleurs, d'où la carte. */
   return (
     <div className="eg-vide">
       <h3>Les fiches publiées ne recouvrent aucun de ses votes sur l’ensemble d’un texte</h3>
@@ -274,6 +267,24 @@ function Vide({ ecarts, voix }) {
 /* `etiquette` (#979) : le rappel du mot du filtre, en tête de la première carte. */
 export default function EcartsGroupe({ ecarts, voix, etiquette = null }) {
   const { bande, fiches } = ecarts;
+
+  /* LA MÊME FORME QUE LES QUATRE AUTRES ABSENCES (01/10/2026), et c'est tout
+     l'objet : la ligne sortait DANS la carte — fond blanc, filet, 22 px de marge —
+     quand les quatre autres sont nues dans le corps de section. Une mention qui
+     prend l'apparence d'un objet se lit comme un objet, et l'écart se voyait.
+
+     Le cas est celui d'aucune fiche de groupe publiée ; sa cause et sa nuance
+     vivent en section 6, où le renvoi mène. */
+  if (!bande.length && !fiches.length) {
+    return (
+      <>
+        {etiquette}
+        <p className="lec-vide-ligne">
+          Rien à comparer. <a className="lec-vide-pourquoi" href="#section-6">Pourquoi →</a>
+        </p>
+      </>
+    );
+  }
 
   return (
     <>

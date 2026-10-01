@@ -1,4 +1,40 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+/* chronologie */
+#chrono{display:block;min-width:820px;width:100%;height:auto}
+#chrono .lbl{ font-family:Manrope,system-ui,sans-serif; font-size:11.5px; font-weight:700; fill:var(--encre); }
+#chrono .sub{ font-family:Manrope,system-ui,sans-serif; font-size:10px; font-weight:600; fill:var(--meta); }
+#chrono .ax{ font-family:Manrope,system-ui,sans-serif; font-size:10.5px; font-weight:700; fill:var(--meta); }
+#chrono .dur{ font-family:Manrope,system-ui,sans-serif; font-size:10.5px; font-weight:700; fill:var(--meta); }
+
+/* sections reprises d'« Anatomie d'un run » */
+.h2s{margin:0 0 6px;font-size:clamp(18px,2.4vw,24px);font-weight:800;letter-spacing:-.015em}
+.intro{margin-bottom:16px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+.tablewrap{overflow-x:auto}
+th,td{text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--filet);vertical-align:top}
+th{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--meta)}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.gardes{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--filet);border:1px solid var(--filet);border-radius:3px}
+.garde{background:var(--surface);padding:20px}
+.garde .titre{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.garde .titre .id{font-size:13px}
+.garde p{font-size:13.5px;margin:0 0 8px}
+.garde .couvre{font-size:12.5px;font-weight:600;color:var(--ph1)}
+.garde .couvre-pas{font-size:12.5px;font-weight:600;color:var(--ph4)}
+.id{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;font-size:.86em;background:var(--lavis);padding:1px 5px;border-radius:2px;white-space:nowrap}
+.incident{background:#14151A;color:#F7F6F4;border-radius:3px;padding:26px 22px;margin-top:26px}
+.incident h3{color:#DFFF00;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin:0 0 12px}
+.incident p{color:#D6D3DC;font-size:14px;max-width:64ch}
+.incident strong{color:#F7F6F4;font-weight:700}
+.incident .id{background:#2A2B34;color:#F7F6F4}
+.incident table{margin-top:16px;color:#F7F6F4}
+.incident th{color:#9E9AA8;border-bottom-color:#33343D}
+.incident td{border-bottom-color:#33343D}
+.incident tr:last-child td{border-bottom:none}
+.verdict{font-weight:700;white-space:nowrap}
+.verdict.ko{color:#F2A93B}
+.verdict.ok{color:#36B97C}
+</style></head><body>
 <title>Fabrique du jeu de données</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -69,22 +105,13 @@ svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
 <header class="hero">
   <p class="eyebrow">Empreinte politique · de la source publique à la fiche</p>
   <h1>Fabrique du jeu de données</h1>
-  <p class="lede">Ce qui alimente quoi, trait par trait. Quatre colonnes : les sources publiques, ce qu'on dépose au brut, ce que le format pivot publie, et ce que le site en lit. <b>Survolez un nœud</b> pour ne garder que ce qui l'alimente et ce qu'il alimente.</p>
+  <p class="lede">Comment le jeu de données se construit : les jobs du workflow dans l'ordre où ils tournent, ce que fait la fusion, et ce que dure un run. <b>Cliquez un job ou une phase</b> pour lire ce qu'il fait.</p>
 </header>
 
-<div class="cadre"><svg class="graphe" id="g" viewBox="0 0 1060 760" role="img" aria-label="Graphe des sources vers les fiches publiées"></svg></div>
 
-<div class="legende">
-  <span><i class="puce" style="background:var(--parl)"></i>Assemblée nationale</span>
-  <span><i class="puce" style="background:var(--senat)"></i>Sénat</span>
-  <span><i class="puce" style="background:var(--pe)"></i>Parlement européen</span>
-  <span><i class="puce" style="background:var(--gouv)"></i>Journal officiel</span>
-  <span><i class="puce" style="background:var(--neutre)"></i>autres sources publiques</span>
-  <span>trait plein = la donnée circule · pointillé = table relue à la main</span>
-</div>
 
 <section id="ordre">
-  <h2 style="margin:44px 0 6px;font-size:clamp(18px,2.4vw,24px);font-weight:800;letter-spacing:-.015em">Le même jeu de données, dans l'ordre où il se construit</h2>
+  <h2 style="margin:0 0 6px;font-size:clamp(18px,2.4vw,24px);font-weight:800;letter-spacing:-.015em">Le jeu de données, dans l'ordre où il se construit</h2>
   <p class="quoi2">Les colonnes sont les niveaux du graphe de dépendances du workflow : ce qui est dans une même colonne tourne <b>en parallèle</b>. La dernière ouvre <code>merge-and-pivot</code>, le seul job qui écrit dans le dépôt, en ses huit phases ; chaque job amont y arrive par la phase qui <b>télécharge</b> son artifact.</p>
   <div class="cadre"><svg class="graphe" id="g2" viewBox="0 0 1072 600" role="img" aria-label="Les 15 jobs du workflow dans leur ordre d'exécution, et les huit phases de merge-and-pivot"></svg></div>
   <div id="detail" hidden>
@@ -99,7 +126,27 @@ svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
     <span><i class="puce" style="background:var(--ph1)"></i>arrive dans Préparer</span>
     <span><i class="puce" style="background:var(--neutre)"></i>entre jobs amont</span>
   </div>
-  <p class="note">Relevé le 25/09/2026 dans <code>.github/workflows/generate-data.yml</code> (<code>origin/main</code> b38076708, après #1129 : 15 jobs, 52 étapes dans <code>merge-and-pivot</code>). Aucune durée n'est portée : aucun run n'a encore tourné avec ce workflow. L'ordre des nœuds et leurs positions sont calculés pour limiter les croisements.</p>
+  <p class="note">Relevé le 25/09/2026 dans <code>.github/workflows/generate-data.yml</code> (<code>origin/main</code> b38076708, après #1129 : 15 jobs, 52 étapes dans <code>merge-and-pivot</code>). Les durées sont dans la figure suivante. L'ordre des nœuds et leurs positions sont calculés pour limiter les croisements.</p>
+</section>
+
+
+<section id="duree">
+  <h2 style="margin:44px 0 6px;font-size:clamp(18px,2.4vw,24px);font-weight:800;letter-spacing:-.015em">Ce que dure un run</h2>
+  <p class="quoi2">Le run le plus chargé, 36758066498 (30/09, interventions et dossiers législatifs des rosters). Les jobs shardés montrent chacun de leurs shards à son heure réelle. Les bandes hachurées disent ce que chaque option ajoute, mesuré contre deux runs du même jour, même code, caches chauds : 36659656048 sans option et 36740965111 avec les interventions seules.</p>
+  <div class="cadre">
+      <svg id="chrono" viewBox="0 0 880 600" role="img" aria-label="Chronologie des quinze jobs du run 36181368061, en minutes depuis le départ"></svg>
+    </div>
+  <div class="legende">
+      <span><i class="puce" style="background:var(--parl)"></i>Assemblée nationale</span>
+      <span><i class="puce" style="background:var(--pe)"></i>Parlement européen</span>
+      <span><i class="puce" style="background:var(--senat)"></i>Sénat</span>
+      <span><i class="puce" style="background:var(--neutre)"></i>Mandats locaux</span>
+      <span><i class="puce" style="background:var(--encre)"></i>Orchestration et fusion</span>
+      <span><i class="puce" style="background:var(--gouv)"></i>Journal officiel, gouvernements</span>
+      <span><i class="puce" style="background:repeating-linear-gradient(45deg,var(--ph4) 0 2px,transparent 2px 5px)"></i>ajouté par les interventions</span>
+      <span><i class="puce" style="background:repeating-linear-gradient(45deg,var(--ph2) 0 2px,transparent 2px 5px)"></i>ajouté par les dossiers des rosters</span>
+    </div>
+  <p class="note"><strong>Les options ne coûtent presque pas de travail : elles changent l'ordonnancement.</strong> Sur ces trois runs, le travail cumulé des 31 shards d'<code>extract-an</code> reste entre 25 et 29 min, et celui des 8 shards du roster entre 81 et 84 min. Ce qui change, c'est combien tournent en même temps : 4 shards d'<code>extract-an</code> à la fois sans option, 1 seul avec les interventions ; 8 shards du roster à la fois, 4 avec les dossiers (#1149). <code>merge-and-pivot</code> passe de 41 à 44-45 min, à peine plus que le bruit : entre ces trois runs, les jobs qui ne lisent aucune option varient déjà jusqu'à 2,4 min.</p>
 </section>
 
 <div class="regles">
@@ -109,7 +156,80 @@ svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
   <div><b>La garde bloque le commit</b><span><code>check_quality_gate.py</code> compare ce qui a été collecté à ce qui est publié. Ce qui ne passe pas n'est pas publié.</span></div>
 </div>
 
-<p class="note">Chiffres du corpus au 25/09/2026. Les deux tables en pointillé — appariement RNE et mandats antérieurs à juin 2002 — sont relues à la main : la source les cite, elle ne les publie pas sous une forme exploitable.</p>
+
+<section id="entre-runs" style="margin-top:44px">
+    <div class="intro">
+      <h2 class="h2s">Ce qui circule entre runs</h2>
+      <p>Les caches ne transmettent rien latéralement : ils portent le travail d'un run <b>au suivant</b>. C'est leur clé qui fixe la péremption, et c'est donc elle qui est la politique de fraîcheur.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Cache</th><th>Granularité de la clé</th><th>Ce qu'il évite de refaire</th></tr></thead>
+        <tbody>
+          <tr><td><code>…-amendements-</code></td><td>semaine ISO</td><td>Retélécharger les archives d'amendements de l'Assemblée.</td></tr>
+          <tr><td><code>…-an-</code></td><td>semaine ISO, plus une empreinte quand les interventions sont collectées</td><td>Recollecter les profils de l'Assemblée ; l'empreinte distingue les deux régimes de collecte.</td></tr>
+          <tr><td><code>…-dossiers-</code></td><td>semaine ISO</td><td>Relire les quatre archives de dossiers législatifs.</td></tr>
+          <tr><td><code>…-parltrack-</code> · <code>…-ue-</code></td><td>semaine ISO</td><td>Retélécharger les dumps et le portail européens.</td></tr>
+          <tr><td><code>…-senat-</code></td><td><b>jour</b></td><td>La seule clé quotidienne : le jeu sénatorial est petit et bouge vite.</td></tr>
+          <tr><td><code>…-europarl-documents-v3-</code></td><td><b>identifiant du run</b></td><td>Passer le portail réchauffé au job de fusion, dans le même run. Le run suivant repart de la dernière entrée par son préfixe : les journaux du 30/09 le montrent (« Cache hit for restore-key »).</td></tr>
+        </tbody>
+      </table>
+    </div>
+</section>
+<section id="gardes" style="margin-top:44px">
+    <div class="intro">
+      <h2 class="h2s">Les trois gardes</h2>
+      <p>Un run doit publier ce qui a réussi, même quand une source tombe. Trois mécanismes s'en chargent — et ils ne couvrent pas la même chose, ce qui est exactement le piège.</p>
+    </div>
+
+    <div class="gardes">
+      <div class="garde">
+        <div class="titre"><span class="id">timeout-minutes</span></div>
+        <p>Le filet de sécurité de chaque job, de 5 minutes pour une matrice à 120 pour la fusion. Dimensionné sur du temps mesuré, jamais sur du temps budgété.</p>
+        <p class="couvre">Empêche un job pendu de tenir le run.</p>
+        <p class="couvre-pas">Ne dit pas ce qu'il advient de la suite.</p>
+      </div>
+      <div class="garde">
+        <div class="titre"><span class="id">continue-on-error</span></div>
+        <p>Porté par les dix jobs d'extraction et de préparation qui peuvent manquer sans tout bloquer. Une source absente ne doit pas bloquer les autres : le run publie ce qu'il a, la fusion étant additive.</p>
+        <p class="couvre">Couvre l'<b>échec</b> d'un job.</p>
+        <p class="couvre-pas">Ne couvre <b>pas</b> son annulation — et un dépassement de timeout en est une.</p>
+      </div>
+      <div class="garde">
+        <div class="titre"><span class="id">if: !cancelled()</span></div>
+        <p>Sur <code>prepare-an-matrix</code>, <code>extract-an</code>, <code>extract-roster-groupes</code> et <code>merge-and-pivot</code>. Un maillon amont annulé ou sauté ne doit pas faire sauter toute la chaîne.</p>
+        <p class="couvre">Rattrape ce que les deux autres laissent passer.</p>
+        <p class="couvre-pas">Seule une annulation du workflow entier arrête encore la chaîne.</p>
+      </div>
+    </div>
+
+    <div class="incident">
+      <h3>Ce que coûte la troisième garde quand elle manque</h3>
+      <p><code class="id">extract-an</code> était le seul maillon de la chaîne à ne pas porter <code class="id">!cancelled()</code>. Deux runs sur la même archive, à deux heures d'intervalle le 23 septembre 2026, ont divergé sur <strong>quelques secondes</strong> :</p>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th>Run</th><th class="num">Fin des amendements</th><th>Conclusion</th><th>Ce qu'a fait <span class="id">extract-an</span></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="num">35910007684</td>
+              <td class="num">29 min 22 s</td>
+              <td><span class="verdict ok">échec</span></td>
+              <td>20 shards exécutés — le run a collecté normalement</td>
+            </tr>
+            <tr>
+              <td class="num">35926731615</td>
+              <td class="num">30 min 36 s</td>
+              <td><span class="verdict ko">annulation</span></td>
+              <td><strong>20 shards sautés</strong> — zéro candidat, zéro intervention</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:16px">Le second avait été lancé avec <code class="id">collect_interventions=true</code>. Le seuil des trente minutes décidait donc, au hasard, si un run collectait l'Assemblée nationale. La condition posée depuis exige en plus le succès des deux jobs dont <code class="id">extract-an</code> dépend réellement — le sha épinglé et la matrice — et rien d'autre.</p>
+    </div>
+  </section>
 </div>
 
 <script>
@@ -249,7 +369,6 @@ svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
     svg.addEventListener("mouseleave", eteindre);
   }
 
-  dessiner(document.getElementById("g"), COLS, N, L, 760);
 
   // ── Le même jeu de données, dans l'ordre d'exécution ─────────────────
   /* Jobs et phases de merge-and-pivot. Les positions viennent du calcul
@@ -560,4 +679,76 @@ svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
 })();
 </script>
 
+<script>
+(function(){
+  /* Le run complet 36758066498 (30/09, les deux options), job par job, avec
+     ses shards à leur heure réelle. Les deux autres runs du même jour, même
+     code et caches chauds, servent à dire ce que chaque option ajoute :
+     36659656048 (aucune option) et 36740965111 (interventions seules). */
+  var JOBS = [{"job": "epingler-le-code", "debut": 0, "fin": 5, "n": 1, "shards": null, "sans": 11, "interv": 3}, {"job": "extract-amendements-an", "debut": 7, "fin": 43, "n": 1, "shards": null, "sans": 43, "interv": 41}, {"job": "extract-parltrack", "debut": 7, "fin": 454, "n": 1, "shards": null, "sans": 507, "interv": 485}, {"job": "extract-gouvernements", "debut": 8, "fin": 32, "n": 1, "shards": null, "sans": 55, "interv": 28}, {"job": "extract-senat", "debut": 8, "fin": 441, "n": 1, "shards": null, "sans": 501, "interv": 487}, {"job": "extract-ue-officiel", "debut": 8, "fin": 452, "n": 1, "shards": null, "sans": 487, "interv": 527}, {"job": "prepare-roster-matrix", "debut": 8, "fin": 458, "n": 1, "shards": null, "sans": 497, "interv": 486}, {"job": "extract-actes-jo", "debut": 8, "fin": 459, "n": 1, "shards": null, "sans": 359, "interv": 507}, {"job": "extract-mandats-locaux", "debut": 8, "fin": 838, "n": 1, "shards": null, "sans": 766, "interv": 776}, {"job": "rafraichir-candidats", "debut": 9, "fin": 25, "n": 1, "shards": null, "sans": 19, "interv": 17}, {"job": "prepare-an-matrix", "debut": 27, "fin": 36, "n": 1, "shards": null, "sans": 12, "interv": 10}, {"job": "extract-an", "debut": 46, "fin": 1636, "n": 31, "shards": [[46, 77], [79, 132], [135, 175], [179, 255], [257, 316], [319, 384], [386, 441], [443, 489], [491, 548], [550, 583], [585, 644], [647, 686], [688, 750], [752, 784], [786, 836], [839, 932], [934, 970], [972, 1004], [1006, 1045], [1047, 1078], [1080, 1120], [1121, 1150], [1152, 1213], [1215, 1284], [1286, 1343], [1346, 1417], [1419, 1452], [1453, 1497], [1501, 1542], [1544, 1574], [1576, 1636]], "sans": 479, "interv": 1796}, {"job": "rechauffer-le-portail-europeen", "debut": 456, "fin": 1033, "n": 1, "shards": null, "sans": 652, "interv": 619}, {"job": "extract-roster-groupes", "debut": 1638, "fin": 3000, "n": 8, "shards": [[1638, 2213], [1638, 2230], [1638, 2304], [1638, 2334], [2216, 2830], [2283, 2843], [2306, 2968], [2336, 3000]], "sans": 686, "interv": 666}, {"job": "merge-and-pivot", "debut": 3002, "fin": 5648, "n": 1, "shards": null, "sans": 2477, "interv": 2704}];
+  var SOUS = {"epingler-le-code":"fige le sha du privé","rafraichir-candidats":"la liste des candidats déclarés","prepare-an-matrix":"un shard par slug résolvable",
+    "prepare-roster-matrix":"la composition des groupes","extract-senat":"appartenances seulement","extract-parltrack":"dumps européens",
+    "extract-ue-officiel":"portail du Parlement européen","extract-mandats-locaux":"répertoire national des élus","rechauffer-le-portail-europeen":"cache du portail",
+    "extract-amendements-an":"index des amendements","extract-an":"shards, un par candidat","extract-roster-groupes":"shards, membres de groupe",
+    "merge-and-pivot":"fusion, contrôles, commit, push","extract-actes-jo":"actes du Journal officiel","extract-gouvernements":"les gouvernements, depuis AMO30"};
+  var TEINTE = {"extract-senat":"--senat","extract-parltrack":"--pe","extract-ue-officiel":"--pe","rechauffer-le-portail-europeen":"--pe",
+    "extract-mandats-locaux":"--neutre","extract-amendements-an":"--parl","extract-an":"--parl","extract-roster-groupes":"--parl",
+    "extract-actes-jo":"--gouv","extract-gouvernements":"--gouv"};
+  /* Ce que chaque option ajoute, quand l'écart dépasse le bruit : entre ces
+     trois runs, les jobs qui ne lisent aucune option varient déjà jusqu'à
+     2,4 min. */
+  var SURCOUT = {
+    "extract-an": {depuis:"sans", option:"interventions", texte:"interventions : les 31 shards passent en série"},
+    "extract-roster-groupes": {depuis:"interv", option:"dossiers", texte:"dossiers : 2 vagues de 4 au lieu d'une de 8"}
+  };
+  var ns="http://www.w3.org/2000/svg", svg=document.getElementById("chrono");
+  function el(t,a){var e=document.createElementNS(ns,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  function duree(s){ var m=s/60; return (m<0.1 ? "< 0,1" : m.toFixed(1).replace(".",","))+" min"; }
+  var fin=Math.max.apply(null, JOBS.map(function(j){return j.fin;}));
+  var X0=246, X1=836, pas=10, maxMin=Math.ceil(fin/60/pas)*pas, px=(X1-X0)/(maxMin*60);
+  /* une ligne de shards est plus haute : 31 shards empilés doivent rester lisibles */
+  var HSHARD=1.4, TOP=42, y=TOP;
+  JOBS.forEach(function(j){ j.y=y; j.h = j.shards ? Math.max(24, j.shards.length*HSHARD)+14 : 22; y += j.h + 14; });
+  var H=y+20;
+  svg.setAttribute("viewBox","0 0 880 "+H);
+  svg.setAttribute("aria-label","Chronologie des quinze jobs du run 36758066498, avec interventions et dossiers législatifs des rosters, en minutes depuis le départ");
+  var defs=el("defs",{}); 
+  [["hach-interventions","--ph4"],["hach-dossiers","--ph2"]].forEach(function(h){
+    var pt=el("pattern",{id:h[0],width:6,height:6,patternUnits:"userSpaceOnUse",patternTransform:"rotate(45)"});
+    pt.appendChild(el("rect",{width:6,height:6,style:"fill:var(--surface)"}));
+    pt.appendChild(el("rect",{width:2.5,height:6,style:"fill:var("+h[1]+")"}));
+    defs.appendChild(pt); });
+  svg.appendChild(defs);
+  for (var m=0; m<=maxMin; m+=pas){
+    var x=X0+m*60*px;
+    svg.appendChild(el("line",{x1:x,y1:34,x2:x,y2:H-24,"stroke-width":1,style:"stroke:var(--filet)"}));
+    var t=el("text",{class:"ax",x:x,y:26,"text-anchor":"middle"}); t.textContent=m; svg.appendChild(t);
+  }
+  var tm=el("text",{class:"ax",x:X0-12,y:26,"text-anchor":"end"}); tm.textContent="minutes"; svg.appendChild(tm);
+  JOBS.forEach(function(j,i){
+    var y=j.y, nom=j.job.length>24 ? j.job.slice(0,21)+"…" : j.job, coul="var("+(TEINTE[j.job]||"--encre")+")";
+    var a=el("text",{class:"lbl",x:0,y:y+9}); a.textContent=nom; svg.appendChild(a);
+    var b=el("text",{class:"sub",x:0,y:y+21}); b.textContent=(j.n>1? j.n+" ":"")+(SOUS[j.job]||""); svg.appendChild(b);
+    var x=X0+j.debut*px, w=Math.max(3.5,(j.fin-j.debut)*px), s=SURCOUT[j.job];
+    if (j.shards){
+      // chaque shard à son heure réelle : on voit s'ils tournent ensemble ou à la file
+      var hl=j.shards.length>8 ? HSHARD : 3;
+      j.shards.forEach(function(sh,k){
+        svg.appendChild(el("rect",{x:X0+sh[0]*px,y:y+k*hl,width:Math.max(1.5,(sh[1]-sh[0])*px),height:Math.max(0.8,hl-0.4),style:"fill:"+coul}));
+      });
+    } else {
+      svg.appendChild(el("rect",{x:x,y:y,width:w,height:16,rx:2,style:"fill:"+coul}));
+    }
+    var d=el("text",{class:"dur",x:x+w+7,y:y+12}); d.textContent=duree(j.fin-j.debut); svg.appendChild(d);
+    if (s){
+      var base = j[s.depuis], xs = x+base*px;
+      var yb = y + (j.shards ? j.shards.length*(j.shards.length>8?HSHARD:3)+4 : 18);
+      var bande = el("rect",{x:xs,y:yb,width:Math.max(2,x+w-xs),height:7,style:"fill:url(#hach-"+s.option+")"});
+      var tt=el("title",{}); tt.textContent="+"+duree(j.fin-j.debut-base)+" : "+s.texte; bande.appendChild(tt); svg.appendChild(bande);
+      var lab=el("text",{class:"sub",x:x+w+7,y:yb+7}); lab.textContent="+"+duree(j.fin-j.debut-base)+" · "+s.texte;
+      lab.setAttribute("style","fill:var("+(s.option==="interventions"?"--ph4":"--ph2")+");font-weight:700"); svg.appendChild(lab);
+    }
+  });
+})();
+</script>
 </body></html>

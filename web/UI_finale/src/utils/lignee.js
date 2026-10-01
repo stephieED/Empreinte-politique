@@ -83,7 +83,7 @@ export function serieEffectif(membres, jusqua = null) {
 export const PASSAGES = {
   prec: { label: 'déjà là au groupe précédent', compte: 'déjà là' },
   retour: { label: "revenu d'un groupe plus ancien", compte: 'revenus' },
-  nouveau: { label: 'nouveau dans la lignée', compte: 'nouveaux' },
+  nouveau: { label: 'nouveau dans le groupe', compte: 'nouveaux' },
 };
 
 export const ORDRE_PASSAGES = ['prec', 'retour', 'nouveau'];

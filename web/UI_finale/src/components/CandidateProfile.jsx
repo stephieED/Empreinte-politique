@@ -736,6 +736,10 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
     : [];
   /* Une cascade non dessinée, ou un mot tapé : la liste montre tous les textes
    * sans attendre de clic (#979). Un clic dans la cascade reste une sélection. */
+  /* LA SECTION ENTIÈRE NE PORTE RIEN : ni texte français, ni texte européen, ni
+     amendement. C'est ce cas-là, et lui seul, qui autorise à retirer la carte
+     des amendements — voir la branche plus bas. */
+  const sectionVide = textes.total === 0 && europe.total === 0 && !amdt.totalAuteur;
   const disposer = ue ? disposerCascadeUE : undefined;
   const toutVoir = cascade && (actif || !cascadeDessinee(cascade, disposer));
   const selectionTextes = selTexte ?? (toutVoir ? selectionDeTousLesTextes(cascade) : null);
@@ -744,9 +748,7 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
       {textes.total === 0 && europe.total === 0 && actif ? (
         <VideDuFiltre mot={mot}>Aucun texte porté<Condition critere="dont l’intitulé contient" mot={mot} />.</VideDuFiltre>
       ) : textes.total === 0 && europe.total === 0 ? (
-        <div className="cp-carte">
-          <ListeVide cause={causeTextes} source="Textes portés comme auteur ou rapporteur" />
-        </div>
+        <ListeVide cause={causeTextes} compacte renvoi="#section-6" />
       ) : (
         <div className="cp-carte cp-textes">
           <EtiquetteFiltre mot={mot} />
@@ -824,7 +826,15 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
         </div>
       )}
 
-      {amdt.totalAuteur === 0 ? (
+      {/* QUAND TOUTE LA SECTION EST VIDE, LA CARTE DISPARAÎT (01/10/2026) : la
+          ligne des textes, deux lignes plus haut, dit déjà l'absence et renvoie
+          à sa cause. Deux mentions pour un même vide, dont une en carte pleine,
+          c'est la redondance que la forme courte venait retirer.
+
+          ELLE RESTE DÈS QUE L'AUTRE VERSANT PORTE QUELQUE CHOSE, et son titre
+          avec : sans lui, « aucun amendement » se lirait comme un vide de
+          collecte alors que le Parlement d'à côté en porte des milliers. */}
+      {sectionVide ? null : amdt.totalAuteur === 0 ? (
         <div className="cp-carte">
           <EtiquetteFiltre mot={mot} />
           {/* Un versant vide DIT de quel parlement il parle : sans commutateur
@@ -979,11 +989,16 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
         </div>
       )}
 
-      <p className="cp-methodo">
-        <Link to="/methodologie#propose">
-          Quels textes et quels amendements sont retenus, et pourquoi aucun taux d’adoption
-        </Link>
-      </p>
+      {/* RIEN À MONTRER, DONC RIEN À EXPLIQUER (01/10/2026). Le renvoi de
+          méthodologie accompagne des figures ; sous deux mentions d'absence, il
+          est le troisième texte d'une section qui ne porte aucun fait. */}
+      {!sectionVide && (
+        <p className="cp-methodo">
+          <Link to="/methodologie#propose">
+            Quels textes et quels amendements sont retenus, et pourquoi aucun taux d’adoption
+          </Link>
+        </p>
+      )}
     </>
   );
 }
@@ -1010,11 +1025,7 @@ function Paroles({ interventions, cause, mot = '' }) {
     return <VideDuFiltre mot={mot}>Aucune intervention<Condition critere="dont le sujet ou le propos contient" mot={mot} />.</VideDuFiltre>;
   }
   if (!interventions.total) {
-    return (
-      <div className="cp-carte">
-        <ListeVide cause={cause} source="Interventions en séance et en commission" />
-      </div>
-    );
+    return <ListeVide cause={cause} compacte renvoi="#section-6" />;
   }
 
   if (!interventions.periodes?.length) {
@@ -1102,11 +1113,7 @@ function Votes({ votes, cause, mot = '' }) {
 function VotesFrancais({ votes, cause, mot = '' }) {
   const actif = useFiltreActif(mot);
   if (!votes.total) {
-    return (
-      <div className="cp-carte">
-        <ListeVide cause={cause} source="Positions de vote publiées" />
-      </div>
-    );
+    return <ListeVide cause={cause} compacte renvoi="#section-6" />;
   }
 
   /* DEUX FIGURES RETIRÉES LE 08/09, ET CE QU'ELLES PORTAIENT.
@@ -1199,7 +1206,7 @@ const LIBELLE_ETAT = {
   fait_etabli: 'fait établi',
 };
 
-function Couverture({ couverture, parcours, collecte }) {
+function Couverture({ couverture, parcours, collecte, ecartsSansFiche = false }) {
   return (
     <>
       {/* `--rangs` : les rangs portent leur marge et leur filet court d'un bord
@@ -1298,6 +1305,17 @@ function Couverture({ couverture, parcours, collecte }) {
       {/* DEUX renvois, deux questions distinctes : ce que ces bornes valent
           pour tout le corpus, et pourquoi une limite se déclare au lieu de se
           combler (DESIGN_SYSTEM §7 règle 2). */}
+      {/* LES ÉCARTS NE SONT PAS UNE LISTE COLLECTÉE : ni borne, ni compte, donc
+          pas une sixième ligne du tableau. Ils ont leur mention, parce que c'est
+          ici que « Rien à comparer. Pourquoi → » renvoie, et parce que la nuance
+          — un vide n'est pas « aucune divergence » — ne doit vivre qu'à un
+          endroit (01/10/2026). */}
+      {ecartsSansFiche && (
+        <p className="cp-couv-ecarts">
+          <b>Les écarts avec son groupe</b> — rien à comparer : aucune fiche n’est publiée pour
+          les groupes où cette personne a siégé. Ce vide ne dit pas qu’elle n’a jamais divergé.
+        </p>
+      )}
       <p className="cp-methodo">
         <Link to="/sources#frise">Ce que le dépôt porte, et depuis quand</Link>
         {' · '}
@@ -1634,17 +1652,17 @@ export default function CandidateProfile({ candidate, mot = '' }) {
         numero="1"
         titre="Les fonctions exercées"
         pied={
-          <>
-            Les trois plus longues par catégorie ; ligne surlignée = expérience sur + de la
-            moitié du mandat.{' '}
-            <Link to="/methodologie#fonctions">Pourquoi ce n’est pas un palmarès →</Link>
-          </>
+          c.fonctions.blocs.length === 0 ? null : (
+            <>
+              Les trois plus longues par catégorie ; ligne surlignée = expérience sur + de la
+              moitié du mandat.{' '}
+              <Link to="/methodologie#fonctions">Pourquoi ce n’est pas un palmarès →</Link>
+            </>
+          )
         }
       >
         {c.fonctions.blocs.length === 0 ? (
-          <div className="cp-carte">
-            <ListeVide cause={c.causes.mandats} source="Fonctions exercées" />
-          </div>
+          <ListeVide cause={c.causes.mandats} compacte renvoi="#section-6" />
         ) : (
           <Fonctions fonctions={c.fonctions} />
         )}
@@ -1681,7 +1699,9 @@ export default function CandidateProfile({ candidate, mot = '' }) {
       <Section
         numero="4"
         titre={c.voix.titres.ecarts}
-        critere="Sa position à côté de celle de son groupe, scrutin par scrutin. Jamais totalisée."
+        critere={c.ecarts.bande.length
+          ? 'Sa position à côté de celle de son groupe, scrutin par scrutin. Jamais totalisée.'
+          : null}
       >
         {actif && !c.ecarts.bande.length ? (
           <VideDuFiltre mot={mot}>
@@ -1699,7 +1719,9 @@ export default function CandidateProfile({ candidate, mot = '' }) {
       <Section
         numero="5"
         titre={c.voix.titres.dit}
-        critere="Ses interventions par période politique, puis par nature et par sujet. Le verbatim est celui du compte rendu."
+        critere={c.interventions.total
+          ? 'Ses interventions par période politique, puis par nature et par sujet. Le verbatim est celui du compte rendu.'
+          : null}
       >
         <Paroles cause={c.causes.interventions} interventions={c.interventions} key={`dit-${mot}`} mot={mot} />
       </Section>
@@ -1713,6 +1735,7 @@ export default function CandidateProfile({ candidate, mot = '' }) {
           couverture={c.couverture}
           parcours={limitesDuParcours}
           collecte={limitesDeCollecte}
+          ecartsSansFiche={!c.ecarts.fiches.length}
         />
       </Section>
       )}
