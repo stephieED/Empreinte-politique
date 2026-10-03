@@ -83,8 +83,9 @@ def test_l_empreinte_est_stable_et_triee():
     """La clé doit être la même quel que soit l'ordre de parcours du disque :
     `iterdir()` ne garantit aucun ordre, et deux clés pour un même contenu
     doubleraient les entrées au lieu de les partager."""
-    assert emp.empreinte(["17", "15", "16"], ["16", "14"]) == "syc15.16.17-q14.16"
-    assert emp.empreinte([], []) == "syc-q"
+    version = cp.SYCERON_VERSION_INDEX
+    assert emp.empreinte(["17", "15", "16"], ["16", "14"]) == f"syc15.16.17-q14.16-p{version}"
+    assert emp.empreinte([], []) == f"syc-q-p{version}"
 
 
 # ---------------------------------------------------------------------------
@@ -92,11 +93,18 @@ def test_l_empreinte_est_stable_et_triee():
 # ---------------------------------------------------------------------------
 
 
-def _poser_index_syceron(racine: Path, legislature: str, vide: bool = False) -> None:
+def _poser_index_syceron(
+    racine: Path, legislature: str, vide: bool = False, version: str | None = None,
+) -> None:
+    """Un répertoire d'index tel que `_write_syceron_index_par_acteur` le publie,
+    version de contenu comprise (#1169) — sauf si `version=""` la retire."""
     index_dir = racine / "syceron_an" / legislature / cp.SYCERON_INDEX_PAR_ACTEUR_DIRNAME
     index_dir.mkdir(parents=True)
     if not vide:
         (index_dir / "PA1234.json").write_text("[]", encoding="utf-8")
+    version = cp.SYCERON_VERSION_INDEX if version is None else version
+    if version:
+        (index_dir / cp.SYCERON_FICHIER_VERSION).write_text(version, encoding="utf-8")
 
 
 def _poser_index_questions(racine: Path, legislature: str) -> None:
@@ -121,7 +129,7 @@ def test_l_entree_fautive_du_27_08_ne_se_declare_plus_complete(tmp_path):
     _poser_index_questions(tmp_path, "17")
 
     obtenue = _empreinte_de(tmp_path)
-    assert obtenue == "syc17-q16.17"
+    assert obtenue == f"syc17-q16.17-p{cp.SYCERON_VERSION_INDEX}"
     assert obtenue != emp.empreinte_attendue(), (
         "L'entrée partielle du 27/08 porte la même empreinte qu'une entrée "
         "complète : elle referait un exact key hit, et les 7 shards "
@@ -152,7 +160,7 @@ def test_un_repertoire_d_index_vide_ne_compte_pas(tmp_path):
 def test_un_cache_absent_donne_une_empreinte_vide(tmp_path):
     """Le cas du runner neuf : rien sur le disque, aucune erreur, une empreinte
     qui le dit."""
-    assert _empreinte_de(tmp_path) == "syc-q"
+    assert _empreinte_de(tmp_path) == f"syc-q-p{cp.SYCERON_VERSION_INDEX}"
 
 
 def test_les_repertoires_hors_forme_sont_ignores(tmp_path):
@@ -249,3 +257,23 @@ def test_une_legislature_syceron_refusee_au_cache_est_absente_de_l_empreinte(
         f"empreinte Syceron = {indexees} : une législature dont l'archive était "
         "injoignable est comptée comme indexée (#550)."
     )
+
+
+# ---------------------------------------------------------------------------
+# #1169 — un index écrit par un autre parseur ne compte pas
+# ---------------------------------------------------------------------------
+
+
+def test_un_index_d_une_autre_version_ne_compte_pas(tmp_path):
+    """Le cas du 03/10/2026 : un index d'avant `role_seance`, complet en
+    apparence. Compté, il serait sauvé sous la clé d'un cache conforme."""
+    _poser_index_syceron(tmp_path, "17", version="")
+    _poser_index_syceron(tmp_path, "16", version="ancienne")
+    assert emp.legislatures_syceron_indexees(tmp_path / "syceron_an") == []
+
+
+def test_la_version_change_la_cle_attendue(monkeypatch):
+    """Un cache de la semaine écrit par l'ancien parseur ne refait pas un exact key hit."""
+    avant = emp.empreinte_attendue()
+    monkeypatch.setattr(cp, "SYCERON_VERSION_INDEX", "suivante")
+    assert emp.empreinte_attendue() != avant

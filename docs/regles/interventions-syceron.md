@@ -148,3 +148,11 @@ les charger, ni à les faire grossir. -->
   bounded by construction, not by measurement, and the #429 and #500 balances are
   un-remeasured. Naming them is the rule: §2.5 applies to our own work too.
   → `docs/decisions/syceron-actif-510.md`
+
+- **The Syceron index carries the version of the parser that wrote it (#1169).**
+  `SYCERON_VERSION_INDEX` is written into each index directory and required on
+  read, and it ends the cache key's empreinte (`-p<version>`). **Any change to
+  what the parser writes into an entry bumps it, in the same lot** — a key-presence
+  check cannot qualify a field that is only set where it applies (`role_seance`),
+  and the run of 03/10/2026 republished an index written before #1169.
+  → `docs/decisions/version-de-l-index-des-interventions-1169.md`

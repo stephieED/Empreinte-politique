@@ -608,6 +608,12 @@ partie. Elle n'existe pas avant le premier run qui la compose (mesure du
 02/10/2026 : aucun run ne l'a encore écrite).
 → `docs/decisions/table-des-groupes-du-run-1168.md`
 
+Un groupe que **seul un run** a ajouté porte le premier sigle que l'Assemblée lui
+a donné, tel quel, et **le dernier nom** qu'elle lui donne ; une lignée qu'un run
+a ouverte prend le nom de son groupe le plus récent. Les noms écrits à la main
+et les identifiants ne bougent jamais. Rien n'est dérivé avant la XVe
+législature. → `docs/decisions/borne-noms-et-sigles-des-groupes-ajoutes-1168.md`
+
 
 Les groupes à produire sont déclarés dans `config/groupes_reels.json` : **12
 entrées** — 5 groupes AN de la XVIe, **5 groupes AN de la XVIIe** (ajoutés par

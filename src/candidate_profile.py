@@ -856,6 +856,25 @@ SYCERON_INDEX_PAR_ACTEUR_DIRNAME = "index_par_acteur"
 # index au nom inchangé servirait, d'un cache, des entrées sans extrait.
 SYCERON_INDEX_PAR_ACTEUR_THEME_DIRNAME = "index_par_acteur_extrait"
 
+#: VERSION DU CONTENU de l'index Syceron, écrite dans chaque répertoire d'index
+#: (`SYCERON_FICHIER_VERSION`) et exigée à la relecture.
+#:
+#: Un index en cache est un PARSAGE en cache : il porte le code qui l'a écrit.
+#: #1169 a ajouté `role_seance` au parseur sans rien changer qui fasse
+#: reconstruire l'index — la qualification de #710/#1087 lit la présence d'une
+#: clé, et `role_seance` n'est posée que sur les paragraphes de présidence. Le
+#: run du 03/10/2026 (`37123323269`), lancé avec les interventions, a donc
+#: relu un index d'avant #1169 et publié 0 `role_seance` sur les 30 244
+#: interventions de `yael-braun-pivet`. Cinquième fois que le dépôt paie ce
+#: piège (#639, #689, #997, #1019).
+#:
+#: **À incrémenter dans le même lot que tout changement de ce que le parseur
+#: écrit dans une entrée.** La valeur entre aussi dans l'empreinte de la clé de
+#: cache (`cache_an_empreinte`), pour qu'un cache de la semaine écrit par
+#: l'ancien parseur ne soit pas restauré comme s'il était conforme.
+SYCERON_VERSION_INDEX = "1169"
+SYCERON_FICHIER_VERSION = "version_index.txt"
+
 #: Valeur publiée dans `interventions[].collecte` pour une entrée réduite au
 #: thème (#657). Une entrée sans cette clé est une entrée complète : l'absence
 #: de verbatim y est un constat, alors qu'elle est une DÉCISION ici, et les deux
@@ -5560,6 +5579,19 @@ def vider_memo_qualification_syceron() -> None:
     _SYCERON_INDEX_QUALIFIE.clear()
 
 
+def syceron_index_a_la_version(index_dir: Path) -> bool:
+    """Le répertoire d'index porte-t-il la version de contenu du parseur courant ?
+
+    Un fichier absent ou illisible vaut « autre version » : un index d'avant ce
+    marqueur est exactement celui qu'il faut reconstruire.
+    """
+    try:
+        lue = (Path(index_dir) / SYCERON_FICHIER_VERSION).read_text(encoding="utf-8").strip()
+    except OSError:
+        return False
+    return lue == SYCERON_VERSION_INDEX
+
+
 def _syceron_index_qualifie(index_dir: Path) -> bool:
     """True si les tranches d'un index Syceron portent la qualification de #710.
 
@@ -5593,6 +5625,12 @@ def _syceron_index_qualifie(index_dir: Path) -> bool:
         return memoise
 
     verdict = False
+    if not syceron_index_a_la_version(index_dir):
+        # Écrit par un autre parseur : la présence d'une clé ne prouve rien sur
+        # celles que ce parseur-ci ajoute, et qui ne sont posées que là où elles
+        # s'appliquent (`role_seance`).
+        _SYCERON_INDEX_QUALIFIE[cle] = verdict
+        return verdict
     try:
         tranches = [p for p in index_dir.glob("PA*.json") if p.is_file()]
     except OSError:
@@ -5645,10 +5683,14 @@ def _read_cached_interventions_syceron_acteur(
         # None` laisse un run réduit se rabattre sur l'autre forme, qui peut,
         # elle, être conforme.
         if not _syceron_index_qualifie(index_dir):
+            raison = (
+                f"écrit par un autre parseur (version attendue {SYCERON_VERSION_INDEX})"
+                if not syceron_index_a_la_version(index_dir)
+                else "antérieur à #710 (aucune qualification `sujet_code_grammaire`)"
+            )
             print(
                 f"  [i] Index des débats Syceron (législature {legislature}"
-                f"{', réduit au thème' if forme_theme else ''}) antérieur à #710 "
-                "(aucune qualification `sujet_code_grammaire`) : reconstruit."
+                f"{', réduit au thème' if forme_theme else ''}) {raison} : reconstruit."
             )
             continue
         shard_path = _syceron_shard_path_acteur(
@@ -5697,6 +5739,8 @@ def _write_syceron_index_par_acteur(
             continue  # acteurRef hors forme attendue : ignoré plutôt qu'écrit
         with open(tmp_dir / shard_path.name, "w", encoding="utf-8") as f:
             json.dump(entrees, f, ensure_ascii=False)
+    # La version AVANT la bascule : l'index publié la porte dès qu'il existe.
+    (tmp_dir / SYCERON_FICHIER_VERSION).write_text(SYCERON_VERSION_INDEX, encoding="utf-8")
     shutil.rmtree(index_dir, ignore_errors=True)
     os.replace(tmp_dir, index_dir)
     # #719 — le verdict de conformité porte sur un CONTENU, pas sur un chemin :

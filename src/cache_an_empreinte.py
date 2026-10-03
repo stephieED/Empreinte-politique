@@ -129,7 +129,13 @@ def legislatures_syceron_indexees(cache_syceron: Optional[Path] = None) -> list[
         if not _LEGISLATURE.match(entree.name):
             continue
         index_dir = entree / _cp.SYCERON_INDEX_PAR_ACTEUR_DIRNAME
-        if index_dir.is_dir() and any(index_dir.glob("*.json")):
+        # Un index écrit par un autre parseur ne compte pas : le sauver sous la
+        # clé d'un cache complet le ferait restaurer comme conforme (#1169).
+        if (
+            index_dir.is_dir()
+            and any(index_dir.glob("*.json"))
+            and _cp.syceron_index_a_la_version(index_dir)
+        ):
             trouvees.append(entree.name)
     return _tri(trouvees)
 
@@ -148,13 +154,21 @@ def legislatures_questions_indexees(cache_questions: Optional[Path] = None) -> l
 
 
 def empreinte(syceron: Iterable[str], questions: Iterable[str]) -> str:
-    """`syc<législatures>-q<législatures>`, triées, jointes par des points.
+    """`syc<législatures>-q<législatures>-p<version>`, triées, jointes par des points.
+
+    `-p<version>` est la version de contenu de l'index Syceron
+    (`candidate_profile.SYCERON_VERSION_INDEX`, #1169) : un cache écrit par un
+    autre parseur n'a pas la même clé, donc il n'est jamais restauré comme
+    exact, et le cache reconstruit peut être sauvé.
 
     Pas un hachage : la clé se lit dans l'interface Actions, et c'est là qu'on
     voit d'un coup d'œil qu'une entrée est partielle et laquelle manque. Le
     format n'utilise que des caractères sûrs pour une clé de cache.
     """
-    return f"syc{'.'.join(_tri(syceron))}-q{'.'.join(_tri(questions))}"
+    return (
+        f"syc{'.'.join(_tri(syceron))}-q{'.'.join(_tri(questions))}"
+        f"-p{_cp.SYCERON_VERSION_INDEX}"
+    )
 
 
 def empreinte_attendue() -> str:

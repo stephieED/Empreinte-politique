@@ -287,8 +287,11 @@ def test_la_peremption_laisse_le_disque_dans_un_etat_que_l_empreinte_550_sait_de
 
     _poser_cache(tmp_path)
     for legislature in ("15", "16", "17"):
-        (tmp_path / "syceron_an" / legislature / "index_par_acteur" / "PA1.json").write_text(
-            "[]", encoding="utf-8"
+        index_dir = tmp_path / "syceron_an" / legislature / "index_par_acteur"
+        (index_dir / "PA1.json").write_text("[]", encoding="utf-8")
+        # #1169 — l'index tel que le parseur courant le publie, version comprise.
+        (index_dir / cp.SYCERON_FICHIER_VERSION).write_text(
+            cp.SYCERON_VERSION_INDEX, encoding="utf-8"
         )
 
     avant = emp.empreinte(
@@ -309,7 +312,7 @@ def test_la_peremption_laisse_le_disque_dans_un_etat_que_l_empreinte_550_sait_de
         emp.legislatures_syceron_indexees(tmp_path / "syceron_an"),
         emp.legislatures_questions_indexees(tmp_path / "questions_an"),
     )
-    assert apres == "syc15.16-q14.15.16"
+    assert apres == f"syc15.16-q14.15.16-p{cp.SYCERON_VERSION_INDEX}"
     assert apres != emp.empreinte_attendue(), (
         "Après péremption, le disque ne porte plus la 17e législature : "
         "l'empreinte de #550 doit le dire, sinon la sauvegarde annoncerait une "

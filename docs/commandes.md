@@ -713,6 +713,11 @@ ce que `--precedent` porte et qu'elle ne porte pas, puis ce que la source apport
 de neuf, et consigne l'empreinte de la table écrite dont elle est partie. Elle ne
 réécrit pas un fichier inchangé.
 
+Dans un runner GitHub Actions, la composition écrit aussi une section dans le
+résumé du job (`$GITHUB_STEP_SUMMARY`) — groupes ajoutés, lignées ouvertes,
+renommages, liens à relire, sans jamais un décompte de lien — et annonce chaque
+groupe ajouté par `GROUPE_AJOUTE`. Hors d'un runner, rien n'est écrit.
+
 **Quelle table lisent les outils** : `raw_data/groupes_du_run.json` quand elle a
 été composée de la table écrite telle qu'elle est aujourd'hui, sinon
 `config/groupes_reels.json`. Une table écrite corrigée entre deux runs reprend

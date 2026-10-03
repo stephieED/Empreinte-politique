@@ -39,7 +39,6 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | --- | ---: |
 | `src/actes_reglementaires.py` | 4 |
 | `src/build_amendements_index.py` | 4 |
-| `src/groupes_amo30.py` | 4 |
 | `src/parse_syceron.py` | 4 |
 | `src/perimetre_candidats.py` | 4 |
 | `src/audit_pipeline.py` | 3 |
@@ -352,7 +351,7 @@ Le mentionnent sans le gouverner : [`qualification-scrutins-et-cle-dossier-639`]
 
 ## `src/cache_an_empreinte.py`
 
-Le mentionnent sans le gouverner : [`cache-completude-interventions-550`](decisions/cache-completude-interventions-550.md), [`max-parallel-sur-cle-chaude-1137`](decisions/max-parallel-sur-cle-chaude-1137.md).
+Le mentionnent sans le gouverner : [`cache-completude-interventions-550`](decisions/cache-completude-interventions-550.md), [`max-parallel-sur-cle-chaude-1137`](decisions/max-parallel-sur-cle-chaude-1137.md), [`version-de-l-index-des-interventions-1169`](decisions/version-de-l-index-des-interventions-1169.md).
 
 ## `src/cache_an_fraicheur.py`
 
@@ -360,7 +359,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 
 ## `src/candidate_profile.py`
 
-97 décision(s) le gouvernent ; le module en cite 14.
+98 décision(s) le gouvernent ; le module en cite 14.
 
 | Décision | Nomme |
 | --- | --- |
@@ -460,6 +459,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [Taxonomie des mandats : exploitation des `typeOrgane` AN non mappés (#382, option « mixte ») (2026-08-17)](decisions/taxonomie-mandats-typeorgane-an.md) | `_TYPE_ORGANE_NON_MAPPES`, `fetch_positions_hemicycle_officielles` |
 | [Téléchargement AN : trois modes de défaillance, un seul principe — ne jamais jeter un préfixe valide (#443) (2026-08-19)](decisions/telechargement-an-prefixe-valide-443.md) | `AMENDEMENTS_DOWNLOAD_CHUNK_BYTES`, `AMENDEMENTS_SOURCE_STALL_MAX_CYCLES`, `AMENDEMENTS_SOURCE_STALL_WAIT_SECONDS`, `SourceAmendementsIndisponibleError`, `_download_amendements_zip`, `_est_erreur_http_definitive`, `_telecharger_flux`, `_tenter_get_sequentiel` |
 | [L'union des avertissements peut ressusciter un démenti, et deux familles Syceron s'éteignent (#600) (2026-08-30)](decisions/union-warnings-extinction-600.md) | `WARNING_PREFIX_QUESTIONS_INDISPONIBLES` |
+| [L'index des interventions porte la version du parseur qui l'a écrit (#1169)](decisions/version-de-l-index-des-interventions-1169.md) | `SYCERON_VERSION_INDEX`, `_syceron_index_qualifie`, `_write_syceron_index_par_acteur` |
 | [Votes : agrégation des législatures 14 à 17, index dédupliqué, 14/15/16 figées (#403) (2026-08-18)](decisions/votes-multi-legislature.md) | `AN_SCRUTINS_LEGISLATURES`, `AN_SCRUTINS_LEGISLATURES_FIGEES`, `AN_SCRUTIN_UID_PREFIXE`, `fetch_votes_officiels` |
 
 Le mentionnent sans le gouverner : [`archive-dossiers-xiv-1019`](decisions/archive-dossiers-xiv-1019.md), [`consommateurs-chambres-migres`](decisions/consommateurs-chambres-migres.md), [`dossiers-multi-archives-origine-document`](decisions/dossiers-multi-archives-origine-document.md), [`gouvernement-roster-desambiguisation`](decisions/gouvernement-roster-desambiguisation.md), [`licences`](decisions/licences.md), [`mandats-agreges-famille-1`](decisions/mandats-agreges-famille-1.md), [`max-parallel-sur-cle-chaude-1137`](decisions/max-parallel-sur-cle-chaude-1137.md), [`parlementaire-en-mission-nest-pas-ministre`](decisions/parlementaire-en-mission-nest-pas-ministre.md), [`partition-profils-legislature-580`](decisions/partition-profils-legislature-580.md), [`perimetre-controle-perte`](decisions/perimetre-controle-perte.md), [`plafond-roster-et-commit-518`](decisions/plafond-roster-et-commit-518.md), [`pythonunbuffered-generate-data`](decisions/pythonunbuffered-generate-data.md), [`qualification-perdue-a-la-fusion-639`](decisions/qualification-perdue-a-la-fusion-639.md), [`rattachement-des-membres-par-organe-996`](decisions/rattachement-des-membres-par-organe-996.md), [`retrait-marqueur-regards-citoyens-deputes-890`](decisions/retrait-marqueur-regards-citoyens-deputes-890.md), [`roster-unique-par-run-518`](decisions/roster-unique-par-run-518.md), [`trame-profil-candidat-328`](decisions/trame-profil-candidat-328.md).
@@ -863,10 +863,11 @@ Le mentionnent sans le gouverner : [`cloisonnement-branche-roster-524`](decision
 
 ## `src/groupes_amo30.py`
 
-4 décision(s) le gouvernent ; le module en cite 0.
+5 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
+| [Les groupes ajoutés par le run : depuis 2017, sous le dernier nom de l'Assemblée et son sigle tel quel (#1168)](decisions/borne-noms-et-sigles-des-groupes-ajoutes-1168.md) | `PREMIERE_LEGISLATURE`, `mettre_a_jour_table`, `suivre_le_dernier_nom` |
 | [Les groupes et leurs lignées se dérivent d'AMO30 : le calcul retrouve la table (#1168, lot 1)](decisions/derivation-des-groupes-depuis-amo30-1168.md) | `PREMIERE_LEGISLATURE` |
 | [Un lien entre groupes se publie « établi par comparaison des membres », et seulement s'il est mesuré (#1168, lot 3)](decisions/lien-etabli-par-comparaison-1168.md) | `mesurer_liens` |
 | [La table des groupes du run : composée à chaque run, dans `raw_data/` (#1168, lot 2c)](decisions/table-des-groupes-du-run-1168.md) | `composer_table`, `mettre_a_jour_table` |

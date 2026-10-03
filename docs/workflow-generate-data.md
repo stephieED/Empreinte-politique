@@ -358,6 +358,14 @@ retient la table du run que si elle porte l'empreinte de la table écrite du
 jour). Annotations `TABLE_GROUPES_A_RELIRE` (un cas non tranché ou un conflit)
 et `TABLE_GROUPES_NON_COMPOSEE` (archive ou table illisible).
 
+**Ce que la composition a fait se lit dans le résumé du job** (#1168, lot 4) :
+une section « Table des groupes du run » nomme les groupes ajoutés et leur
+lignée, les lignées ouvertes, les renommages rattachés, les liens sous le seuil,
+les cas non tranchés ou en attente — une seule ligne quand rien n'a bougé. Un
+groupe ajouté émet aussi `GROUPE_AJOUTE` (`::notice::`). Le résumé d'un run du
+dépôt public est lisible par tous : il ne porte **jamais** le décompte d'un lien
+(arbitré le 03/10/2026, seule la règle se publie).
+
 La table voyage **dans l'artifact `roster-candidats`**, avec le roster qu'elle a
 servi à construire : les shards et la fusion le téléchargent dans `raw_data`, et
 elle y revient à sa place. `merge-and-pivot` la committe.
@@ -833,7 +841,12 @@ sur un hit exact, donc le premier écrivain gèle l'entrée pour tout le monde. 
 même défaut est passé trois fois (#412 §2.3 → #424 → #505). Deux corollaires :
 un job portant un `--skip-*` utilise `actions/cache/restore`, et une clé dont le
 **contenu** dépend d'un input porte cet input — d'où le suffixe
-`-interv-<empreinte>` quand `collect_interventions` est vrai. Le **consommateur**
+`-interv-<empreinte>` quand `collect_interventions` est vrai. L'empreinte se termine par `-p<version>`, la version de contenu de l'index
+Syceron (`candidate_profile.SYCERON_VERSION_INDEX`, #1169) : un cache écrit par
+un autre parseur n'a pas la même clé, donc il n'est jamais restauré comme exact,
+et l'index reconstruit peut être sauvé. **Toute PR qui change ce que le parseur
+écrit dans une entrée incrémente cette version** — sans quoi elle n'atteint pas
+le corpus (`docs/decisions/version-de-l-index-des-interventions-1169.md`). Le **consommateur**
 doit porter ce suffixe aussi (#657) : sans lui, la clé nue de la semaine — écrite
 par n'importe quel run en mode par défaut — fait un *exact key hit*, et
 `restore-keys` n'est pas consulté après un hit exact ; les 8 shards roster

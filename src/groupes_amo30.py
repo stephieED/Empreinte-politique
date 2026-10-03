@@ -34,6 +34,18 @@ l'effectif du **plus petit** des deux, à partir de la moitié
 
 Une **lignée** est ce que ces filiations relient.
 
+Les décisions qui gouvernent ce module
+--------------------------------------
+Les trois qui comptent ; la liste complète et à jour est dans
+`docs/decisions-par-module.md`.
+
+- `docs/decisions/derivation-des-groupes-depuis-amo30-1168.md` — la règle
+  appliquée deux fois, et ce que le calcul retrouve de la table ;
+- `docs/decisions/table-des-groupes-du-run-1168.md` — la table du run, sa
+  composition, et l'empreinte qui dit si elle est à jour ;
+- `docs/decisions/lien-etabli-par-comparaison-1168.md` — pourquoi chaque lien
+  est mesuré, et ce que la fiche en dit.
+
 Ce qui n'est pas tranché n'est pas deviné
 -----------------------------------------
 - Un organe qui a **deux** successeurs contigus au-dessus du seuil — ou deux
@@ -108,6 +120,7 @@ import argparse
 import copy
 import datetime
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any, Iterable, Optional
@@ -115,6 +128,7 @@ from typing import Any, Iterable, Optional
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import an_roster  # noqa: E402
+import gha  # noqa: E402
 from audit_filiation_lignees import atteint_le_seuil, index_des_groupes  # noqa: E402
 from groupes_config import (  # noqa: E402
     CHEMIN_CONFIG_GROUPES,
@@ -479,9 +493,18 @@ CHAMPS_RAFRAICHIS = ("historique_organes_an", "position", "effectif_amo30")
 
 CLE_TABLE = "correspondance_sigles_an"
 
+#: Sur une entrée de `groupes[]` ou de `lignees[]` : qui l'a nommée. Posé à
+#: `NOMME_PAR_LE_RUN` sur ce que `mettre_a_jour_table` ajoute, et sur rien
+#: d'autre ; absent, l'entrée a été nommée à la main. C'est ce qui dit à
+#: `suivre_le_dernier_nom` quels noms il peut faire suivre — un nom choisi par
+#: un humain ne suit jamais, même quand la table écrite cesse de le porter.
+CLE_NOMME_PAR = "nomme_par"
+NOMME_PAR_LE_RUN = "run"
+
 
 def _journal_vide() -> dict[str, list[Any]]:
     return {
+        "noms_rafraichis": [],
         "liens_non_soutenus": [],
         "organes_rattaches": [],
         "groupes_ajoutes": [],
@@ -729,6 +752,7 @@ def mettre_a_jour_table(
                 "chambre": "AN",
                 "fichier": f"lignee-AN-{sigle}.json",
                 "verifie_le": jour,
+                CLE_NOMME_PAR: NOMME_PAR_LE_RUN,
             })
             lignees_prises.add(lignee_id)
             journal["lignees_ajoutees"].append({"lignee_id": lignee_id, "lignee_nom": nom})
@@ -769,6 +793,7 @@ def mettre_a_jour_table(
             "chambre": "AN",
             "legislature": groupe["legislature"],
             "fichier": fichier,
+            CLE_NOMME_PAR: NOMME_PAR_LE_RUN,
         })
         identifiants.add(groupe_id)
         lignee_de[groupe_id] = lignee_id
@@ -786,6 +811,74 @@ def mettre_a_jour_table(
         })
     journal["liens_non_soutenus"] = mesurer_liens(nouveau, index)
     return nouveau, journal
+
+
+def suivre_le_dernier_nom(
+    composee: dict[str, Any],
+    ecrite: dict[str, Any],
+    *,
+    jour: str,
+) -> list[dict[str, Any]]:
+    """Le nom affiché d'un groupe que **seul un run** a ajouté suit le dernier nom de l'Assemblée.
+
+    Arbitré par la propriétaire le 03/10/2026. **Modifie `composee` en place.**
+
+    - `groupe_nom` : le libellé du dernier organe du groupe ;
+    - `lignee_nom` d'une lignée que seul un run a ouverte : le nom de son
+      groupe le plus récent — la convention des lignées écrites à la main
+      (« Ensemble pour la République », « Droite Républicaine »).
+
+    « Seul un run » se lit au marqueur `nomme_par: "run"`, posé à l'entrée du
+    groupe : un groupe nommé à la main puis retiré de la table écrite garde le
+    nom qu'un humain lui a donné.
+
+    Ce qui ne bouge **jamais** : un nom que la table écrite porte, l'identifiant
+    du groupe, celui de la lignée — donc l'adresse de la page (#836) —, et le
+    sigle publié, que l'Assemblée donne tel quel à l'entrée du groupe.
+    """
+    noms_ecrits = {
+        g.get("groupe_id") for g in ecrite.get("groupes") or []
+    } | {
+        g.get("groupe_id") for g in composee["groupes"]
+        if g.get(CLE_NOMME_PAR) != NOMME_PAR_LE_RUN
+    }
+    lignees_ecrites = {
+        l.get("lignee_id") for l in ecrite.get("lignees") or []
+    } | {
+        l.get("lignee_id") for l in composee["lignees"]
+        if l.get(CLE_NOMME_PAR) != NOMME_PAR_LE_RUN
+    }
+    entree_de = {e.get("groupe_id"): e for e in composee[CLE_TABLE]["groupes"]}
+    changes: list[dict[str, Any]] = []
+
+    def dernier_nom(entree: dict[str, Any]) -> Optional[str]:
+        historique = entree.get("historique_organes_an") or []
+        return historique[-1].get("nom") if historique else None
+
+    for groupe in composee["groupes"]:
+        if groupe.get("groupe_id") in noms_ecrits:
+            continue
+        nom = dernier_nom(entree_de.get(groupe.get("groupe_id")) or {})
+        if nom and nom != groupe.get("groupe_nom"):
+            changes.append({"objet": groupe.get("groupe_id"), "avant": groupe.get("groupe_nom"), "apres": nom})
+            groupe["groupe_nom"] = nom
+
+    def recence(groupe: dict[str, Any]) -> tuple[int, str]:
+        historique = (entree_de.get(groupe.get("groupe_id")) or {}).get("historique_organes_an") or []
+        return (int(groupe.get("legislature") or 0), (historique[-1].get("debut") or "") if historique else "")
+
+    for lignee in composee["lignees"]:
+        if lignee.get("lignee_id") in lignees_ecrites:
+            continue
+        maillons = [g for g in composee["groupes"] if g.get(CLE_LIGNEE_ID) == lignee.get("lignee_id")]
+        if not maillons:
+            continue
+        nom = max(maillons, key=recence).get("groupe_nom")
+        if nom and nom != lignee.get("lignee_nom"):
+            changes.append({"objet": lignee.get("lignee_id"), "avant": lignee.get("lignee_nom"), "apres": nom})
+            lignee["lignee_nom"] = nom
+            lignee["verifie_le"] = jour
+    return changes
 
 
 def composer_table(
@@ -896,6 +989,7 @@ def composer_table(
     composee, journal = mettre_a_jour_table(depart, index, jour=jour)
     journal["conflits"] = []
     journal["groupes_repris"] = repris
+    journal["noms_rafraichis"] = suivre_le_dernier_nom(composee, ecrite, jour=jour)
 
     if precedente:
         avant = {
@@ -982,8 +1076,9 @@ def mesurer_liens(
 def table_modifiee(journal: dict[str, list[Any]]) -> bool:
     """La mise à jour a-t-elle changé quelque chose à la table ?"""
     return any(
-        journal[cle]
-        for cle in ("organes_rattaches", "groupes_ajoutes", "lignees_ajoutees", "champs_rafraichis")
+        journal.get(cle)
+        for cle in ("organes_rattaches", "groupes_ajoutes", "lignees_ajoutees",
+                    "champs_rafraichis", "noms_rafraichis")
     )
 
 
@@ -1019,6 +1114,8 @@ def _afficher_journal(journal: dict[str, list[Any]]) -> None:
         print(f"  [en attente] {attente.get('sigles_an') or attente['organes_an']} : {attente['motif']}")
     for cas in journal["non_tranches"]:
         print(f"  [non tranché] {'/'.join(cas['sigles_an'])} ({cas['legislature']}e) : {cas['motif']}")
+    for nom in journal.get("noms_rafraichis") or []:
+        print(f"  [nom] {nom['objet']} : « {nom['avant']} » → « {nom['apres']} »")
     for lien in journal.get("liens_non_soutenus") or []:
         print(
             f"  [non soutenu] {lien['predecesseur']} → {lien['groupe_id']} : "
@@ -1099,6 +1196,100 @@ def _afficher_comparaison(rapport: dict[str, Any]) -> None:
         if rapport["differences"] else
         "\n→ La dérivation reproduit la table."
     )
+
+
+# ── Le résumé de run (#1168, lot 4) ──────────────────────────────────────────
+
+def resume_de_run(journal: dict[str, list[Any]], *, ecrite: bool) -> str:
+    """Ce que la composition a fait, en Markdown, pour le résumé du job.
+
+    Le résumé d'un run du dépôt public est lisible par tous : il nomme les
+    groupes et les liens, **jamais le décompte** d'un lien. La propriétaire a
+    arbitré le 03/10/2026 que seule la règle se publie (« on ne publiera que la
+    règle dans la méthodo ») ; le décompte reste dans la table, où il sert à
+    choisir `etabli_par`.
+
+    Une ligne quand rien n'a bougé : un run ordinaire ne doit pas noyer le
+    résumé, mais son silence doit se distinguer d'une étape qui n'a pas tourné.
+    """
+    lignes = ["### Table des groupes du run (#1168)", ""]
+    if not ecrite:
+        lignes.append(
+            "**Table non écrite** : la composition contredit ce qu'un run a déjà "
+            "publié. Le run continue sur la table écrite à la main."
+        )
+        lignes.append("")
+        for cas in journal.get("conflits") or []:
+            lignes.append(f"- `{cas['groupe_id']}` : {cas['motif']}")
+        return "\n".join(lignes) + "\n"
+
+    rubriques = [
+        ("Groupes ajoutés", [
+            f"`{a['groupe_id']}` ({'/'.join(a['sigles_an'])}, {a['effectif_amo30']} personnes) — "
+            + (
+                "prend la suite de " + ", ".join(f"`{s['groupe_id']}`" for s in a["succede_a"])
+                if a["succede_a"] else "aucun prédécesseur"
+            )
+            + f", lignée `{a['lignee_id']}`"
+            for a in journal["groupes_ajoutes"]
+        ]),
+        ("Lignées ouvertes", [
+            f"`{l['lignee_id']}` — {l['lignee_nom']}" for l in journal["lignees_ajoutees"]
+        ]),
+        ("Renommages rattachés à leur groupe", [
+            f"`{r['organe_an']}` ({r['sigle_an']}) → `{r['groupe_id']}`"
+            for r in journal["organes_rattaches"]
+        ]),
+        ("Noms suivis (groupes et lignées ajoutés par un run)", [
+            f"`{n['objet']}` : « {n['avant']} » → « {n['apres']} »"
+            for n in journal.get("noms_rafraichis") or []
+        ]),
+        ("Liens sous le seuil — publiés `relecture_humaine`", [
+            f"`{l['predecesseur']}` → `{l['groupe_id']}`"
+            for l in journal.get("liens_non_soutenus") or []
+        ]),
+        ("Non tranchés — à relire", [
+            f"{'/'.join(c['sigles_an'])} ({c['legislature']}e) : {c['motif']}"
+            for c in journal["non_tranches"]
+        ]),
+        ("En attente — aucun mandat commencé", [
+            f"{'/'.join(c.get('sigles_an') or c['organes_an'])}" for c in journal["en_attente"]
+        ]),
+    ]
+    rafraichis = sorted({c["groupe_id"] for c in journal["champs_rafraichis"]})
+    if not any(contenu for _, contenu in rubriques):
+        lignes.append(
+            "Aucun groupe nouveau, aucun renommage, aucun lien à relire"
+            + (f" ; champs rafraîchis depuis la source sur {len(rafraichis)} groupe(s)."
+               if rafraichis else ".")
+        )
+        return "\n".join(lignes) + "\n"
+    for titre, contenu in rubriques:
+        if contenu:
+            lignes.append(f"**{titre}**")
+            lignes.append("")
+            lignes.extend(f"- {ligne}" for ligne in contenu)
+            lignes.append("")
+    if rafraichis:
+        lignes.append(f"Champs rafraîchis depuis la source : {', '.join(f'`{g}`' for g in rafraichis)}.")
+    return "\n".join(lignes) + "\n"
+
+
+def _publier_le_resume(journal: dict[str, list[Any]], *, ecrite: bool) -> None:
+    """Résumé du job et annotations — sans effet hors d'un runner GitHub Actions."""
+    chemin = os.getenv("GITHUB_STEP_SUMMARY")
+    if chemin:
+        try:
+            with open(chemin, "a", encoding="utf-8") as f:
+                f.write(resume_de_run(journal, ecrite=ecrite))
+        except OSError as exc:
+            print(f"  [!] Impossible d'écrire dans GITHUB_STEP_SUMMARY : {exc}", file=sys.stderr)
+    for ajout in journal["groupes_ajoutes"]:
+        gha.annoter(
+            "notice",
+            f"GROUPE_AJOUTE — {ajout['groupe_id']} ({'/'.join(ajout['sigles_an'])}) entre "
+            f"dans la table du run, lignée {ajout['lignee_id']} (#1168).",
+        )
 
 
 def _build_arg_parser() -> argparse.ArgumentParser:
@@ -1204,6 +1395,7 @@ def main(argv: Optional[list[str]] = None) -> int:
             print(json.dumps(journal, ensure_ascii=False, indent=2))
         else:
             _afficher_journal(journal)
+        _publier_le_resume(journal, ecrite=nouveau is not None)
         if nouveau is None:
             print(
                 "[!] Table NON écrite : la composition contredit ce qu'un run a déjà "

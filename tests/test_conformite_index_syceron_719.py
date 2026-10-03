@@ -61,7 +61,11 @@ def _entree(avec_qualification: bool, sujet="Motions de censure"):
     return e
 
 
-def _ecrire_index(racine, legislature, tranches, *, theme=False):
+def _ecrire_index(racine, legislature, tranches, *, theme=False, version=None):
+    """Un index tel que le parseur courant le publie — version de contenu
+    comprise depuis #1169, sauf `version=""`. Ces tests-ci portent sur la
+    qualification par une clé ; celle par la version est éprouvée dans
+    `test_index_syceron_version_1169.py`."""
     dirname = "index_par_acteur_extrait" if theme else "index_par_acteur"
     d = racine / legislature / dirname
     d.mkdir(parents=True, exist_ok=True)
@@ -69,6 +73,9 @@ def _ecrire_index(racine, legislature, tranches, *, theme=False):
         (d / f"{acteur_ref}.json").write_text(
             json.dumps(entrees, ensure_ascii=False), encoding="utf-8"
         )
+    version = cp.SYCERON_VERSION_INDEX if version is None else version
+    if version:
+        (d / cp.SYCERON_FICHIER_VERSION).write_text(version, encoding="utf-8")
     return d
 
 
