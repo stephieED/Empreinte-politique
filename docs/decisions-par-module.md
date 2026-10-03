@@ -39,11 +39,11 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | --- | ---: |
 | `src/actes_reglementaires.py` | 4 |
 | `src/build_amendements_index.py` | 4 |
+| `src/groupes_amo30.py` | 4 |
 | `src/parse_syceron.py` | 4 |
 | `src/perimetre_candidats.py` | 4 |
 | `src/audit_pipeline.py` | 3 |
 | `src/budget_collecte.py` | 3 |
-| `src/groupes_amo30.py` | 3 |
 | `src/json_io.py` | 3 |
 | `src/purge_mandats_dupliques.py` | 3 |
 | `src/rne_opendata.py` | 3 |
@@ -863,17 +863,18 @@ Le mentionnent sans le gouverner : [`cloisonnement-branche-roster-524`](decision
 
 ## `src/groupes_amo30.py`
 
-3 décision(s) le gouvernent ; le module en cite 0.
+4 décision(s) le gouvernent ; le module en cite 0.
 
 | Décision | Nomme |
 | --- | --- |
 | [Les groupes et leurs lignées se dérivent d'AMO30 : le calcul retrouve la table (#1168, lot 1)](decisions/derivation-des-groupes-depuis-amo30-1168.md) | `PREMIERE_LEGISLATURE` |
+| [Un lien entre groupes se publie « établi par comparaison des membres », et seulement s'il est mesuré (#1168, lot 3)](decisions/lien-etabli-par-comparaison-1168.md) | `mesurer_liens` |
 | [La table des groupes du run : composée à chaque run, dans `raw_data/` (#1168, lot 2c)](decisions/table-des-groupes-du-run-1168.md) | `composer_table`, `mettre_a_jour_table` |
 | [La table des groupes se met à jour depuis AMO30, sans réécrire ce qui est nommé (#1168, lot 2a)](decisions/table-des-groupes-mise-a-jour-depuis-amo30-1168.md) | `mettre_a_jour_table` |
 
 ## `src/groupes_config.py`
 
-9 décision(s) le gouvernent ; le module en cite 3.
+10 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -883,6 +884,7 @@ Le mentionnent sans le gouverner : [`cloisonnement-branche-roster-524`](decision
 | [Corriger là où un champ est jeté ne suffit pas : il faut trouver tous les endroits où l'objet est fabriqué (#901) (2026-09-14)](decisions/deux-fabriques-textes-portes-europeens-901.md) | `resume_suspension` |
 | [Suspendre l'extraction des deux groupes Sénat, sans les retirer de la config (#516) (2026-08-24)](decisions/extraction-groupe-suspendue-516.md) | `anomalies_suspension` |
 | [Les 5 groupes de la XVIIe entrent dans `groupes[]`, et leur succession est déclarée comme une relecture (#700) (2026-09-01)](decisions/fiches-groupe-17e-legislature-700.md) | `CorrespondanceSiglesInvalide`, `_valider_successions`, `charger_correspondance_sigles`, `libelle_groupe` |
+| [Un lien entre groupes se publie « établi par comparaison des membres », et seulement s'il est mesuré (#1168, lot 3)](decisions/lien-etabli-par-comparaison-1168.md) | `succession_publiee` |
 | [`NG` et `SOC` de la XVe sont un seul groupe, et une fiche se retire par son nom (#1168, lot 2b)](decisions/ng-et-soc-un-seul-groupe-1168.md) | `charger_fiches_retirees` |
 | [La position politique d'un groupe est celle que l'Assemblée déclare, lue dans une table committée (#686) (2026-09-01)](decisions/position-politique-groupes-686.md) | `CHEMIN_CONFIG_GROUPES`, `CLE_CORRESPONDANCE_SIGLES`, `CorrespondanceSiglesInvalide`, `charger_correspondance_sigles`, `entree_correspondance`, `position_politique_publiee` |
 | [La table des groupes du run : composée à chaque run, dans `raw_data/` (#1168, lot 2c)](decisions/table-des-groupes-du-run-1168.md) | `CHEMIN_CONFIG_GROUPES`, `chemin_table_groupes` |
@@ -1248,7 +1250,7 @@ Le mentionnent sans le gouverner : [`agregat-parole-gouvernement-1020`](decision
 
 ## `src/schema_groupe.py`
 
-9 décision(s) le gouvernent ; le module en cite 3.
+10 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1258,6 +1260,7 @@ Le mentionnent sans le gouverner : [`agregat-parole-gouvernement-1020`](decision
 | [Les groupes et leurs lignées se dérivent d'AMO30 : le calcul retrouve la table (#1168, lot 1)](decisions/derivation-des-groupes-depuis-amo30-1168.md) | `resumer_position_politique` |
 | [L'effectif d'un groupe dans le temps : `min_historique` et `max_historique` portent leur date (#702) — 01/09/2026](decisions/effectif-du-groupe-dans-le-temps-702.md) | `valeur_borne_effectif`, `validate_profil_groupe` |
 | [Les 5 groupes de la XVIIe entrent dans `groupes[]`, et leur succession est déclarée comme une relecture (#700) (2026-09-01)](decisions/fiches-groupe-17e-legislature-700.md) | `ETABLISSEMENTS_SUCCESSION`, `POSITIONS_POLITIQUES_GROUPE`, `_valider_succede_a` |
+| [Un lien entre groupes se publie « établi par comparaison des membres », et seulement s'il est mesuré (#1168, lot 3)](decisions/lien-etabli-par-comparaison-1168.md) | `ETABLISSEMENTS_SUCCESSION` |
 | [L'origine de la date de référence nomme le critère, plus un événement (#808)](decisions/origine-date-reference-nomme-le-critere-808.md) | `ORIGINES_DATE_REFERENCE`, `ORIGINE_DATE_REFERENCE_CLOTURE`, `ORIGINE_DATE_REFERENCE_CLOTURE_HERITEE` |
 | [L'appartenance publiée cesse d'être une enveloppe (#809)](decisions/periodes-appartenance-809.md) | `validate_profil_groupe` |
 | [La position politique d'un groupe est celle que l'Assemblée déclare, lue dans une table committée (#686) (2026-09-01)](decisions/position-politique-groupes-686.md) | `POSITIONS_POLITIQUES_GROUPE`, `resumer_position_politique` |

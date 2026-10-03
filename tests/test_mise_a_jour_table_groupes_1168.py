@@ -271,6 +271,9 @@ def test_deux_entrees_pour_un_groupe_renomme_sont_signalees_pas_fusionnees():
         ("SOC", "15", ["PO2"], "AN:LIGNEE:SOC", ["AN:NG:15"]),
     ])
     nouveau, journal = groupes_amo30.mettre_a_jour_table(document, index, jour=JOUR)
+    # Rien n'est fusionné ; seule la mesure du lien écrit s'ajoute (#1168, lot 3).
+    soc = nouveau["correspondance_sigles_an"]["groupes"][1]
+    assert soc.pop("succede_a_mesures") == [{"groupe_id": "AN:NG:15", "communs": 30, "base": 33}]
     assert nouveau == document
     cas, = journal["a_fusionner"]
     assert cas["groupes"] == ["AN:NG:15", "AN:SOC:15"]

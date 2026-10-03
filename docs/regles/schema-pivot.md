@@ -138,8 +138,12 @@ elective mandate** (38/38, 85/85, 60/60 on `LR`, `REN`, `LFI` — re-elected in
 - **`succede_a` is an assertion of this repo, and the schema forbids it a
   `source_url`.** The Assembly opens and closes organs (`PO800508` closed
   09/06/2024, `PO845425` opened 18/07/2024); it never chains them. Exact mirror
-  of `position_politique`, which *requires* one: here `etabli_par`
-  (`relecture_humaine`, a one-value closed vocabulary) plus `verifie_le` say
+  of `position_politique`, which *requires* one: here `etabli_par` plus
+  `verifie_le` say where it comes from. Two values since #1168:
+  `comparaison_des_membres` **only** when the run's table carries the link's
+  measurement (`succede_a_mesures`) and it passes the rule — half of the smaller
+  group; `relecture_humaine` otherwise, the value that stays true when nothing
+  measured it. Never write the first one by hand. These say
   where it comes from, and the published proof is the predecessor's
   `sigles_an`/`organes_an`, verbatim. Optional, like #686 and #653. A succession
   that does not resolve is refused **twice**: in the table (after the loop — at

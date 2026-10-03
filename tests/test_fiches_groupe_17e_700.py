@@ -291,10 +291,18 @@ def test_le_bloc_publie_est_une_relecture_datee_et_ne_porte_aucune_source():
     assert bloc[0]["sigles_an"] == ["LR"]
 
 
-def test_le_vocabulaire_detablissement_na_quune_valeur():
-    """Pas de `source_ouverte` « au cas où » : ce cas n'existe pas, et une
-    valeur ajoutée d'avance laisserait croire le contraire."""
-    assert schema_groupe.ETABLISSEMENTS_SUCCESSION == ("relecture_humaine",)
+def test_le_vocabulaire_detablissement_ne_pretend_jamais_a_une_source():
+    """Pas de `source_ouverte` « au cas où » : aucune source ne publie la
+    succession, et une valeur ajoutée d'avance laisserait croire le contraire.
+
+    Deux valeurs depuis #1168 (arbitré le 03/10/2026) : la relecture humaine,
+    et la comparaison des membres — deux affirmations de CE dépôt, jamais de
+    l'Assemblée. Le test figeait une seule valeur ; c'est la règle qu'il tient
+    désormais, pas l'état d'un jour."""
+    assert schema_groupe.ETABLISSEMENTS_SUCCESSION == (
+        "relecture_humaine", "comparaison_des_membres",
+    )
+    assert not any("source" in valeur for valeur in schema_groupe.ETABLISSEMENTS_SUCCESSION)
 
 
 def test_les_lignees_remontent_jusquou_le_corpus_va():

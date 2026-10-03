@@ -699,8 +699,14 @@ ouvre et ferme des organes (`PO800508` clos le 09/06/2024, `PO845425` ouvert le
 18/07/2024), elle ne les chaîne pas. D'où une dissymétrie voulue avec
 `position_politique` : celui-ci **exige** un `source_url`, `succede_a`
 l'**interdit** — le schéma refuse le bloc s'il en porte un. C'est `etabli_par`
-(`relecture_humaine`, vocabulaire fermé à une valeur) et `verifie_le` qui disent
-d'où l'affirmation vient ; la preuve publiée est les `sigles_an` / `organes_an`
+et `verifie_le` qui disent d'où l'affirmation vient. **Deux valeurs depuis
+#1168** : `comparaison_des_membres` quand la table du run porte la mesure du lien
+(`succede_a_mesures`, `{groupe_id, communs, base}`, écrite par
+`groupes_amo30.mesurer_liens`) et qu'elle passe la règle — plus de la moitié du
+plus petit des deux groupes —, `relecture_humaine` sinon. La mesure vit dans la
+table, **jamais sur la fiche** : seule la règle est publiée, dans la méthodologie
+(arbitré le 03/10/2026).
+→ `docs/decisions/lien-etabli-par-comparaison-1168.md`. La preuve publiée est les `sigles_an` / `organes_an`
 du prédécesseur, recopiés verbatim de la table. Le champ est **optionnel** : les
 7 fiches publiées avant le lot ne le portent pas, et les 5 de la XVIe ne le
 porteront jamais (la XVe n'est pas couverte). `fichier` est ce qui fait que

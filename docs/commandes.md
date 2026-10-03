@@ -702,6 +702,7 @@ Ce qui est déjà nommé — sigle publié, identifiants, liens — n'est jamais
 | `[à fusionner]` | deux entrées de la table sont un seul groupe renommé pour la règle |
 
 | `[repris]` | groupes qu'un run précédent avait ajoutés, repris tels quels de `--precedent` |
+| `[non soutenu]` | un lien écrit à la main sous la moitié du plus petit des deux groupes : il reste publié, comme `relecture_humaine`, **sortie 1** |
 | `[CONFLIT]` | la table écrite contredit une adresse déjà publiée : **rien n'est écrit**, sortie 1 |
 
 → `docs/decisions/table-des-groupes-mise-a-jour-depuis-amo30-1168.md`.

@@ -564,11 +564,22 @@ POSITIONS_POLITIQUES_GROUPE: tuple[str, ...] = (
 # recopiés verbatim de la table, qui disent au lecteur ce que la lecture
 # rapproche.
 #
-# Vocabulaire fermé à **une** valeur, et il n'y en aura pas de seconde tant
-# qu'aucune source ne publiera la succession : une valeur `source_ouverte`
-# ajoutée « au cas où » laisserait croire que ce cas existe.
+# Vocabulaire fermé, et il ne dira jamais qu'une source publie la succession :
+# aucune ne le fait. Deux valeurs depuis #1168 (arbitré le 03/10/2026) :
+#
+# - `comparaison_des_membres` — le lien est celui que la règle de ce dépôt
+#   trouve : plus de la moitié du plus petit des deux groupes se retrouve dans
+#   l'autre. Écrit **seulement** quand la table du run porte la mesure de ce
+#   lien et qu'elle passe le seuil (`groupes_config.succession_publiee`) ;
+# - `relecture_humaine` — le lien est écrit à la main et rien ne l'a mesuré :
+#   la table écrite seule, ou un lien que la règle ne soutient pas. C'est la
+#   valeur qui reste vraie quand la mesure manque.
 ETABLI_PAR_RELECTURE_HUMAINE = "relecture_humaine"
-ETABLISSEMENTS_SUCCESSION: tuple[str, ...] = (ETABLI_PAR_RELECTURE_HUMAINE,)
+ETABLI_PAR_COMPARAISON_DES_MEMBRES = "comparaison_des_membres"
+ETABLISSEMENTS_SUCCESSION: tuple[str, ...] = (
+    ETABLI_PAR_RELECTURE_HUMAINE,
+    ETABLI_PAR_COMPARAISON_DES_MEMBRES,
+)
 
 
 def resumer_position_politique(organes: list[dict[str, Any]]) -> str:

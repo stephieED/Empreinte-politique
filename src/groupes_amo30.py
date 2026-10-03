@@ -118,6 +118,7 @@ import an_roster  # noqa: E402
 from audit_filiation_lignees import atteint_le_seuil, index_des_groupes  # noqa: E402
 from groupes_config import (  # noqa: E402
     CHEMIN_CONFIG_GROUPES,
+    CLE_MESURES_SUCCESSION,
     CHEMIN_TABLE_DU_RUN,
     CHEMIN_TABLE_ECRITE,
     CLE_EMPREINTE_TABLE_ECRITE,
@@ -126,6 +127,7 @@ from groupes_config import (  # noqa: E402
     CorrespondanceSiglesInvalide,
     charger_correspondance_sigles,
     empreinte_table,
+    mesure_soutient_le_lien,
 )
 from schema_groupe import (  # noqa: E402
     POSITION_POLITIQUE_AN_VERS_PIVOT,
@@ -480,6 +482,7 @@ CLE_TABLE = "correspondance_sigles_an"
 
 def _journal_vide() -> dict[str, list[Any]]:
     return {
+        "liens_non_soutenus": [],
         "organes_rattaches": [],
         "groupes_ajoutes": [],
         "lignees_ajoutees": [],
@@ -781,6 +784,7 @@ def mettre_a_jour_table(
                 for p, l in predecesseurs
             ],
         })
+    journal["liens_non_soutenus"] = mesurer_liens(nouveau, index)
     return nouveau, journal
 
 
@@ -923,6 +927,58 @@ def composer_table(
     return composee, journal
 
 
+def mesurer_liens(
+    document: dict[str, Any],
+    index: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Écrit dans chaque entrée la mesure de ses liens `succede_a`, et rend ceux que la règle ne soutient pas.
+
+    **Modifie `document` en place** — c'est la dernière étape de
+    `mettre_a_jour_table`, qui travaille sur sa propre copie.
+
+    Chaque lien reçoit `{groupe_id, communs, base}` sous `succede_a_mesures` :
+    les personnes communes aux deux groupes (organes réunis), sur l'effectif du
+    plus petit. Un lien dont un côté n'a aucun membre dans l'archive n'est pas
+    mesuré — il ne reçoit rien, et se publiera `relecture_humaine`.
+
+    C'est ce qui rend `etabli_par: comparaison_des_membres` vrai à la lettre :
+    la fiche ne le dit que d'un lien dont la mesure est écrite et passe le seuil.
+    Tous les liens sont mesurés, y compris ceux écrits à la main — sans quoi
+    l'affirmation reposerait sur ce que la table écrite prétend.
+    """
+    entrees = document[CLE_TABLE]["groupes"]
+    par_id = {e.get("groupe_id"): e for e in entrees}
+
+    def membres(entree: dict[str, Any]) -> set[str]:
+        return set().union(*(_membres(index, ref) for ref in entree.get("organes_an") or []))
+
+    non_soutenus: list[dict[str, Any]] = []
+    for entree in entrees:
+        mesures = []
+        for cible in entree.get(CLE_SUCCESSION) or []:
+            precedent = par_id.get(cible)
+            if precedent is None:
+                continue
+            avant, apres = membres(precedent), membres(entree)
+            base = min(len(avant), len(apres))
+            if base == 0:
+                continue
+            mesure = {"groupe_id": cible, "communs": len(avant & apres), "base": base}
+            mesures.append(mesure)
+            if not mesure_soutient_le_lien(mesure):
+                non_soutenus.append({
+                    "groupe_id": entree.get("groupe_id"),
+                    "predecesseur": cible,
+                    "communs": mesure["communs"],
+                    "base": base,
+                })
+        if mesures:
+            entree[CLE_MESURES_SUCCESSION] = mesures
+        else:
+            entree.pop(CLE_MESURES_SUCCESSION, None)
+    return non_soutenus
+
+
 def table_modifiee(journal: dict[str, list[Any]]) -> bool:
     """La mise à jour a-t-elle changé quelque chose à la table ?"""
     return any(
@@ -963,6 +1019,12 @@ def _afficher_journal(journal: dict[str, list[Any]]) -> None:
         print(f"  [en attente] {attente.get('sigles_an') or attente['organes_an']} : {attente['motif']}")
     for cas in journal["non_tranches"]:
         print(f"  [non tranché] {'/'.join(cas['sigles_an'])} ({cas['legislature']}e) : {cas['motif']}")
+    for lien in journal.get("liens_non_soutenus") or []:
+        print(
+            f"  [non soutenu] {lien['predecesseur']} → {lien['groupe_id']} : "
+            f"{lien['communs']} sur {lien['base']}, sous la moitié — le lien reste "
+            "publié, comme `relecture_humaine`"
+        )
     for cas in journal.get("conflits") or []:
         print(f"  [CONFLIT] {cas['groupe_id']} : {cas['motif']}")
     if journal.get("groupes_repris"):
@@ -1161,7 +1223,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 args.out.parent.mkdir(parents=True, exist_ok=True)
                 args.out.write_text(contenu, encoding="utf-8")
                 print(f"→ Table écrite dans {args.out}.", file=sys.stderr)
-        return 1 if journal["non_tranches"] else 0
+        return 1 if journal["non_tranches"] or journal["liens_non_soutenus"] else 0
 
     chemin = Path(args.config) if args.config else CHEMIN_CONFIG_GROUPES
     try:

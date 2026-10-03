@@ -66,6 +66,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from schema_groupe import (
+    ETABLI_PAR_COMPARAISON_DES_MEMBRES,
     ETABLI_PAR_RELECTURE_HUMAINE,
     POSITIONS_POLITIQUES_GROUPE,
     resumer_position_politique,
@@ -330,6 +331,13 @@ CLE_SUCCESSION = "succede_a"
 #: silence — le défaut que #815 a payé sur les deux listes du fichier.
 CLE_HISTORIQUE_ORGANES = "historique_organes_an"
 
+#: Clé portant, dans une entrée de la table **du run**, la mesure de chacun de
+#: ses liens `succede_a` (#1168) : `[{groupe_id, communs, base}]`, écrite par
+#: `groupes_amo30.mesurer_liens` sur l'archive AMO30. Absente de la table écrite
+#: à la main — personne ne la tient à jour à la main. C'est elle, et elle seule,
+#: qui fait publier un lien comme `comparaison_des_membres`.
+CLE_MESURES_SUCCESSION = "succede_a_mesures"
+
 
 class CorrespondanceSiglesInvalide(ValueError):
     """La table sigle publié → sigle(s) AN est absente ou viole un invariant."""
@@ -497,6 +505,22 @@ def _valider_successions(
                     f"{libelle} : le prédécesseur {cible!r} n'a pas de 'fichier' — "
                     "l'affirmation de succession n'atteindrait aucune fiche "
                     "publiée (#700)."
+                )
+        # #1168 — la mesure, quand elle est là, ne parle que des liens de
+        # l'entrée, et en entiers : c'est elle qui fait publier un lien comme
+        # « établi par comparaison des membres ».
+        for mesure in entree.get(CLE_MESURES_SUCCESSION) or []:
+            if (
+                not isinstance(mesure, dict)
+                or mesure.get("groupe_id") not in cibles
+                or not isinstance(mesure.get("communs"), int)
+                or not isinstance(mesure.get("base"), int)
+                or not 0 <= mesure["communs"] <= mesure["base"]
+            ):
+                raise CorrespondanceSiglesInvalide(
+                    f"{libelle} : '{CLE_MESURES_SUCCESSION}' porte {mesure!r} — "
+                    "chaque mesure nomme un lien de `succede_a` et compte en "
+                    "entiers, `0 <= communs <= base`."
                 )
 
 
@@ -749,6 +773,10 @@ def succession_publiee(
         return None
     # `_valider_successions` a déjà refusé une cible qui ne résout pas : la
     # recherche ci-dessous ne peut donc pas rendre `None`.
+    mesures = {
+        m.get("groupe_id"): m for m in entree.get(CLE_MESURES_SUCCESSION) or []
+        if isinstance(m, dict)
+    }
     blocs = []
     for cible in cibles:
         predecesseur = next(e for e in entrees if e.get("groupe_id") == cible)
@@ -758,10 +786,28 @@ def succession_publiee(
             "legislature": predecesseur["legislature"],
             "sigles_an": list(predecesseur["sigles_an"]),
             "organes_an": list(predecesseur["organes_an"]),
-            "etabli_par": ETABLI_PAR_RELECTURE_HUMAINE,
+            "etabli_par": (
+                ETABLI_PAR_COMPARAISON_DES_MEMBRES
+                if mesure_soutient_le_lien(mesures.get(cible))
+                else ETABLI_PAR_RELECTURE_HUMAINE
+            ),
             "verifie_le": entree["verifie_le"],
         })
     return blocs
+
+
+def mesure_soutient_le_lien(mesure: Optional[dict[str, Any]]) -> bool:
+    """La mesure d'un lien passe-t-elle la règle : la moitié du plus petit des deux ?
+
+    `False` sans mesure, ou sur une base nulle : un lien qu'on n'a pas pu
+    mesurer ne se publie pas comme mesuré (§2 règle 5).
+    """
+    if not isinstance(mesure, dict):
+        return False
+    communs, base = mesure.get("communs"), mesure.get("base")
+    if not (isinstance(communs, int) and isinstance(base, int)) or base <= 0:
+        return False
+    return 2 * communs >= base
 
 
 # ── Les fiches retirées, nommées une à une (#1168, lot 2b) ───────────────────
