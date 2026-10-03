@@ -195,29 +195,38 @@ export function Cascade({ cascade, selection, onSelection, rangs = null, dispose
           </button>
         ))}
       </div>
-      {/* LE 49.3 EST DIT ICI PARCE QUE LA FIGURE NE PEUT PAS LE PORTER.
-          Son axe est le STADE — jusqu'où le texte est allé — et un texte adopté
-          par engagement de responsabilité s'y range comme les autres : quatre
-          de Gabriel Attal se fondent dans la barre « promulgué », un d'Édouard
-          Philippe tombe dans une barre « non adopté » qui le contredit. Le fait
-          est donc nommé à côté de la figure, jamais dedans, et jamais compté
-          comme une adoption ordinaire (§2 règle 4). */}
-      {cascade.procedure493 > 0 && (
-        <p className="cp-ter-493">
-          <button
-            aria-pressed={Boolean(selection?.procedure493)}
-            className="cp-ter-493-bouton"
-            onClick={() => onSelection(selection?.procedure493 ? null : { procedure493: true })}
-            type="button"
-          >
-            <span className="cp-ter-493-marque">49.3</span>
-            <b>{formatNumber(cascade.procedure493)}</b> de ces textes
-            {cascade.procedure493 > 1 ? ' ont été adoptés' : ' a été adopté'} sans vote
-            <span className="cp-ter-493-quoi">(fait procédural)</span>
-          </button>
-        </p>
-      )}
+      <Mention493 cascade={cascade} onSelection={onSelection} selection={selection} />
     </div>
+  );
+}
+
+/* LE 49.3 EST DIT À CÔTÉ DE LA FIGURE PARCE QU'ELLE NE PEUT PAS LE PORTER.
+ * Son axe est le STADE — jusqu'où le texte est allé — et un texte adopté par
+ * engagement de responsabilité s'y range comme les autres : quatre de Gabriel
+ * Attal se fondent dans la barre « promulgué », un d'Édouard Philippe tombe
+ * dans une barre « non adopté » qui le contredit. Le fait est donc nommé à côté
+ * de la figure, jamais dedans, et jamais compté comme une adoption ordinaire
+ * (§2 règle 4).
+ *
+ * SORTIE DE `Cascade` LE 01/10/2026, sans y changer un mot : les carrés de la
+ * fiche candidat (`CarresTextes.jsx`) rangent eux aussi par stade, et portent
+ * donc la même mention. Recopiée, elle aurait divergé au premier correctif. */
+export function Mention493({ cascade, selection, onSelection }) {
+  if (!(cascade.procedure493 > 0)) return null;
+  return (
+    <p className="cp-ter-493">
+      <button
+        aria-pressed={Boolean(selection?.procedure493)}
+        className="cp-ter-493-bouton"
+        onClick={() => onSelection(selection?.procedure493 ? null : { procedure493: true })}
+        type="button"
+      >
+        <span className="cp-ter-493-marque">49.3</span>
+        <b>{formatNumber(cascade.procedure493)}</b> de ces textes
+        {cascade.procedure493 > 1 ? ' ont été adoptés' : ' a été adopté'} sans vote
+        <span className="cp-ter-493-quoi">(fait procédural)</span>
+      </button>
+    </p>
   );
 }
 
@@ -225,7 +234,10 @@ export function Cascade({ cascade, selection, onSelection, rangs = null, dispose
  * commission, et non discuté en séance » n'a de sens que là ; sur le versant
  * européen, une issue ne se lit pas par rapport à la suivante — il n'y a pas de
  * suivante. La liste nomme alors l'issue, et rien d'autre. */
-export function ListeCascade({ cascade, selection, onRaz, ordonnee = true }) {
+/* `invite` (facultatif) : la phrase qui dit quoi cliquer. Elle nomme les formes
+ * de la figure — rubans ici, carrés sur la fiche candidat — et c'est donc la
+ * figure qui la connaît. */
+export function ListeCascade({ cascade, selection, onRaz, ordonnee = true, invite = null }) {
   const sel = useMemo(() => textesDeLaSelection(cascade, selection), [cascade, selection]);
   /* LA COLONNE SUIT L'INSTITUTION SOURCÉE, JAMAIS LA NATURE DU TEXTE.
      Elle a filtré sur `projetDeLoi` : un RAPPORTEUR d'un projet de loi se
@@ -248,7 +260,7 @@ export function ListeCascade({ cascade, selection, onRaz, ordonnee = true }) {
   if (!selection) {
     return (
       <p className="cp-note cp-ter-invite">
-        Cliquez un ruban, une barre ou une étiquette pour lire ce qui la compose.
+        {invite || 'Cliquez un ruban, une barre ou une étiquette pour lire ce qui la compose.'}
       </p>
     );
   }
@@ -266,8 +278,16 @@ export function ListeCascade({ cascade, selection, onRaz, ordonnee = true }) {
     <div className="cp-ter-liste">
       <div className="cp-ter-liste-tete">
         <span className="cp-ter-liste-quoi">
-          {selection.procedure493 ? 'Article 49.3' : selection.matiere || 'toutes matières'} ·{' '}
-          {ou} — {formatNumber(sel.length)} texte
+          {/* Une sélection venue des carrés porte son `intitule` — les mots de
+              la figure, qui ne sont pas ceux d'un intervalle de crans. Vide,
+              c'est un texte seul : le compte suffit. */}
+          {selection.intitule === undefined ? (
+            <>
+              {selection.procedure493 ? 'Article 49.3' : selection.matiere || 'toutes matières'} ·{' '}
+              {ou} —{' '}
+            </>
+          ) : (selection.intitule && `${selection.intitule} · `)}
+          {formatNumber(sel.length)} texte
           {sel.length > 1 ? 's' : ''}
         </span>
         {/* Sans `onRaz`, la liste montre déjà tout : un « Tout afficher » n'y

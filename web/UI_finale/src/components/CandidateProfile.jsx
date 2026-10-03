@@ -15,15 +15,20 @@
 import '../styles/shell.css';
 import './CandidateProfile.css';
 import { BadgeSource, ListeVide } from './Lecture';
+import InfoBulle, { BulleDePastille } from './InfoBulle';
+import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
 import { Condition, EtiquetteFiltre, VideDuFiltre, useFiltreActif } from './Recherche';
-import { teinteMatiere, teinteThemeUe } from '../utils/matiere';
+import { teinteThemeUe } from '../utils/matiere';
+import { teinteCommission } from '../utils/commissions';
 import { MATIERE_NON_ETABLIE, NATURES_UE } from '../utils/profilCandidat';
-import { Cascade, ListeCascade } from './CascadeTextes';
-import { cascadeDessinee, disposerCascadeUE, selectionDeTousLesTextes } from '../utils/cascadeTextes';
+import { ListeCascade } from './CascadeTextes';
+import { CarresTextes } from './CarresTextes';
+import { CarresThemesUe } from './CarresThemesUe';
+import { selectionDeTousLesTextes } from '../utils/cascadeTextes';
 import { Fragment, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { LAST_READING_LABEL, formatNumber } from '../utils/lecture';
-import { LIBELLE_QUALITE, QUALITE_AN, QUALITE_PE } from '../utils/parolesParPeriode';
+import { PAGE_JEU_DE_DONNEES_DEBATS, formatNumber } from '../utils/lecture';
+import { LIBELLE_QUALITE, QUALITE_AN, QUALITE_GOUVERNEMENT, QUALITE_PE } from '../utils/parolesParPeriode';
 import ParolesParPeriode from './ParolesParPeriode';
 import VotesParPeriode from './VotesParPeriode';
 import EcartsGroupe from './EcartsGroupe';
@@ -72,26 +77,179 @@ function periodeDuRole(r) {
   return periode(r.debut, r.fin, r.actif);
 }
 
+/* ── LES BULLES D'INFORMATION (revue d'ergonomie du 01/10/2026) ──────────────
+ *
+ * HUIT EMPLACEMENTS, ET LES TEXTES SONT ARRÊTÉS AU MOT PRÈS par la
+ * propriétaire : ils ne se reformulent pas ici. Chaque bulle remplace un renvoi
+ * vers la méthodologie ou un critère de section — le pied d'« En bref », les
+ * trois renvois posés sous les figures, les critères des sections 4 et 5 — et
+ * garde son lien, vers la même ancre.
+ *
+ * Ils vivent en UN endroit plutôt que dans huit appels : c'est ce tableau qu'on
+ * relit pour savoir ce que la fiche dit d'elle-même, et qu'un test compare à
+ * la méthodologie (une ancre qui n'existe pas est un lien mort).
+ *
+ * LA SECTION 2 N'A PAS DE BULLE À SON TITRE : elle en porte une par carte,
+ * parce que ses deux figures ne se lisent pas de la même façon. Une exception,
+ * arrêtée le 02/10/2026 : entièrement vide, elle n'a plus de carte, et porte
+ * alors UNE bulle à son titre (`proposeVide`), sans note — il n'y a aucune
+ * figure à lire.
+ *
+ * LE VERSANT EUROPÉEN A SES QUATRE TEXTES (02/10/2026), suffixés `Ue`. Les
+ * bulles écrites pour l'Assemblée y étaient fausses — ni commission, ni
+ * gouvernement, ni dernière lecture à Strasbourg. Ils sont arrêtés au mot près
+ * comme les autres, sur la fiche rendue.
+ *
+ * OÙ ILS SE POSENT dépend de la fiche. Sans commutateur, au titre, comme
+ * partout. Dès qu'un commutateur oppose l'Assemblée au Parlement européen, le
+ * titre n'en porte plus : chaque pastille du commutateur porte la sienne
+ * (`BulleDePastille`), et le lecteur lit la règle d'un versant sans avoir à y
+ * basculer. La règle ne vaut QUE si un versant européen est présent : le
+ * commutateur « député / membre du gouvernement » des prises de parole garde
+ * sa bulle au titre.
+ */
+const LIRE_LA_METHODE = 'Lire la méthode →';
+
+const BULLES = {
+  enBref: {
+    phrase: 'Le parcours d’élu, et l’activité en quelques chiffres bruts.',
+    note: 'Note : « Majorité » et « opposition » sont les qualifications déclarées par l’Assemblée nationale. Quand elle n’en déclare aucune, la fiche l’indique.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#fonctions' }],
+  },
+  fonctions: {
+    phrase: 'Les responsabilités tenues pendant les mandats, classées par durée dans chaque catégorie.',
+    note: 'Note : Une ligne sans rôle indiqué signifie simple membre. Une fonction longue n’est pas une fonction plus importante.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#fonctions' }],
+  },
+  textes: {
+    phrase: 'Les textes de loi dont la personne est l’auteur ou le rapporteur, rangés à l’étape qu’ils ont atteinte.',
+    note: 'Note : Seuls les textes examinés en commission sont affichés. Un texte arrêté à une étape n’est pas nécessairement rejeté.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#propose' }],
+  },
+  // Le pronom s'accorde comme le titre de la carte : la phrase le reprend.
+  amendements: (voix) => ({
+    phrase: `Les amendements dont ${voix.sujet} est l’auteur, répartis par thème de la commission.`,
+    note: 'Note : Chaque segment d’une barre est un texte amendé. Sa largeur est le nombre d’amendements déposés sur ce texte.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#propose' }],
+  }),
+  textesUe: {
+    phrase: 'Les textes dont la personne est l’auteur ou le rapporteur au Parlement européen, par thème et par étape de la procédure.',
+    note: 'Note : Un texte qui traite de plusieurs thèmes apparaît sur chaque ligne concernée. « Sans dossier rattaché » : la source ne dit pas où en est le texte.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#propose' }],
+  },
+  amendementsUe: (voix) => ({
+    phrase: `Les amendements dont ${voix.sujet} est l’auteur au Parlement européen, répartis par thème.`,
+    note: 'Note : Chaque segment d’une barre est un texte amendé. Un amendement qui traite de plusieurs thèmes est compté sur chaque ligne concernée.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#propose' }],
+  }),
+  // Une phrase, et pas de note : la section entièrement vide ne montre aucune
+  // figure dont une note aiderait la lecture.
+  proposeVide: {
+    phrase: 'Les textes de loi dont la personne est l’auteur ou le rapporteur, et les amendements dont elle est l’auteur.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#propose' }],
+  },
+  votes: {
+    phrase: 'Les votes sur les textes de loi en dernière lecture, par période de gouvernement.',
+    note: 'Note : Dernière lecture : le vote le plus récent sur le texte entier. Les votes sont regroupés par gouvernement pour distinguer ceux émis dans la majorité, la minorité ou l’opposition.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#votes' }],
+  },
+  votesUe: {
+    phrase: 'Les votes au Parlement européen, classés par thème.',
+    note: 'Note : Pour chaque texte, seul le vote le plus récent est retenu. Un texte qui traite de plusieurs thèmes apparaît sur chaque ligne concernée.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#votes' }],
+  },
+  ecarts: {
+    phrase: 'Les votes où sa position diffère de celle de la majorité de son groupe parlementaire.',
+    note: 'Note : Seuls les votes en dernière lecture sont comparés, et uniquement sur les scrutins où une majorité se dégage dans le groupe.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#ecarts' }],
+  },
+  // LA SOURCE EST LE PREMIER LIEN : la phrase qui la nommait sous la figure —
+  // « Les comptes rendus de séance sont publiés… sous forme d'archive » — est
+  // retirée avec elle. La page du jeu de données, jamais l'archive de 100 Mo.
+  dit: {
+    phrase: 'Les prises de parole à l’Assemblée, par période de gouvernement, par type et par sujet.',
+    note: 'Note : Les sujets sont les titres de l’ordre du jour de l’Assemblée.',
+    liens: [
+      { libelle: 'La source : les comptes rendus de l’Assemblée →', href: PAGE_JEU_DE_DONNEES_DEBATS },
+      { libelle: LIRE_LA_METHODE, vers: '/methodologie#interventions' },
+    ],
+  },
+  // Pas de lien de source ici : celui de `dit` mène au jeu de données de
+  // l'Assemblée, qui ne porte aucun débat de Strasbourg.
+  ditUe: {
+    phrase: 'Les prises de parole au Parlement européen, par type et par sujet.',
+    note: 'Note : La source publie les sujets le plus souvent en anglais.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#interventions' }],
+  },
+  // RÉÉCRITE LE 02/10/2026 : elle annonçait « la date où chaque source
+  // commence », du temps où la section était un tableau de bornes. Devenue une
+  // liste de manques, la section ne montre plus cette date que face à un
+  // mandat non couvert.
+  couverture: {
+    phrase: 'Les limites de cette fiche : les mandats non couverts, et ce que les sources ne disent pas.',
+    note: 'Note : Quand un mandat n’est pas couvert, la fiche ne sait rien de cette période. Cela ne veut pas dire qu’il ne s’est rien passé.',
+    liens: [
+      { libelle: 'Nos sources, et depuis quand →', vers: '/sources#frise' },
+      { libelle: LIRE_LA_METHODE, vers: '/methodologie#couverture' },
+    ],
+  },
+};
+
+/* Les bulles du commutateur des prises de parole, quand il porte un versant
+ * européen. « Membre du gouvernement » reçoit le texte de l'Assemblée : c'est
+ * devant elle que ces paroles sont prononcées, et aucun texte propre à cette
+ * qualité n'a été arrêté. */
+const BULLES_DES_QUALITES = {
+  [QUALITE_AN]: BULLES.dit,
+  [QUALITE_GOUVERNEMENT]: BULLES.dit,
+  [QUALITE_PE]: BULLES.ditUe,
+};
+
+/* Un pli : une poignée, et ce qu'elle déplie. C'est un `details` dont l'état
+ * est tenu ici, pour qu'un clic ailleurs le replie comme tout ce qui s'ouvre
+ * sur la fiche (`useReplieAuClicDehors`). Les trois plis de la fiche passent
+ * par lui — une poignée, une forme. */
+function Pli({ className = 'cp-pli', titre, children }) {
+  const ref = useRef(null);
+  const [ouvert, setOuvert] = useState(false);
+  useReplieAuClicDehors(ref, ouvert, () => setOuvert(false));
+  return (
+    <details className={className} onToggle={(e) => setOuvert(e.currentTarget.open)} open={ouvert} ref={ref}>
+      <summary className="cp-poignee">
+        <i className="cp-poignee-plus" aria-hidden="true" />
+        {titre}
+      </summary>
+      {children}
+    </details>
+  );
+}
+
 /*
- * Un en-tête de section : son numéro, son titre, et le critère qui dit ce que
- * la section montre ET ce qu'elle refuse de montrer. Le critère est du contenu
- * publié, pas une légende décorative — c'est lui qui empêche de lire un
- * décompte comme une note.
+ * Un en-tête de section : son numéro, son titre, et la bulle qui dit ce que la
+ * section montre ET ce qui empêche de mal la lire. Le critère écrit sous le
+ * titre a quitté les deux dernières sections qui le portaient (01/10/2026) :
+ * une phrase lue avant la figure faisait lire la consigne à la place du fait,
+ * et la bulle la garde à portée d'un clic.
  */
 /* `id` et `data-section` : c'est par eux que `SommaireSections` LIT la page, au
  * lieu de recevoir une liste. Le sommaire sert ainsi les trois types de fiche
  * sans qu'aucune ait à le connaître, et une section ajoutée y apparaît d'elle-
  * même. L'ancre est dérivée du NUMÉRO, pas du titre : un titre change avec la
  * voix du texte (« ce qu'il » / « ce qu'elle »), un lien partagé ne doit pas. */
-function Section({ numero, titre, critere, pied, children }) {
+function Section({ numero, titre, bulle = null, pied, children }) {
   return (
     <section className="cp-section" id={`section-${numero}`} data-section={titre}>
       <div className="cp-section-bande">
         <span className="cp-section-numero">{numero}</span>
         <span className="cp-section-trait" />
       </div>
-      <h2 className="cp-section-titre"><span>{titre}</span></h2>
-      {critere && <p className="cp-section-critere">{critere}</p>}
+      {/* LA BULLE EST À CÔTÉ DU TITRE, PAS DEDANS : dans le `h2`, son bouton et
+          son texte entreraient dans le nom que la section annonce à un lecteur
+          d'écran. `ib-ancre` : c'est sous cette ligne qu'elle s'ouvre. */}
+      <div className="cp-section-tete ib-ancre">
+        <h2 className="cp-section-titre"><span>{titre}</span></h2>
+        {bulle && <InfoBulle sujet={titre} {...bulle} />}
+      </div>
       <div className="cp-section-corps">{children}</div>
       {/* Le pied porte la règle de lecture APRÈS le contenu, jamais avant : une
           section qui s'annonce avant qu'on ait rien lu fait lire la consigne à
@@ -347,11 +505,7 @@ function Frise({ parcours }) {
       {/* Le détail daté se replie : c'est du DÉTAIL, et il n'a pas à s'imposer
           entre la frise et ce qui suit. Même poignée que le bloc « Les grands
           chiffres » — deux plis de même nature ne prennent pas deux formes. */}
-      <details className="cp-pli">
-        <summary className="cp-poignee">
-          <i className="cp-poignee-plus" aria-hidden="true" />
-          Détails du parcours
-        </summary>
+      <Pli titre="Détails du parcours">
       <ul className="cp-roles">
         {roles.map((r) => (
           <li className="cp-role" key={r.numero}>
@@ -369,7 +523,7 @@ function Frise({ parcours }) {
           </li>
         ))}
       </ul>
-      </details>
+      </Pli>
     </div>
   );
 }
@@ -451,8 +605,21 @@ function Intitule({ label, roles }) {
  */
 function Fonctions({ fonctions }) {
   if (!fonctions || !fonctions.blocs.length) return null;
+  /* LA LÉGENDE APPARTIENT À LA FIGURE (01/10/2026). Ce que marque la ligne
+   * surlignée était dit dans le pied de la section, sous la carte et après
+   * trois catégories : on lisait la marque avant de savoir ce qu'elle marquait.
+   * Elle entre dans la carte, en tête, avec un échantillon de la marque
+   * elle-même. Elle se tait sur une carte sans ligne surlignée — une légende
+   * qui ne renvoie à rien à l'écran est du mobilier. */
+  const uneLigneMarquee = fonctions.blocs.some((b) => b.montrees.some((e) => e.marquee));
   return (
     <div className="cp-carte cp-fonctions">
+      {uneLigneMarquee && (
+        <p className="cp-fonctions-legende">
+          <i className="cp-fonctions-legende-marque" aria-hidden="true" />
+          Fonction tenue pendant plus de la moitié du mandat
+        </p>
+      )}
       {fonctions.blocs.map((b) => {
         const marquee = b.montrees.some((e) => e.marquee);
         // Le BANC porte la couleur, pas la catégorie. Neuf catégories auraient
@@ -487,11 +654,10 @@ function Fonctions({ fonctions }) {
             </ul>
 
             {b.reste.length > 0 && (
-              <details className="cp-pli cp-pli--fonctions">
-                <summary className="cp-poignee">
-                  <i className="cp-poignee-plus" aria-hidden="true" />
-                  {formatNumber(b.reste.length)} {b.reste.length > 1 ? 'autres' : 'autre'}
-                </summary>
+              <Pli
+                className="cp-pli cp-pli--fonctions"
+                titre={`${formatNumber(b.reste.length)} ${b.reste.length > 1 ? 'autres' : 'autre'}`}
+              >
                 <div className="cp-puces">
                   {b.reste.map((e) => (
                     <span className="cp-puce" key={e.label}>
@@ -501,7 +667,7 @@ function Fonctions({ fonctions }) {
                     </span>
                   ))}
                 </div>
-              </details>
+              </Pli>
             )}
           </div>
         );
@@ -510,7 +676,7 @@ function Fonctions({ fonctions }) {
   );
 }
 
-/* ── LES MATIÈRES, DEUX MESURES ET LEUR RAPPORT ─────────────────────────────
+/* ── LES MATIÈRES, DEUX MESURES — ET LA BARRE QUI LES RELIE ─────────────────
  *
  * REMPLACE LA CASCADE PAR ANNÉE. Celle-ci empilait les matières sur un axe du
  * temps, avec un bouton pour basculer entre « amendements déposés » et
@@ -519,22 +685,55 @@ function Fonctions({ fonctions }) {
  *
  * Le volume seul ne fait rien ressortir : il suit le calendrier de l'Assemblée,
  * et Finances arrive en tête pour à peu près tout le monde. Le classement
- * S'INVERSE dès qu'on compte les textes. Les deux mesures sont donc côte à côte,
- * avec le ratio AU MILIEU — c'est le terme qui les relie, pas une conclusion
- * posée au bout.
+ * S'INVERSE dès qu'on compte les textes. Les deux mesures restent donc côte à
+ * côte, un nombre par colonne.
  *
- * CE RAPPORT N'EST NI UNE PERFORMANCE NI UN JUGEMENT. C'est une densité, et elle
- * porte ses deux termes : elle ne se compare à aucune moyenne, ne se normalise
- * par aucun effectif, et n'est jamais un taux d'adoption (§6). Aucune colonne
- * n'est mise en avant — un ratio sans ses deux termes n'est rien.
+ * LE RAPPORT SE LIT DANS LA BARRE, IL NE S'ÉCRIT PLUS (01/10/2026). Une colonne
+ * « ratio par texte » et sa seconde barre le publiaient au milieu : un quotient
+ * de plus à lire, et une moyenne qui écrase ce qu'elle résume — 2 553
+ * amendements sur 2 textes y faisaient « 1 277 par texte », quand l'un en a
+ * reçu 2 471 et l'autre 82. La barre est désormais DÉCOUPÉE : un segment par
+ * texte amendé, large comme le nombre d'amendements déposés dessus, du plus
+ * grand au plus petit. Deux gros segments ou cinquante fins — la répartition
+ * se voit, et aucun chiffre n'est ajouté.
+ *
+ * CE N'EST NI UNE PERFORMANCE NI UN JUGEMENT, et ce n'est jamais un taux
+ * d'adoption (§6) : la barre ne compte que des dépôts.
  *
  * UN NOMBRE PAR COLONNE. Empilés dans une même cellule, « 26 775 » et « 59 » se
  * lisaient « 26 77559 », et se copiaient ainsi.
  *
- * « Matière non établie » garde sa ligne, en gris et sans ratio : un dossier
- * dont la commission n'est pas résolue n'a pas de dénominateur, et lui en
- * inventer un le ferait disparaître dans les autres (§2 règle 5).
+ * « Matière non établie » garde sa ligne, en gris : un dépôt qu'aucun dossier
+ * ne rattache n'a pas de texte derrière lequel se ranger, et lui en inventer un
+ * le ferait disparaître dans les autres (§2 règle 5).
  */
+
+/* Les segments d'une ligne : le nombre d'amendements de chacun de ses textes,
+ * du plus grand au plus petit — ou `null` quand ils ne se découpent pas.
+ *
+ * ILS NE SE DÉCOUPENT QUE S'ILS FONT LE TOTAL. La ligne compte les dépôts
+ * DATÉS (`totauxDepots`), `dossiersParMatiere` ceux qui ont un DOSSIER : un
+ * dépôt sans date manque à l'un, un dépôt sans dossier à l'autre. Quand les
+ * deux sommes diffèrent, découper la barre lui ferait dire une répartition que
+ * la donnée ne porte pas — elle reste alors d'un seul tenant (§2 règle 5). */
+function segmentsParTexte(chute, matiere, total) {
+  const parTexte = (chute.dossiersParMatiere?.[matiere] || []).map((d) => d.n).sort((a, b) => b - a);
+  return parTexte.length && parTexte.reduce((s, n) => s + n, 0) === total ? parTexte : null;
+}
+
+function BarreParTexte({ segments, teinte, part }) {
+  const width = `${part * 100}%`;
+  if (!segments) return <i style={{ background: teinte, width }} />;
+  return (
+    <span className="cp-mr-segments" style={{ width }}>
+      {segments.map((n, k) => (
+        // L'index suffit : la liste est triée une fois et ne se réordonne pas.
+        <b key={k} style={{ background: teinte, flex: `${n} 1 0` }} />
+      ))}
+    </span>
+  );
+}
+
 function Matieres({ chute, matiere, onMatiere, ue = false }) {
   const rang = useMemo(
     () => new Map(chute.matieres.map((m, i) => [m, i])),
@@ -555,7 +754,6 @@ function Matieres({ chute, matiere, onMatiere, ue = false }) {
   };
   if (!lignes.length && !nd.amdt) return null;
   const maxA = Math.max(...lignes.map((x) => x.amdt), nd.amdt, 1);
-  const maxD = Math.max(...lignes.map((x) => (x.textes ? x.amdt / x.textes : 0)), 1);
 
   return (
     <div className="cp-mat">
@@ -563,13 +761,13 @@ function Matieres({ chute, matiere, onMatiere, ue = false }) {
         <span className="cp-mr-lib" />
         <span />
         <span className="cp-mr-n">amendements</span>
-        <span className="cp-mr-n">ratio par texte</span>
-        <span />
         <span className="cp-mr-n">textes distincts</span>
       </div>
       {lignes.map((x) => {
-        const dens = x.textes ? x.amdt / x.textes : null;
-        const teinte = ue ? teinteThemeUe(x.m, rang.get(x.m)) : teinteMatiere(x.m, rang.get(x.m));
+        /* UNE COULEUR FIXE PAR COMMISSION (`utils/commissions.js`) : la même
+           que sur les carrés des textes portés, juste au-dessus, et sur toutes
+           les fiches. Le versant européen garde la teinte de son thème. */
+        const teinte = ue ? teinteThemeUe(x.m, rang.get(x.m)) : teinteCommission(x.m);
         return (
           <button
             aria-pressed={matiere === x.m}
@@ -580,15 +778,13 @@ function Matieres({ chute, matiere, onMatiere, ue = false }) {
           >
             <span className="cp-mr-lib">{x.m}</span>
             <span className="cp-mr-rail">
-              <i style={{ background: teinte, width: `${(x.amdt / maxA) * 100}%` }} />
+              <BarreParTexte
+                part={x.amdt / maxA}
+                segments={segmentsParTexte(chute, x.m, x.amdt)}
+                teinte={teinte}
+              />
             </span>
             <span className="cp-mr-n">{formatNumber(x.amdt)}</span>
-            <span className="cp-mr-n">{dens == null ? '—' : formatNumber(Math.round(dens))}</span>
-            <span className="cp-mr-rail">
-              {dens != null && (
-                <i style={{ background: teinte, opacity: 0.5, width: `${(dens / maxD) * 100}%` }} />
-              )}
-            </span>
             <span className="cp-mr-n cp-mr-n--textes">{formatNumber(x.textes)}</span>
           </button>
         );
@@ -597,11 +793,13 @@ function Matieres({ chute, matiere, onMatiere, ue = false }) {
         <div className="cp-mr cp-mr--nd">
           <span className="cp-mr-lib">{MATIERE_NON_ETABLIE}</span>
           <span className="cp-mr-rail">
-            <i style={{ background: '#dcd8d2', width: `${(nd.amdt / maxA) * 100}%` }} />
+            <BarreParTexte
+              part={nd.amdt / maxA}
+              segments={segmentsParTexte(chute, MATIERE_NON_ETABLIE, nd.amdt)}
+              teinte={teinteCommission(MATIERE_NON_ETABLIE)}
+            />
           </span>
           <span className="cp-mr-n">{formatNumber(nd.amdt)}</span>
-          <span className="cp-mr-n">—</span>
-          <span />
           <span className="cp-mr-n cp-mr-n--textes">{formatNumber(nd.textes) || '—'}</span>
         </div>
       )}
@@ -650,19 +848,27 @@ function Matieres({ chute, matiere, onMatiere, ue = false }) {
  * `ParolesParPeriode.css`, et la puce n'est PAS redéfinie ici : une seule
  * définition de l'objet (#672).
  */
-function CommutateurVersant({ ue, onFr, onUe, compteFr, compteUe, libelle }) {
+function CommutateurVersant({ ue, onFr, onUe, compteFr, compteUe, libelle, bulleFr = null, bulleUe = null }) {
   return (
     <div className="pp-qualites" role="group" aria-label={libelle}>
-      <button aria-pressed={!ue} className="pp-qualite pp-qualite--an" onClick={onFr} type="button">
-        <i aria-hidden="true" />
-        {LIBELLE_QUALITE[QUALITE_AN]}
-        <span>· {formatNumber(compteFr)}</span>
-      </button>
-      <button aria-pressed={ue} className="pp-qualite pp-qualite--pe" onClick={onUe} type="button">
-        <i aria-hidden="true" />
-        {LIBELLE_QUALITE[QUALITE_PE]}
-        <span>· {formatNumber(compteUe)}</span>
-      </button>
+      <BulleDePastille bulle={bulleFr} sujet={LIBELLE_QUALITE[QUALITE_AN]}>
+        {(classe) => (
+          <button aria-pressed={!ue} className={`pp-qualite pp-qualite--an${classe}`} onClick={onFr} type="button">
+            <i aria-hidden="true" />
+            {LIBELLE_QUALITE[QUALITE_AN]}
+            <span>· {formatNumber(compteFr)}</span>
+          </button>
+        )}
+      </BulleDePastille>
+      <BulleDePastille bulle={bulleUe} sujet={LIBELLE_QUALITE[QUALITE_PE]}>
+        {(classe) => (
+          <button aria-pressed={ue} className={`pp-qualite pp-qualite--pe${classe}`} onClick={onUe} type="button">
+            <i aria-hidden="true" />
+            {LIBELLE_QUALITE[QUALITE_PE]}
+            <span>· {formatNumber(compteUe)}</span>
+          </button>
+        )}
+      </BulleDePastille>
     </div>
   );
 }
@@ -705,6 +911,12 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
     ? (filtreNature && nature !== 'tous' ? europe.parNature[nature].cascade : europe.cascade)
     : textes.cascade;
   const choisirMatiere = (m) => setMatiere((a) => (a === m ? null : m));
+  /* Chaque carte replie sa liste au clic hors d'elle : un texte ouvert ici ne
+   * reste pas à l'écran quand le lecteur passe aux amendements, ni l'inverse. */
+  const carteTextes = useRef(null);
+  const carteAmendements = useRef(null);
+  useReplieAuClicDehors(carteTextes, selTexte != null, () => setSelTexte(null));
+  useReplieAuClicDehors(carteAmendements, matiere != null, () => setMatiere(null));
   /* UN SEUL VERSANT POUR TOUTE LA SECTION, COMMANDÉ DEPUIS DEUX ENDROITS. Les
    * amendements suivent les textes portés : le commutateur du haut et celui
    * posé au-dessus des amendements règlent le même état, pour qu'on puisse
@@ -734,14 +946,17 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
         .slice()
         .sort((a, b) => b.n - a.n)
     : [];
-  /* Une cascade non dessinée, ou un mot tapé : la liste montre tous les textes
-   * sans attendre de clic (#979). Un clic dans la cascade reste une sélection. */
+  /* Un mot tapé : la liste montre tous les textes sans attendre de clic (#979).
+   * Un clic dans la figure reste une sélection. */
   /* LA SECTION ENTIÈRE NE PORTE RIEN : ni texte français, ni texte européen, ni
      amendement. C'est ce cas-là, et lui seul, qui autorise à retirer la carte
      des amendements — voir la branche plus bas. */
   const sectionVide = textes.total === 0 && europe.total === 0 && !amdt.totalAuteur;
-  const disposer = ue ? disposerCascadeUE : undefined;
-  const toutVoir = cascade && (actif || !cascadeDessinee(cascade, disposer));
+  /* LES DEUX FIGURES SE DESSINENT TOUJOURS — un seul texte fait un carré, sur
+   * un versant comme sur l'autre. La branche « figure non dessinée, la liste
+   * montre tout » ne valait que pour la cascade européenne, qui renonçait sous
+   * un certain nombre de flux : elle est partie avec les rubans (02/10/2026). */
+  const toutVoir = cascade && actif;
   const selectionTextes = selTexte ?? (toutVoir ? selectionDeTousLesTextes(cascade) : null);
   return (
     <>
@@ -750,12 +965,21 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
       ) : textes.total === 0 && europe.total === 0 ? (
         <ListeVide cause={causeTextes} compacte renvoi="#section-6" />
       ) : (
-        <div className="cp-carte cp-textes">
+        <div className="cp-carte cp-textes" ref={carteTextes}>
           <EtiquetteFiltre mot={mot} />
-          <div className="cp-gouv-tete">
+          <div className="cp-gouv-tete ib-ancre">
             <span className="cp-gouv-nom">
               Les textes {voix.quil} a portés
               {!deuxVersants && ue ? ' au Parlement européen' : ''}
+              {/* Sans commutateur, la bulle est au titre et suit le seul
+                  versant affiché ; avec lui, elle est dans chaque pastille. */}
+              {!commutateur && (
+                <InfoBulle
+                  petite
+                  sujet={`Les textes ${voix.quil} a portés`}
+                  {...(ue ? BULLES.textesUe : BULLES.textes)}
+                />
+              )}
             </span>
             <span className="cp-gouv-periode cp-num">
               {ue ? (
@@ -773,6 +997,8 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
           </div>
           {commutateur && (
             <CommutateurVersant
+              bulleFr={BULLES.textes}
+              bulleUe={BULLES.textesUe}
               compteFr={textes.total}
               compteUe={europe.total}
               libelle="Parlement des textes portés"
@@ -800,15 +1026,25 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
           )}
           {cascade && cascade.total > 0 && (
             <>
-              <Cascade
-                cascade={cascade}
-                disposer={disposer}
-                ue={ue}
-                onSelection={setSelTexte}
-                selection={selTexte}
-              />
+              {/* DEUX FIGURES EN CARRÉS, UNE PAR VERSANT. Les textes portés à
+                  l'Assemblée : un carré par texte, rangé à l'étape atteinte,
+                  dans les quatre colonnes de la procédure (01/10/2026). Les
+                  textes européens : une ligne par thème, une colonne par étape
+                  PRÉSENTE, un texte répété sur chacun de ses thèmes
+                  (02/10/2026). Leurs seize stades ne s'ordonnent pas (#901) :
+                  ces colonnes-là suivent l'ordre du schéma, pas une échelle. */}
+              {ue ? (
+                <CarresThemesUe cascade={cascade} onSelection={setSelTexte} selection={selTexte} />
+              ) : (
+                <CarresTextes cascade={cascade} onSelection={setSelTexte} selection={selTexte} />
+              )}
               <ListeCascade
                 cascade={cascade}
+                // Sans invitation propre, la liste écrirait son défaut — « Cliquez
+                // un ruban, une barre ou une étiquette… » —, faux sous des carrés.
+                invite={ue
+                  ? 'Cliquez un carré, une étape ou un thème pour lire les textes.'
+                  : 'Cliquez un carré, une étape ou une commission pour lire les textes.'}
                 onRaz={selTexte ? () => setSelTexte(null) : null}
                 ordonnee={!ue}
                 selection={selectionTextes}
@@ -840,14 +1076,26 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
           {/* Un versant vide DIT de quel parlement il parle : sans commutateur
               ni titre, « aucun amendement » se lirait comme un vide de
               collecte, alors que l'autre versant en porte des milliers. */}
-          <div className="cp-gouv-tete">
+          <div className="cp-gouv-tete ib-ancre">
             <span className="cp-gouv-nom">
               Les amendements dont {voix.sujet} est l’auteur
               {commutateur ? '' : ue ? ' au Parlement européen' : ''}
+              {/* UNE CARTE VIDE PORTE SA BULLE (02/10/2026). La règle inverse
+                  datait des renvois en pied de section ; une bulle dit ce que
+                  la carte présente, qu'elle soit pleine ou non. */}
+              {!commutateur && (
+                <InfoBulle
+                  petite
+                  sujet={`Les amendements dont ${voix.sujet} est l’auteur`}
+                  {...(ue ? BULLES.amendementsUe(voix) : BULLES.amendements(voix))}
+                />
+              )}
             </span>
           </div>
           {commutateur && (
             <CommutateurVersant
+              bulleFr={BULLES.amendements(voix)}
+              bulleUe={BULLES.amendementsUe(voix)}
               compteFr={amdtFr.totalAuteur}
               compteUe={amdtUe.totalAuteur}
               libelle="Parlement des amendements"
@@ -873,12 +1121,19 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
           )}
         </div>
       ) : amdt.chute && (
-        <div className="cp-carte">
+        <div className="cp-carte" ref={carteAmendements}>
           <EtiquetteFiltre mot={mot} />
-          <div className="cp-gouv-tete">
+          <div className="cp-gouv-tete ib-ancre">
             <span className="cp-gouv-nom">
               Les amendements dont {voix.sujet} est l’auteur
               {commutateur ? '' : ue ? ' au Parlement européen' : ''}
+              {!commutateur && (
+                <InfoBulle
+                  petite
+                  sujet={`Les amendements dont ${voix.sujet} est l’auteur`}
+                  {...(ue ? BULLES.amendementsUe(voix) : BULLES.amendements(voix))}
+                />
+              )}
             </span>
             <span className="cp-gouv-periode cp-num">
               {formatNumber(amdt.totalAuteur)} amendements ·{' '}
@@ -895,6 +1150,8 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
           </div>
           {commutateur && (
             <CommutateurVersant
+              bulleFr={BULLES.amendements(voix)}
+              bulleUe={BULLES.amendementsUe(voix)}
               compteFr={amdtFr.totalAuteur}
               compteUe={amdtUe.totalAuteur}
               libelle="Parlement des amendements"
@@ -989,16 +1246,10 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
         </div>
       )}
 
-      {/* RIEN À MONTRER, DONC RIEN À EXPLIQUER (01/10/2026). Le renvoi de
-          méthodologie accompagne des figures ; sous deux mentions d'absence, il
-          est le troisième texte d'une section qui ne porte aucun fait. */}
-      {!sectionVide && (
-        <p className="cp-methodo">
-          <Link to="/methodologie#propose">
-            Quels textes et quels amendements sont retenus, et pourquoi aucun taux d’adoption
-          </Link>
-        </p>
-      )}
+      {/* LE RENVOI DE MÉTHODOLOGIE EST PASSÉ DANS LES BULLES (01/10/2026), une
+          par carte. Le versant européen gardait le sien, faute de textes
+          écrits pour lui : ils le sont depuis le 02/10/2026 (`textesUe`,
+          `amendementsUe`), et le lien est dans la bulle. */}
     </>
   );
 }
@@ -1017,9 +1268,10 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
  * gouvernement restent calculés — « En bref » les consomme —, et la qualité est
  * écrite intervention par intervention dans le fil (« prononcé comme ministre
  * délégué »), là où elle qualifie un fait plutôt qu'une carrière. Ce que la
- * section ne sait pas est publié sous la figure.
+ * section ne sait pas était publié sous la figure ; depuis le 01/10/2026 c'est
+ * une ligne de « Ce qu'on n'a pas pu lire », lue dans `manques.paroles`.
  */
-function Paroles({ interventions, cause, mot = '' }) {
+function Paroles({ interventions, cause, mot = '', bulles = null }) {
   const actif = useFiltreActif(mot);
   if (!interventions.total && actif) {
     return <VideDuFiltre mot={mot}>Aucune intervention<Condition critere="dont le sujet ou le propos contient" mot={mot} />.</VideDuFiltre>;
@@ -1044,10 +1296,10 @@ function Paroles({ interventions, cause, mot = '' }) {
       deplie={Boolean(mot)}
       mot={mot}
       etiquette={actif ? <EtiquetteFiltre mot={mot} /> : null}
+      bulles={bulles}
       qualites={interventions.qualites}
       plafondPeriode={interventions.plafondPeriode}
       plafondEnsemble={interventions.plafondEnsemble}
-      couverture={interventions.couverture}
     />
   );
 }
@@ -1061,7 +1313,7 @@ function Paroles({ interventions, cause, mot = '' }) {
  * découpage par période, aucune origine de texte, et le thème du dossier à la
  * place de la commission saisie au fond.
  */
-function Votes({ votes, cause, mot = '' }) {
+function Votes({ votes, cause, mot = '', bulles = null }) {
   const actif = useFiltreActif(mot);
   const europe = votes.europe || { textes: 0 };
   const deuxVersants = votes.textes > 0 && europe.textes > 0;
@@ -1084,6 +1336,8 @@ function Votes({ votes, cause, mot = '' }) {
       <>
         {deuxVersants && (
           <CommutateurVersant
+            bulleFr={bulles?.fr}
+            bulleUe={bulles?.ue}
             compteFr={votes.textes}
             compteUe={europe.textes}
             libelle="Parlement des votes"
@@ -1168,9 +1422,9 @@ function VotesFrancais({ votes, cause, mot = '' }) {
           {/* DEUX PHRASES, ET PLUS DEUX PARAGRAPHES (#328).
               Le « pourquoi » des deux règles — quatre lectures d'un même texte,
               un code de scrutin qui ne sépare pas l'ensemble de l'article —
-              est passé dans la page de méthodologie, où le renvoi sous la
-              figure mène. Trois pages de raisonnement sous un graphique font
-              lire la légende à la place du fait.
+              est passé dans la page de méthodologie, où mène la bulle du
+              titre de section. Trois pages de raisonnement sous un graphique
+              font lire la légende à la place du fait.
               Ce qui NE PART PAS : les deux phrases elles-mêmes. #711 les veut
               à côté du chiffre, pas seulement dans la méthodologie — qui
               annonçait déjà la règle à l'époque où rien ne l'appliquait. */}
@@ -1180,8 +1434,7 @@ function VotesFrancais({ votes, cause, mot = '' }) {
                 etiquette={actif ? <EtiquetteFiltre mot={mot} /> : null}
                 periodes={votes.periodes}
                 portee={votes.portee}
-                reperes={votes.reperes}
-                regle={`${formatNumber(votes.textes)} textes — ${LAST_READING_LABEL}`}
+                regle={`Sur ${formatNumber(votes.textes)} scrutins de textes en dernière lecture`}
               />
             </>
           ) : (
@@ -1198,99 +1451,43 @@ function VotesFrancais({ votes, cause, mot = '' }) {
   );
 }
 
-/* ── § 7 — ce qu'on n'a pas pu lire ─────────────────────────────────────────── */
-const LIBELLE_ETAT = {
-  couvert: 'couvert',
-  hors_couverture: 'hors couverture',
-  non_collecte: 'non collecté',
-  fait_etabli: 'fait établi',
-};
-
-function Couverture({ couverture, parcours, collecte, ecartsSansFiche = false }) {
+/* ── § 6 — ce qu'on n'a pas pu lire ─────────────────────────────────────────
+ *
+ * UNE SEULE CARTE, UNE SEULE LISTE (01/10/2026). La fonction de la section est
+ * de dire CE QUI MANQUE pour cette personne : une ligne par manque, un intitulé
+ * en gras et une phrase. Le tableau « Ce que chaque liste porte » et les deux
+ * cartes de signalements qui le suivaient sont devenus ces lignes ; l'ordre et
+ * les textes sont arrêtés dans `manquesDeLaFiche` (`utils/profilCandidat.js`),
+ * ce composant ne fait que les poser.
+ *
+ * UNE FICHE SANS MANDAT PARLEMENTAIRE N'A PAS DE LISTE, ELLE A UNE PHRASE
+ * (`phrase`) — c'est elle que les « Pourquoi → » des sections vides viennent
+ * lire (#1158).
+ *
+ * CE QUI NE S'AFFICHE PLUS : les états du pipeline (`couvert`,
+ * `hors_couverture`, `non_collecte`, `fait_etabli`) et leur preuve. « Non
+ * collecté — collecte écartée par le run… » est du vocabulaire interne, et il
+ * était faux à l'écran quand la liste portait 3 522 entrées. */
+function Couverture({ manques, ecartsSansFiche = false }) {
+  const { phrase, lignes } = manques;
   return (
     <>
-      {/* `--rangs` : les rangs portent leur marge et leur filet court d'un bord
-          à l'autre, donc la carte s'efface devant eux. La seule de la fiche. */}
-      <div className="cp-carte cp-carte--rangs">
-        <div className="cp-gouv-tete cp-rangs-tete">
-          <span className="cp-gouv-nom">Ce que chaque liste porte</span>
-          <span className="cp-gouv-periode cp-num">
-            {formatNumber(couverture.length)} liste{couverture.length > 1 ? 's' : ''}
-          </span>
-        </div>
-        {couverture.map((c) => (
-          <div className="cp-ligne cp-ligne--couverture" key={c.cle}>
-            <span className="cp-ligne-cle">{c.titre}</span>
-            <span className="cp-ligne-corps">
-              {c.etats.map((e) => (
-                <span className="cp-etat" key={`${e.etat}-${e.debut}-${e.fin}`}>
-                  <b>{LIBELLE_ETAT[e.etat] || e.etat}</b>
-                  {e.debut && ` depuis le ${jour(e.debut)}`}
-                  {!e.debut && e.fin && ` jusqu’au ${jour(e.fin)}`}
-                  {/* La même borne explique souvent « couvert depuis » ET
-                      « hors couverture jusqu'au » : elle se dit une fois par
-                      liste, jamais deux (`preuveDejaDite`). */}
-                  {e.preuve && !e.preuveDejaDite && <em>{e.preuve}</em>}
-                </span>
+      {(phrase || lignes.length > 0) && (
+        <div className="cp-carte cp-manques">
+          <div className="cp-gouv-tete">
+            <span className="cp-gouv-nom">Ce qui manque sur cette fiche</span>
+          </div>
+          {phrase && <p className="cp-manques-phrase">{phrase}</p>}
+          {lignes.length > 0 && (
+            <ul className="cp-manques-liste">
+              {lignes.map((l) => (
+                <li key={l.cle}>
+                  <b>{l.titre}</b>
+                  <span>{l.texte}</span>
+                </li>
               ))}
-            </span>
-            <span className="cp-ligne-nombre cp-num">
-              {formatNumber(c.decompte)}
-              <span>entrées</span>
-            </span>
-          </div>
-        ))}
-      </div>
-
-      {/* DEUX SOUS-PARTIES, PARCE QU'IL Y A DEUX SUJETS.
-          Le tableau ci-dessus dit, liste par liste, CE QUE LE DÉPÔT PORTE et
-          depuis quand. Les signalements ci-dessous disent ce que LA COLLECTE a
-          rencontré — une source qui ne publie pas, un identifiant introuvable.
-          Mêlés, ils faisaient un tableau suivi de paragraphes flottants que rien
-          ne rattachait à rien.
-
-          Chaque signalement est coupé sur son premier tiret cadratin, que nos
-          propres messages posent entre la source et son explication (« Parlement
-          européen — votes non publiés : … »). Un message qui n'en porte pas est
-          rendu entier : on ne devine pas un intitulé qui n'existe pas. */}
-      {parcours.length > 0 && (
-        <div className="cp-carte cp-signal">
-          <div className="cp-gouv-tete">
-            <span className="cp-gouv-nom">Ce que le corpus ne dit pas de son parcours</span>
-            <span className="cp-gouv-periode cp-num">
-              {formatNumber(parcours.length)} point{parcours.length > 1 ? 's' : ''}
-            </span>
-          </div>
-          <dl className="cp-signal-dl">
-            {parcours.map((l) => (
-              <Fragment key={l.cle}>
-                <dt>{LIBELLE_LIMITE[l.cle] || 'Corpus'}</dt>
-                <dd>{l.texte}</dd>
-              </Fragment>
-            ))}
-          </dl>
-        </div>
-      )}
-
-      {collecte.length > 0 && (
-        <div className="cp-carte cp-signal">
-          <div className="cp-gouv-tete">
-            <span className="cp-gouv-nom">Ce que la collecte signale</span>
-            <span className="cp-gouv-periode cp-num">
-              {formatNumber(collecte.length)} signalement{collecte.length > 1 ? 's' : ''}
-            </span>
-          </div>
-          <dl className="cp-signal-dl">
-            {collecte.map((l) => {
-              const coupe = /^(.+?)\s+—\s+([\s\S]+)$/.exec(l.texte);
-              return (
-                <Fragment key={l.cle}>
-                  <dt>{coupe ? coupe[1] : 'Collecte'}</dt>
-                  <dd>{coupe ? coupe[2] : l.texte}</dd>
-                </Fragment>
-              );
-            })}
-          </dl>
+            </ul>
+          )}
         </div>
       )}
       {/* LE BLOC « ASSIDUITÉ / CLASSEMENT / 49.3 » EST RETIRÉ (#328). Mesuré
@@ -1302,13 +1499,13 @@ function Couverture({ couverture, parcours, collecte, ecartsSansFiche = false })
           l'expose sur l'accueil. Le 49.3, lui, est déjà porté là où il sert —
           la pastille d'encre de « Ce qu'il a voté » marque chaque texte adopté
           sans vote (#743). */}
-      {/* DEUX renvois, deux questions distinctes : ce que ces bornes valent
-          pour tout le corpus, et pourquoi une limite se déclare au lieu de se
-          combler (DESIGN_SYSTEM §7 règle 2). */}
-      {/* LES ÉCARTS NE SONT PAS UNE LISTE COLLECTÉE : ni borne, ni compte, donc
-          pas une sixième ligne du tableau. Ils ont leur mention, parce que c'est
-          ici que « Rien à comparer. Pourquoi → » renvoie, et parce que la nuance
-          — un vide n'est pas « aucune divergence » — ne doit vivre qu'à un
+      {/* LES DEUX RENVOIS SONT DANS LA BULLE DU TITRE (01/10/2026) : ce que
+          ces bornes valent pour tout le corpus, et pourquoi une limite se
+          déclare au lieu de se combler (DESIGN_SYSTEM §6 bis règle 2). */}
+      {/* LES ÉCARTS NE SONT PAS UN MANQUE DE SOURCE : ni borne, ni compte, donc
+          pas une ligne de la liste. Ils ont leur mention, parce que c'est ici
+          que « Rien à comparer. Pourquoi → » renvoie, et parce que la nuance —
+          un vide n'est pas « aucune divergence » — ne doit vivre qu'à un
           endroit (01/10/2026). */}
       {ecartsSansFiche && (
         <p className="cp-couv-ecarts">
@@ -1316,13 +1513,6 @@ function Couverture({ couverture, parcours, collecte, ecartsSansFiche = false })
           les groupes où cette personne a siégé. Ce vide ne dit pas qu’elle n’a jamais divergé.
         </p>
       )}
-      <p className="cp-methodo">
-        <Link to="/sources#frise">Ce que le dépôt porte, et depuis quand</Link>
-        {' · '}
-        <Link to="/methodologie#couverture">
-          Pourquoi ces limites se déclarent au lieu de se combler
-        </Link>
-      </p>
     </>
   );
 }
@@ -1435,7 +1625,10 @@ function GrandsChiffres({ chiffres, parcours }) {
       <div className="cp-section-bande">
         <span className="cp-section-trait" />
       </div>
-      <h2 className="cp-section-titre"><span>En bref</span></h2>
+      <div className="cp-section-tete ib-ancre">
+        <h2 className="cp-section-titre"><span>En bref</span></h2>
+        <InfoBulle sujet="En bref" {...BULLES.enBref} />
+      </div>
 
       <div className="cp-carte cp-gc-carte">
         {/* La FRISE reste toujours dépliée : c'est l'ossature, et elle donne aux
@@ -1458,11 +1651,7 @@ function GrandsChiffres({ chiffres, parcours }) {
             un aveu d'échec, et si une phrase doit expliquer un chiffre, c'est la
             forme qui n'a pas fait son travail. */}
         {!sansChiffres && (
-        <details className="cp-pli">
-          <summary className="cp-poignee">
-            <i className="cp-poignee-plus" aria-hidden="true" />
-            Ce que cette personne a engagé, en chiffres.
-          </summary>
+        <Pli titre="Ce que cette personne a engagé, en chiffres.">
 
           {/* Le nombre de colonnes vient de la CLASSE, jamais d'un style en
               ligne : sous 720 px le tableau défile latéralement, et une valeur en
@@ -1521,7 +1710,7 @@ function GrandsChiffres({ chiffres, parcours }) {
               </Fragment>
             ))}
           </div>
-        </details>
+        </Pli>
         )}
       </div>
 
@@ -1531,18 +1720,16 @@ function GrandsChiffres({ chiffres, parcours }) {
           la main —, donc il compose aussi son pied, avec la même classe et au
           même endroit relatif.
 
-          Il remplace la note « Majorité, minorité et opposition selon l'AN », la
-          seule phrase qui rattachait les trois postures à l'Assemblée plutôt
-          qu'à nous (§2 règle 2) : la frise ne les porte plus, mais la liste des
-          rôles les écrit toujours. */}
+          LE RENVOI « Majorité, minorité et opposition, selon l'Assemblée » EST
+          PASSÉ DANS LA BULLE DU TITRE (01/10/2026). C'est la seule phrase qui
+          rattache les trois postures à l'Assemblée plutôt qu'à nous (§2
+          règle 2) : la note de la bulle la porte, et la liste des rôles écrit
+          toujours la qualification à côté du mandat. */}
       {parcours?.roles?.some((r) => r.institution === INSTITUTION_LOCAL) && (
         <p className="cp-section-pied">
           * Mandats locaux : données parcellaires, publiées seulement à partir de 2020.
         </p>
       )}
-      <p className="cp-section-pied">
-        <Link to="/methodologie#fonctions">Majorité, minorité et opposition, selon l’Assemblée →</Link>
-      </p>
     </section>
   );
 }
@@ -1555,44 +1742,38 @@ function GrandsChiffres({ chiffres, parcours }) {
  * `tests/test_essentiel_328.py` documente.
  */
 
-/* L'intitulé de chaque limite de parcours : il nomme SUR QUOI elle porte, pour
- * que trois phrases deviennent trois lignes rangées. Les clés viennent de
- * `profilCandidat.js` ; une clé inconnue retombe sur « Corpus » plutôt que de
- * rendre une ligne sans intitulé. */
-const LIBELLE_LIMITE = {
-  'position-non-declaree': 'Qualification du groupe',
-  suspension: 'Entrée au gouvernement',
-  'sieges-replies': 'Enregistrements de mandat',
-  'mandats-anterieurs': 'Mandats antérieurs',
-};
-
-/* DEUX SORTES DE LIMITES, ET ELLES NE DISENT PAS LA MÊME CHOSE.
- *
- * Les unes disent ce que le corpus NE DIT PAS de cette personne : la
- * qualification que l'Assemblée n'a pas déclarée sur un mandat, la suspension
- * pour fonction gouvernementale qu'aucun mandat électif ne renseigne, les
- * enregistrements repliés sur un même siège. Les autres disent ce que la
- * COLLECTE a rencontré : une source qui ne publie pas, un identifiant
- * introuvable.
- *
- * Toutes restent en « ce qu'on n'a pas pu lire » — c'est la section qui parle
- * des trous —, mais chacune sous son intitulé : mêlées, elles faisaient une
- * suite de phrases sans rang. */
-const LIMITES_DU_PARCOURS = new Set([
-  'position-non-declaree',
-  'suspension',
-  'sieges-replies',
-  /* Un mandat antérieur à ce que l'Assemblée publie est, très exactement, ce
-     que le corpus ne dit pas de son parcours (#860). */
-  'mandats-anterieurs',
-]);
+/* L'INTITULÉ DE CHAQUE LIMITE N'EST PLUS ICI (01/10/2026) : chaque limite le
+ * porte (`titre`, `limitesDeclarees`), et les deux familles — ce que le corpus
+ * ne dit pas du parcours, ce que la collecte signale — ne sont plus deux
+ * cartes : ce sont les lignes d'une seule liste, « Ce qui manque sur cette
+ * fiche », dans l'ordre de `manquesDeLaFiche`. */
 
 export default function CandidateProfile({ candidate, mot = '' }) {
   const actif = useFiltreActif(mot);
   const c = candidate;
   const filtre = actif ? c.filtre : null;
-  const limitesDuParcours = (c.limites || []).filter((l) => LIMITES_DU_PARCOURS.has(l.cle));
-  const limitesDeCollecte = (c.limites || []).filter((l) => !LIMITES_DU_PARCOURS.has(l.cle));
+
+  /* OÙ SE POSE LA BULLE D'UNE SECTION (02/10/2026). Au titre, sauf quand un
+   * commutateur oppose l'Assemblée au Parlement européen : chaque pastille
+   * porte alors la sienne, et le titre n'en porte plus. Une section qui n'a
+   * que son versant européen garde la bulle au titre, avec le texte européen.
+   * Les conditions sont celles des composants qui dessinent le commutateur
+   * (`Votes`, `ParolesParPeriode`) : la bulle ne peut pas quitter le titre
+   * sans qu'une pastille la reprenne. */
+  const votesUe = (c.votes.europe?.textes || 0) > 0;
+  const votesDesDeuxCotes = votesUe && c.votes.textes > 0;
+  const votesUeSeuls = votesUe && !votesDesDeuxCotes;
+  const qualites = c.interventions.qualites || [];
+  const parolesUe = c.interventions.total > 0 && qualites.some((q) => q.qualite === QUALITE_PE);
+  const parolesDesDeuxCotes = parolesUe && qualites.length > 1;
+  const parolesUeSeules = parolesUe && !parolesDesDeuxCotes;
+  /* La section 2 entièrement vide n'a plus de carte où accrocher ses deux
+   * bulles : elle en porte une à son titre. La condition est celle de
+   * `sectionVide` dans `Propositions`, lue sur les deux versants. */
+  const proposeVide = c.textes.total === 0
+    && !(c.textes.europe?.total > 0)
+    && !((c.amendementsParVersant?.francais ?? c.amendements)?.totalAuteur > 0)
+    && !(c.amendementsParVersant?.europeens?.totalAuteur > 0);
 
   return (
     <main className="cp-main">
@@ -1651,15 +1832,7 @@ export default function CandidateProfile({ candidate, mot = '' }) {
       <Section
         numero="1"
         titre="Les fonctions exercées"
-        pied={
-          c.fonctions.blocs.length === 0 ? null : (
-            <>
-              Les trois plus longues par catégorie ; ligne surlignée = expérience sur + de la
-              moitié du mandat.{' '}
-              <Link to="/methodologie#fonctions">Pourquoi ce n’est pas un palmarès →</Link>
-            </>
-          )
-        }
+        bulle={BULLES.fonctions}
       >
         {c.fonctions.blocs.length === 0 ? (
           <ListeVide cause={c.causes.mandats} compacte renvoi="#section-6" />
@@ -1675,7 +1848,7 @@ export default function CandidateProfile({ candidate, mot = '' }) {
           note SOUS elle : la cascade dit qu'aucun seuil ne s'applique et que la
           branche basse n'est pas un rejet, la chute dit que l'axe est le
           calendrier et qu'aucun rapport n'est calculé. */}
-      <Section numero="2" titre={c.voix.titres.propose}>
+      <Section numero="2" titre={c.voix.titres.propose} bulle={proposeVide ? BULLES.proposeVide : null}>
         <Propositions
           filtre={filtre}
           key={`propose-${mot}`}
@@ -1692,16 +1865,21 @@ export default function CandidateProfile({ candidate, mot = '' }) {
       <Section
         numero="3"
         titre={c.voix.titres.vote}
+        bulle={votesDesDeuxCotes ? null : votesUeSeuls ? BULLES.votesUe : BULLES.votes}
       >
-        <Votes cause={c.causes.votes} key={`vote-${mot}`} mot={mot} votes={c.votes} />
+        <Votes
+          bulles={votesDesDeuxCotes ? { fr: BULLES.votes, ue: BULLES.votesUe } : null}
+          cause={c.causes.votes}
+          key={`vote-${mot}`}
+          mot={mot}
+          votes={c.votes}
+        />
       </Section>
 
       <Section
         numero="4"
         titre={c.voix.titres.ecarts}
-        critere={c.ecarts.bande.length
-          ? 'Sa position à côté de celle de son groupe, scrutin par scrutin. Jamais totalisée.'
-          : null}
+        bulle={BULLES.ecarts}
       >
         {actif && !c.ecarts.bande.length ? (
           <VideDuFiltre mot={mot}>
@@ -1719,22 +1897,25 @@ export default function CandidateProfile({ candidate, mot = '' }) {
       <Section
         numero="5"
         titre={c.voix.titres.dit}
-        critere={c.interventions.total
-          ? 'Ses interventions par période politique, puis par nature et par sujet. Le verbatim est celui du compte rendu.'
-          : null}
+        bulle={parolesDesDeuxCotes ? null : parolesUeSeules ? BULLES.ditUe : BULLES.dit}
       >
-        <Paroles cause={c.causes.interventions} interventions={c.interventions} key={`dit-${mot}`} mot={mot} />
+        <Paroles
+          bulles={parolesDesDeuxCotes ? BULLES_DES_QUALITES : null}
+          cause={c.causes.interventions}
+          interventions={c.interventions}
+          key={`dit-${mot}`}
+          mot={mot}
+        />
       </Section>
 
       {!filtre && (
       <Section
         numero="6"
         titre="Ce qu’on n’a pas pu lire"
+        bulle={BULLES.couverture}
       >
         <Couverture
-          couverture={c.couverture}
-          parcours={limitesDuParcours}
-          collecte={limitesDeCollecte}
+          manques={c.ceQuiManque}
           ecartsSansFiche={!c.ecarts.fiches.length}
         />
       </Section>

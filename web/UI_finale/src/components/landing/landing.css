@@ -622,7 +622,7 @@
    derrière le texte.
 
    NI L'ACCENT NI LE CYAN. Le jaune signal vaut 1,05:1 en bordure sur fond clair
-   et ne colore jamais du texte (DESIGN_SYSTEM §2) ; le cyan `--notice` est
+   et ne colore jamais du texte (DESIGN_SYSTEM §2) ; le gris `--notice` (cyan jusqu'au 02/10/2026) est
    réservé aux bandeaux d'état du projet, et l'employer pour du contenu lui
    retirerait ce qui le rend lisible. Restent des tokens déjà posés : le gris
    #6f6b78 des pastilles sans mandat, 5,5:1 sur blanc, sur le fond de survol du

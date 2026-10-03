@@ -223,11 +223,18 @@ def test_la_colonne_des_noms_tient_les_intitules_europeens() -> None:
     """« Environment, Public Health and Food Safety » fait 41 signes, là où
     « Finances » en fait 8 : quatre noms sur dix-neuf étaient tronqués. La barre
     qui suit rend la place, la colonne ne s'élargit qu'autant que le contenu le
-    demande, et la mise en page mobile n'est pas touchée."""
+    demande, et la mise en page mobile n'est pas touchée.
+
+    MIS À JOUR LE 01/10/2026. La grille comptait six colonnes, dont deux barres
+    (`0.9fr` et `0.5fr`) : le ratio par texte et sa barre sont partis, et il ne
+    reste qu'UNE barre, qui prend toute la place libre — `1fr`. `0.9fr` seul
+    laisserait un dixième de la ligne vide : une somme de fractions sous 1 ne
+    remplit pas. Ce que le test garde est inchangé : 290 px au plus pour les
+    noms, et la place prise à la barre voisine."""
     style = STYLE.read_text(encoding="utf-8")
     grille = [l for l in style.splitlines() if "grid-template-columns" in l and "290px" in l]
     assert grille, "la colonne des noms monte à 290 px"
-    assert "minmax(120px, 290px) minmax(0, 0.9fr)" in grille[0], (
+    assert "minmax(120px, 290px) minmax(0, 1fr)" in grille[0], (
         "la place vient de la barre voisine, pas de la largeur de la carte"
     )
 

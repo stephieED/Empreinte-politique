@@ -156,6 +156,12 @@ publiées restent intactes), `1` une génération a réellement échoué.
 `--merge-existing` conserve les membres déjà connus qu'un fetch incomplet
 n'aurait pas rendus.
 
+Il applique aussi, **après** la génération, les retraits nommés dans
+`fiches_retirees[]` de la table : une fiche de groupe qui n'a plus d'entrée n'est
+supprimée que si celle qui la remplace porte ses organes et tous ses membres.
+Refusé, le retrait laisse la fiche en place et le dit ; le portail de qualité
+bloque alors sur elle. → `docs/decisions/ng-et-soc-un-seul-groupe-1168.md`.
+
 ### Les fiches de lignée de groupe
 
 Une fiche par **lignée** — la suite des fiches qu'un même groupe a portées au
@@ -630,6 +636,87 @@ candidats déclarés ne les réécrit pas, et la reprise ne fait pas ce que le r
 Un constat posé dans la table pour un candidat gelé **n'atteint pas sa fiche** — c'est le cas de
 Jordan Bardella, que rien ne régénère. Laurent Wauquiez, gelé mais membre d'un groupe, le reçoit
 par la passe des groupes au run suivant. Le décompte imprimé exclut les gelés.
+
+### Les liens entre groupes successifs tiennent-ils encore ? (#1168)
+
+```bash
+python3 src/audit_filiation_lignees.py
+python3 src/audit_filiation_lignees.py --proches 10
+python3 src/audit_filiation_lignees.py --json
+```
+
+Compare les liens `succede_a` de `config/groupes_reels.json`, écrits à la main, à
+la composition des groupes lue dans l'archive AMO30. Le critère est celui arbitré
+le 02/10/2026 : les personnes communes, sur l'effectif du **plus petit** des deux
+groupes, à partir de la moitié — non-inscrits exclus, un groupe renommé pris par
+l'union de ses organes. **N'écrit rien** : la table reste ce que les fiches lisent.
+
+| Ce que le rapport nomme | Compte comme écart |
+| --- | --- |
+| un lien déclaré que la composition ne soutient plus — à sigle identique d'abord | oui |
+| un couple qui atteint le seuil sans être déclaré | oui |
+| les couples non déclarés les plus proches du seuil (`--proches`, 5 par défaut) | non : ils donnent la marge |
+| un organe de groupe de l'Assemblée qu'aucune entrée de la table ne couvre | non : nommé |
+| un lien dont un côté n'a aucun membre connu | non : nommé, jamais lu comme 0 % |
+
+Sortie 0 sans écart, 1 avec, 2 si la table ou l'archive est illisible. `--archive`
+lit une archive nommée **sans toucher au cache partagé** ; `--config` une autre
+table. Chaque taux est imprimé avec son décompte (`AGENTS.md` §2 règle 7).
+→ `docs/decisions/audit-de-filiation-des-lignees-1168.md`.
+
+### Les groupes et leurs lignées, tels que la source seule les donne (#1168)
+
+```bash
+python3 src/groupes_amo30.py
+python3 src/groupes_amo30.py --comparer
+python3 src/groupes_amo30.py --json
+python3 src/groupes_amo30.py --mettre-a-jour
+python3 src/groupes_amo30.py --mettre-a-jour --out une_table.json
+python3 src/groupes_amo30.py --mettre-a-jour \
+    --precedent raw_data/groupes_du_run.json --out raw_data/groupes_du_run.json
+```
+
+Dérive de l'archive AMO30, **sans lire la table écrite à la main**, les groupes
+de l'Assemblée depuis la XVe : organes renommés réunis en un groupe, groupes
+reliés d'une législature à la suivante, lignées. La règle est la même aux deux
+étages — les personnes communes, sur l'effectif du plus petit des deux, à partir
+de la moitié. **N'écrit rien**, et aucun job ne le lit encore.
+
+`--comparer` rapporte la dérivation à `config/groupes_reels.json`, du plus gros au
+plus fin : lignées, groupes, liens, puis champ par champ (organes, noms
+successifs et leurs dates, position, effectif). Sortie 0 sans `--comparer` ; avec,
+1 si elles diffèrent ; 2 si la table ou l'archive est illisible. `--archive` lit
+une archive nommée sans toucher au cache partagé.
+→ `docs/decisions/derivation-des-groupes-depuis-amo30-1168.md`.
+
+`--mettre-a-jour` dit ce que la source **ajouterait** à la table : un organe
+renommé qui rejoint son groupe, un groupe nouveau relié à sa lignée ou ouvrant la
+sienne, un effectif ou une date qui a bougé. **Rien n'est écrit sans `--out`.**
+Ce qui est déjà nommé — sigle publié, identifiants, liens — n'est jamais réécrit.
+
+| Ce que le journal nomme | Ce que ça veut dire |
+| --- | --- |
+| `[groupe ajouté]`, `[lignée ajoutée]`, `[renommage]`, `[rafraîchi]` | la table changerait |
+| `[en attente]` | aucun mandat n'a commencé dans ce groupe : il entrera au run suivant |
+| `[non tranché]` | le groupe succéderait à deux lignées, ou son identifiant est pris : **sortie 1**, à relire |
+| `[à fusionner]` | deux entrées de la table sont un seul groupe renommé pour la règle |
+
+| `[repris]` | groupes qu'un run précédent avait ajoutés, repris tels quels de `--precedent` |
+| `[CONFLIT]` | la table écrite contredit une adresse déjà publiée : **rien n'est écrit**, sortie 1 |
+
+→ `docs/decisions/table-des-groupes-mise-a-jour-depuis-amo30-1168.md`.
+
+**La dernière forme est celle du run** (`prepare-roster-matrix`). Elle part
+toujours de la table **écrite à la main** (`config/groupes_reels.json`), y ajoute
+ce que `--precedent` porte et qu'elle ne porte pas, puis ce que la source apporte
+de neuf, et consigne l'empreinte de la table écrite dont elle est partie. Elle ne
+réécrit pas un fichier inchangé.
+
+**Quelle table lisent les outils** : `raw_data/groupes_du_run.json` quand elle a
+été composée de la table écrite telle qu'elle est aujourd'hui, sinon
+`config/groupes_reels.json`. Une table écrite corrigée entre deux runs reprend
+donc la main aussitôt. `--config` force un fichier.
+→ `docs/decisions/table-des-groupes-du-run-1168.md`.
 
 ### Volumétrie : ce que pèse le corpus et ce que rapporterait chaque levier
 

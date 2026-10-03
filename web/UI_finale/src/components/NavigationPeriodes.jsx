@@ -41,6 +41,14 @@ export default function NavigationPeriodes({
   avecTout = false,
   libelleTout = 'Voir toutes les périodes',
   libelleRetour = 'Revenir à une seule période',
+  // LA LIGNE DE POSITION SE TAIT SUR LA FICHE CANDIDAT (01/10/2026). « Période
+  // 7 sur 7 · 31 textes · les flèches ← → du clavier naviguent aussi » redisait
+  // ce que le rail montre et ce que le titre de période écrit juste dessous ;
+  // le mode d'emploi du clavier, lui, n'a pas à être lu pour que les flèches
+  // marchent. Ce qui reste est le seul geste que le rail ne porte pas : « Voir
+  // toutes les périodes ». La fiche de groupe ne passe pas la prop et garde sa
+  // ligne — elle n'a pas été relue.
+  sansPosition = false,
 }) {
   const tout = index === null;
   const total = periodes.reduce((n, p) => n + poids(p), 0) || 1;
@@ -78,9 +86,13 @@ export default function NavigationPeriodes({
     aller(index + (e.key === 'ArrowLeft' ? -1 : 1));
   };
 
+  // Sans ligne de position ni bouton « tout », rien ne suit le rail : il prend
+  // alors la marge que la ligne portait, pour ne pas coller à la figure.
+  const ligne = !sansPosition || avecTout;
+
   return (
     <div className="np" onKeyDown={surTouche}>
-      <div className="np-nav">
+      <div className={`np-nav${ligne ? '' : ' np-nav--seule'}`}>
         {fleche(tout ? -1 : index - 1, 'precedent', '← période précédente', 'début de la période couverte')}
         <div className={`np-rail${tout ? ' np-rail--tout' : ''}`}>
           {periodes.map((p, i) => {
@@ -104,20 +116,22 @@ export default function NavigationPeriodes({
         </div>
         {fleche(tout ? -1 : index + 1, 'suivant', 'période suivante →', 'fin de la période couverte')}
       </div>
-      <p className="np-position">
-        {tout
-          ? `Toutes les périodes · ${formatNumber(total)} ${mot(total)}`
-          : `Période ${index + 1} sur ${periodes.length} · ${formatNumber(poids(periodes[index]))} ${mot(poids(periodes[index]))} · les flèches ← → du clavier naviguent aussi`}
-        {avecTout && (
-          <button
-            type="button"
-            className="np-tout"
-            onClick={() => onIndex(tout ? periodes.length - 1 : null)}
-          >
-            {tout ? libelleRetour : libelleTout}
-          </button>
-        )}
-      </p>
+      {ligne && (
+        <p className={`np-position${sansPosition ? ' np-position--seule' : ''}`}>
+          {!sansPosition && (tout
+            ? `Toutes les périodes · ${formatNumber(total)} ${mot(total)}`
+            : `Période ${index + 1} sur ${periodes.length} · ${formatNumber(poids(periodes[index]))} ${mot(poids(periodes[index]))} · les flèches ← → du clavier naviguent aussi`)}
+          {avecTout && (
+            <button
+              type="button"
+              className="np-tout"
+              onClick={() => onIndex(tout ? periodes.length - 1 : null)}
+            >
+              {tout ? libelleRetour : libelleTout}
+            </button>
+          )}
+        </p>
+      )}
     </div>
   );
 }

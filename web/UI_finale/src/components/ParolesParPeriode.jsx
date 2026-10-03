@@ -24,10 +24,11 @@
  * ce qu'aucune règle ne nous autorise à faire (§2 règle 1).
  */
 import { CITATION_ELISION, CITATION_FERME, CITATION_OUVRE } from '../utils/extraits';
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useMemo, useRef, useState } from 'react';
+import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
+import { BulleDePastille } from './InfoBulle';
 import { segmentsSurlignes } from '../utils/filtreIntitule';
-import { Link } from 'react-router-dom';
-import { PAGE_JEU_DE_DONNEES_DEBATS, formatNumber, lienDocumentaire } from '../utils/lecture';
+import { formatNumber, lienDocumentaire } from '../utils/lecture';
 import { libellePosition, TYPES_INTERVENTION } from '../utils/profilCandidat';
 import { SUJET_NON_PUBLIE, sujetsDuLot } from '../utils/parolesParPeriode';
 import NavigationPeriodes from './NavigationPeriodes';
@@ -166,7 +167,7 @@ function Intervention({ i, mot = '' }) {
  * fouille pas. Sans mot, rien ne change. `etiquette` : le rappel du mot, posé
  * en tête du cadre pour qu'une capture de la figure ne le perde pas. */
 export default function ParolesParPeriode({
-  qualites, plafondPeriode, plafondEnsemble, couverture, deplie = false, etiquette = null, mot = '',
+  qualites, plafondPeriode, plafondEnsemble, deplie = false, etiquette = null, mot = '', bulles = null,
 }) {
   /* LA QUALITÉ D'ABORD, LA PÉRIODE ENSUITE (#328).
    *
@@ -188,6 +189,9 @@ export default function ParolesParPeriode({
   const [sujet, setSujet] = useState(null);
   const [tousSujets, setTousSujets] = useState(false);
   const [limite, setLimite] = useState(PAS_DE_FIL);
+  // Le fil d'un sujet se replie au clic hors de la figure (02/10/2026).
+  const racine = useRef(null);
+  useReplieAuClicDehors(racine, sujet != null, () => { setSujet(null); setLimite(PAS_DE_FIL); });
 
   const indexSur = Math.min(index ?? periodes.length - 1, periodes.length - 1);
   const tout = index === null;
@@ -250,21 +254,27 @@ export default function ParolesParPeriode({
   const sujetsVus = tousSujets ? sujets : sujets.slice(0, SUJETS_REPLIES);
 
   return (
-    <div className="pp">
+    <div className="pp" ref={racine}>
       {qualites.length > 1 && (
         <div className="pp-qualites" role="group" aria-label="En quelle qualité">
+          {/* `bulles` : une bulle par qualité, quand la fiche les pose sur le
+              commutateur plutôt qu'au titre de la section (fiche candidat à
+              versant européen, 02/10/2026). Sans elle, la pastille est seule. */}
           {qualites.map((q) => (
-            <button
-              className={`pp-qualite ${CLASSE_QUALITE[q.qualite]}`}
-              key={q.qualite}
-              type="button"
-              aria-pressed={q.qualite === bloc.qualite}
-              onClick={() => { setQualite(q.qualite); setIndex(null); }}
-            >
-              <i aria-hidden="true" />
-              {q.libelle}
-              <span>· {formatNumber(q.total)}</span>
-            </button>
+            <BulleDePastille bulle={bulles?.[q.qualite]} key={q.qualite} sujet={q.libelle}>
+              {(classe) => (
+                <button
+                  className={`pp-qualite ${CLASSE_QUALITE[q.qualite]}${classe}`}
+                  type="button"
+                  aria-pressed={q.qualite === bloc.qualite}
+                  onClick={() => { setQualite(q.qualite); setIndex(null); }}
+                >
+                  <i aria-hidden="true" />
+                  {q.libelle}
+                  <span>· {formatNumber(q.total)}</span>
+                </button>
+              )}
+            </BulleDePastille>
           ))}
         </div>
       )}
@@ -285,6 +295,7 @@ export default function ParolesParPeriode({
           unite="interventions"
           uniteSingulier="intervention"
           avecTout
+          sansPosition
         />
       )}
 
@@ -433,51 +444,18 @@ export default function ParolesParPeriode({
         )}
       </div>
 
-      {/* LE CHIFFRE RESTE ICI, LE POURQUOI PART À LA MÉTHODOLOGIE. Ce que la
-          source publie ou non de la qualité de l'orateur, ce qu'est une
-          collecte réduite au thème : c'est vrai des 30 fiches, et le répéter
-          sous chacune noyait la seule chose qui parle de cette personne — les
-          quatre chiffres. */}
-      <p className="cp-note pp-couverture">
-        {/* CE QUI MANQUE, PAS CE QUI EST LÀ. « 3 951 portent l'intitulé » sur
-            3 963 se lit comme une abondance : il faut soustraire de tête pour
-            voir les 12 qui manquent, et c'est le trou que la phrase annonce. */}
-        <b>Ce que cette figure ne sait pas.</b> Sur {formatNumber(couverture.total)} interventions :{' '}
-        {formatNumber(couverture.total - couverture.sujet)} sans intitulé,{' '}
-        {formatNumber(couverture.total - couverture.verbatim)} sans verbatim,{' '}
-        {formatNumber(couverture.total - couverture.fonction)} sans la qualité de l’orateur.
-        {couverture.themeSeul > 0 && (
-          <>
-            {' '}
-            {formatNumber(couverture.themeSeul)} relèvent d’une collecte réduite au thème.
-          </>
-        )}
-        {couverture.datees < couverture.total && (
-          <>
-            {' '}
-            {formatNumber(couverture.total - couverture.datees)} ne portent pas de date exploitable
-            et restent hors du découpage.
-          </>
-        )}{' '}
-        <Link to="/methodologie#interventions">Ce que ces absences veulent dire</Link>.
-      </p>
+      {/* TROIS TEXTES ONT QUITTÉ LE BAS DE LA SECTION (01/10/2026).
 
-      {/* LA SOURCE EST NOMMÉE UNE FOIS, PAS À CHAQUE LIGNE. L'Assemblée publie
-          les comptes rendus de séance en archive : un badge par intervention y
-          menait, et cliquer lançait le téléchargement de 100 Mo. */}
-      <p className="pp-archive">
-        Les comptes rendus de séance sont publiés par l’Assemblée nationale sous forme d’archive.{' '}
-        <a href={PAGE_JEU_DE_DONNEES_DEBATS} target="_blank" rel="noreferrer">
-          La page du jeu de données
-        </a>{' '}
-        porte le lien de téléchargement.
-      </p>
+          « Ce que cette figure ne sait pas » — combien d'interventions sans
+          intitulé, sans verbatim, sans la qualité de l'orateur — devient une
+          ligne de « Ce qu'on n'a pas pu lire », la section qui parle des
+          manques. Les nombres ne sont pas perdus : la vue du candidat les porte
+          (`manques.paroles`, tiré de `couvertureDesParoles`), et c'est là que la
+          section 6 les lit — ce composant ne les reçoit plus.
 
-      <p className="pp-methodo">
-        <Link to="/methodologie#interventions">
-          Comment ces interventions sont collectées, datées et qualifiées
-        </Link>
-      </p>
+          La phrase sur l'archive des comptes rendus et le renvoi vers la
+          méthodologie sont les deux liens de la bulle du titre de section
+          (`CandidateProfile`) : la source d'abord, la méthode ensuite. */}
     </div>
   );
 }

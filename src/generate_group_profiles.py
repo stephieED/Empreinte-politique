@@ -81,6 +81,8 @@ from group_roster import (
 from groupes_config import (
     CHEMIN_CONFIG_GROUPES,
     CorrespondanceSiglesInvalide,
+    FichesRetireesInvalides,
+    charger_fiches_retirees,
     partitionner_groupes,
     historique_noms_publie,
     position_politique_publiee,
@@ -373,13 +375,104 @@ def generate_all(
     )
 
 
+# ── Le retrait nommé d'une fiche (#1168, lot 2b) ─────────────────────────────
+
+def _lire_fiche(chemin: Path) -> Optional[dict[str, Any]]:
+    try:
+        fiche = json.loads(chemin.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    return fiche if isinstance(fiche, dict) else None
+
+
+def motif_de_refus_du_retrait(
+    retiree: Optional[dict[str, Any]],
+    remplacante: Optional[dict[str, Any]],
+) -> Optional[str]:
+    """Pourquoi cette fiche ne peut PAS être retirée — ou `None` si elle le peut.
+
+    Le contrôle de perte du run ne dira pas si l'on retire la bonne fiche : il
+    compte ce qui disparaît, et la disparition est ici voulue. La garde est donc
+    d'une autre nature, et elle se lit **dans les deux fiches** : la remplaçante
+    doit porter tout ce que la retirée portait.
+
+    - **ses organes** — chaque `organe_an` de `historique_noms` ;
+    - **ses membres** — chaque `membre_id`.
+
+    Tant que l'une des deux conditions manque, la fiche reste, et le portail de
+    qualité bloque sur elle : un retrait refusé arrête la publication, il ne
+    publie jamais un corpus amputé. Fonction pure.
+    """
+    if retiree is None:
+        return "la fiche à retirer est illisible"
+    if remplacante is None:
+        return "la fiche qui la remplace est absente ou illisible"
+
+    def organes(fiche: dict[str, Any]) -> set[str]:
+        return {
+            h.get("organe_an") for h in fiche.get("historique_noms") or []
+            if isinstance(h, dict) and h.get("organe_an")
+        }
+
+    def membres(fiche: dict[str, Any]) -> set[str]:
+        return {
+            m.get("membre_id") for m in fiche.get("membres") or []
+            if isinstance(m, dict) and m.get("membre_id")
+        }
+
+    if not organes(retiree):
+        return "la fiche à retirer ne nomme aucun organe : rien ne prouve ce qui la remplace"
+    organes_perdus = organes(retiree) - organes(remplacante)
+    if organes_perdus:
+        return (
+            "la fiche qui la remplace ne porte pas son ou ses organe(s) "
+            f"{sorted(organes_perdus)} — elle n'a pas encore été régénérée réunie"
+        )
+    membres_perdus = membres(retiree) - membres(remplacante)
+    if membres_perdus:
+        return (
+            f"{len(membres_perdus)} membre(s) de la fiche à retirer manquent à celle "
+            f"qui la remplace : {sorted(membres_perdus)[:5]}"
+        )
+    return None
+
+
+def retirer_fiches(
+    retraits: list[dict[str, Any]],
+    groupes: list[dict[str, Any]],
+    out_dir: Path,
+) -> tuple[list[str], list[tuple[str, str]]]:
+    """Applique `fiches_retirees[]` : `(fichiers retirés, [(fichier, motif du refus)])`.
+
+    Un fichier déjà absent n'est ni retiré ni refusé : le retrait a eu lieu à un
+    run précédent, et la liste reste dans la table comme sa trace.
+    """
+    fichier_de = {g.get("groupe_id"): g.get("fichier") for g in groupes}
+    retires: list[str] = []
+    refuses: list[tuple[str, str]] = []
+    for retrait in retraits:
+        chemin = out_dir / retrait["fichier"]
+        if not chemin.exists():
+            continue
+        fichier_remplacant = fichier_de.get(retrait["remplacee_par"])
+        remplacante = _lire_fiche(out_dir / fichier_remplacant) if fichier_remplacant else None
+        refus = motif_de_refus_du_retrait(_lire_fiche(chemin), remplacante)
+        if refus is not None:
+            refuses.append((retrait["fichier"], refus))
+            continue
+        chemin.unlink()
+        retires.append(retrait["fichier"])
+    return retires, refuses
+
+
 def _build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument(
         "--config",
-        default="config/groupes_reels.json",
+        default=str(CHEMIN_CONFIG_GROUPES),
         metavar="FICHIER",
-        help="Fichier JSON listant les groupes à générer (défaut : config/groupes_reels.json).",
+        help="Fichier JSON listant les groupes à générer (défaut : la table du run "
+             "si elle est à jour, sinon config/groupes_reels.json).",
     )
     parser.add_argument(
         "--profiles-dir",
@@ -457,6 +550,32 @@ def main(argv: Optional[list[str]] = None) -> int:
         f"généré(s){suffixe}.",
         file=sys.stderr,
     )
+
+    # Les retraits nommés, APRÈS la génération : c'est la fiche réunie que ce
+    # run vient d'écrire qui prouve que l'ancienne peut partir. Un roster
+    # indisponible n'a rien réécrit — la garde le voit dans la fiche, et refuse.
+    try:
+        retraits = charger_fiches_retirees(config_path)
+    except FichesRetireesInvalides as exc:
+        print(f"[!] {exc}", file=sys.stderr)
+        return 1
+    retires, refuses = retirer_fiches(retraits, groupes, out_dir)
+    for fichier in retires:
+        message = (
+            f"FICHE_RETIREE — {fichier} est retirée du corpus (fiches_retirees, "
+            "#1168) : la fiche qui la remplace porte ses organes et tous ses "
+            "membres. Le contrôle de perte verra un fichier disparu — c'est celui-ci."
+        )
+        print(f"  [retrait] {message}", file=sys.stderr)
+        gha.annoter("notice", message)
+    for fichier, refus in refuses:
+        message = (
+            f"FICHE_NON_RETIREE — {fichier} devait être retirée et ne l'est pas : "
+            f"{refus}. Elle reste sur le disque, et le portail de qualité bloquera "
+            "sur elle."
+        )
+        print(f"  [!] {message}", file=sys.stderr)
+        gha.annoter("warning", message)
 
     code = resultat.code_sortie()
     if code == EXIT_ROSTER_INDISPONIBLE:

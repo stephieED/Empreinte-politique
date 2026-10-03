@@ -344,7 +344,7 @@ export async function chargerSourcesCandidat(id) {
   const manifest = await loadManifest();
   const entry = manifest.candidates.find((c) => c.slug === id);
   if (!entry) return null;
-  const [pivot, scrutins, fichesGroupe, commissions, scrutinsDossiers, dossiersEuropeens, documentsEuropeens, scrutinsEuropeens] =
+  const [pivot, scrutins, fichesGroupe, commissions, scrutinsDossiers, dossiersEuropeens, documentsEuropeens, scrutinsEuropeens, couverture] =
     await Promise.all([
       fetchJson(`/data/profiles/${entry.slug}.pivot.json`),
       loadScrutins(),
@@ -354,6 +354,15 @@ export async function chargerSourcesCandidat(id) {
       loadDossiersEuropeens(),
       loadDocumentsEuropeens(),
       loadScrutinsEuropeens(),
+      /* LA DATE OÙ CHAQUE SOURCE COMMENCE, quand le profil ne la porte pas
+       * (01/10/2026). « Ce qu'on n'a pas pu lire » compare les mandats à cette
+       * date ; or 17 profils de candidats déclarés ne la portent pas pour
+       * leurs prises de parole — état `non_collecte`, sans portée. La borne est
+       * la même que sur les autres fiches, et `couverture.json` la publie déjà
+       * (`bornes`) : on la lit là plutôt que de l'écrire une seconde fois.
+       * Non bloquant : sans elle, la ligne concernée ne s'écrit pas — une date
+       * ne s'invente pas (§2 règle 5). */
+      loadCouverture().catch(() => null),
     ]);
   if (!pivot) return null;
   // L'index des amendements se charge APRÈS le profil : ce sont les
@@ -362,6 +371,7 @@ export async function chargerSourcesCandidat(id) {
   return {
     manifest, entry, pivot, scrutins, fichesGroupe, commissions, scrutinsDossiers,
     dossiersEuropeens, documentsEuropeens, scrutinsEuropeens, amendements,
+    bornesDuCorpus: couverture?.bornes ?? null,
   };
 }
 
@@ -429,7 +439,7 @@ export function vueCandidat(sources, mot = '', debut = null) {
   if (!sources) return null;
   const {
     manifest, entry, scrutins, fichesGroupe, commissions, scrutinsDossiers,
-    dossiersEuropeens, documentsEuropeens, scrutinsEuropeens, amendements,
+    dossiersEuropeens, documentsEuropeens, scrutinsEuropeens, amendements, bornesDuCorpus,
   } = sources;
   const pivot = filtrerProfilParPeriode(
     filtrerProfil(sources.pivot, mot, lecteursDIntitule(sources)),
@@ -453,6 +463,7 @@ export function vueCandidat(sources, mot = '', debut = null) {
     dossiersEuropeens,
     documentsEuropeens,
     scrutinsEuropeens,
+    bornesDuCorpus,
   );
   if (!view || (!motsDuFiltre(mot).length && !debut)) return avecSiglesDeSiege(view, manifest);
   /* SOUS UN MOT, « Ce qu'il a voté » cumule ses périodes (`periodeCumulee`) :

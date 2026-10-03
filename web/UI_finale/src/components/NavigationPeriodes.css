@@ -149,6 +149,18 @@
   margin-left: 8px;
 }
 
+/* La fiche candidat ne garde de la ligne que le bouton (01/10/2026) : seul, il
+   n'a plus de texte à sa gauche dont s'écarter. */
+.np-position--seule .np-tout {
+  margin-left: 0;
+}
+
+/* Et quand la ligne disparaît tout entière — « Ce qu'il a voté » n'a pas de
+   bouton « tout » —, le rail reprend la marge qu'elle portait. */
+.np-nav--seule {
+  margin-bottom: 18px;
+}
+
 /* Sous 720px, le rail passe pleine largeur au-dessus : ses années devenaient
    illisibles et ses segments intouchables. Les deux flèches se partagent la
    ligne du dessous, et il gagne en hauteur — c'est une cible tactile. */

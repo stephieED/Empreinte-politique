@@ -235,10 +235,28 @@ def test_la_couverture_des_reperes_porte_son_denominateur(module: str) -> None:
         assert f"{cle}:" in corps, f"couvertureDesReperes doit publier « {cle} »"
 
 
-def test_la_section_affiche_ce_qu_elle_ne_sait_pas(composant: str) -> None:
-    assert "Ce que cette figure ne sait pas" in composant
-    assert "reperes.matiere" in composant
-    assert "reperes.total" in composant
+def test_ce_que_la_section_ne_sait_pas_reste_publie() -> None:
+    """Les trous de la section sont comptés et publiés — plus sous sa figure.
+
+    Arrêté le 01/10/2026 : l'encadré « Ce que cette figure ne sait pas » quitte
+    « Ce qu'il a voté » pour devenir une ligne de « Ce qu'on n'a pas pu lire »,
+    la section qui parle des manques. Ce qui ne doit pas se perdre en route est
+    le CHIFFRE : la vue du candidat porte, déjà soustraits, les deux nombres de
+    la phrase — positions sans commission, positions sans sort final —, tirés de
+    `couvertureDesReperes` et d'aucun second comptage.
+
+    Le versant européen garde son encadré sous sa figure : sa phrase dit autre
+    chose, et la revue n'a arrêté aucune ligne pour elle (§2 règle 5).
+    """
+    composant = sans_commentaires(COMPOSANT.read_text(encoding="utf-8"))
+    assert "{reperes && !ue && (" not in composant, "l'encadré français est revenu sous la figure"
+    assert "{reperes && ue && (" in composant
+    assert "reperes.matiere" in composant and "reperes.total" in composant
+
+    adaptateur = sans_commentaires(ADAPTATEUR.read_text(encoding="utf-8"))
+    assert "const reperesDesVotes = couvertureDesReperes(votesQualifies);" in adaptateur
+    assert "sansCommission: reperesDesVotes.total - reperesDesVotes.matiere," in adaptateur
+    assert "sansSort: reperesDesVotes.total - reperesDesVotes.statut," in adaptateur
 
 
 # ── L'origine se dit par la forme, jamais par une texture ────────────────────
@@ -310,12 +328,15 @@ def test_une_absence_d_index_n_est_pas_une_absence_de_commission() -> None:
 
 
 def test_le_renvoi_methodo_est_ancre_et_la_cible_existe() -> None:
-    """Un lien posé sous une figure doit déposer le lecteur DEVANT la règle.
+    """Le renvoi doit déposer le lecteur DEVANT la règle.
 
     Sans `id`, `/methodologie#votes` ouvre une page de dix sections en haut.
+
+    Le renvoi n'est plus sous la figure depuis le 01/10/2026 : il est dans la
+    bulle du titre de section, que la fiche compose.
     """
-    composant = COMPOSANT.read_text(encoding="utf-8")
-    assert '"/methodologie#votes"' in composant
+    fiche = FICHE.read_text(encoding="utf-8")
+    assert "vers: '/methodologie#votes'" in fiche
 
     methodo = METHODO.read_text(encoding="utf-8")
     assert "id: 'votes'," in methodo
@@ -351,13 +372,12 @@ def test_seul_le_pourquoi_des_deux_regles_part_dans_la_methodologie() -> None:
     # chiffre, et le renvoi vers le raisonnement.
     assert "LAST_READING_RULE" not in fiche
     assert "WHOLE_TEXT_VOTE_BOUND" not in fiche
-    assert "LAST_READING_LABEL" in fiche, "l'étiquette du chiffre reste sur la fiche"
-    # Le renvoi est posé SOUS LA FIGURE, donc dans le composant qui la rend —
-    # pas dans la fiche, qui ne fait que l'appeler.
-    figure = (RACINE / "web" / "UI_finale" / "src" / "components" / "VotesParPeriode.jsx").read_text(
-        encoding="utf-8",
-    )
-    assert 'to="/methodologie#votes"' in figure, "le renvoi vers le raisonnement reste"
+    # L'étiquette est écrite sur la fiche depuis le 01/10/2026 : « Sur 168
+    # scrutins de textes en dernière lecture », arrêtée par la propriétaire.
+    assert "scrutins de textes en dernière lecture" in fiche, "l'étiquette du chiffre reste sur la fiche"
+    # Le renvoi était posé SOUS LA FIGURE, dans le composant qui la rend. Il est
+    # maintenant dans la bulle du titre de section, donc dans la fiche.
+    assert "vers: '/methodologie#votes'" in fiche, "le renvoi vers le raisonnement reste"
     assert ".pourquoi" not in fiche, (
         "le raisonnement long vit dans la méthodologie, jamais sur la fiche"
     )

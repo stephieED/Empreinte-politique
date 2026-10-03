@@ -378,15 +378,38 @@ def test_la_borne_est_celle_que_la_source_declare(generateur: str) -> None:
 def test_les_deux_mentions_de_fiche_renvoient_a_la_methodologie() -> None:
     """« Ce qu'il a voté » et « Ce qu'il a dit » gardent leurs chiffres — vrais
     de cette personne — et renvoient le pourquoi, identique sur les 30 fiches, à
-    la méthodologie."""
+    la méthodologie.
+
+    LES CHIFFRES ONT CHANGÉ DE SECTION LE 01/10/2026, ils ne sont pas partis.
+    Les deux encadrés « Ce que cette figure ne sait pas » quittent leur figure
+    pour devenir des lignes de « Ce qu'on n'a pas pu lire » : la vue du candidat
+    porte les nombres dont ces lignes ont besoin (`manques`), tirés des deux
+    mêmes mesures. Le renvoi, lui, est dans la bulle du titre de chaque section.
+    Seul le versant européen des votes garde son encadré : la revue n'a arrêté
+    aucune ligne pour lui, et le retirer effacerait un trou déclaré.
+    """
     votes = (SRC / "components" / "VotesParPeriode.jsx").read_text(encoding="utf-8")
     paroles = (SRC / "components" / "ParolesParPeriode.jsx").read_text(encoding="utf-8")
-    assert 'to="/methodologie#votes"' in votes
-    assert 'to="/methodologie#interventions"' in paroles
-    for source in (votes, paroles):
-        assert "Ce que cette figure ne sait pas" in source, (
-            "le chiffre reste sous la figure ; c'est le pourquoi qui déménage"
-        )
+    fiche = (SRC / "components" / "CandidateProfile.jsx").read_text(encoding="utf-8")
+    assert "vers: '/methodologie#votes'" in fiche
+    assert "vers: '/methodologie#interventions'" in fiche
+
+    def rendu(source: str) -> str:
+        """Hors commentaires : celui qui explique le départ de l'encadré le cite."""
+        return re.sub(r"/\*.*?\*/", "", source, flags=re.DOTALL)
+
+    assert "Ce que cette figure ne sait pas" not in rendu(paroles)
+    assert rendu(votes).count("Ce que cette figure ne sait pas") == 1 and "{reperes && ue && (" in votes, (
+        "côté français l'encadré a quitté la figure ; seul le versant européen le garde"
+    )
+    adaptateur = (SRC / "data" / "pivotAdapter.js").read_text(encoding="utf-8")
+    for nombre in (
+        "sansCommission: reperesDesVotes.total - reperesDesVotes.matiere",
+        "sansSort: reperesDesVotes.total - reperesDesVotes.statut",
+        "sansVerbatim: couvertureParoles.total - couvertureParoles.verbatim",
+        "sansQualite: couvertureParoles.total - couvertureParoles.fonction",
+    ):
+        assert nombre in adaptateur, f"« {nombre} » : le chiffre de l'encadré n'est plus porté nulle part"
 
 
 # ── L'accueil : une borne par institution, et les fiches hors couverture ─────

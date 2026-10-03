@@ -589,15 +589,17 @@
         "ecart_membres": []
       },
       {
-        "groupe_sigle": "NG",
-        "groupe_id": "AN:NG:15",
+        "groupe_sigle": "SOC",
+        "groupe_id": "AN:SOC:15",
         "legislature": "15",
-        "fichier": "groupe-AN-NG-15.json",
+        "fichier": "groupe-AN-SOC-15.json",
         "sigles_an": [
-          "NG"
+          "NG",
+          "SOC"
         ],
         "organes_an": [
-          "PO730946"
+          "PO730946",
+          "PO758835"
         ],
         "historique_organes_an": [
           {
@@ -606,39 +608,7 @@
             "nom": "Nouvelle Gauche",
             "debut": "2017-06-27",
             "fin": "2018-09-11"
-          }
-        ],
-        "position_politique_an": {
-          "position": "opposition",
-          "verifie_le": "2026-09-08",
-          "organes": [
-            {
-              "organe_an": "PO730946",
-              "sigle_an": "NG",
-              "valeur_source": "Opposition",
-              "position": "opposition"
-            }
-          ]
-        },
-        "effectif_amo30": 33,
-        "effectif_publie": null,
-        "verifie_le": "2026-09-08",
-        "ecart_motif": "Publication configurée par #777 : organe PO730946 relu dans l'index AMO30 des groupes politiques le 2026-09-08 — sigle `NG` (libelleAbrev), 2017-06-27 → 2018-09-11. La fiche paraît au prochain run. 14 des 33 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution.",
-        "membres_avec_slug": 14,
-        "ecart_membres": []
-      },
-      {
-        "groupe_sigle": "SOC",
-        "groupe_id": "AN:SOC:15",
-        "legislature": "15",
-        "fichier": "groupe-AN-SOC-15.json",
-        "sigles_an": [
-          "SOC"
-        ],
-        "organes_an": [
-          "PO758835"
-        ],
-        "historique_organes_an": [
+          },
           {
             "organe_an": "PO758835",
             "sigle_an": "SOC",
@@ -649,8 +619,14 @@
         ],
         "position_politique_an": {
           "position": "opposition",
-          "verifie_le": "2026-09-08",
+          "verifie_le": "2026-10-02",
           "organes": [
+            {
+              "organe_an": "PO730946",
+              "sigle_an": "NG",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            },
             {
               "organe_an": "PO758835",
               "sigle_an": "SOC",
@@ -659,15 +635,12 @@
             }
           ]
         },
-        "effectif_amo30": 36,
+        "effectif_amo30": 39,
         "effectif_publie": null,
-        "verifie_le": "2026-09-08",
-        "ecart_motif": "Publication configurée par #777 : organe PO758835 relu dans l'index AMO30 des groupes politiques le 2026-09-08 — sigle `SOC` (libelleAbrev), 2018-09-12 → 2022-06-21. La fiche paraît au prochain run. 17 des 36 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution.",
-        "membres_avec_slug": 17,
-        "ecart_membres": [],
-        "succede_a": [
-          "AN:NG:15"
-        ]
+        "verifie_le": "2026-10-02",
+        "ecart_motif": "Groupe réuni par #1168 (arbitrage du 2026-10-02 : la même règle pour tous les groupes). Deux organes successifs dans la même législature, relus dans l'index AMO30 des groupes politiques le 2026-10-02 : PO730946 (`NG`, « Nouvelle Gauche », 2017-06-27 → 2018-09-11) puis PO758835 (`SOC`, « Socialistes et apparentés », 2018-09-12 → 2022-06-21). L'AN ferme un organe et rouvre le suivant le lendemain, avec 30 personnes communes sur 33 : un renommage, le motif `SOC`/`SOC-A` et `MODEM`/`DEM`. Jusqu'ici la table en faisait deux groupes reliés par `succede_a`, et publiait une fiche `groupe-AN-NG-15.json` ; elle est retirée (`fiches_retirees`). 39 acteurs distincts sur les deux organes ; 39 ont une entrée dans raw_data/correspondance_acteurs_an.json. `effectif_publie` reste null jusqu'à la parution de la fiche réunie.",
+        "membres_avec_slug": 39,
+        "ecart_membres": []
       },
       {
         "groupe_sigle": "EDS",
@@ -1277,6 +1250,183 @@
         "membres_avec_slug": 2,
         "ecart_membres": [],
         "ecart_motif": "Publication configurée par #815 : UDR est une LIGNÉE À ELLE SEULE, sans prédécesseur (arbitrage de la propriétaire, 2026-09-11). Trois organes successifs de la XVIIe, relus dans l'index AMO30 des groupes politiques le 2026-09-11 : PO845520 (`AD`, « À Droite », 2024-07-18 → 2024-09-11), PO847173 (`UDR`, « UDR », 2024-09-12 → 2025-09-04), PO872880 (`UDDPLR`, `UDR` en libelleAbrege, « Union des droites pour la République », 2025-09-05 → en cours). Deux RENOMMAGES et non une scission : AD et UDR portent les mêmes 16 acteurs, UDR et UDDPLR 15 sur 16, et c'est l'UNION des trois qui rend le groupe — le motif `SOC`/`SOC-A` de la XVIe. AUCUN `succede_a`, et c'est mesuré : 0 des 16 acteurs d'AD n'a siégé dans DR (AD n'a donc jamais « quitté DR », comme #815 et #836 l'écrivaient), et 2 des 16 seulement viennent de LR-16, qui en a envoyé 41 vers DR. Déclarer LR-16 comme prédécesseur affirmerait une succession pour 2 membres sur 16. 52 mandats pour 18 acteurs distincts, et 18 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur ces organes. 2 des 18 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 16 autres reçoivent un slug fabriqué au roster (#527, #708 §3), sont collectés sous l'acteur que le roster nomme (#850), puis reçoivent leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "UDI",
+        "groupe_id": "AN:UDI:15",
+        "legislature": "15",
+        "fichier": "groupe-AN-UDI-15.json",
+        "sigles_an": [
+          "LC",
+          "UDI-AGIR",
+          "UDI-I",
+          "UDI-A-I",
+          "UDI_I"
+        ],
+        "organes_an": [
+          "PO730952",
+          "PO744425",
+          "PO765636",
+          "PO767217",
+          "PO771889"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO730952",
+            "sigle_an": "LC",
+            "nom": "Les Constructifs : républicains, UDI, indépendants",
+            "debut": "2017-06-27",
+            "fin": "2017-11-28"
+          },
+          {
+            "organe_an": "PO744425",
+            "sigle_an": "UDI-AGIR",
+            "nom": "UDI, Agir et Indépendants",
+            "debut": "2017-11-29",
+            "fin": "2019-06-10"
+          },
+          {
+            "organe_an": "PO765636",
+            "sigle_an": "UDI-I",
+            "nom": "UDI et Indépendants",
+            "debut": "2019-06-11",
+            "fin": "2019-09-27"
+          },
+          {
+            "organe_an": "PO767217",
+            "sigle_an": "UDI-A-I",
+            "nom": "UDI, Agir et Indépendants",
+            "debut": "2019-09-28",
+            "fin": "2020-05-25"
+          },
+          {
+            "organe_an": "PO771889",
+            "sigle_an": "UDI_I",
+            "nom": "UDI et Indépendants",
+            "debut": "2020-05-26",
+            "fin": "2022-06-21"
+          }
+        ],
+        "position_politique_an": {
+          "position": "divergente",
+          "verifie_le": "2026-10-02",
+          "organes": [
+            {
+              "organe_an": "PO730952",
+              "sigle_an": "LC",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            },
+            {
+              "organe_an": "PO744425",
+              "sigle_an": "UDI-AGIR",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            },
+            {
+              "organe_an": "PO765636",
+              "sigle_an": "UDI-I",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            },
+            {
+              "organe_an": "PO767217",
+              "sigle_an": "UDI-A-I",
+              "valeur_source": "Minoritaire",
+              "position": "minoritaire"
+            },
+            {
+              "organe_an": "PO771889",
+              "sigle_an": "UDI_I",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 43,
+        "effectif_publie": null,
+        "verifie_le": "2026-10-02",
+        "membres_avec_slug": 28,
+        "ecart_membres": [],
+        "ecart_motif": "Publication configurée par #1168 : la XVe législature comptait trois groupes sans fiche, trouvés par l'audit de filiation. Cinq organes successifs dans la même législature, relus dans l'index AMO30 des groupes politiques le 2026-10-02 (archive publiée le 2026-10-02) : PO730952 (`LC`, « Les Constructifs : républicains, UDI, indépendants », 2017-06-27 → 2017-11-28) puis PO744425 (`UDI-AGIR`, « UDI, Agir et Indépendants », 2017-11-29 → 2019-06-10) puis PO765636 (`UDI-I`, « UDI et Indépendants », 2019-06-11 → 2019-09-27) puis PO767217 (`UDI-A-I`, « UDI, Agir et Indépendants », 2019-09-28 → 2020-05-25) puis PO771889 (`UDI_I`, « UDI et Indépendants », 2020-05-26 → 2022-06-21). Même motif que `SOC`/`SOC-A` et `MODEM`/`DEM` : l'AN ferme un organe et rouvre le suivant le lendemain, et c'est l'UNION qui rend le groupe. Recouvrement mesuré d'un organe au suivant : 35 sur 35, 28 sur 28, 28 sur 28, 27 sur 28. Les organes ne s'accordent pas sur la position politique — `Opposition` quatre fois, `Minoritaire` pour `UDI-A-I` —, d'où `divergente`. 171 mandats pour 43 acteurs distincts, et 43 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur ces organes. 28 des 43 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 15 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "LT",
+        "groupe_id": "AN:LT:15",
+        "legislature": "15",
+        "fichier": "groupe-AN-LT-15.json",
+        "sigles_an": [
+          "LT"
+        ],
+        "organes_an": [
+          "PO759900"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO759900",
+            "sigle_an": "LT",
+            "nom": "Libertés et Territoires",
+            "debut": "2018-10-18",
+            "fin": "2022-06-21"
+          }
+        ],
+        "position_politique_an": {
+          "position": "opposition",
+          "verifie_le": "2026-10-02",
+          "organes": [
+            {
+              "organe_an": "PO759900",
+              "sigle_an": "LT",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 25,
+        "effectif_publie": null,
+        "verifie_le": "2026-10-02",
+        "membres_avec_slug": 22,
+        "ecart_membres": [],
+        "ecart_motif": "Publication configurée par #1168 : la XVe législature comptait trois groupes sans fiche, trouvés par l'audit de filiation. Un organe dans la même législature, relu dans l'index AMO30 des groupes politiques le 2026-10-02 (archive publiée le 2026-10-02) : PO759900 (`LT`, « Libertés et Territoires », 2018-10-18 → 2022-06-21). 28 mandats pour 25 acteurs distincts, et 25 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur cet organe. 22 des 25 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 3 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "AGIR",
+        "groupe_id": "AN:AGIR:15",
+        "legislature": "15",
+        "fichier": "groupe-AN-AGIR-15.json",
+        "sigles_an": [
+          "AGIR-E"
+        ],
+        "organes_an": [
+          "PO771923"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO771923",
+            "sigle_an": "AGIR-E",
+            "nom": "Agir ensemble",
+            "debut": "2020-05-27",
+            "fin": "2022-06-21"
+          }
+        ],
+        "position_politique_an": {
+          "position": "minoritaire",
+          "verifie_le": "2026-10-02",
+          "organes": [
+            {
+              "organe_an": "PO771923",
+              "sigle_an": "AGIR-E",
+              "valeur_source": "Minoritaire",
+              "position": "minoritaire"
+            }
+          ]
+        },
+        "effectif_amo30": 23,
+        "effectif_publie": null,
+        "verifie_le": "2026-10-02",
+        "membres_avec_slug": 19,
+        "ecart_membres": [],
+        "ecart_motif": "Publication configurée par #1168 : la XVe législature comptait trois groupes sans fiche, trouvés par l'audit de filiation. Un organe dans la même législature, relu dans l'index AMO30 des groupes politiques le 2026-10-02 (archive publiée le 2026-10-02) : PO771923 (`AGIR-E`, « Agir ensemble », 2020-05-27 → 2022-06-21). 24 mandats pour 23 acteurs distincts, et 23 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur cet organe. 19 des 23 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 4 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
       }
     ]
   },
@@ -1410,16 +1560,6 @@
       "chambre": "AN",
       "legislature": "15",
       "fichier": "groupe-AN-FI-15.json"
-    },
-    {
-      "roster_chambre": "deputes",
-      "groupe_id": "AN:NG:15",
-      "lignee_id": "AN:LIGNEE:SOC",
-      "groupe_sigle": "NG",
-      "groupe_nom": "Nouvelle Gauche",
-      "chambre": "AN",
-      "legislature": "15",
-      "fichier": "groupe-AN-NG-15.json"
     },
     {
       "roster_chambre": "deputes",
@@ -1570,6 +1710,36 @@
       "chambre": "AN",
       "legislature": "17",
       "fichier": "groupe-AN-UDR-17.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:UDI:15",
+      "lignee_id": "AN:LIGNEE:UDI",
+      "groupe_sigle": "UDI",
+      "groupe_nom": "UDI et Indépendants",
+      "chambre": "AN",
+      "legislature": "15",
+      "fichier": "groupe-AN-UDI-15.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:LT:15",
+      "lignee_id": "AN:LIGNEE:LT",
+      "groupe_sigle": "LT",
+      "groupe_nom": "Libertés et Territoires",
+      "chambre": "AN",
+      "legislature": "15",
+      "fichier": "groupe-AN-LT-15.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:AGIR:15",
+      "lignee_id": "AN:LIGNEE:AGIR",
+      "groupe_sigle": "AGIR",
+      "groupe_nom": "Agir ensemble",
+      "chambre": "AN",
+      "legislature": "15",
+      "fichier": "groupe-AN-AGIR-15.json"
     }
   ],
   "lignees": [
@@ -1656,6 +1826,36 @@
       "chambre": "AN",
       "fichier": "lignee-AN-UDR.json",
       "verifie_le": "2026-09-11"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:UDI",
+      "lignee_nom": "UDI et Indépendants",
+      "chambre": "AN",
+      "fichier": "lignee-AN-UDI.json",
+      "verifie_le": "2026-10-02"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:LT",
+      "lignee_nom": "Libertés et Territoires",
+      "chambre": "AN",
+      "fichier": "lignee-AN-LT.json",
+      "verifie_le": "2026-10-02"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:AGIR",
+      "lignee_nom": "Agir ensemble",
+      "chambre": "AN",
+      "fichier": "lignee-AN-AGIR.json",
+      "verifie_le": "2026-10-02"
+    }
+  ],
+  "fiches_retirees": [
+    {
+      "fichier": "groupe-AN-NG-15.json",
+      "groupe_id": "AN:NG:15",
+      "remplacee_par": "AN:SOC:15",
+      "depuis": "2026-10-02",
+      "motif": "Nouvelle Gauche et Socialistes et apparentés sont un seul groupe renommé le 12/09/2018 (30 personnes communes sur 33). La fiche de la XVe porte désormais les deux noms dans son historique (#1168)."
     }
   ]
 }

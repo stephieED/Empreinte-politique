@@ -75,6 +75,7 @@ from schema_pivot import (  # noqa: E402
 # toujours contrôlée, couverture plus mesurée) et qui refuse une suspension
 # non documentée.
 from groupes_config import (  # noqa: E402
+    CHEMIN_CONFIG_GROUPES,
     CLE_POSITION_POLITIQUE,
     CorrespondanceSiglesInvalide,
     anomalies_suspension,
@@ -2641,9 +2642,10 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--groupes-config",
         type=Path,
-        default=Path("config/groupes_reels.json"),
+        default=CHEMIN_CONFIG_GROUPES,
         dest="groupes_config",
-        help="Config des groupes attendus (défaut : config/groupes_reels.json).",
+        help="Config des groupes attendus (défaut : la table du run si elle est "
+             "à jour, sinon config/groupes_reels.json).",
     )
     parser.add_argument(
         "--gouvernements-dir",

@@ -59,7 +59,9 @@ configuration **autorise à publier** :
 
 from __future__ import annotations
 
+import hashlib
 import json
+import os
 from pathlib import Path
 from typing import Any, Optional
 
@@ -139,12 +141,90 @@ def anomalies_suspension(groupe: dict[str, Any]) -> list[str]:
     return []
 
 
-#: Fichier de configuration des groupes. Il vit ICI depuis #558, et non plus
-#: dans `an_roster` : ce module est celui qui dit ce que `groupes_reels.json`
-#: pilote, et trois consommateurs le lisent sans avoir la moindre raison de
-#: dépendre du dérivateur de roster AN. `an_roster` le réexporte pour ses
-#: propres appelants.
-CHEMIN_CONFIG_GROUPES = Path("config") / "groupes_reels.json"
+# ── Deux tables, et celle qu'on lit (#1168, lot 2c) ──────────────────────────
+#: La table **écrite à la main** : relue en PR, versionnée avec le code. C'est
+#: elle qui nomme — sigle publié, identifiants, adresses de lignée — et elle a
+#: toujours raison sur ce qu'elle porte.
+CHEMIN_TABLE_ECRITE = Path("config") / "groupes_reels.json"
+
+#: La table **tenue par le run** : la table écrite, complétée de ce que la
+#: source dit et qu'elle ne portait pas (`groupes_amo30.composer_table`). Elle
+#: vit dans `raw_data/` parce que le run ne peut rien garder ailleurs — `config/`
+#: est recopié du dépôt privé à chaque run (`.github/actions/code-du-prive`).
+#:
+#: **Un autre nom que la table écrite, délibérément** (#1057) : le critère de
+#: `config/` et de `raw_data/` est QUI ÉCRIT le fichier, et deux fichiers de
+#: même nom de part et d'autre se liraient comme deux copies. Celui-ci n'est pas
+#: une copie : c'est ce qu'un run compose, et son nom le dit.
+CHEMIN_TABLE_DU_RUN = Path("raw_data") / "groupes_du_run.json"
+
+#: Sous `_meta` de la table du run : l'empreinte de la table écrite dont elle a
+#: été composée. C'est ce qui dit si elle est encore à jour.
+CLE_EMPREINTE_TABLE_ECRITE = "table_ecrite_a_la_main"
+
+
+#: Variable d'environnement qui impose la table écrite à la résolution par
+#: défaut. **Posée par `tests/conftest.py`, et par lui seul** : la table du run
+#: revient sur un poste par la synchronisation des données, et une suite qui la
+#: lirait dépendrait de ce qu'un run a laissé — 26 tests au rouge, mesuré le
+#: 02/10/2026 en posant la table dans un worktree. La CI ne le verrait jamais :
+#: son checkout ne matérialise pas ce fichier.
+VARIABLE_TABLE_ECRITE_SEULE = "EMPREINTE_TABLE_GROUPES_ECRITE_SEULE"
+
+
+def empreinte_table(chemin: Path) -> Optional[str]:
+    """SHA-256 du fichier tel qu'il est sur le disque, ou `None` s'il est illisible."""
+    try:
+        return hashlib.sha256(Path(chemin).read_bytes()).hexdigest()
+    except OSError:
+        return None
+
+
+def chemin_table_groupes(racine: Optional[Path] = None) -> Path:
+    """La table que les lecteurs doivent lire : celle du run, **si elle est à jour**.
+
+    La table du run est retenue quand elle existe et qu'elle a été composée de
+    la table écrite **telle qu'elle est aujourd'hui** — son empreinte y est
+    consignée. Sinon c'est la table écrite, seule.
+
+    Pourquoi l'empreinte, et pas la seule existence du fichier : la table du run
+    revient sur un poste par la synchronisation des données, et date du dernier
+    run. Une PR qui corrige la table écrite entre deux runs serait ignorée de
+    tous les outils locaux, sans un mot, jusqu'au run suivant. Avec l'empreinte,
+    une table écrite modifiée reprend la main aussitôt — au prix des groupes que
+    seul le run avait ajoutés, qui reviennent au run suivant.
+
+    Dans un run, la composition a lieu avant toute lecture et consigne
+    l'empreinte de la table qu'elle vient de lire : les deux coïncident.
+
+    Sans `racine`, `VARIABLE_TABLE_ECRITE_SEULE` impose la table écrite : c'est
+    ce qui garde la suite de tests indépendante de ce qu'un run a laissé.
+    """
+    if racine is None and os.environ.get(VARIABLE_TABLE_ECRITE_SEULE) == "1":
+        return CHEMIN_TABLE_ECRITE
+    racine = Path(racine) if racine is not None else Path()
+    ecrite = racine / CHEMIN_TABLE_ECRITE
+    du_run = racine / CHEMIN_TABLE_DU_RUN
+    try:
+        meta = json.loads(du_run.read_text(encoding="utf-8")).get("_meta") or {}
+    except (OSError, ValueError, AttributeError):
+        return ecrite
+    consignee = (meta.get(CLE_EMPREINTE_TABLE_ECRITE) or {}).get("sha256")
+    if consignee and consignee == empreinte_table(ecrite):
+        return du_run
+    return ecrite
+
+
+#: Fichier de configuration des groupes **que les lecteurs lisent**. Il vit ICI
+#: depuis #558, et non plus dans `an_roster` : ce module est celui qui dit ce
+#: que `groupes_reels.json` pilote, et trois consommateurs le lisent sans avoir
+#: la moindre raison de dépendre du dérivateur de roster AN. `an_roster` le
+#: réexporte pour ses propres appelants.
+#:
+#: Résolu **une fois, au chargement du module** (#1168) : chaque étape d'un run
+#: est un processus neuf, lancé après que la table du run a été posée. Qui veut
+#: la table écrite, et elle seule, nomme `CHEMIN_TABLE_ECRITE`.
+CHEMIN_CONFIG_GROUPES = chemin_table_groupes()
 
 #: Répertoire des fiches de groupe publiées.
 GROUPES_PUBLIES_DIR = Path("pivot_data") / "groupes"
@@ -682,6 +762,106 @@ def succession_publiee(
             "verifie_le": entree["verifie_le"],
         })
     return blocs
+
+
+# ── Les fiches retirées, nommées une à une (#1168, lot 2b) ───────────────────
+#: Clé portant la liste des fiches de groupe à retirer du corpus publié.
+#:
+#: Une fiche de groupe est un agrégat : elle se recompose à chaque run, et un
+#: groupe sorti de `groupes[]` n'est simplement plus régénéré. Son ancien
+#: fichier, lui, RESTE — rien ne le supprime, et le portail de qualité bloque
+#: alors sur « fiche publiée sans entrée ». Depuis le modèle à deux dépôts, les
+#: données ne se modifient que par un run : un retrait ne peut donc pas être fait
+#: à la main. Il est **déclaré ici**, fichier par fichier, et c'est
+#: `generate_group_profiles.py` qui l'applique — jamais un « supprime ce que la
+#: table ne nomme plus », qui emporterait le jour venu une fiche qu'une table
+#: mal fusionnée aurait oubliée.
+CLE_FICHES_RETIREES = "fiches_retirees"
+
+_CLES_RETRAIT_EXIGEES: tuple[str, ...] = (
+    "fichier", "groupe_id", "remplacee_par", "depuis", "motif",
+)
+
+
+class FichesRetireesInvalides(ValueError):
+    """La déclaration des fiches retirées viole un invariant."""
+
+
+def charger_fiches_retirees(chemin: Optional[Path] = None) -> list[dict[str, Any]]:
+    """Charge et valide `fiches_retirees[]`. Une clé absente rend `[]`.
+
+    Quatre refus, tous à seuil 0 :
+
+    - une entrée à qui il manque l'une des cinq clés exigées — un retrait sans
+      motif ni date ne se relit pas ;
+    - un `fichier` qui n'est pas un nom nu `groupe-….json` : ni chemin, ni
+      remontée de répertoire. C'est ce qui garantit que la liste ne peut
+      désigner qu'une fiche de groupe ;
+    - un `fichier` ou un `groupe_id` que `groupes[]` déclare encore — on ne
+      retire pas une fiche que le même run régénère ;
+    - un `remplacee_par` qui n'est le `groupe_id` d'aucun groupe déclaré : le
+      retrait n'aurait rien pour reprendre ce que la fiche portait.
+
+    Raises:
+        FichesRetireesInvalides: le premier invariant rompu, nommé.
+    """
+    chemin = Path(chemin) if chemin is not None else CHEMIN_CONFIG_GROUPES
+    try:
+        document = json.loads(chemin.read_text(encoding="utf-8"))
+    except OSError as exc:
+        raise FichesRetireesInvalides(
+            f"Configuration des groupes illisible ({chemin}) : {exc}"
+        ) from exc
+    except ValueError as exc:
+        raise FichesRetireesInvalides(f"{chemin} : JSON invalide — {exc}") from exc
+
+    retraits = document.get(CLE_FICHES_RETIREES)
+    if retraits is None:
+        return []
+    if not isinstance(retraits, list):
+        raise FichesRetireesInvalides(
+            f"{chemin} : '{CLE_FICHES_RETIREES}' doit être une liste."
+        )
+
+    groupes = document.get("groupes") or []
+    fichiers_declares = {g.get("fichier") for g in groupes}
+    identifiants = {g.get("groupe_id") for g in groupes}
+    vus: set[str] = set()
+    for retrait in retraits:
+        if not isinstance(retrait, dict):
+            raise FichesRetireesInvalides(f"{chemin} : entrée de '{CLE_FICHES_RETIREES}' non-objet.")
+        manquantes = [cle for cle in _CLES_RETRAIT_EXIGEES if not retrait.get(cle)]
+        if manquantes:
+            raise FichesRetireesInvalides(
+                f"{chemin} : retrait {retrait.get('fichier') or '(sans fichier)'} — "
+                f"clé(s) exigée(s) absente(s) : {manquantes}."
+            )
+        fichier = str(retrait["fichier"])
+        if (
+            Path(fichier).name != fichier
+            or not fichier.startswith("groupe-")
+            or not fichier.endswith(".json")
+        ):
+            raise FichesRetireesInvalides(
+                f"{chemin} : '{fichier}' n'est pas un nom de fiche de groupe "
+                "(`groupe-….json`, sans chemin). Un retrait ne désigne rien d'autre."
+            )
+        if fichier in vus:
+            raise FichesRetireesInvalides(f"{chemin} : '{fichier}' est retiré deux fois.")
+        vus.add(fichier)
+        if fichier in fichiers_declares or retrait["groupe_id"] in identifiants:
+            raise FichesRetireesInvalides(
+                f"{chemin} : '{fichier}' ({retrait['groupe_id']}) est à la fois "
+                "retiré et déclaré dans 'groupes' — le même run le régénérerait."
+            )
+        if retrait["remplacee_par"] not in identifiants:
+            raise FichesRetireesInvalides(
+                f"{chemin} : '{fichier}' est dit remplacé par "
+                f"{retrait['remplacee_par']!r}, qui n'est le `groupe_id` d'aucun "
+                "groupe déclaré."
+            )
+    return retraits
+
 
 
 def historique_noms_publie(

@@ -98,7 +98,12 @@ les charger, ni à les faire grossir. -->
   or before the day the legislature's groups are constituted is a **transit**, and that
   date is *read* from the referential, never hard-coded; the AN sigle is
   `organe.libelleAbrev`, **not** `libelleAbrege`, and the published sigle → AN sigle(s)
-  table is committed in `config/groupes_reels.json`; one group can have **successive
+  table is committed in `config/groupes_reels.json` — **the hand-written table; a run
+  never writes there**, it composes `raw_data/groupes_du_run.json` from it (#1168), and
+  every reader goes through `groupes_config.CHEMIN_CONFIG_GROUPES`, which resolves to the
+  run's table only when it was composed from today's hand-written one. Name
+  `CHEMIN_TABLE_ECRITE` when the hand-written table is what you mean, and never pass
+  `config/groupes_reels.json` to a workflow step; one group can have **successive
   organs** in one legislature, so the roster is their deduplicated **union** with periods
   re-glued. An actor with no entry in #525's table gets `slug: None` **and** a named,
   dated line in `membres_sans_slug`. Guarded by `tests/test_an_roster.py`, on a

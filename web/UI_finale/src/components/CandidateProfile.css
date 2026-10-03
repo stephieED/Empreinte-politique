@@ -707,18 +707,15 @@
   -webkit-box-decoration-break: clone;
 }
 
-.cp-section-critere {
-  font-size: 13px;
-  color: #6e6a78;
-  /* 78ch bridait le critère à 619 px quand la colonne en offre 1 020, et
-     coupait en deux la phrase la plus longue de la fiche — « Ses interventions
-     par période politique, puis par nature et par sujet. Le verbatim est celui
-     du compte rendu. », 109 signes. Un critère est une ligne de service, pas du
-     texte courant : il a le droit d'aller au bout. Mesuré le 13/09/2026 — il
-     lui faut 834 px, la colonne en a 1 020. */
-  max-width: 108ch;
-  margin-top: 8px;
-  line-height: 1.55;
+/* LE TITRE ET SA BULLE D'INFORMATION, SUR UNE LIGNE (01/10/2026). Le « i » est
+   à droite du titre, centré sur lui ; la bulle s'ouvre sous cette ligne, à son
+   bord gauche (`ib-ancre`, `InfoBulle.css`). Le critère écrit sous le titre —
+   `.cp-section-critere` — est retiré avec ses deux dernières phrases : c'est la
+   bulle qui les porte. */
+.cp-section-tete {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .cp-section-corps {
@@ -737,16 +734,10 @@
      redéclaraient — 26, 24, 22, 20, 18, 16 et 0 px en haut ; 26, 24 et 20 à
      gauche —, et `.cp-carte` n'en portait aucune : douze cartes sur dix-neuf
      n'avaient d'autre marge que celle que leur premier enfant voulait bien
-     porter. Deux exceptions restent, et elles sont NOMMÉES : une carte qui ne
-     contient que des rangs pleine largeur (`--rangs`), une figure qui touche
-     ses bords (`--nu`). */
+     porter. Une exception reste, et elle est NOMMÉE : une figure qui touche
+     ses bords (`--nu`). La carte en rangs pleine largeur (`--rangs`) est partie
+     avec le tableau de « Ce qu'on n'a pas pu lire » (01/10/2026). */
   padding: 22px 26px;
-}
-
-/* Les rangs portent leur propre marge et leur filet doit courir d'un bord à
-   l'autre : la carte s'efface devant eux. */
-.cp-carte--rangs {
-  padding: 0;
 }
 
 /* Une figure qui va au bord — la frise des paroles. */
@@ -1070,6 +1061,30 @@
 }
 
 /* ── § 1 — les fonctions exercées ────────────────────────────────────────── */
+
+/* LA LÉGENDE, EN TÊTE DE LA CARTE (01/10/2026). Son échantillon reprend la
+   marque qu'il nomme — le liseré d'encre de 3 px et le fond de
+   `.cp-fonctions-item--marquee` — et il tombe à l'aplomb des lignes
+   surlignées, qui débordent jusqu'à la marge de la carte. Le filet qui la
+   sépare de la première catégorie est celui des blocs : précédé de la légende,
+   le premier n'est plus `:first-child`. */
+.cp-fonctions-legende {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: #6f6b78;
+}
+
+.cp-fonctions-legende-marque {
+  flex: none;
+  width: 34px;
+  height: 18px;
+  border-left: 3px solid var(--ink);
+  background: #fbfaf8;
+}
+
 .cp-fonctions-bloc {
   padding: 20px 26px;
   border-top: 1px solid var(--border);
@@ -1141,79 +1156,14 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* ── Lignes génériques ───────────────────────────────────────────────────── */
-.cp-ligne {
-  display: grid;
-  grid-template-columns: 200px 1fr auto;
-  gap: 18px;
-  align-items: baseline;
-  padding: 16px 26px;
-  border-top: 1px solid var(--border);
-}
-
-.cp-ligne:first-child {
-  border-top: 0;
-}
-
-.cp-ligne-cle {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--muted);
-  line-height: 1.6;
-}
-
-.cp-ligne-cle .cp-position {
-  margin-left: 0;
-  display: flex;
-  width: fit-content;
-  margin-top: 6px;
-}
-
+/* Le titre d'une ligne de texte — 14px/600 (DESIGN_SYSTEM §3). Les autres
+   règles de « lignes génériques » (`.cp-ligne`, `.cp-ligne-cle`,
+   `.cp-ligne-nombre`, `.cp-etat`) habillaient le tableau de « Ce qu'on n'a pas
+   pu lire » et sont parties avec lui (01/10/2026). */
 .cp-ligne-titre {
   font-size: 14px;
   font-weight: 600;
   line-height: 1.4;
-}
-
-.cp-ligne-nombre {
-  font-size: 15px;
-  font-weight: 800;
-  white-space: nowrap;
-  text-align: right;
-}
-
-.cp-ligne-nombre span {
-  display: block;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--muted);
-}
-
-.cp-ligne--couverture .cp-ligne-corps {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.cp-etat {
-  font-size: 12.5px;
-  color: #6e6a78;
-  line-height: 1.5;
-}
-
-.cp-etat b {
-  font-weight: 800;
-  color: var(--ink);
-}
-
-.cp-etat em {
-  display: block;
-  font-style: normal;
-  font-size: 11.5px;
-  color: var(--muted);
-  margin-top: 3px;
 }
 
 /* ── § 3 — les blocs d'irrecevabilité ────────────────────────────────────── */
@@ -1399,15 +1349,10 @@
 }
 
 @media (max-width: 760px) {
-  .cp-ligne,
   .cp-ecart,
   .cp-role {
     grid-template-columns: 1fr;
     gap: 8px;
-  }
-
-  .cp-ligne-nombre {
-    text-align: left;
   }
 }
 
@@ -1548,8 +1493,10 @@
   font-weight: 700;
 }
 
-/* « En bref » est un titre de section : même écart au corps que les autres. */
-.cp-gc .cp-section-titre { margin-bottom: 16px; }
+/* « En bref » est un titre de section : même écart au corps que les autres.
+   L'écart est porté par la LIGNE du titre, pas par le `h2` : sur le `h2`, il
+   allongeait la ligne et le « i », centré sur elle, descendait de huit pixels. */
+.cp-gc .cp-section-tete { margin-bottom: 16px; }
 
 @media (max-width: 720px) {
   .cp-fonctions-item {
@@ -1779,10 +1726,10 @@
   font-size: 10.5px; font-weight: 800; letter-spacing: 0.02em; padding: 2px 8px;
 }
 
-/* Le renvoi vers la méthodologie, une fois par section (#328). La fiche garde
-   la limite en deux mots, le paragraphe vit là-bas — DESIGN_SYSTEM §7 règle 2.
-   Même traitement que `.vp-methodo` et `.pp-methodo` : un lien qui se voit sans
-   crier, sous la figure et jamais au-dessus. */
+/* Le renvoi vers la méthodologie, sous la figure (#328) : un lien qui se voit
+   sans crier. Depuis le 01/10/2026 il est passé dans la bulle du titre
+   (`InfoBulle`) partout où elle existe ; il ne reste ici que pour le versant
+   européen de « Ce qu'il a proposé », dont les bulles n'ont pas été écrites. */
 .cp-methodo {
   margin: 14px 0 0;
   font-size: 12.5px;
@@ -1902,10 +1849,11 @@
 }
 
 
-/* ── LES MATIÈRES, DEUX MESURES ET LEUR RAPPORT ──────────────────────────────
-   Six colonnes, un nombre par colonne : empilés dans une même cellule,
+/* ── LES MATIÈRES, DEUX MESURES — ET LA BARRE QUI LES RELIE ──────────────────
+   Quatre colonnes, un nombre par colonne : empilés dans une même cellule,
    « 26 775 » et « 59 » se lisaient « 26 77559 » — et se copiaient ainsi.
-   Le ratio est AU MILIEU, entre les deux mesures qu'il relie. */
+   Elles étaient six : le ratio par texte et sa barre, au milieu, sont partis
+   le 01/10/2026 — la barre découpée par texte montre ce qu'ils résumaient. */
 .cp-mat {
   display: grid;
   gap: 4px;
@@ -1914,12 +1862,12 @@
 .cp-mr {
   display: grid;
   /* La colonne des noms monte à 290 px, et la barre qui la suit rend la place
-     (1.2fr → 0.9fr) : les commissions du Parlement européen s'écrivent en
+     (elle prend ce qui reste) : les commissions du Parlement européen s'écrivent en
      entier — « Environment, Public Health and Food Safety » fait 41 signes, là
      où « Finances » en fait 8 — et la troncature qui coupait quatre noms sur
      dix-neuf disparaît. La colonne ne s'élargit qu'autant que son contenu le
      demande : côté français, les intitulés courts la laissent à 120 px. */
-  grid-template-columns: minmax(120px, 290px) minmax(0, 0.9fr) 74px 74px minmax(0, 0.5fr) 78px;
+  grid-template-columns: minmax(120px, 290px) minmax(0, 1fr) 74px 78px;
   gap: 12px;
   align-items: center;
   font-size: 12.5px;
@@ -1964,14 +1912,33 @@
   background: var(--border);
   overflow: hidden;
 }
-.cp-mr--tete .cp-mr-rail,
-.cp-mr--nd span:nth-child(5) {
+.cp-mr--tete .cp-mr-rail {
   background: none;
 }
 .cp-mr-rail i {
   display: block;
   height: 100%;
   border-radius: 2px;
+}
+/* LA BARRE DÉCOUPÉE PAR TEXTE : un segment par texte amendé, large comme le
+   nombre d'amendements déposés dessus. Le blanc de la carte passe entre les
+   segments — c'est lui qui les sépare, pas un filet. */
+.cp-mr-segments {
+  display: flex;
+  gap: 1px;
+  height: 100%;
+  background: var(--card, #fff);
+  /* Deux pixels par texte peuvent dépasser la part de la ligne quand les textes
+     sont très nombreux : la barre garde SA longueur, qui est le nombre
+     d'amendements, et ce sont les plus petits segments qui cèdent. */
+  overflow: hidden;
+}
+.cp-mr-segments b {
+  display: block;
+  flex: 1 1 0;
+  height: 100%;
+  /* Un texte qui n'a reçu qu'un amendement reste un texte. */
+  min-width: 2px;
 }
 .cp-mr-n {
   text-align: right;
@@ -1987,48 +1954,61 @@
 
 @media (max-width: 720px) {
   .cp-mr {
-    grid-template-columns: 1fr 64px 64px 64px;
+    grid-template-columns: 1fr 64px 64px;
     gap: 8px;
   }
-  /* Les deux rails sautent : à 320 px, une barre de 12 px ne dit rien que le
-     nombre à côté ne dise mieux. */
+  /* Le rail saute : à 320 px, une barre de 12 px ne dit rien que le nombre à
+     côté ne dise mieux. */
   .cp-mr-rail {
     display: none;
   }
 }
 
-/* Les deux sous-parties de « ce qu'on n'a pas pu lire ». La première est en
-   rangs pleine largeur, donc son intitulé reprend le fer des rangs. */
-.cp-rangs-tete {
-  padding: 20px 26px 14px;
+/* ── § 6 — « Ce qui manque sur cette fiche » : une liste (01/10/2026) ──
+   Une ligne = un intitulé en gras, dans une colonne de 240 px, et une phrase.
+   Le filet court entre les lignes, la première comprise : il sépare la liste
+   du titre de la carte. Valeurs de la maquette validée. */
+.cp-manques .cp-gouv-tete {
+  margin-bottom: 14px;
 }
 
-.cp-signal {
-  margin-top: 14px;
+.cp-manques-phrase {
+  margin: 0 0 10px;
+  max-width: 70ch;
+  font-size: 15px;
+  line-height: 1.5;
 }
-.cp-signal-dl {
-  display: grid;
-  grid-template-columns: minmax(140px, 220px) minmax(0, 1fr);
-  gap: 10px 20px;
-  margin: 16px 0 0;
-  font-size: 13px;
-}
-.cp-signal-dl dt {
-  font-weight: 700;
-  color: var(--ink);
-}
-.cp-signal-dl dd {
+
+.cp-manques-liste {
   margin: 0;
-  color: var(--muted);
-  line-height: 1.55;
+  padding: 0;
+  list-style: none;
 }
+
+.cp-manques-liste li {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 0 18px;
+  padding: 11px 0;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.cp-manques-liste b {
+  font-weight: 700;
+}
+
+.cp-manques-liste span {
+  color: #6f6b78;
+}
+
+/* Sous 720 px, 240 px d'intitulé ne laissent plus de place à la phrase :
+   l'intitulé passe au-dessus. */
 @media (max-width: 720px) {
-  .cp-signal-dl {
+  .cp-manques-liste li {
     grid-template-columns: 1fr;
     gap: 3px 0;
-  }
-  .cp-signal-dl dd {
-    margin-bottom: 10px;
   }
 }
 
@@ -2071,7 +2051,7 @@
 }
 
 /* La mention des écarts dans « Ce qu'on n'a pas pu lire » (01/10/2026). Ce n'est
-   ni une ligne du tableau — les écarts n'ont ni borne ni compte — ni un renvoi de
+   ni une ligne de la liste — les écarts n'ont ni borne ni compte — ni un renvoi de
    méthodologie : c'est la cause, écrite là où la section vide l'envoie chercher. */
 .cp-couv-ecarts {
   margin: 14px 0 0;

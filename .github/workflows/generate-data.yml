@@ -997,6 +997,7 @@ jobs:
             raw_data/resolutions_candidats.json
             raw_data/gouvernements_reels.json
             config/groupes_reels.json
+            raw_data/groupes_du_run.json
             raw_data/amendements_an_figes
             raw_data/scrutins_an_figes
             raw_data/profiles/${{ matrix.slug }}.json
@@ -2201,6 +2202,33 @@ jobs:
       # `continue-on-error: true` : celui-ci avalerait aussi le code 1 — un
       # fetch tombé, donc un roster INCOMPLET — et le run repartirait sur une
       # composition de groupe non mesurée (#511).
+      # LA TABLE DES GROUPES DU RUN (#1168, lot 2c), composée AVANT le roster,
+      # qui la lit : la table écrite à la main (`config/`, relue en PR), plus ce
+      # que les runs précédents ont ajouté (`raw_data/groupes_du_run.json`, repris
+      # tel quel), plus ce que l'archive AMO30 apporte de neuf — un organe
+      # renommé, un groupe que la table ne connaît pas.
+      #
+      # Elle s'écrit dans `raw_data/` et pas dans `config/` : `code-du-prive`
+      # recopie `config/` du dépôt privé à chaque run, un ajout y serait perdu.
+      #
+      # AUCUN CODE DE SORTIE N'ARRÊTE LE JOB, et c'est voulu. Si la table n'est
+      # pas écrite (archive illisible, ou composition qui contredit une adresse
+      # déjà publiée), les lecteurs retombent sur la table écrite à la main :
+      # le run continue sur ce qu'un humain a relu, et un groupe que seul un run
+      # avait ajouté laisse une fiche sans entrée, sur laquelle le portail de
+      # qualité bloque. Dégradé et visible, jamais faux.
+      - name: Table des groupes du run — composée depuis AMO30
+        run: |
+          CODE=0
+          python3 src/groupes_amo30.py --mettre-a-jour \
+            --precedent raw_data/groupes_du_run.json \
+            --out raw_data/groupes_du_run.json || CODE=$?
+          case "$CODE" in
+            0) ;;
+            1) echo "::warning::TABLE_GROUPES_A_RELIRE — la composition de la table des groupes a laissé un cas non tranché ou un conflit : voir le journal de ce step. Le run continue." ;;
+            *) echo "::warning::TABLE_GROUPES_NON_COMPOSEE — code $CODE (archive AMO30 ou table écrite illisible) : le run continue sur la table écrite à la main." ;;
+          esac
+
       - name: Roster du run — une seule construction pour tout le run
         id: roster
         run: |
@@ -2235,9 +2263,13 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: roster-candidats
+          # `groupes_du_run.json` (#1168) voyage AVEC le roster qu'elle a servi à
+          # construire : les shards et la fusion lisent ainsi la même table,
+          # posée à sa place par leur `download-artifact` dans `raw_data`.
           path: |
             raw_data/roster_candidats.json
             raw_data/rosters_bruts.json
+            raw_data/groupes_du_run.json
           if-no-files-found: error
 
       - name: Liste des shards roster
@@ -3935,7 +3967,6 @@ jobs:
           [[ "$OVERWRITE" != "true" ]] && MERGE_FLAG=(--merge-existing)
           CODE=0
           python3 src/generate_group_profiles.py \
-            --config config/groupes_reels.json \
             --profiles-dir pivot_data/profiles \
             --out-dir pivot_data/groupes \
             --rosters-bruts raw_data/rosters_bruts.json \
@@ -3969,7 +4000,6 @@ jobs:
         continue-on-error: true
         run: |
           python3 src/generate_lignee_profiles.py \
-            --config config/groupes_reels.json \
             --groupes-dir pivot_data/groupes \
             --profiles-dir pivot_data/profiles \
             --out-dir pivot_data/lignees \
@@ -4072,7 +4102,6 @@ jobs:
             --groupes-dir       pivot_data/groupes \
             --raw-dir           raw_data/profiles \
             --candidats         raw_data/candidats.json \
-            --groupes-config    config/groupes_reels.json \
             --gouvernements-dir    pivot_data/gouvernements \
             --gouvernements-config raw_data/gouvernements_reels.json \
             --threshold         "$GATE_THRESHOLD" \
@@ -4534,6 +4563,12 @@ jobs:
           # run, comme `rosters_bruts.json`, et le committer ferait bouger un
           # fichier à chaque exécution sans que personne ne le lise.
           git add raw_data/candidats.json raw_data/profiles raw_data/correspondance_acteurs_an.json raw_data/gouvernements_reels.json pivot_data/profiles pivot_data/groupes pivot_data/gouvernements pivot_data/scrutins.json pivot_data/scrutins_europeens.json pivot_data/dossiers_europeens.json pivot_data/documents_europeens.json pivot_data/amendements
+          # `raw_data/groupes_du_run.json` (#1168) : la table des groupes du run.
+          # Sans elle dans le commit, un groupe ajouté par ce run serait
+          # recalculé au suivant — son lien et son adresse ne seraient jamais
+          # figés. À part, et conditionnel : `git add` d'un chemin absent est
+          # FATAL, et la table peut ne pas avoir été composée.
+          if [ -f raw_data/groupes_du_run.json ]; then git add raw_data/groupes_du_run.json; fi
           # LE CODE ENTRE DANS LE MÊME COMMIT (#1059) — et SEULEMENT le code
           # (#1066). La liste vient de l'action de superposition : ce sont
           # les entrées de tête de l'arbre du dépôt privé, données exclues.

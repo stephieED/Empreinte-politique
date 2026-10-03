@@ -59,12 +59,33 @@ export function partDissidente(entree) {
 
 /* ── Ce qui est comparable, et rien de plus ─────────────────────────────────
  *
- * Un scrutin entre dans la bande quand QUATRE conditions sont réunies : la
+ * Un scrutin entre dans la bande quand CINQ conditions sont réunies : la
  * personne y a une position, la fiche de son groupe aussi, la position
- * majoritaire du groupe est publiée, et le scrutin porte sur l'ensemble d'un
- * texte. Cette dernière restriction n'est pas un détail de collecte : sur un
- * article ou un amendement, la position majoritaire d'un groupe se déplace d'un
- * vote à l'autre pour des raisons de négociation que le corpus ne porte pas.
+ * majoritaire du groupe est publiée, le scrutin porte sur l'ensemble d'un
+ * texte, et il en est la DERNIÈRE LECTURE. La quatrième n'est pas un détail de
+ * collecte : sur un article ou un amendement, la position majoritaire d'un
+ * groupe se déplace d'un vote à l'autre pour des raisons de négociation que le
+ * corpus ne porte pas.
+ *
+ * LA DERNIÈRE LECTURE, ET POURQUOI ELLE S'IMPOSE ICI AUSSI (01/10/2026). La
+ * section juste au-dessus, « Ce qu'il a voté », ne publie qu'une position par
+ * texte — celle de sa dernière lecture (`AGENTS.md` §6, #711). Celle-ci
+ * comparait TOUTES les lectures : un texte revenu trois fois devant l'Assemblée
+ * y pesait trois colonnes, et une divergence de première lecture s'affichait
+ * sous une section qui, deux écrans plus haut, ne retenait pas ce vote. Mesuré
+ * ce jour-là sur les 31 fiches publiées : 1 940 scrutins comparés toutes
+ * lectures confondues, 1 304 en dernière lecture ; chez François Ruffin, 258
+ * contre 168 — les 168 de sa section 3, au scrutin près.
+ *
+ * `retenus` EST CETTE SÉLECTION, PAS UNE SECONDE : les votes que
+ * `votesDuProfil` a retenus par `selectDerniereLectureVotes`, lue sur le corpus
+ * entier des scrutins. L'adaptateur les passe ; ce module n'ordonne aucune
+ * lecture lui-même, et ne peut donc pas diverger de la section 3.
+ *
+ * `null` quand le corpus des scrutins n'a pas pu être lu : la dernière lecture
+ * n'est alors pas déterminable, et la bande reste vide plutôt que de retomber
+ * sur toutes les lectures (§2 règle 5) — une règle de repli qui remplace en
+ * silence la règle publiée est ce qui a rendu #510 invisible.
  *
  * `communs` compte les scrutins communs TOUTES NATURES CONFONDUES, et il n'est
  * plus affiché : rapproché des divergences, il servait de dénominateur à une
@@ -80,7 +101,12 @@ export function partDissidente(entree) {
  * lirait comme un texte sans commission, alors que c'est notre rattachement qui
  * manque.
  */
-export function ecartsAvecLeGroupe(votesJoints, fichesGroupe, matiereDuScrutin = () => null) {
+export function ecartsAvecLeGroupe(
+  votesJoints,
+  fichesGroupe,
+  matiereDuScrutin = () => null,
+  retenus = null,
+) {
   const fiches = (fichesGroupe || []).filter(Boolean);
   if (!fiches.length) {
     return { fiches: [], communs: 0, bande: [], ecarts: [], divises: 0, comparable: false };
@@ -90,6 +116,8 @@ export function ecartsAvecLeGroupe(votesJoints, fichesGroupe, matiereDuScrutin =
   for (const v of votesJoints || []) {
     if (v.scrutin_id) parScrutin.set(v.scrutin_id, v);
   }
+
+  const dernieresLectures = retenus ? new Set(retenus.map((v) => v.scrutin_id)) : null;
 
   let communs = 0;
   const bande = [];
@@ -101,6 +129,7 @@ export function ecartsAvecLeGroupe(votesJoints, fichesGroupe, matiereDuScrutin =
       if (!c.position_majoritaire) continue;
       if (!POSITIONS_COMPARABLES.includes(mien.position)) continue;
       if (!isWholeTextVote(mien.scrutin)) continue;
+      if (!dernieresLectures?.has(c.scrutin_id)) continue;
       bande.push({
         scrutinId: c.scrutin_id,
         // Le titre NETTOYÉ, comme dans « ce qu'il a voté » : la source écrit

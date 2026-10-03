@@ -131,7 +131,11 @@ def test_le_critere_des_votes_ne_redit_plus_la_regle_de_derniere_lecture(fiche: 
     assert not [c for c in re.findall(r'critere="([^"]+)"', fiche) if "taux de participation" in c], (
         "le critère de la section des votes est revenu"
     )
-    assert "LAST_READING_LABEL" in fiche, (
+    # L'étiquette est écrite sur la fiche depuis le 01/10/2026 — « Sur 168
+    # scrutins de textes en dernière lecture », arrêtée par la propriétaire — et
+    # ne passe plus par `LAST_READING_LABEL`. Ce que #711 garantit ne change
+    # pas : le chiffre ne paraît pas sans les mots « dernière lecture ».
+    assert "scrutins de textes en dernière lecture" in fiche, (
         "l'étiquette courte reste à côté du chiffre : c'est ce que #711 garantit "
         "encore, le raisonnement vivant en méthodologie"
     )

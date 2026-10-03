@@ -80,7 +80,9 @@ from gouvernement_textes import (
 from profil_brut import ecrire_profil_brut
 from licences import LICENCE_AN
 from parse_syceron import parse_syceron_xml
-from schema_pivot import COLLECTE_EXTRAIT, COLLECTE_THEME_SEUL, POSITION_POLITIQUE_AN_VERS_PIVOT, extrait_de_texte
+from schema_pivot import (COLLECTE_EXTRAIT, COLLECTE_THEME_SEUL,
+                          POSITION_POLITIQUE_AN_VERS_PIVOT, extrait_de_texte,
+                          role_seance_depuis_orateur)
 from syceron_debates import (
     SYCERON_AVAILABLE_LEGISLATURES,
     SYCERON_CACHE_DIR,
@@ -5410,6 +5412,12 @@ def _reduire_au_theme(record: dict[str, Any]) -> dict[str, Any]:
         # la porte : posée à `None` sur l'entrée d'un index d'avant #1087, elle
         # ferait passer l'index réduit pour conforme (`_syceron_index_qualifie`).
         **({"id_syceron": record["id_syceron"]} if "id_syceron" in record else {}),
+        # #1169 — et le rôle de séance, pour 2,6 Mio sur le corpus. C'est la
+        # forme des MEMBRES DE ROSTER, donc exactement la population dont les
+        # fiches de groupe agrègent la parole : sans cette clé ici, la conduite
+        # de la séance serait comptée comme une prise de parole du groupe. Un
+        # président d'Assemblée y pèse 35 % des entrées de son groupe.
+        **({"role_seance": record["role_seance"]} if record.get("role_seance") else {}),
         "collecte": COLLECTE_INTERVENTION_THEME_SEUL,
     }
 
@@ -5459,6 +5467,14 @@ def _parse_syceron_intervention_entry(
         **({"id_syceron": intervention["id_syceron"]} if "id_syceron" in intervention else {}),
         "texte": intervention.get("texte"),
         "fonction": intervention.get("fonction"),
+        # #1169 — LE RÔLE DANS LA CONDUITE DE LA SÉANCE, dérivé du libellé de
+        # l'orateur. `fonction` ne peut pas le porter : Syceron laisse
+        # `<qualite>` vide sur 100 % des paragraphes de présidence, et son
+        # attribut `roledebat` n'en couvre que 41 %. Posé seulement quand le
+        # libellé le dit, jamais à `None` — une entrée sans la clé n'affirme
+        # rien sur le rôle (§2 règle 5).
+        **({"role_seance": _role} if (_role := role_seance_depuis_orateur(
+            intervention.get("orateur_nom"))) else {}),
         "format": intervention.get("format"),
         "mots_cles": intervention.get("mots_cles") or [],
         # Compatibilité avec les autres formats bruts d'interventions : `source`

@@ -26,7 +26,7 @@ date qu'elle porte : un job ajouté ici ne s'y ajoute pas seul.
 | `extract-ue-officiel` | `epingler-le-code` | Europarl Open Data | artifact `raw-profiles-ue-officiel`, cache `public-data-cache-ue-<semaine>` |
 | `extract-parltrack` | `epingler-le-code` | 5 dumps ParlTrack (232 Mio) | artifact `parltrack-dumps`, cache `public-data-cache-parltrack-<semaine>` |
 | `rechauffer-le-portail-europeen` | `epingler-le-code`, `extract-parltrack` | le portail du Parlement européen, le dump `ep_dossiers` | l'artifact `portail-europeen-chaud` (le cache des réponses du portail) + le cache `public-data-cache-europarl-documents-v3-<run>-rechauffage` (#1064) |
-| `prepare-roster-matrix` | `epingler-le-code` | `config/groupes_reels.json`, l'archive AMO30 | `raw_data/roster_candidats.json` → artifact `roster-candidats`, la matrice roster, et `rosters_bruts.json` — qui porte depuis #996 une clé `gouvernements:`, les membres des 17 gouvernements lus dans AMO30 (`gouvernement_roster_an.py`). **Depuis #996 lot 3 ces membres entrent aussi dans `roster_candidats.json`**, sous `statut: "roster_gouvernement"`, donc les shards les collectent ; les slugs déjà portés par un roster de groupe ne sont pas repris, et restent `roster_groupe`. La passe tourne **après** le portail d'anomalies et **avant** l'écriture des deux fichiers ; `--sans-gouvernements` la débranche, et son échec est non fatal |
+| `prepare-roster-matrix` | `epingler-le-code` | `config/groupes_reels.json`, `raw_data/groupes_du_run.json` du run précédent, l'archive AMO30 | **la table des groupes du run** (`raw_data/groupes_du_run.json`, #1168), transportée dans le même artifact ; `raw_data/roster_candidats.json` → artifact `roster-candidats`, la matrice roster, et `rosters_bruts.json` — qui porte depuis #996 une clé `gouvernements:`, les membres des 17 gouvernements lus dans AMO30 (`gouvernement_roster_an.py`). **Depuis #996 lot 3 ces membres entrent aussi dans `roster_candidats.json`**, sous `statut: "roster_gouvernement"`, donc les shards les collectent ; les slugs déjà portés par un roster de groupe ne sont pas repris, et restent `roster_groupe`. La passe tourne **après** le portail d'anomalies et **avant** l'écriture des deux fichiers ; `--sans-gouvernements` la débranche, et son échec est non fatal |
 | `extract-an` | `extract-amendements-an`, `prepare-an-matrix` | AN open data, Syceron, l'index amendements | un artifact `raw-profiles-an-<slug>` par shard, cache `public-data-cache-an-<semaine>[-interv-<empreinte>]` |
 | `extract-roster-groupes` | les quatre `extract-*` + `prepare-roster-matrix` | l'artifact `roster-candidats`, les mêmes sources | un artifact `raw-profiles-roster-groupes-<shard>` par shard |
 | `extract-senat` | `epingler-le-code` | `export_sens.zip` de `data.senat.fr` (#885) | artifact `raw-profiles-senat`, cache `public-data-cache-senat-<date>` |
@@ -338,12 +338,39 @@ committés, le portail. **Produit** l'artifact `portail-europeen-chaud`.
 
 #### `prepare-roster-matrix`
 
+**D'abord, la table des groupes du run (#1168)** :
+
+```
+python3 src/groupes_amo30.py --mettre-a-jour \
+    --precedent raw_data/groupes_du_run.json --out raw_data/groupes_du_run.json
+```
+
+`groupes_amo30.py` compose la table que tout le run lira : la table **écrite à
+la main** (`config/groupes_reels.json`), plus les groupes qu'un run précédent a
+ajoutés (repris tels quels de `raw_data/groupes_du_run.json` — c'est ce qui fige
+un lien et une adresse), plus ce que l'archive AMO30 apporte de neuf : un organe
+renommé rejoint son groupe, un groupe inconnu entre avec sa lignée. Elle s'écrit
+dans `raw_data/` parce que `config/` est recopié du dépôt privé à chaque run.
+
+**Aucun code de sortie n'arrête le job** : sans table composée, les lecteurs
+retombent sur la table écrite (`groupes_config.chemin_table_groupes`, qui ne
+retient la table du run que si elle porte l'empreinte de la table écrite du
+jour). Annotations `TABLE_GROUPES_A_RELIRE` (un cas non tranché ou un conflit)
+et `TABLE_GROUPES_NON_COMPOSEE` (archive ou table illisible).
+
+La table voyage **dans l'artifact `roster-candidats`**, avec le roster qu'elle a
+servi à construire : les shards et la fusion le téléchargent dans `raw_data`, et
+elle y revient à sa place. `merge-and-pivot` la committe.
+→ [la table des groupes du run](decisions/table-des-groupes-du-run-1168.md)
+
+**Ensuite, le roster** :
+
 Construit **une fois pour tout le run** `raw_data/roster_candidats.json` (la
 liste roster-driven, filtrée par sigle) *et* `raw_data/rosters_bruts.json` (la
 **même** collecte, avant filtrage), publiés dans **un seul** artifact
 `roster-candidats` ; puis calcule la liste des 8 shards roster.
 
-**Consomme** `config/groupes_reels.json` — **12 entrées** depuis #700, dont 10
+**Consomme** la table des groupes — **12 entrées** depuis #700, dont 10
 actives : un fetch de roster par couple `(roster_chambre, législature)`
 distinct, donc **deux** côté AN (`("deputes", "16")` et `("deputes", "17")`),
 lus dans la **même** archive AMO30 déjà en cache — pas de téléchargement
@@ -619,7 +646,7 @@ committe pas ;
 `--enrich-parltrack` ; **seconde** passe `--pivot-only` sur le
 `roster_candidats.json` du run ; **la table des commissions
 saisies au fond** (`build_commissions_dossiers.py`, #328 — non bloquante, elle
-dérive du référentiel et non du corpus) ; profils de groupe parlementaire réel, **fiches de lignée de groupe**
+dérive du référentiel et non du corpus) ; profils de groupe parlementaire réel — `generate_group_profiles.py`, qui applique **après** la génération les retraits nommés dans `fiches_retirees[]` (#1168 : une fiche ne part que si celle qui la remplace porte ses organes et tous ses membres ; annotations `FICHE_RETIREE` / `FICHE_NON_RETIREE`) —, **fiches de lignée de groupe**
 (`generate_lignee_profiles.py`, #836 — lues sur les fiches de groupe que le step
 précédent vient d'écrire, jamais du réseau, donc APRÈS lui et insensibles à son
 code 2 ; `continue-on-error`, même arbitrage que le step gouvernement, la §4c du

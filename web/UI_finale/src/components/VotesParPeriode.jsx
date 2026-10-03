@@ -7,8 +7,8 @@
  *
  * Maquette validée le 08/09/2026 (artefact « Depuis quel banc il a voté »).
  */
-import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useMemo, useRef, useState } from 'react';
+import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
 import { LIBELLE_SORT_TEXTE, VOTE_STYLE, formatNumber, pageDuJeuDeDonnees } from '../utils/lecture';
 import { MATIERE_NON_ETABLIE as NON_ETABLIE, NATURES_UE } from '../utils/profilCandidat';
 import { teinteThemeUe } from '../utils/matiere';
@@ -240,10 +240,10 @@ function Colonnes({ votes, positions, matiere, onIsoler, onToutAfficher, ue = fa
         })}
       </div>
 
-      {/* Une seule voix sur toute la fiche : « cliquez ». Le tutoiement de
-          l'invite des textes portés et le vouvoiement d'ici cohabitaient sur la
-          même page (#328). */}
-      <p className="vp-aide">Cliquez une barre, ou un en-tête de colonne.</p>
+      {/* PLUS DE MODE D'EMPLOI SOUS LES COLONNES (01/10/2026). « Cliquez une
+          barre, ou un en-tête de colonne. » expliquait un geste que la figure
+          doit faire comprendre seule : le texte explicatif est un aveu d'échec
+          (DESIGN_SYSTEM §6 bis règle 2). */}
     </div>
   );
 }
@@ -260,6 +260,9 @@ export default function VotesParPeriode({ periodes, portee, reperes, regle, etiq
   const [positions, setPositions] = useState(() => new Set(POSITIONS_ORDONNEES));
   const [origine, setOrigine] = useState(null);
   const [matiere, setMatiere] = useState(null);
+  // La liste d'une matière se replie au clic hors de la figure (02/10/2026).
+  const racine = useRef(null);
+  useReplieAuClicDehors(racine, matiere != null, () => setMatiere(null));
   // Le filtre par nature des textes votés au Parlement européen (#901).
   const [nature, setNature] = useState('tous');
 
@@ -323,7 +326,7 @@ export default function VotesParPeriode({ periodes, portee, reperes, regle, etiq
    * d'autre que : voici de quoi cette figure est tirée, et quelle période elle
    * montre. Elles entrent donc dans la carte, dans cet ordre. */
   return (
-    <div className="vp">
+    <div className="vp" ref={racine}>
       <div className="cp-carte cp-bloc vp-carte">
         {etiquette}
         {regle && <p className="vp-regle">{regle}</p>}
@@ -362,6 +365,7 @@ export default function VotesParPeriode({ periodes, portee, reperes, regle, etiq
           libelle={libelleCourtDePeriode}
           unite="textes"
           uniteSingulier="texte"
+          sansPosition
         />
         )}
         <BlocPeriode
@@ -412,12 +416,9 @@ export default function VotesParPeriode({ periodes, portee, reperes, regle, etiq
         ))}
       </div>
 
-      <p className="vp-methodo">
-        <Link to="/methodologie#votes">
-          Comment ces votes sont retenus, rattachés et qualifiés
-        </Link>
-      </p>
-
+      {/* Le renvoi vers la méthodologie est dans la bulle du titre de section
+          (`CandidateProfile`, 01/10/2026) : il n'est plus posé entre la figure
+          et sa liste. */}
       <Colonnes
         ue={ue}
         votes={visibles}
@@ -427,13 +428,18 @@ export default function VotesParPeriode({ periodes, portee, reperes, regle, etiq
         onToutAfficher={() => setMatiere(null)}
       />
 
-      {/* La section publie ses propres trous. Sans cette ligne, une matière
-          absente sur 449 des 1 160 positions se lirait comme « ces textes n'ont
-          pas de commission saisie au fond » (§2 règles 5 et 7).
-          LE CHIFFRE RESTE ICI, LE POURQUOI PART À LA MÉTHODOLOGIE : la mesure
-          ne vaut que de cette personne et n'a de sens que sous sa figure ;
-          l'explication du rattachement est la même sur les 30 fiches, et un
-          paragraphe recopié trente fois se lit zéro fois. */}
+      {/* CE QUE LA FIGURE NE SAIT PAS A QUITTÉ LA SECTION, CÔTÉ FRANÇAIS
+          (01/10/2026). L'encadré — combien de positions sans commission, combien
+          sans sort final — devient une ligne de « Ce qu'on n'a pas pu lire », la
+          section qui parle des manques : dit sous chaque figure, il faisait de
+          chaque section une demi-section de réserves. Les nombres ne sont pas
+          perdus : la vue du candidat les porte (`manques.votes`, tiré de
+          `couvertureDesReperes`), et c'est là que la section 6 les lit.
+
+          LE VERSANT EUROPÉEN GARDE LE SIEN : sa phrase dit autre chose — des
+          textes sans thème, des scrutins antérieurs remplacés — et la revue n'a
+          arrêté aucune ligne pour elle. Le retirer sans lui donner de place
+          effacerait un trou déclaré (§2 règle 5). */}
       {reperes && ue && (
         <p className="cp-note vp-couverture">
           <b>Ce que cette figure ne sait pas.</b> Sur ses {formatNumber(reperes.total)} textes votés
@@ -442,16 +448,6 @@ export default function VotesParPeriode({ periodes, portee, reperes, regle, etiq
           {formatNumber(reperes.positions - reperes.total)} position
           {reperes.positions - reperes.total > 1 ? 's' : ''} portent sur un scrutin antérieur du
           même texte, que le dernier vote retenu remplace.
-        </p>
-      )}
-      {reperes && !ue && (
-        <p className="cp-note vp-couverture">
-          <b>Ce que cette figure ne sait pas.</b> Sur ses {formatNumber(reperes.total)} positions
-          de dernière lecture, {formatNumber(reperes.total - reperes.matiere)} ne disent pas quelle
-          commission a examiné le texte — elles restent en « matière non établie » — et{' '}
-          {formatNumber(reperes.total - reperes.statut)} ne portent pas le sort final de leur
-          texte.{' '}
-          <Link to="/methodologie#votes">Pourquoi ce rattachement n’aboutit pas toujours</Link>.
         </p>
       )}
     </div>

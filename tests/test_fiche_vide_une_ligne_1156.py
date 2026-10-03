@@ -46,19 +46,30 @@ def test_une_liste_jamais_interrogee_ne_dit_pas_qu_on_a_cherche() -> None:
     assert "defaut: 'Aucune donnée trouvée.'" in lecture
 
 
-def test_une_section_vide_ne_porte_plus_sa_regle_de_lecture() -> None:
-    """Rien à montrer, donc rien à expliquer — sa consigne du 01/10/2026.
+def test_une_section_vide_porte_sa_bulle() -> None:
+    """La règle s'est retournée le 02/10/2026, et le test avec elle.
 
-    Le pied et le critère accompagnent des figures ; sous une mention d'absence,
-    ils sont deux lignes de commentaire pour une ligne de contenu.
+    Le 01/10, « rien à montrer, donc rien à expliquer » : le pied et le critère
+    accompagnaient des figures, et une section vide n'en gardait aucun. La règle
+    de lecture est passée dans une bulle le même jour, et la consigne avait
+    suivi — pas de « i » à côté d'une ligne d'absence.
+
+    La propriétaire l'a défaite le lendemain : « Cette décision a été prise au
+    moment où on avait les notes en pied de section. Avec les bulles, ça n'a
+    plus de sens. » Une bulle dit ce que la section présente ; elle le dit
+    aussi quand la section est vide.
     """
     fiche = FICHE.read_text(encoding="utf-8")
-    assert "c.fonctions.blocs.length === 0 ? null : (" in fiche, "le pied de la section 1"
-    assert "critere={c.ecarts.bande.length" in fiche, "le critère de la section 4"
-    assert "critere={c.interventions.total" in fiche, "le critère de la section 5"
-    assert "{!sectionVide && (" in fiche, (
-        "le renvoi de méthodologie de la section 2"
-    )
+    assert "bulle={BULLES.fonctions}" in fiche, "section 1"
+    assert "bulle={votesDesDeuxCotes ? null : votesUeSeuls ? BULLES.votesUe : BULLES.votes}" in fiche, "section 3"
+    assert "bulle={BULLES.ecarts}" in fiche, "section 4"
+    assert "bulle={parolesDesDeuxCotes ? null : parolesUeSeules ? BULLES.ditUe : BULLES.dit}" in fiche, "section 5"
+    assert "bulle={BULLES.couverture}" in fiche, "section 6"
+    for condition in ("c.fonctions.blocs.length === 0 ? null", "c.votes.total ? BULLES", "c.ecarts.bande.length ? BULLES"):
+        assert condition not in fiche, f"une bulle dépend encore du vide de sa section : {condition}"
+    # Section 2 : ses bulles tiennent aux titres de CARTE, et entièrement vide
+    # elle n'a plus de carte. Elle en porte alors une seule, à son titre.
+    assert '<Section numero="2" titre={c.voix.titres.propose} bulle={proposeVide ? BULLES.proposeVide : null}>' in fiche
 
 
 def test_la_carte_des_amendements_disparait_quand_la_section_entiere_est_vide() -> None:
@@ -84,9 +95,10 @@ def test_la_carte_des_amendements_disparait_quand_la_section_entiere_est_vide() 
 
 
 def test_la_cause_des_ecarts_est_dite_en_section_six() -> None:
-    """Les écarts ne sont pas une liste collectée — ni borne, ni compte —, donc
-    pas une sixième ligne du tableau. Ils ont leur mention, et elle porte la
-    nuance sans laquelle le vide se lirait « il n'a jamais divergé »."""
+    """Les écarts ne sont pas un manque de source — ni borne, ni compte —, donc
+    pas une ligne de « Ce qui manque sur cette fiche » (la liste qui a remplacé
+    le tableau le 01/10/2026). Ils ont leur mention, et elle porte la nuance
+    sans laquelle le vide se lirait « il n'a jamais divergé »."""
     fiche = FICHE.read_text(encoding="utf-8")
     assert "cp-couv-ecarts" in fiche
     assert "ecartsSansFiche={!c.ecarts.fiches.length}" in fiche

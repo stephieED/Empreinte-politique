@@ -122,9 +122,12 @@ def test_le_pied_de_fiche_ne_garde_que_la_licence(fiche: str) -> None:
 
 
 def test_la_section_renvoie_a_la_couverture_du_corpus(fiche: str) -> None:
-    """Les bornes ne disparaissent pas de la vue : elles changent de page."""
-    assert 'to="/sources#frise"' in fiche
-    assert 'to="/methodologie#couverture"' in fiche
+    """Les bornes ne disparaissent pas de la vue : elles changent de page.
+
+    Les deux renvois sont les deux liens de la bulle du titre de section depuis
+    le 01/10/2026, et non plus une ligne sous les cartes."""
+    assert "vers: '/sources#frise'" in fiche
+    assert "vers: '/methodologie#couverture'" in fiche
 
 
 def test_la_limite_projets_de_loi_a_disparu(profil: str, fiche: str) -> None:
@@ -194,7 +197,28 @@ def test_la_qualification_ne_se_declenche_pas_sur_un_mandat_unique(profil: str) 
 
 def test_les_accords_suivent_le_nombre(profil: str) -> None:
     """« aucun de ses 1 mandats électifs » se lisait sur toutes les fiches à un
-    seul mandat."""
-    bloc = profil[profil.index("'suspension'") :]
+    seul mandat.
+
+    LA PHRASE QUI PORTAIT CE COMPTE EST PARTIE (01/10/2026) : la limite
+    `suspension` dit désormais « La source ne dit pas si un mandat s'est
+    interrompu quand cette personne est entrée au gouvernement », sans nombre —
+    et sans le nom de champ `suspendu_pour_fonction_gouvernementale`, qui était
+    publié tel quel. La règle d'accord, elle, reste, et elle s'est déplacée là
+    où « Ce qui manque sur cette fiche » écrit des nombres : « 1 n'a pas de
+    texte », « 3 475 n'indiquent pas… ».
+    """
+    bloc = profil[profil.index("cle: 'suspension'") :]
     bloc = bloc[: bloc.index("});") + 3]
-    assert "electifs.length > 1 ? 's' : ''" in bloc
+    assert "${" not in bloc, "la phrase de la suspension ne compte plus rien"
+    assert "suspendu_pour_fonction_gouvernementale" not in bloc
+    mesures = profil[profil.index("function lignesDesReperes") :]
+    mesures = mesures[: mesures.index("\n}\n")]
+    for singulier, pluriel in (
+        ("n’a pas de commission connue", "n’ont pas de commission connue"),
+        ("n’a pas de sort connu", "n’ont pas de sort connu"),
+        ("n’a pas de texte", "n’ont pas de texte"),
+        ("n’indique pas à quel titre", "n’indiquent pas à quel titre"),
+    ):
+        assert singulier in mesures and pluriel in mesures, f"l'accord de « {pluriel} » a disparu"
+    assert "v.total > 1 ? 's' : ''" in mesures
+    assert "p.total > 1 ? 's' : ''" in mesures

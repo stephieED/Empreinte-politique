@@ -20,7 +20,6 @@ import {
   appartenancesGouvernementales,
   bornesDuParcours,
   causeListeVide,
-  couvertureDesListes,
   directionQuestionsGouvernement,
   essentiel,
   estAmendementEuropeen,
@@ -30,6 +29,7 @@ import {
   grandsChiffres,
   fonctionsExercees,
   limitesDeclarees,
+  manquesDeLaFiche,
   regimeQualiteOrateur,
   rolesDuParcours,
   siegesElectifs,
@@ -289,6 +289,10 @@ export function buildCandidateView(
   dossiersEuropeens = null,
   documentsEuropeens = null,
   scrutinsEuropeens = null,
+  // `bornes` de `couverture.json` : la date où chaque source commence, telle que
+  // l'ensemble des fiches la déclare. Elle ne sert que là où le profil ne porte
+  // pas la sienne (`debutDeSource`) ; `null` quand le fichier n'a pas pu être lu.
+  bornesDuCorpus = null,
 ) {
   const mandats = pivot.mandats || [];
   const votes = joinVotes(pivot.votes || [], scrutinsIndex);
@@ -433,7 +437,17 @@ export function buildCandidateView(
     const dossierId = scrutinsDossiers?.scrutins?.[scrutinId] ?? null;
     return commissionDuDossier(dossierId)?.sigle ?? null;
   };
-  const ecarts = ecartsAvecLeGroupe(votes, fichesGroupe, matiereDuScrutin);
+  /* LA SECTION 4 COMPARE LES MÊMES SCRUTINS QUE LA SECTION 3 EN PUBLIE
+     (01/10/2026) : `lectureVotes.retenus`, la sélection de dernière lecture
+     calculée une fois, juste au-dessus. `null` quand le corpus des scrutins n'a
+     pas pu être lu — « je ne sais pas quelle est la dernière lecture » ne se
+     remplace pas par « toutes les lectures » (§2 règle 5). */
+  const ecarts = ecartsAvecLeGroupe(
+    votes,
+    fichesGroupe,
+    matiereDuScrutin,
+    lectureVotes.derniereLectureDisponible ? lectureVotes.retenus : null,
+  );
 
   /* « Ce qu'il a voté » : les positions de dernière lecture, rangées par
    * période politique (#328). Elles partent de `lectureVotes.retenus` — la
@@ -450,6 +464,9 @@ export function buildCandidateView(
     commissionDuDossier,
   });
   const periodesDeVotes = periodesDeVote(votesQualifies);
+  // Ce que la section sait de ses propres trous — publié, jamais deviné à la
+  // soustraction par le lecteur (§2 règles 5 et 7).
+  const reperesDesVotes = couvertureDesReperes(votesQualifies);
 
   /* « Ce qu'il a voté » AU PARLEMENT EUROPÉEN : un texte, une position, et les
    * mêmes thèmes que le sankey (`utils/votesEuropeens.js`). Les 11 013
@@ -484,6 +501,7 @@ export function buildCandidateView(
     gouvernements: tousLesGouvernements || [],
   });
   const periodesDeParoles = periodesDeParole(parolesQualifiees);
+  const couvertureParoles = couvertureDesParoles(parolesQualifiees);
   /* Les mêmes paroles, rangées par QUALITÉ (#328) : on ne parle pas du même
      endroit selon qu'on siège à Paris, qu'on gouverne ou qu'on siège à
      Strasbourg. `periodes` reste servi pour les vues qui lisent tout d'un bloc
@@ -492,6 +510,35 @@ export function buildCandidateView(
     roles: roles.filter((r) => r.institution === INSTITUTION_PARLEMENT),
     gouvernements: tousLesGouvernements || [],
   });
+
+  /* CE QUE DEUX FIGURES NE SAVENT PAS, RENDU À LA SECTION QUI PARLE DES
+   * MANQUES (01/10/2026). « Ce qu'il a voté » et « Ce qu'il a dit » portaient
+   * chacune, sous leur figure, un encadré « Ce que cette figure ne sait
+   * pas » ; les deux ont quitté leur section pour devenir des lignes de « Ce
+   * qu'on n'a pas pu lire ». Les nombres dont ces lignes ont besoin sont ICI,
+   * déjà soustraits — c'est le trou que la phrase annonce, pas ce qui est là
+   * — et ils viennent des deux mêmes mesures qu'avant (`couvertureDesReperes`,
+   * `couvertureDesParoles`), jamais d'un second comptage.
+   *
+   * `votes` ne compte que les positions de dernière lecture À L'ASSEMBLÉE,
+   * comme l'encadré qu'il remplace ; le versant européen garde le sien sous
+   * sa figure (`votes.europe.reperes`). Un nombre à zéro reste un zéro
+   * mesuré : c'est à la phrase de ne pas l'écrire. */
+  const manques = {
+    votes: {
+      total: reperesDesVotes.total,
+      sansCommission: reperesDesVotes.total - reperesDesVotes.matiere,
+      sansSort: reperesDesVotes.total - reperesDesVotes.statut,
+    },
+    paroles: {
+      total: couvertureParoles.total,
+      sansIntitule: couvertureParoles.total - couvertureParoles.sujet,
+      sansVerbatim: couvertureParoles.total - couvertureParoles.verbatim,
+      sansQualite: couvertureParoles.total - couvertureParoles.fonction,
+      themeSeul: couvertureParoles.themeSeul,
+      sansDate: couvertureParoles.total - couvertureParoles.datees,
+    },
+  };
 
   return {
     id: manifestEntry.slug,
@@ -572,7 +619,7 @@ export function buildCandidateView(
       qualites: qualitesDeParole,
       plafondPeriode: plafondParPeriode(periodesDeParoles),
       plafondEnsemble: plafondToutesPeriodes(periodesDeParoles),
-      couverture: couvertureDesParoles(parolesQualifiees),
+      couverture: couvertureParoles,
     },
     votes: {
       ...lectureVotes,
@@ -582,9 +629,7 @@ export function buildCandidateView(
       qualifies: votesQualifies.length,
       periodes: periodesDeVotes,
       portee: porteeCommune(periodesDeVotes),
-      // Ce que la section sait de ses propres trous — publié, jamais deviné à
-      // la soustraction par le lecteur (§2 règles 5 et 7).
-      reperes: couvertureDesReperes(votesQualifies),
+      reperes: reperesDesVotes,
       // L'index scrutin → dossier n'a pas pu être lu : la matière et le statut
       // manquent pour TOUS les votes, ce qui n'est pas la même chose que « ces
       // textes n'ont pas de commission saisie au fond ».
@@ -592,6 +637,8 @@ export function buildCandidateView(
       europe: votesEuropeens,
     },
     ecarts,
+
+    manques,
 
     // La cause d'un vide, par liste : `ListeVide` (lot 1) la rend en phrase.
     // Elle est calculée ici pour n'être lue qu'une fois, pas dans six branches
@@ -604,14 +651,18 @@ export function buildCandidateView(
       interventions: causeListeVide(pivot.couverture?.interventions),
     },
 
-    couverture: couvertureDesListes(pivot.couverture, {
-      mandats: mandats.length,
-      votes: (pivot.votes || []).length,
-      amendements: (pivot.amendements || []).length,
-      textes_portes: (pivot.textes_portes || []).length,
-      interventions: interventions.length,
+    /* « CE QUI MANQUE SUR CETTE FICHE » : la section 6 est UNE liste
+     * (01/10/2026), et elle est calculée ici d'un bloc — les mandats qu'une
+     * source ne couvre pas, les limites déclarées, puis les deux mesures de
+     * `manques` ci-dessus, dans l'ordre que `manquesDeLaFiche` arrête. Le
+     * tableau « Ce que chaque liste porte » (`couverture`) n'est plus servi :
+     * plus rien ne le lit. */
+    ceQuiManque: manquesDeLaFiche({
+      profil: pivot,
+      limites: limitesDeclarees({ profil: pivot, roles, sieges }),
+      manques,
+      bornesDuCorpus,
     }),
-    limites: limitesDeclarees({ profil: pivot, roles, sieges }),
   };
 }
 

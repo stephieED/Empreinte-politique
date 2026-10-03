@@ -8,7 +8,6 @@
  */
 import { VOTE_STYLE, formatNumber, pageDuJeuDeDonnees } from '../utils/lecture';
 import { groupeDivise, partDissidente } from '../utils/ecartsGroupe';
-import { Link } from 'react-router-dom';
 import './EcartsGroupe.css';
 
 const jour = (d) => (d ? `${d.slice(8, 10)}/${d.slice(5, 7)}/${d.slice(0, 4)}` : '');
@@ -307,21 +306,18 @@ export default function EcartsGroupe({ ecarts, voix, etiquette = null }) {
                   </p>
                 )}
               </div>
+              {/* LES DEUX NOMBRES, SANS LEUR SOUS-ÉTIQUETTE (01/10/2026). Chacune
+                  définissait son nombre en une ligne et renvoyait à la
+                  méthodologie : la définition et le renvoi sont dans la bulle du
+                  titre de section (`CandidateProfile`), une fois, et non sous
+                  chaque chiffre. */}
               <dl className="eg-dl">
                 <dt>
                   <b>Scrutins utilisés pour la comparaison</b>
-                  <em>
-                    scrutins sur l’ensemble d’un texte où les données sont complètes ·{' '}
-                    <Link to="/methodologie#ecarts">comment ils sont retenus</Link>
-                  </em>
                 </dt>
                 <dd className="eg-fort">{formatNumber(bande.length)}</dd>
                 <dt>
                   <b>Scrutins où son groupe s’est divisé</b>
-                  <em>
-                    ses membres exprimés n’ont pas tous voté de la même façon ·{' '}
-                    <Link to="/methodologie#ecarts">le détail</Link>
-                  </em>
                 </dt>
                 <dd className="eg-fort">{formatNumber(bande.filter(groupeDivise).length)}</dd>
               </dl>
@@ -365,9 +361,6 @@ export default function EcartsGroupe({ ecarts, voix, etiquette = null }) {
       <h3 className="eg-titre">
         Les scrutins où {voix.pronom} n’a pas voté comme la majorité de son groupe
       </h3>
-          <p className="eg-sous">
-            Chacun avec la répartition réelle du groupe ce jour-là, et le sort du texte.
-          </p>
           <div className="eg-lignes">
             {ecarts.ecarts.map((x) => (
               <Ligne x={x} key={x.scrutinId} />

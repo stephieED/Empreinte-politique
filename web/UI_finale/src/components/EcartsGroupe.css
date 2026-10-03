@@ -7,13 +7,6 @@
 }
 
 
-.eg-sous {
-  font-size: 13px;
-  color: var(--muted);
-  margin: 6px 0 0;
-  max-width: 76ch;
-}
-
 .eg-bloc {
   padding-top: 22px;
   margin-top: 22px;
@@ -87,28 +80,6 @@
   color: var(--ink);
 }
 
-.eg-dl dt em {
-  display: block;
-  font-style: normal;
-  font-size: 11.5px;
-  /* `--border-strong` est la couleur d'un FILET (#e7e4df) : posée sur du texte,
-     elle donne un contraste de 1,3:1 sur blanc — illisible. */
-  color: var(--muted);
-  margin-top: 2px;
-}
-
-.eg-dl dt em a {
-  color: var(--muted);
-  text-decoration: underline;
-  text-decoration-color: var(--border);
-  text-underline-offset: 2px;
-}
-
-.eg-dl dt em a:hover {
-  color: var(--ink);
-  text-decoration-color: currentcolor;
-}
-
 .eg-dl dd {
   margin: 0;
   font-weight: 700;
@@ -177,6 +148,14 @@
 
 button.eg-col {
   cursor: pointer;
+}
+
+/* LE POINT D'UNE DIVERGENCE PASSE AU PREMIER PLAN (01/10/2026). Il fait 10 px
+   dans une colonne qui en fait trois : il déborde sur ses voisines, et les
+   repères de celles-ci, peints après lui, passaient par-dessus son cercle. */
+.eg-col--ecart {
+  position: relative;
+  z-index: 1;
 }
 
 button.eg-col:hover .eg-lui {

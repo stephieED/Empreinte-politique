@@ -181,12 +181,29 @@ def test_la_cascade_lit_la_meme_table_de_commissions_que_la_chute(regles):
         )
 
 
-def test_la_teinte_vient_de_la_palette_partagee(composant):
-    """Une seconde palette dans le composant ferait diverger les deux figures."""
-    assert "teinteMatiere" in composant, "la cascade doit teinter par `teinteMatiere`"
+def test_la_teinte_vient_de_la_table_partagee(composant):
+    """Une seconde palette dans le composant ferait diverger les deux figures.
+
+    RÉÉCRIT LE 01/10/2026, AVEC LA RÈGLE. Il exigeait `teinteMatiere`, la teinte
+    AU RANG : la commission la plus fréquente prenait la première couleur. Les
+    deux cartes de la section ne classant pas pareil — des textes portés en
+    haut, des amendements en bas —, la même commission y changeait de couleur
+    (« Affaires sociales » indigo puis bleu clair chez François Ruffin). La
+    fiche candidat teinte désormais par `teinteCommission` : une couleur FIXE
+    par commission permanente, lue dans `utils/commissions.js`. Ce que le test
+    garde n'a pas bougé — une seule table, hors du composant.
+    """
+    assert "teinteCommission" in composant, (
+        "la carte des amendements doit teinter par `teinteCommission`, la table "
+        "de couleurs fixes que les carrés des textes portés lisent aussi"
+    )
+    assert "teinteMatiere" not in composant, (
+        "la teinte au rang est revenue sur la fiche candidat : une commission y "
+        "changerait de couleur d'une carte à l'autre"
+    )
     assert not re.search(r"const PALETTE\w* = \[", composant), (
         "une palette de matières a été redéclarée dans le composant : elle vit "
-        "dans `utils/matiere.js`, et nulle part ailleurs"
+        "dans `utils/commissions.js`, et nulle part ailleurs"
     )
 
 
@@ -232,7 +249,11 @@ def test_les_textes_portes_viennent_avant_les_amendements(composant):
     # `<Chute>` — la cascade des amendements par année — est devenue
     # `<Matieres>`, le tableau des deux mesures. L'ancrage reste STRUCTUREL :
     # c'est l'ordre des deux populations qui est gardé, pas le nom du composant.
-    place_textes = corps.index("<Cascade")
+    # De même `<Cascade>` a quitté la fiche candidat le 02/10/2026, quand le
+    # versant européen a pris ses carrés : la carte des textes portés se repère
+    # par ses deux figures, `<CarresThemesUe>` puis `<CarresTextes>`.
+    place_textes = corps.index("<CarresThemesUe")
+    assert place_textes < corps.index("<CarresTextes")
     place_amdts = corps.index("<Matieres")
     assert place_textes < place_amdts, (
         "la carte des textes portés doit ouvrir la section, avant les "

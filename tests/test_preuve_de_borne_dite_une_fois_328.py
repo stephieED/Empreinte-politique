@@ -24,10 +24,26 @@ doublon » effacerait un fait dans ces 35 cas.
 La donnée reste donc vraie sur chaque état ; c'est l'affichage qui ne répète
 pas, par `preuveDejaDite`.
 
+LA FICHE NE REND PLUS AUCUNE PREUVE, DEPUIS LE 01/10/2026. Le tableau « Ce que
+chaque liste porte » a quitté « Ce qu'on n'a pas pu lire » : la section est
+devenue une seule liste de manques, et ni les états du pipeline (`couvert`,
+`hors_couverture`, `non_collecte`, `fait_etabli`) ni leur preuve ne s'y
+affichent. `couvertureDesListes`, `preuveDejaDite` et `ETATS_PORTANT_LA_BORNE`
+sont partis avec lui : il n'y a plus de répétition à sauter là où plus rien
+n'est imprimé.
+
+CE QUI SE GARDE DE LA RÈGLE, et c'est ce que ces tests tiennent désormais :
+- ce qui se dit une fois ne se dit pas trois — les listes qui partagent le même
+  manque et la même date tiennent sur UNE ligne ;
+- la preuve de borne ne revient pas sur la fiche, la DATE seule y paraît, et
+  seulement en face d'un mandat qu'elle laisse hors de la source ;
+- LA DONNÉE N'EST TOUJOURS PAS CORRIGÉE À LA SOURCE : le producteur écrit ses
+  deux entrées par liste, et le dernier test le garde tel quel.
+
 CE QUE CES TESTS NE COUVRENT PAS (§2 règle 5) : aucun composant React n'est
-rendu ici. La disparition effective du doublon a été vérifiée hors dépôt contre
-le paquet construit, sur les quatre profils cités — 0 mot en double après, et
-les deux preuves distinctes de `marine-tondelier` toujours affichées.
+rendu ici. La liste rendue a été vérifiée hors dépôt par rendu serveur sur les
+31 fiches publiées, le 01/10/2026 ; `tests/test_section_6_liste_de_manques.py`
+exécute le calcul sur des entrées copiées du corpus.
 """
 
 from __future__ import annotations
@@ -58,68 +74,95 @@ def fiche() -> str:
     return sans_commentaires(FICHE.read_text(encoding="utf-8"))
 
 
-def test_la_marque_est_posee_par_le_calcul_et_non_par_le_rendu(profil: str) -> None:
-    """Un dédoublonnage écrit dans le JSX est un dédoublonnage qu'aucun test ne lit."""
-    bloc = profil[profil.index("export function couvertureDesListes") :]
-    bloc = bloc[: bloc.index("\n}")]
-    assert "preuveDejaDite" in bloc
-    assert "new Set()" in bloc, "rien ne mémorise les preuves déjà dites"
+def test_la_liste_est_posee_par_le_calcul_et_non_par_le_rendu(profil: str, fiche: str) -> None:
+    """Un regroupement écrit dans le JSX est un regroupement qu'aucun test ne lit.
 
-
-def test_la_preuve_reste_portee_par_chaque_etat(profil: str) -> None:
-    """La marque dit « ne la répète pas », pas « cet état n'a pas de preuve ».
-
-    Mettre `preuve: null` sur la seconde occurrence rendrait la donnée fausse :
-    les deux états portent bien la même borne, et c'est vrai.
+    C'était vrai du dédoublonnage des preuves (`preuveDejaDite`), ça l'est de la
+    liste qui le remplace : l'ordre, les textes et les regroupements sont
+    calculés dans `manquesDeLaFiche`, et le composant ne fait que poser des
+    lignes.
     """
-    bloc = profil[profil.index("export function couvertureDesListes") :]
-    bloc = bloc[: bloc.index("\n}")]
-    assert "preuve," in bloc
-    # `borne ? null : e.preuve` est la SEULE mise à null tolérée, et elle porte
-    # sur une preuve qui n'est pas supprimée mais déplacée sur `/couverture`
-    # (#328). Toute autre annulerait un fait propre à la personne.
-    assert bloc.count("null") == bloc.count("borne ? null : e.preuve ?? null") + bloc.count("?? null")
+    assert "export function manquesDeLaFiche" in profil
+    bloc = fiche[fiche.index("function Couverture(") :]
+    bloc = bloc[: bloc.index("\n}\n")]
+    assert "lignes.map((l) => (" in bloc
+    assert "<b>{l.titre}</b>" in bloc and "<span>{l.texte}</span>" in bloc
+    assert ".sort(" not in bloc and ".filter(" not in bloc, (
+        "le composant trie ou filtre les lignes : la règle a quitté le calcul"
+    )
 
 
-def test_la_memoire_est_desormais_celle_de_la_SECTION(profil: str) -> None:
-    """La mémoire est partagée entre les listes — et c'est le renversement de #328.
+def test_la_date_de_source_reste_lue_sur_les_etats_qui_la_portent(profil: str) -> None:
+    """La donnée n'est pas réécrite : elle est LUE, sur les états qui datent.
 
-    #802 l'avait délibérément remise à zéro par liste : partagée, la borne AMO30
-    aurait disparu de « Votes » parce que « Mandats et fonctions » l'avait déjà
-    écrite, alors que ce sont deux listes indépendantes.
-
-    CETTE RAISON TOMBE AVEC LA BORNE. Les preuves de borne ne sont plus rendues
-    du tout (`ETATS_PORTANT_LA_BORNE`) : elles vivent sur `/couverture`. Ce qui
-    reste est propre à la personne ou au run — « aucun acteur AMO30 pour X »,
-    « extraction du groupe Senat:LR suspendue » —, identique d'une liste à
-    l'autre, et se répétait cinq fois pour rien : 700 mots sur la fiche
-    Retailleau, dont 140 par liste pour le seul certificat de suspension.
+    `couverture_profil._deriver` pose `portee.debut` sur `couvert` et sur
+    `fait_etabli` — les deux disent « publiée à partir de ». Ne retenir que le
+    premier laissait la borne vide sur les fiches hors AN, dont les cinq listes
+    sont `fait_etabli`. Une entrée EUROPÉENNE n'est pas une borne : sa portée va
+    de la première à la dernière donnée de la personne.
     """
-    bloc = profil[profil.index("export function couvertureDesListes") :]
+    assert "const ETATS_DATANT_LA_SOURCE = new Set(['couvert', 'fait_etabli'])" in profil
+    bloc = profil[profil.index("export function debutDeSource") :]
     bloc = bloc[: bloc.index("\n}")]
-    avant_map = bloc[: bloc.index("return LISTES_COUVERTES.map")]
-    assert "new Set()" in avant_map, "la mémoire est redevenue locale à une liste"
+    assert "ETATS_DATANT_LA_SOURCE.has(e.etat)" in bloc
+    assert "e.source !== INSTITUTION_PE_SOURCE" in bloc
+    assert "e.portee?.debut" in bloc
+    assert "bornesDuCorpus?.[liste]" in bloc, (
+        "sans le repli sur les bornes du corpus, une liste `non_collecte` — sans "
+        "portée — n'a plus de date, et ses mandats non couverts ne se disent plus"
+    )
 
 
-def test_la_borne_de_source_n_est_plus_rendue_sur_la_fiche(profil: str) -> None:
-    """Elle ne dit rien de la personne : elle dit ce que l'Assemblée publie.
+def test_un_meme_manque_se_dit_une_fois_pour_les_listes_qui_le_partagent(profil: str) -> None:
+    """Ce qui se répétait cinq fois pour rien ne se répète plus trois fois.
 
-    Le discriminant est l'ÉTAT, garanti par `couverture_profil._deriver` qui
-    attache `borne.preuve` à `couvert` et `hors_couverture` et bascule sur
-    `fait_etabli` dès que la preuve devient propre à la personne — pas une
-    reconnaissance du texte de la preuve, qui serait une jointure par
-    ressemblance (#639).
+    #802 puis #328 avaient réglé la mémoire des PREUVES — par liste, puis pour
+    la section. La liste n'imprime plus de preuve ; ce qui pourrait encore se
+    répéter, c'est la phrase : votes, amendements et textes portés commencent le
+    même jour et laissent donc le même mandat hors de la source. Ils tiennent
+    sur UNE ligne, « Votes, Amendements, Textes portés ».
     """
-    assert "export const ETATS_PORTANT_LA_BORNE" in profil
-    bloc = profil[profil.index("export const ETATS_PORTANT_LA_BORNE") :]
-    assert "'couvert'" in bloc[:200] and "'hors_couverture'" in bloc[:200]
-    calcul = profil[profil.index("export function couvertureDesListes") :]
-    calcul = calcul[: calcul.index("\n}")]
-    assert "ETATS_PORTANT_LA_BORNE.has(e.etat)" in calcul
+    bloc = profil[profil.index("export function mandatsNonCouverts") :]
+    bloc = bloc[: bloc.index("\n}\n")]
+    avant_boucle = bloc[: bloc.index("for (const { cle, titre } of LISTES_D_ACTIVITE)")]
+    assert "const groupes = new Map();" in avant_boucle, (
+        "la mémoire est redevenue locale à une liste : trois lignes identiques"
+    )
+    assert "g.titres.join(', ')" in bloc
 
 
-def test_le_rendu_saute_la_repetition_et_rien_d_autre(fiche: str) -> None:
-    assert "e.preuve && !e.preuveDejaDite" in fiche
+def test_la_preuve_de_borne_n_est_pas_rendue_et_sa_date_ne_l_est_que_face_a_un_mandat(
+    profil: str, fiche: str,
+) -> None:
+    """Une borne ne dit rien de la personne : elle dit ce que l'Assemblée publie.
+
+    Sa PREUVE vit sur `/couverture` depuis #328, et n'est pas revenue. Sa DATE,
+    elle, ne paraît plus sur toutes les fiches (« couvert depuis le 20.06.2012 »
+    s'imprimait sur les 31) : seulement dans la phrase d'un mandat qu'elle
+    laisse hors de la source, et dans « Avant juin 2002 ».
+    """
+    assert "preuve" not in fiche, "une preuve de couverture est revenue dans le composant"
+    assert "couvertureDesListes" not in profil and "ETATS_PORTANT_LA_BORNE" not in profil
+    bloc = profil[profil.index("export function mandatsNonCouverts") :]
+    bloc = bloc[: bloc.index("\n}\n")]
+    assert "if (!segments.length) continue;" in bloc, (
+        "une liste sans mandat non couvert écrirait quand même sa borne"
+    )
+    assert "la source commence le ${jourEnLettres(g.borne)}" in bloc
+    assert "e.preuve" not in profil[profil.index("export function debutDeSource") :], (
+        "le calcul de la liste lit une preuve : il n'a besoin que des dates"
+    )
+
+
+def test_le_rendu_ne_connait_plus_aucun_etat_de_pipeline(fiche: str) -> None:
+    """« non collecté — collecte écartée par le run qui a produit le profil brut
+    (meta.collecte_ecartee, #357) » s'affichait sous une liste de 3 522 entrées.
+
+    L'état décrit le dernier run, pas ce que le dépôt porte : il ne se rend
+    plus, ni lui ni les trois autres.
+    """
+    for etat in ("non_collecte:", "hors_couverture:", "fait_etabli:", "LIBELLE_ETAT", "e.etat"):
+        assert etat not in fiche, f"`{etat}` : la fiche rend de nouveau un état de couverture"
 
 
 def test_le_producteur_pose_bien_les_deux_cas() -> None:

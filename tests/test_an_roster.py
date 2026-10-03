@@ -180,6 +180,15 @@ APPELANTS_ATTENDUS = {
     # #996 lot 2 : le producteur du roster brut télécharge l'archive et charge
     # l'index GP pour cette union.
     "generate_roster_candidats.py",
+    # #1168 : l'audit de filiation lit l'index GP pour comparer la composition
+    # de deux groupes. Il ne dérive aucun roster et n'écrit rien — ni fiche, ni
+    # cache quand l'archive est nommée.
+    # → docs/decisions/audit-de-filiation-des-lignees-1168.md
+    "audit_filiation_lignees.py",
+    # #1168 lot 1 : la dérivation des groupes et de leurs lignées lit le même
+    # index GP. Elle ne dérive aucun roster, n'écrit rien, et aucun job ne la
+    # lit encore. → docs/decisions/derivation-des-groupes-depuis-amo30-1168.md
+    "groupes_amo30.py",
     # `group_profile.py` n'y est PLUS depuis #529. Il lisait le drapeau pour
     # choisir entre deux rédactions du `meta.warnings` de fraîcheur — celle
     # d'AMO30 et celle de NosDéputés. Le repli retiré, il n'y a plus qu'une

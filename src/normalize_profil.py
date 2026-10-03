@@ -494,6 +494,8 @@ def _normalize_intervention(i: dict[str, Any]) -> dict[str, Any]:
             reduite["collecte"] = COLLECTE_EXTRAIT
         if i.get("id_syceron"):
             reduite["id_syceron"] = str(i["id_syceron"])  # #1087, même règle qu'en forme complète
+        if i.get("role_seance"):
+            reduite["role_seance"] = i["role_seance"]  # #1169, même règle : posé seulement s'il est là
         return reduite
 
     result: dict[str, Any] = {
@@ -545,6 +547,11 @@ def _normalize_intervention(i: dict[str, Any]) -> dict[str, Any]:
     # l'entrée a été collectée avant que le parseur ne la lise.
     if i.get("id_syceron"):
         result["id_syceron"] = str(i["id_syceron"])
+    # #1169 — le rôle de séance, posé SEULEMENT quand le libellé de l'orateur l'a
+    # dit. `fonction` ne peut pas le porter (Syceron laisse `<qualite>` vide sur
+    # la présidence), et une clé à `None` ferait croire que le rôle a été mesuré.
+    if i.get("role_seance"):
+        result["role_seance"] = i["role_seance"]
     return result
 
 

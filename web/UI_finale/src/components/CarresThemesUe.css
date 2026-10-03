@@ -1,0 +1,137 @@
+/* ── Les textes portés européens, une ligne par thème (fiche candidat,
+ *    02/10/2026) ───────────────────────────────────────────────────────────
+ *
+ * Une grille : le nom du thème à gauche, puis une colonne par étape présente.
+ * L'en-tête de colonne, le carré, le voile et l'infobulle sont ceux de
+ * `CarresTextes.css` (`.cp-car-*`) ; cette feuille ne tient que ce que la
+ * grille ajoute.
+ *
+ * LES TEINTES NE SONT PAS ICI. Un carré reçoit la couleur du thème de sa ligne
+ * en attribut, depuis `utils/matiere.js` (`teinteThemeUe`).
+ *
+ * TROIS LONGUEURS, CHANGÉES SOUS 560 px. Le gabarit des colonnes est écrit par
+ * le composant (`--cth-cols`) et lit ces trois variables : le plancher d'une
+ * colonne, la largeur de la colonne des noms, l'écart entre colonnes.
+ */
+.cp-cth-grille {
+  --cth-plancher: 150px;
+  --cth-nom: 210px;
+  --cth-ecart: 26px;
+  display: grid;
+  grid-template-columns: var(--cth-nom) var(--cth-cols);
+  gap: 0 var(--cth-ecart);
+}
+/* La ligne n'est pas une boîte : son nom et ses cases sont des cellules de la
+   grille, alignées sur les en-têtes. */
+.cp-cth-ligne {
+  display: contents;
+}
+/* Le filet d'encre en tête de colonne est celui de `.cp-car-col` : un tableau,
+   pas une échelle — aucune étape n'est « plus avancée » que sa voisine (#901). */
+.cp-cth-tete {
+  min-width: 0;
+  border-top: 2px solid var(--ink, #17141f);
+  padding-top: 10px;
+}
+
+/* Le nom du thème : en gris, calé à droite contre ses cases, tronqué quand il
+   ne tient pas — « Agriculture, sylviculture et pêche » fait 34 signes. Il
+   reste entier dans `title`. C'est un bouton : il ouvre les textes du thème. */
+.cp-cth-nom {
+  display: block;
+  min-width: 0;
+  width: 100%;
+  margin: 0;
+  padding: 5px 0 3px;
+  border: 0;
+  border-top: 1px solid var(--border, #f0eeeb);
+  border-radius: 0;
+  background: none;
+  color: #3d3948;
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  /* Aligné sur le haut de la première rangée de carrés, quelle que soit la
+     hauteur de la case la plus fournie de la ligne. */
+  align-self: start;
+}
+.cp-cth-nom:hover,
+.cp-cth-nom[aria-pressed='true'] {
+  color: var(--ink, #17141f);
+  font-weight: 700;
+}
+/* Le contour passe à l'intérieur : `overflow: hidden`, qu'exige l'ellipse,
+   rognerait un contour posé dehors. */
+.cp-cth-nom:focus-visible {
+  outline: 2px solid var(--ink, #17141f);
+  outline-offset: -2px;
+}
+/* Un nom estompé reste lisible dès qu'on y revient : c'est par lui qu'on
+   change de thème. */
+.cp-cth-nom.cp-car-voile:hover,
+.cp-cth-nom.cp-car-voile:focus-visible {
+  opacity: 1;
+}
+
+.cp-cth-case {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 2px;
+  min-width: 0;
+  padding: 5px 0;
+  border-top: 1px solid var(--border, #f0eeeb);
+}
+
+/* LE CARRÉ EST PLUS PETIT QUE CELUI DU VERSANT FRANÇAIS, ET TOUS ONT LA MÊME
+   TAILLE : une fiche en dessine plusieurs centaines, et une taille qui varierait se
+   lirait comme une importance (§2 règle 1). */
+.cp-cth .cp-car-carre {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+/* TOUTES LES OCCURRENCES D'UN TEXTE S'ENTOURENT ENSEMBLE — au survol, au
+   focus, et tant qu'il est choisi. C'est ce contour qui dit qu'un même texte
+   est dessiné sur plusieurs lignes. */
+.cp-cth .cp-cth-jumeau,
+.cp-cth .cp-car-carre:focus-visible {
+  outline: 2px solid var(--ink, #17141f);
+  outline-offset: 1px;
+}
+
+/* Sous 560 px, 210 px de noms ne laisseraient rien aux colonnes : le nom du
+   thème passe sur sa propre ligne, au-dessus de ses cases, et le plancher des
+   colonnes descend. La page ne défile jamais horizontalement. */
+@media (max-width: 560px) {
+  .cp-cth-grille {
+    --cth-plancher: 72px;
+    --cth-nom: 0px;
+    --cth-ecart: 14px;
+    grid-template-columns: var(--cth-cols);
+  }
+  .cp-cth-coin {
+    display: none;
+  }
+  .cp-cth-nom {
+    grid-column: 1 / -1;
+    padding: 8px 0 0;
+    text-align: left;
+    white-space: normal;
+  }
+  .cp-cth-case {
+    padding: 4px 0 8px;
+    border-top: 0;
+  }
+  /* Un libellé d'étape dans 72 px : il se coupe plutôt que de déborder sur la
+     colonne voisine. */
+  .cp-cth .cp-car-lib {
+    overflow-wrap: anywhere;
+  }
+}

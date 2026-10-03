@@ -836,18 +836,30 @@ def test_le_libelle_affiche_dit_la_regle_a_cote_du_chiffre():
     la règle, plus une phrase qui promet qu'elle l'est.
 
     Ce qui reste garanti ici, et qui est l'essentiel de #711 : le chiffre porte
-    son étiquette courte (`LAST_READING_LABEL`), il est bâti sur les TEXTES
-    retenus, et le raisonnement complet est publié en méthodologie, où mène le
-    renvoi posé sous la figure.
+    son étiquette, il est bâti sur les TEXTES retenus, et le raisonnement complet
+    est publié en méthodologie.
+
+    L'ÉTIQUETTE A CHANGÉ DE MOTS LE 01/10/2026, PAS DE RÔLE. « 168 textes —
+    dernière lecture retenue pour chaque texte » est devenu « Sur 168 scrutins de
+    textes en dernière lecture », arrêté par la propriétaire à la revue
+    d'ergonomie de la fiche : la phrase est écrite sur la fiche, elle ne passe
+    plus par `LAST_READING_LABEL` — que la fiche de groupe emploie toujours, et
+    que `test_la_regle_est_ecrite_dans_le_module_partage` garde. Ce que le test
+    tient est ce que #711 voulait : le chiffre ne paraît pas sans les mots
+    « dernière lecture ». Le renvoi vers la méthodologie n'est plus sous la
+    figure : il est dans la bulle du titre de section.
 
     → `docs/decisions/regle-de-lecture-en-methodologie-328.md`
     """
     vue = sans_commentaires(VUE_CANDIDAT.read_text(encoding="utf-8"))
     methodo = sans_commentaires(PAGE_METHODO.read_text(encoding="utf-8"))
 
-    assert "LAST_READING_LABEL" in vue, (
+    assert "scrutins de textes en dernière lecture" in vue, (
         "le chiffre affiché sur la fiche candidat porte son étiquette : sans "
         "elle, le lecteur compare des textes à des votes"
+    )
+    assert "/methodologie#votes" in vue, (
+        "la bulle du titre de section mène au raisonnement de la règle"
     )
     assert "votes.textes" in vue, (
         "la barre de positions doit être bâtie sur les TEXTES retenus, pas sur "

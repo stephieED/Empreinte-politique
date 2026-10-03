@@ -1,0 +1,113 @@
+/* La bulle d'information d'un titre — forme arrêtée sur maquette le 01/10/2026.
+   Une seule feuille pour les huit emplacements de la fiche candidat : le « i »
+   d'un titre de section et celui d'un titre de carte ne diffèrent que par leur
+   taille. */
+
+/* L'ancêtre sous lequel la bulle s'ouvre. Il ne porte rien d'autre : c'est le
+   composant qui l'accueille qui garde sa mise en page. */
+.ib-ancre {
+  position: relative;
+}
+
+.ib-bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0;
+  cursor: pointer;
+}
+
+/* Dans le titre d'une carte, le « i » suit le texte : il n'y a pas de boîte
+   flexible pour l'en écarter, donc la marge et le calage sont les siens. */
+.ib-bouton--petit {
+  width: 17px;
+  height: 17px;
+  margin-left: 10px;
+  font-size: 11px;
+  vertical-align: 2px;
+}
+
+/* L'état ouvert se lit sur le bouton lui-même : c'est lui qu'on recliquera. */
+.ib-bouton[aria-expanded='true'] {
+  background: var(--ink);
+  color: #fff;
+}
+
+.ib-bouton:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Sous le titre, à son bord gauche. `z-index: 4` : au-dessus des figures de la
+   page, et SOUS la rangée collée du site (5) — une bulle qui défile ne doit pas
+   recouvrir la navigation. */
+.ib-bulle {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 10px);
+  z-index: 4;
+  display: block;
+  width: 420px;
+  max-width: 90vw;
+  padding: 18px 20px;
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(23, 20, 31, 0.14);
+  /* Le titre qui l'accueille est en 21 px, gras et serré : la bulle ne lui
+     emprunte rien. */
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-align: left;
+  white-space: normal;
+  color: var(--ink);
+}
+
+/* `display: block` l'emporterait sur l'attribut : sans cette règle, une bulle
+   fermée resterait à l'écran. */
+.ib-bulle[hidden] {
+  display: none;
+}
+
+.ib-phrase,
+.ib-note {
+  display: block;
+}
+
+.ib-phrase {
+  font-weight: 700;
+}
+
+.ib-note {
+  margin-top: 10px;
+  color: #3d3948;
+}
+
+.ib-liens {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 14px;
+}
+
+.ib-liens a {
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

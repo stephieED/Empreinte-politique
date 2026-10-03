@@ -135,6 +135,19 @@ les charger, ni à les faire grossir. -->
   rather than what happened, a dead job reads as a working one**: « Construction de
   l'index… 642 acteurs » was printed for a 0,28 s step that downloaded nothing.
   → `docs/decisions/fraicheur-index-amendements-749.md`
+- **And the consequence, measured: the weekly key expires an entry's NAME, never its
+  CONTENT (#1127).** The prefix crosses weeks on purpose (#555), so a *rebuild* never
+  happens at the week boundary either — only the purge of non-frozen legislatures does.
+  Measured on the first run of ISO week W40 (`36396696042`, 28/09/2026, 52 green jobs):
+  `--reconstruire-actives` was set, the log reads `Cache hit for restore-key:
+  public-data-cache-amendements-2026-W39`, and `17.contenu.json` kept its `genere_le` from
+  the 27th across the **four** following data commits — 125 090 ids unchanged. **So never
+  schedule a verification on "the first run of the week" expecting a rebuild**: #1127 did,
+  and was closed `not planned`. What actually exercises the from-archive build is
+  `cold_start`, a purged cache, or a schema change invalidating the entry version — three
+  things that are *decided*, not awaited, and the same day that would measure #1123 and
+  reopen #1125.
+  → `docs/decisions/aucune-semaine-ne-force-la-reconstruction-1127.md`
 - **A test reading the developer's `.cache/` passes for the wrong reason, and CI never
   sees it (#721).** The eleven cache constants are `Path(".cache") / …` — **relative to
   the cwd**, i.e. the repo root locally. CI's sparse checkout does not materialise

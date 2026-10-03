@@ -34,6 +34,16 @@ tolerance is **partitioned** — no input disarms another's check.
   `docs/decisions/perimetre-controle-perte.md`,
   `docs/decisions/agregats-publies-controle-perte-649.md`,
   `docs/decisions/controle-perte-nomme-les-echanges-823.md`
+  **A group fiche leaves by name, never by hand (#1168)**: data only changes through a
+  run, and nothing deletes the file of a group that left `groupes[]` — the quality gate
+  then blocks on « fiche publiée sans entrée ». Declare it in `fiches_retirees[]` of
+  `config/groupes_reels.json` (file, group, replacement, date, reason);
+  `generate_group_profiles.py` removes it **only if the replacing fiche carries its
+  organs and every one of its members**. The run that carries a retirement must be
+  launched with `allow_declared_losses=true`: the loss check sees a file gone and a
+  `maillons` list one shorter, and cannot tell that these are the right ones — the
+  guard above is what does.
+  → `docs/decisions/ng-et-soc-un-seul-groupe-1168.md`
 - **Referential integrity (#485)**: `audit_integrite_referentielle.py`. Every published
   key resolves in the index it points at, or the commit aborts naming file and key — an
   orphan reference is a vote published with no object, on a groupe a false denominator

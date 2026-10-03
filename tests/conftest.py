@@ -45,6 +45,15 @@ from urllib.parse import urlsplit
 import pytest
 import requests
 
+# LA SUITE NE LIT JAMAIS LA TABLE DES GROUPES TENUE PAR LE RUN (#1168).
+# `raw_data/groupes_du_run.json` revient sur un poste par la synchronisation des
+# données, et les lecteurs la préfèrent à la table écrite quand elle est à jour.
+# Une suite qui la suivrait dépendrait de ce qu'un run a laissé : 26 tests au
+# rouge, mesuré le 02/10/2026 en posant la table dans un worktree — en local
+# seulement, le checkout de `tests.yml` ne la matérialisant pas. Posée AVANT tout
+# import de `src/` : `groupes_config` résout son chemin au chargement du module.
+os.environ.setdefault("EMPREINTE_TABLE_GROUPES_ECRITE_SEULE", "1")
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 # `tests/` sur le chemin d'import **avant** `_outils_ci` : le seul analyseur du
 # bloc `sparse-checkout:` du dépôt y vit, et un conftest ne peut pas importer un

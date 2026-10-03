@@ -355,9 +355,13 @@ def test_les_listes_se_deplient_sous_un_mot():
 
 
 def test_une_cascade_non_dessinee_montre_tous_ses_textes():
+    """La règle vit toujours dans `cascadeDessinee`. La fiche candidat ne
+    l'appelle plus depuis le 02/10/2026 : ses deux versants se lisent en carrés,
+    qui se dessinent dès le premier texte — il n'y a plus de figure qui manque.
+    Sous un mot, la liste montre toujours tous les textes sans attendre de clic."""
     assert "export function cascadeDessinee" in _lire(CASCADE)
     fiche = _lire(FICHE)
-    assert "!cascadeDessinee(cascade, disposer)" in fiche
+    assert "const toutVoir = cascade && actif;" in fiche
     assert "selTexte ?? (toutVoir ? selectionDeTousLesTextes(cascade) : null)" in fiche
     # « Tout afficher » ne s'affiche que s'il retire une sélection.
     assert "{onRaz && <button" in _lire(LISTE_CASCADE)

@@ -287,19 +287,33 @@ def test_la_qualite_absente_n_est_jamais_comblee(composant: str) -> None:
     chiffres qui, eux, parlent de la personne affichée. Il vit maintenant dans
     la méthodologie, et la fiche y renvoie : le test suit les deux moitiés,
     faute de quoi supprimer le renvoi ou vider la méthodologie passerait.
+
+    Le renvoi est dans la bulle du titre de section depuis le 01/10/2026 : c'est
+    la fiche qui la compose, et non plus ce composant.
     """
     assert "i.fonction &&" in composant
-    assert 'to="/methodologie#interventions"' in composant
+    assert "vers: '/methodologie#interventions'" in FICHE.read_text(encoding="utf-8")
 
     methodo = (SRC / "pages" / "MethodologyPage.jsx").read_text(encoding="utf-8")
     assert "silence de la source" in methodo
     assert "La qualité de l'orateur" in methodo
 
 
-def test_une_date_illisible_sort_du_decoupage_et_le_dit(module: str, composant: str) -> None:
+def test_une_date_illisible_sort_du_decoupage_et_le_dit(module: str, fiche: str) -> None:
+    """Une intervention sans date n'entre dans aucune période, et elle se compte.
+
+    LE COMPTE A QUITTÉ LA SECTION LE 01/10/2026, avec l'encadré « Ce que cette
+    figure ne sait pas » qui le portait : il devient une ligne de « Ce qu'on n'a
+    pas pu lire ». Il n'est pas perdu — la vue du candidat le porte
+    (`manques.paroles.sansDate`), et c'est ce que ce test garde. Le cas où
+    AUCUNE intervention n'est datée reste dit par la fiche, à la place de la
+    figure.
+    """
     assert "export function dateISO" in module
     assert "i.date)" in module
-    assert "date exploitable" in composant
+    adaptateur = sans_commentaires(ADAPTATEUR.read_text(encoding="utf-8"))
+    assert "sansDate: couvertureParoles.total - couvertureParoles.datees" in adaptateur
+    assert "date exploitable" in fiche
 
 
 # ── Règle 7 : un seul mécanisme de navigation pour les deux sections ─────────
@@ -376,9 +390,11 @@ def test_la_fiche_declare_le_vide_quand_aucune_date_n_est_lisible(fiche: str) ->
     assert "ListeVide" in fiche
 
 
-def test_la_methodologie_porte_l_ancre_du_renvoi(composant: str) -> None:
+def test_la_methodologie_porte_l_ancre_du_renvoi(fiche: str) -> None:
+    """Le renvoi vit dans la bulle du titre de section depuis le 01/10/2026 —
+    donc dans la fiche, qui la compose."""
     methodo = METHODO.read_text(encoding="utf-8")
-    assert "/methodologie#interventions" in composant
+    assert "/methodologie#interventions" in fiche
     assert "id: 'interventions'" in methodo
 
 

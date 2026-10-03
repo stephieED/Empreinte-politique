@@ -121,7 +121,9 @@ def test_la_these_tient_en_une_ligne(composant):
     """Réduite trois fois. Le motif de chaque coupe est le même : si une phrase
     doit expliquer un chiffre, c'est la forme qui n'a pas fait son travail."""
     assert "Ce que cette personne a engagé, en chiffres." in composant
-    bloc = _corps(composant, "Ce que cette personne a engagé", "</summary>")
+    # Depuis le 02/10/2026 la thèse est le `titre` du composant `Pli`.
+    assert '<Pli titre="Ce que cette personne a engagé, en chiffres.">' in composant
+    bloc = "Ce que cette personne a engagé, en chiffres."
     assert bloc.count(".") <= 2, (
         "la thèse est une phrase, pas un paragraphe : le texte explicatif est "
         "un aveu d'échec"
@@ -134,10 +136,10 @@ def test_ce_qui_se_replie_est_la_partie_dense_pas_la_frise(composant):
     relevé en relecture d'écran le 02/09/2026. Le `<details>` n'enveloppe donc
     que les colonnes, et la frise reste dehors."""
     bloc = _corps(composant, "function GrandsChiffres(", "export default function")
-    assert bloc.index('className="cp-gc-frise"') < bloc.index("<details"), (
+    assert bloc.index('className="cp-gc-frise"') < bloc.index("<Pli"), (
         "la frise est AVANT le pli : elle ne se replie pas"
     )
-    assert bloc.index("<details") < bloc.index('className={`cp-gc-duo'), (
+    assert bloc.index("<Pli") < bloc.index('className={`cp-gc-duo'), (
         "ce sont les colonnes que le pli enveloppe"
     )
 
@@ -147,7 +149,9 @@ def test_la_these_est_la_poignee_et_precede_les_colonnes(composant):
     le parcours. Elle sert de `<summary>`, donc de poignée à ce qu'elle
     annonce."""
     bloc = _corps(composant, "function GrandsChiffres(", "export default function")
-    assert '<summary className="cp-poignee">' in bloc
+    # La poignée est celle de `Pli`, qui écrit son `titre` dans le `<summary>`.
+    assert '<Pli titre="Ce que cette personne a engagé, en chiffres.">' in bloc
+    assert '<summary className="cp-poignee">' in _corps(composant, "function Pli(", "\n}\n")
     assert bloc.index("a engagé, en chiffres") < bloc.index("cp-gc-tete-col"), (
         "la thèse se lit avant l'en-tête « À l'Assemblée »"
     )
@@ -157,7 +161,7 @@ def test_le_pli_porte_un_plus_visible(composant, feuille):
     """Un `<details>` sans marqueur ne dit pas qu'il s'ouvre. Le « + » est
     dessiné et non écrit — deux glyphes changeraient de chasse et feraient
     sauter la ligne."""
-    bloc = _corps(composant, "function GrandsChiffres(", "export default function")
+    bloc = _corps(composant, "function Pli(", "\n}\n")
     assert 'className="cp-poignee-plus"' in bloc
     assert ".cp-pli[open] .cp-poignee-plus::after" in feuille, (
         "la barre verticale disparaît à l'ouverture : « + » devient « − »"
@@ -494,11 +498,14 @@ def test_tous_les_plis_partagent_une_seule_poignee(composant, feuille):
     propriété qui compte qui est vérifiée : AUCUN pli ne se donne sa propre
     poignée. Compter les plis aurait fait échouer ce test à chaque pli ajouté,
     sans que rien de ce qu'il protège ait bougé."""
-    poignees = composant.count('className="cp-poignee"')
-    assert poignees >= 2, "les plis du bloc de tête portent la classe commune"
-    assert composant.count("<summary") == poignees, (
-        "chaque pli ouvre sur la poignée commune, aucun n'en invente une autre"
+    # Depuis le 02/10/2026 la propriété est tenue par construction : les plis
+    # passent tous par le composant `Pli`, seul à écrire un `<details>` et sa
+    # poignée — c'est lui qui les replie au clic ailleurs.
+    assert composant.count('className="cp-poignee"') == 1
+    assert composant.count("<summary") == 1 and composant.count("<details") == 1, (
+        "un pli écrit hors de `Pli` se donne sa propre poignée, et ne se replie pas"
     )
+    assert composant.count("<Pli") >= 2, "les plis du bloc de tête passent par `Pli`"
     for morte in ("cp-gc-these", "cp-gc-plus", "cp-gc-plis"):
         assert morte not in composant and morte not in feuille, (
             f"`{morte}` était la forme propre au bloc"
@@ -509,15 +516,15 @@ def test_les_deux_plis_sont_fermes_par_defaut(composant):
     """Le bloc s'ouvre sur la FRISE SEULE : elle est ce que le lecteur voit sans
     effort, les chiffres et le détail sont ce qu'il déplie s'il veut. C'est la §7
     de la décision appliquée aux deux moitiés du bloc plutôt qu'à l'ensemble."""
-    assert "<details className=\"cp-pli\" open>" not in composant
-    assert composant.count('<details className="cp-pli">') == 2
+    assert "const [ouvert, setOuvert] = useState(false);" in _corps(composant, "function Pli(", "\n}\n")
+    assert composant.count("<Pli titre=") == 2, "les deux plis du bloc de tête"
 
 
 def test_le_detail_date_du_parcours_se_replie(composant):
     """Le détail daté n'a pas à s'imposer entre la frise et ce qui suit."""
     bloc = _corps(composant, "function Frise(", "\nfunction ")
     assert "Détails du parcours" in bloc
-    assert bloc.index("<details") < bloc.index('<ul className="cp-roles">'), (
+    assert bloc.index("<Pli") < bloc.index('<ul className="cp-roles">'), (
         "le pli enveloppe la liste datée"
     )
 

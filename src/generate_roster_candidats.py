@@ -161,6 +161,7 @@ from group_roster import (
     filter_roster_by_sigle,
 )
 from groupes_config import (
+    CHEMIN_CONFIG_GROUPES,
     libelle_groupe,
     partitionner_groupes,
     resume_suspension,
@@ -387,10 +388,17 @@ def build_roster_candidats_detaille(
     le total seul ne distingue pas « 300 membres manquants » de « ces 300-là
     manquent », et c'est cette distinction qui rend l'anomalie actionnable.
 
-    Attention à ce que ce décompte mesure : le nombre de membres **retenus**,
-    donc après déduplication par slug. Un groupe dont tous les membres seraient
-    déjà venus d'un autre groupe compterait 0 ici — cas que la déduplication
-    qualifie elle-même de config mal renseignée, et qu'on veut voir signalé.
+    Ce que ce décompte mesure : les membres que le filtre par sigle **trouve**
+    pour ce groupe (avec un slug), **avant** la déduplication entre groupes.
+
+    Il mesurait les membres **retenus**, après déduplication, en tenant qu'un
+    groupe dont tous les membres viennent d'un autre groupe est une
+    configuration mal renseignée. C'est faux d'un groupe né d'une scission :
+    les 23 membres d'Agir ensemble (XVe) étaient tous passés avant par un
+    groupe que la table range plus haut — 11 par LAREM, 10 par le groupe UDI —,
+    et le run du 02/10/2026 à 20:23 s'est arrêté sur « 0 membre retenu ». Ce
+    que la garde veut voir, c'est un sigle qui ne trouve **personne** : c'est
+    ce qu'elle compte désormais (#1168).
     """
     candidats_par_slug: dict[str, dict[str, Any]] = {}
     membres_par_groupe: dict[str, int] = {}
@@ -411,6 +419,8 @@ def build_roster_candidats_detaille(
 
         for membre in roster:
             slug = membre.get("slug")
+            if slug:
+                membres_par_groupe[libelle] += 1
             if not slug or slug in candidats_par_slug:
                 continue
             candidats_par_slug[slug] = {
@@ -440,7 +450,6 @@ def build_roster_candidats_detaille(
                 # pas rendu — la collecte retombe alors sur la table.
                 "acteur_ref": membre.get("acteur_ref"),
             }
-            membres_par_groupe[libelle] += 1
 
     return list(candidats_par_slug.values()), membres_par_groupe
 
@@ -635,7 +644,7 @@ def anomalies_roster(
         libelle = _libelle_groupe(groupe)
         if membres_par_groupe.get(libelle, 0) == 0:
             anomalies.append(
-                f"groupe {libelle} ({groupe.get('groupe_sigle')}) : 0 membre retenu "
+                f"groupe {libelle} ({groupe.get('groupe_sigle')}) : 0 membre trouvé "
                 "alors que son roster a bien été récupéré — sigle renommé en amont, "
                 "ou groupe dissous à retirer de la config."
             )
@@ -682,9 +691,10 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument(
         "--config",
-        default="config/groupes_reels.json",
+        default=str(CHEMIN_CONFIG_GROUPES),
         metavar="FICHIER",
-        help="Fichier JSON listant les groupes à agréger (défaut : config/groupes_reels.json).",
+        help="Fichier JSON listant les groupes à agréger (défaut : la table du run "
+             "si elle est à jour, sinon config/groupes_reels.json).",
     )
     parser.add_argument(
         "--out",

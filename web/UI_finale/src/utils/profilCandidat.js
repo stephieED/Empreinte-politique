@@ -92,7 +92,7 @@ const VOIX_MASCULINE = {
     propose: "Ce qu'il a proposé",
     dit: "Ce qu'il a dit",
     vote: "Ce qu'il a voté",
-    ecarts: "Où il s'est écarté des siens",
+    ecarts: 'Où il a voté autrement que son groupe',
   },
 };
 
@@ -108,7 +108,7 @@ const VOIX_FEMININE = {
     propose: "Ce qu'elle a proposé",
     dit: "Ce qu'elle a dit",
     vote: "Ce qu'elle a voté",
-    ecarts: "Où elle s'est écartée des siens",
+    ecarts: 'Où elle a voté autrement que son groupe',
   },
 };
 
@@ -124,7 +124,7 @@ const VOIX_NON_DECLAREE = {
     propose: 'Ce que cette personne a proposé',
     dit: 'Ce que cette personne a dit',
     vote: 'Ce que cette personne a voté',
-    ecarts: 'Les écarts avec son groupe',
+    ecarts: 'Où cette personne a voté autrement que son groupe',
   },
 };
 
@@ -1243,9 +1243,10 @@ export function agregerAmendements(
   const annees = [...new Set([...chuteParAnnee.keys(), ...dossiersParAnnee.keys()])].sort();
   const chute = annees.length
     ? {
-        // L'ordre des matières — donc les teintes — est fixé une fois par le
-        // volume de DÉPÔTS : recalculé à chaque mesure, le bouton rebattrait
-        // les couleurs et deux lectures cesseraient de se comparer.
+        // L'ordre des matières est fixé une fois par le volume de DÉPÔTS. Il ne
+        // fixe plus les teintes du versant français, qui sont celles de la
+        // commission (`utils/commissions.js`, 01/10/2026) ; il reste le rang de
+        // secours d'un thème européen hors référentiel (`teinteThemeUe`).
         matieres: [...new Set([...totauxDepots.keys(), ...totauxDossiers.keys()])].sort(
           (a, b) => (totauxDepots.get(b) || 0) - (totauxDepots.get(a) || 0)
             || a.localeCompare(b, 'fr'),
@@ -1814,8 +1815,10 @@ function cascadeDesTextes(publies, commissionDuDossier) {
       institution: institutionDuTexte(t),
     };
   });
-  // L'ordre des matières fixe les teintes, et il suit le VOLUME : recalculé
-  // ailleurs, la cascade et la chute cesseraient de colorier pareil.
+  // L'ordre des matières suit le VOLUME. Il fixait les teintes, et c'est ce
+  // qui faisait changer une commission de couleur entre cette carte et celle
+  // des amendements, classée autrement : depuis le 01/10/2026 la teinte est
+  // celle de la commission (`utils/commissions.js`), et l'ordre n'en décide plus.
   const volume = new Map();
   for (const t of listeTextes) volume.set(t.matiere, (volume.get(t.matiere) || 0) + 1);
   const matieres = [...volume.keys()].sort(
@@ -3031,18 +3034,37 @@ export function grandsChiffres({
 
 /* ── Livrable : ce qu'on n'a pas pu lire ─────────────────────────────────────
  *
- * `couverture` porte la cause sur 481 / 481 profils. Les états ne disent pas la
- * même chose et ne se confondent pas (§2 règle 5) : `couvert` est une mesure,
- * `hors_couverture` parle de la source, `non_collecte` parle de la collecte.
- * Les libellés viennent d'`EMPTY_LIST_CAUSES` (lot 1) — ils ne sont pas
- * réécrits ici.
+ * UNE SEULE LISTE DE MANQUES (01/10/2026). La section portait trois cartes — un
+ * tableau « Ce que chaque liste porte » (couvert depuis / hors couverture /
+ * N entrées), puis « Ce que le corpus ne dit pas de son parcours », puis « Ce
+ * que la collecte signale ». Le tableau répondait à « qu'avons-nous ? », quand
+ * le titre de la section promet « que n'avons-nous pas ? » : cinq rangs
+ * identiques d'une fiche à l'autre, où le seul fait propre à la personne — un
+ * mandat que la source ne couvre pas — restait à déduire de deux dates.
+ *
+ * La liste dit ce manque en clair, et tout le reste à la suite, une ligne par
+ * manque. Elle est CALCULÉE sur le profil (`manquesDeLaFiche`, plus bas) :
+ * aucune relecture manuelle n'est supposée.
+ *
+ * `couverture` porte toujours la cause, liste par liste, et les états ne se
+ * confondent pas (§2 règle 5) : `couvert` est une mesure, `hors_couverture`
+ * parle de la source, `non_collecte` parle de la collecte. La fiche n'en rend
+ * plus AUCUN tel quel : `non_collecte` et sa preuve (« collecte écartée par le
+ * run… ») sont du vocabulaire de pipeline, et l'état est faux à l'écran quand
+ * la liste est pleine — il décrit le dernier run, pas ce que le dépôt porte.
+ * Ce qu'on lit encore dans `couverture`, c'est la date où une source commence
+ * (`debutDeSource`) et la cause d'une liste vide (`causeListeVide`).
  */
-export const LISTES_COUVERTES = [
-  { cle: 'mandats', titre: 'Mandats et fonctions' },
+
+/** Les listes d'ACTIVITÉ : celles dont un mandat peut précéder la source. La
+ *  liste des mandats n'en est pas — elle a sa propre ligne, « Avant juin 2002 ».
+ *  L'intitulé est celui que la ligne porte, donc celui du lecteur : « Prises de
+ *  parole », pas « Interventions ». */
+export const LISTES_D_ACTIVITE = [
   { cle: 'votes', titre: 'Votes' },
   { cle: 'amendements', titre: 'Amendements' },
   { cle: 'textes_portes', titre: 'Textes portés' },
-  { cle: 'interventions', titre: 'Interventions' },
+  { cle: 'interventions', titre: 'Prises de parole' },
 ];
 
 /* ── Règle : une liste vide dit de quelle sorte de vide il s'agit ────────────
@@ -3061,62 +3083,6 @@ export function causeListeVide(entrees) {
   return PRIORITE_CAUSES.find((c) => etats.includes(c)) ?? null;
 }
 
-/* ── Règle : la borne de source n'est plus rendue sur la fiche ───────────────
- *
- * CE QUE LA FICHE GARDE, ET CE QUI PART. Une preuve de borne — « l'Assemblée
- * nationale ne publie pas de scrutins avant la XIVe législature… » — ne dit
- * rien de la personne affichée : elle dit ce que l'Assemblée publie. Elle était
- * recopiée sur toutes les fiches, où elle se lisait comme une limite DE CETTE
- * PERSONNE. Elle vit désormais une fois, sur `/couverture` (#328).
- *
- * L'ÉTAT DATÉ, LUI, RESTE. « Couvert depuis le 20.06.2012 » est ce qui empêche
- * de lire une liste vide comme une absence d'activité (§2 règle 5) : c'est la
- * ligne, pas sa preuve, qui porte cette fonction.
- *
- * LE DISCRIMINANT EST L'ÉTAT, ET IL EST GARANTI À LA SOURCE — pas reconnu au
- * texte. `couverture_profil._deriver` attache `borne.preuve` à `couvert` et à
- * `hors_couverture`, et bascule sur `fait_etabli` dès que la preuve devient
- * propre à la personne (« aucun acteur AMO30 pour X »). `non_collecte` porte
- * une décision de run. Vérifié sur les 32 fiches de candidats déclarés :
- * partition exacte, zéro exception — 180 entrées de borne sur 286, soit 6 413
- * des 8 328 mots de preuve rendus (77 %).
- *
- * LA PREUVE QUI RESTE SE DIT UNE FOIS POUR LA SECTION, plus une fois par liste.
- * #802 avait délibérément limité la mémoire à la liste, parce qu'une mémoire
- * partagée aurait fait disparaître la borne AMO30 de « Votes » après que
- * « Mandats » l'a écrite. Cette raison tombe avec la borne : ce qui reste est
- * propre à la personne ou au run, identique d'une liste à l'autre, et se répète
- * cinq fois pour rien — 700 mots sur la fiche Retailleau, dont le certificat de
- * suspension Sénat/LR compte 140 mots par liste.
- */
-export const ETATS_PORTANT_LA_BORNE = new Set(['couvert', 'hors_couverture']);
-
-export function couvertureDesListes(couverture, decomptes) {
-  const dites = new Set();
-  return LISTES_COUVERTES.map(({ cle, titre }) => {
-    const entrees = (couverture || {})[cle] || [];
-    return {
-      cle,
-      titre,
-      decompte: decomptes[cle] ?? null,
-      etats: entrees.map((e) => {
-        const borne = ETATS_PORTANT_LA_BORNE.has(e.etat);
-        const preuve = borne ? null : e.preuve ?? null;
-        const dejaDite = Boolean(preuve) && dites.has(preuve);
-        if (preuve) dites.add(preuve);
-        return {
-          etat: e.etat,
-          cause: e.cause ?? null,
-          debut: e.portee?.debut ?? null,
-          fin: e.portee?.fin ?? null,
-          preuve,
-          preuveDejaDite: dejaDite,
-        };
-      }),
-    };
-  });
-}
-
 /* ── Règle : une limite se déclare, elle ne se comble pas ────────────────────
  *
  * Quatre manques que la trame suppose et que le corpus ne porte pas. Ils sont
@@ -3127,7 +3093,18 @@ export function couvertureDesListes(couverture, decomptes) {
  * `destinataire` vaut `interne` — ils ne sont donc pas affichés. La clé est
  * lue, pas devinée : un avertissement `lecteur` apparaîtra le jour où il en
  * sera écrit un, sans toucher à ce composant.
+ *
+ * CHAQUE LIMITE PORTE SON INTITULÉ (`titre`), depuis que la section 6 est une
+ * seule liste (01/10/2026) : le composant ne tient plus de table de libellés à
+ * côté, et une limite ajoutée ici ne peut plus sortir sous « Corpus ». L'ORDRE
+ * des lignes, lui, n'est pas celui de ce tableau : `manquesDeLaFiche` le pose.
  */
+/** La chambre que le pivot estampille sur un mandat de députée ou de député
+ *  (`schema_pivot.KNOWN_CHAMBRES`). Un mandat sans chambre n'est pas présumé à
+ *  l'Assemblée : on ne lui oppose pas la borne d'une source qui n'est peut-être
+ *  pas la sienne. */
+const CHAMBRE_AN = 'AN';
+
 /* Le premier jour des données publiées par l'Assemblée — la XIIe législature.
  * Sa jumelle, qui valide la table, est `BORNE_COUVERTURE_AN` dans
  * `src/mandats_anterieurs.py` : aucune sortie ne la porte, et une borne
@@ -3140,15 +3117,26 @@ export function limitesDeclarees({ profil, roles, sieges }) {
    * Chacun dit UN fait sur CE profil, avec ses nombres. Le « pourquoi » — la
    * qualification d'un groupe n'est pas déductible d'un comportement de vote,
    * un enregistrement écarté est une collecte qu'on ne peut plus vérifier —
-   * vit dans la méthodologie, sous l'ancre `#couverture` où mène le renvoi
-   * posé sous la liste. DESIGN_SYSTEM §7 règle 2 : « une limite tient en deux
+   * vit dans la méthodologie, sous l'ancre `#couverture` où mène la bulle du
+   * titre de section. DESIGN_SYSTEM §6 bis règle 2 : « une limite tient en deux
    * mots, une explication en paragraphe ». Une phrase ajoutée ici est une
    * phrase qui manque là-bas.
    */
   const limites = [];
 
+  /* UN SIGNALEMENT DE COLLECTE EST COUPÉ SUR SON PREMIER TIRET CADRATIN, que
+   * nos propres messages posent entre la source et son explication (« Parlement
+   * européen — votes non publiés : … ») : la source fait l'intitulé de la ligne.
+   * Un message qui n'en porte pas est rendu entier, sous « Collecte » — on ne
+   * devine pas un intitulé qui n'existe pas. */
   for (const a of profil?.meta?.avertissements || []) {
-    if (a.destinataire === 'lecteur') limites.push({ cle: `avertissement:${a.message}`, texte: a.message });
+    if (a.destinataire !== 'lecteur') continue;
+    const coupe = /^(.+?)\s+—\s+([\s\S]+)$/.exec(a.message);
+    limites.push({
+      cle: `avertissement:${a.message}`,
+      titre: coupe ? coupe[1] : 'Collecte',
+      texte: coupe ? coupe[2] : a.message,
+    });
   }
 
   /* DEUX CORRECTIONS SUR LA MÊME PHRASE (#328).
@@ -3171,11 +3159,15 @@ export function limitesDeclarees({ profil, roles, sieges }) {
   const sansPosition = aLAssemblee.filter((r) => !r.position);
   const parlementaires = aLAssemblee;
   if (sansPosition.length > 1 || (sansPosition.length === 1 && parlementaires.length > 1)) {
+    /* LA PHRASE A PERDU SON VOCABULAIRE (01/10/2026). « La qualification du
+     * groupe — majoritaire, minoritaire, d'opposition — n'est pas déclarée… »
+     * demandait de savoir ce qu'est une qualification ; l'intitulé de la ligne
+     * dit maintenant de quoi il s'agit, et la phrase ne garde que le compte. */
     limites.push({
       cle: 'position-non-declaree',
+      titre: 'Majorité ou opposition',
       texte:
-        `La qualification du groupe — majoritaire, minoritaire, d'opposition — n'est pas déclarée ` +
-        `par l'Assemblée sur ${sansPosition.length} de ses ${parlementaires.length} mandats parlementaires.`,
+        `L’Assemblée ne l’a pas déclaré pour ${sansPosition.length} de ses ${parlementaires.length} mandats.`,
     });
   }
 
@@ -3183,13 +3175,30 @@ export function limitesDeclarees({ profil, roles, sieges }) {
     (m) => m.categorie === 'fonction_gouvernementale' && m.fonction === FONCTION_MEMBRE,
   );
   const electifs = (profil?.mandats || []).filter((m) => m.categorie === 'mandat_electif');
-  if (aExerce && electifs.length && electifs.every((m) => m.suspendu_pour_fonction_gouvernementale == null)) {
+  /* DEUX CHANGEMENTS SUR CETTE LIMITE (01/10/2026).
+   *
+   * Elle ne publie plus un NOM DE CHAMP. « suspendu_pour_fonction_gouvernementale
+   * n'est renseigné sur aucun de ses 4 mandats électifs » était exact et
+   * illisible : c'est notre schéma, pas un fait que le lecteur peut situer.
+   *
+   * Et elle ne compte plus que les mandats À L'ASSEMBLÉE — la conséquence de la
+   * nouvelle phrase, pas une règle pour le Sénat. « La source ne dit pas… »
+   * affirme quelque chose d'une source ; or ce champ n'existe que sur les
+   * mandats que l'Assemblée publie, et data.senat.fr, elle, DIT pourquoi un
+   * mandat de sénateur a pris fin (`motif_fin_senat`). Sur Bruno Retailleau,
+   * quatre mandats au Sénat et aucun à l'Assemblée dans le corpus, l'ancienne
+   * phrase restait vraie à la lettre — le champ est bien absent — et la
+   * nouvelle aurait été fausse (§2 règle 2). */
+  const electifsALAssemblee = electifs.filter((m) => m.chambre === CHAMBRE_AN);
+  if (
+    aExerce && electifsALAssemblee.length
+    && electifsALAssemblee.every((m) => m.suspendu_pour_fonction_gouvernementale == null)
+  ) {
     limites.push({
       cle: 'suspension',
+      titre: 'Entrée au gouvernement',
       texte:
-        `Le corpus ne dit pas si un mandat s'est arrêté parce que la personne entrait au gouvernement : ` +
-        `« suspendu_pour_fonction_gouvernementale » n'est renseigné sur aucun de ses ${electifs.length} `
-        + `mandat${electifs.length > 1 ? 's' : ''} électif${electifs.length > 1 ? 's' : ''}.`,
+        'La source ne dit pas si un mandat s’est interrompu quand cette personne est entrée au gouvernement.',
     });
   }
 
@@ -3230,6 +3239,7 @@ export function limitesDeclarees({ profil, roles, sieges }) {
     const pluriel = n > 1;
     limites.push({
       cle: 'mandats-anterieurs',
+      titre: 'Mandats antérieurs',
       texte:
         `${n} mandat${pluriel ? 's' : ''} exercé${pluriel ? 's' : ''} avant le ${JOUR_BORNE_AN}`
         + (detail.length > 1 ? ` — ${detail.join(', ')} —` : '')
@@ -3242,6 +3252,7 @@ export function limitesDeclarees({ profil, roles, sieges }) {
   if (sieges && enregistrements > sieges.length) {
     limites.push({
       cle: 'sieges-replies',
+      titre: 'Enregistrements de mandat',
       texte:
         `${enregistrements} enregistrements de mandat électif pour ${sieges.length} sièges, regroupés sur ` +
         `leur date de fin. Aucun n'est supprimé.`,
@@ -3249,4 +3260,315 @@ export function limitesDeclarees({ profil, roles, sieges }) {
   }
 
   return limites;
+}
+
+/* ── Règle : un mandat que la source ne couvre pas se dit, avec ses dates ────
+ *
+ * La source d'une liste d'activité commence à une date — celle de la plus
+ * ancienne législature que l'Assemblée publie pour elle. Un mandat exercé avant
+ * n'a donc ni vote, ni amendement, ni prise de parole au corpus, et ce vide
+ * n'est PAS une inactivité (§2 règle 5). Le tableau qu'on retire l'écrivait en
+ * deux dates (« couvert depuis le… », « hors couverture jusqu'au… ») que le
+ * lecteur devait rapprocher lui-même de la frise du parcours ; la ligne fait le
+ * rapprochement : « Son mandat de juin 2007 à juin 2012 n'est pas couvert : la
+ * source commence le 20 juin 2012. »
+ *
+ * D'OÙ VIENT LA DATE. Du profil d'abord : `couverture[liste]` porte, sur l'état
+ * `couvert` ou `fait_etabli`, `portee.debut` — posée par
+ * `src/couverture_profil.py` (`Borne.debut`, l'ouverture de la plus ancienne
+ * législature ingérée). Elle n'est jamais écrite ici.
+ *
+ * QUAND LE PROFIL NE LA PORTE PAS — et c'est le cas sur les prises de parole de
+ * 17 des 34 profils de candidats déclarés (mesuré le 01/10/2026), dont l'état
+ * est `non_collecte` SANS portée parce que le dernier run n'a pas interrogé la
+ * source : la borne est alors celle que les autres fiches déclarent pour la
+ * même liste, lue dans `couverture.json` (`bornes`, calculé au build par
+ * `scripts/couverture-corpus.mjs` sur ces mêmes blocs `couverture`). C'est la
+ * même source et la même borne ; seul le run diffère. Sans l'une ni l'autre,
+ * la liste ne produit aucune ligne : une date ne s'invente pas.
+ *
+ * UNE ENTRÉE EUROPÉENNE N'EST PAS UNE BORNE : sa `portee` va de la première à
+ * la dernière donnée de la personne (même garde que `bornesPubliees`).
+ */
+const ETATS_DATANT_LA_SOURCE = new Set(['couvert', 'fait_etabli']);
+
+export function debutDeSource(couverture, liste, bornesDuCorpus = null) {
+  const declarees = ((couverture || {})[liste] || [])
+    .filter((e) => e.source !== INSTITUTION_PE_SOURCE && ETATS_DATANT_LA_SOURCE.has(e.etat))
+    .map((e) => e.portee?.debut)
+    .filter(Boolean)
+    .sort();
+  return declarees[0] ?? bornesDuCorpus?.[liste] ?? null;
+}
+
+/* DEUX TOLÉRANCES, ET CHACUNE A SA RAISON (maquette validée le 01/10/2026).
+ *
+ * SEPT JOURS : un mandat commence le jour de l'élection, la législature — donc
+ * la source — quelques jours plus tard. Le mandat ouvert le 18 juin 2017 n'a
+ * pas « trois jours non couverts » avant le 21 : il est couvert.
+ *
+ * QUARANTE-CINQ JOURS : deux mandats qui se suivent sont un seul manque. Entre
+ * deux législatures, les enregistrements d'une même personne sont séparés de
+ * quelques jours (16 juin 2012 → 20 juin 2012), et de quatre semaines après
+ * une dissolution (9 juin 2024 → 7 juillet 2024). Deux lignes pour dix années
+ * continues feraient lire une interruption qui n'a pas eu lieu. */
+export const TOLERANCE_DEBUT_DE_MANDAT_JOURS = 7;
+export const ECART_ENTRE_MANDATS_CONTIGUS_JOURS = 45;
+
+const decaleDeJours = (iso, jours) =>
+  new Date(Date.parse(`${iso}T00:00:00Z`) + jours * MS_PAR_JOUR).toISOString().slice(0, 10);
+
+/** Les périodes de mandat qu'une source commencée à `borne` ne couvre pas.
+ *  `mandats` : des `{ debut, fin }` en `AAAA-MM-JJ`, `fin` nulle pour un mandat
+ *  en cours. Un mandat à cheval sur la borne n'est non couvert que jusqu'à
+ *  elle. */
+export function segmentsNonCouverts(mandats, borne) {
+  if (!borne) return [];
+  const limite = decaleDeJours(borne, -TOLERANCE_DEBUT_DE_MANDAT_JOURS);
+  const segments = [];
+  const tries = (mandats || []).filter((m) => m?.debut).sort((a, b) => (a.debut < b.debut ? -1 : 1));
+  for (const m of tries) {
+    if (!(m.debut < limite)) continue;
+    const fin = m.fin && m.fin < borne ? m.fin : borne;
+    const dernier = segments[segments.length - 1];
+    if (dernier && m.debut <= decaleDeJours(dernier.fin, ECART_ENTRE_MANDATS_CONTIGUS_JOURS)) {
+      if (fin > dernier.fin) dernier.fin = fin;
+    } else {
+      segments.push({ debut: m.debut, fin });
+    }
+  }
+  return segments;
+}
+
+const MOIS_EN_LETTRES = [
+  'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+  'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
+];
+const moisEtAnnee = (iso) => `${MOIS_EN_LETTRES[Number(iso.slice(5, 7)) - 1]} ${iso.slice(0, 4)}`;
+const jourEnLettres = (iso) => `${Number(iso.slice(8, 10))} ${moisEtAnnee(iso)}`;
+// « d’avril », « d’août », « d’octobre » : la préposition s'élide devant voyelle.
+const deMois = (iso) => (/^[aoAO]/.test(moisEtAnnee(iso)) ? `d’${moisEtAnnee(iso)}` : `de ${moisEtAnnee(iso)}`);
+
+/* LES MANDATS AU SÉNAT ET AU PARLEMENT EUROPÉEN N'ENTRENT PAS DANS CE CALCUL.
+ * Les quatre bornes sont celles de sources de l'ASSEMBLÉE : leur opposer un
+ * mandat de sénateur écrirait « son mandat de 2004 à 2010 n'est pas couvert :
+ * la source commence le 20 juin 2012 », d'une source qui ne l'aurait pas
+ * couvert davantage après. Le Sénat a sa propre ligne (`mandatsAuSenat`,
+ * ci-dessous). Le Parlement européen n'en a pas, et c'est un reste déclaré :
+ * ses dates sont fausses ou absentes dans les données (#1163), et une période
+ * calculée dessus publierait un fait faux.
+ *
+ * LES LISTES QUI PARTAGENT LE MÊME MANQUE ET LA MÊME DATE TIENNENT SUR UNE
+ * LIGNE : « Votes, Amendements, Textes portés ». Trois lignes identiques au
+ * mot près se liraient comme trois faits. */
+export function mandatsNonCouverts(profil, bornesDuCorpus = null) {
+  const aLAssemblee = (profil?.mandats || []).filter(
+    (m) => m.categorie === 'mandat_electif' && m.chambre === CHAMBRE_AN && m.debut,
+  );
+  if (!aLAssemblee.length) return [];
+  const groupes = new Map();
+  for (const { cle, titre } of LISTES_D_ACTIVITE) {
+    const borne = debutDeSource(profil?.couverture, cle, bornesDuCorpus);
+    const segments = segmentsNonCouverts(aLAssemblee, borne);
+    if (!segments.length) continue;
+    const periodes = segments.map((s) => `${deMois(s.debut)} à ${moisEtAnnee(s.fin)}`).join(', puis ');
+    const cleDeGroupe = `${periodes}|${borne}`;
+    if (!groupes.has(cleDeGroupe)) groupes.set(cleDeGroupe, { listes: [], titres: [], periodes, borne, segments });
+    groupes.get(cleDeGroupe).listes.push(cle);
+    groupes.get(cleDeGroupe).titres.push(titre);
+  }
+  return [...groupes.values()].map((g) => ({
+    cle: `mandats-non-couverts:${g.listes.join('+')}`,
+    titre: g.titres.join(', '),
+    texte: `Son mandat ${g.periodes} n’est pas couvert : la source commence le ${jourEnLettres(g.borne)}.`,
+    listes: g.listes,
+    borne: g.borne,
+    segments: g.segments,
+  }));
+}
+
+/* ── Règle : un mandat au Sénat se dit non couvert, d'un bout à l'autre ──────
+ *
+ * data.senat.fr est collecté pour les MANDATS seulement (#885) : le jeu ne
+ * porte ni scrutin ni compte rendu, et les amendements du Sénat ne sont pas
+ * collectés. Vingt ans de mandat sénatorial n'ont donc ni vote, ni amendement,
+ * ni prise de parole sur la fiche — et la section qui dit ce qui manque n'en
+ * disait rien (lu à l'écran le 02/10/2026 sur la fiche de Bruno Retailleau).
+ *
+ * LA LIGNE NE DIT PAS « AUCUNE ACTIVITÉ » : les textes déposés au Sénat sont
+ * publiés, par les dossiers de l'Assemblée. Elle nomme les trois listes qui
+ * manquent, et rien d'autre. Sa tournure est celle de la ligne de l'Assemblée
+ * (« Son mandat … n'est pas couvert : … »), arrêtée par la propriétaire.
+ *
+ * Il n'y a pas de borne à opposer ici : la source ne commence pas plus tard,
+ * elle ne porte pas ces listes. Chaque période est donc dite entière, et un
+ * mandat en cours se dit « depuis ». */
+const CHAMBRE_SENAT = 'Senat';
+
+export function mandatsAuSenat(profil) {
+  const auSenat = (profil?.mandats || [])
+    .filter((m) => m.categorie === 'mandat_electif' && m.chambre === CHAMBRE_SENAT && m.debut)
+    .sort((a, b) => (a.debut < b.debut ? -1 : 1));
+  if (!auSenat.length) return [];
+  // Deux mandats qui se suivent font une période, comme pour l'Assemblée.
+  const periodes = [];
+  for (const m of auSenat) {
+    const derniere = periodes[periodes.length - 1];
+    if (derniere && derniere.fin && m.debut <= decaleDeJours(derniere.fin, ECART_ENTRE_MANDATS_CONTIGUS_JOURS)) {
+      derniere.fin = m.fin && m.fin > derniere.fin ? m.fin : (m.fin ? derniere.fin : null);
+    } else {
+      periodes.push({ debut: m.debut, fin: m.fin || null });
+    }
+  }
+  const dites = periodes
+    .map((p) => (p.fin ? `${deMois(p.debut)} à ${moisEtAnnee(p.fin)}` : `depuis ${moisEtAnnee(p.debut)}`))
+    .join(' puis ');
+  const plusieurs = auSenat.length > 1;
+  return [{
+    cle: 'mandats-au-senat',
+    titre: 'Sénat',
+    texte: `${plusieurs ? 'Ses mandats' : 'Son mandat'} au Sénat, ${dites}, `
+      + `${plusieurs ? 'ne sont pas couverts' : 'n’est pas couvert'} : ni vote, ni amendement, ni prise de parole.`,
+    periodes,
+  }];
+}
+
+/* ── Règle : ce que deux figures ne savent pas se dit ici, en une phrase ─────
+ *
+ * Les encadrés « Ce que cette figure ne sait pas » des sections 3 et 5 ont
+ * quitté leur figure (lot 1) ; leurs nombres arrivent déjà soustraits dans
+ * `manques` (`buildCandidateView`). UN TERME À ZÉRO NE S'ÉCRIT PAS — « 0 sans
+ * intitulé » est une ligne de gabarit, pas un manque —, et une phrase dont tous
+ * les termes sont nuls ne s'écrit pas du tout. Le verbe s'accorde au nombre :
+ * « 1 n'a pas de texte », « 3 475 n'indiquent pas… ». */
+const enumere = (termes) =>
+  (termes.length < 2 ? termes.join('') : `${termes.slice(0, -1).join(', ')} et ${termes[termes.length - 1]}`);
+const terme = (n, singulier, pluriel) => (n > 0 ? `${formatNumber(n)} ${n > 1 ? pluriel : singulier}` : null);
+
+function lignesDesReperes(manques) {
+  const lignes = [];
+  const v = manques?.votes;
+  if (v?.total > 0) {
+    const termes = [
+      terme(v.sansCommission, 'n’a pas de commission connue', 'n’ont pas de commission connue'),
+      terme(v.sansSort, 'n’a pas de sort connu', 'n’ont pas de sort connu'),
+    ].filter(Boolean);
+    if (termes.length) {
+      lignes.push({
+        cle: 'votes-sans-repere',
+        titre: 'Votes',
+        texte:
+          `Sur ${v.total > 1 ? 'ses' : 'son'} ${formatNumber(v.total)} vote${v.total > 1 ? 's' : ''}, `
+          + `${enumere(termes)}.`,
+      });
+    }
+  }
+  const p = manques?.paroles;
+  if (p?.total > 0) {
+    const termes = [
+      terme(p.sansIntitule, 'n’a pas d’intitulé', 'n’ont pas d’intitulé'),
+      terme(p.sansVerbatim, 'n’a pas de texte', 'n’ont pas de texte'),
+      terme(
+        p.sansQualite,
+        'n’indique pas à quel titre la personne parlait',
+        'n’indiquent pas à quel titre la personne parlait',
+      ),
+    ].filter(Boolean);
+    if (termes.length) {
+      lignes.push({
+        cle: 'paroles-sans-repere',
+        titre: 'Prises de parole',
+        texte:
+          `Sur ${formatNumber(p.total)} prise${p.total > 1 ? 's' : ''} de parole, ${enumere(termes)}.`,
+      });
+    }
+    /* DEUX MANQUES QUI ONT LEUR PROPRE LIGNE, parce qu'ils ne sont pas de la
+     * même sorte que les trois termes ci-dessus : ceux-là disent ce qu'UNE
+     * entrée ne porte pas, ceux-ci ce que la collecte ou le découpage a fait de
+     * l'entrée entière. Leur formulation est celle de l'encadré retiré ; aucune
+     * fiche publiée n'en porte au 01/10/2026 — la ligne est donc muette, et le
+     * restera tant que le nombre est nul. */
+    if (p.themeSeul > 0) {
+      lignes.push({
+        cle: 'paroles-theme-seul',
+        titre: 'Prises de parole',
+        texte: `${formatNumber(p.themeSeul)} ${p.themeSeul > 1 ? 'relèvent' : 'relève'} d’une collecte réduite au thème.`,
+      });
+    }
+    if (p.sansDate > 0) {
+      lignes.push({
+        cle: 'paroles-sans-date',
+        titre: 'Prises de parole',
+        texte:
+          `${formatNumber(p.sansDate)} ${p.sansDate > 1 ? 'ne portent pas' : 'ne porte pas'} de date exploitable `
+          + `et ${p.sansDate > 1 ? 'restent' : 'reste'} hors du découpage.`,
+      });
+    }
+  }
+  return lignes;
+}
+
+/* ── Règle : la section 6 est UNE liste, dans un ordre arrêté ────────────────
+ *
+ * L'ordre va du plus lourd au plus fin (revue du 01/10/2026) :
+ *   1. les mandats qu'une source ne couvre pas — des années entières, à
+ *      l'Assemblée puis au Sénat ;
+ *   2. « Majorité ou opposition », 3. « Entrée au gouvernement » — ce que la
+ *      source ne dit pas du parcours ;
+ *   4. « Votes », 5. « Prises de parole » — ce que des entrées ne portent pas ;
+ *   6. les autres limites, chacune avec le texte qu'elle avait ;
+ *   7. en dernier, « Avant juin 2002 » — la borne de tout le reste.
+ *
+ * « AVANT JUIN 2002 » ET « MANDATS ANTÉRIEURS » NE COHABITENT PAS : la seconde
+ * cite des mandats d'avant la borne, et la première dirait au-dessous que nos
+ * sources n'en connaissent aucun. La date vient de la borne des mandats du
+ * profil (`debutDeSource`), jamais d'une constante ; et la ligne se tait aussi
+ * si un mandat affiché commence avant elle — le cas d'un siège au Sénat, que
+ * data.senat.fr publie bien plus haut que 2002.
+ *
+ * SANS MANDAT PARLEMENTAIRE, PAS DE LISTE : UNE PHRASE. Elle dit ce que nos
+ * SOURCES savent, jamais un fait sur la personne — « n'a exercé aucun mandat »
+ * serait une affirmation que rien ici n'établit (§2 règle 5). Sa seconde
+ * moitié (« Il n'y a donc ni vote… ») n'est écrite que si elle est vraie : une
+ * personne entrée au gouvernement sans avoir été élue a des prises de parole.
+ */
+const PHRASE_SANS_MANDAT = 'Nos sources ne connaissent aucun mandat parlementaire de cette personne.';
+const PHRASE_SANS_ACTIVITE = 'Il n’y a donc ni vote, ni amendement, ni prise de parole à publier.';
+const LIMITES_EN_TETE = ['position-non-declaree', 'suspension'];
+const RANG_DES_AUTRES_LIMITES = ['sieges-replies', 'mandats-anterieurs'];
+
+export function manquesDeLaFiche({ profil, limites = [], manques = null, bornesDuCorpus = null }) {
+  const electifs = (profil?.mandats || []).filter((m) => m.categorie === 'mandat_electif');
+  const rang = (l) => {
+    const i = RANG_DES_AUTRES_LIMITES.indexOf(l.cle);
+    return i === -1 ? RANG_DES_AUTRES_LIMITES.length : i;
+  };
+  const lignes = [
+    ...mandatsNonCouverts(profil, bornesDuCorpus),
+    ...mandatsAuSenat(profil),
+    ...LIMITES_EN_TETE.flatMap((cle) => limites.filter((l) => l.cle === cle)),
+    ...lignesDesReperes(manques),
+    // Le tri est stable : deux signalements de collecte gardent leur ordre.
+    ...limites.filter((l) => !LIMITES_EN_TETE.includes(l.cle)).sort((a, b) => rang(a) - rang(b)),
+  ];
+
+  const borneDesMandats = debutDeSource(profil?.couverture, 'mandats', bornesDuCorpus);
+  if (
+    electifs.length
+    && borneDesMandats
+    && !limites.some((l) => l.cle === 'mandats-anterieurs')
+    && !electifs.some((m) => m.debut && m.debut < borneDesMandats)
+  ) {
+    lignes.push({
+      cle: 'avant-la-borne',
+      titre: `Avant ${moisEtAnnee(borneDesMandats)}`,
+      texte: `Nos sources ne connaissent aucun mandat avant le ${jourEnLettres(borneDesMandats)}.`,
+    });
+  }
+
+  const sansActivite = ['votes', 'amendements', 'interventions'].every((l) => !(profil?.[l] || []).length);
+  const phrase = electifs.length
+    ? null
+    : [PHRASE_SANS_MANDAT, sansActivite ? PHRASE_SANS_ACTIVITE : null].filter(Boolean).join(' ');
+  return { phrase, lignes };
 }

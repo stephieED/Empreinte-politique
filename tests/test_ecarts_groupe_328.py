@@ -217,7 +217,7 @@ def test_la_part_dissidente_se_rapporte_a_l_effectif_eligible(module: str) -> No
     assert "membresEligibles" in corps
 
 
-# ── Les quatre conditions d'entrée dans la bande ───────────────────────────
+# ── Les cinq conditions d'entrée dans la bande ─────────────────────────────
 
 
 def test_seuls_les_votes_sur_l_ensemble_entrent_dans_la_bande(module: str) -> None:
@@ -227,6 +227,34 @@ def test_seuls_les_votes_sur_l_ensemble_entrent_dans_la_bande(module: str) -> No
     assert "isWholeTextVote(mien.scrutin)" in corps
     assert "c.position_majoritaire" in corps
     assert "POSITIONS_COMPARABLES.includes(mien.position)" in corps
+
+
+def test_seule_la_derniere_lecture_entre_dans_la_bande(module: str) -> None:
+    """La section compare les scrutins que « Ce qu'il a voté » publie, et eux seuls.
+
+    Arrêté le 01/10/2026 : la section 3 ne retient qu'une position par texte,
+    celle de sa dernière lecture (#711), et la section 4 comparait TOUTES les
+    lectures — une divergence de première lecture s'affichait sous une section
+    qui, deux écrans plus haut, ne retenait pas ce vote. Mesuré ce jour-là sur
+    les 31 fiches publiées : 1 940 scrutins comparés avant, 1 304 après ; chez
+    François Ruffin 258 puis 168, les 168 de sa section 3.
+
+    LA SÉLECTION N'EST PAS RÉÉCRITE, et c'est ce que les deux moitiés du test
+    tiennent : le module reçoit les votes retenus et n'ordonne aucune lecture
+    lui-même ; l'adaptateur lui passe ceux de `votesDuProfil`, la sélection de
+    la section 3 (`selectDerniereLectureVotes`, sur le corpus entier).
+
+    SANS CORPUS, RIEN : `null` laisse la bande vide plutôt que de retomber sur
+    toutes les lectures (§2 règle 5).
+    """
+    corps = module.split("export function ecartsAvecLeGroupe(")[1]
+    assert "retenus = null," in corps, "sans sélection passée, la bande reste vide"
+    assert "if (!dernieresLectures?.has(c.scrutin_id)) continue;" in corps
+    for reecrit in ("selectDerniereLectureVotes", "grouperLecturesParTexte", "derniereLecture("):
+        assert reecrit not in module, f"{reecrit} : la sélection se reçoit, elle ne se refait pas ici"
+
+    adaptateur = sans_commentaires(ADAPTATEUR.read_text(encoding="utf-8"))
+    assert "lectureVotes.derniereLectureDisponible ? lectureVotes.retenus : null," in adaptateur
 
 
 def test_un_scrutin_sans_quorum_est_publie_avec_sa_reserve(module: str, composant: str) -> None:
@@ -316,7 +344,11 @@ def test_la_matiere_vient_de_l_adaptateur_et_n_est_pas_reconstruite() -> None:
 
     adaptateur = sans_commentaires(ADAPTATEUR.read_text(encoding="utf-8"))
     assert "const matiereDuScrutin = (scrutinId) => {" in adaptateur
-    assert "ecartsAvecLeGroupe(votes, fichesGroupe, matiereDuScrutin)" in adaptateur
+    # L'appel tient sur plusieurs lignes depuis qu'il porte un quatrième
+    # argument — les votes de dernière lecture (01/10/2026). La matière reste
+    # le troisième, passée telle quelle.
+    appel = adaptateur.split("const ecarts = ecartsAvecLeGroupe(")[1].split(");")[0]
+    assert [a.strip() for a in appel.split(",")][:3] == ["votes", "fichesGroupe", "matiereDuScrutin"]
 
 
 def test_le_titre_du_texte_est_nettoye(module: str) -> None:
@@ -346,17 +378,34 @@ def test_la_phrase_ne_subsiste_que_la_ou_la_figure_ne_dit_rien(composant: str) -
 
 
 def test_le_renvoi_methodo_est_ancre_et_la_cible_existe() -> None:
-    """Un lien posé sous un chiffre doit déposer le lecteur DEVANT la règle.
+    """Le renvoi doit déposer le lecteur DEVANT la règle.
 
     L'ancre `#ecarts` n'existait pas quand la maquette a été validée ; la
     section ne pouvait pas être livrée sans elle, sinon la traçabilité était
     déplacée et non assurée (§2 règle 2).
+
+    LE RENVOI A QUITTÉ LE COMPOSANT LE 01/10/2026. Il était posé deux fois, sous
+    chacun des deux nombres de « Ce qui est comparable » ; il est maintenant dans
+    la bulle du titre de section, que la fiche compose. Le test le suit là, et
+    refuse qu'il revienne sous les chiffres.
+
+    La méthodologie dit aussi la règle que la section applique depuis ce jour :
+    seule la dernière lecture de chaque texte est comparée.
     """
     composant = COMPOSANT.read_text(encoding="utf-8")
-    assert '"/methodologie#ecarts"' in composant
+    assert "/methodologie#ecarts" not in sans_commentaires(composant), (
+        "le renvoi est revenu sous les chiffres : il vit dans la bulle du titre"
+    )
+    fiche = FICHE.read_text(encoding="utf-8")
+    assert "vers: '/methodologie#ecarts'" in fiche
 
     methodo = METHODO.read_text(encoding="utf-8")
     assert "id: 'ecarts'," in methodo
+    ancre = methodo[methodo.index("id: 'ecarts',") :]
+    ancre = ancre[: ancre.index("id: 'interventions',")]
+    assert "dernière lecture" in ancre, (
+        "la méthodologie décrit encore une comparaison sur toutes les lectures"
+    )
     for attendu in (
         "scrutin par scrutin",
         "ensemble d'un texte",

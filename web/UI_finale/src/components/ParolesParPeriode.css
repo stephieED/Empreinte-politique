@@ -309,16 +309,6 @@
   background: repeating-linear-gradient(45deg, var(--bg) 0 4px, transparent 4px 8px);
 }
 
-/* La source du compte rendu, nommée une fois par section. */
-.pp-archive {
-  margin: 10px 0 0;
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--muted);
-}
-
-.pp-archive a { color: var(--ink); font-weight: 600; }
-
 .pp-source {
   display: inline-block;
   margin-top: 9px;
@@ -346,15 +336,6 @@
   margin: 12px 0 0;
   font-size: 13px;
   color: var(--muted);
-}
-
-.pp-couverture {
-  margin-top: 16px;
-}
-
-.pp-methodo {
-  margin: 14px 0 0;
-  font-size: 12.5px;
 }
 
 .pp-chip:focus-visible,
@@ -431,6 +412,41 @@
 .pp-qualite--an[aria-pressed='true'] { background: var(--parl); }
 .pp-qualite--gouv[aria-pressed='true'] { background: var(--gouv); }
 .pp-qualite--pe[aria-pressed='true'] { background: var(--pe); }
+
+/* La bulle d'une pastille (02/10/2026) : le « i » est DANS la pastille, qui lui
+   réserve sa place à droite. Deux boutons frères — la pastille et le « i » —,
+   posés l'un sur l'autre par l'enveloppe ; la bulle s'ouvre sous la pastille,
+   à son bord gauche. */
+.pp-pastille {
+  position: relative;
+  display: inline-flex;
+}
+.pp-qualite--bulle { padding-right: 38px; }
+.pp-pastille .ib-bouton {
+  position: absolute;
+  right: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  background: transparent;
+}
+/* La cible du doigt déborde le dessin : 18 px ne se visent pas sur un
+   téléphone, et un clic manqué ici basculerait de versant. */
+.pp-pastille .ib-bouton::after {
+  content: '';
+  position: absolute;
+  inset: -11px;
+}
+.pp-pastille .ib-bouton[aria-expanded='true'] { background: var(--ink); color: #fff; }
+/* Sur la pastille active, le « i » passe en blanc sur la couleur du versant ;
+   ouvert, il s'inverse. */
+.pp-qualite[aria-pressed='true'] + .ib .ib-bouton { border-color: #fff; color: #fff; }
+.pp-qualite[aria-pressed='true'] + .ib .ib-bouton[aria-expanded='true'] { background: #fff; }
+.pp-qualite--an[aria-pressed='true'] + .ib .ib-bouton[aria-expanded='true'] { color: var(--parl); }
+.pp-qualite--gouv[aria-pressed='true'] + .ib .ib-bouton[aria-expanded='true'] { color: var(--gouv); }
+.pp-qualite--pe[aria-pressed='true'] + .ib .ib-bouton[aria-expanded='true'] { color: var(--pe); }
 
 /* Le mot de la recherche dans un verbatim (#979) : le surlignage des titres de
  * section, sur le bas des lettres — le jaune ne porte jamais le texte. */

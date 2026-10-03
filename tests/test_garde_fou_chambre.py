@@ -146,6 +146,10 @@ SITES_PYTHON: dict[tuple[str, str], str] = {
     # espère bien écrit.
     ("groupes_config.py", "charger_lignees"): GROUPE,
     ("generate_lignee_profiles.py", "generer_une_lignee"): GROUPE,
+    # #1168 lot 2a — un groupe ou une lignée que la dérivation AMO30 ajoute à la
+    # table reçoit la chambre de son organe : `AN`, la seule que ce référentiel
+    # porte. C'est la chambre d'un groupe, jamais le scalaire d'un profil.
+    ("groupes_amo30.py", "mettre_a_jour_table"): GROUPE,
     ("group_profile.py", "_mandats_electifs"): MANDAT,
     ("group_profile.py", "generate_groupe_profile_from_roster"): GROUPE,
     ("group_profile.py", "main"): GROUPE,

@@ -73,7 +73,7 @@ const FILIGRANE = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000
      valeur (#8b8794), les pages d'instantané nomment ce gris autrement ;
    — le bouton du menu prend `--border-fort`, le `--border-strong` du site. */
 export const STYLE_CHROME = `
-:root { --notice:#00e5ff; }
+:root { --notice:#e7e4df; }
 body {
   background-color: var(--bg);
   background-image: ${FILIGRANE};

@@ -49,6 +49,7 @@
 import { sankey, sankeyLeft, sankeyLinkHorizontal } from 'd3-sankey';
 import { LIBELLE_STADE } from './profilCandidat';
 import { SORTS_PROCEDURE_49_3 } from './lecture';
+import { familleDeCommission } from './commissions';
 
 /* Le mot court d'une étape, et la négation courte de l'étape SUIVANTE. Deux
  * tables plutôt que deux tableaux parallèles : l'échelle des stades peut
@@ -401,11 +402,22 @@ export function textesDeLaSelection(cascade, selection) {
   if (selection.procedure493) {
     return (cascade.textes || []).filter((t) => SORTS_PROCEDURE_49_3.has(t.sortCle)).sort(tri);
   }
+  /* LES CARRÉS DE LA FICHE CANDIDAT ÉTENDENT LA SÉLECTION DE DEUX CLÉS
+   * (`utils/carresTextes.js`, 01/10/2026). `texte` désigne UN texte par son
+   * rang dans `cascade.textes` — un carré est un texte, il n'y a rien à
+   * croiser. `famille` est l'entrée de légende : les huit commissions
+   * permanentes, et les commissions spéciales réunies sous un seul nom. La
+   * cascade, elle, n'écrit ni l'une ni l'autre, et se lit comme avant. */
+  if (selection.texte != null) {
+    const seul = (cascade.textes || [])[selection.texte];
+    return seul ? [seul] : [];
+  }
   /* Un texte européen touche plusieurs thèmes (`themes`) : il se retrouve sous
    * CHACUN d'eux, pas sous le seul plus lourd (#901). */
   const aLeTheme = (t) => (t.themes ? t.themes.includes(selection.matiere) : t.matiere === selection.matiere);
   return (cascade.textes || [])
     .filter((t) => (!selection.matiere || aLeTheme(t))
+      && (!selection.famille || familleDeCommission(t.matiere) === selection.famille)
       && rang(t.stadeCle) >= selection.lo && rang(t.stadeCle) <= selection.hi)
     .sort(tri);
 }

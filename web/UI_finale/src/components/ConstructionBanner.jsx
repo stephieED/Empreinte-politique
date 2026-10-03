@@ -12,12 +12,10 @@ import './ConstructionBanner.css';
  * Volontairement NON refermable : un bandeau qu'on ferme disparaît pour toute
  * la visite, y compris sur les pages de profil — là où il compte le plus.
  *
- * Couleur : cyan signal (--notice) sur encre. La charte ne définit aucune
- * couleur d'alerte, et c'est ce qui rend ce choix sûr : le cyan n'appartient à
- * aucun autre élément de l'interface, donc le bandeau ne peut pas se lire
- * comme du contenu. Le jaune signal est exclu — la charte le réserve à la
- * sélection, l'action et la source vérifiée, « jamais pour indiquer un
- * jugement » (DESIGN_SYSTEM.md §1 et §2).
+ * Couleur : encre sur gris (--notice). Le bandeau était cyan, hors palette ;
+ * la propriétaire l'a ramené à un gris le 02/10/2026. Le jaune signal reste
+ * exclu — la charte le réserve à la sélection, l'action et la source vérifiée,
+ * « jamais pour indiquer un jugement » (DESIGN_SYSTEM.md §1 et §2).
  */
 export default function ConstructionBanner() {
   return (

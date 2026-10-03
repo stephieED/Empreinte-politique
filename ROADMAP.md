@@ -294,7 +294,7 @@ Convention d'écriture : `AGENTS.md` §8.
   supprime. Arbitrage éditorial ouvert : le seuil ne porte-t-il que sur les
   textes qui ont un stade ?
 
-- **La §4 « Où il s'est écarté des siens » ne peut pas exister à l'européen
+- **La §4 « Où il a voté autrement que son groupe » ne peut pas exister à l'européen
   (#328).** Elle compare une position à celle de son groupe, et les 23 fiches de
   groupe servies sont **21 AN et 2 Sénat, aucune européenne** ; le profil de
   Glucksmann ne porte même aucun mandat `groupe_politique`. La section reste

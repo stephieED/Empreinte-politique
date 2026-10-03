@@ -14,8 +14,11 @@ amendement, ni intervention. Le poser sur la frise du parcours ferait lire
 Ce que ces tests verrouillent :
 
 - la limite existe, sous la clé `mandats-anterieurs`, et porte son intitulé ;
-- elle est rangée dans les limites **du parcours** — c'est ce que le corpus ne
-  dit pas de cette personne, pas ce que la collecte a rencontré ;
+- elle a sa place dans la liste de « Ce qui manque sur cette fiche » — après
+  les lignes d'activité, avant ce que la collecte signale — et elle **fait
+  taire « Avant juin 2002 »**. Jusqu'au 01/10/2026 elle était rangée dans une
+  carte « Ce que le corpus ne dit pas de son parcours » ; la section est
+  devenue une seule liste, et ce qui se garde est son rang, plus sa carte ;
 - **le champ n'est lu nulle part ailleurs dans la fiche** : c'est le test le
   plus important du fichier, celui qui tient l'arbitrage. Une session suivante
   qui rebranche `mandats_anterieurs` sur la frise le fera rougir ;
@@ -67,17 +70,41 @@ def test_la_limite_est_declaree_avec_sa_cle():
     )
 
 
-def test_la_limite_porte_son_intitule_et_reste_dans_le_parcours():
-    code = sans_commentaires(COMPOSANT.read_text(encoding="utf-8"))
-    assert f"'{CLE}': 'Mandats antérieurs'" in code, (
-        "Sans entrée dans LIBELLE_LIMITE, la ligne s'intitulerait « Corpus »."
+def test_la_limite_porte_son_intitule_et_fait_taire_la_ligne_de_borne():
+    """L'intitulé voyage avec la limite, et la borne ne la contredit pas.
+
+    LA RÈGLE A CHANGÉ LE 01/10/2026. L'intitulé vivait dans une table du
+    composant (`LIBELLE_LIMITE`) et la limite dans un ensemble
+    (`LIMITES_DU_PARCOURS`) qui la rangeait sous la carte « Ce que le corpus ne
+    dit pas de son parcours ». La section 6 est devenue UNE liste : chaque limite
+    porte son `titre`, et son rang est posé par `manquesDeLaFiche`.
+
+    Ce qui se garde de l'arbitrage de #860 : c'est une ligne de « ce qu'on n'a
+    pas pu lire », sous son intitulé. Ce qui s'y ajoute : la dernière ligne de
+    la liste, « Avant juin 2002 — Nos sources ne connaissent aucun mandat avant
+    le 19 juin 2002 », NE PARAÎT PAS sur une fiche qui cite des mandats
+    antérieurs — les deux lignes se contrediraient.
+    """
+    regles = sans_commentaires(MODULE_REGLES.read_text(encoding="utf-8"))
+    bloc = regles[regles.index(f"cle: '{CLE}'") :]
+    bloc = bloc[: bloc.index("});")]
+    assert "titre: 'Mandats antérieurs'" in bloc, (
+        "Sans son intitulé, la ligne sortirait sans colonne de gauche."
     )
-    bloc = re.search(r"LIMITES_DU_PARCOURS\s*=\s*new Set\(\[(.*?)\]\)", code, re.DOTALL)
-    assert bloc, "LIMITES_DU_PARCOURS introuvable."
-    assert f"'{CLE}'" in bloc.group(1), (
-        "La limite a quitté les limites DU PARCOURS : elle se rangerait sous "
-        "« ce que la collecte signale », qui parle des sources rencontrées, pas "
-        "de ce que le corpus ignore de cette personne."
+    rangs = re.search(r"RANG_DES_AUTRES_LIMITES\s*=\s*\[(.*?)\]", regles, re.DOTALL)
+    assert rangs and f"'{CLE}'" in rangs.group(1), (
+        "La limite a perdu son rang dans la liste : elle se mêlerait aux "
+        "signalements de collecte, qui parlent des sources rencontrées."
+    )
+    liste = regles[regles.index("export function manquesDeLaFiche") :]
+    assert f"!limites.some((l) => l.cle === '{CLE}')" in liste, (
+        "« Avant juin 2002 » reparaîtrait sous une ligne qui cite des mandats "
+        "d'avant 2002."
+    )
+    composant = sans_commentaires(COMPOSANT.read_text(encoding="utf-8"))
+    assert "LIBELLE_LIMITE" not in composant and "LIMITES_DU_PARCOURS" not in composant, (
+        "Une seconde table d'intitulés est revenue dans le composant : elle "
+        "divergera de celle que la limite porte."
     )
 
 

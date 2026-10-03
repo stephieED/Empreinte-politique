@@ -122,6 +122,28 @@ les charger, ni à les faire grossir. -->
   contradicted `id_acteur`. This is what settled the 19 inherited interventions without a
   Syceron twin: they leave.
   → `docs/decisions/residus-source-retiree-839.md`
+- **The chair of the sitting is not a speech in the debate, and the source says so in only
+  one place (#1169).** Measured on 60 XVIIe comptes rendus, 33 924 paragraphs: `<qualite>` —
+  what we publish as `fonction` — is **empty on 100 %** of the 3 667 chair paragraphs, and
+  the `roledebat="president"` attribute covers only **41 %** of them (3 666 of 8 970). The
+  **speaker's label** covers all of them: the chair is never named by their own name in that
+  role, they are « M. le président » or « Mme la présidente ». Hence `role_seance`, one closed
+  value, derived from that label and **anchored at both ends** — a speaker quoting the formula
+  is not the chair, and that case exists. **The reduced form keeps it**, because that form is
+  the roster members' one, i.e. exactly the population whose speech a group sheet aggregates:
+  a sitting President weighs **35 %** of their own group's entries. Publishing `orateur_nom`
+  verbatim instead would cost **42 Mio** against **2,6 Mio** for this field alone.
+  → `docs/decisions/role-de-seance-distingue-1169.md`
+- **A fact the source carries, added after the corpus was written, never reaches it on its own
+  (#1169).** The merge is additive: the old entry wins. The need has come up three times —
+  #710 the subject, #1087 the anchor, #1169 the role — and the proof is in the runs: both runs
+  of 30/09 collected interventions and **added no entry and filled no field** (1 217 456 on
+  both sides, zero delta). `reporter_faits_de_source` carries a **named** list,
+  `CHAMPS_FAITS_DE_SOURCE`, and only where nothing is written: never over a published value,
+  neither with emptiness nor with another value. **A named list and not "every missing
+  field"** — a field the collection may legitimately leave empty for a reason about the *run*
+  would otherwise be filled from another run, which is `collecte-vide-necrase-jamais` turned
+  inside out.
 - **What is not measured says so** — per-candidate cost and RSS of the sharded index are
   bounded by construction, not by measurement, and the #429 and #500 balances are
   un-remeasured. Naming them is the rule: §2.5 applies to our own work too.

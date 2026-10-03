@@ -239,11 +239,13 @@ const SECTIONS = [
         </p>
         <h3>Quels scrutins sont retenus</h3>
         <p>
-          Quatre conditions, toutes nécessaires : la personne y a une position publiée, la fiche de
-          son groupe aussi, la position majoritaire du groupe est établie, et le scrutin porte sur
-          l'<strong>ensemble d'un texte</strong>. Cette dernière restriction n'est pas un défaut de
-          collecte : sur un article ou un amendement, la position majoritaire d'un groupe se déplace
-          d'un vote à l'autre pour des raisons de négociation que la source ne porte pas.
+          Cinq conditions, toutes nécessaires : la personne y a une position publiée, la fiche de
+          son groupe aussi, la position majoritaire du groupe est établie, le scrutin est la{' '}
+          <strong>dernière lecture</strong> du texte, c'est-à-dire le vote le plus récent sur ce
+          texte, et il porte sur l'<strong>ensemble du texte</strong>. Cette dernière restriction
+          n'est pas un défaut de collecte : sur un article ou un amendement, la position majoritaire
+          d'un groupe se déplace d'un vote à l'autre pour des raisons de négociation que la source
+          ne porte pas.
         </p>
         <p>
           Le nombre de scrutins <em>communs toutes natures confondues</em> n'est pas publié. Posé à

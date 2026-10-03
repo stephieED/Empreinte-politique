@@ -191,9 +191,15 @@ def test_la_fiche_choisit_la_mise_en_page_et_le_vocabulaire(mise_en_page) -> Non
 
     « examiné en commission, et non discuté en séance » n'a de sens que sur une
     échelle : sur le versant européen, il n'y a pas d'étape suivante.
+
+    La fiche candidat ne passe plus `disposerCascadeUE` depuis le 02/10/2026 :
+    son versant européen se lit en carrés, une ligne par thème
+    (`tests/test_carres_themes_ue_fiche_candidat.py`). La mise en page
+    européenne reste dans `cascadeTextes.js`, et ses règles restent tenues par
+    les tests de ce fichier ; la liste, elle, garde son vocabulaire.
     """
     fiche = FICHE.read_text(encoding="utf-8")
-    assert "disposerCascadeUE" in fiche, "la fiche doit passer la mise en page européenne"
+    assert "<CarresThemesUe " in fiche, "le versant européen de la fiche a sa figure"
     assert re.search(r"ordonnee=\{!ue\}", fiche), (
         "la liste doit savoir que les issues européennes ne s'ordonnent pas"
     )

@@ -193,31 +193,76 @@ def aligner_collecte_reduite(profil: dict[str, Any]) -> dict[str, Any]:
     return profil
 
 
+#: #1169 — LES FAITS DE SOURCE QU'UNE ENTRÉE PUBLIÉE PEUT NE PAS AVOIR.
+#:
+#: Nommés un par un, jamais « tous les champs absents ». Chacun est un fait que
+#: la source porte sur le paragraphe, que la collecte n'a pas toujours retenu, et
+#: qu'aucune relecture ne corrige : le reporter ne décide de rien.
+#:
+#: Ce que la liste n'a PAS le droit de contenir : un champ dérivé (il se
+#: recompose), un champ que la collecte peut rendre vide pour une raison tenant
+#: au run (ce serait `collecte-vide-necrase-jamais` à l'envers), et un champ
+#: qu'une relecture humaine renseigne (`succede_a`, `position_politique`).
+CHAMPS_FAITS_DE_SOURCE: tuple[str, ...] = (
+    "id_syceron",    # #1087 — l'ancre du paragraphe sur la page de séance
+    "fonction",      # la `<qualite>` de l'orateur : ministre, rapporteur
+    "role_seance",   # #1169 — la présidence de séance, lue dans son libellé
+)
+
+
+def reporter_faits_de_source(
+    merged: list[dict[str, Any]],
+    new_list: Optional[list[dict[str, Any]]],
+    key_fn: Callable[[dict[str, Any]], Key],
+    champs: tuple[str, ...] = CHAMPS_FAITS_DE_SOURCE,
+) -> list[dict[str, Any]]:
+    """Reporte sur une entrée publiée les faits de source qu'elle n'a pas (#1169).
+
+    Généralise le report d'`id_syceron` de #1087, dont le besoin s'est répété
+    trois fois : la fusion est additive et l'entrée ancienne gagne, donc **aucun
+    champ ajouté après coup n'atteint jamais le corpus déjà écrit**. Mesuré le
+    02/10/2026 : 1 217 456 interventions publiées, et deux runs du 30/09 ayant
+    collecté les interventions n'ont ajouté AUCUNE entrée ni rempli aucun champ.
+
+    **Seulement quand la clé manque, et dans un seul sens.** Une valeur publiée
+    n'est jamais remplacée — ni par une autre valeur, ni par du vide : c'est
+    `docs/decisions/collecte-vide-necrase-jamais.md`, et ce report ne l'entame
+    pas. Il ne fait qu'écrire là où rien n'était écrit.
+    """
+    apports: dict[str, dict[Key, Any]] = {champ: {} for champ in champs}
+    for item in (new_list or []):
+        if not isinstance(item, dict):
+            continue
+        cle = key_fn(item)
+        for champ in champs:
+            valeur = item.get(champ)
+            if valeur not in (None, "", [], {}):
+                apports[champ].setdefault(cle, valeur)
+    if not any(apports.values()):
+        return merged
+    for item in merged:
+        if not isinstance(item, dict):
+            continue
+        cle = key_fn(item)
+        for champ in champs:
+            if item.get(champ) in (None, "", [], {}):
+                valeur = apports[champ].get(cle)
+                if valeur is not None:
+                    item[champ] = valeur
+    return merged
+
+
 def reporter_id_syceron(
     merged: list[dict[str, Any]],
     new_list: Optional[list[dict[str, Any]]],
     key_fn: Callable[[dict[str, Any]], Key],
 ) -> list[dict[str, Any]]:
-    """Reporte `id_syceron` d'une intervention neuve sur l'entrée publiée qui ne
-    l'a pas (#1087).
+    """Le report d'#1087, devenu un cas de `reporter_faits_de_source` (#1169).
 
-    La fusion est additive et l'entrée ancienne gagne : sans ce report, aucune
-    des interventions publiées avant #1087 ne recevrait jamais son ancre. Le
-    report ne touche QUE cette clé, et seulement quand elle manque : c'est un
-    fait de la source (l'identifiant du paragraphe), pas une correction.
+    Conservé parce que la décision #1087 le nomme et que des tests l'exercent :
+    il dit la règle sur une seule clé, là où l'autre la dit sur la liste.
     """
-    ancres = {
-        key_fn(item): item["id_syceron"] for item in (new_list or [])
-        if isinstance(item, dict) and item.get("id_syceron")
-    }
-    if not ancres:
-        return merged
-    for item in merged:
-        if isinstance(item, dict) and not item.get("id_syceron"):
-            ancre = ancres.get(key_fn(item))
-            if ancre:
-                item["id_syceron"] = ancre
-    return merged
+    return reporter_faits_de_source(merged, new_list, key_fn, ("id_syceron",))
 
 
 def merge_lists_by_key(
@@ -1779,7 +1824,7 @@ def merge_raw_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> dic
     # le nom d'un créneau de séance — donc `normalize_profil` republierait le faux
     # thème dans `theme_officiel` puis dans `tags_thematiques`.
     merged["interventions"] = normaliser_dates_interventions(backfill_sujet_question(backfill_sujet_seance(
-        reporter_id_syceron(promouvoir_forme_complete(
+        reporter_faits_de_source(promouvoir_forme_complete(
             merge_lists_by_key(old.get("interventions"), new.get("interventions"), _intervention_key),
             new.get("interventions"),
             _intervention_key,
@@ -2815,7 +2860,7 @@ def merge_pivot_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> d
     merged["interventions"] = normaliser_dates_interventions(clean_stale_interventions(
         backfill_sujet_europeen(
             backfill_sujet_question(backfill_sujet_seance(
-                reporter_id_syceron(promouvoir_forme_complete(
+                reporter_faits_de_source(promouvoir_forme_complete(
                     merge_lists_by_key(old.get("interventions"), new.get("interventions"),
                                        _pivot_intervention_key),
                     new.get("interventions"),

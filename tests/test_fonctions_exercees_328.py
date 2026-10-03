@@ -268,34 +268,56 @@ def test_la_section_ne_republie_ni_la_frise_ni_la_liste_datee(composant):
     section = _corps(composant, 'titre="Les fonctions exercées"', "</Section>")
     assert "<Frise" not in section
     assert "cp-roles" not in section
-    assert "Le parcours" not in composant, "le titre ne décrivait plus la section"
+    # Le TITRE « Le parcours » — et non plus les deux mots : depuis le
+    # 01/10/2026 la bulle d'« En bref » commence par « Le parcours d'élu, et
+    # l'activité en quelques chiffres bruts. », texte arrêté par la propriétaire.
+    assert 'titre="Le parcours"' not in composant, "le titre ne décrivait plus la section"
 
 
 def test_la_section_n_a_plus_de_critere_d_en_tete(composant):
     """Il annonçait la section avant qu'on ait rien lu, et il décrivait la frise
-    — qui n'y est plus. La règle de lecture est descendue en pied."""
+    — qui n'y est plus. La règle de lecture est descendue en pied, puis, le
+    01/10/2026, dans la légende de la carte et la bulle du titre."""
     section = _corps(composant, 'titre="Les fonctions exercées"', "</Section>")
     assert "critere=" not in section
 
 
-def test_le_pied_documente_la_regle_et_mene_a_la_methodologie(composant):
+def test_la_legende_documente_la_marque_et_la_bulle_mene_a_la_methodologie(composant, feuille):
     """Le lecteur doit pouvoir savoir POURQUOI certaines fonctions sont en avant,
     et aller plus loin s'il le souhaite.
 
-    LA RÈGLE EST LÀ, SON POURQUOI EST AILLEURS (#328). Le pied disait les trois
-    règles de lecture en quarante mots — les trois plus longues, le filet à la
-    moitié du mandat, le rôle précisé hors « membre ». DESIGN_SYSTEM §7 règle 2
-    range cela du côté de l'explication : le pied garde les deux repères qu'on
-    voit à l'écran, et le renvoi mène à `#fonctions`, où les trois sont écrites
-    avec ce qu'elles ne veulent PAS dire — qu'aucune n'est un palmarès.
+    LA RÈGLE EST LÀ, SON POURQUOI EST AILLEURS (#328). DESIGN_SYSTEM §6 bis
+    règle 2 range l'explication du côté de la méthodologie : la fiche garde le
+    repère qu'on voit à l'écran, et le renvoi mène à `#fonctions`, où les règles
+    sont écrites avec ce qu'elles ne veulent PAS dire — qu'aucune n'est un
+    palmarès.
+
+    LE PIED EST PARTI LE 01/10/2026, EN DEUX MORCEAUX, et le test les suit tous
+    les deux — sans quoi retirer l'un ou l'autre passerait :
+
+    - ce que marque la ligne surlignée est une LÉGENDE, en tête de la carte,
+      avec un échantillon de la marque elle-même : « la légende appartient à la
+      figure ». Sous la carte, on lisait la marque avant de savoir ce qu'elle
+      marquait. Elle ne s'affiche que si la carte porte une ligne surlignée ;
+    - le renvoi vers la méthodologie est dans la bulle du titre de section.
     """
+    fonctions = _corps(composant, "function Fonctions(", "\n}")
+    assert "Fonction tenue pendant plus de la moitié du mandat" in fonctions
+    assert "{uneLigneMarquee && (" in fonctions, "une légende sans ligne surlignée ne renvoie à rien"
+    assert fonctions.index("cp-fonctions-legende") < fonctions.index("fonctions.blocs.map("), (
+        "la légende précède la première catégorie"
+    )
+    # L'échantillon EST la marque : même liseré, même fond que la ligne.
+    marque = _corps(feuille, ".cp-fonctions-item--marquee {", "}")
+    echantillon = _corps(feuille, ".cp-fonctions-legende-marque {", "}")
+    for trait in ("border-left: 3px solid var(--ink);", "background: #fbfaf8;"):
+        assert trait in marque and trait in echantillon, f"l'échantillon ne reprend plus « {trait} »"
+
     section = _corps(composant, 'titre="Les fonctions exercées"', "</Section>")
-    assert "plus longues" in section
-    # « un filet passé la moitié du mandat » nommait la FORME du repère ; le pied
-    # dit maintenant ce qu'il marque — « ligne surlignée = expérience sur + de la
-    # moitié du mandat ». Le repère reste documenté, en clair.
-    assert "moitié du mandat" in section
-    assert 'to="/methodologie#fonctions"' in section
+    assert "plus longues" not in section and "cp-section-pied" not in section, "le pied est revenu"
+    assert "BULLES.fonctions" in section
+    bulle = _corps(composant, "  fonctions: {", "  },")
+    assert "vers: '/methodologie#fonctions'" in bulle
 
     methodo = (
         RACINE / "web" / "UI_finale" / "src" / "pages" / "MethodologyPage.jsx"

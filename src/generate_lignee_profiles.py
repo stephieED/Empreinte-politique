@@ -355,7 +355,8 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         default=str(CHEMIN_CONFIG_GROUPES),
         metavar="FICHIER",
         help="Configuration déclarant les lignées et l'appartenance de chaque "
-             "groupe (défaut : config/groupes_reels.json).",
+             "groupe (défaut : la table du run si elle est à jour, sinon "
+             "config/groupes_reels.json).",
     )
     parser.add_argument(
         "--groupes-dir",

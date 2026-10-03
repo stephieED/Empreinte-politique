@@ -554,6 +554,47 @@ KNOWN_COLLECTES_INTERVENTION: frozenset[str] = frozenset({
     COLLECTE_SANS_VERBATIM_SOURCE,
 })
 
+#: #1169 — LE RÔLE DANS LA CONDUITE DE LA SÉANCE, et il n'y a qu'une valeur.
+#:
+#: Syceron ne le dit NI dans `<qualite>` — vide à 100 % sur les 3 667
+#: paragraphes de présidence des 60 comptes rendus mesurés de la XVIIe — NI de
+#: façon fiable dans l'attribut `roledebat`, qui n'en couvre que 41 % (3 666 sur
+#: 8 970). Le seul signal complet est le LIBELLÉ de l'orateur : la présidence
+#: n'est jamais nommée par son nom propre dans ce rôle, elle est « M. le
+#: président » ou « Mme la présidente ».
+#:
+#: Pourquoi un rôle dérivé et non `orateur_nom` publié verbatim : 8,5 % des
+#: entrées d'index portent un libellé de présidence, et publier le libellé
+#: partout coûterait **42 Mio** sur le corpus contre **2,6 Mio** pour ce seul
+#: champ (mesuré le 02/10/2026 sur 101 946 entrées d'index). Le dépôt compte
+#: déjà ses octets ici — voir `_reduire_au_theme`.
+ROLE_SEANCE_PRESIDENCE = "presidence"
+
+KNOWN_ROLES_SEANCE: frozenset[str] = frozenset({ROLE_SEANCE_PRESIDENCE})
+
+#: « M. le président », « Mme la présidente », et les deux formes de la
+#: vice-présidence, qui préside aussi. Ancré des deux côtés : un orateur qui
+#: CITE la formule dans son propos ne doit pas être pris pour la présidence —
+#: mesuré, un seul cas sur 60 comptes rendus, et l'ancrage l'écarte.
+_LIBELLE_PRESIDENCE = re.compile(
+    r"^(?:M\.|Mme)\s+l[ae]\s+(?:vice-)?présidente?\s*$", re.IGNORECASE
+)
+
+
+def role_seance_depuis_orateur(orateur_nom: Optional[str]) -> Optional[str]:
+    """`"presidence"` quand le libellé de l'orateur est celui de la présidence
+    de séance, `None` sinon (#1169).
+
+    `None` n'est pas « cette personne ne présidait pas » au sens d'un fait
+    mesuré sur elle : c'est « ce libellé ne désigne pas la présidence ». Une
+    entrée collectée avant ce lot n'en porte pas du tout, et son absence ne se
+    lit pas comme un rôle (AGENTS.md §2 règle 5).
+    """
+    if not isinstance(orateur_nom, str):
+        return None
+    return ROLE_SEANCE_PRESIDENCE if _LIBELLE_PRESIDENCE.match(orateur_nom.strip()) else None
+
+
 _FIN_DE_PHRASE = re.compile(r"[.!?…](?=\s|$)")
 
 
