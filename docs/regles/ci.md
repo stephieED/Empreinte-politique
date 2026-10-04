@@ -246,6 +246,14 @@ les charger, ni à les faire grossir. -->
   tolerated by all **three** callers. **Never `continue-on-error: true`** there: it would
   swallow code 1 and commit a stale sheet with nothing blocking.
   → `docs/decisions/cloisonnement-branche-roster-524.md`
+- **A large archive that is cut is resumed, not lost (#1202).** The Actions cache keeps the
+  Syceron *index*, not the archive: every bump of `SYCERON_VERSION_INDEX` makes each job
+  download the XVth-legislature archive again (149 Mo), and the Assemblée's server broke that
+  transfer in ten jobs out of ten on 04/10/2026. `download_with_watchdog(..., reprises=N)`
+  resumes with `Range`, restarts from zero if the server ignores it, and never publishes a
+  file shorter than announced. **The wall budget covers all attempts** — resuming does not
+  lengthen a job. Opt-in per caller; only Syceron asks for it today.
+  → `docs/decisions/telechargement-repris-apres-coupure-1202.md`
 - **A generated file every PR commits is a conflict every PR shares (#1174).**
   `docs/technical_decisions.md` and `docs/decisions-par-module.md` are regenerated **on
   `main`**, by `.github/workflows/index-decisions.yml`, after each merge that touches

@@ -358,7 +358,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 
 ## `src/candidate_profile.py`
 
-99 décision(s) le gouvernent ; le module en cite 14.
+101 décision(s) le gouvernent ; le module en cite 14.
 
 | Décision | Nomme |
 | --- | --- |
@@ -411,6 +411,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [Un texte renvoyé en commission n'est pas un texte examiné (#997) (2026-09-18)](decisions/examen-en-commission-997.md) | `_stade_from_code_acte` |
 | [La parole des membres de groupe et de gouvernement publie un extrait de 280 caractères (#1029) (2026-09-22)](decisions/extrait-de-la-parole-des-rosters-1029.md) | `_reduire_a_l_extrait` |
 | [Un filtre de publication posé avant la fusion ne filtre rien (#641, réouverture) (2026-08-31)](decisions/filtre-publication-apres-fusion-641.md) | `_profession_an` |
+| [La qualité de l'orateur survit à la forme réduite : `fonction` pour les membres de groupe et de gouvernement (#1200) (2026-10-04)](decisions/fonction-sur-la-forme-reduite-1200.md) | `SYCERON_VERSION_INDEX`, `_reduire_au_theme` |
 | [L'archive vivante se reprend au changement de semaine, les mortes jamais (#762), 07/09/2026](decisions/fraicheur-dossiers-762.md) | `AN_SCRUTINS_LEGISLATURES_FIGEES` |
 | [La rotation de clé hebdomadaire était toute la politique de fraîcheur, et son propre repli la désamorçait (#749)](decisions/fraicheur-index-amendements-749.md) | `_download_and_build_amendement_index`, `amendements_index_en_cache_utilisable` |
 | [`gouvernement_profile` : `premier_ministre` et `portefeuille` câblés depuis les mandats `MINISTERE` (#398) (2026-08-18)](decisions/gouvernement-premier-ministre-portefeuille.md) | `AN_ACTEURS_HISTORIQUE_ZIP_URL`, `_extract_mandats_officiels` |
@@ -458,6 +459,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [`synchro_sources` publie la dernière récupération réussie, et pas son origine (#600) (2026-08-30)](decisions/synchro-sources-derniere-recuperation-600.md) | `_telecharger_flux`, `fetch_interventions_syceron`, `fetch_questions_officielles` |
 | [Taxonomie des mandats : exploitation des `typeOrgane` AN non mappés (#382, option « mixte ») (2026-08-17)](decisions/taxonomie-mandats-typeorgane-an.md) | `_TYPE_ORGANE_NON_MAPPES`, `fetch_positions_hemicycle_officielles` |
 | [Téléchargement AN : trois modes de défaillance, un seul principe — ne jamais jeter un préfixe valide (#443) (2026-08-19)](decisions/telechargement-an-prefixe-valide-443.md) | `AMENDEMENTS_DOWNLOAD_CHUNK_BYTES`, `AMENDEMENTS_SOURCE_STALL_MAX_CYCLES`, `AMENDEMENTS_SOURCE_STALL_WAIT_SECONDS`, `SourceAmendementsIndisponibleError`, `_download_amendements_zip`, `_est_erreur_http_definitive`, `_telecharger_flux`, `_tenter_get_sequentiel` |
+| [Un téléchargement coupé se reprend là où il s'est arrêté : l'archive Syceron de la XVe ne reste plus hors des correctifs (#1202) (2026-10-04)](decisions/telechargement-repris-apres-coupure-1202.md) | `SYCERON_VERSION_INDEX` |
 | [L'union des avertissements peut ressusciter un démenti, et deux familles Syceron s'éteignent (#600) (2026-08-30)](decisions/union-warnings-extinction-600.md) | `WARNING_PREFIX_QUESTIONS_INDISPONIBLES` |
 | [L'index des interventions porte la version du parseur qui l'a écrit (#1169)](decisions/version-de-l-index-des-interventions-1169.md) | `SYCERON_VERSION_INDEX`, `_syceron_index_qualifie`, `_write_syceron_index_par_acteur` |
 | [Votes : agrégation des législatures 14 à 17, index dédupliqué, 14/15/16 figées (#403) (2026-08-18)](decisions/votes-multi-legislature.md) | `AN_SCRUTINS_LEGISLATURES`, `AN_SCRUTINS_LEGISLATURES_FIGEES`, `AN_SCRUTIN_UID_PREFIXE`, `fetch_votes_officiels` |
@@ -581,11 +583,12 @@ Le mentionnent sans le gouverner : [`cascade-europeenne-une-porte-901`](decision
 
 ## `src/download_watchdog.py`
 
-1 décision(s) le gouvernent ; le module en cite 1.
+2 décision(s) le gouvernent ; le module en cite 1.
 
 | Décision | Nomme |
 | --- | --- |
 | [Mandats commission/groupe_amitie/extra_parlementaire sourcés depuis l'AN, fetch_identity NosDéputés rendu conditionnel (#369, complet), watchdog générique sur tous les téléchargements zip (#370, complet) (2026-08-17)](decisions/mandats-officiels-an-369.md) | `download_with_watchdog` |
+| [Un téléchargement coupé se reprend là où il s'est arrêté : l'archive Syceron de la XVe ne reste plus hors des correctifs (#1202) (2026-10-04)](decisions/telechargement-repris-apres-coupure-1202.md) | `download_with_watchdog` |
 
 Le mentionnent sans le gouverner : [`budget-collecte-interventions`](decisions/budget-collecte-interventions.md).
 
@@ -959,7 +962,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 
 ## `src/merge_profile.py`
 
-76 décision(s) le gouvernent ; le module en cite 5.
+77 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -991,6 +994,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [La parole des membres de groupe et de gouvernement publie un extrait de 280 caractères (#1029) (2026-09-22)](decisions/extrait-de-la-parole-des-rosters-1029.md) | `aligner_collecte_reduite`, `promouvoir_forme_complete` |
 | [Borner l'historique de données : ce que ça rend vraiment, et quand (#434) (2026-08-20)](decisions/fenetre-historique-donnees.md) | `merge_raw_profile` |
 | [Un filtre de publication posé avant la fusion ne filtre rien (#641, réouverture) (2026-08-31)](decisions/filtre-publication-apres-fusion-641.md) | `FILTRES_PUBLICATION_IDENTITE`, `_composer_identite`, `bloc_sans_fond`, `deriver_provenance_champs`, `filtrer_identite_publiee`, `merge_pivot_profile` |
+| [La qualité de l'orateur survit à la forme réduite : `fonction` pour les membres de groupe et de gouvernement (#1200) (2026-10-04)](decisions/fonction-sur-la-forme-reduite-1200.md) | `CHAMPS_FAITS_DE_SOURCE`, `reporter_faits_de_source` |
 | [Extension de la stabilité des horodatages aux profils groupe/gouvernement/parti (#343, complet) (2026-08-17)](decisions/freshness-timestamps-groupes-gouvernements-partis.md) | `load_existing_document`, `preserve_stable_freshness_timestamps` |
 | [Un champ qu'une contribution ne porte pas n'est plus effacé (#997) (2026-09-19)](decisions/fusion-conserve-les-champs-absents-997.md) | `CHAMPS_PROTEGES_DU_VIDE`, `_prefer_non_empty`, `merge_raw_profile` |
 | [Un dossier déjà collecté n'apprenait plus rien : au brut aussi, la neuve gagne (#997) (2026-09-18)](decisions/fusion-dossiers-brut-la-neuve-gagne-997.md) | `CHAMPS_PROTEGES_DU_VIDE`, `_dossier_key`, `backfill_dossier_nature`, `backfill_sort_texte_porte`, `merge_dossier_records`, `merge_lists_by_key`, `merge_raw_profile` |
@@ -1078,7 +1082,7 @@ Le mentionnent sans le gouverner : [`investigation-sources-ue`](decisions/invest
 
 ## `src/normalize_profil.py`
 
-10 décision(s) le gouvernent ; le module en cite 4.
+11 décision(s) le gouvernent ; le module en cite 4.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1086,6 +1090,7 @@ Le mentionnent sans le gouverner : [`investigation-sources-ue`](decisions/invest
 | [Une URL de source n'est pas un identifiant : la clé de fusion des interventions (#540) (2026-08-27)](decisions/cle-fusion-interventions-540.md) | `_normalize_intervention` |
 | [Une clé de fusion en `a or b` change d'identité quand `a` se remplit (#668) (2026-08-31)](decisions/cle-fusion-textes-portes-668.md) | `_normalize_texte_porte` |
 | [Un filtre de publication posé avant la fusion ne filtre rien (#641, réouverture) (2026-08-31)](decisions/filtre-publication-apres-fusion-641.md) | `_profession_publiable` |
+| [La qualité de l'orateur survit à la forme réduite : `fonction` pour les membres de groupe et de gouvernement (#1200) (2026-10-04)](decisions/fonction-sur-la-forme-reduite-1200.md) | `_normalize_intervention` |
 | [L'intitulé de séance de la XVe était jeté à la normalisation : une entrée Syceron se reconnaît à ce que le parseur a écrit (#1189) (2026-10-04)](decisions/intitule-de-seance-xve-1189.md) | `_normalize_intervention`, `_vient_de_syceron` |
 | [Normaliser les amendements : le coût n'est pas l'amendement, c'est sa liste de cosignataires (#431) (2026-08-19)](decisions/normalisation-amendements.md) | `_normalize_amendement` |
 | [Un code de nomenclature n'est pas une profession, et « sans activité professionnelle » n'en est pas une (#641) (2026-08-31)](decisions/profession-code-nomenclature-641.md) | `_profession_publiable`, `_uri_hatvp_publiable` |
@@ -1394,7 +1399,7 @@ Le mentionnent sans le gouverner : [`frise-segments-pleins-et-senat-885`](decisi
 
 ## `src/syceron_debates.py`
 
-6 décision(s) le gouvernent ; le module en cite 3.
+7 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1404,6 +1409,7 @@ Le mentionnent sans le gouverner : [`frise-segments-pleins-et-senat-885`](decisi
 | [Mandats commission/groupe_amitie/extra_parlementaire sourcés depuis l'AN, fetch_identity NosDéputés rendu conditionnel (#369, complet), watchdog générique sur tous les téléchargements zip (#370, complet) (2026-08-17)](decisions/mandats-officiels-an-369.md) | `_download_syceron_zip` |
 | [Syceron publie l'identifiant d'orateur NU, et n'a donc jamais rien indexé (#510) (2026-08-20)](decisions/syceron-acteur-ref-nu-510.md) | `SYCERON_AVAILABLE_LEGISLATURES` |
 | [Suite du 26/08/2026 : les trois archives vérifiées, les deux défauts de parseur corrigés](decisions/syceron-archives-verifiees-parseur-510.md) | `SYCERON_AVAILABLE_LEGISLATURES` |
+| [Un téléchargement coupé se reprend là où il s'est arrêté : l'archive Syceron de la XVe ne reste plus hors des correctifs (#1202) (2026-10-04)](decisions/telechargement-repris-apres-coupure-1202.md) | `SYCERON_REPRISES_TELECHARGEMENT` |
 
 Le mentionnent sans le gouverner : [`cache-du-poste-hors-des-tests-721`](decisions/cache-du-poste-hors-des-tests-721.md), [`plafond-roster-et-commit-518`](decisions/plafond-roster-et-commit-518.md), [`syceron`](decisions/syceron.md).
 

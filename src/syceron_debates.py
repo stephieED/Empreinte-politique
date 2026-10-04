@@ -46,6 +46,9 @@ HEADERS = {
     "User-Agent": "cv-politique-syceron/0.1 (usage personnel / non commercial)"
 }
 TIMEOUT = (15, 600)
+#: Reprises d'un transfert coupé, par archive. Bornées par le budget mur du
+#: téléchargement, qui couvre tous les essais : ce nombre ne rallonge pas un job.
+SYCERON_REPRISES_TELECHARGEMENT = 8
 
 _SYCERON_LOCKS: dict[str, threading.Lock] = {}
 _SYCERON_LOCKS_META = threading.Lock()
@@ -114,7 +117,13 @@ def _download_syceron_zip(legislature: str, dest: Path) -> bool:
     print(f"-> Téléchargement des débats Syceron (Assemblée nationale) : {url}")
     try:
         dest.parent.mkdir(parents=True, exist_ok=True)
-        download_with_watchdog(url, dest, headers=HEADERS, timeout=TIMEOUT)
+        # #1202 — REPRISE après coupure. L'archive de la XVe pèse 149 Mo, et le
+        # serveur de l'Assemblée a rompu le transfert dans les dix jobs du run
+        # `37200491118` (04/10/2026), après 2 à 40 Mo : sans reprise, chaque
+        # changement de `SYCERON_VERSION_INDEX` laisse la XVe hors du correctif
+        # qui l'a motivé. Le serveur annonce `accept-ranges: bytes`.
+        download_with_watchdog(url, dest, headers=HEADERS, timeout=TIMEOUT,
+                               reprises=SYCERON_REPRISES_TELECHARGEMENT)
         return True
     except (requests.RequestException, OSError, TimeoutError) as exc:
         print(f"  [!] Débats Syceron législature {legislature} indisponibles : {exc}")

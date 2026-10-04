@@ -134,6 +134,13 @@ les charger, ni à les faire grossir. -->
   a sitting President weighs **35 %** of their own group's entries. Publishing `orateur_nom`
   verbatim instead would cost **42 Mio** against **2,6 Mio** for this field alone.
   → `docs/decisions/role-de-seance-distingue-1169.md`
+- **The reduced form keeps the speaker's quality too (#1200).** `fonction` — « ministre »,
+  « rapporteur général » — was written on the declared candidates' full form and on **none**
+  of the 1 197 491 reduced entries, so a group sheet could not tell a member's speech from the
+  government bench. Same rule as `role_seance`: the key is set only when the source carries
+  it. **A field the full form publishes is not thereby published for the rosters** — the
+  reduced form is a second writer, and it is checked on its own.
+  → `docs/decisions/fonction-sur-la-forme-reduite-1200.md`
 - **A fact the source carries, added after the corpus was written, never reaches it on its own
   (#1169).** The merge is additive: the old entry wins. The need has come up three times —
   #710 the subject, #1087 the anchor, #1169 the role — and the proof is in the runs: both runs

@@ -875,8 +875,9 @@ SYCERON_INDEX_PAR_ACTEUR_THEME_DIRNAME = "index_par_acteur_extrait"
 #:
 #: `1197` : le parseur lit le titre des lois de finances (`APPEL_PLF_1_20`), donc
 #: `sujet` et `sujet_code_grammaire` changent sur les entrées des débats
-#: budgétaires.
-SYCERON_VERSION_INDEX = "1197"
+#: budgétaires. `1200` : l'index RÉDUIT garde `fonction` — le parseur n'a pas
+#: changé, mais ce que l'index contient, si.
+SYCERON_VERSION_INDEX = "1200"
 SYCERON_FICHIER_VERSION = "version_index.txt"
 
 #: Valeur publiée dans `interventions[].collecte` pour une entrée réduite au
@@ -5443,6 +5444,13 @@ def _reduire_au_theme(record: dict[str, Any]) -> dict[str, Any]:
         # de la séance serait comptée comme une prise de parole du groupe. Un
         # président d'Assemblée y pèse 35 % des entrées de son groupe.
         **({"role_seance": record["role_seance"]} if record.get("role_seance") else {}),
+        # #1200 — et la QUALITÉ de l'orateur (« ministre », « rapporteur général »),
+        # pour la même raison : une fiche de groupe retire de la parole du groupe
+        # celle qu'un membre a prononcée au banc du gouvernement, et elle ne la
+        # reconnaît qu'à ce champ. Il était absent des 1 197 491 entrées réduites
+        # du corpus. Posé seulement quand la source le porte (§2 règle 5) :
+        # 50 526 des 318 848 paragraphes de la XVIIe, 1,8 Mo au plus.
+        **({"fonction": record["fonction"]} if record.get("fonction") else {}),
         "collecte": COLLECTE_INTERVENTION_THEME_SEUL,
     }
 

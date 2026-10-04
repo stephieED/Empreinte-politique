@@ -523,6 +523,8 @@ def _normalize_intervention(i: dict[str, Any]) -> dict[str, Any]:
             reduite["id_syceron"] = str(i["id_syceron"])  # #1087, même règle qu'en forme complète
         if i.get("role_seance"):
             reduite["role_seance"] = i["role_seance"]  # #1169, même règle : posé seulement s'il est là
+        if i.get("fonction"):
+            reduite["fonction"] = i["fonction"]  # #1200, même règle
         return reduite
 
     result: dict[str, Any] = {
