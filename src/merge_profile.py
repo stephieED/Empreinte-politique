@@ -265,6 +265,30 @@ def reporter_id_syceron(
     return reporter_faits_de_source(merged, new_list, key_fn, ("id_syceron",))
 
 
+def reporter_source_syceron(
+    merged: list[dict[str, Any]],
+    new_list: Optional[list[dict[str, Any]]],
+    key_fn: Callable[[dict[str, Any]], Key],
+) -> list[dict[str, Any]]:
+    """Reporte `source` sur une entrée pivot Syceron publiée sans elle.
+
+    `normalize_profil` n'écrivait `source` sur la forme complète que si l'entrée
+    brute portait `seance_ref` ou `session_ref`, que l'archive de la XVe ne
+    publie qu'à partir de mars-avril 2021. Toute prise de parole antérieure d'un
+    candidat déclaré est donc publiée avec `source: null` — sans attribution
+    (AGENTS.md §2 règle 2), et hors de portée de `backfill_sujet_seance`, dont
+    la preuve au pivot est `source.type`.
+
+    Hors de `CHAMPS_FAITS_DE_SOURCE`, et à l'étage pivot seulement : `source`
+    n'est pas lu sur le paragraphe, c'est `normalize_profil` qui le compose, et
+    le brut porte sous ce nom autre chose. Même règle que
+    `reporter_faits_de_source` pour le reste : seulement là où rien n'est écrit,
+    et seulement depuis une entrée neuve qui se déclare Syceron.
+    """
+    syceron = [i for i in (new_list or []) if isinstance(i, dict) and _entree_syceron_publiee(i)]
+    return reporter_faits_de_source(merged, syceron, key_fn, ("source",))
+
+
 def merge_lists_by_key(
     old_list: Optional[list[dict[str, Any]]],
     new_list: Optional[list[dict[str, Any]]],
@@ -2860,12 +2884,13 @@ def merge_pivot_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> d
     merged["interventions"] = normaliser_dates_interventions(clean_stale_interventions(
         backfill_sujet_europeen(
             backfill_sujet_question(backfill_sujet_seance(
-                reporter_faits_de_source(promouvoir_forme_complete(
+                reporter_source_syceron(reporter_faits_de_source(promouvoir_forme_complete(
                     merge_lists_by_key(old.get("interventions"), new.get("interventions"),
                                        _pivot_intervention_key),
                     new.get("interventions"),
                     _pivot_intervention_key,
                 ), new.get("interventions"), _pivot_intervention_key),
+                    new.get("interventions"), _pivot_intervention_key),
                 new.get("interventions"),
                 _pivot_intervention_key,
                 preuve=_entree_syceron_publiee,

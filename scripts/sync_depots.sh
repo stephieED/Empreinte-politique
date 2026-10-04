@@ -79,7 +79,12 @@ recuperer_donnees() {
     return 0
   fi
   info "Récupération de ${DONNEES[*]} depuis le public…"
-  git checkout public/main -- "${DONNEES[@]}"
+  # `--no-overlay` : un fichier que le public n'a plus est SUPPRIMÉ ici aussi.
+  # Sans lui, `git checkout <ref> -- <dossiers>` recopie et écrase, mais ne
+  # retire rien : le 03/10/2026, `groupe-AN-NG-15.json`, retirée par un run,
+  # serait restée dans le privé — et `--publier-code` aurait ensuite refusé
+  # (« données différentes »), ou l'aurait remise sur le public.
+  git checkout --no-overlay public/main -- "${DONNEES[@]}"
   git commit --quiet -m "chore : données récupérées du dépôt public ($(git rev-parse --short public/main))
 
 Régénérées par un run sur le dépôt public, reprises ici pour que le

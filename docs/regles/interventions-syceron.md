@@ -144,6 +144,13 @@ les charger, ni à les faire grossir. -->
   field"** — a field the collection may legitimately leave empty for a reason about the *run*
   would otherwise be filled from another run, which is `collecte-vide-necrase-jamais` turned
   inside out.
+- **A Syceron entry is recognised by what the parser wrote, never by a sitting reference
+  (#1189).** `seance_ref` and `session_ref` are metadata the XVth-legislature archive only
+  publishes from March-April 2021 on. Used as the test for "this entry comes from Syceron",
+  they dropped the subject read at the raw stage for every earlier sitting, and left the full
+  form without `source`. The test is `normalize_profil._vient_de_syceron`; **a criterion
+  measured on one legislature is re-measured on each of the others before it is trusted.**
+  → `docs/decisions/intitule-de-seance-xve-1189.md`
 - **What is not measured says so** — per-candidate cost and RSS of the sharded index are
   bounded by construction, not by measurement, and the #429 and #500 balances are
   un-remeasured. Naming them is the rule: §2.5 applies to our own work too.

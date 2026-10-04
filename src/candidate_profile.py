@@ -5402,6 +5402,8 @@ def _reduire_au_theme(record: dict[str, Any]) -> dict[str, Any]:
     - `date`, `type_detail` — les deux faits que la fiche affiche ;
     - `sujet` + `session_ref` — `normalize_profil` en dérive `theme_officiel`,
       qui est TOUT l'objet du mode ; `sujet_code_grammaire` les suit (#710),
+      parce que c'est la preuve qu'en lit `normalize_profil` là où la source ne
+      publie pas `session_ref` (la XVe d'avant avril 2021, #1189), et
       parce que c'est le critère du report `backfill_sujet_seance` : sans lui,
       une entrée réduite ne pourrait jamais corriger un créneau de séance déjà
       publié, et le mode « thème seul » serait le seul à ne pas guérir ;

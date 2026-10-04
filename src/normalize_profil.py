@@ -431,6 +431,35 @@ def _normalize_texte_porte(d: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _vient_de_syceron(i: dict[str, Any]) -> bool:
+    """L'entrée brute sort-elle d'un compte rendu Syceron ?
+
+    Quatre preuves, dont une suffit : `seance_ref`, `session_ref`, la clé
+    `sujet_code_grammaire` (écrite par le parseur depuis #710, fût-elle à
+    `None`), ou l'identifiant `syceron_…`, que seule la collecte Syceron
+    compose à partir de l'uid du compte rendu.
+
+    Les deux références ont longtemps été le seul critère. Or ce sont des
+    métadonnées de séance que l'archive de la XVe ne publie qu'à partir de
+    mars-avril 2021 : avant cette date, l'intitulé lu au brut était jeté ici, et
+    la forme complète sortait sans `source`.
+
+    Une question de l'open data (`question_…`) ne porte aucune des quatre : son
+    `sujet` n'est pas un intitulé de séance et ne devient pas un thème.
+    """
+    return bool(
+        i.get("seance_ref")
+        or i.get("session_ref")
+        or "sujet_code_grammaire" in i
+        or str(i.get("id") or "").startswith("syceron_")
+    )
+
+
+def _theme_officiel_syceron(i: dict[str, Any]) -> Optional[str]:
+    """Le `sujet` d'une entrée brute, quand c'est l'intitulé d'un point de séance."""
+    return i.get("sujet") if _vient_de_syceron(i) else None
+
+
 def _normalize_intervention(i: dict[str, Any]) -> dict[str, Any]:
     """Normalise une intervention brute vers le format pivot.
 
@@ -471,9 +500,7 @@ def _normalize_intervention(i: dict[str, Any]) -> dict[str, Any]:
             "intervention_id": i.get("id") if i.get("id") not in (None, "") else None,
             "date": _first(i.get("date"), i.get("created_at")),
             "type_detail": i.get("type_detail"),
-            "theme_officiel": (
-                i.get("sujet") if i.get("seance_ref") or i.get("session_ref") else None
-            ),
+            "theme_officiel": _theme_officiel_syceron(i),
             "source_url": _first(i.get("url_detail"), i.get("url")),
             # `source.url` reste `null` : la répéter ici doublerait 112 octets
             # par entrée pour la même URL d'archive. `source_id` aussi — l'uid
@@ -510,8 +537,8 @@ def _normalize_intervention(i: dict[str, Any]) -> dict[str, Any]:
         "source_url": _first(i.get("url_detail"), i.get("url")),
         # Champs pivot officiels — renseignés depuis les données Syceron (débats AN)
         # quand disponibles, null sinon (interventions NosDéputés scraping).
-        # La présence de seance_ref ou session_ref identifie une intervention Syceron.
-        "theme_officiel": i.get("sujet") if i.get("seance_ref") or i.get("session_ref") else None,
+        # Ce qui identifie une intervention Syceron : `_theme_officiel_syceron`.
+        "theme_officiel": _theme_officiel_syceron(i),
         "seance": (
             {
                 "ref": i.get("seance_ref"),
@@ -532,7 +559,7 @@ def _normalize_intervention(i: dict[str, Any]) -> dict[str, Any]:
                 "source_id": i.get("source_id"),
                 "legislature": i.get("legislature"),
             }
-            if i.get("seance_ref") or i.get("session_ref")
+            if _vient_de_syceron(i)
             else None
         ),
     }
