@@ -64,7 +64,8 @@ TEXTES = {
     ),
     "amendements": (
         "est l’auteur, répartis par thème de la commission.",
-        "Note : Chaque segment d’une barre est un texte amendé. Sa largeur est le nombre d’amendements déposés sur ce texte.",
+        # « Le nombre d'amendements seul peut tromper » est revenu le 02/10/2026.
+        "Note : Le nombre d’amendements seul peut tromper. Chaque segment d’une barre est un texte amendé ; sa largeur est le nombre d’amendements déposés sur ce texte.",
     ),
     "votes": (
         "Les votes sur les textes de loi en dernière lecture, par période de gouvernement.",
@@ -91,7 +92,7 @@ TEXTES = {
     ),
     "amendementsUe": (
         "est l’auteur au Parlement européen, répartis par thème.",
-        "Note : Chaque segment d’une barre est un texte amendé. Un amendement qui traite de plusieurs thèmes est compté sur chaque ligne concernée.",
+        "Note : Le nombre d’amendements seul peut tromper. Chaque segment d’une barre est un texte amendé. Un amendement qui traite de plusieurs thèmes est compté sur chaque ligne concernée.",
     ),
     "votesUe": (
         "Les votes au Parlement européen, classés par thème.",
@@ -262,7 +263,7 @@ def test_la_source_des_paroles_est_le_premier_lien_de_sa_bulle(bulles: str, fich
 
 def test_la_bulle_de_couverture_porte_ses_deux_liens(bulles: str) -> None:
     entree = _entree(bulles, "couverture")
-    assert "{ libelle: 'Nos sources, et depuis quand →', vers: '/sources#frise' }" in entree
+    assert "{ libelle: 'Sources et couvertures →', vers: '/sources#frise' }" in entree
 
 
 # ── Les emplacements ─────────────────────────────────────────────────────────
@@ -378,8 +379,8 @@ def test_la_ligne_de_position_se_tait_sur_la_fiche_candidat() -> None:
     aussi » : retirée des deux sections de la fiche candidat. En section 5, le
     lien « Voir toutes les périodes » qu'elle portait reste, seul.
 
-    La fiche de groupe partage le composant et n'a pas été relue : elle ne passe
-    pas la prop, et garde sa ligne.
+    La fiche de groupe partage le composant : relue le 02/10/2026, elle passe la
+    prop à son tour.
     """
     navigation = lire(NAVIGATION)
     assert "sansPosition = false," in navigation
@@ -389,7 +390,7 @@ def test_la_ligne_de_position_se_tait_sur_la_fiche_candidat() -> None:
         appel = lire(composant).split("<NavigationPeriodes")[1].split("/>")[0]
         assert "sansPosition" in appel, f"{composant.name} affiche encore la ligne de position"
     assert "avecTout" in lire(PAROLES).split("<NavigationPeriodes")[1].split("/>")[0]
-    assert "sansPosition" not in lire(LIGNEE)
+    assert "sansPosition" in lire(LIGNEE).split("<NavigationPeriodes")[1].split("/>")[0]
 
 
 def test_la_regle_des_votes_dit_ce_qu_elle_compte(fiche: str) -> None:

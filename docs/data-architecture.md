@@ -1041,6 +1041,15 @@ graph TD
   les couvrir tous. `[intitulé, porteurs]` et un dénominateur par groupe —
   1,0 Mo pour les douze lignées, 115 Ko pour la socialiste (mesuré le
   17/09/2026) —, chargé par la page au premier mot tapé seulement.
+  **Les prises de parole comptées d'un groupe** s'écrivent dans
+  `public/data/lignees/<groupe>.paroles.json` (02/10/2026) : `debats`, la liste
+  des intitulés, et `comptes`, des quadruplets `[débat, personne, nature, n]` —
+  **hors présidence de séance et hors parole prononcée comme membre du
+  gouvernement** (`src/utils/paroleDeGroupe.js`). `rolesPublies` dit si le
+  corpus lu au build porte `role_seance` (#1169) ; tant qu'il est faux, la fiche
+  ne dessine pas la figure qui lit ce fichier. Les extraits du même groupe
+  (`<groupe>.extraits.*.json`) suivent la même population. Le témoin
+  `lignees/paroles.json`, écrit en dernier, tient le cache de build.
   `scripts/amendements-lignees.mjs` y ajoute les amendements de chaque maillon
   par commission saisie au fond, relus dans les profils et l'index, et ne sert
   la répartition d'un type de déposant que si elle **retombe sur le total

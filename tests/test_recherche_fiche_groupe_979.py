@@ -243,14 +243,14 @@ def test_ce_qui_ne_se_recompte_pas_se_tait_sous_un_mot():
     source = _lire(FICHE)
     # #1074 : sous un filtre actif — un mot OU une période.
     assert "{filtreActif ? '' : `, sur ${formatNumber(q.agreges)}`}" in source
-    assert "if (m.amendements.sansType && !filtreActif)" in source
+    assert "{m.amendements.sansType > 0 && !filtreActif && (" in source
 
 
 def test_les_listes_se_deplient_sous_un_mot():
     source = _lire(FICHE)
     # #1074 : sous un filtre actif — un mot OU une période.
     assert "const ouvert = ouverte === l.commission || filtreActif;" in source
-    assert '<details className="lp-tous" open={filtreActif}>' in source
+    assert "<Pli force={filtreActif} titre=" in source
     assert "...(m.partageListes?.une_seule_voix || [])" in source
 
 

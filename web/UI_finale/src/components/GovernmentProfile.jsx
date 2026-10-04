@@ -32,7 +32,7 @@ import './GovernmentProfile.css';
 import {
   LIBELLE_SORT_TEXTE, SOURCE_BADGE_VERIFIED, formatNumber, pageDuJeuDeDonnees,
 } from '../utils/lecture';
-import { teinteMatiere } from '../utils/matiere';
+import { teinteCommission } from '../utils/commissions';
 import {
   MATIERE_ABSENTE,
   chargeDuPortefeuille,
@@ -569,7 +569,7 @@ function FluxDesTextes({ textes, selection, onSelection }) {
   const disposition = useMemo(() => {
     if (!liens.length) return null;
     const noeuds = [
-      ...matieres.map((m) => ({ id: `m:${m.nom}`, nom: `${m.nom} (${m.n})`, teinte: teinteMatiere(m.nom === MATIERE_ABSENTE ? MATIERE_ABSENTE : m.nom, m.rang), matiere: m.nom })),
+      ...matieres.map((m) => ({ id: `m:${m.nom}`, nom: `${m.nom} (${m.n})`, teinte: teinteCommission(m.nom === MATIERE_ABSENTE ? null : m.nom), matiere: m.nom })),
       ...sorts.map((s) => ({ id: `s:${s.statut}`, nom: `${LIBELLE_COURT_SORT[s.statut] || s.statut} (${s.n})`, teinte: TEINTE_SORT[s.statut], statut: s.statut })),
     ];
     const index = new Map(noeuds.map((n, i) => [n.id, i]));

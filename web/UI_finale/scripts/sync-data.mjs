@@ -520,9 +520,16 @@ const entreesLignees = plusRecent(
   path.join(projectRoot, 'src', 'utils', 'groupe.js'),
   path.join(projectRoot, 'src', 'utils', 'lecture.js'),
   path.join(projectRoot, 'src', 'utils', 'extraits.js'),
+  path.join(projectRoot, 'src', 'utils', 'paroleDeGroupe.js'),
+  path.join(projectRoot, 'src', 'utils', 'fonctionGouvernementale.js'),
   path.join(projectRoot, 'src', 'utils', 'amendementsMots.js'),
 );
-const vuesAJour = manifestLignees.length > 0 && manifestLignees.every((l) => {
+// Le témoin des prises de parole comptées : écrit en tout dernier, après les
+// fichiers de chaque groupe, pour qu'un build interrompu se refasse.
+const temoinParoles = path.join(outDir, 'lignees', 'paroles.json');
+const vuesAJour = manifestLignees.length > 0
+  && existsSync(temoinParoles) && statSync(temoinParoles).mtimeMs >= entreesLignees
+  && manifestLignees.every((l) => {
   const f = path.join(outDir, 'lignees', l.fichier);
   const d = path.join(outDir, 'lignees', l.debats);
   const x = path.join(outDir, 'lignees', `${l.id}.extraits.json`);
@@ -535,6 +542,8 @@ if (vuesAJour) {
 } else {
   const debut = Date.now();
   let octetsExtraitsLignees = 0;
+  const parolesDesMaillons = [];
+  let rolesDeSeancePublies = false;
   const repartitions = repartitionsDesMaillons({
     fiches: ficheParFichier,
     profilesDir: pivotProfilesDir,
@@ -607,9 +616,24 @@ if (vuesAJour) {
     });
     for (const [maillon, x] of Object.entries(extraits)) {
       octetsExtraitsLignees += ecrireExtraits(path.join(outDir, 'lignees'), maillon, x);
+      parolesDesMaillons.push([maillon, x.paroles]);
+      if (x.rolesVus) rolesDeSeancePublies = true;
     }
     writeFileSync(path.join(outDir, 'lignees', `${entree.id}.extraits.json`), JSON.stringify({ maillons: Object.keys(extraits) }));
   }
+  /* LES PRISES DE PAROLE COMPTÉES, un fichier par groupe (02/10/2026). Écrits
+     APRÈS la boucle : `rolesPublies` est un fait du CORPUS, pas d'un groupe —
+     un groupe dont aucun membre n'a présidé ne porte aucun `role_seance`, et sa
+     figure doit pourtant se dessiner dès que le champ est publié ailleurs. Tant
+     qu'il est faux, la fiche garde sa figure d'avant. */
+  for (const [maillon, paroles] of parolesDesMaillons) {
+    writeFileSync(
+      path.join(outDir, 'lignees', `${maillon}.paroles.json`),
+      JSON.stringify({ schema_version: 'paroles-de-groupe-v1', rolesPublies: rolesDeSeancePublies, ...paroles }),
+    );
+  }
+  writeFileSync(temoinParoles, JSON.stringify({ rolesPublies: rolesDeSeancePublies, maillons: parolesDesMaillons.map(([maillon]) => maillon) }));
+  console.log(`sync-data : prises de parole des groupes — ${parolesDesMaillons.length} fichiers, rôle de séance ${rolesDeSeancePublies ? 'publié' : 'ABSENT du corpus : la figure reste éteinte'}.`);
   console.log(`sync-data : extraits de parole des lignées — ${(octetsExtraitsLignees / 1e6).toFixed(1)} Mo écrits.`);
   console.log(`sync-data : ${manifestLignees.length} vues de lignée écrites en ${((Date.now() - debut) / 1000).toFixed(1)} s.`);
 }

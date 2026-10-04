@@ -67,6 +67,23 @@ def test_un_cache_ailleurs_nest_pas_reconnu(tmp_path):
     assert not conftest_suite._sous_le_cache_du_depot(str(tmp_path / ".cache" / "syceron_an"))
 
 
+def test_un_lien_sous_le_cache_vers_un_autre_checkout_est_reconnu(tmp_path, monkeypatch):
+    """#1172 — `.cache/acteurs_historique_an` posé en lien vers le cache d'un
+    autre checkout : le chemin RÉSOLU sort du dépôt, et six tests de roster
+    lisaient alors l'archive réelle. C'est le chemin écrit qui fait foi."""
+    cache = tmp_path / "depot" / ".cache"
+    ailleurs = tmp_path / "autre_checkout" / "acteurs_historique_an"
+    cache.mkdir(parents=True)
+    ailleurs.mkdir(parents=True)
+    (cache / "acteurs_historique_an").symlink_to(ailleurs)
+    monkeypatch.setattr(conftest_suite, "CACHE_DU_DEPOT", cache.resolve())
+    monkeypatch.setattr(conftest_suite, "CACHE_ECRIT_DU_DEPOT", cache)
+
+    assert conftest_suite._sous_le_cache_du_depot(
+        str(cache / "acteurs_historique_an" / "acteurs_historique.zip"))
+    assert not conftest_suite._sous_le_cache_du_depot(str(ailleurs / "acteurs_historique.zip"))
+
+
 def test_un_fichier_du_depot_hors_cache_nest_pas_reconnu():
     assert not conftest_suite._sous_le_cache_du_depot(str(RACINE / "AGENTS.md"))
 

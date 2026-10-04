@@ -46,8 +46,8 @@ export default function NavigationPeriodes({
   // ce que le rail montre et ce que le titre de période écrit juste dessous ;
   // le mode d'emploi du clavier, lui, n'a pas à être lu pour que les flèches
   // marchent. Ce qui reste est le seul geste que le rail ne porte pas : « Voir
-  // toutes les périodes ». La fiche de groupe ne passe pas la prop et garde sa
-  // ligne — elle n'a pas été relue.
+  // toutes les périodes ». La fiche de groupe passe la prop à son tour depuis
+  // sa propre revue (02/10/2026).
   sansPosition = false,
 }) {
   const tout = index === null;

@@ -14,12 +14,20 @@
  * par thème (`CarresThemesUe.jsx`, 02/10/2026) ; la cascade
  * (`CascadeTextes.jsx`) reste la figure de la fiche de groupe.
  *
+ * UNE LIGNE PAR RÔLE, SUR LA FICHE DE GROUPE (forme C, 02/10/2026). `lignes`
+ * découpe chaque colonne en rangées — « Comme auteurs », « Comme
+ * rapporteurs » — sans rien changer au rangement : les colonnes, leurs
+ * comptes et la légende restent ceux de tous les textes. Un texte que le
+ * groupe porte aux deux titres figure sur les deux lignes ; c'est le même
+ * carré, et il s'allume aux deux endroits. Sans `lignes`, la figure est celle
+ * de la fiche candidat, inchangée.
+ *
  * TROIS GESTES, UN ÉTAT. Un carré ouvre son texte ; l'en-tête d'une colonne,
  * les textes de l'étape ; une entrée de légende, ceux de la commission. Ce qui
  * n'est pas retenu s'estompe et reste tracé — un texte hors sélection est
  * toujours un texte.
  */
-import { useId, useMemo, useRef, useState } from 'react';
+import { Fragment, useId, useMemo, useRef, useState } from 'react';
 import './CarresTextes.css';
 import { formatNumber } from '../utils/lecture';
 import {
@@ -37,7 +45,7 @@ import { Mention493 } from './CascadeTextes';
 // carte quand le carré survolé est près du bord droit.
 const LARGEUR_BULLE = 300;
 
-export function CarresTextes({ cascade, selection, onSelection }) {
+export function CarresTextes({ cascade, selection, onSelection, lignes = null }) {
   const { colonnes, legende } = useMemo(() => rangerEnCarres(cascade), [cascade]);
   const ref = useRef(null);
   const idBulle = useId();
@@ -65,64 +73,86 @@ export function CarresTextes({ cascade, selection, onSelection }) {
   const cacher = () => setBulle(null);
   const survole = bulle ? cascade.textes[bulle.index] : null;
 
+  /* L'en-tête d'une colonne : un bouton quand elle porte des textes. Une
+   * colonne à zéro garde son en-tête, et n'est pas un bouton — il n'y a aucun
+   * texte à ouvrir derrière un « 0 ». */
+  const teteDe = (col) => {
+    const tete = (
+      <>
+        <span className="cp-car-n cp-num">{formatNumber(col.n)}</span>
+        <span className="cp-car-lib">{col.libelle}</span>
+      </>
+    );
+    return col.n > 0 ? (
+      <button
+        aria-pressed={memeSelection(selection, selectionDeLEtape(col))}
+        className="cp-car-tete cp-car-tete--cliquable"
+        onClick={() => choisir(selectionDeLEtape(col))}
+        type="button"
+      >
+        {tete}
+      </button>
+    ) : (
+      <div className="cp-car-tete">{tete}</div>
+    );
+  };
+  const carreDe = (c) => {
+    const choisi = selection?.texte === c.index;
+    return (
+      <button
+        aria-describedby={bulle?.index === c.index ? idBulle : undefined}
+        aria-label={c.texte.titre}
+        aria-pressed={choisi}
+        className={[
+          'cp-car-carre',
+          choisi ? 'cp-car-carre--choisi' : '',
+          carreEclaire(selection, c, cascade) ? '' : 'cp-car-voile',
+        ].filter(Boolean).join(' ')}
+        key={c.index}
+        onBlur={cacher}
+        // Au clic, la liste prend le relais : l'infobulle se retire, sinon un
+        // écran tactile — où le toucher vaut survol — la garderait posée sur
+        // la figure.
+        onClick={() => { cacher(); choisir(selectionDuCarre(c)); }}
+        onFocus={(e) => montrer(c, e.currentTarget)}
+        onMouseEnter={(e) => montrer(c, e.currentTarget)}
+        onMouseLeave={cacher}
+        style={{ background: c.teinte }}
+        type="button"
+      />
+    );
+  };
+
   return (
     <div className="cp-car" ref={ref}>
-      <div className="cp-car-cols">
-        {colonnes.map((col) => {
-          const tete = (
-            <>
-              <span className="cp-car-n cp-num">{formatNumber(col.n)}</span>
-              <span className="cp-car-lib">{col.libelle}</span>
-            </>
-          );
-          return (
+      {lignes ? (
+        <div className="cp-car-lignes">
+          <span className="cp-car-coin" />
+          {colonnes.map((col) => <div className="cp-car-col" key={col.cle}>{teteDe(col)}</div>)}
+          {lignes.map((l) => {
+            const n = colonnes.reduce((somme, col) => somme + col.carres.filter((c) => l.porte(c.texte)).length, 0);
+            return (
+              <Fragment key={l.cle}>
+                <span className="cp-car-ligne">{l.libelle} <b className="cp-num">{formatNumber(n)}</b></span>
+                {colonnes.map((col) => (
+                  <div className="cp-car-case" key={col.cle}>
+                    <div className="cp-car-grille">{col.carres.filter((c) => l.porte(c.texte)).map(carreDe)}</div>
+                  </div>
+                ))}
+              </Fragment>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="cp-car-cols">
+          {colonnes.map((col) => (
             <div className="cp-car-col" key={col.cle}>
-              {/* Une colonne à zéro garde son en-tête, et n'est pas un bouton :
-                  il n'y a aucun texte à ouvrir derrière un « 0 ». */}
-              {col.n > 0 ? (
-                <button
-                  aria-pressed={memeSelection(selection, selectionDeLEtape(col))}
-                  className="cp-car-tete cp-car-tete--cliquable"
-                  onClick={() => choisir(selectionDeLEtape(col))}
-                  type="button"
-                >
-                  {tete}
-                </button>
-              ) : (
-                <div className="cp-car-tete">{tete}</div>
-              )}
-              <div className="cp-car-grille">
-                {col.carres.map((c) => {
-                  const choisi = selection?.texte === c.index;
-                  return (
-                    <button
-                      aria-describedby={bulle?.index === c.index ? idBulle : undefined}
-                      aria-label={c.texte.titre}
-                      aria-pressed={choisi}
-                      className={[
-                        'cp-car-carre',
-                        choisi ? 'cp-car-carre--choisi' : '',
-                        carreEclaire(selection, c, cascade) ? '' : 'cp-car-voile',
-                      ].filter(Boolean).join(' ')}
-                      key={c.index}
-                      onBlur={cacher}
-                      // Au clic, la liste prend le relais : l'infobulle se
-                      // retire, sinon un écran tactile — où le toucher vaut
-                      // survol — la garderait posée sur la figure.
-                      onClick={() => { cacher(); choisir(selectionDuCarre(c)); }}
-                      onFocus={(e) => montrer(c, e.currentTarget)}
-                      onMouseEnter={(e) => montrer(c, e.currentTarget)}
-                      onMouseLeave={cacher}
-                      style={{ background: c.teinte }}
-                      type="button"
-                    />
-                  );
-                })}
-              </div>
+              {teteDe(col)}
+              <div className="cp-car-grille">{col.carres.map(carreDe)}</div>
             </div>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
 
       {/* LA LÉGENDE NOMME CE QUE LA TEINTE RAPPELLE, et elle se clique : c'est
           par elle qu'on lit tous les textes d'une commission, toutes étapes

@@ -31,6 +31,9 @@ on:
 # contents: read suffit : ce job ne fait que lire le dépôt et exécuter pytest.
 permissions:
   contents: read
+  # #1174 — lire la liste des fichiers d'une PR, pour refuser qu'elle touche un
+  # index généré.
+  pull-requests: read
 
 # Sur une PR, seul le dernier push mérite un run — les précédents sont périmés.
 # Sur main au contraire, chaque commit garde son verdict : c'est l'historique
@@ -145,6 +148,28 @@ jobs:
             fi
           done
           echo "pivot_data/ et raw_data/profiles/ absents, comme attendu."
+
+      # #1174 — UNE PR NE TOUCHE PAS AUX INDEX GÉNÉRÉS. `index-decisions.yml`
+      # les régénère sur `main` après la fusion ; une PR qui les committe ramène
+      # le conflit que ce découpage supprime (quatre PR d'un coup le 02/10/2026).
+      # Par l'API et non par `git diff` : le checkout est partiel et sans
+      # historique, il ne connaît pas la base de la PR.
+      - name: Les index générés ne sont pas touchés par la PR (#1174)
+        id: index-generes-intacts
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          touches="$(gh api "repos/${REPO}/pulls/${PR}/files" --paginate --jq '.[].filename' \
+            | grep -x -e 'docs/technical_decisions.md' -e 'docs/decisions-par-module.md' || true)"
+          if [ -n "$touches" ]; then
+            echo "::error::Cette PR modifie un index généré : ${touches//$'\n'/, }. Ils sont régénérés sur main après la fusion. Les remettre à l'état de main : git checkout origin/main -- docs/technical_decisions.md docs/decisions-par-module.md"
+            exit 1
+          fi
+          echo "Aucun index généré dans cette PR."
 
       # Réutilise le préambule des jobs d'extraction (setup-python + pip
       # install) : la version de Python n'a ainsi qu'une seule déclaration dans

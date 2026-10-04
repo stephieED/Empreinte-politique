@@ -35,6 +35,8 @@ import {
 import { isWholeTextVote } from '../src/utils/lecture.js';
 import { personnesParMaillon, serieEffectif, signalementsDuMaillon } from '../src/utils/lignee.js';
 import { construireExtraits, extraitDeLIntervention } from '../src/utils/extraits.js';
+import { SUJET_NON_PUBLIE, sujetDeIntervention } from '../src/utils/sujetIntervention.js';
+import { agregerParoles, estParoleDuGroupe, natureDeParole, porteUnRoleDeSeance } from '../src/utils/paroleDeGroupe.js';
 
 /* Les amendements d'un maillon : le total distinct publié, et la répartition
  * par commission des deux types de déposant qu'un groupe porte, VÉRIFIÉE contre
@@ -314,7 +316,7 @@ export function construireExtraitsLignee({ lignee, fiches, idsDeFiche, lireProfi
         : [{ debut: membre.debut_dans_groupe, fin: membre.fin_dans_groupe }]).filter((p) => p.debut);
       if (liste.length) periodes.set(membre.membre_id, liste);
     }
-    return { id: idsDeFiche.get(maillon.fichier), periodes, entrees: [] };
+    return { id: idsDeFiche.get(maillon.fichier), periodes, entrees: [], paroles: [], rolesVus: false };
   });
   (lignee.membres || []).forEach((personne, rang) => {
     const siens = maillons.filter((m) => m.periodes.has(personne.membre_id));
@@ -323,11 +325,30 @@ export function construireExtraitsLignee({ lignee, fiches, idsDeFiche, lireProfi
     if (!profil) return;
     for (const i of profil.interventions || []) {
       const date = typeof i.date === 'string' ? i.date.slice(0, 10) : null;
-      const theme = typeof i.theme_officiel === 'string' ? i.theme_officiel.trim().toLowerCase() : '';
-      if (!date || !theme) continue;
+      /* Le sujet se lit comme sur la fiche candidat (04/10/2026) : le thème
+         quand la collecte l'a posé, sinon le sujet du chemin de l'ordre du jour.
+         Une intervention sans aucun intitulé n'est PAS écartée : elle se compte
+         dans sa nature et se range sous « Intitulé non publié » (§2 règle 5). */
+      const intitule = typeof i.theme_officiel === 'string' && i.theme_officiel.trim()
+        ? i.theme_officiel : sujetDeIntervention(i);
+      const theme = intitule ? intitule.trim().toLowerCase() : SUJET_NON_PUBLIE;
+      if (!date) continue;
       const maillon = siens.find((m) => m.periodes.get(personne.membre_id)
         .some((p) => date >= p.debut && (!p.fin || date <= p.fin)));
       if (!maillon) continue;
+      /* CE QUI N'EST PAS LA PAROLE DU GROUPE N'ENTRE NI DANS LE COMPTE NI DANS
+         LES EXTRAITS (02/10/2026) : la présidence de séance et la parole
+         prononcée comme membre du gouvernement. Une seule population pour la
+         figure et pour ce qu'on lit en ouvrant un débat. Tant que le corpus ne
+         porte pas `role_seance`, rien n'est écarté — et `rolesVus` le dit. */
+      if (porteUnRoleDeSeance(i)) maillon.rolesVus = true;
+      if (!estParoleDuGroupe(i)) continue;
+      maillon.paroles.push({ sujet: theme, orateur: rang, nature: natureDeParole(i.type_detail) });
+      /* Sans intitulé, la prise de parole est COMPTÉE mais son texte n'est pas
+         servi : la ligne « Intitulé non publié » ne s'ouvre pas (04/10/2026).
+         Sur la XVe elle pèse des dizaines de milliers d'entrées — 19,6 Mo au
+         clic pour un seul groupe. */
+      if (theme === SUJET_NON_PUBLIE) continue;
       const [texte, tronque] = extraitDeLIntervention(i);
       maillon.entrees.push({
         sujet: theme, orateur: rang, date, texte, tronque,
@@ -335,5 +356,11 @@ export function construireExtraitsLignee({ lignee, fiches, idsDeFiche, lireProfi
       });
     }
   });
-  return Object.fromEntries(maillons.map((m) => [m.id, construireExtraits(m.entrees, debuts)]));
+  /* `paroles` et `rolesVus` voyagent avec les extraits du maillon : les profils
+     ne sont lus qu'une fois (#635). */
+  return Object.fromEntries(maillons.map((m) => [m.id, {
+    ...construireExtraits(m.entrees, debuts),
+    paroles: agregerParoles(m.paroles),
+    rolesVus: m.rolesVus,
+  }]));
 }

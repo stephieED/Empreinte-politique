@@ -127,9 +127,14 @@ const BULLES = {
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#propose' }],
   },
   // Le pronom s'accorde comme le titre de la carte : la phrase le reprend.
+  // « LE NOMBRE D'AMENDEMENTS SEUL PEUT TROMPER » EST REVENU (02/10/2026). La
+  // phrase avait quitté la note le 01/10, quand la barre s'est découpée par
+  // texte : l'alerte devait se lire dans la figure. En relisant la bulle, la
+  // propriétaire n'y a plus trouvé l'alerte — la figure ne dispense pas de la
+  // dire. Les deux versants et la fiche de groupe la portent.
   amendements: (voix) => ({
     phrase: `Les amendements dont ${voix.sujet} est l’auteur, répartis par thème de la commission.`,
-    note: 'Note : Chaque segment d’une barre est un texte amendé. Sa largeur est le nombre d’amendements déposés sur ce texte.',
+    note: 'Note : Le nombre d’amendements seul peut tromper. Chaque segment d’une barre est un texte amendé ; sa largeur est le nombre d’amendements déposés sur ce texte.',
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#propose' }],
   }),
   textesUe: {
@@ -139,7 +144,7 @@ const BULLES = {
   },
   amendementsUe: (voix) => ({
     phrase: `Les amendements dont ${voix.sujet} est l’auteur au Parlement européen, répartis par thème.`,
-    note: 'Note : Chaque segment d’une barre est un texte amendé. Un amendement qui traite de plusieurs thèmes est compté sur chaque ligne concernée.',
+    note: 'Note : Le nombre d’amendements seul peut tromper. Chaque segment d’une barre est un texte amendé. Un amendement qui traite de plusieurs thèmes est compté sur chaque ligne concernée.',
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#propose' }],
   }),
   // Une phrase, et pas de note : la section entièrement vide ne montre aucune
@@ -189,7 +194,7 @@ const BULLES = {
     phrase: 'Les limites de cette fiche : les mandats non couverts, et ce que les sources ne disent pas.',
     note: 'Note : Quand un mandat n’est pas couvert, la fiche ne sait rien de cette période. Cela ne veut pas dire qu’il ne s’est rien passé.',
     liens: [
-      { libelle: 'Nos sources, et depuis quand →', vers: '/sources#frise' },
+      { libelle: 'Sources et couvertures →', vers: '/sources#frise' },
       { libelle: LIRE_LA_METHODE, vers: '/methodologie#couverture' },
     ],
   },

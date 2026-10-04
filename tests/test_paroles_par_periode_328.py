@@ -50,6 +50,8 @@ UI = RACINE / "web" / "UI_finale"
 SRC = UI / "src"
 
 MODULE = SRC / "utils" / "parolesParPeriode.js"
+# La règle du sujet vit dans un module que le build de la fiche de groupe importe aussi.
+SUJET = SRC / "utils" / "sujetIntervention.js"
 COMPOSANT = SRC / "components" / "ParolesParPeriode.jsx"
 FEUILLE = SRC / "components" / "ParolesParPeriode.css"
 NAV = SRC / "components" / "NavigationPeriodes.jsx"
@@ -75,7 +77,7 @@ def sans_commentaires(source: str) -> str:
 
 @pytest.fixture(scope="module")
 def module() -> str:
-    return sans_commentaires(MODULE.read_text(encoding="utf-8"))
+    return sans_commentaires(SUJET.read_text(encoding="utf-8") + "\n" + MODULE.read_text(encoding="utf-8"))
 
 
 @pytest.fixture(scope="module")
@@ -405,5 +407,5 @@ def test_la_methodologie_porte_les_regles_que_la_figure_n_ecrit_plus() -> None:
     en paragraphe ». Les paragraphes vont là.
     """
     methodo = METHODO.read_text(encoding="utf-8")
-    for mot in ("feuille", "racine", "cinquante mots", "densité par jour"):
+    for mot in ("dernier niveau", "premier niveau", "cinquante mots", "densité par jour"):
         assert mot in methodo, f"« {mot} » absent de la méthodologie"

@@ -1,0 +1,82 @@
+name: Index des décisions (régénération sur main)
+
+# #1174 — les deux index générés, `docs/technical_decisions.md` et
+# `docs/decisions-par-module.md`, ne sont plus committés par les PR : ce
+# workflow les régénère sur `main` après chaque fusion qui peut les changer.
+#
+# Tant que chaque PR committait l'index, deux PR ouvertes qui ajoutaient chacune
+# une décision écrivaient à la même ligne, en tête : le 02/10/2026, une fusion a
+# mis les quatre PR ouvertes en conflit, sur ce seul fichier.
+# → docs/decisions/index-regenere-sur-main-1174.md
+
+on:
+  push:
+    branches: [main]
+    # Ce dont les deux générateurs dépendent, et les deux sorties elles-mêmes :
+    # un index édité à la main dans une PR est réécrit ici.
+    paths:
+      - docs/decisions/**
+      - docs/technical_decisions.md
+      - docs/decisions-par-module.md
+      - src/*.py
+      - scripts/generer_index_decisions.py
+      - scripts/generer_decisions_par_module.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Jamais deux à la fois, et aucune annulation : chaque exécution repart de la
+# tête de `main`, la dernière a donc toujours le dernier mot.
+concurrency:
+  group: index-decisions
+  cancel-in-progress: false
+
+jobs:
+  regenerer:
+    name: Régénérer et committer
+    # Le dépôt public reçoit le code par publication, index compris : il n'a
+    # rien à régénérer.
+    if: github.repository != 'stephieED/Empreinte-politique'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # `ref: main` et non le SHA de l'événement : deux fusions rapprochées
+      # lancent deux exécutions, et la seconde doit lire la tête, pas son commit.
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            docs
+            scripts
+            src
+
+      - name: Régénérer, committer, pousser
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Trois essais : une fusion peut arriver entre la lecture et le push.
+          # On ne rebase pas un fichier généré, on repart de la tête et on
+          # régénère.
+          for essai in 1 2 3; do
+            git fetch --quiet origin main
+            git reset --quiet --hard origin/main
+            python3 scripts/generer_index_decisions.py
+            python3 scripts/generer_decisions_par_module.py
+            if git diff --quiet -- docs/technical_decisions.md docs/decisions-par-module.md; then
+              echo "Les deux index sont à jour : rien à committer."
+              exit 0
+            fi
+            git add docs/technical_decisions.md docs/decisions-par-module.md
+            git commit --quiet -m "docs : index des décisions régénérés ($(git rev-parse --short origin/main))"
+            if git push --quiet origin HEAD:main; then
+              echo "Index régénérés et poussés : $(git rev-parse --short HEAD)."
+              exit 0
+            fi
+            echo "::warning::main a bougé pendant la régénération (essai ${essai}) : on repart de la tête."
+          done
+          echo "::error::Trois essais sans pouvoir pousser : relancer ce workflow à la main."
+          exit 1

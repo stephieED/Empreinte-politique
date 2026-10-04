@@ -525,11 +525,12 @@ def test_la_branche_figure_non_dessinee_est_partie_avec_les_rubans(fiche) -> Non
     assert "selTexte ?? (toutVoir ? selectionDeTousLesTextes(cascade) : null)" in fiche
 
 
-def test_la_fiche_de_lignee_garde_sa_cascade() -> None:
-    """Ce lot ne couvre que la fiche candidat."""
+def test_la_fiche_de_lignee_n_a_pas_la_grille_europeenne() -> None:
+    """La grille par thème est celle du versant européen de la fiche candidat.
+    La fiche de groupe, qui ne porte que l'Assemblée, a reçu les carrés
+    français le 02/10/2026 — jamais cette grille."""
     lignee = _sans_commentaires(LIGNEE.read_text(encoding="utf-8"))
-    assert "<Cascade " in lignee
-    assert "CarresThemesUe" not in lignee and "CarresTextes" not in lignee
+    assert "CarresThemesUe" not in lignee
 
 
 def test_la_figure_n_ecrit_aucun_texte_et_la_liste_ne_parle_plus_de_rubans(fiche, grille) -> None:

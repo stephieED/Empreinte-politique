@@ -261,10 +261,13 @@ def test_les_carres_sont_la_figure_francaise_le_versant_europeen_a_la_sienne(fic
     assert "<Cascade" not in bloc, "les rubans ont quitté la fiche candidat"
 
 
-def test_la_fiche_de_groupe_garde_la_cascade() -> None:
-    """Ce lot ne couvre que la fiche candidat."""
+def test_la_fiche_de_groupe_a_recu_les_carres_une_ligne_par_role() -> None:
+    """Le lot du 01/10/2026 ne couvrait que la fiche candidat ; la revue de la
+    fiche de groupe (02/10/2026) lui a donné la même figure, découpée en une
+    ligne par rôle. La cascade en rubans n'y est plus."""
     lignee = _sans_commentaires(LIGNEE.read_text(encoding="utf-8"))
-    assert "<Cascade " in lignee and "CarresTextes" not in lignee
+    assert "<Cascade " not in lignee
+    assert "<CarresTextes cascade={textes.cascade} lignes={lignes}" in lignee
 
 
 def test_l_invitation_est_celle_qui_a_ete_validee(fiche) -> None:
@@ -289,7 +292,7 @@ def test_la_mention_49_3_est_la_meme_sous_les_deux_figures(carres) -> None:
 def test_les_carres_sont_des_boutons_nommes(carres) -> None:
     """Atteignables au clavier, et lus par leur titre : un carré sans nom serait
     six fois « bouton » à la suite."""
-    carre = carres.split("col.carres.map(")[1].split("/>")[0]
+    carre = carres.split("const carreDe = (c) =>")[1].split("/>")[0]
     assert "<button" in carre and 'type="button"' in carre
     assert "aria-label={c.texte.titre}" in carre
     assert "aria-pressed={choisi}" in carre

@@ -99,10 +99,11 @@ export function ProposDuMembre({ extraits, mots = [], saisie = '', parPage = 5 }
   );
 }
 
-/** Le débat ouvert de la fiche de groupe, en forme A comme la fiche de
- *  gouvernement : chaque député à gauche, ses propos datés à droite. Arbitré le
- *  22/09/2026 (option A) : l'orateur est NOMMÉ, jamais compté — la colonne de
- *  gauche ne porte ni nombre de prises de parole ni rang, seulement le nom et
+/** Le débat ouvert de la fiche de groupe : le nom du député en tête de son
+ *  bloc, chaque propos sous sa date (forme B, maquette du 04/10/2026 — la
+ *  colonne du nom et celle de la date ne laissaient que 512 px au texte).
+ *  Arbitré le 22/09/2026 (option A) : l'orateur est NOMMÉ, jamais compté — la
+ *  tête ne porte ni nombre de prises de parole ni rang, seulement le nom et
  *  les dates. Les députés se suivent du plus récent au plus ancien propos. */
 export function ProposParOrateur({ charger, cle, sujet, nomDe, mots = [], saisie = '', debut = null, parIntitule = false }) {
   const paquet = usePaquetExtraits(cle, charger);

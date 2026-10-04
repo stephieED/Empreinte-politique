@@ -53,44 +53,14 @@
  *   banc du gouvernement et une intervention depuis les bancs ne se comptent
  *   pas dans la même unité.
  */
+import { estFonctionGouvernementale } from './fonctionGouvernementale.js';
 import { urlSeanceAn } from './extraits.js';
+import { SUJET_NON_PUBLIE, cheminDuPoint, segmentsDuChemin, sujetDeIntervention } from './sujetIntervention.js';
+
+export { SEPARATEUR_CHEMIN, SUJET_NON_PUBLIE, cheminDuPoint, segmentsDuChemin, sujetDeIntervention } from './sujetIntervention.js';
 import { lienDocumentaire } from './lecture.js';
 import { bancALaDate, gouvernementALaDate } from './votesParPeriode';
 
-/** Les types dont le sujet est la FEUILLE du chemin, et non sa racine. */
-export const SUJET_EN_FEUILLE = new Set([
-  'question_gouvernement',
-  'question',
-  'question_orale',
-]);
-
-export const SUJET_NON_PUBLIE = 'Intitulé non publié';
-export const SEPARATEUR_CHEMIN = '>';
-
-/* Le chemin brut, dans l'ordre où la collecte le rend disponible. Les trois
- * champs ne se contredisent pas : `point_ordre_du_jour` est le chemin complet,
- * `theme_officiel` le porte quand la collecte s'est arrêtée au thème (#657), et
- * `sujet` est la feuille déjà isolée par le parseur. */
-export function cheminDuPoint(intervention) {
-  const i = intervention || {};
-  return i.dossier?.point_ordre_du_jour || i.theme_officiel || i.sujet || null;
-}
-
-export function segmentsDuChemin(chemin) {
-  return (chemin || '')
-    .split(SEPARATEUR_CHEMIN)
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
-
-/** Le sujet d'une intervention : la feuille ou la racine, selon son type. */
-export function sujetDeIntervention(intervention) {
-  const segments = segmentsDuChemin(cheminDuPoint(intervention));
-  if (!segments.length) return null;
-  return SUJET_EN_FEUILLE.has(intervention?.type_detail)
-    ? segments[segments.length - 1]
-    : segments[0];
-}
 
 /* Deux formats de date coexistent dans le corpus : l'ISO du compte rendu et le
  * `JJ/MM/AAAA` des questions écrites. Une date qui n'entre dans aucun des deux
@@ -201,7 +171,6 @@ export const QUALITE_AN = 'AN';
 export const QUALITE_GOUVERNEMENT = 'GOUV';
 export const QUALITE_PE = 'PE';
 
-const FONCTION_GOUVERNEMENTALE = /ministre|secrétaire d'état|premier ministre/i;
 
 export const LIBELLE_QUALITE = {
   [QUALITE_AN]: 'En qualité de député(e)',
@@ -215,7 +184,7 @@ export const ORDRE_QUALITES = [QUALITE_AN, QUALITE_GOUVERNEMENT, QUALITE_PE];
 
 export function qualiteDeParole(intervention) {
   const fonction = intervention?.fonction;
-  if (fonction && FONCTION_GOUVERNEMENTALE.test(fonction)) return QUALITE_GOUVERNEMENT;
+  if (estFonctionGouvernementale(fonction)) return QUALITE_GOUVERNEMENT;
   if ((intervention?.source?.institution ?? null) === 'parlement_europeen') return QUALITE_PE;
   return QUALITE_AN;
 }

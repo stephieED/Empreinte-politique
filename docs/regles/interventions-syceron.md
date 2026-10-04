@@ -151,6 +151,12 @@ les charger, ni à les faire grossir. -->
   form without `source`. The test is `normalize_profil._vient_de_syceron`; **a criterion
   measured on one legislature is re-measured on each of the others before it is trusted.**
   → `docs/decisions/intitule-de-seance-xve-1189.md`
+- **A finance bill is not titled like the other texts (#1197).** Its agenda point carries
+  `APPEL_PLF_1_20`, not `TITRE_TEXTE_DISCUSSION`; the set of subject-bearing codes had been
+  measured on one legislature's most frequent codes, and this one sat below what was looked
+  at. **A closed list read off a frequency table misses the rare code that carries the most
+  speech** — re-measure it by what it leaves *without* a subject, not by what it covers.
+  → `docs/decisions/intitule-des-lois-de-finances-1197.md`
 - **What is not measured says so** — per-candidate cost and RSS of the sharded index are
   bounded by construction, not by measurement, and the #429 and #500 balances are
   un-remeasured. Naming them is the rule: §2.5 applies to our own work too.

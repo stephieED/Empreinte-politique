@@ -162,7 +162,7 @@ def test_la_fiche_de_groupe_filtre_aussi_par_les_extraits() -> None:
 
 
 def test_la_tete_d_un_depute_ne_porte_que_son_nom_et_ses_dates() -> None:
-    """Fiche de groupe, forme A : les propos sont RANGÉS par député (demande du
+    """Fiche de groupe : les propos sont RANGÉS par député (demande du
     22/09/2026), jamais COMPTÉS — la tête ne porte ni nombre ni rang."""
     source = (RACINE / "web" / "UI_finale" / "src" / "components" / "ExtraitsDuDebat.jsx").read_text(encoding="utf-8")
     debut = source.index('<div className="xd-membre-tete">')

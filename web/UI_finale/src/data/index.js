@@ -656,6 +656,14 @@ export async function getIndexExtraitsLignee(id) {
   return Object.fromEntries(maillons.map((m, i) => [m, index[i]]));
 }
 
+/* Les prises de parole comptées d'un groupe (02/10/2026) : chargées quand la
+ * section s'affiche, jamais avec la fiche — un groupe en porte des milliers
+ * de lignes. `null` si le fichier manque : la fiche garde alors sa figure
+ * d'avant. */
+export function getParolesMaillon(maillon) {
+  return fetchExtraits(`/data/lignees/${maillon}.paroles.json`);
+}
+
 export function getPaquetExtraitsMaillon(maillon, paquet) {
   return fetchExtraits(`/data/lignees/${maillon}.extraits.${paquet}.json`);
 }

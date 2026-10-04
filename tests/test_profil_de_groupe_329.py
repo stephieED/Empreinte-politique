@@ -387,7 +387,11 @@ def test_chaque_section_renvoie_a_son_ancre_de_methodologie(composant):
     methodo = lire(METHODO)
     for ancre in ANCRES:
         assert f"id: '{ancre}'" in methodo, f"l'ancre #{ancre} manque à la méthodologie"
-        assert f"ancre: '{ancre}'" in composant, f"aucune section ne renvoie à #{ancre}"
+        # Depuis le 02/10/2026 le renvoi est dans la bulle du titre (`vers:`) ;
+        # « paroles » garde son renvoi de pied tant que sa bulle attend la donnée.
+        assert f"vers: '/methodologie#{ancre}'" in composant or f"ancre: '{ancre}'" in composant, (
+            f"aucune section ne renvoie à #{ancre}"
+        )
 
 
 def test_les_refus_de_la_fiche_de_groupe_vivent_en_methodologie(regles, composant):
@@ -420,15 +424,21 @@ def test_ce_qu_on_n_a_pas_pu_lire_renvoie_le_corpus_a_la_page_de_couverture(proj
     sur `/couverture`, le pourquoi sous `/methodologie#couverture`."""
     assert "signalementsDuMaillon(groupe)" in projection
     section = corps(composant, "function CeQuOnNaPasPuLire(")
-    assert "vers: '/sources#frise'" in section and "vers: '/methodologie#couverture'" in section
+    # Les deux renvois sont dans la bulle du titre depuis le 02/10/2026.
+    assert "bulle={BULLES.couverture}" in section
+    bulle = composant.split("  couverture: {")[1].split("\n  },")[0]
+    assert "vers: '/sources#frise'" in bulle and "vers: '/methodologie#couverture'" in bulle
     assert "m.signalements" in section, "la section rend la projection, elle ne relit pas les avertissements"
     assert "warnings" not in section
 
 
 def test_les_textes_portes_reprennent_la_figure_et_la_regle_de_la_fiche_candidat(projection, composant):
-    """La même cascade (`CascadeTextes.jsx`) et la même règle (`textesPortes`) :
-    une figure recopiée divergerait au premier correctif."""
-    assert "import { Cascade, ListeCascade } from './CascadeTextes'" in composant
+    """La même figure — les carrés de `CarresTextes.jsx` depuis le 02/10/2026,
+    la cascade avant — et la même règle (`textesPortes`) : une figure recopiée
+    divergerait au premier correctif."""
+    assert "import { CarresTextes } from './CarresTextes'" in composant
+    assert "import { ListeCascade } from './CascadeTextes'" in composant
+    assert "function CarresTextes(" not in composant
     assert "textesPortes(" in composant and "textesDesQualites(" in composant
     assert "function Cascade(" not in composant
     candidat = lire(SRC / "components" / "CandidateProfile.jsx")

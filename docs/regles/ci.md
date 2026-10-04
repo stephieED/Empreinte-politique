@@ -160,7 +160,9 @@ les charger, ni à les faire grossir. -->
   relative** — is tested, with a witness counter. `.cache` is listed in
   `_NOMMES_POUR_ETRE_REFUSES` of `tests/test_ci_perimetre_sparse_checkout.py`: it is named
   to be **refused**, never read, and it must stay out of the sparse-checkout or the guard
-  becomes a lie.
+  becomes a lie. **The path is compared as written, before it is resolved (#1172)**: a
+  `.cache/<dir>` that is a symlink to another checkout's cache resolves *outside* the repo,
+  and six roster tests then read the real archive instead of their fixture.
   → `docs/decisions/cache-du-poste-hors-des-tests-721.md`
 - **A test reading a file outside `tests.yml`'s sparse-checkout passes locally and fails
   in CI** — #434, then #518 twice. Whitelisting the file is half of it; the other half is
@@ -244,6 +246,16 @@ les charger, ni à les faire grossir. -->
   tolerated by all **three** callers. **Never `continue-on-error: true`** there: it would
   swallow code 1 and commit a stale sheet with nothing blocking.
   → `docs/decisions/cloisonnement-branche-roster-524.md`
+- **A generated file every PR commits is a conflict every PR shares (#1174).**
+  `docs/technical_decisions.md` and `docs/decisions-par-module.md` are regenerated **on
+  `main`**, by `.github/workflows/index-decisions.yml`, after each merge that touches
+  `docs/decisions/`, `src/*.py` or a generator. **A PR never commits them**: `tests.yml`
+  reads the PR's file list through the API and fails on either path. The workflow starts
+  from the head of `main`, never from the event's commit, retries from the head when `main`
+  moved under it, and does not run on the public repository, which receives the indexes by
+  publication. Its commit is pushed with the Actions token, so it triggers no other
+  workflow — **a local `main` is one commit behind after such a merge, and that is expected.**
+  → `docs/decisions/index-regenere-sur-main-1174.md`
 - **`retry-generate-data.yml` is coupled to `generate-data.yml`, and nothing in either
   file says so.** The API does not expose a run's inputs, so the retry **rebuilds them
   from the logs** and re-dispatches with `-f`. Two silent failure modes: a `-f` with no

@@ -39,7 +39,6 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | --- | ---: |
 | `src/actes_reglementaires.py` | 4 |
 | `src/build_amendements_index.py` | 4 |
-| `src/parse_syceron.py` | 4 |
 | `src/perimetre_candidats.py` | 4 |
 | `src/audit_pipeline.py` | 3 |
 | `src/budget_collecte.py` | 3 |
@@ -359,7 +358,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 
 ## `src/candidate_profile.py`
 
-98 décision(s) le gouvernent ; le module en cite 14.
+99 décision(s) le gouvernent ; le module en cite 14.
 
 | Décision | Nomme |
 | --- | --- |
@@ -420,6 +419,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [`_build_acteur_identite_index` : couvrir les élu⋅e⋅s dont le mandat est terminé via `AMO30`, pas en combinant `AMO20` par législature (#354) (2026-08-16)](decisions/identite-acteurs-amo30.md) | `AN_ACTEURS_HISTORIQUE_ZIP_URL`, `_build_acteur_identite_index`, `_build_acteur_positions_hemicycle_index`, `_build_organe_index`, `_ensure_acteurs_historique_zip_downloaded`, `_select_mandat_assemblee_courant`, `build_profile` |
 | [Index amendements shardé par acteur (#392) (2026-08-17)](decisions/index-amendements-sharde-par-acteur.md) | `_download_and_build_amendement_index`, `_expand_aggregated_amendements_index`, `fetch_amendements_officiels` |
 | [`extract-senat` ne collecte plus d'interventions : la collecte n'en retenait aucune, par construction (#501) (2026-08-20)](decisions/interventions-senat-501.md) | `build_profile`, `fetch_questions_officielles` |
+| [Le titre d'une loi de finances est un intitulé de séance : le parseur lit `APPEL_PLF_1_20` (#1197) (2026-10-04)](decisions/intitule-des-lois-de-finances-1197.md) | `SYCERON_VERSION_INDEX` |
 | [Un garde-fou posé sur `builtins.open` ne voit pas `pathlib` (#791) (2026-09-10)](decisions/lectures-du-depot-dans-les-tests-791.md) | `AMENDEMENTS_CACHE_DIR` |
 | [Le libellé d'organe du chef du gouvernement s'accorde en genre, la qualité jamais (#658) (2026-08-31)](decisions/libelle-chef-du-gouvernement-au-feminin-658.md) | `_build_acteur_mandats_index` |
 | [Chaque prise de parole porte l'ancre de sa page de séance à l'AN (#1087) (2026-09-22)](decisions/lien-vers-la-prise-de-parole-1087.md) | `_syceron_index_qualifie` |
@@ -959,7 +959,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 
 ## `src/merge_profile.py`
 
-75 décision(s) le gouvernent ; le module en cite 5.
+76 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -999,6 +999,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [Index amendements shardé par acteur (#392) (2026-08-17)](decisions/index-amendements-sharde-par-acteur.md) | `_amendement_key` |
 | [`extract-senat` ne collecte plus d'interventions : la collecte n'en retenait aucune, par construction (#501) (2026-08-20)](decisions/interventions-senat-501.md) | `preserver_collectes_non_vides` |
 | [L'intitulé de séance de la XVe était jeté à la normalisation : une entrée Syceron se reconnaît à ce que le parseur a écrit (#1189) (2026-10-04)](decisions/intitule-de-seance-xve-1189.md) | `CHAMPS_FAITS_DE_SOURCE`, `backfill_sujet_seance`, `merge_pivot_profile`, `reporter_source_syceron` |
+| [Le titre d'une loi de finances est un intitulé de séance : le parseur lit `APPEL_PLF_1_20` (#1197) (2026-10-04)](decisions/intitule-des-lois-de-finances-1197.md) | `backfill_sujet_seance` |
 | [Le versant AN passe en Licence Ouverte, et `meta.licence_donnees` devient un champ dérivé (#530, lot 6 de l'épic « une seule source AN ») (2026-08-27)](decisions/licence-lot-6-530.md) | `_merge_pivot_sources`, `merge_pivot_profile` |
 | [Chaque prise de parole porte l'ancre de sa page de séance à l'AN (#1087) (2026-09-22)](decisions/lien-vers-la-prise-de-parole-1087.md) | `reporter_id_syceron` |
 | [Un profil publie tous ses mandats de député, et le compteur devient un témoin de couverture (#640) (2026-08-31)](decisions/mandats-electifs-liste-complete-640.md) | `_pivot_mandat_key` |
@@ -1121,11 +1122,12 @@ Le mentionnent sans le gouverner : [`investigation-sources-ue`](decisions/invest
 
 ## `src/parse_syceron.py`
 
-4 décision(s) le gouvernent ; le module en cite 0.
+5 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
 | [Un créneau de séance n'est pas un sujet, et le discriminant reste structurel (#710, 02/09/2026)](decisions/creneau-de-seance-nest-pas-un-sujet-710.md) | `_CODE_GRAMMAIRE_QUESTION`, `_CODE_GRAMMAIRE_SUJET`, `_TYPE_DETAIL_MAP`, `_TYPE_DETAIL_PAR_CODE_GRAMMAIRE`, `_creneaux_de_questions`, `_iter_paragraphes`, `_point_porteur_du_sujet` |
+| [Le titre d'une loi de finances est un intitulé de séance : le parseur lit `APPEL_PLF_1_20` (#1197) (2026-10-04)](decisions/intitule-des-lois-de-finances-1197.md) | `_CODE_GRAMMAIRE_SUJET` |
 | [« Ce qu'il a dit » publie les mots, et les range par période politique (#328) (2026-09-09)](decisions/paroles-par-periode-328.md) | `_infer_format` |
 | [Syceron publie l'identifiant d'orateur NU, et n'a donc jamais rien indexé (#510) (2026-08-20)](decisions/syceron-acteur-ref-nu-510.md) | `_parse_interventions`, `_parse_orateur` |
 | [Suite du 26/08/2026 : les trois archives vérifiées, les deux défauts de parseur corrigés](decisions/syceron-archives-verifiees-parseur-510.md) | `_parse_orateur` |

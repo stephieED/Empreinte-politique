@@ -155,9 +155,23 @@ def test_toute_decision_citee_dans_le_depot_existe():
         "fichier, jamais de mémoire :\n  " + "\n  ".join(sorted(set(manquants))))
 
 
+def _index_genere() -> str:
+    """L'index tel que le script le produit, et non le fichier committé (#1174).
+
+    Depuis #1174 une PR ne committe plus l'index : le fichier du dépôt est en
+    retard d'une décision pendant toute la vie de la PR qui l'ajoute, et c'est
+    voulu. Ce que ces tests tiennent, c'est ce que le workflow écrira sur `main`.
+    """
+    import sys
+
+    sys.path.insert(0, str(RACINE / "scripts"))
+    from generer_index_decisions import generer
+
+    return generer()
+
+
 def test_lindex_et_le_repertoire_disent_la_meme_chose():
-    lignes = [m for m in (_LIGNE_INDEX.match(l) for l in INDEX.read_text(
-        encoding="utf-8").split("\n")) if m]
+    lignes = [m for m in (_LIGNE_INDEX.match(l) for l in _index_genere().split("\n")) if m]
     indexes = [m.group(2) for m in lignes]
     fiches = set(_decisions())
 
@@ -180,8 +194,7 @@ def test_lindex_conserve_toutes_les_ancres_dorigine():
     commentaires d'issues GitHub, hors du dépôt et non réécrivables. Toute ancre
     définie dans une décision doit donc rester déclarée sur sa ligne d'index, sans
     quoi le vieux lien atterrit en haut de page au lieu de la bonne décision."""
-    texte = INDEX.read_text(encoding="utf-8")
-    dans_index = set(_ANCRE.findall(texte))
+    dans_index = set(_ANCRE.findall(_index_genere()))
     absentes = {}
     for nom, ancres in _decisions().items():
         manquantes = sorted(a for a in ancres if a not in dans_index)
@@ -209,33 +222,66 @@ def test_rien_ne_renvoie_vers_larchive():
 
 
 # ---------------------------------------------------------------------------
-# #840 — l'index est GÉNÉRÉ, il ne s'édite plus
+# #840 puis #1174 — l'index est GÉNÉRÉ, et c'est `main` qui le régénère
 # ---------------------------------------------------------------------------
 #
-# Il était maintenu à la main, et tous les lots y écrivaient au même endroit :
-# une ligne insérée en tête, à chaque décision. Deux branches parallèles
-# conflictaient donc systématiquement — quatre rebases en une heure le
-# 10/09/2026, sur des lots qui ne se recouvraient pas.
+# #840 l'a rendu généré : plus d'écriture à la main. Mais chaque PR le
+# committait encore, et il est trié de la plus récente à la plus ancienne : deux
+# PR ouvertes qui ajoutent chacune une décision écrivent à la même ligne. Le
+# 02/10/2026, une fusion a mis les quatre PR ouvertes en conflit sur ce seul
+# fichier. Depuis #1174, une PR n'y touche plus : un workflow le régénère sur
+# `main` après la fusion.
 
-def test_lindex_committe_est_celui_que_le_script_produit():
-    """La dérive se voit ici, pas au prochain conflit de fusion.
+WORKFLOW_INDEX = RACINE / ".github" / "workflows" / "index-decisions.yml"
+WORKFLOW_TESTS = RACINE / ".github" / "workflows" / "tests.yml"
+INDEX_GENERES = ("docs/technical_decisions.md", "docs/decisions-par-module.md")
 
-    Même contrat que `tests/test_decisions_par_module.py` : un fichier généré
-    qui a été édité à la main ne se rattrape nulle part ailleurs.
-    """
-    import subprocess
-    import sys
 
-    resultat = subprocess.run(
-        [sys.executable, "scripts/generer_index_decisions.py", "--verifier"],
-        cwd=RACINE, capture_output=True, text=True,
-    )
-    assert resultat.returncode == 0, (
-        "`docs/technical_decisions.md` ne correspond plus aux fichiers de "
-        "`docs/decisions/`. Il ne s'édite pas à la main : lancer "
-        "`python3 scripts/generer_index_decisions.py`.\n"
-        f"{resultat.stderr}"
-    )
+def _workflow(chemin) -> str:
+    """Le texte du workflow, commentaires retirés : `pyyaml` n'est pas une
+    dépendance de la suite, et un chemin cité dans un commentaire ne prouve rien."""
+    return "\n".join(
+        l for l in chemin.read_text(encoding="utf-8").split("\n")
+        if not l.lstrip().startswith("#"))
+
+
+def test_le_workflow_se_declenche_sur_ce_que_les_generateurs_lisent():
+    """Un chemin oublié ici, et l'index reste en retard sans que rien ne le dise."""
+    texte = _workflow(WORKFLOW_INDEX)
+    declencheur = texte.split("workflow_dispatch:")[0]
+    assert "branches: [main]" in declencheur
+    for chemin in ("docs/decisions/**", "src/*.py",
+                   "scripts/generer_index_decisions.py",
+                   "scripts/generer_decisions_par_module.py",
+                   # Les sorties aussi : un index édité à la main est réécrit.
+                   *INDEX_GENERES):
+        assert f"      - {chemin}\n" in declencheur, chemin
+
+
+def test_le_workflow_regenere_les_deux_index_et_ne_committe_qu_eux():
+    texte = _workflow(WORKFLOW_INDEX)
+    assert "python3 scripts/generer_index_decisions.py\n" in texte
+    assert "python3 scripts/generer_decisions_par_module.py\n" in texte
+    ajouts = [l.strip() for l in texte.split("\n") if l.strip().startswith("git add ")]
+    assert ajouts == ["git add " + " ".join(INDEX_GENERES)]
+    assert "git push --quiet origin HEAD:main" in texte
+
+
+def test_le_workflow_ne_tourne_pas_sur_le_depot_public():
+    """Le public reçoit le code par publication, index compris."""
+    assert "    if: github.repository != 'stephieED/Empreinte-politique'\n" in _workflow(
+        WORKFLOW_INDEX)
+
+
+def test_une_pr_qui_touche_un_index_genere_est_refusee():
+    """Sans ce refus, la première PR qui régénère par habitude ramène le conflit."""
+    texte = _workflow(WORKFLOW_TESTS)
+    assert "  pull-requests: read\n" in texte
+    garde = texte.split("id: index-generes-intacts")[1].split("\n      - ")[0]
+    assert "if: github.event_name == 'pull_request'" in garde
+    for fichier in INDEX_GENERES:
+        assert f"-e '{fichier}'" in garde
+    assert "exit 1" in garde
 
 
 def test_chaque_decision_porte_de_quoi_produire_sa_ligne():

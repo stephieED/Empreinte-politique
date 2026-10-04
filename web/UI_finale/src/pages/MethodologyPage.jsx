@@ -106,14 +106,14 @@ const SECTIONS = [
       <>
         <h3>Textes portés</h3>
         <p>
-          Un texte est affiché seulement si le pivot lui attribue un rôle factuel parmi{' '}
-          <code>auteur</code>, <code>rapporteur</code> ou <code>co-rapporteur</code>, à un stade attestant
-          qu'il a réellement été débattu.
+          Un texte est affiché seulement si la source y donne à la personne un rôle d'auteur, de
+          rapporteur ou de co-rapporteur, et s'il a atteint une étape attestant qu'il a réellement été
+          débattu.
         </p>
         <p>
-          Les stades retenus commencent à <code>examine_commission</code>, puis incluent l'inscription à
-          l'ordre du jour, la discussion en séance, l'adoption et la promulgation. Un dépôt seul, un rôle
-          non retenu ou un volume d'interventions ne suffisent pas.
+          Les étapes retenues commencent à l'examen en commission, puis incluent l'inscription à
+          l'ordre du jour, la discussion en séance, l'adoption et la promulgation. Un texte seulement
+          déposé, un autre rôle ou un volume d'interventions ne suffisent pas.
         </p>
         <h3>Amendements</h3>
         <p>Les issues sont publiées en comptes bruts : adoptés, rejetés, retirés, tombés, irrecevables et non soutenus.</p>
@@ -121,12 +121,15 @@ const SECTIONS = [
           Aucun taux d'adoption isolé n'est présenté. Ces issues dépendent du texte, de la procédure, de la
           recevabilité et du rôle du déposant ; elles ne constituent pas une mesure d'efficacité.
         </p>
-        <h3>Pourquoi la cascade et la chute se cliquent</h3>
+        <h3>Lire les textes derrière les figures</h3>
         <p>
-          Les deux figures sont des <strong>entrées de lecture</strong>, pas des illustrations : un
-          ruban, une barre ou une étiquette ouvre la liste des textes ou des dossiers qui la
-          composent, avec leur date et leur source. Aucun seuil ne s'y applique, et la branche basse
-          d'une cascade n'est pas un rejet — c'est un stade que le texte n'a pas encore atteint.
+          Chaque carré est un texte porté, rangé sous la dernière étape qu'il a atteinte. Chaque
+          barre découpe les amendements d'une commission, texte par texte. Cliquer{' '}
+          <strong>ouvre la liste des textes</strong>, avec leur date et leur source.
+        </p>
+        <p>
+          Un texte rangé sous « examinés en commission » n'a pas été rejeté : il n'est pas allé plus
+          loin à ce jour.
         </p>
       </>
     ),
@@ -156,14 +159,15 @@ const SECTIONS = [
         <p>
           Un même vote ne dit pas la même chose selon d'où il est émis : depuis la majorité, voter contre
           n'arrive presque jamais ; depuis l'opposition, c'est le vote pour qui se remarque. La fiche ne
-          totalise donc pas une carrière entière, elle la découpe en <strong>périodes politiques</strong> —
-          une nouvelle dès que le banc ou le gouvernement en place change.
+          totalise donc pas une carrière entière, elle la découpe en <strong>périodes</strong> — une
+          nouvelle dès que change le banc (majorité, opposition ou groupe minoritaire, tel que
+          l'Assemblée le déclare) ou le gouvernement en place.
         </p>
         <p>
           Les deux repères sont <strong>déclarés, jamais déduits</strong>, et ils se complètent. Le banc
-          vient de <code>position_dans_hemicycle</code>, que la validation du pivot refuse sans{' '}
-          <code>source_url</code> ; le gouvernement vient des dates des fiches de gouvernement. De 2012 à
-          2017, l'Assemblée publie le banc mais le corpus ne porte aucune fiche de gouvernement ; depuis
+          vient de la déclaration du groupe à l'Assemblée, et n'est jamais publié sans le lien vers
+          sa source ; le gouvernement vient des dates des fiches de gouvernement. De 2012 à
+          2017, l'Assemblée publie le banc mais nous n'avons aucune fiche de gouvernement ; depuis
           2024, c'est l'inverse. Sur les 1 160 positions de dernière lecture des candidats déclarés, le banc
           seul en couvre 719 et le gouvernement seul 916 — <strong>le banc ou le gouvernement les couvre
           toutes les 1 160</strong>. Une période sans aucun des deux serait affichée comme telle, jamais
@@ -183,7 +187,7 @@ const SECTIONS = [
           L'<strong>origine</strong> — texte du gouvernement ou du Parlement — est lue dans l'intitulé
           officiel du scrutin, qui nomme lui-même la catégorie juridique : « projet de loi » pour un texte
           du gouvernement, « proposition de loi » ou « proposition de résolution » pour un texte du
-          Parlement. Ce n'est pas un rapprochement entre deux corpus, c'est un mot que la source pose ; il
+          Parlement. Ce n'est pas un rapprochement entre deux sources, c'est un mot que la source pose ; il
           est reconnu sur les 1 160 positions.
         </p>
         <p>
@@ -205,7 +209,7 @@ const SECTIONS = [
         </p>
         <p>
           Une motion de censure est un scrutin distinct. Elle est présentée séparément et reliée au texte
-          concerné lorsque <code>texte_lie_id</code> est disponible.
+          concerné lorsque la source nomme ce texte.
         </p>
       </>
     ),
@@ -298,16 +302,16 @@ const SECTIONS = [
         </p>
         <h3>Pourquoi le sujet ne se lit pas au même endroit selon le type</h3>
         <p>
-          L'Assemblée écrit son ordre du jour en <strong>chemin</strong> — « racine &rsaquo; étape
-          &rsaquo; article » —, et la grammaire de ce chemin change avec le type d'intervention.
+          L'Assemblée écrit son ordre du jour en <strong>plusieurs niveaux</strong>, du plus général
+          au plus précis, et le sujet ne se trouve pas au même niveau selon le type d'intervention.
           Sur une question au gouvernement, « Questions au Gouvernement &rsaquo; Réforme des
-          retraites », le sujet est la <strong>feuille</strong> et la racine n'est que le créneau de
-          séance. Sur l'examen d'un texte, « Projet de loi de finances pour 2023 &rsaquo; Première
-          partie &rsaquo; Après l'article 3 », le sujet est la <strong>racine</strong> et la feuille
-          est une étape de procédure.
+          retraites », le sujet est le <strong>dernier niveau</strong> : le premier n'est que le
+          créneau de séance. Sur l'examen d'un texte, « Projet de loi de finances pour 2023 &rsaquo;
+          Première partie &rsaquo; Après l'article 3 », le sujet est le <strong>premier niveau</strong> :
+          le dernier est une étape de procédure.
         </p>
         <p>
-          Prendre partout le même bout rangerait 2 885 des 3 660 questions sous un seul libellé —
+          Prendre partout le même niveau rangerait 2 885 des 3 660 questions sous un seul libellé —
           « Questions au Gouvernement », qui est un créneau de séance et non un sujet — ou bien
           ferait des textes examinés autant de « Suspension et reprise de la séance ». Le niveau se
           choisit donc par type,
@@ -325,9 +329,9 @@ const SECTIONS = [
         <h3>Ce qui n'est pas publié</h3>
         <p>
           La distinction entre « réaction courte » et « prise de parole développée » existe dans nos
-          données, sur 16 242 lignes, mais elle est <strong>notre</strong> déduction : un seuil de
+          données, sur 16 242 interventions, mais elle est <strong>notre</strong> déduction : un seuil de
           cinquante mots posé à la collecte, jamais un fait du compte rendu. La publier ferait
-          passer un choix d'implémentation pour une donnée.
+          passer un choix de notre part pour une donnée.
         </p>
         <p>
           Aucune densité par jour de séance n'est dessinée : un creux s'y lirait comme une absence
@@ -341,27 +345,6 @@ const SECTIONS = [
           et le thème, et rien d'autre. Aucun verbatim, aucune qualité, souvent aucun intitulé. Ce
           n'est pas une donnée manquante à combler, et surtout pas un silence de la personne : la
           fiche le nomme sous chaque entrée concernée et le compte sous la figure.
-        </p>
-      </>
-    ),
-  },
-  {
-    heading: 'Ordre des catégories',
-    body: (
-      <>
-        <p>
-          <code>position_dans_hemicycle</code> n'est utilisée que lorsqu'elle possède une source primaire
-          (<code>source_url</code>). Elle permet de répartir les textes portés et les amendements d'un
-          candidat en trois lots : <strong>Majorité</strong>, <strong>Opposition</strong> et{' '}
-          <strong>Non distingué</strong> (éléments à cheval sur les deux périodes, ou dont la date ne
-          correspond à aucune période sourcée).
-        </p>
-        <p>
-          Sur le profil d'un candidat, l'onglet « Textes » affiche cette répartition sous forme de barres de
-          comparaison (nombre de textes portés et d'amendements par catégorie). Le lot « Non distingué » est
-          toujours affiché séparément, même à zéro : l'absence de donnée sourcée reste visible, conformément
-          à la règle 6. Cette répartition n'est pour l'instant présentée que sur les profils candidat, pas
-          sur les profils de groupe.
         </p>
       </>
     ),
@@ -386,21 +369,21 @@ const SECTIONS = [
           L'Assemblée ouvre et ferme des groupes à chaque législature ; elle ne dit pas lequel
           succède à lequel. La fiche réunit les <strong>groupes successifs</strong> d'une même
           formation — « Nouvelle Gauche », puis « Socialistes et apparentés » sous trois
-          législatures. Ce rattachement est une <strong>relecture humaine, datée</strong>, jamais
-          une ressemblance de sigle : un groupe qui prend la suite d'un autre sans le déclarer n'y
-          est pas rattaché.
+          législatures. Pour relier deux groupes d'une législature à la suivante, Empreinte
+          politique <strong>compare leurs membres</strong> : un groupe prend la suite d'un autre
+          quand plus de la moitié des députés du plus petit des deux se retrouvent dans l'autre.
         </p>
         <p>
-          La frise trace le nombre de membres jour par jour, depuis les dates d'entrée et de sortie
-          de chacun ; le nombre écrit au bout de chaque bande est celui que la fiche du groupe
-          publie à sa date de référence. Le motif dit comment l'Assemblée qualifie le groupe pour
-          cette législature : majoritaire, d'opposition, minoritaire — ou rien, quand elle ne le
-          déclare pas.
+          Le graphique en tête de fiche trace le nombre de membres jour par jour, depuis les dates
+          d'entrée et de sortie de chacun. Le nombre écrit à droite de chaque période est celui des
+          membres à son dernier jour. Le remplissage de la période dit comment l'Assemblée qualifie
+          le groupe pour cette législature : majoritaire, d'opposition, minoritaire — ou rien,
+          quand elle ne le déclare pas.
         </p>
         <p>
           Un point par personne et par groupe : « nouveau dans le groupe » ne veut pas dire
-          « nouveau député ». La personne a pu siéger ailleurs avant ; la donnée ne porte que
-          ce groupe et ceux qui l'ont précédé, et la fiche n'en dit pas plus. Aucun taux de
+          « nouveau député ». La personne a pu siéger ailleurs avant ; la fiche ne connaît que
+          ce groupe et ceux qui l'ont précédé, et n'en dit pas plus. Aucun taux de
           renouvellement n'est calculé : il deviendrait une note comparée d'un groupe à l'autre.
         </p>
       </>
@@ -413,10 +396,21 @@ const SECTIONS = [
       <>
         <p>
           Les intitulés sont ceux que le compte rendu de l'Assemblée donne aux débats, recopiés tels
-          quels. Chacun porte le nombre de membres du groupe qui y sont intervenus, sur le nombre de
-          membres passés par le groupe pendant la législature. Ce sont des <strong>sujets
-          abordés</strong>, jamais des positions du groupe : intervenir sur un texte ne dit pas ce
-          qu'on en pense.
+          quels. Chacun porte le nombre de prises de parole des membres du groupe, et le nombre de
+          membres intervenus sur le nombre de personnes passées par le groupe pendant la
+          législature. Ce sont des <strong>sujets abordés</strong>, jamais des positions du groupe :
+          intervenir sur un texte ne dit pas ce qu'on en pense.
+        </p>
+        <p>
+          Une prise de parole dont le compte rendu ne donne pas l'intitulé reste comptée : elle est
+          rangée sous <strong>« Intitulé non publié »</strong>, et cette ligne ne s'ouvre pas.
+        </p>
+        <p>
+          Quand la fiche compte les prises de parole, la <strong>présidence de séance</strong> n'y
+          entre pas : « La parole est à… » conduit le débat, ce n'est pas la parole du groupe. La
+          parole prononcée <strong>comme membre du gouvernement</strong> non plus — un député nommé
+          ministre reste membre de son groupe un mois, et il y parle alors pour le gouvernement.
+          La parole d'un rapporteur, elle, reste comptée : il parle du texte, comme membre du groupe.
         </p>
       </>
     ),
@@ -437,18 +431,19 @@ const SECTIONS = [
           La matière est la commission chargée d'examiner le texte, comme sur la fiche d'un candidat.
           Les textes se rangent du plus récemment amendé au plus ancien, jamais par volume : déposer
           beaucoup sur un texte peut être un travail de fond comme une obstruction, et le nombre ne
-          les distingue pas. Le sort d'un texte n'est affiché que lorsqu'un scrutin le rattache à
-          son dossier.
+          les distingue pas. Le sort d'un texte n'est affiché que lorsque la source relie un scrutin
+          à ce texte.
         </p>
         <p>
-          Les textes portés se lisent avec la même cascade que sur la fiche d'un candidat : jusqu'où
-          chaque texte est allé, de l'examen en commission à la promulgation. Un texte compte
-          <strong> une fois</strong> pour le groupe, quel que soit le nombre de membres qui l'ont
-          déposé ou rapporté, et seulement s'il relève de la législature du groupe. Deux qualités se
-          lisent séparément ou ensemble — auteur d'une proposition, rapporteur d'un texte — et un
-          dossier qui porte les deux ne compte qu'une fois. Un projet de loi n'y figure pas : il est
-          signé par un membre du gouvernement, pas au nom d'un groupe. Sous l'examen en commission,
-          rien n'est publié.
+          Les textes portés se lisent avec la même figure que sur la fiche d'un candidat : un carré
+          par texte, rangé à l'étape qu'il a atteinte, de l'examen en commission à la promulgation.
+          Un texte compte <strong> une fois</strong> pour le groupe, quel que soit le nombre de
+          membres qui l'ont déposé ou rapporté, et seulement s'il relève de la législature du
+          groupe. Deux rôles ont chacun leur ligne — auteur d'une proposition, rapporteur d'un
+          texte — et un texte qui porte les deux figure sur les deux lignes, sans compter deux
+          fois dans les totaux. Un projet de loi n'y figure pas : il est
+          signé par un membre du gouvernement, pas au nom d'un groupe. Un texte qui n'a pas
+          atteint l'examen en commission n'est pas affiché.
         </p>
       </>
     ),
@@ -461,12 +456,12 @@ const SECTIONS = [
         <p>
           Un groupe ne vote pas : ses membres votent. Pour dire s'il s'est exprimé d'une seule voix,
           il faut qu'au moins la moitié de ses membres aient pris part au scrutin. En dessous, deux
-          ou trois voix ne décrivent pas le groupe, et rien n'est publié. Ce n'est pas une lacune de
-          collecte : les autres scrutins sont là, ils ne permettent simplement pas cette mesure.
+          ou trois voix ne décrivent pas le groupe, et rien n'est publié. Ce n'est pas un manque dans
+          nos données : les autres scrutins sont là, ils ne permettent simplement pas cette mesure.
         </p>
         <p>
           « D'une seule voix » signifie que toutes les positions exprimées allaient dans le même
-          sens. Les absences ne sont jamais comptées, et aucune largeur affichée ne s'y rapporte :
+          sens. Les absences ne sont jamais comptées, et aucune barre de la fiche ne les représente :
           ce serait un taux de présence sur des personnes nommées.
         </p>
         {REFUS_FICHE_GROUPE.map((refus) => (
@@ -484,12 +479,12 @@ const SECTIONS = [
       <>
         <p>
           La position majoritaire du groupe est comparée à celle de chaque autre groupe de la même
-          législature, sur la <strong>dernière lecture de chaque texte</strong>, et seulement là où
-          les deux atteignent leur quorum. Les dénominateurs diffèrent donc d'une ligne à l'autre,
-          et chacun est publié. L'ordre est d'abord celui du nombre de textes communs ; à nombre
-          égal seulement, l'accord départage, parce que les deux groupes se comparent alors sur la
-          même base. Trier sur l'accord seul rangerait des parts calculées sur des bases
-          différentes, et ferait un classement des alliés.
+          législature, sur la <strong>dernière lecture de chaque texte</strong>, et seulement là où,
+          dans chacun des deux groupes, au moins la moitié des membres ont voté. Le nombre de textes
+          comparés diffère donc d'une ligne à l'autre, et il est écrit sur chacune. Les groupes sont rangés d'abord par le nombre de textes comparés ;
+          à nombre égal seulement, par le nombre de votes dans le même sens. Ranger par l'accord
+          seul serait trompeur : un groupe d'accord sur les 2 seuls textes comparés passerait devant
+          un groupe d'accord sur 40 textes sur 50, et la fiche fabriquerait un classement des alliés.
         </p>
         <p>
           <strong>Voter dans le même sens n'est pas s'entendre.</strong> Deux groupes peuvent

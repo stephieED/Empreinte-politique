@@ -362,7 +362,7 @@ def test_seul_le_pourquoi_des_deux_regles_part_dans_la_methodologie() -> None:
     methodo = METHODO.read_text(encoding="utf-8")
     assert "LAST_READING_RULE" in methodo
     assert "WHOLE_TEXT_VOTE_BOUND" in methodo
-    assert "périodes politiques" in methodo
+    assert "découpées en périodes" in methodo
 
     fiche = sans_commentaires(FICHE.read_text(encoding="utf-8"))
     # Les deux `phrase` ont quitté la fiche le 10/09 : la règle est APPLIQUÉE

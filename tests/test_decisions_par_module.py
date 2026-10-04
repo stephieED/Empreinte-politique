@@ -80,16 +80,12 @@ def test_le_corpus_analyse_nest_pas_vide(analyse):
         "rien — dans les deux cas le seuil ci-dessous ne protège plus personne.")
 
 
-def test_la_table_inversee_est_a_jour(analyse):
-    """Générée, jamais tenue à la main : une table manuelle diverge."""
-    attendu = generateur.rendre(analyse)
-    assert generateur.SORTIE.exists(), (
-        f"{generateur.SORTIE.relative_to(RACINE)} est absent — le générer avec "
-        "`python3 scripts/generer_decisions_par_module.py`.")
-    assert generateur.SORTIE.read_text(encoding="utf-8") == attendu, (
-        f"{generateur.SORTIE.relative_to(RACINE)} a dérivé du dépôt. Ce fichier "
-        "est généré : relancer `python3 scripts/generer_decisions_par_module.py` "
-        "plutôt que de l'éditer.")
+def test_la_table_inversee_se_genere(analyse):
+    """Générée, jamais tenue à la main — et depuis #1174, jamais committée par
+    une PR : c'est `.github/workflows/index-decisions.yml` qui la réécrit sur
+    `main`. Ce test tient ce qu'il reste à tenir ici, que le rendu aboutit."""
+    rendu = generateur.rendre(analyse)
+    assert rendu.startswith("#") and "src/" in rendu
 
 
 def test_aucun_module_lourdement_gouverne_ne_cite_zero_decision(analyse):

@@ -63,8 +63,8 @@ nouvelle s'écrit dans un fichier neuf, jamais insérée dans un fichier existan
 découpe : **ne la citez jamais** — ses ancres sont préfixées `archive-` exprès, et
 `tests/test_index_decisions.py` refuse tout chemin qui y pointe.
 
-`docs/decisions-par-module.md` est **généré** : ne le corrigez pas à la main,
-relancez `scripts/generer_decisions_par_module.py`.
+`docs/decisions-par-module.md` est **généré sur `main`** après chaque fusion
+(#1174) : ne le corrigez pas à la main et ne le committez pas dans une PR.
 
 **Ton travail sur ces fichiers est de les contredire, pas de les recopier.** Après
 avoir mesuré l'état, relis ces constats et signale ceux que la mesure infirme :

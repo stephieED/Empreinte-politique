@@ -1073,20 +1073,20 @@ export const REFUS_FICHE_GROUPE = [
     sujet: 'Un indice de cohésion',
     phrase: "Aucun chiffre unique ne résume la cohésion d'un groupe.",
     pourquoi:
-      "La donnée porte trois taux synthétiques — cohérence, cohérence hors absents, participation. Ils ne sortent pas du fichier : un chiffre unique par groupe est une note, et cinq notes sont un classement. Les scrutins où le groupe s'est partagé sont montrés un par un.",
+      "Nos données contiennent trois taux par groupe — cohérence, cohérence hors absents, participation. Nous ne les publions pas : un chiffre unique par groupe est une note, et cinq notes sont un classement. Les scrutins où le groupe s'est partagé sont montrés un par un.",
   },
   {
     id: 'ecarts-individuels',
     sujet: 'Écarts individuels',
     phrase: "Cette fiche ne nomme jamais qui s'est écarté de la position majoritaire.",
     pourquoi:
-      "Les décomptes disent combien de membres ont pris chaque position, jamais lesquels. Désigner les écarts produirait un classement à l'intérieur du groupe, et l'écart entre un vote individuel et sa ligne de groupe reste une donnée de contrôle interne.",
+      "Les décomptes disent combien de membres ont pris chaque position, jamais lesquels. Désigner les écarts produirait un classement à l'intérieur du groupe, et l'écart entre un vote individuel et la position de son groupe reste une vérification interne, jamais publiée.",
   },
   {
     id: 'assiduite-de-groupe',
     sujet: 'Les absences',
     phrase: "Cette fiche connaît les absents de chaque scrutin et ne les publie jamais.",
     pourquoi:
-      "La donnée compte, scrutin par scrutin, les membres éligibles pour lesquels aucun vote n'a été trouvé, et ceux qui étaient excusés. Publiés, agrégés ou non, ils deviennent un taux de présence sur des personnes nommées. Aucun décompte de cette page ne les fait entrer, ni dans un total, ni dans une largeur affichée.",
+      "Nos données comptent, scrutin par scrutin, les membres qui pouvaient voter et pour lesquels aucun vote n'a été trouvé, et ceux qui étaient excusés. Publiés, agrégés ou non, ils deviennent un taux de présence sur des personnes nommées. Aucun décompte de cette page ne les fait entrer, ni dans un total, ni dans la largeur d'une barre.",
   },
 ];

@@ -151,6 +151,8 @@ def _reseau_coupe(monkeypatch):
 
 #: Le cache réel du poste — celui qu'aucun test ne doit lire.
 CACHE_DU_DEPOT = (Path(__file__).resolve().parents[1] / ".cache").resolve()
+#: Le même, liens non suivis : ce que le code écrit quand il nomme le cache.
+CACHE_ECRIT_DU_DEPOT = Path(os.path.abspath(Path(__file__).parent.parent / ".cache"))
 
 #: `raw_data/` du dépôt, et la seule branche que ce garde-fou laisse à un autre :
 #: `raw_data/profiles/`, déjà couverte par le hook de diagnostic du bas de ce
@@ -207,6 +209,14 @@ def _sous_le_cache_du_depot(fichier) -> bool:
     texte = _texte_du_chemin(fichier)
     if texte is None or ".cache" not in texte:
         return False
+    # #1172 — le chemin TEL QU'ÉCRIT d'abord, liens non suivis : un
+    # `.cache/acteurs_historique_an` qui est un lien vers le cache d'un autre
+    # checkout se résout HORS du dépôt, et la seule comparaison des chemins
+    # résolus le laissait passer. Six tests de roster lisaient alors l'archive
+    # réelle (311 membres de gouvernement) au lieu de leur fixture.
+    ecrit = Path(os.path.abspath(texte))
+    if CACHE_ECRIT_DU_DEPOT in (ecrit, *ecrit.parents):
+        return True
     resolu = _resolu(texte)
     return resolu is not None and CACHE_DU_DEPOT in (resolu, *resolu.parents)
 

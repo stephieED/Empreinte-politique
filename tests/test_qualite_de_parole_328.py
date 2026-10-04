@@ -57,10 +57,15 @@ def test_les_trois_qualites_ne_sont_jamais_devinees():
     code = sans_commentaires(MODULE.read_text(encoding="utf-8"))
     bloc = re.search(r"export function qualiteDeParole\(intervention\) \{(.*?)\n\}", code, re.DOTALL)
     assert bloc, "qualiteDeParole a disparu ou changé de forme."
-    assert "FONCTION_GOUVERNEMENTALE.test(fonction)" in bloc.group(1), (
+    # La règle est dans `fonctionGouvernementale.js` depuis le 02/10/2026 : la
+    # projection de build, qui retire cette parole de celle d'un groupe, doit
+    # pouvoir l'importer — et une règle recopiée divergerait.
+    assert "estFonctionGouvernementale(fonction)" in bloc.group(1), (
         "La qualité gouvernementale doit venir de la fonction PUBLIÉE par le "
         "compte rendu, jamais d'une date ou d'une déduction."
     )
+    regle = sans_commentaires((MODULE.parent / "fonctionGouvernementale.js").read_text(encoding="utf-8"))
+    assert "FONCTION_GOUVERNEMENTALE.test(fonction)" in regle
     assert "'parlement_europeen'" in bloc.group(1), (
         "La qualité européenne doit venir du marqueur d'institution (#328)."
     )

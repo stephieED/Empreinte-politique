@@ -876,22 +876,27 @@ et aucun acteur dans le profil qu'AMO30 a produit. En désaccord, aucune entrée
 le slug est nommé, la §5b bloquera, et un humain arbitre.
 → `docs/decisions/boucle-perimetre-candidats-757.md`.
 
-### J'ai écrit une décision : mettre l'index à jour
+### J'ai écrit une décision : l'index se met à jour sur `main`
 
 ```bash
-python3 scripts/generer_index_decisions.py
 python3 scripts/generer_index_decisions.py --verifier
+python3 scripts/generer_index_decisions.py
 ```
 
 `docs/technical_decisions.md` est **généré** depuis les fichiers de
-`docs/decisions/` (#840) — il ne s'édite pas à la main. Chaque décision porte
-son titre, sa date et son résumé `> **En bref** — …` ; le script les assemble,
-de la plus récente à la plus ancienne.
+`docs/decisions/` (#840) — il ne s'édite pas à la main, et **une PR ne le
+committe pas** (#1174) : `.github/workflows/index-decisions.yml` le régénère sur
+`main` après la fusion. Chaque décision porte son titre, sa date et son résumé
+`> **En bref** — …` ; le script les assemble, de la plus récente à la plus
+ancienne.
 
-C'est ce qui supprime les conflits : un lot n'écrit que **son** fichier, que
-personne d'autre ne touche. `--verifier` ne modifie rien, sortie 1 si l'index a
-dérivé.
-→ `docs/decisions/index-decisions-genere-840.md`.
+Les deux commandes servent à **lire** : `--verifier` ne modifie rien, sortie 1
+si l'index du disque a dérivé — ce qui est l'état normal d'une branche qui
+ajoute une décision. Sans l'option, le fichier est réécrit ; le remettre à
+l'état de `main` avant de committer
+(`git checkout origin/main -- docs/technical_decisions.md docs/decisions-par-module.md`),
+sans quoi `tests.yml` refuse la PR.
+→ `docs/decisions/index-regenere-sur-main-1174.md`.
 
 ### Régénérer la table « ce module → ces décisions »
 
@@ -901,10 +906,10 @@ python3 scripts/generer_decisions_par_module.py
 ```
 
 `--verifier` n'écrit rien et sort 1 si le fichier committé a dérivé du dépôt ;
-sans lui, `docs/decisions-par-module.md` est réécrit. À relancer après avoir
-ajouté ou modifié une décision, ajouté ou renommé un module de `src/`, ou
-renommé une fonction qu'une décision nomme. `tests/test_decisions_par_module.py`
-fait la même vérification dans la suite.
+sans lui, `docs/decisions-par-module.md` est réécrit. Les deux servent à
+**lire** une table fraîche sur sa branche : le fichier n'est pas committé par une
+PR, `.github/workflows/index-decisions.yml` le régénère sur `main` après la
+fusion (#1174).
 → `docs/decisions/table-inversee-decisions-par-module.md`.
 
 ### Vérifier que les SHA cités sont archivés dans Software Heritage

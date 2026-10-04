@@ -12,27 +12,34 @@
  * `utils/groupe.js` et `utils/lignee.js` — les mêmes que ce fichier importe
  * pour ses libellés. Aucun nombre n'est recalculé ici.
  *
- * Les sept règles de forme (DESIGN_SYSTEM §6 bis) y sont appliquées : un
- * critère court sous le titre, la limite en pied de section, le raisonnement en
- * méthodologie derrière un renvoi — jamais un paragraphe sur la fiche.
+ * Les règles de forme (DESIGN_SYSTEM §6 bis) y sont appliquées. Depuis la
+ * revue d'ergonomie du 02/10/2026, ce qui dit comment lire une section est
+ * dans la BULLE de son titre, comme sur la fiche candidat : une phrase, une
+ * note, « Lire la méthode ». Les phrases sous les titres, les pieds et les
+ * renvois sont partis — `docs/decisions/revue-ux-de-la-fiche-de-groupe.md`.
  */
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useMemo, useRef, useState } from 'react';
 import { Condition, EtiquetteFiltre, PeriodeContext } from './Recherche';
 import { Link } from 'react-router-dom';
 import '../styles/shell.css';
 import './LigneeProfile.css';
-import { ProposParOrateur } from './ExtraitsDuDebat';
-import { getPaquetExtraitsMaillon } from '../data';
+import { ProposParOrateur, usePaquetExtraits } from './ExtraitsDuDebat';
+import { getPaquetExtraitsMaillon, getParolesMaillon } from '../data';
+import { NATURES_DE_PAROLE, debatsSousSelection } from '../utils/paroleDeGroupe';
 import { paquetDe } from '../utils/extraits';
+import { SUJET_NON_PUBLIE } from '../utils/sujetIntervention.js';
 import { motsDuFiltre } from '../utils/filtreIntitule';
 import NavigationPeriodes from './NavigationPeriodes';
+import InfoBulle from './InfoBulle';
+import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
 import { ListeVide } from './Lecture';
 import { LAST_READING_LABEL, formatNumber, styleForPosition, pageDuJeuDeDonnees } from '../utils/lecture';
 import { MAILLON_A_DES_RESULTATS } from '../utils/filtreLignee';
 import { cumulerTypes, LISTES_SIGNALEES, motifDePosture, ORDRE_PASSAGES, PASSAGES, QUALITES_TEXTE, textesDesQualites } from '../utils/lignee';
-import { Cascade, ListeCascade } from './CascadeTextes';
+import { ListeCascade } from './CascadeTextes';
+import { CarresTextes } from './CarresTextes';
 import { MATIERE_NON_ETABLIE, textesPortes } from '../utils/profilCandidat';
-import { GRIS_SANS_MATIERE, PALETTE_MATIERE } from '../utils/matiere';
+import { teinteCommission } from '../utils/commissions';
 
 const MOIS = [
   'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
@@ -101,45 +108,115 @@ function VideFiltre({ quoi, critere }) {
   const { mot } = useContext(Filtre);
   return <p className="cp-filtre-vide">{quoi}<Condition critere={critere} mot={mot} />.</p>;
 }
-function Section({ numero, titre, critere, pied, renvoi, renvois, children }) {
+/* LES TEXTES DES BULLES, tels que la propriétaire les a arrêtés le 02/10/2026,
+ * un par un, sur maquette. La phrase dit ce que la section montre et ce qui la
+ * range ; la note aide à ne pas mal lire la figure. Les recopier dans
+ * `tests/test_revue_ergonomie_fiche_groupe.py` est voulu : une reformulation
+ * « pour améliorer » doit échouer.
+ *
+ * « En bref » : la note finit par « en comparant leurs membres » depuis que
+ * le run calcule le rattachement (#1168, lot 3).
+ *
+ * « Sur quoi ils ont pris la parole » a DEUX ÉTATS. Sa figure et sa bulle
+ * arrêtées comptent des prises de parole, d'où l'on retire la présidence de
+ * séance — ce que seul le champ `role_seance` permet (#1169). Tant que le
+ * corpus construit ne le porte pas, la section garde sa figure d'avant, avec
+ * sa phrase, son pied et son renvoi ; dès qu'il le porte, elle prend la
+ * nouvelle (`utils/paroleDeGroupe.js`). */
+const LIRE_LA_METHODE = 'Lire la méthode →';
+const BULLES = {
+  enBref: {
+    phrase: 'L’histoire du groupe à l’Assemblée : ses noms, ses effectifs, sa position face au gouvernement.',
+    note: 'Note : D’une législature à la suivante, l’Assemblée ne dit pas quel groupe succède à quel autre. Empreinte politique établit ce lien en comparant leurs membres.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#lignee' }],
+  },
+  quiSontIls: {
+    phrase: 'L’évolution de la composition du groupe d’une législature à la suivante et sous chacun de ses noms successifs.',
+    note: 'Note : Sont comptés tous les députés passés par le groupe pendant la législature, même brièvement.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#lignee' }],
+  },
+  textes: {
+    phrase: 'Les textes de loi portés par des membres du groupe, comme auteurs ou comme rapporteurs, à l’étape qu’ils ont atteinte.',
+    note: 'Note : Seuls les textes examinés en commission sont affichés. Un texte arrêté à une étape n’est pas nécessairement rejeté.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#depots' }],
+  },
+  amendements: {
+    phrase: 'Les amendements des membres du groupe, par matière et par texte amendé.',
+    note: 'Note : Le nombre d’amendements seul peut tromper. Chaque segment d’une barre est un texte amendé ; sa largeur est le nombre d’amendements déposés sur ce texte.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#depots' }],
+  },
+  paroles: {
+    phrase: 'Les prises de parole des membres du groupe à l’Assemblée, par législature, par nature et par débat.',
+    note: 'Note : Une prise de parole peut tenir en quelques mots.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#paroles' }],
+  },
+  vote: {
+    phrase: 'Les scrutins où le groupe a voté d’une seule voix, et ceux où ses membres se sont partagés, par législature.',
+    note: 'Note : « Quorum atteint » : au moins la moitié des membres du groupe a voté. « D’une seule voix » : toutes les positions exprimées vont dans le même sens.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#cohesion' }],
+  },
+  avecQui: {
+    phrase: 'La position du groupe comparée à celle de chaque autre groupe, texte par texte, par législature.',
+    note: 'Note : Voter dans le même sens n’est pas s’entendre : deux groupes peuvent rejeter un texte pour des raisons opposées. « Nuance » : l’un des deux groupes s’est abstenu.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#convergences' }],
+  },
+  couverture: {
+    phrase: 'Les limites de cette fiche : ce que les sources ne disent pas sur ces groupes.',
+    note: 'Note : Une information absente de cette fiche n’a pas été trouvée dans les sources. Cela ne veut pas dire qu’il ne s’est rien passé.',
+    liens: [
+      { libelle: 'Sources et couvertures →', vers: '/sources#frise' },
+      { libelle: LIRE_LA_METHODE, vers: '/methodologie#couverture' },
+    ],
+  },
+};
+
+/* LA BULLE EST À CÔTÉ DU TITRE, PAS DEDANS — la règle de la fiche candidat :
+ * dans le `h2`, son bouton entrerait dans le nom que la section annonce à un
+ * lecteur d'écran. Une section qui porte une bulle n'écrit plus de critère ;
+ * `critere`, `pied` et `renvoi` restent pour la seule section qui n'a pas
+ * encore la sienne. */
+function Section({ numero, titre, bulle = null, critere, pied, renvoi, children }) {
   const { avecTete, avecPied } = useContext(Filtre);
-  if (!avecTete || !avecPied) {
-    return (
-      <section className="lp-section" data-section={avecTete ? titre : undefined} id={avecTete ? `section-${numero}` : undefined} style={avecTete ? undefined : { marginTop: 18 }}>
-        {avecTete && (<><div className="lp-section-bande"><span className="lp-section-numero">{numero}</span><span className="lp-section-trait" /></div>
-        <h2 className="lp-section-titre"><span>{titre}</span></h2>{critere && <p className="lp-section-critere">{critere}</p>}</>)}
-        <div className="lp-section-corps">{children}</div>
-        {avecPied && pied && <p className="lp-section-pied">{pied}</p>}
-        {avecPied && renvoi && <p className="lp-methodo"><Link to={`/methodologie#${renvoi.ancre}`}>{renvoi.texte}</Link></p>}
-      </section>
-    );
-  }
   return (
-    <section className="lp-section" data-section={titre} id={`section-${numero}`}>
-      <div className="lp-section-bande">
-        <span className="lp-section-numero">{numero}</span>
-        <span className="lp-section-trait" />
-      </div>
-      <h2 className="lp-section-titre"><span>{titre}</span></h2>
-      {critere && <p className="lp-section-critere">{critere}</p>}
+    <section className="lp-section" data-section={avecTete ? titre : undefined} id={avecTete ? `section-${numero}` : undefined} style={avecTete ? undefined : { marginTop: 18 }}>
+      {avecTete && (
+        <>
+          <div className="lp-section-bande">
+            <span className="lp-section-numero">{numero}</span>
+            <span className="lp-section-trait" />
+          </div>
+          <div className="lp-section-tete ib-ancre">
+            <h2 className="lp-section-titre"><span>{titre}</span></h2>
+            {bulle && <InfoBulle sujet={titre} {...bulle} />}
+          </div>
+          {critere && !bulle && <p className="lp-section-critere">{critere}</p>}
+        </>
+      )}
       <div className="lp-section-corps">{children}</div>
-      {pied && <p className="lp-section-pied">{pied}</p>}
-      {renvoi && (
+      {avecPied && pied && <p className="lp-section-pied">{pied}</p>}
+      {avecPied && renvoi && (
         <p className="lp-methodo">
           <Link to={`/methodologie#${renvoi.ancre}`}>{renvoi.texte}</Link>
         </p>
       )}
-      {renvois && (
-        <p className="lp-methodo">
-          {renvois.map((r, i) => (
-            <span key={r.vers}>
-              {i > 0 && ' · '}
-              <Link to={r.vers}>{r.texte}</Link>
-            </span>
-          ))}
-        </p>
-      )}
     </section>
+  );
+}
+
+/* Un pli : une poignée, et ce qu'elle déplie. Comme sur la fiche candidat,
+ * c'est un `details` dont l'état est tenu ici, pour qu'un clic ailleurs le
+ * replie (`useReplieAuClicDehors`, arrêté pour les fiches de groupe le
+ * 02/10/2026). `force` : sous un mot recherché, le pli est déplié d'office et
+ * ne se replie pas — c'est la recherche qui l'a ouvert, pas le lecteur. */
+function Pli({ titre, force = false, children }) {
+  const ref = useRef(null);
+  const [ouvert, setOuvert] = useState(false);
+  useReplieAuClicDehors(ref, ouvert && !force, () => setOuvert(false));
+  return (
+    <details className="lp-tous" onToggle={(e) => setOuvert(e.currentTarget.open)} open={ouvert || force} ref={ref}>
+      <summary>{titre}</summary>
+      {children}
+    </details>
   );
 }
 
@@ -188,6 +265,7 @@ function Navigation({ lignee, index, onIndex, poids, unite, uniteSingulier }) {
       onIndex={onIndex}
       periodes={periodes}
       poids={poids}
+      sansPosition
       unite={unite}
       uniteSingulier={uniteSingulier}
     />
@@ -420,25 +498,19 @@ function QuiSontIls({ lignee }) {
   const colonnes = Math.max(...lignee.maillons.map((m) => m.presents.length)) > 150 ? 20 : 12;
   const candidats = lignee.personnes.filter((p) => p.candidat);
   const nom = (p) => (p.candidat ? <Link to={`/candidats/${p.id}`}>{p.nom}</Link> : p.nom);
+  // La liste : un groupe à la fois, et un clic hors de la carte la replie.
+  const carte = useRef(null);
+  const [rang, setRang] = useState(null);
+  useReplieAuClicDehors(carte, rang != null, () => setRang(null));
+  const lus = lignee.couverture?.profils_lus;
 
   return (
     <Section
-      critere="Chaque personne passée par l'un de ces groupes successifs, et le chemin qu'elle y a fait."
+      bulle={BULLES.quiSontIls}
       numero="1"
-      pied={(
-        <>
-          {formatNumber(lignee.couverture?.profils_lus)} profils publiés sur {formatNumber(lignee.cumul)} personnes
-          {candidats.length > 0 && (
-            <> · candidat{candidats.length > 1 ? 's' : ''} déclaré{candidats.length > 1 ? 's' : ''} :{' '}
-              {candidats.map((p, i) => <span key={p.id}>{i > 0 ? ', ' : ''}{nom(p)}</span>)}
-            </>
-          )}
-        </>
-      )}
-      renvoi={{ ancre: 'lignee', texte: 'Comment les groupes successifs sont reliés' }}
       titre="Qui sont-ils"
     >
-      <div className="lp-carte">
+      <div className="lp-carte" ref={carte}>
         <div className="lp-cles">
           {ORDRE_PASSAGES.map((cle) => (
             <span key={cle}><i className={`lp-point lp-point--${cle}`} />{PASSAGES[cle].label}</span>
@@ -477,34 +549,59 @@ function QuiSontIls({ lignee }) {
             ? <><b>{lignee.personnes[survol].nom}</b> · {chemins[survol].map((i) => nomDuMaillon(lignee.maillons[i])).join(' → ')}</>
             : ' '}
         </p>
-        {/* Les noms en colonnes, UNE PAR GROUPE de la lignée (relecture du
-            11/09/2026), dans l'ordre des points : une personne passée par trois
-            groupes figure dans trois colonnes, et c'est le chemin qui se lit.
-            Le survol d'un nom allume son chemin dans la grille, comme un point. */}
-        <details className="lp-tous">
-          <summary>Les {formatNumber(lignee.personnes.length)} personnes</summary>
-          <div className="lp-tous-colonnes" onMouseLeave={() => setSurvol(null)}>
-            {lignee.maillons.map((m) => (
-              <div className="lp-tous-colonne" key={m.id}>
-                <p className="lp-bloc-tete">
-                  {nomDuMaillon(m)} <small>· {formatNumber(m.presents.length)}</small>
-                </p>
-                <ul>
-                  {m.presents.map(([r, passage]) => (
-                    <li
-                      className={survol === r ? 'lp-tous-actif' : undefined}
-                      key={r}
-                      onMouseEnter={() => setSurvol(r)}
-                    >
-                      <i aria-hidden="true" className={`lp-point lp-point--${passage}`} />
-                      {nom(lignee.personnes[r])}
-                    </li>
-                  ))}
-                </ul>
+        {/* CE QUI ÉTAIT LE PIED DE LA SECTION, et qui est un fait : les
+            candidats déclarés passés par ces groupes, avec leur fiche. Le
+            compte des profils ne s'écrit que s'il en manque — « 448 sur 448 »
+            ne disait rien (DESIGN_SYSTEM §6 bis règle 1). */}
+        {(candidats.length > 0 || (lus != null && lus < lignee.cumul)) && (
+          <p className="lp-carte-faits">
+            {candidats.length > 0 && (
+              <span>
+                Candidat{candidats.length > 1 ? 's' : ''} déclaré{candidats.length > 1 ? 's' : ''} :{' '}
+                {candidats.map((p, i) => <span key={p.id}>{i > 0 ? ', ' : ''}{nom(p)}</span>)}
+              </span>
+            )}
+            {lus != null && lus < lignee.cumul && (
+              <span className="lp-num">{formatNumber(lus)} profils publiés sur {formatNumber(lignee.cumul)} personnes</span>
+            )}
+          </p>
+        )}
+        {/* LA LISTE, UN GROUPE À LA FOIS (forme C, retenue le 02/10/2026). Les
+            noms étaient en colonnes, une par groupe, tous dépliés d'un coup :
+            7 583 px pour les 448 personnes d'Ensemble pour la République. Un
+            rang par groupe de la lignée, un seul ouvert ; une personne passée
+            par trois groupes figure sous les trois, et c'est son chemin qui se
+            lit. Le survol d'un nom allume ce chemin dans la grille, comme un
+            point. Aucun champ de recherche, aucun « membre clef » : la fiche
+            ne choisit pas qui compte (§2 règle 1). */}
+        <div className="lp-rangs">
+          {lignee.maillons.map((m, i) => {
+            const ouvert = rang === i;
+            return (
+              <div className="lp-rang" data-ouvert={ouvert || undefined} key={m.id}>
+                <button aria-expanded={ouvert} className="lp-rang-poignee" onClick={() => setRang(ouvert ? null : i)} type="button">
+                  <span aria-hidden="true" className="lp-chevron">{ouvert ? '▾' : '▸'}</span>
+                  <span className="lp-rang-nom">{nomDuMaillon(m)}</span>
+                  <span className="lp-rang-n"><b className="lp-num">{formatNumber(m.presents.length)}</b> personnes</span>
+                </button>
+                {ouvert && (
+                  <ul className="lp-rang-noms" onMouseLeave={() => setSurvol(null)}>
+                    {m.presents.map(([r, passage]) => (
+                      <li
+                        className={survol === r ? 'lp-tous-actif' : undefined}
+                        key={r}
+                        onMouseEnter={() => setSurvol(r)}
+                      >
+                        <i aria-hidden="true" className={`lp-point lp-point--${passage}`} />
+                        {nom(lignee.personnes[r])}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
-            ))}
-          </div>
-        </details>
+            );
+          })}
+        </div>
       </div>
     </Section>
   );
@@ -517,7 +614,23 @@ function SurQuoiIlsParlent({ lignee }) {
   const debut = useContext(PeriodeContext);
   // Un débat ouvert, par maillon : ce qui y a été dit (#1029).
   const [ouvert, setOuvert] = useState(null);
+  const carte = useRef(null);
+  useReplieAuClicDehors(carte, ouvert != null, () => setOuvert(null));
   const s = filtreActif ? m.sujets : { ...m.sujets, liste: m.sujets.liste.slice(0, 10) };
+  /* LES PRISES DE PAROLE COMPTÉES (figure retenue le 02/10/2026) : chargées
+   * avec la section, et dessinées seulement si le corpus construit porte le
+   * rôle de séance — sans lui, la présidence passerait pour la parole du
+   * groupe. Sous un mot ou une période, la section garde sa liste d'avant :
+   * c'est elle que la recherche sait réduire. */
+  const paroles = usePaquetExtraits(filtreActif ? null : `paroles:${m.id}`, () => getParolesMaillon(m.id));
+  if (!filtreActif && paroles?.rolesPublies) {
+    return (
+      <Section bulle={BULLES.paroles} numero="2" titre="Sur quoi ils ont pris la parole">
+        <Navigation index={index} lignee={lignee} onIndex={setIndex} poids={(p) => p.sujets.total} unite="débats" uniteSingulier="débat" />
+        <ParolesComptees key={m.id} lignee={lignee} maillon={m} paroles={paroles} />
+      </Section>
+    );
+  }
   return (
     <Section
       critere="Les débats où le plus de membres sont intervenus : des sujets, jamais des positions du groupe."
@@ -529,7 +642,7 @@ function SurQuoiIlsParlent({ lignee }) {
       titre="Sur quoi ils ont pris la parole"
     >
       <Navigation index={index} lignee={lignee} onIndex={setIndex} poids={(p) => p.sujets.total} unite="débats" uniteSingulier="débat" />
-      <div className="lp-carte">
+      <div className="lp-carte" ref={carte}>
         <TeteDePeriode avecPosture={false} maillon={m} />
         <Etiquette />
         {s.liste.length === 0 && filtreActif ? <VideFiltre critere="dont l’intitulé contient" quoi="Aucun débat" /> : s.liste.length === 0 ? <Vide maillon={m} /> : s.liste.map((t) => {
@@ -573,6 +686,117 @@ function SurQuoiIlsParlent({ lignee }) {
   );
 }
 
+/* LA BARRE DÉCOUPÉE PAR MEMBRE, AVEC LES PASTILLES DE NATURE (forme D, retenue
+ * le 02/10/2026 sur une idée de la propriétaire : la barre des amendements de
+ * la fiche candidat, où chaque segment est un membre). La longueur d'une barre
+ * est le nombre de prises de parole dans le débat ; le nombre de segments, les
+ * membres intervenus. Les débats sont rangés par nombre de prises de parole.
+ *
+ * LES SEGMENTS SE TOUCHENT, et deux encres alternent : avec le blanc et les
+ * deux pixels au moins de la barre des amendements, 51 membres demandent plus
+ * de place que la barre n'en a, et c'est le plus gros segment qui cède. Ici
+ * chaque largeur reste exacte.
+ *
+ * Les pastilles sont celles de la fiche candidat, sous les mêmes mots. Aucune
+ * pastille de rôle : la présidence de séance et la parole prononcée comme
+ * membre du gouvernement sont retirées en amont, elles ne sont pas la parole
+ * du groupe. Aucune nature cochée : toutes. */
+function ParolesComptees({ lignee, maillon, paroles }) {
+  const [natures, setNatures] = useState(() => new Set());
+  const [ouvert, setOuvert] = useState(null);
+  const [survol, setSurvol] = useState(null);
+  const carte = useRef(null);
+  useReplieAuClicDehors(carte, ouvert != null, () => setOuvert(null));
+  const vue = useMemo(() => debatsSousSelection(paroles, natures), [paroles, natures]);
+  const max = Math.max(1, ...vue.lignes.map((l) => l.paroles));
+  const denominateur = maillon.sujets.denominateur;
+  const basculer = (k) => {
+    const suivantes = new Set(natures);
+    if (suivantes.has(k)) suivantes.delete(k); else suivantes.add(k);
+    setNatures(suivantes);
+    setOuvert(null);
+    setSurvol(null);
+  };
+  return (
+    <div className="lp-carte" ref={carte}>
+      <TeteDePeriode avecPosture={false} maillon={maillon} />
+      <div className="lp-facette">
+        <span className="lp-facette-quoi">Nature <i>— {formatNumber(vue.total)} prise{vue.total > 1 ? 's' : ''} de parole sous la sélection</i></span>
+        <div className="lp-chips">
+          {NATURES_DE_PAROLE.map((libelle, k) => (
+            <button aria-pressed={natures.has(k)} className="lp-chip" disabled={!vue.parNature[k]} key={libelle} onClick={() => basculer(k)} type="button">
+              {libelle} <span className="lp-chip-n lp-num">{formatNumber(vue.parNature[k])}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+      {vue.lignes.length === 0 ? (
+        <p className="lp-rien">Aucune prise de parole de cette nature.</p>
+      ) : (
+        <>
+          <span className="lp-facette-quoi">Débat <i>— {formatNumber(vue.lignes.length)} sur {formatNumber(vue.nDebats)} sous la sélection</i></span>
+          <div className="lp-mat" onMouseLeave={() => setSurvol(null)}>
+            <div className="lp-mr lp-mr--tete">
+              <span />
+              <span className="lp-mr-rail" />
+              <span className="lp-mr-n">prises de parole</span>
+              <span className="lp-mr-n">membres</span>
+            </div>
+            {vue.lignes.map((l) => {
+              // « Intitulé non publié » se compte et ne s'ouvre pas : ses textes
+              // ne sont pas servis. Le survol nomme toujours ses membres.
+              const sansIntitule = l.label === SUJET_NON_PUBLIE;
+              const choisi = !sansIntitule && ouvert === l.label;
+              const Rang = sansIntitule ? 'div' : 'button';
+              return (
+                <div key={l.label}>
+                  <Rang
+                    {...(sansIntitule ? {} : { 'aria-expanded': choisi, onClick: () => setOuvert(choisi ? null : l.label), type: 'button' })}
+                    className={sansIntitule ? 'lp-mr lp-mr--nd' : 'lp-mr lp-mr--cliquable'}
+                  >
+                    <span className="lp-mr-lib" title={l.label}>{l.label}</span>
+                    <span className="lp-mr-rail">
+                      <span className="lp-parole-segments" style={{ width: `${((100 * l.paroles) / max).toFixed(2)}%` }}>
+                        {l.segments.map(([orateur, n]) => (
+                          <b
+                            className={survol?.orateur === orateur ? 'lp-parole-meme' : undefined}
+                            key={orateur}
+                            onMouseEnter={() => setSurvol({ orateur, n, total: l.paroles, debat: l.label })}
+                            style={{ flex: `${n} 1 0` }}
+                          />
+                        ))}
+                      </span>
+                    </span>
+                    <span className="lp-mr-n">{formatNumber(l.paroles)}</span>
+                    <span className="lp-mr-n lp-mr-n--textes">{formatNumber(l.membres)} / {formatNumber(denominateur)}</span>
+                  </Rang>
+                  {choisi && (
+                    <div className="lp-deroule">
+                      <ProposParOrateur
+                        charger={() => getPaquetExtraitsMaillon(maillon.id, paquetDe(l.label))}
+                        cle={`${maillon.id}:${paquetDe(l.label)}`}
+                        nomDe={(r) => lignee.personnes[r]?.nom ?? '—'}
+                        parIntitule
+                        sujet={l.label}
+                      />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          {/* Le membre survolé se nomme ici, et s'allume dans chaque débat. */}
+          <p aria-live="polite" className="lp-chemin">
+            {survol ? (
+              <><b>{lignee.personnes[survol.orateur]?.nom ?? '—'}</b> · {formatNumber(survol.n)} prise{survol.n > 1 ? 's' : ''} de parole sur {formatNumber(survol.total)} dans « {survol.debat} »</>
+            ) : ' '}
+          </p>
+        </>
+      )}
+    </div>
+  );
+}
+
 /* ── § 3 — ce qu'ils ont proposé ───────────────────────────────────────────────
  *
  * Le gabarit « amendements par matière » de la fiche candidat (relecture du
@@ -596,62 +820,66 @@ const LIBELLES_QUALITE = {
   rapporteur: 'Comme rapporteurs',
 };
 
-/* LES TEXTES QU'ILS ONT PORTÉS — la cascade de la fiche candidat, la même
- * figure importée (`CascadeTextes.jsx`) et la même règle (`textesPortes`,
+/* LES TEXTES QU'ILS ONT PORTÉS — un carré par texte, une ligne par rôle
+ * (forme C, retenue le 02/10/2026). La figure est celle de la fiche candidat
+ * (`CarresTextes.jsx`) et la règle la même (`textesPortes`,
  * utils/profilCandidat.js). Seule change la population : les dossiers portés
  * par les membres du groupe dans la législature, un dossier une fois
- * (`textesDuMaillon`, utils/lignee.js). Les deux qualités se sélectionnent
- * ensemble, comme les types de déposant des amendements. Sous le seuil de
- * l'examen en commission, rien n'est publié (AGENTS §6). */
-function TextesPortes({ maillon, rangs }) {
+ * (`textesDuMaillon`, utils/lignee.js).
+ *
+ * LES DEUX RÔLES SE LISENT ENSEMBLE, SANS BOUTON. Les pilules « Comme
+ * auteurs » / « Comme rapporteurs » filtraient la cascade ; elles sont devenues
+ * les deux lignes de la figure. Un texte que le groupe porte aux deux titres
+ * figure sur les deux — c'est le même carré, pas deux textes.
+ *
+ * Sous le seuil de l'examen en commission, rien n'est publié (AGENTS §6). */
+function TextesPortes({ maillon }) {
   const { filtreActif } = useContext(Filtre);
-  const [qualites, setQualites] = useState(Object.keys(QUALITES_TEXTE));
   const [sel, setSel] = useState(null);
+  const carte = useRef(null);
+  useReplieAuClicDehors(carte, sel != null, () => setSel(null));
   const textes = useMemo(() => {
     if (!maillon.textes) return null;
-    const retenus = textesDesQualites(maillon.textes, qualites);
+    const retenus = textesDesQualites(maillon.textes, Object.keys(QUALITES_TEXTE));
     const parDossier = new Map(retenus.map((t) => [t.dossier_id, t.commission]));
     return textesPortes(retenus, (dossier) => parDossier.get(dossier) ?? null);
-  }, [maillon, qualites]);
+  }, [maillon]);
+  /* Le rôle se lit sur le texte du maillon, pas sur celui de la cascade, qui
+   * n'en garde qu'un : la clé est l'adresse du dossier, son titre à défaut. */
+  const lignes = useMemo(() => {
+    const roles = new Map((maillon.textes || []).map((t) => [t.source_url || t.titre, t.roles || {}]));
+    return Object.keys(QUALITES_TEXTE)
+      .filter((q) => (maillon.textes || []).some((t) => t.roles?.[q]))
+      .map((q) => ({ cle: q, libelle: LIBELLES_QUALITE[q], porte: (texte) => Boolean(roles.get(texte.url || texte.titre)?.[q]) }));
+  }, [maillon]);
   if (!textes) return null;
   if (filtreActif && !maillon.textes.length) {
     return <div className="lp-carte lp-textes"><Etiquette /><VideFiltre critere="dont l’intitulé contient" quoi="Aucun texte porté" /></div>;
   }
-  const presentes = Object.keys(QUALITES_TEXTE).filter((q) => maillon.textes.some((t) => t.roles?.[q]));
-  const basculer = (q) => {
-    // Une qualité au moins reste retenue : une cascade vide se lirait « aucun texte ».
-    const suivantes = qualites.includes(q) ? qualites.filter((x) => x !== q) : [...qualites, q];
-    if (suivantes.length) { setQualites(suivantes); setSel(null); }
-  };
   return (
-    <div className="lp-carte lp-textes">
+    <div className="lp-carte lp-textes" ref={carte}>
       <Etiquette />
-      <div className="lp-mat-tete">
-        <span className="lp-mat-titre">Les textes qu'ils ont portés</span>
+      <div className="lp-mat-tete ib-ancre">
+        <span className="lp-mat-titre">
+          Les textes qu'ils ont portés
+          <InfoBulle petite sujet="Les textes qu'ils ont portés" {...BULLES.textes} />
+        </span>
         <span className="lp-mat-totaux lp-num">
           <b>{formatNumber(textes.publies.length)}</b> publiés · <b>{formatNumber(textes.promulgues)}</b>{' '}
           promulgué{textes.promulgues > 1 ? 's' : ''}
         </span>
       </div>
-      {presentes.length > 1 && (
-        <div aria-label="Qualités retenues" className="lp-onglets" role="group">
-          {presentes.map((q) => (
-            <button
-              aria-pressed={qualites.includes(q)}
-              className="lp-filtre"
-              key={q}
-              onClick={() => basculer(q)}
-              type="button"
-            >
-              {LIBELLES_QUALITE[q]}
-            </button>
-          ))}
-        </div>
-      )}
       {textes.cascade.total > 0 ? (
         <>
-          <Cascade cascade={textes.cascade} onSelection={setSel} rangs={rangs} selection={sel} />
-          <ListeCascade cascade={textes.cascade} onRaz={sel ? () => setSel(null) : null} selection={sel ?? (filtreActif ? { matiere: null, lo: 0, hi: textes.cascade.stades.length - 1 } : null)} />
+          <CarresTextes cascade={textes.cascade} lignes={lignes} onSelection={setSel} selection={sel} />
+          {/* L'invitation est celle de la fiche candidat, validée le 01/10/2026 :
+              celle de la liste par défaut parle encore de rubans. */}
+          <ListeCascade
+            cascade={textes.cascade}
+            invite="Cliquez un carré, une étape ou une commission pour lire les textes."
+            onRaz={sel ? () => setSel(null) : null}
+            selection={sel ?? (filtreActif ? { matiere: null, lo: 0, hi: textes.cascade.stades.length - 1 } : null)}
+          />
         </>
       ) : (
         <p className="lp-rien">Aucun de ces textes n'a atteint l'examen en commission.</p>
@@ -669,10 +897,34 @@ const STATUTS_TEXTE = {
 };
 const TEXTES_MONTRES = 12;
 
+/* Les segments d'une ligne : le nombre d'amendements de chacun de ses textes,
+ * du plus grand au plus petit — la règle de la fiche candidat. ILS NE SE
+ * DÉCOUPENT QUE S'ILS FONT LE TOTAL : sinon la barre dirait une répartition
+ * que la donnée ne porte pas, et elle reste d'un seul tenant (§2 règle 5). */
+function segmentsParTexte(detail, total) {
+  const parTexte = (detail || []).map((d) => d.amendements).sort((a, b) => b - a);
+  return parTexte.length && parTexte.reduce((s, n) => s + n, 0) === total ? parTexte : null;
+}
+
+function BarreParTexte({ segments, teinte, part }) {
+  const width = `${(part * 100).toFixed(1)}%`;
+  if (!segments) return <i style={{ background: teinte, width }} />;
+  return (
+    <span className="lp-mr-segments" style={{ width }}>
+      {segments.map((n, k) => (
+        // L'index suffit : la liste est triée une fois et ne se réordonne pas.
+        <b key={k} style={{ background: teinte, flex: `${n} 1 0` }} />
+      ))}
+    </span>
+  );
+}
+
 function TextesAmendes({ detail }) {
   const [montres, setMontres] = useState(TEXTES_MONTRES);
   return (
     <div className="lp-deroule">
+      {/* Ce que le pied de la section disait de cette liste, là où elle se lit. */}
+      <p className="lp-deroule-ordre">Du plus récemment amendé au plus ancien</p>
       {detail.slice(0, montres).map((d) => (
         <div className="lp-deroule-ligne" key={d.dossier}>
           <span className="lp-deroule-date lp-num">{court(d.dernier)}</span>
@@ -709,15 +961,11 @@ function CeQuIlsOntPropose({ lignee }) {
   const actifs = types.filter((t) => choisis.includes(t));
   const selection = actifs.length ? actifs : types.slice(0, 1);
   const bloc = cumulerTypes(m.amendements.parType, selection);
-  /* UNE TEINTE PAR COMMISSION POUR TOUTE LA SECTION : le rang suit le volume
-   * d'amendements du maillon, tous types réunis, et ne bouge ni avec les
-   * boutons ni d'une figure à l'autre — la cascade des textes et les barres
-   * d'amendements colorient pareil (DESIGN_SYSTEM : la couleur suit l'entité,
-   * jamais son rang dans une sélection). */
-  const rangs = useMemo(() => {
-    const tous = cumulerTypes(m.amendements.parType, Object.keys(m.amendements.parType));
-    return new Map((tous?.lignes || []).filter((l) => l.amendements > 0).map((l, i) => [l.commission, i]));
-  }, [m]);
+  /* UNE COULEUR FIXE PAR COMMISSION (`utils/commissions.js`) : la même sur les
+   * carrés des textes portés, juste au-dessus, et sur les trois types de fiche.
+   * La teinte suivait le rang du volume dans le groupe (02/10/2026). */
+  const carte = useRef(null);
+  useReplieAuClicDehors(carte, ouverte != null, () => setOuverte(null));
   const basculer = (t) => {
     // Un bouton au moins reste sélectionné : une vue vide se lirait « aucun amendement ».
     const suivants = selection.includes(t) ? selection.filter((x) => x !== t) : [...selection, t];
@@ -726,18 +974,10 @@ function CeQuIlsOntPropose({ lignee }) {
   const lignes = bloc ? bloc.lignes.filter((l) => l.amendements > 0) : [];
   const nd = bloc?.nonEtablie ?? null;
   const maxA = Math.max(1, ...lignes.map((l) => l.amendements), nd?.amendements ?? 0);
-  const maxD = Math.max(1, ...lignes.map((l) => (l.textes ? l.amendements / l.textes : 0)));
-  const limites = [];
-  if (m.amendements.distincts) limites.push(`${formatNumber(m.amendements.distincts)} amendements distincts en tout`);
-  if (m.amendements.sansType && !filtreActif) limites.push(`dont ${formatNumber(m.amendements.sansType)} sans type de déposant publié`);
-  if (lignes.length) limites.push('textes rangés du plus récemment amendé au plus ancien');
 
   return (
     <Section
-      critere="Textes et amendements distincts : cosigné par vingt membres, un texte ou un amendement compte une fois."
       numero="3"
-      pied={limites.join(' · ') || null}
-      renvoi={{ ancre: 'depots', texte: 'Quels textes et quels amendements sont retenus, et pourquoi aucun taux d’adoption' }}
       titre="Ce qu'ils ont proposé"
     >
       <Navigation
@@ -749,8 +989,8 @@ function CeQuIlsOntPropose({ lignee }) {
         uniteSingulier="amendement"
       />
       <TeteDePeriode maillon={m} />
-      {m.textes ? <TextesPortes key={m.id} maillon={m} rangs={rangs} /> : null}
-      <div className="lp-carte">
+      {m.textes ? <TextesPortes key={m.id} maillon={m} /> : null}
+      <div className="lp-carte" ref={carte}>
         <Etiquette />
         {m.amendementsHorsPeriode ? (
           /* La projection compte les amendements par dossier, sur toute la
@@ -773,7 +1013,7 @@ function CeQuIlsOntPropose({ lignee }) {
                 ))}
               </div>
             )}
-            <div className="lp-mat-tete">
+            <div className="lp-mat-tete ib-ancre">
               {/* « Par matière », et non « Par commission saisie au fond » (#328).
                   L'expression est du jargon parlementaire : la propriétaire, qui
                   connaît ce corpus mieux que quiconque, a demandé ce qu'elle
@@ -781,12 +1021,20 @@ function CeQuIlsOntPropose({ lignee }) {
                   partout ailleurs, et que la page de méthodologie définit
                   désormais en français courant. Le terme officiel y survit une
                   fois, comme passerelle vers le vocabulaire de la source. */}
-              <span className="lp-mat-titre">Par matière</span>
+              <span className="lp-mat-titre">
+                Par matière
+                <InfoBulle petite sujet="Les amendements, par matière" {...BULLES.amendements} />
+              </span>
               <span className="lp-mat-totaux lp-num">
                 <b>{formatNumber(bloc.amendements)}</b> amendements · <b>{formatNumber(bloc.dossiers)}</b> dossiers ·{' '}
                 <b>{formatNumber(bloc.adoptes)}</b> adoptés
               </span>
             </div>
+            {/* Une absence de donnée se déclare, là où le compte se lit (§2
+                règle 5) : c'était une incise du pied de section. */}
+            {m.amendements.sansType > 0 && !filtreActif && (
+              <p className="lp-carte-faits lp-num">{formatNumber(m.amendements.sansType)} amendements sans type de déposant publié ne figurent pas ici</p>
+            )}
             <div className="lp-mat">
               {/* Les cases vides d'en-tête portent la classe des barres qu'elles
                   surplombent : sous 720 px les barres disparaissent, et une case
@@ -795,13 +1043,17 @@ function CeQuIlsOntPropose({ lignee }) {
                 <span />
                 <span className="lp-mr-rail" />
                 <span className="lp-mr-n">amendements</span>
-                <span className="lp-mr-n">ratio par texte</span>
-                <span className="lp-mr-rail" />
                 <span className="lp-mr-n">textes distincts</span>
               </div>
-              {lignes.map((l, r) => {
-                const densite = l.textes ? l.amendements / l.textes : null;
-                const teinte = PALETTE_MATIERE[(rangs.get(l.commission) ?? r) % PALETTE_MATIERE.length];
+              {/* LA BARRE DÉCOUPÉE PAR TEXTE (forme A, 02/10/2026) : un segment
+                  par texte amendé, large comme le nombre d'amendements déposés
+                  dessus — la figure de la fiche candidat. La colonne « ratio
+                  par texte » est partie avec elle : la découpe montre ce que le
+                  ratio résumait. Mesuré sur Ensemble pour la République,
+                  XVIIe : 28 textes sur 237 n'y ont aucun pixel, la propriétaire
+                  l'a retenue en le sachant ; le nombre de textes reste écrit
+                  au bout de la ligne. */}
+              {lignes.map((l) => {
                 const ouvert = ouverte === l.commission || filtreActif;
                 return (
                   <div key={l.commission}>
@@ -812,12 +1064,10 @@ function CeQuIlsOntPropose({ lignee }) {
                       type="button"
                     >
                       <span className="lp-mr-lib" title={l.commission}>{l.commission}</span>
-                      <span className="lp-mr-rail"><i style={{ background: teinte, width: `${((100 * l.amendements) / maxA).toFixed(1)}%` }} /></span>
-                      <span className="lp-mr-n">{formatNumber(l.amendements)}</span>
-                      <span className="lp-mr-n">{densite == null ? '—' : formatNumber(Math.round(densite))}</span>
                       <span className="lp-mr-rail">
-                        {densite != null && <i style={{ background: teinte, opacity: 0.5, width: `${((100 * densite) / maxD).toFixed(1)}%` }} />}
+                        <BarreParTexte part={l.amendements / maxA} segments={segmentsParTexte(l.detail, l.amendements)} teinte={teinteCommission(l.commission)} />
                       </span>
+                      <span className="lp-mr-n">{formatNumber(l.amendements)}</span>
                       <span className="lp-mr-n lp-mr-n--textes">{formatNumber(l.textes)}</span>
                     </button>
                     {ouvert && <TextesAmendes detail={l.detail} />}
@@ -833,10 +1083,10 @@ function CeQuIlsOntPropose({ lignee }) {
                     type="button"
                   >
                     <span className="lp-mr-lib">{MATIERE_NON_ETABLIE}</span>
-                    <span className="lp-mr-rail"><i style={{ background: GRIS_SANS_MATIERE, width: `${((100 * nd.amendements) / maxA).toFixed(1)}%` }} /></span>
+                    <span className="lp-mr-rail">
+                      <BarreParTexte part={nd.amendements / maxA} segments={segmentsParTexte(nd.detail, nd.amendements)} teinte={teinteCommission(MATIERE_NON_ETABLIE)} />
+                    </span>
                     <span className="lp-mr-n">{formatNumber(nd.amendements)}</span>
-                    <span className="lp-mr-n">—</span>
-                    <span className="lp-mr-rail" />
                     <span className="lp-mr-n lp-mr-n--textes">{nd.textes ? formatNumber(nd.textes) : '—'}</span>
                   </button>
                   {(ouverte === MATIERE_NON_ETABLIE || filtreActif) && nd.detail.length > 0 && <TextesAmendes detail={nd.detail} />}
@@ -914,10 +1164,8 @@ function CeQuIlsOntVote({ lignee }) {
 
   return (
     <Section
-      critere="Un groupe ne vote pas : ses membres votent. Mesuré là où la moitié d'entre eux a voté."
+      bulle={BULLES.vote}
       numero="4"
-      pied={q.agreges ? 'Positions exprimées seulement · les absences ne sont jamais comptées' : null}
-      renvoi={{ ancre: 'cohesion', texte: 'Pourquoi aucun indice de cohésion' }}
       titre="Ce qu'ils ont voté"
     >
       <Navigation
@@ -970,10 +1218,9 @@ function CeQuIlsOntVote({ lignee }) {
               </button>
             )}
             {reste.length > 0 && (
-              <details className="lp-tous" open={filtreActif}>
-                <summary>Lectures antérieures, amendements, articles et motions — {formatNumber(reste.length)} scrutins</summary>
+              <Pli force={filtreActif} titre={`Lectures antérieures, amendements, articles et motions — ${formatNumber(reste.length)} scrutins`}>
                 <Repli entrees={reste} scrutins={m.scrutins} />
-              </details>
+              </Pli>
             )}
           </>
         )}
@@ -1004,7 +1251,18 @@ function Repli({ entrees, scrutins }) {
  * lecture de chaque texte (relecture du 11/09/2026), là où les deux atteignent
  * leur quorum. Rangés par nombre de textes communs, puis — à base égale
  * seulement — par votes dans le même sens (relecture du 11/09/2026). Chaque
- * groupe mène à SA lignée ; chaque segment déroule ses textes. */
+ * groupe mène à SA lignée.
+ *
+ * UN CARRÉ PAR TEXTE (forme B, retenue le 02/10/2026). La ligne portait une
+ * barre et, à droite, le nombre de textes communs en gros : un relecteur
+ * attentif y a lu « 51 % de proximité » là où la figure disait 9 textes dans
+ * le même sens sur 51. Le nombre le plus visible n'était pas celui qui répond
+ * au titre (DESIGN_SYSTEM §6 bis règle 8). La base ne s'écrit plus en gros :
+ * elle se compte, un carré par texte commun, et reste écrite en petit au bout
+ * des trois comptes — un ratio de groupe garde son dénominateur (§2 règle 7).
+ *
+ * Le survol d'un carré allume le même texte chez chaque groupe et le nomme
+ * sous la figure ; le clic déroule les textes de sa part, comme avant. */
 const NATURES = [
   { cle: 'meme_sens', classe: 'lp-part--une' },
   { cle: 'nuance', classe: 'lp-part--nuance' },
@@ -1016,32 +1274,45 @@ function AvecQuiIlsVotent({ lignee }) {
   const { filtreActif } = useContext(Filtre);
   const [m, index, setIndex] = useMaillon(lignee);
   const [ouvert, setOuvert] = useState(null);
+  const [survol, setSurvol] = useState(null);
+  const carte = useRef(null);
+  useReplieAuClicDehors(carte, ouvert != null, () => setOuvert(null));
   const lignes = (m.convergences || []).filter((a) => a.communs > 0);
-  /* UNE SEULE ÉCHELLE pour toutes les lignes (relecture du 11/09/2026) : la
-   * barre la plus longue est le groupe qui partage le plus de textes, et les
-   * autres raccourcissent d'autant. Ramener chaque barre à toute la largeur
-   * faisait lire 48 et 58 textes communs comme la même base — une barre
-   * « normalisée à effet visuel », ce que le DESIGN_SYSTEM §5 interdit. */
-  const communsMax = Math.max(1, ...lignes.map((a) => a.communs));
   const basculer = (sigle, nature) => setOuvert(ouvert?.sigle === sigle && ouvert.nature === nature ? null : { sigle, nature });
+  /* Le texte survolé, et la position de chaque groupe sur lui : lu dans les
+   * listes déjà servies, rien n'est recalculé. */
+  const survole = useMemo(() => {
+    if (survol == null) return null;
+    let sienne = null;
+    const autres = [];
+    for (const a of lignes) {
+      for (const n of NATURES) {
+        const entree = (a.scrutins[n.cle] || []).find(([id]) => id === survol);
+        if (entree) { sienne = entree[1]; autres.push([a.sigle, entree[2]]); }
+      }
+    }
+    return { scrutin: m.scrutins[survol] || {}, sienne, autres };
+  }, [survol, lignes, m]);
+  const pastille = (position) => {
+    const st = styleForPosition(position);
+    return <span className="lp-pos" style={{ background: st.color || undefined }}>{st.label}</span>;
+  };
 
   return (
     <Section
-      critere="Position du groupe face à celle de chaque autre, sur la dernière lecture de chaque texte, quorum atteint des deux côtés."
+      bulle={BULLES.avecQui}
       numero="5"
-      pied={lignes.length ? `${LAST_READING_LABEL} · rangés par nombre de textes communs, puis de votes dans le même sens` : null}
-      renvoi={{ ancre: 'convergences', texte: 'Voter dans le même sens n’est pas s’entendre' }}
       titre="Avec qui ils votent"
     >
       <Navigation
         index={index}
         lignee={lignee}
-        onIndex={(i) => { setIndex(i); setOuvert(null); }}
+        onIndex={(i) => { setIndex(i); setOuvert(null); setSurvol(null); }}
         poids={(x) => (x.convergences || []).reduce((a, c) => a + c.communs, 0)}
         unite="textes comparés"
         uniteSingulier="texte comparé"
       />
-      <div className="lp-carte">
+      <div className="lp-carte" ref={carte}>
         <Etiquette />
         <TeteDePeriode maillon={m} />
         {m.convergences && filtreActif && lignes.length === 0 ? <VideFiltre critere="dont l’intitulé contient" quoi="Aucun texte comparé" /> : !m.convergences ? <Vide maillon={m} /> : lignes.length === 0 ? (
@@ -1050,50 +1321,65 @@ function AvecQuiIlsVotent({ lignee }) {
           <>
             <div className="lp-natures">
               {NATURES.map((n) => (
-                <span key={n.cle}><i className={`lp-part ${n.classe}`} />{n.cle === 'nuance' ? 'nuance — abstention face à pour ou contre' : LIBELLES_NATURE[n.cle]}</span>
+                <span key={n.cle}><i className={`lp-part lp-carre ${n.classe}`} />{n.cle === 'nuance' ? 'nuance — abstention face à pour ou contre' : LIBELLES_NATURE[n.cle]}</span>
               ))}
             </div>
-            {lignes.map((a) => {
-              const valeurs = Object.fromEntries(a.natures.map((n) => [n.cle, n.valeur]));
-              const actif = ouvert?.sigle === a.sigle ? ouvert.nature : null;
-              return (
-                <div className="lp-accord" key={a.sigle}>
-                  <span className="lp-accord-sigle">
-                    {a.lignee ? <Link className="lp-lien" to={`/groupes/${a.lignee}`}>{a.sigle}</Link> : a.sigle}
-                    <small>{a.ligneeNom || a.nom}</small>
-                  </span>
-                  <div>
-                    <div className="lp-accord-barre" style={{ width: `${((100 * a.communs) / communsMax).toFixed(1)}%` }}>
-                      {NATURES.map((n) => (
-                        <button
-                          aria-label={`${valeurs[n.cle] || 0} ${LIBELLES_NATURE[n.cle]}`}
-                          aria-pressed={actif === n.cle}
-                          className={`lp-part ${n.classe}`}
-                          key={n.cle}
-                          onClick={() => basculer(a.sigle, n.cle)}
-                          style={{ flex: `${valeurs[n.cle] || 0} 1 0` }}
-                          type="button"
-                        />
-                      ))}
+            <div onMouseLeave={() => setSurvol(null)}>
+              {lignes.map((a) => {
+                const valeurs = Object.fromEntries(a.natures.map((n) => [n.cle, n.valeur]));
+                const actif = ouvert?.sigle === a.sigle ? ouvert.nature : null;
+                return (
+                  <div className="lp-accord" key={a.sigle}>
+                    <span className="lp-accord-sigle">
+                      {a.lignee ? <Link className="lp-lien" to={`/groupes/${a.lignee}`}>{a.sigle}</Link> : a.sigle}
+                      <small>{a.ligneeNom || a.nom}</small>
+                    </span>
+                    <div>
+                      <div className="lp-accord-carres">
+                        {NATURES.flatMap((n) => (a.scrutins[n.cle] || []).map(([id]) => (
+                          <button
+                            aria-label={`${m.scrutins[id]?.texte || 'Intitulé non publié'} — ${LIBELLES_NATURE[n.cle]}`}
+                            className={`lp-part lp-carre ${n.classe}${survol === id ? ' lp-carre--meme' : ''}`}
+                            key={id}
+                            onBlur={() => setSurvol(null)}
+                            onClick={() => basculer(a.sigle, n.cle)}
+                            onFocus={() => setSurvol(id)}
+                            onMouseEnter={() => setSurvol(id)}
+                            type="button"
+                          />
+                        )))}
+                      </div>
+                      <div className="lp-accord-pied">
+                        <div className="lp-accord-cles">
+                          {NATURES.map((n) => (
+                            <button aria-pressed={actif === n.cle} key={n.cle} onClick={() => basculer(a.sigle, n.cle)} type="button">
+                              {LIBELLES_NATURE[n.cle]} <b className="lp-num">{formatNumber(valeurs[n.cle] || 0)}</b>
+                            </button>
+                          ))}
+                          {a.autres > 0 && <span>autres <b className="lp-num">{formatNumber(a.autres)}</b></span>}
+                        </div>
+                        <span className="lp-accord-base lp-num">{formatNumber(a.communs)} texte{a.communs > 1 ? 's' : ''} commun{a.communs > 1 ? 's' : ''}</span>
+                      </div>
                     </div>
-                    <div className="lp-accord-cles">
-                      {NATURES.map((n) => (
-                        <button aria-pressed={actif === n.cle} key={n.cle} onClick={() => basculer(a.sigle, n.cle)} type="button">
-                          {LIBELLES_NATURE[n.cle]} <b className="lp-num">{formatNumber(valeurs[n.cle] || 0)}</b>
-                        </button>
-                      ))}
-                      {a.autres > 0 && <span>autres <b className="lp-num">{formatNumber(a.autres)}</b></span>}
-                    </div>
+                    {actif && <TextesCompares autre={a.sigle} entrees={a.scrutins[actif] || []} moi={m.sigle} scrutins={m.scrutins} />}
+                    {!actif && filtreActif && <TextesCompares autre={a.sigle} entrees={NATURES.flatMap((n) => a.scrutins[n.cle] || []).concat(a.scrutins.autres || [])} moi={m.sigle} scrutins={m.scrutins} />}
                   </div>
-                  <span className="lp-accord-n">
-                    <b className="lp-num">{formatNumber(a.communs)}</b>
-                    <small>textes communs</small>
-                  </span>
-                  {actif && <TextesCompares autre={a.sigle} entrees={a.scrutins[actif] || []} moi={m.sigle} scrutins={m.scrutins} />}
-                  {!actif && filtreActif && <TextesCompares autre={a.sigle} entrees={NATURES.flatMap((n) => a.scrutins[n.cle] || []).concat(a.scrutins.autres || [])} moi={m.sigle} scrutins={m.scrutins} />}
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
+            {/* Le texte survolé se nomme ici, avec la position de chaque groupe.
+                La ligne garde sa hauteur au repos : rien ne saute sous le
+                curseur (le motif de « Qui sont-ils »). */}
+            <p aria-live="polite" className="lp-texte-survole">
+              {survole ? (
+                <>
+                  <b className="lp-num">{court(survole.scrutin.date)}</b> · <b>{survole.scrutin.texte || 'Intitulé non publié'}</b>
+                  <br />
+                  {m.sigle} {pastille(survole.sienne)}
+                  {survole.autres.map(([sigle, position]) => <span key={sigle}> · {sigle} {pastille(position)}</span>)}
+                </>
+              ) : ' '}
+            </p>
           </>
         )}
       </div>
@@ -1154,12 +1440,8 @@ function CeQuOnNaPasPuLire({ lignee }) {
 
   return (
     <Section
-      critere="Les limites propres aux fiches de ces groupes, liste par liste."
+      bulle={BULLES.couverture}
       numero="6"
-      renvois={[
-        { vers: '/sources#frise', texte: 'Ce que le dépôt porte, et depuis quand' },
-        { vers: '/methodologie#couverture', texte: 'Pourquoi ces limites se déclarent au lieu de se combler' },
-      ]}
       titre="Ce qu’on n’a pas pu lire"
     >
       {total === 0 ? (
@@ -1229,7 +1511,10 @@ export default function LigneeProfile({ lignee, mot = '' }) {
 
       {!filtreActif && (
       <section className="lp-section lp-section--bref" data-section="En bref" id="section-bref">
-        <h2 className="lp-section-titre"><span>En bref</span></h2>
+        <div className="lp-section-tete ib-ancre">
+          <h2 className="lp-section-titre"><span>En bref</span></h2>
+          <InfoBulle sujet="En bref" {...BULLES.enBref} />
+        </div>
         <Frise aujourdhui={aujourdhui} lignee={lignee} />
       </section>
       )}

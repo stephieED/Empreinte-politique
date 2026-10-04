@@ -182,3 +182,64 @@
     gap: 20px 18px;
   }
 }
+
+/* ── Une ligne par rôle (fiche de groupe, forme C du 02/10/2026) ─────────────
+ *
+ * La même figure, découpée en rangées. La première colonne nomme la ligne et
+ * son nombre de textes ; les quatre suivantes sont les étapes, avec le même
+ * filet d'encre. Les carrés sont plus petits : un groupe porte jusqu'à 390
+ * textes là où un candidat en porte une dizaine. Sous 720 px, le nom de la
+ * ligne passe au-dessus de ses quatre cases. */
+.cp-car-lignes {
+  display: grid;
+  grid-template-columns: minmax(110px, 190px) repeat(4, minmax(0, 1fr));
+  gap: 0 22px;
+}
+.cp-car-coin {
+  border-top: 2px solid transparent;
+}
+.cp-car-ligne {
+  padding: 7px 0;
+  border-top: 1px solid var(--border, #f0eeeb);
+  font-size: 12.5px;
+  color: var(--muted, #8b8794);
+}
+.cp-car-ligne b {
+  margin-left: 4px;
+  color: var(--ink, #17141f);
+  font-weight: 800;
+}
+.cp-car-case {
+  padding: 7px 0;
+  border-top: 1px solid var(--border, #f0eeeb);
+}
+.cp-car-lignes .cp-car-grille {
+  gap: 2px;
+}
+.cp-car-lignes .cp-car-carre {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+@media (max-width: 720px) {
+  .cp-car-lignes {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0 10px;
+  }
+  .cp-car-coin {
+    display: none;
+  }
+  .cp-car-ligne {
+    grid-column: 1 / -1;
+    padding-bottom: 0;
+  }
+  .cp-car-case {
+    border-top: 0;
+  }
+  .cp-car-lignes .cp-car-n {
+    font-size: 18px;
+  }
+  .cp-car-lignes .cp-car-lib {
+    font-size: 11px;
+  }
+}

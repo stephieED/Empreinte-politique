@@ -110,11 +110,21 @@
   background: var(--border-strong);
 }
 
+/* LE TITRE ET SA BULLE D'INFORMATION, SUR UNE LIGNE — la forme de la fiche
+   candidat (`.cp-section-tete`) : le « i » à droite du titre, la bulle qui
+   s'ouvre sous cette ligne, à son bord gauche (`ib-ancre`). */
+.lp-section-tete {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 4px;
+}
+
 .lp-section-titre {
   font-size: 21px;
   font-weight: 800;
   letter-spacing: -0.018em;
-  margin: 0 0 4px;
+  margin: 0;
 }
 
 .lp-section-titre > span {
@@ -581,32 +591,95 @@ button.lp-point {
   font-size: 13px;
 }
 
-/* Une colonne par groupe de la lignée ; elles passent à la ligne en étroit. */
-.lp-tous-colonnes {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 18px 24px;
-  margin-top: 12px;
-  align-items: start;
+/* Ce qui était le pied de la section : les candidats déclarés, et le compte
+   des profils quand il en manque. */
+.lp-carte-faits {
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  color: var(--texte-2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
 }
 
-.lp-tous-colonne ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.lp-carte-faits a {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* LA LISTE DES PERSONNES, UN GROUPE À LA FOIS (forme C, 02/10/2026). Un rang
+   par groupe de la lignée ; un seul s'ouvre. Les noms y coulent en colonnes de
+   journal : la hauteur suit l'effectif du groupe ouvert, pas la somme. */
+.lp-rangs {
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.lp-rang {
+  border-bottom: 1px solid var(--border);
+}
+
+.lp-rang-poignee {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
   font-size: 13px;
+  text-align: left;
+  cursor: pointer;
 }
 
-.lp-tous-colonne li {
+.lp-rang-poignee:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.lp-rang-nom {
+  font-weight: 800;
+}
+
+/* Le rang ouvert se lit sur son nom : le surligné des titres, jamais une
+   teinte de plus. */
+.lp-rang[data-ouvert] .lp-rang-nom {
+  background: linear-gradient(transparent 62%, var(--accent) 62%);
+}
+
+.lp-rang-n {
+  color: var(--texte-2);
+}
+
+.lp-rang-n b {
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.lp-rang-noms {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0 0 0 1.6em;
+  font-size: 13px;
+  columns: 220px;
+  column-gap: 24px;
+}
+
+.lp-rang-noms li {
   display: flex;
   align-items: center;
   gap: 7px;
   padding: 2px 4px;
   margin: 0 -4px;
   border-radius: 4px;
+  break-inside: avoid;
 }
 
-.lp-tous-colonne li .lp-point {
+.lp-rang-noms li .lp-point {
   width: 8px;
   height: 8px;
   flex: 0 0 auto;
@@ -618,7 +691,7 @@ button.lp-point {
   box-shadow: inset 2px 0 0 var(--ink);
 }
 
-.lp-tous-colonne a {
+.lp-rang-noms a {
   font-weight: 700;
   color: var(--ink);
 }
@@ -753,7 +826,7 @@ button.lp-point {
 
 .lp-mr {
   display: grid;
-  grid-template-columns: minmax(120px, 200px) minmax(0, 1.2fr) 74px 74px minmax(0, 0.55fr) 78px;
+  grid-template-columns: minmax(120px, 290px) minmax(0, 1fr) 74px 78px;
   gap: 12px;
   align-items: center;
   font-size: 12.5px;
@@ -800,9 +873,138 @@ button.lp-point {
   overflow: hidden;
 }
 
-.lp-mr--tete .lp-mr-rail,
-.lp-mr--nd span:nth-child(5) {
+.lp-mr--tete .lp-mr-rail {
   background: none;
+}
+
+/* LA BARRE DÉCOUPÉE PAR TEXTE — celle de la fiche candidat (`.cp-mr-segments`),
+   telle quelle : un segment par texte amendé, large comme le nombre
+   d'amendements déposés dessus. Le blanc de la carte passe entre les segments. */
+.lp-mr-segments {
+  display: flex;
+  gap: 1px;
+  height: 100%;
+  background: var(--card);
+  overflow: hidden;
+}
+
+.lp-mr-segments b {
+  display: block;
+  flex: 1 1 0;
+  height: 100%;
+  min-width: 2px;
+}
+
+/* ── Les prises de parole comptées (§ 2, forme D du 02/10/2026) ────────────── */
+/* Les facettes et leurs pastilles sont celles de la fiche candidat
+   (`ParolesParPeriode.css`, `.pp-facette`, `.pp-chip`), sous le préfixe de la
+   fiche de groupe : mêmes valeurs, un écart ici est un écart à justifier. */
+.lp-facette {
+  padding: 0 0 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.lp-facette-quoi {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 9px;
+}
+
+.lp-facette-quoi i {
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+.lp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.lp-chip {
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border-strong);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 5px 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lp-chip:hover:not(:disabled) {
+  border-color: var(--muted);
+}
+
+.lp-chip[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: #c2df00;
+}
+
+.lp-chip:disabled {
+  opacity: 0.34;
+  cursor: default;
+}
+
+.lp-chip:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.lp-chip-n {
+  color: var(--muted);
+}
+
+.lp-chip[aria-pressed='true'] .lp-chip-n {
+  color: #4a4f00;
+}
+
+/* UN SEGMENT PAR MEMBRE, large comme ses prises de parole. Les segments se
+   touchent et deux encres alternent : chaque largeur reste exacte, là où un
+   blanc et deux pixels au moins par segment écrasaient le plus gros. */
+.lp-parole-segments {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.lp-parole-segments b {
+  display: block;
+  flex: 1 1 0;
+  height: 100%;
+  min-width: 0;
+  background: var(--ink);
+}
+
+.lp-parole-segments b:nth-child(even) {
+  background: var(--texte-2);
+}
+
+/* Le membre survolé : le jaune de la sélection, cerclé d'encre. */
+.lp-parole-segments b.lp-parole-meme {
+  background: var(--accent);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+
+.lp-deroule-ordre {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .lp-mr-rail i {
@@ -827,7 +1029,7 @@ button.lp-point {
 
 @media (max-width: 720px) {
   .lp-mr {
-    grid-template-columns: 1fr 64px 64px 64px;
+    grid-template-columns: 1fr 64px 64px;
     gap: 8px;
   }
 
@@ -1095,10 +1297,10 @@ button.lp-part[aria-pressed='true'] {
 
 .lp-accord {
   display: grid;
-  grid-template-columns: 130px minmax(0, 1fr) 130px;
+  grid-template-columns: 130px minmax(0, 1fr);
   gap: 6px 16px;
   align-items: center;
-  padding: 9px 0;
+  padding: 10px 0;
 }
 
 .lp-accord + .lp-accord {
@@ -1117,27 +1319,64 @@ button.lp-part[aria-pressed='true'] {
   color: var(--muted);
 }
 
-.lp-accord-barre {
+/* UN CARRÉ PAR TEXTE COMMUN (forme B, 02/10/2026) : la base de la comparaison
+   se compte, elle ne s'écrit plus en gros. Les carrés passent à la ligne en
+   étroit ; le même texte s'allume chez chaque groupe au survol. */
+.lp-accord-carres {
   display: flex;
-  gap: 2px;
-  height: 12px;
-  margin-bottom: 5px;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-bottom: 6px;
 }
 
-.lp-accord-n {
-  text-align: right;
+.lp-carre {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
 }
 
-.lp-accord-n b {
-  font-size: 17px;
+.lp-natures i.lp-carre {
+  width: 11px;
+  height: 11px;
+}
+
+button.lp-carre.lp-carre--meme {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.lp-accord-pied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 18px;
+}
+
+/* Les trois comptes sont les nombres de la ligne (DESIGN_SYSTEM §6 bis
+   règle 3) ; la base reste écrite, à l'échelle des libellés. */
+.lp-accord-pied .lp-accord-cles b {
+  font-size: 15px;
   font-weight: 800;
-  display: block;
-  line-height: 1.1;
 }
 
-.lp-accord-n small {
-  font-size: 11.5px;
+.lp-accord-base {
+  font-size: 12px;
   color: var(--texte-2);
+  white-space: nowrap;
+}
+
+.lp-texte-survole {
+  min-height: 2.9em;
+  margin: 12px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--texte-2);
+}
+
+.lp-texte-survole b {
+  color: var(--ink);
 }
 
 .lp-pos {
@@ -1153,10 +1392,6 @@ button.lp-part[aria-pressed='true'] {
 @media (max-width: 720px) {
   .lp-accord {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .lp-accord-n {
-    text-align: left;
   }
 }
 

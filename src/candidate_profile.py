@@ -872,7 +872,11 @@ SYCERON_INDEX_PAR_ACTEUR_THEME_DIRNAME = "index_par_acteur_extrait"
 #: écrit dans une entrée.** La valeur entre aussi dans l'empreinte de la clé de
 #: cache (`cache_an_empreinte`), pour qu'un cache de la semaine écrit par
 #: l'ancien parseur ne soit pas restauré comme s'il était conforme.
-SYCERON_VERSION_INDEX = "1169"
+#:
+#: `1197` : le parseur lit le titre des lois de finances (`APPEL_PLF_1_20`), donc
+#: `sujet` et `sujet_code_grammaire` changent sur les entrées des débats
+#: budgétaires.
+SYCERON_VERSION_INDEX = "1197"
 SYCERON_FICHIER_VERSION = "version_index.txt"
 
 #: Valeur publiée dans `interventions[].collecte` pour une entrée réduite au

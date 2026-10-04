@@ -22,31 +22,43 @@
  * clair : ce n'est pas une matière mais une absence de donnée (§2 règle 5).
  *
  * LES TEINTES SE CALCULENT, ELLES NE S'ESTIMENT PAS (`DESIGN_SYSTEM.md` §2).
- * Parties de la palette « muted » de Paul Tol qu'employait `utils/matiere.js`,
- * elles ont été corrigées, chacune dans sa famille, jusqu'à passer
- * `validate_palette.js` sur fond blanc et TOUTES PAIRES — un carré a n'importe
- * quelle autre commission pour voisin. La mesure et le verdict sont dans
- * `docs/decisions/carres-des-textes-et-couleurs-des-commissions.md`.
+ * La palette du 01/10/2026 partait de la « muted » de Paul Tol et passait
+ * `validate_palette.js` TOUTES PAIRES — un carré a n'importe quelle autre
+ * commission pour voisin. Mais le validateur ne compare pas la palette aux
+ * couleurs que le site emploie déjà, et QUATRE teintes s'y confondaient :
+ * « Défense » avec le vert des votes « pour », « Affaires économiques » avec
+ * le prune de l'Assemblée, « Finances » avec le sarcelle du Sénat, « Affaires
+ * étrangères » avec le bleu du Parlement européen.
+ *
+ * CELLE-CI A ÉTÉ CHERCHÉE CONTRE LES DEUX CONTRAINTES À LA FOIS (palette A,
+ * retenue sur maquette le 02/10/2026) : toutes paires entre elles, ET chaque
+ * teinte à 12 ou plus (écart OKLab × 100) de toute couleur déjà prise — le
+ * vert et le rouge des votes, le prune de l'Assemblée, le bronze du
+ * gouvernement, le bleu du Parlement européen, le sarcelle du Sénat, l'ambre
+ * des amendements retirés, le mauve des groupes minoritaires. Elle n'a donc
+ * plus ni vert ni brun. La mesure et ce qui a été écarté sont dans
+ * `docs/decisions/revue-ux-de-la-fiche-de-groupe.md`.
  *
  * LA COULEUR NE PORTE JAMAIS SEULE L'IDENTITÉ : la légende nomme chaque teinte,
  * la ligne d'amendements écrit sa commission, le carré la dit au survol et dans
  * la liste. Et aucun texte ne prend la couleur d'une commission — encre et
  * gris seulement.
  *
- * La fiche de lignée et la fiche de gouvernement gardent `teinteMatiere` : ce
- * lot ne les couvre pas.
+ * UNE TABLE POUR LES TROIS FICHES (02/10/2026) : la fiche de groupe et la
+ * fiche de gouvernement, qui gardaient la couleur au rang (`teinteMatiere`),
+ * lisent désormais cette table.
  */
 import { MATIERE_NON_ETABLIE } from './profilCandidat.js';
 
 export const TEINTE_COMMISSION_PERMANENTE = {
-  'Affaires culturelles et éducation': '#f16675',
-  'Affaires économiques': '#882255',
-  'Affaires étrangères': '#463fa0',
-  'Affaires sociales': '#259ce6',
-  'Défense': '#137731',
-  'Développement durable': '#ab47aa',
-  'Finances': '#09a68b',
-  'Lois': '#9d9201',
+  'Affaires culturelles et éducation': '#c57576',
+  'Affaires économiques': '#bf165b',
+  'Affaires étrangères': '#2355f1',
+  'Affaires sociales': '#1096e9',
+  'Défense': '#9c40bf',
+  'Développement durable': '#ef45c4',
+  'Finances': '#15628e',
+  'Lois': '#959609',
 };
 
 /* Le nom sous lequel la légende réunit les commissions spéciales. */

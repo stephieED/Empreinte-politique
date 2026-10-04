@@ -23,6 +23,23 @@ Principes :
     - Champs manquants → None (jamais "" ni 0).
     - Pas d'appel réseau, pas de dépendance externe (xml.etree uniquement).
     - Robuste aux fichiers incomplets ou provisoires.
+
+Les décisions à relire avant de toucher à ce que le parseur tient pour un sujet
+---------------------------------------------------------------------------------
+Cinq décisions nomment ce module ; la liste complète et à jour est dans
+`docs/decisions-par-module.md`. Trois portent les contraintes :
+
+- `docs/decisions/creneau-de-seance-nest-pas-un-sujet-710.md` — le critère est
+  STRUCTUREL (le `code_grammaire` du point), jamais une liste de libellés, et un
+  créneau de questions n'est pas un sujet.
+- `docs/decisions/intitule-des-lois-de-finances-1197.md` — une loi de finances
+  est titrée sous `APPEL_PLF_1_20` : la liste des codes se remesure par ce
+  qu'elle laisse SANS sujet, pas par les codes les plus fréquents.
+- `docs/decisions/syceron-acteur-ref-nu-510.md` — l'orateur se lit par son
+  identifiant nu, et une attribution ambiguë n'est pas attribuée.
+
+Tout changement de ce que ce module écrit dans une entrée incrémente
+`candidate_profile.SYCERON_VERSION_INDEX` dans le même lot (#1169).
 """
 
 import re
@@ -125,7 +142,21 @@ _CODE_GRAMMAIRE_SUJET = frozenset({
     "QG_1_1",                   # question au Gouvernement
     "QOSD_1_1",                 # question orale sans débat
     "QPM_1_1",                  # question au Premier ministre (#710)
+    "APPEL_PLF_1_20",           # projet de loi de finances (#1197)
 })
+
+# **Une loi de finances n'est pas titrée comme les autres textes (#1197).** Son
+# point d'ordre du jour porte `APPEL_PLF_1_20` — « Projet de loi de finances pour
+# 2025 » — et non `TITRE_TEXTE_DISCUSSION`. Le jeu ci-dessus avait été mesuré sur
+# « les 30 322 points de la 17e », où ce code n'ouvre que 59 points : il était
+# passé sous le seuil de ce qu'on regarde. Mesuré le 04/10/2026 sur les trois
+# archives, il ouvre 229 + 40 + 59 points, tous titrés d'un texte budgétaire
+# (loi de finances, rectificative, de fin de gestion), et 111 839 + 20 588 +
+# 35 877 paragraphes en dépendaient sans sujet — la parole d'un rapporteur
+# général du budget presque entière. Le PLFSS, lui, est titré sous
+# `TITRE_TEXTE_DISCUSSION`. Les niveaux inférieurs (`APPEL_PLF_1_30`, « Première
+# partie (suite) » ; `PLF_PARTIES_*`, `PLF_1_1`, `PLF_3_1`) nomment une partie ou
+# une mission, pas le texte : ils restent hors du jeu.
 
 # Grammaire des QUESTIONS : ces points portent le sujet d'UNE question, et la
 # source les range sous un point d'ordre du jour qui, lui, nomme le créneau
