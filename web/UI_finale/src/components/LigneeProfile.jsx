@@ -747,16 +747,17 @@ function ParolesComptees({ lignee, maillon, paroles }) {
               <span className="lp-mr-n">membres</span>
             </div>
             {vue.lignes.map((l) => {
-              // « Intitulé non publié » se compte et ne s'ouvre pas : ses textes
-              // ne sont pas servis. Le survol nomme toujours ses membres.
+              // « Intitulé non publié » s'ouvre comme les autres lignes (#1178) ;
+              // l'italique dit seulement que ce libellé n'est pas un intitulé.
               const sansIntitule = l.label === SUJET_NON_PUBLIE;
-              const choisi = !sansIntitule && ouvert === l.label;
-              const Rang = sansIntitule ? 'div' : 'button';
+              const choisi = ouvert === l.label;
               return (
                 <div key={l.label}>
-                  <Rang
-                    {...(sansIntitule ? {} : { 'aria-expanded': choisi, onClick: () => setOuvert(choisi ? null : l.label), type: 'button' })}
-                    className={sansIntitule ? 'lp-mr lp-mr--nd' : 'lp-mr lp-mr--cliquable'}
+                  <button
+                    aria-expanded={choisi}
+                    className={`lp-mr lp-mr--cliquable${sansIntitule ? ' lp-mr--nd' : ''}`}
+                    onClick={() => setOuvert(choisi ? null : l.label)}
+                    type="button"
                   >
                     <span className="lp-mr-lib" title={l.label}>{l.label}</span>
                     <span className="lp-mr-rail">
@@ -773,7 +774,7 @@ function ParolesComptees({ lignee, maillon, paroles }) {
                     </span>
                     <span className="lp-mr-n">{formatNumber(l.paroles)}</span>
                     <span className="lp-mr-n lp-mr-n--textes">{formatNumber(l.membres)} / {formatNumber(denominateur)}</span>
-                  </Rang>
+                  </button>
                   {choisi && (
                     <div className="lp-deroule">
                       <ProposParOrateur

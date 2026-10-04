@@ -403,7 +403,7 @@ const SECTIONS = [
         </p>
         <p>
           Une prise de parole dont le compte rendu ne donne pas l'intitulé reste comptée : elle est
-          rangée sous <strong>« Intitulé non publié »</strong>, et cette ligne ne s'ouvre pas.
+          rangée sous <strong>« Intitulé non publié »</strong>.
         </p>
         <p>
           Quand la fiche compte les prises de parole, la <strong>présidence de séance</strong> n'y
@@ -502,18 +502,24 @@ const SECTIONS = [
     body: (
       <>
         <p>
-          La fiche range les membres du gouvernement <strong>par ministère</strong>. Un ministère
-          tenu successivement par deux personnes reste un seul ministère : ses titulaires se
-          suivent, avec la date d'arrivée de chacun. Les ministres délégués et les secrétaires
-          d'État sont rattachés au ministère que nomme l'intitulé officiel de leur fonction
-          — « auprès du ministre de… » —, jamais par déduction.
+          La fiche range les membres du gouvernement <strong>par ministère</strong>. Quand deux
+          personnes se sont succédé à la tête d'un même ministère, il reste un seul ministère :
+          elles y figurent l'une après l'autre, avec leur date d'arrivée. Un ministre délégué ou
+          un secrétaire d'État est placé sous le ministère que nomme le titre officiel de sa
+          fonction — « auprès du ministre de… » —, et seulement d'après ce titre.
         </p>
         <p>
-          Sont comptés <strong>tous les membres passés par ce gouvernement</strong>, même
-          brièvement. « En bref » donne le nombre de membres le plus bas et le plus haut au même
-          moment, et le nombre de remaniements : des nominations séparées de moins de huit jours
-          comptent pour un seul remaniement, parce qu'un décret et son complément tombent souvent
-          à deux ou trois jours d'écart.
+          <strong>Tous les membres passés par ce gouvernement sont comptés</strong>, même ceux
+          restés quelques jours. Comme leur nombre change à chaque remaniement, « En bref » donne
+          le plus petit et le plus grand nombre de membres en fonction au même moment. Deux séries
+          de nominations séparées de moins de huit jours comptent pour un seul remaniement : un
+          gouvernement est souvent complété deux ou trois jours après sa nomination.
+        </p>
+        <p>
+          « En bref » nomme aussi le groupe majoritaire à l'Assemblée. C'est l'Assemblée nationale
+          qui le désigne, pas Empreinte politique, et elle ne le dit qu'une fois la législature
+          achevée. Pour la législature en cours, la fiche écrit donc « aucun groupe déclaré
+          majoritaire », et ne désigne pas le plus nombreux à sa place.
         </p>
       </>
     ),
@@ -524,17 +530,20 @@ const SECTIONS = [
     body: (
       <>
         <p>
-          Une prise de parole est retenue quand elle est datée <strong>pendant les fonctions</strong>{' '}
-          de la personne dans ce gouvernement. Les débats sont rangés par nombre de prises de parole.
-          Chaque barre se découpe en un segment par membre, large comme le nombre de fois où il a
-          pris la parole ; le nombre d'un membre ne s'affiche que pour celui qu'on désigne.
+          La fiche retient les prises de parole à l'Assemblée d'une personne{' '}
+          <strong>pendant qu'elle était membre de ce gouvernement</strong>. Les débats sont rangés
+          par nombre de prises de parole. La barre d'un débat est découpée en autant de parts
+          qu'il y a de membres intervenus : plus un membre a pris la parole, plus sa part est
+          large. Cliquer sur une part donne le nom du membre, son nombre de prises de parole dans
+          ce débat, et ses propos.
         </p>
         <p>
-          Ce sont des <strong>sujets abordés</strong>, jamais des positions. Une prise de parole dont
-          le compte rendu ne donne pas l'intitulé reste comptée : elle est rangée sous{' '}
-          <strong>« Intitulé non publié »</strong>, et cette ligne ne s'ouvre pas. Aucun total par
-          personne n'est publié, et rien ne rapporte ces nombres à un possible : ce serait un taux
-          de présence.
+          Ce sont des <strong>sujets abordés</strong>, jamais des positions : intervenir dans un
+          débat ne dit pas ce qu'on en pense. Quand le compte rendu ne donne pas l'intitulé du
+          débat, la prise de parole reste comptée, sous{' '}
+          <strong>« Intitulé non publié »</strong>. La fiche ne publie
+          aucun total par personne et ne compare ces nombres à aucun nombre de séances : ce serait
+          mesurer la présence de chacun.
         </p>
       </>
     ),
@@ -545,17 +554,18 @@ const SECTIONS = [
     body: (
       <>
         <p>
-          Un carré est un <strong>projet de loi</strong>, rangé à l'étape qu'il a atteinte :
-          déposé, en navette entre les deux chambres, adopté, promulgué ou rejeté. Sa couleur est
-          celle de la commission chargée de l'examiner. Les propositions de loi, déposées par des
-          parlementaires, n'y figurent pas.
+          Un carré est un <strong>projet de loi</strong> : un texte présenté par le gouvernement.
+          Il est rangé à l'étape qu'il a atteinte : déposé, en navette — encore en cours d'examen
+          entre l'Assemblée et le Sénat —, adopté, promulgué ou rejeté. Sa couleur est celle de la
+          commission chargée de l'examiner. Les propositions de loi, déposées par des députés ou
+          des sénateurs, n'y figurent pas.
         </p>
         <p>
-          « Adoptés » réunit trois façons d'aboutir : par un vote de chaque chambre, après une
-          commission mixte paritaire — sept députés et sept sénateurs chargés de trouver un texte
-          commun —, ou sans vote, par l'article 49.3. La liste des textes dit laquelle pour chacun.
-          Le <strong>49.3 est un fait de procédure</strong>, jamais une position de vote : il est
-          signalé à part, par sa pastille.
+          « Adoptés » réunit trois cas : le texte a été voté par chacune des deux chambres ; il l'a
+          été après une commission mixte paritaire, où sept députés et sept sénateurs cherchent un
+          texte commun ; ou il a été adopté sans vote, par l'article 49.3. La liste des textes dit
+          lequel pour chacun. <strong>Le 49.3 n'est pas un vote</strong> : il est signalé à part,
+          par sa pastille, et n'est jamais compté comme une position.
         </p>
       </>
     ),
@@ -567,17 +577,23 @@ const SECTIONS = [
       <>
         <p>
           La section compte les décrets, arrêtés et ordonnances parus au Journal officiel pendant
-          ce gouvernement, depuis 2007. Les actes qui concernent une personne — nominations,
-          promotions, naturalisations, médailles — sont comptés à part : le Journal officiel les
-          range lui-même sous « Mesures nominatives », et à défaut c'est leur titre qui le dit.
-          Les barres ne portent que les autres, ceux qui touchent au droit, par ministère.
+          ce gouvernement ; nos données commencent en 2007. Les nominations, promotions,
+          naturalisations et médailles sont comptées à part, sous « actes relevant du
+          fonctionnement interne de l'État », et n'entrent pas dans les barres. Le Journal
+          officiel les range lui-même sous « Mesures nominatives » ; quand il ne le fait pas,
+          c'est le titre de l'acte qui le dit. Les barres montrent les autres actes, ceux qui
+          touchent au droit, ministère par ministère.
         </p>
         <p>
-          La part sombre d'une barre est celle des actes dont le <strong>titre cite une loi</strong>.{' '}
+          Chaque barre a deux parts. La part sombre compte les actes dont le{' '}
+          <strong>titre cite une loi</strong> ; la part claire, ceux dont le titre ne le dit pas.{' '}
           <strong>« Le titre ne le dit pas » ne veut pas dire « sans loi »</strong> : un acte peut
-          appliquer une loi sans la nommer dans son titre, et cette absence ne dit rien de lui. Un
-          acte peut aussi appliquer une loi adoptée avant ce gouvernement. Le délai affiché pour
-          une loi est celui de son premier acte pendant ce gouvernement : une loi ancienne a pu en
+          appliquer une loi sans la nommer dans son titre. Cliquer sur le nom d'un ministère ouvre
+          tous ses actes ; cliquer sur une part de sa barre n'ouvre que ceux de cette part.
+        </p>
+        <p>
+          Un acte peut appliquer une loi adoptée avant ce gouvernement. Le délai affiché pour une
+          loi est celui de son premier acte pendant ce gouvernement : une loi ancienne a pu en
           recevoir avant.
         </p>
       </>

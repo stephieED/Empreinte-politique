@@ -468,8 +468,8 @@ function QuiLeComposait({ government }) {
  * de prises de parole ; ce nombre ne s'écrit plus à côté de vingt noms à la
  * fois. Ses propos se lisent le nom en tête, la date au-dessus de chacun.
  *
- * « INTITULÉ NON PUBLIÉ » SE COMPTE ET NE S'OUVRE PAS : ses textes ne sont pas
- * servis. Aucun filtre de rôle : un ministre ne préside pas la séance, et sa
+ * « INTITULÉ NON PUBLIÉ » SE COMPTE ET S'OUVRE comme les autres lignes (#1178),
+ * depuis que les intitulés publiés l'ont rendue petite. Aucun filtre de rôle : un ministre ne préside pas la séance, et sa
  * parole est retenue par les dates de ses fonctions.
  *
  * Sous un mot recherché ou une période, la section garde sa liste d'avant :
@@ -478,18 +478,15 @@ function ParolesComptees({ government }) {
   const [sujets, setSujets] = useState(undefined);
   const [ouvert, setOuvert] = useState(null);
   const [choisi, setChoisi] = useState(null);
-  // Sur la ligne sans intitulé, qui ne s'ouvre pas, le clic nomme seulement.
-  const [nomme, setNomme] = useState(null);
   const [detail, setDetail] = useState(null);
   const carte = useRef(null);
-  useReplieAuClicDehors(carte, ouvert !== null || nomme !== null, () => { setOuvert(null); setChoisi(null); setNomme(null); });
+  useReplieAuClicDehors(carte, ouvert !== null, () => { setOuvert(null); setChoisi(null); });
 
   useEffect(() => {
     let vivant = true;
     setSujets(undefined);
     setOuvert(null);
     setChoisi(null);
-    setNomme(null);
     setDetail(null);
     getSujetsComptesDuGouvernement(government.id)
       .then((s) => { if (vivant) setSujets(s); })
@@ -522,7 +519,6 @@ function ParolesComptees({ government }) {
   const { denominateur } = government.paroles;
   const max = Math.max(1, ...sujets.liste.map((l) => l.tours));
   const ouvrir = (label, nom = null) => {
-    setNomme(null);
     if (ouvert === label && nom === null) { setOuvert(null); setChoisi(null); return; }
     setOuvert(label);
     setChoisi(nom);
@@ -539,10 +535,12 @@ function ParolesComptees({ government }) {
           <span className="gvp-mr-n">membres</span>
         </div>
         {sujets.liste.map((l) => {
+          // « Intitulé non publié » s'ouvre comme les autres lignes (#1178) ;
+          // l'italique dit seulement que ce libellé n'est pas un intitulé.
           const sansIntitule = l.label === SUJET_NON_PUBLIE;
-          const ouverte = !sansIntitule && ouvert === l.label;
+          const ouverte = ouvert === l.label;
           const designe = ouverte ? (choisi || l.segments[0][0]) : null;
-          const pointe = sansIntitule ? nomme : designe;
+          const pointe = designe;
           const montre = pointe ? { nom: pointe, n: l.segments.find(([n]) => n === pointe)?.[1] ?? 0 } : null;
           const entrees = ouverte && detail ? (detail[l.label] || []).filter((e) => e.membre === designe) : null;
           const extraits = ouverte && paquet ? extraitsDuDebat(paquet[l.label], { mots: [], debut: null, parIntitule: true }) : [];
@@ -550,14 +548,10 @@ function ParolesComptees({ government }) {
           return (
             <div className={`gvp-mr-bloc${sansIntitule ? ' gvp-mr-bloc--nd' : ''}`} key={l.label}>
               <div className="gvp-mr">
-                {sansIntitule ? (
-                  <span className="gvp-mr-lib" title={l.label}>{l.label}</span>
-                ) : (
-                  <button aria-expanded={ouverte} className="gvp-mr-lib gvp-mr-lib--cliquable" onClick={() => ouvrir(l.label)} title={l.label} type="button">
-                    <span aria-hidden="true" className="gvp-chevron">{ouverte ? '▾' : '▸'}</span>
-                    {l.label}
-                  </button>
-                )}
+                <button aria-expanded={ouverte} className="gvp-mr-lib gvp-mr-lib--cliquable" onClick={() => ouvrir(l.label)} title={l.label} type="button">
+                  <span aria-hidden="true" className="gvp-chevron">{ouverte ? '▾' : '▸'}</span>
+                  {l.label}
+                </button>
                 <span className="gvp-mr-rail">
                   <span className="gvp-segments" style={{ width: `${((100 * l.tours) / max).toFixed(2)}%` }}>
                     {l.segments.map(([nom, n]) => (
@@ -566,9 +560,7 @@ function ParolesComptees({ government }) {
                         aria-pressed={pointe === nom}
                         className={pointe === nom ? 'gvp-segment--choisi' : undefined}
                         key={nom}
-                        onClick={sansIntitule
-                          ? () => { setOuvert(null); setChoisi(null); setNomme(nomme === nom ? null : nom); }
-                          : () => ouvrir(l.label, nom)}
+                        onClick={() => ouvrir(l.label, nom)}
                         style={{ flex: `${n} 1 0` }}
                         type="button"
                       />
@@ -1092,7 +1084,7 @@ function ListeDesTextes({ textes }) {
  * Ce que CETTE fiche ne peut pas lire, et pourquoi — jamais le corpus entier,
  * qui a sa page (`/couverture`). Deux absences ne se confondent pas
  * (DESIGN_SYSTEM §7 règle 7) : une archive que la source ne publie pas, une
- * position que la source ne déclare plus, et une activité qui n'existe pas au
+ * position que la source ne déclare pas encore, et une activité qui n'existe pas au
  * niveau d'un gouvernement sont trois lignes distinctes.
  */
 function limitesDeLaFiche(government) {
@@ -1126,7 +1118,7 @@ function limitesDeLaFiche(government) {
   } else if (government.majorite.some((m) => !m.declaree)) {
     lignes.push({
       quoi: 'Majorité à l’Assemblée',
-      texte: 'Depuis 2024, l’Assemblée nationale ne déclare plus la position de ses groupes. Aucun n’est donc déclaré majoritaire, et nous ne désignons pas le plus nombreux à sa place.',
+      texte: `${NOTE_MAJORITE_NON_DITE} Aucun n’est donc déclaré majoritaire, et nous ne désignons pas le plus nombreux à sa place.`,
     });
   }
 

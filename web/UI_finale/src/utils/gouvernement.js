@@ -201,7 +201,8 @@ export function fourchetteEffectif(membres = [], periode = {}) {
 /**
  * LE GROUPE MAJORITAIRE N'EST PAS UNE LECTURE DE NOTRE PART. L'Assemblée
  * déclare elle-même la position de chaque groupe — « Majoritaire »,
- * « Opposition », « Minoritaire » —, et depuis 2024 elle ne déclare plus rien.
+ * « Opposition », « Minoritaire » —, mais seulement une fois la législature
+ * achevée (#686) : pour celle en cours, elle ne déclare encore rien.
  * Cette absence se dit ; elle ne se comble pas en désignant le plus nombreux,
  * ce qui serait notre jugement et non un fait (§2 règles 1 et 5).
  *

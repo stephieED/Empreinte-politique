@@ -126,11 +126,12 @@ avec les projets de loi. Trois voies ont été examinées et écartées :
 | --- | --- |
 | Les cinq teintes d'avant | Elles suivent le rang, pas le ministère : la première barre est toujours bleue |
 | Une table ministère → commission | Écrite à la main, sans source ; l'Économie relève de deux commissions. Refusée |
-| Colorer les projets de loi par ministère | La fiche ne connaît que le Premier ministre comme auteur : 110 des 111 projets de Borne |
+| Colorer les projets de loi par ministère | La fiche ne porte pas le ministère d'un projet : `initiateurs` nomme des personnes, sans portefeuille. **Corrigé le 04/10/2026** — cette ligne écrivait « la fiche ne connaît que le Premier ministre comme auteur : 110 des 111 projets de Borne », et c'était faux. Élisabeth Borne figure parmi les auteurs de 110 des 111 projets de sa fiche ; elle n'y est seule que sur 46 (40 portent deux noms, 25 trois ou plus). Mesure et suite : [`ministres-presentant-un-projet-de-loi-1204`](ministres-presentant-un-projet-de-loi-1204.md) |
 
 D'où l'encre, et la règle : **une couleur porte une information ou se retire**.
 La voie reste ouverte : la source publie le ministre qui présente un projet de
-loi (`coSignataires` du document de dépôt), la collecte ne le lit pas encore.
+loi (`coSignataires` du document de dépôt), et la collecte le lit depuis #1204
+(PR #1208) : le portefeuille arrive sur les fiches au run qui suit.
 
 **Ce qui ne devait pas se perdre** avec le paragraphe retiré sous la figure,
 et qu'un test existant a rattrapé : « le titre ne le dit pas » ne veut pas dire
@@ -193,7 +194,7 @@ corrections, toutes de sa main :
 | En bref (gouvernement et groupe) | Rien ne disait pourquoi aucun groupe n'est déclaré majoritaire | La note de la bulle reçoit « L'Assemblée nationale ne dit quel groupe est majoritaire qu'une fois la législature achevée. », seulement quand la fiche l'écrit — mesure dans [`position-politique-groupes-686`](position-politique-groupes-686.md) |
 
 Le nombre d'actes écartés d'après leur titre ne se lit plus sur la fiche : la
-règle est en méthodologie (« à défaut c'est leur titre qui le dit »), et
+règle est en méthodologie (« c'est le titre de l'acte qui le dit »), et
 `tests/test_actes_gouvernement_1029.py` l'y exige désormais.
 
 ## Ce que ce fichier rend caduc

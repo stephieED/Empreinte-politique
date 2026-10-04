@@ -148,7 +148,7 @@ def test_la_fiche_dit_ce_qu_elle_n_a_pas_pu_lire():
     )
     for cause in (
         "commencent au ${jour(couverture.borne)}",  # une archive que la source ne publie pas
-        "ne déclare plus la position de ses groupes",  # une position qu'elle ne déclare plus
+        "NOTE_MAJORITE_NON_DITE} Aucun n’est donc déclaré majoritaire",  # une position pas encore déclarée
         "Un gouvernement ne vote pas",         # une activité qui n'existe pas à ce niveau
     ):
         assert cause in source, f"limite disparue : {cause}"

@@ -197,7 +197,7 @@ def test_la_methodologie_dit_que_le_titre_tranche_a_defaut_du_sommaire() -> None
     methodologie = (COMPOSANT.parent.parent / "pages" / "MethodologyPage.jsx").read_text(encoding="utf-8")
     section = methodologie[methodologie.index("id: 'gouv-actes'"):]
     assert "Mesures nominatives" in section, "la méthodologie doit dire QUI range les actes écartés"
-    assert "à défaut c'est leur titre qui le dit" in section, (
+    assert "c'est le titre de l'acte qui le dit" in section, (
         "la méthodologie doit dire que le titre tranche quand le sommaire ne range pas"
     )
 

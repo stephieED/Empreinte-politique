@@ -125,6 +125,27 @@ d'être retenues, et recopiées dans
 Elles remplacent les quatre renvois en pied de section que le fichier du
 retour relevait.
 
+## La page de méthodologie a suivi
+
+Elle écrivait : « Aucune section de méthode ne décrit encore cette fiche. »
+Quatre sections ont été écrites avec la revue, une par bulle qui y mène, puis
+réécrites le 04/10/2026 pour un lecteur qui n'a pas travaillé sur le projet,
+comme l'avaient été celles des fiches candidat et de groupe.
+
+| Ce qui est parti | Ce qui le remplace |
+| --- | --- |
+| « un segment par membre » | « la barre d'un débat est découpée en autant de parts qu'il y a de membres intervenus » |
+| « jamais par déduction » | « et seulement d'après ce titre » |
+| « rien ne rapporte ces nombres à un possible : ce serait un taux de présence » | « ne compare ces nombres à aucun nombre de séances : ce serait mesurer la présence de chacun » |
+| « un décret et son complément tombent souvent à deux ou trois jours d'écart » | « un gouvernement est souvent complété deux ou trois jours après sa nomination » |
+| « en navette entre les deux chambres », « projet de loi », sans explication | Les deux mots restent, chacun avec ce qu'il désigne |
+| « Les actes qui concernent une personne » | Les mots de la fiche : « actes relevant du fonctionnement interne de l'État » |
+
+Trois choses y sont entrées, qui n'y étaient pas : pourquoi « En bref » peut
+écrire « aucun groupe déclaré majoritaire » ; ce qu'ouvre un clic sur le nom
+d'un ministère ou sur une part de sa barre ; et le clic, non le survol, pour
+lire la parole d'un membre.
+
 ## Ce qui a été décidé contre l'avis de l'agent, et ce qu'il a mal compris
 
 Consigné parce que la suite repartira des mêmes réflexes.
@@ -141,7 +162,6 @@ Consigné parce que la suite repartira des mêmes réflexes.
 
 | Sujet | Où il en est |
 | --- | --- |
-| La page de méthodologie | Ses quatre sections « gouvernement » sont réécrites pour un lecteur extérieur ; en relecture chez la propriétaire |
 | « Depuis 2024, l'Assemblée nationale ne déclare plus la position de ses groupes » | Phrase de « Ce qu'on n'a pas pu lire » qui contredit la nouvelle note d'« En bref » ; question posée, sans réponse |
 | Quatorze des dix-sept fiches de gouvernement | Jamais regardées à l'écran : seules Borne, Lecornu II et Fillon I l'ont été (#1205) |
 | « Motion de censure » : 21 membres annoncés avant, 19 comptés par la figure | Écart non expliqué entre l'agrégat et le détail servi |

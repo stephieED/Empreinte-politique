@@ -344,11 +344,11 @@ export function construireExtraitsLignee({ lignee, fiches, idsDeFiche, lireProfi
       if (porteUnRoleDeSeance(i)) maillon.rolesVus = true;
       if (!estParoleDuGroupe(i)) continue;
       maillon.paroles.push({ sujet: theme, orateur: rang, nature: natureDeParole(i.type_detail) });
-      /* Sans intitulé, la prise de parole est COMPTÉE mais son texte n'est pas
-         servi : la ligne « Intitulé non publié » ne s'ouvre pas (04/10/2026).
-         Sur la XVe elle pèse des dizaines de milliers d'entrées — 19,6 Mo au
-         clic pour un seul groupe. */
-      if (theme === SUJET_NON_PUBLIE) continue;
+      /* Sans intitulé, la prise de parole est comptée ET son texte est servi :
+         la ligne « Intitulé non publié » s'ouvre comme les autres (#1178).
+         Elle ne s'ouvrait pas tant qu'elle pesait des dizaines de milliers
+         d'entrées sur la XVe — 19,6 Mo au clic pour un seul groupe ; les
+         intitulés publiés depuis (#1189, #1197) l'ont rendue petite. */
       const [texte, tronque] = extraitDeLIntervention(i);
       maillon.entrees.push({
         sujet: theme, orateur: rang, date, texte, tronque,

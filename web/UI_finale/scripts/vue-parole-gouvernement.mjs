@@ -184,9 +184,8 @@ export function construireExtraitsGouvernement(gouvernement, lireProfil, debuts 
       const date = intervention.date;
       const sujet = cleDeSujet(intervention);
       if (!sujet || !date || !fenetreDe(date, fenetresDuMembre)) continue;
-      // « Intitulé non publié » se compte et ne s'ouvre pas : ses textes ne
-      // sont pas servis, comme sur la fiche de groupe.
-      if (sujet === SUJET_NON_PUBLIE) continue;
+      // « Intitulé non publié » s'ouvre comme les autres lignes (#1178) : ses
+      // textes sont servis, comme sur la fiche de groupe.
       const [texte, tronque] = extraitDeLIntervention(intervention);
       entrees.push({
         sujet,

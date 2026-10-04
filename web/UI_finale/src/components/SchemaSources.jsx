@@ -123,7 +123,7 @@ export default function SchemaSources() {
   const decalage = (rang) => (rangOuverte >= 0 && rang > rangOuverte ? hauteurBande : 0);
   const yLigne = (rang) => HAUT_ENTETE + rang * PAS + decalage(rang);
   const yDe = (liste, id) => yLigne(liste.findIndex((x) => x.id === id));
-  const hauteur = HAUT_ENTETE + SOURCES_SCHEMA.length * PAS + 10 + hauteurBande;
+  const hauteur = HAUT_ENTETE + Math.max(SOURCES_SCHEMA.length, DONNEES_SCHEMA.length) * PAS + 10 + hauteurBande;
 
   // Ce qu'on regarde : la source survolée à la souris, la source ouverte au doigt.
   const focale = survol || ouverte;
@@ -183,7 +183,7 @@ export default function SchemaSources() {
                 return (
                   <path
                     key={`${sid}-${d.id}`}
-                    className={`ss-lien ss-lien--${s.teinte} ss-lien--${s.statut}${etat(sid, d.id)}`}
+                    className={`ss-lien ss-lien--${s.teinte} ss-lien--${d.citees?.includes(sid) ? 'citee' : s.statut}${etat(sid, d.id)}`}
                     d={courbe(
                       COLONNES.source[0] + COLONNES.source[1],
                       yDe(SOURCES_SCHEMA, sid) + HAUT / 2,

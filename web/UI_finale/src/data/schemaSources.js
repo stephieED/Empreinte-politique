@@ -26,6 +26,14 @@
  * jamais interrogée). `teinte` : l'institution que la source sert, dans les
  * teintes de la frise ; `candidat` pour les deux sources qui disent QUI est
  * candidat et ne servent aucune institution.
+ *
+ * LE JOURNAL OFFICIEL EST COLLECTÉ, ET DEUX DE SES TROIS TRAITS RESTENT EN
+ * POINTILLÉ (forme A, retenue le 04/10/2026). Ses actes — décrets, arrêtés,
+ * ordonnances — sont lus à chaque run depuis #1029 et nourrissent la fiche de
+ * gouvernement ; le schéma le disait encore « cité, jamais interrogé ». Les
+ * décrets de nomination, eux, restent relus à la main : `citees` nomme, sur
+ * une ligne, les sources dont le trait garde le pointillé. Deux nœuds « Journal
+ * officiel » (forme B) ont été écartés : une source, un nœud.
  */
 
 export const SOURCES_SCHEMA = [
@@ -43,7 +51,7 @@ export const SOURCES_SCHEMA = [
     url: 'https://data.senat.fr/' },
   { id: 'syc', nom: 'Sycomore', teinte: 'an', statut: 'citee', config: 'sycomore',
     url: 'https://www2.assemblee-nationale.fr/sycomore/recherche' },
-  { id: 'jo', nom: 'Journal officiel', teinte: 'gouv', statut: 'citee', config: 'journal-officiel',
+  { id: 'jo', nom: 'Journal officiel', teinte: 'gouv', statut: 'collectee', config: 'journal-officiel',
     url: 'https://www.legifrance.gouv.fr/' },
   { id: 'pe', nom: 'Parlement européen', teinte: 'pe', statut: 'collectee', config: 'parlement-europeen-opendata',
     url: 'https://data.europarl.europa.eu/' },
@@ -62,9 +70,10 @@ export const DONNEES_SCHEMA = [
   { id: 'identifiant', nom: 'Leur identifiant à l’Assemblée', de: ['wd'] },
   { id: 'deputes', nom: 'Identité, mandats de député', de: ['an'] },
   { id: 'activite', nom: 'Votes, amendements, textes, paroles', de: ['an'] },
-  { id: 'gouvernement', nom: 'Fonctions gouvernementales', de: ['an', 'jo'] },
+  { id: 'gouvernement', nom: 'Fonctions gouvernementales', de: ['an', 'jo'], citees: ['jo'] },
   { id: 'senat', nom: 'Mandats au Sénat', de: ['sen'] },
-  { id: 'anterieurs', nom: 'Mandats antérieurs à 2002', de: ['syc', 'jo'] },
+  { id: 'anterieurs', nom: 'Mandats antérieurs à 2002', de: ['syc', 'jo'], citees: ['jo'] },
+  { id: 'actes', nom: 'Décrets, arrêtés, ordonnances', de: ['jo'] },
   { id: 'europeen', nom: 'Mandat européen', de: ['pe'] },
   { id: 'activite-ue', nom: 'Activité européenne, titres français', de: ['pt', 'pe'] },
   { id: 'matieres', nom: 'Noms des matières européennes', de: ['ev'] },
@@ -72,7 +81,7 @@ export const DONNEES_SCHEMA = [
 ];
 
 export const FICHES_SCHEMA = [
-  { id: 'candidat', nom: 'Fiche candidat', de: DONNEES_SCHEMA.map((d) => d.id), ligne: 4 },
-  { id: 'groupe', nom: 'Fiche de groupe', de: ['deputes', 'activite'], ligne: 7 },
-  { id: 'gouv', nom: 'Fiche de gouvernement', de: ['gouvernement', 'activite'], ligne: 9 },
+  { id: 'candidat', nom: 'Fiche candidat', de: DONNEES_SCHEMA.filter((d) => d.id !== 'actes').map((d) => d.id), ligne: 4 },
+  { id: 'groupe', nom: 'Fiche de groupe', de: ['deputes', 'activite'], ligne: 8 },
+  { id: 'gouv', nom: 'Fiche de gouvernement', de: ['gouvernement', 'activite', 'actes'], ligne: 10 },
 ];

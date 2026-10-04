@@ -331,3 +331,17 @@ def test_wikipedia_et_wikidata_disent_ce_qu_elles_apportent() -> None:
         assert "Suivi biographique" not in entree and "verbatim" not in entree
     assert "nom: 'Wikipédia'" in wp and "jamais de texte" in wp
     assert "P4123" in wd
+
+
+def test_le_journal_officiel_est_collecte_et_ses_decrets_relus_restent_en_pointille() -> None:
+    """Forme A, retenue le 04/10/2026 : le schéma disait le Journal officiel « cité,
+    jamais interrogé » alors que ses actes nourrissent la fiche de gouvernement (#1029)."""
+    schema = SCHEMA.read_text(encoding="utf-8")
+    assert "{ id: 'jo', nom: 'Journal officiel', teinte: 'gouv', statut: 'collectee'" in schema
+    assert "{ id: 'actes', nom: 'Décrets, arrêtés, ordonnances', de: ['jo'] }" in schema
+    assert "de: ['an', 'jo'], citees: ['jo']" in schema and "de: ['syc', 'jo'], citees: ['jo']" in schema
+    fiches = schema[schema.index("export const FICHES_SCHEMA"):]
+    assert "de: ['gouvernement', 'activite', 'actes']" in fiches, "les actes se lisent sur la fiche de gouvernement"
+    assert "d.id !== 'actes'" in fiches, "et pas sur la fiche candidat"
+    composant = (UI / "src" / "components" / "SchemaSources.jsx").read_text(encoding="utf-8")
+    assert "d.citees?.includes(sid) ? 'citee' : s.statut" in composant

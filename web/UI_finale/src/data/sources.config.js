@@ -129,15 +129,15 @@ export const sourcesConfig = [
   {
     id: 'journal-officiel',
     nom: 'Journal officiel (Légifrance)',
-    type: 'Décrets consultés, relus à la main',
+    type: 'Actes collectés ; décrets de nomination relus à la main',
     contenuCouvert:
-      "Fonctions gouvernementales antérieures à celles que publie l'open data de l'Assemblée : décrets relatifs à la composition du Gouvernement, cités fonction par fonction.",
+      'Tous les décrets, arrêtés et ordonnances parus depuis 2007. Pour les fonctions gouvernementales plus anciennes, les décrets de nomination sont cités un à un, après relecture.',
     cadenceMiseAJour:
-      "Aucune collecte : table relue une fois (config/mandats_anterieurs.json), complétée quand un candidat se déclare.",
+      'À chaque mise à jour des données pour les actes. Les décrets relus à la main ne sont complétés que lorsqu’un candidat se déclare.',
     licence: 'Licence Ouverte 2.0 (Etalab)',
     implication: 'Réutilisation libre sous réserve de mention de la source (attribution uniquement).',
     perimetre: ['Gouvernement'],
-    couverturePeriode: null,
+    couverturePeriode: 'Les actes commencent au 1er janvier 2007.',
   },
   // WIKIPÉDIA ET WIKIDATA disent QUI est candidat, rien d'autre (AGENTS.md §7,
   // job `rafraichir-candidats`). Leurs textes disaient « suivi biographique

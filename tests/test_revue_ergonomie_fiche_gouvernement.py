@@ -132,13 +132,17 @@ def test_le_sujet_se_lit_comme_sur_les_autres_fiches_et_rien_n_est_jete() -> Non
     assert ": SUJET_NON_PUBLIE;" in cle, "une prise de parole sans intitulé est comptée"
 
 
-def test_intitule_non_publie_se_compte_et_ne_s_ouvre_pas() -> None:
-    projection = PROJECTION.read_text(encoding="utf-8")
-    extraits = projection.split("export function construireExtraitsGouvernement(")[1]
-    assert "if (sujet === SUJET_NON_PUBLIE) continue;" in extraits, "ses textes ne sont pas servis"
+def test_intitule_non_publie_se_compte_et_s_ouvre_comme_les_autres() -> None:
+    """La ligne ne s'ouvrait pas tant qu'elle était énorme ; les intitulés publiés
+    depuis (#1189, #1197) l'ont rendue petite, et la propriétaire l'a rouverte
+    (#1178) : 137 prises de parole sur les sept fiches de gouvernement qui en
+    portent, 1 307 sur 677 100 pour les 31 fiches de groupe (04/10/2026)."""
+    for script in (PROJECTION, PROJECTION.parent / "vue-lignee.mjs"):
+        code = script.read_text(encoding="utf-8")
+        assert "=== SUJET_NON_PUBLIE) continue;" not in code, f"{script.name} : ses textes sont servis"
     fiche = _sans_commentaires(_fiche())
     assert "const sansIntitule = l.label === SUJET_NON_PUBLIE;" in fiche
-    assert "const ouverte = !sansIntitule && ouvert === l.label;" in fiche
+    assert "const ouverte = ouvert === l.label;" in fiche
 
 
 def test_la_liste_est_rangee_par_prises_de_parole_un_segment_par_personne() -> None:
