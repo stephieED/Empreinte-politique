@@ -895,6 +895,14 @@ Il résout aussi `textes[].initiateurs` vers un `membre_id` quand l'`acteurRef`
 correspond à un membre retenu ; sinon l'`acteurRef` brut est conservé avec
 `membre_id = null`, jamais rattaché à un profil approchant (#435).
 
+Depuis #1204, `initiateurs` porte aussi **les ministres qui présentent le texte**
+quand le dossier ne les nomme pas : ils sont lus sur le document de dépôt, dont
+ils sont cosignataires. Chaque entrée gagne deux clés : `releve_dans`
+(`dossier` ou `document_depot`, vocabulaire fermé `KNOWN_RELEVES_INITIATEUR`) et
+`portefeuille`, celui que la personne tenait le jour du dépôt d'après `membres[]`
+— `null` hors de `membres[]` ou hors de ses périodes de fonction. Les deux clés
+sont absentes d'une fiche écrite avant ce lot, sans que ce soit une faute.
+
 Depuis #689, il joint chaque texte à `pivot_data/commissions_dossiers.json` **par
 `dossier_id`** — jamais par le titre — et publie `textes[].commission_saisie_au_fond`
 (`{organe_ref, sigle, nom, type}`), la matière que l'Assemblée assigne elle-même au

@@ -495,15 +495,92 @@ const SECTIONS = [
       </>
     ),
   },
+  { famille: 'Fiche de gouvernement' },
   {
-    famille: 'Fiche de gouvernement',
-    note: (
-      <p>
-        Aucune section de méthode ne décrit encore cette fiche, alors qu'elle publie trois blocs :
-        les comptages de textes portés par statut, les textes suivis et les membres du gouvernement.
-        C'est un manque de cette page, pas une absence de règle — les règles de traçabilité et de
-        non-notation s'y appliquent comme partout ailleurs.
-      </p>
+    id: 'gouv-composition',
+    heading: 'Qui le composait',
+    body: (
+      <>
+        <p>
+          La fiche range les membres du gouvernement <strong>par ministère</strong>. Un ministère
+          tenu successivement par deux personnes reste un seul ministère : ses titulaires se
+          suivent, avec la date d'arrivée de chacun. Les ministres délégués et les secrétaires
+          d'État sont rattachés au ministère que nomme l'intitulé officiel de leur fonction
+          — « auprès du ministre de… » —, jamais par déduction.
+        </p>
+        <p>
+          Sont comptés <strong>tous les membres passés par ce gouvernement</strong>, même
+          brièvement. « En bref » donne le nombre de membres le plus bas et le plus haut au même
+          moment, et le nombre de remaniements : des nominations séparées de moins de huit jours
+          comptent pour un seul remaniement, parce qu'un décret et son complément tombent souvent
+          à deux ou trois jours d'écart.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: 'gouv-paroles',
+    heading: 'Sur quoi ils ont pris la parole',
+    body: (
+      <>
+        <p>
+          Une prise de parole est retenue quand elle est datée <strong>pendant les fonctions</strong>{' '}
+          de la personne dans ce gouvernement. Les débats sont rangés par nombre de prises de parole.
+          Chaque barre se découpe en un segment par membre, large comme le nombre de fois où il a
+          pris la parole ; le nombre d'un membre ne s'affiche que pour celui qu'on désigne.
+        </p>
+        <p>
+          Ce sont des <strong>sujets abordés</strong>, jamais des positions. Une prise de parole dont
+          le compte rendu ne donne pas l'intitulé reste comptée : elle est rangée sous{' '}
+          <strong>« Intitulé non publié »</strong>, et cette ligne ne s'ouvre pas. Aucun total par
+          personne n'est publié, et rien ne rapporte ces nombres à un possible : ce serait un taux
+          de présence.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: 'gouv-textes',
+    heading: 'Ce qu’il a fait déposer',
+    body: (
+      <>
+        <p>
+          Un carré est un <strong>projet de loi</strong>, rangé à l'étape qu'il a atteinte :
+          déposé, en navette entre les deux chambres, adopté, promulgué ou rejeté. Sa couleur est
+          celle de la commission chargée de l'examiner. Les propositions de loi, déposées par des
+          parlementaires, n'y figurent pas.
+        </p>
+        <p>
+          « Adoptés » réunit trois façons d'aboutir : par un vote de chaque chambre, après une
+          commission mixte paritaire — sept députés et sept sénateurs chargés de trouver un texte
+          commun —, ou sans vote, par l'article 49.3. La liste des textes dit laquelle pour chacun.
+          Le <strong>49.3 est un fait de procédure</strong>, jamais une position de vote : il est
+          signalé à part, par sa pastille.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: 'gouv-actes',
+    heading: 'Ce qu’il a fait entrer en vigueur',
+    body: (
+      <>
+        <p>
+          La section compte les décrets, arrêtés et ordonnances parus au Journal officiel pendant
+          ce gouvernement, depuis 2007. Les actes qui concernent une personne — nominations,
+          promotions, naturalisations, médailles — sont comptés à part : le Journal officiel les
+          range lui-même sous « Mesures nominatives », et à défaut c'est leur titre qui le dit.
+          Les barres ne portent que les autres, ceux qui touchent au droit, par ministère.
+        </p>
+        <p>
+          La part sombre d'une barre est celle des actes dont le <strong>titre cite une loi</strong>.{' '}
+          <strong>« Le titre ne le dit pas » ne veut pas dire « sans loi »</strong> : un acte peut
+          appliquer une loi sans la nommer dans son titre, et cette absence ne dit rien de lui. Un
+          acte peut aussi appliquer une loi adoptée avant ce gouvernement. Le délai affiché pour
+          une loi est celui de son premier acte pendant ce gouvernement : une loi ancienne a pu en
+          recevoir avant.
+        </p>
+      </>
     ),
   },
   { famille: 'Ce qui vaut pour toutes les fiches' },

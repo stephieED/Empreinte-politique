@@ -19,28 +19,86 @@
  * la section 03 dit déjà), et la liste des remaniements ligne à ligne (douze
  * lignes pour Philippe II, quand « remanié 10 fois » suffit).
  */
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Condition, EtiquetteFiltre, useFiltreActif } from './Recherche';
-import { getPaquetExtraitsGouvernement, getParolesDuGouvernement } from '../data';
+import { getPaquetExtraitsGouvernement, getParolesDuGouvernement, getSujetsComptesDuGouvernement } from '../data';
 import { ProposDuMembre, usePaquetExtraits } from './ExtraitsDuDebat';
 import { extraitsDuDebat, paquetDe } from '../utils/extraits';
 import { motsDuFiltre } from '../utils/filtreIntitule';
-import { sankey, sankeyLinkHorizontal } from 'd3-sankey';
+import { SUJET_NON_PUBLIE } from '../utils/sujetIntervention.js';
 import '../styles/shell.css';
+import './CarresTextes.css';
 import './GovernmentProfile.css';
 import {
   LIBELLE_SORT_TEXTE, SOURCE_BADGE_VERIFIED, formatNumber, pageDuJeuDeDonnees,
 } from '../utils/lecture';
-import { teinteCommission } from '../utils/commissions';
+import {
+  COMMISSIONS_SPECIALES, familleDeCommission, teinteCommission, teinteDeLaFamille,
+} from '../utils/commissions';
+import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
+import InfoBulle from './InfoBulle';
 import {
   MATIERE_ABSENTE,
   chargeDuPortefeuille,
-  fluxMatiereSort,
-  matiereDeFigure,
   organigramme,
 } from '../utils/gouvernement';
 import ActesDuGouvernement from './ActesDuGouvernement';
+
+/* LES BULLES (revue d'ergonomie du 04/10/2026). Une phrase dit ce que la
+ * section présente, une note aide à ne pas mal la lire, un lien mène à la
+ * méthode — la forme des fiches candidat et de groupe. Chaque texte a été
+ * écrit ou recomposé par la propriétaire, rendu dans sa bulle avant d'être
+ * retenu ; `tests/test_revue_ergonomie_fiche_gouvernement.py` les recopie, pour
+ * qu'une reformulation échoue. Elles remplacent les quatre renvois qui
+ * fermaient les sections. */
+const LIRE_LA_METHODE = 'Lire la méthode →';
+/* S'ajoute à la note d'« En bref » quand la fiche écrit « aucun groupe déclaré
+ * majoritaire » : sans elle, l'absence se lit comme un défaut de la fiche.
+ * Texte de la propriétaire, 04/10/2026. */
+export const NOTE_MAJORITE_NON_DITE = 'L’Assemblée nationale ne dit quel groupe est majoritaire qu’une fois la législature achevée.';
+export const BULLES = {
+  enBref: {
+    phrase: 'Le gouvernement en quelques faits.',
+    note: 'Note : Le nombre de membres varie au fil des remaniements.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#gouv-composition' }],
+  },
+  composition: {
+    phrase: 'Les ministres, ministres délégués et secrétaires d’État de ce gouvernement, par ministère.',
+    note: 'Note : Sont comptés tous les membres passés par ce gouvernement, même brièvement.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#gouv-composition' }],
+  },
+  paroles: {
+    phrase: 'Les prises de parole des membres du gouvernement à l’Assemblée, par débat.',
+    note: 'Note : Une prise de parole peut tenir en quelques mots.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#gouv-paroles' }],
+  },
+  textes: {
+    phrase: 'Les projets de loi que ce gouvernement a présentés au Parlement, et jusqu’où chacun est allé.',
+    note: 'Note : Un texte arrêté à une étape n’est pas nécessairement rejeté. Le 49.3 est un fait de procédure, jamais un vote.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#gouv-textes' }],
+  },
+  actes: {
+    phrase: 'Les décrets, arrêtés et ordonnances parus au Journal officiel pendant ce gouvernement, par ministère.',
+    note: 'Note : Seuls les actes qui touchent au droit sont pris en compte et non ceux qui relèvent du fonctionnement interne de l’État (nominations, promotions…). Un acte peut appliquer une loi adoptée avant ce gouvernement.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#gouv-actes' }],
+  },
+  couverture: {
+    phrase: 'Les limites de cette fiche : ce que les sources ne disent pas sur ce gouvernement.',
+    note: 'Note : Une information absente de cette fiche n’a pas été trouvée dans les sources. Cela ne veut pas dire qu’il ne s’est rien passé.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#couverture' }],
+  },
+};
+
+/* Le titre d'une section et sa bulle, sur une ligne. */
+function TitreDeSection({ titre, bulle }) {
+  return (
+    <div className="gvp-section-titre-rang ib-ancre">
+      <h2 className="gvp-section-titre"><span>{titre}</span></h2>
+      <InfoBulle sujet={titre} {...bulle} />
+    </div>
+  );
+}
 
 const MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
   'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
@@ -204,7 +262,12 @@ function EnBref({ government, chronologie }) {
         <span className="gvp-section-numero">01</span>
         <span className="gvp-section-trait" />
       </div>
-      <h2 className="gvp-section-titre"><span>En bref</span></h2>
+      <TitreDeSection
+        bulle={government.majorite.some((m) => !m.declaree)
+          ? { ...BULLES.enBref, note: `${BULLES.enBref.note} ${NOTE_MAJORITE_NON_DITE}` }
+          : BULLES.enBref}
+        titre="En bref"
+      />
       <div className="gvp-carte">
         {chronologie.length > 1 && (
           <FriseDesGouvernements chronologie={chronologie} courantId={government.id} />
@@ -257,9 +320,6 @@ function EnBref({ government, chronologie }) {
           </Fait>
         </div>
       </div>
-      <p className="gvp-methodo">
-        <Link to="/methodologie#fonctions">Majorité, minorité et opposition, selon l’Assemblée →</Link>
-      </p>
     </section>
   );
 }
@@ -327,6 +387,10 @@ function Ministere({ pole, ouvert, onBasculer }) {
 
 function QuiLeComposait({ government }) {
   const [deplie, setDeplie] = useState(null);
+  // Ce qui s'ouvre au clic se replie au clic ailleurs, comme sur les fiches
+  // candidat et de groupe (04/10/2026).
+  const carte = useRef(null);
+  useReplieAuClicDehors(carte, deplie !== null, () => setDeplie(null));
   const poles = useMemo(() => {
     /* La source publie parfois DEUX mandats d'appartenance pour la même
        personne, dont un sans portefeuille — Damien Abad et Yaël Braun-Pivet
@@ -346,8 +410,8 @@ function QuiLeComposait({ government }) {
         <span className="gvp-section-numero">02</span>
         <span className="gvp-section-trait" />
       </div>
-      <h2 className="gvp-section-titre"><span>Qui le composait</span></h2>
-      <div className="gvp-carte">
+      <TitreDeSection bulle={BULLES.composition} titre="Qui le composait" />
+      <div className="gvp-carte" ref={carte}>
         {poles.length === 0 ? (
           <p className="gvp-vide">Aucun membre n’est publié pour ce gouvernement.</p>
         ) : (
@@ -391,6 +455,172 @@ function QuiLeComposait({ government }) {
  * sections d'intitulés se recalculent, figure et liste ensemble
  * (`filtrerGouvernement`). Chaque figure porte le mot en tête, pour qu'une
  * capture ne circule pas sans lui. */
+/* LA PAROLE DU GOUVERNEMENT, COMPTÉE (revue d'ergonomie du 04/10/2026).
+ *
+ * La figure de la fiche de groupe : les débats rangés par nombre de PRISES DE
+ * PAROLE, une barre par débat, un segment par membre. La ligne d'avant
+ * écrivait « 21 / 50 » sans dire de quoi ; un relecteur y a lu 21
+ * interventions. Les deux colonnes se nomment désormais.
+ *
+ * UN SUJET OUVERT MONTRE UN MEMBRE À LA FOIS. Tous les membres dépliés d'un
+ * coup faisaient 5 880 px sur « motion de censure » (Borne). Le membre désigné
+ * — au CLIC d'un segment, jamais au survol — se nomme sous la barre avec son nombre
+ * de prises de parole ; ce nombre ne s'écrit plus à côté de vingt noms à la
+ * fois. Ses propos se lisent le nom en tête, la date au-dessus de chacun.
+ *
+ * « INTITULÉ NON PUBLIÉ » SE COMPTE ET NE S'OUVRE PAS : ses textes ne sont pas
+ * servis. Aucun filtre de rôle : un ministre ne préside pas la séance, et sa
+ * parole est retenue par les dates de ses fonctions.
+ *
+ * Sous un mot recherché ou une période, la section garde sa liste d'avant :
+ * c'est elle que la recherche sait réduire. */
+function ParolesComptees({ government }) {
+  const [sujets, setSujets] = useState(undefined);
+  const [ouvert, setOuvert] = useState(null);
+  const [choisi, setChoisi] = useState(null);
+  // Sur la ligne sans intitulé, qui ne s'ouvre pas, le clic nomme seulement.
+  const [nomme, setNomme] = useState(null);
+  const [detail, setDetail] = useState(null);
+  const carte = useRef(null);
+  useReplieAuClicDehors(carte, ouvert !== null || nomme !== null, () => { setOuvert(null); setChoisi(null); setNomme(null); });
+
+  useEffect(() => {
+    let vivant = true;
+    setSujets(undefined);
+    setOuvert(null);
+    setChoisi(null);
+    setNomme(null);
+    setDetail(null);
+    getSujetsComptesDuGouvernement(government.id)
+      .then((s) => { if (vivant) setSujets(s); })
+      .catch(() => { if (vivant) setSujets(null); });
+    return () => { vivant = false; };
+  }, [government.id]);
+
+  // Le détail d'un sujet — qui, sous quel portefeuille, quand — ne se charge
+  // qu'au premier sujet ouvert : 4,1 Mo sur Borne.
+  useEffect(() => {
+    if (ouvert === null || detail !== null) return undefined;
+    let vivant = true;
+    getParolesDuGouvernement(government.id).then((d) => { if (vivant) setDetail(d || {}); });
+    return () => { vivant = false; };
+  }, [ouvert, detail, government.id]);
+
+  const cleOuvert = ouvert === null ? null : `${government.id}:${paquetDe(ouvert)}`;
+  const paquet = usePaquetExtraits(cleOuvert, () => getPaquetExtraitsGouvernement(government.id, paquetDe(ouvert)));
+
+  if (sujets === undefined) return <p className="gvp-attente">Chargement des prises de parole…</p>;
+  if (!sujets || !sujets.liste.length) {
+    return (
+      <p className="gvp-vide">
+        Aucune prise de parole n’est lisible pour les membres de ce gouvernement — voir
+        « Ce qu’on n’a pas pu lire ».
+      </p>
+    );
+  }
+
+  const { denominateur } = government.paroles;
+  const max = Math.max(1, ...sujets.liste.map((l) => l.tours));
+  const ouvrir = (label, nom = null) => {
+    setNomme(null);
+    if (ouvert === label && nom === null) { setOuvert(null); setChoisi(null); return; }
+    setOuvert(label);
+    setChoisi(nom);
+  };
+
+  return (
+    <div ref={carte}>
+      <span className="gvp-facette">Débat <i>— {formatNumber(sujets.liste.length)} sur {formatNumber(sujets.debats)}</i></span>
+      <div className="gvp-mat">
+        <div className="gvp-mr gvp-mr--tete">
+          <span />
+          <span />
+          <span className="gvp-mr-n">prises de parole</span>
+          <span className="gvp-mr-n">membres</span>
+        </div>
+        {sujets.liste.map((l) => {
+          const sansIntitule = l.label === SUJET_NON_PUBLIE;
+          const ouverte = !sansIntitule && ouvert === l.label;
+          const designe = ouverte ? (choisi || l.segments[0][0]) : null;
+          const pointe = sansIntitule ? nomme : designe;
+          const montre = pointe ? { nom: pointe, n: l.segments.find(([n]) => n === pointe)?.[1] ?? 0 } : null;
+          const entrees = ouverte && detail ? (detail[l.label] || []).filter((e) => e.membre === designe) : null;
+          const extraits = ouverte && paquet ? extraitsDuDebat(paquet[l.label], { mots: [], debut: null, parIntitule: true }) : [];
+          const siens = (e) => extraits.filter((x) => x.orateur === e.membre && x.date >= e.premiere && x.date <= e.derniere);
+          return (
+            <div className={`gvp-mr-bloc${sansIntitule ? ' gvp-mr-bloc--nd' : ''}`} key={l.label}>
+              <div className="gvp-mr">
+                {sansIntitule ? (
+                  <span className="gvp-mr-lib" title={l.label}>{l.label}</span>
+                ) : (
+                  <button aria-expanded={ouverte} className="gvp-mr-lib gvp-mr-lib--cliquable" onClick={() => ouvrir(l.label)} title={l.label} type="button">
+                    <span aria-hidden="true" className="gvp-chevron">{ouverte ? '▾' : '▸'}</span>
+                    {l.label}
+                  </button>
+                )}
+                <span className="gvp-mr-rail">
+                  <span className="gvp-segments" style={{ width: `${((100 * l.tours) / max).toFixed(2)}%` }}>
+                    {l.segments.map(([nom, n]) => (
+                      <button
+                        aria-label={`${nom} — ${formatNumber(n)} prise${n > 1 ? 's' : ''} de parole`}
+                        aria-pressed={pointe === nom}
+                        className={pointe === nom ? 'gvp-segment--choisi' : undefined}
+                        key={nom}
+                        onClick={sansIntitule
+                          ? () => { setOuvert(null); setChoisi(null); setNomme(nomme === nom ? null : nom); }
+                          : () => ouvrir(l.label, nom)}
+                        style={{ flex: `${n} 1 0` }}
+                        type="button"
+                      />
+                    ))}
+                  </span>
+                </span>
+                <span className="gvp-mr-n">{formatNumber(l.tours)}</span>
+                <span className="gvp-mr-n gvp-mr-n--sur">{formatNumber(l.membres)} / {formatNumber(denominateur)}</span>
+              </div>
+              {/* Le membre désigné se nomme ici, avec son nombre : jamais vingt
+                  nombres à la fois. */}
+              {montre && (
+                <p aria-live="polite" className="gvp-chemin">
+                  <b>{montre.nom}</b> · {formatNumber(montre.n)} prise{montre.n > 1 ? 's' : ''} de parole sur {formatNumber(l.tours)} dans « {l.label} »
+                </p>
+              )}
+              {ouverte && (
+                <div className="gvp-interventions gvp-interventions--b">
+                  {entrees === null ? (
+                    <p className="gvp-attente">Chargement des prises de parole…</p>
+                  ) : entrees.length === 0 ? (
+                    <p className="gvp-attente">Aucune prise de parole détaillée pour ce membre.</p>
+                  ) : entrees.map((e) => (
+                    <div className="gvp-membre-b" key={`${e.membre}-${e.portefeuille}-${e.premiere}`}>
+                      <div className="gvp-membre-b-tete">
+                        <span className="gvp-intervention-membre">{e.membre}</span>
+                        {e.portefeuille && <span className="gvp-intervention-qualite">{e.portefeuille}</span>}
+                        <span className="gvp-intervention-date">
+                          {e.premiere === e.derniere ? jour(e.premiere) : `du ${jour(e.premiere)} au ${jour(e.derniere)}`}
+                        </span>
+                      </div>
+                      {siens(e).length > 0 ? (
+                        <ProposDuMembre extraits={siens(e)} mots={[]} saisie="" />
+                      ) : paquet === undefined ? (
+                        <p className="gvp-attente">Chargement des propos…</p>
+                      ) : e.url ? (
+                        <a className="gvp-source" href={e.url} rel="noreferrer" target="_blank">
+                          <VerifiedIcon /> {SOURCE_BADGE_VERIFIED}
+                        </a>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function SurQuoiIlsOntPrisLaParole({ government, mot = '', debut = null }) {
   const actif = useFiltreActif(mot);
   const { liste, total, denominateur, membres } = government.paroles;
@@ -437,8 +667,11 @@ function SurQuoiIlsOntPrisLaParole({ government, mot = '', debut = null }) {
         <span className="gvp-section-numero">03</span>
         <span className="gvp-section-trait" />
       </div>
-      <h2 className="gvp-section-titre"><span>Sur quoi ils ont pris la parole</span></h2>
+      <TitreDeSection bulle={BULLES.paroles} titre="Sur quoi ils ont pris la parole" />
 
+      {!actif && !debut ? (
+        <div className="gvp-carte"><ParolesComptees government={government} /></div>
+      ) : (
       <div className="gvp-carte">
         <EtiquetteFiltre mot={mot} />
         {liste.length === 0 && actif ? (
@@ -535,19 +768,15 @@ function SurQuoiIlsOntPrisLaParole({ government, mot = '', debut = null }) {
           );
         })}
       </div>
-      {/* Sous un mot, « N sur M » n'a plus de sens : M serait le nombre de
-          débats qui portent le mot, c'est-à-dire N. Le pied dit alors ce qu'il
-          compte, et rien de plus. */}
-      {liste.length > 0 && (
+      )}
+      {/* Sous un mot ou une période, le pied dit ce que la liste compte. */}
+      {(actif || debut) && liste.length > 0 && (
         <p className="gvp-section-pied">
           {mot
             ? `${formatNumber(liste.length)} débat${liste.length > 1 ? 's' : ''} · membres qui y sont intervenus, sur ${denominateur} des ${membres} membres dont la parole est collectée`
             : `${liste.length} sur ${formatNumber(total)} débats · membres qui y sont intervenus, sur ${denominateur} des ${membres} membres dont la parole est collectée`}
         </p>
       )}
-      <p className="gvp-methodo">
-        <Link to="/methodologie#paroles">D’où viennent ces intitulés →</Link>
-      </p>
     </section>
   );
 }
@@ -555,96 +784,193 @@ function SurQuoiIlsOntPrisLaParole({ government, mot = '', debut = null }) {
 /* ── 04 · Ce qu'il a fait déposer ────────────────────────────────────────── */
 
 /*
- * LE FLUX MATIÈRE → ÉTAPE. À gauche la commission saisie au fond, à droite
- * l'étape où le texte s'est arrêté. L'épaisseur d'un ruban est un NOMBRE DE
- * TEXTES, jamais une part, et aucun seuil ne fait disparaître un texte seul.
+ * UN CARRÉ PAR PROJET DE LOI (revue d'ergonomie du 04/10/2026, forme B).
  *
- * Les commissions spéciales, créées pour un seul texte, sont regroupées dans la
- * figure — une dizaine de rubans d'un texte y superposent leurs étiquettes. La
- * liste en dessous nomme chacune.
+ * La fiche de gouvernement était la seule à garder un diagramme de flux : les
+ * fiches candidat et de groupe montrent un carré par texte, rangé à l'étape
+ * atteinte et teinté par sa commission. Même figure ici, avec les étapes d'un
+ * projet de loi.
+ *
+ * CINQ COLONNES. « Adoptés » réunit les trois adoptions — vote, commission
+ * mixte paritaire, 49.3 —, comme la colonne unique de la fiche candidat ;
+ * l'étape exacte se lit en toutes lettres dans la liste, jamais sous le sigle
+ * « CMP » seul. La première colonne, « déposés », est propre au gouvernement :
+ * le dépôt est son acte, là où candidat et groupe partent de l'examen en
+ * commission.
+ *
+ * LE 49.3 N'A PAS DE COLONNE : c'est un fait de procédure (§2 règle 4), dit
+ * par la pastille. Au survol de la pastille, les carrés adoptés sans vote
+ * s'allument et les autres s'estompent — demandé sur maquette. Aucune pastille
+ * pour la commission mixte paritaire : « adopté » y est exact, il n'y a aucune
+ * lecture fausse à prévenir.
+ *
+ * Un statut que la source ajouterait reçoit sa propre colonne, sous le libellé
+ * de la source : rien ne disparaît faute de place prévue (§2 règle 5).
  */
-function FluxDesTextes({ textes, selection, onSelection }) {
-  const { matieres, sorts, liens } = useMemo(() => fluxMatiereSort(textes, ORDRE_SORTS), [textes]);
+const COLONNES_PROJETS = [
+  { cle: 'deposes', statuts: ['depose'], un: 'déposé', plusieurs: 'déposés' },
+  { cle: 'navette', statuts: ['navette_en_cours'], un: 'en navette', plusieurs: 'en navette' },
+  { cle: 'adoptes', statuts: ['adopte', 'adopte_cmp', 'adopte_49_3'], un: 'adopté', plusieurs: 'adoptés' },
+  { cle: 'promulgues', statuts: ['promulgue'], un: 'promulgué', plusieurs: 'promulgués' },
+  { cle: 'rejetes', statuts: ['rejete', 'rejete_49_3'], un: 'rejeté', plusieurs: 'rejetés' },
+];
+const STATUT_493 = 'adopte_49_3';
 
-  const disposition = useMemo(() => {
-    if (!liens.length) return null;
-    const noeuds = [
-      ...matieres.map((m) => ({ id: `m:${m.nom}`, nom: `${m.nom} (${m.n})`, teinte: teinteCommission(m.nom === MATIERE_ABSENTE ? null : m.nom), matiere: m.nom })),
-      ...sorts.map((s) => ({ id: `s:${s.statut}`, nom: `${LIBELLE_COURT_SORT[s.statut] || s.statut} (${s.n})`, teinte: TEINTE_SORT[s.statut], statut: s.statut })),
-    ];
-    const index = new Map(noeuds.map((n, i) => [n.id, i]));
-    const graphe = {
-      nodes: noeuds.map((n) => ({ ...n })),
-      links: liens.map((l) => ({
-        source: index.get(`m:${l.matiere}`),
-        target: index.get(`s:${l.statut}`),
-        value: l.valeur,
-        matiere: l.matiere,
-      })),
-    };
-    const hauteur = Math.max(260, Math.min(560, noeuds.length * 26));
-    return {
-      hauteur,
-      graphe: sankey()
-        .nodeWidth(12)
-        .nodePadding(13)
-        .extent([[2, 8], [810, hauteur - 8]])(graphe),
-    };
-  }, [matieres, sorts, liens]);
+const familleDuTexte = (texte) => familleDeCommission(texte.commission);
 
-  if (!disposition) return null;
-  const { graphe, hauteur } = disposition;
-  const teinteDe = new Map(graphe.nodes.map((n) => [n.matiere, n.teinte]));
+/** Les colonnes de la figure : les cinq prévues, puis une par statut imprévu. */
+export function colonnesDesProjets(textes) {
+  const prevus = new Set(COLONNES_PROJETS.flatMap((c) => c.statuts));
+  const imprevus = [...new Set(textes.map((t) => t.statut).filter((st) => !prevus.has(st)))];
+  const ordre = (t) => [ORDRE_FAMILLES.indexOf(familleDuTexte(t)), familleDuTexte(t), t.meta || ''];
+  const trier = (liste) => [...liste].sort((x, y) => {
+    const [a, fa, da] = ordre(x); const [b, fb, db] = ordre(y);
+    return a - b || fa.localeCompare(fb, 'fr') || da.localeCompare(db);
+  });
+  return [
+    ...COLONNES_PROJETS,
+    ...imprevus.map((st) => {
+      const libelle = (LIBELLE_COURT_SORT[st] || st).toLowerCase();
+      return { cle: st, statuts: [st], un: libelle, plusieurs: libelle };
+    }),
+  ].map((c) => ({ ...c, textes: trier(textes.filter((t) => c.statuts.includes(t.statut))) }));
+}
+
+const ORDRE_FAMILLES = [
+  'Affaires culturelles et éducation', 'Affaires économiques', 'Affaires étrangères',
+  'Affaires sociales', 'Défense', 'Développement durable', 'Finances', 'Lois',
+  COMMISSIONS_SPECIALES, MATIERE_ABSENTE,
+];
+
+function retenu(selection, texte) {
+  if (!selection) return true;
+  if (selection.texte) return selection.texte === texte.dossierId;
+  if (selection.colonne) return selection.statuts.includes(texte.statut);
+  if (selection.famille) return familleDuTexte(texte) === selection.famille;
+  if (selection.p493) return texte.statut === STATUT_493;
+  return true;
+}
+
+function CarresDesProjets({ textes, selection, onSelection }) {
+  const colonnes = useMemo(() => colonnesDesProjets(textes), [textes]);
+  const familles = ORDRE_FAMILLES.filter((f) => textes.some((t) => familleDuTexte(t) === f));
+  const n493 = textes.filter((t) => t.statut === STATUT_493).length;
+  /* LE TEXTE SURVOLÉ SE NOMME DANS UNE INFOBULLE, celle des carrés des fiches
+   * candidat et groupe (`.cp-car-bulle`) : posée d'après le carré, ancrée par
+   * le bas, hors du flux. Une ligne écrite sous la grille décalait tout ce
+   * qui la suit à chaque carré survolé. */
+  const ref = useRef(null);
+  const idBulle = useId();
+  const [bulle, setBulle] = useState(null);
+  const montrer = (texte, cible) => {
+    const cadre = ref.current?.getBoundingClientRect();
+    if (!cadre) return;
+    const b = cible.getBoundingClientRect();
+    const largeur = Math.min(300, cadre.width);
+    const gauche = Math.max(0, Math.min(b.left - cadre.left - 20, cadre.width - largeur));
+    setBulle({ texte, gauche, bas: cadre.bottom - b.top + 12, fleche: b.left - cadre.left + b.width / 2 - gauche });
+  };
+  const cacher = () => setBulle(null);
+  const [eclaire493, setEclaire493] = useState(false);
+  const meme = (a) => JSON.stringify(a) === JSON.stringify(selection);
+  const choisir = (nouvelle) => onSelection(meme(nouvelle) ? null : nouvelle);
+  const voile = (texte) => (eclaire493 ? texte.statut !== STATUT_493 : !retenu(selection, texte));
 
   return (
-    <figure className="gvp-flux">
-      <svg viewBox={`0 0 1000 ${hauteur}`} role="img"
-        aria-label="Les textes déposés, de leur matière à l’étape où ils se sont arrêtés">
-        <g>
-          {graphe.links.map((l) => {
-            const choisi = selection
-              && selection.matiere === l.matiere
-              && selection.statut === l.target.statut;
-            const eteint = Boolean(selection) && !choisi;
-            return (
-              <path
-                key={`${l.source.id}-${l.target.id}`}
-                className="gvp-brin"
-                d={sankeyLinkHorizontal()(l)}
-                fill="none"
-                stroke={teinteDe.get(l.matiere)}
-                strokeOpacity={choisi ? 0.75 : (eteint ? 0.1 : 0.38)}
-                strokeWidth={Math.max(1, l.width)}
-                role="button"
-                tabIndex={0}
-                aria-pressed={Boolean(choisi)}
-                onClick={() => onSelection(choisi ? null : { matiere: l.matiere, statut: l.target.statut })}
-                onKeyDown={(ev) => {
-                  if (ev.key !== 'Enter' && ev.key !== ' ') return;
-                  ev.preventDefault();
-                  onSelection(choisi ? null : { matiere: l.matiere, statut: l.target.statut });
-                }}
-              >
-                <title>{`${l.source.nom} → ${l.target.nom} : ${l.value} — cliquez pour lire ces textes`}</title>
-              </path>
-            );
-          })}
-        </g>
-        <g>
-          {graphe.nodes.map((n) => (
-            <g key={n.id}>
-              <rect
-                x={n.x0} y={n.y0} width={n.x1 - n.x0} height={Math.max(n.y1 - n.y0, 1)}
-                fill={n.teinte || 'var(--card)'}
-                stroke={n.teinte ? 'none' : 'var(--ink)'}
-                strokeWidth={n.teinte ? 0 : 1}
-              />
-              <text x={n.x1 + 6} y={(n.y0 + n.y1) / 2} dy="0.35em" className="gvp-flux-etiquette">{n.nom}</text>
-            </g>
-          ))}
-        </g>
-      </svg>
-    </figure>
+    <div className="cp-car gvp-car" ref={ref}>
+      <div className="cp-car-cols" style={{ gridTemplateColumns: `repeat(${colonnes.length}, minmax(0, 1fr))` }}>
+        {colonnes.map((col) => {
+          const tete = (
+            <>
+              <span className="cp-car-n">{formatNumber(col.textes.length)}</span>
+              <span className="cp-car-lib">{col.textes.length > 1 ? col.plusieurs : col.un}</span>
+            </>
+          );
+          const sel = { colonne: col.cle, statuts: col.statuts, intitule: col.plusieurs };
+          return (
+            <div className="cp-car-col" key={col.cle}>
+              {col.textes.length > 0 ? (
+                <button aria-pressed={meme(sel)} className="cp-car-tete cp-car-tete--cliquable" onClick={() => choisir(sel)} type="button">
+                  {tete}
+                </button>
+              ) : <div className="cp-car-tete">{tete}</div>}
+              <div className="cp-car-grille">
+                {col.textes.map((t) => (
+                  <button
+                    aria-describedby={bulle?.texte === t ? idBulle : undefined}
+                    aria-label={t.titre}
+                    aria-pressed={selection?.texte === t.dossierId}
+                    className={[
+                      'cp-car-carre',
+                      selection?.texte === t.dossierId ? 'cp-car-carre--choisi' : '',
+                      voile(t) ? 'cp-car-voile' : '',
+                    ].filter(Boolean).join(' ')}
+                    key={t.dossierId}
+                    onBlur={cacher}
+                    onClick={() => { cacher(); choisir({ texte: t.dossierId, intitule: t.titre }); }}
+                    onFocus={(e) => montrer(t, e.currentTarget)}
+                    onMouseEnter={(e) => montrer(t, e.currentTarget)}
+                    onMouseLeave={cacher}
+                    style={{ background: teinteCommission(t.commission) }}
+                    type="button"
+                  />
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {bulle && (
+        <div
+          className="cp-car-bulle"
+          id={idBulle}
+          role="tooltip"
+          style={{ left: bulle.gauche, bottom: bulle.bas, '--fleche': `${bulle.fleche}px` }}
+        >
+          <b>{bulle.texte.titre}</b>
+          <span>{bulle.texte.commission || MATIERE_ABSENTE} · {LIBELLE_SORT_TEXTE[bulle.texte.statut] || bulle.texte.statut}</span>
+        </div>
+      )}
+
+      <div className="cp-car-legende">
+        {familles.map((f) => {
+          const sel = { famille: f, intitule: f };
+          return (
+            <button
+              aria-pressed={meme(sel)}
+              className={['cp-car-cle', selection?.famille && !meme(sel) ? 'cp-car-voile' : ''].filter(Boolean).join(' ')}
+              key={f}
+              onClick={() => choisir(sel)}
+              type="button"
+            >
+              <i aria-hidden="true" style={{ background: teinteDeLaFamille(f) }} />
+              {f}
+            </button>
+          );
+        })}
+      </div>
+
+      {n493 > 0 && (
+        <p className="cp-ter-493">
+          <button
+            aria-pressed={Boolean(selection?.p493)}
+            className="cp-ter-493-bouton"
+            onBlur={() => setEclaire493(false)}
+            onClick={() => choisir({ p493: true, intitule: 'adoptés sans vote (49.3)' })}
+            onFocus={() => setEclaire493(true)}
+            onMouseEnter={() => setEclaire493(true)}
+            onMouseLeave={() => setEclaire493(false)}
+            type="button"
+          >
+            <span className="cp-ter-493-marque">49.3</span>
+            <b>{formatNumber(n493)}</b> de ces textes
+            {n493 > 1 ? ' ont été adoptés' : ' a été adopté'} sans vote
+            <span className="cp-ter-493-quoi">(fait procédural)</span>
+          </button>
+        </p>
+      )}
+    </div>
   );
 }
 
@@ -660,7 +986,7 @@ function CeQuIlAFaitDeposer({ government, mot = '' }) {
         <span className="gvp-section-numero">04</span>
         <span className="gvp-section-trait" />
       </div>
-      <h2 className="gvp-section-titre"><span>Ce qu’il a fait déposer</span></h2>
+      <TitreDeSection bulle={BULLES.textes} titre="Ce qu’il a fait déposer" />
       <div className="gvp-carte">
         <EtiquetteFiltre mot={mot} />
         {government.textes.length === 0 && actif ? (
@@ -675,42 +1001,29 @@ function CeQuIlAFaitDeposer({ government, mot = '' }) {
           <FluxEtListe mot={mot} textes={government.textes} />
         )}
       </div>
-      {/* Ce qui reste n'explique pas la figure — l'épaisseur d'un ruban se lit
-          sans qu'on l'écrive : c'est le 49.3 qu'aucune forme ne peut porter
-          seule, et que §2 règle 4 veut nommé à côté. */}
-      <p className="gvp-section-pied">
-        Le 49.3 est un fait de procédure, jamais une position de vote.
-      </p>
-      <p className="gvp-methodo">
-        <Link to="/methodologie#propose">Ce que la figure compte, et ce qu’elle refuse de compter →</Link>
-      </p>
     </section>
   );
 }
 
-/* La liste ne s'ouvre qu'au clic sur un brin : 282 cartes sous la figure
-   étaient un mur, et la figure servait d'index sans qu'on puisse y entrer. */
+/* La liste ne s'ouvre qu'au clic : 282 cartes sous la figure étaient un mur. */
 function FluxEtListe({ textes, mot = '' }) {
   const actif = useFiltreActif(mot);
   const [selection, setSelection] = useState(null);
+  const racine = useRef(null);
+  useReplieAuClicDehors(racine, selection !== null, () => setSelection(null));
   /* Sous un mot, la liste est DÉPLIÉE : les textes retenus s'affichent sans
-     qu'il faille cliquer un brin, et un clic les restreint encore. */
-  const choisis = selection
-    ? textes.filter((t) => matiereDeFigure({ commission: t.commission }) === selection.matiere
-      && t.statut === selection.statut)
-    : actif ? textes : [];
+     qu'il faille cliquer, et un clic les restreint encore. */
+  const choisis = selection ? textes.filter((t) => retenu(selection, t)) : actif ? textes : [];
 
   return (
-    <>
-      <FluxDesTextes textes={textes} selection={selection} onSelection={setSelection} />
+    <div ref={racine}>
+      <CarresDesProjets onSelection={setSelection} selection={selection} textes={textes} />
       {selection ? (
         <div className="gvp-selection">
           <p className="gvp-selection-tete">
             <span className="gvp-nombre">{choisis.length}</span>
             {choisis.length === 1 ? ' texte · ' : ' textes · '}
-            <span className="gvp-fort">{selection.matiere}</span>
-            {' → '}
-            <span className="gvp-fort">{LIBELLE_COURT_SORT[selection.statut] || selection.statut}</span>
+            <span className="gvp-fort">{selection.intitule}</span>
             <button type="button" className="gvp-raz" onClick={() => setSelection(null)}>Tout refermer</button>
           </p>
           <ListeDesTextes textes={choisis} />
@@ -724,9 +1037,9 @@ function FluxEtListe({ textes, mot = '' }) {
           <ListeDesTextes textes={choisis} />
         </div>
       ) : (
-        <p className="gvp-invite">Cliquez un brin de la figure pour lire les textes qu’il porte.</p>
+        <p className="gvp-invite">Cliquez un carré, une étape ou une commission pour lire les textes.</p>
       )}
-    </>
+    </div>
   );
 }
 
@@ -831,7 +1144,7 @@ function limitesDeLaFiche(government) {
   } else {
     lignes.push({
       quoi: 'Prises de parole',
-      texte: `Un débat n’apparaît que si la source publie son intitulé, et cet étiquetage est plus fin sur les années récentes : ${government.paroles.denominateur} des ${government.paroles.membres} membres y portent un sujet.`,
+      texte: `Une prise de parole dont le compte rendu ne donne pas l’intitulé est comptée sous « Intitulé non publié », sans ses propos. Les intitulés sont plus fins sur les années récentes : ${government.paroles.denominateur} des ${government.paroles.membres} membres portent au moins un débat nommé.`,
     });
   }
 
@@ -843,17 +1156,42 @@ function limitesDeLaFiche(government) {
   return lignes;
 }
 
+/* MENTION TEMPORAIRE — POSÉE À LA MAIN, À RETIRER À LA MAIN (#1199).
+ *
+ * Le service qui diffuse le Journal officiel refuse toute requête depuis le
+ * 02/10/2026 : les actes parus depuis n'arrivent plus, et la fiche du
+ * gouvernement en place s'arrêtait au 1er octobre sans le dire. La
+ * propriétaire a arbitré le 04/10/2026 : une mention de circonstance, sur
+ * cette fiche seulement (pas sur la page Sources), texte et forme validés sur
+ * maquette — l'encre pleine, parce que le gris du bandeau n'alertait pas.
+ *
+ * Ce n'est PAS une borne de couverture : rien ne la calcule, rien ne l'efface.
+ * AU RETOUR DU SERVICE, passer cette constante à `null` — l'issue #1199 ne se
+ * ferme pas tant que la mention est affichée. */
+export const SOURCE_INTERROMPUE = {
+  titre: 'Données incomplètes depuis le 2 octobre 2026.',
+  texte: 'Le service qui diffuse le Journal officiel ne répond plus : les actes parus depuis cette date n’apparaissent pas encore ici.',
+};
+
 /* 05 — Ce qu'il a fait entrer en vigueur (#1029 voie 1). La section ne porte
    que son cadre : tout le reste vit dans `ActesDuGouvernement`. */
 function CeQuIlAFaitEntrerEnVigueur({ government }) {
+  // Seul le gouvernement en place peut manquer d'actes récents.
+  const interrompue = SOURCE_INTERROMPUE && !government.periode.fin;
   return (
     <section className="gvp-section" data-section="Ce qu’il a fait entrer en vigueur" id="section-actes">
       <div className="gvp-section-tete">
         <span className="gvp-section-numero">05</span>
         <span className="gvp-section-trait" />
       </div>
-      <h2 className="gvp-section-titre"><span>Ce qu’il a fait entrer en vigueur</span></h2>
+      <TitreDeSection bulle={BULLES.actes} titre="Ce qu’il a fait entrer en vigueur" />
       <div className="gvp-carte">
+        {interrompue && (
+          <p className="gvp-mention" role="note">
+            <span aria-hidden="true" className="gvp-mention-point" />
+            <span><strong>{SOURCE_INTERROMPUE.titre}</strong> {SOURCE_INTERROMPUE.texte}</span>
+          </p>
+        )}
         <ActesDuGouvernement id={government.id} />
       </div>
     </section>
@@ -869,7 +1207,7 @@ function CeQuOnNaPasPuLire({ government }) {
         <span className="gvp-section-numero">06</span>
         <span className="gvp-section-trait" />
       </div>
-      <h2 className="gvp-section-titre"><span>Ce qu’on n’a pas pu lire</span></h2>
+      <TitreDeSection bulle={BULLES.couverture} titre="Ce qu’on n’a pas pu lire" />
       <div className="gvp-carte">
         <dl className="gvp-limites">
           {lignes.map((l) => (
@@ -880,9 +1218,6 @@ function CeQuOnNaPasPuLire({ government }) {
           ))}
         </dl>
       </div>
-      <p className="gvp-methodo">
-        <Link to="/methodologie#couverture">Pourquoi ces limites se déclarent au lieu de se combler →</Link>
-      </p>
     </section>
   );
 }
@@ -891,6 +1226,10 @@ function CeQuOnNaPasPuLire({ government }) {
 
 export default function GovernmentProfile({ government, chronologie = [], mot = '', debut = null }) {
   const actif = useFiltreActif(mot);
+  // « Première ministre » quand la source l'écrit ainsi : le libellé se lit, il
+  // ne s'accorde pas à la main.
+  const titreDuChef = government.membres.find((m) => m.nom === government.premierMinistre
+    && /^premi[èe]re? ministre$/i.test(m.portefeuille || ''))?.portefeuille || 'Premier ministre';
   return (
     <main className="gvp-main">
       <div className="gvp-breadcrumb">
@@ -914,7 +1253,7 @@ export default function GovernmentProfile({ government, chronologie = [], mot = 
               ) : (
                 <span className="gvp-fort">{government.premierMinistre}</span>
               )}
-              {', Premier ministre · '}
+              {`, ${titreDuChef} · `}
             </span>
           ) : (
             <span><span className="gvp-nd">Premier ministre non publié</span>{' · '}</span>

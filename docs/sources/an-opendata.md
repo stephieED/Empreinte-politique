@@ -362,6 +362,13 @@ Implemented path:
   the government's own `membres[]` to fill `textes[].initiateurs` — the
   minister → bill link (723/725 government bills carry one, 1213 links, 556
   resolved). See `docs/decisions/gouvernement-textes-initiateurs.md`.
+- **A government bill's presenting minister is on the deposit DOCUMENT, not
+  always on the dossier (#1204).** `document.coSignataires.coSignataire[]` of
+  the `PRJL…` document tied to the earliest `-DEPOT` act lists the ministers
+  who present the bill; `document.auteurs` holds the Prime Minister. The
+  dossier's `initiateur.acteurs` repeats them only about half the time — a bill
+  first tabled at the Senate typically names the Prime Minister alone.
+  `coSignataire` is an object when there is one, a list otherwise.
 - `merge_profile.py` drops `dossiers_legislatifs`/`textes_portes` entries that
   have no factual `role` during migration/merge.
 

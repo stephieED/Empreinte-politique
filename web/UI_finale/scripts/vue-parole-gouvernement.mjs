@@ -33,6 +33,7 @@
  */
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import { SUJET_NON_PUBLIE, sujetDeIntervention } from '../src/utils/sujetIntervention.js';
 import { construireExtraits, extraitDeLIntervention, urlSeanceAn } from '../src/utils/extraits.js';
 
 /* LA CLÉ EST CELLE DE L'AGRÉGAT, PAS LE LIBELLÉ BRUT. `deriver_tags_thematiques`
@@ -40,10 +41,15 @@ import { construireExtraits, extraitDeLIntervention, urlSeanceAn } from '../src/
    forme que `tags_thematiques_agreges` publie. Keyer la projection sur le
    libellé brut donnait zéro correspondance : « Plan national maladies rares »
    contre « plan national maladies rares ». */
+/* Le sujet se lit comme sur les fiches candidat et de groupe (04/10/2026) : le
+   thème quand la collecte l'a posé, sinon le sujet du chemin de l'ordre du
+   jour. Une prise de parole sans aucun intitulé n'est PLUS écartée : elle se
+   range sous « Intitulé non publié » (§2 règle 5) — 2 144 des 26 034 de Borne,
+   1 923 des 15 269 de Lecornu II étaient jetées avant le compte. */
 function cleDeSujet(intervention) {
   const theme = intervention.theme_officiel;
-  if (typeof theme === 'string' && theme.trim()) return theme.trim().toLowerCase();
-  return null;
+  const intitule = typeof theme === 'string' && theme.trim() ? theme : sujetDeIntervention(intervention);
+  return intitule ? intitule.trim().toLowerCase() : SUJET_NON_PUBLIE;
 }
 
 /* La source publie le compte rendu en ARCHIVE (`syseron.xml.zip`), pas au
@@ -100,8 +106,6 @@ export function construireParoles(gouvernement, lireProfil) {
     for (const intervention of profil.interventions || []) {
       const date = intervention.date;
       const sujet = cleDeSujet(intervention);
-      // Un intitulé absent n'est pas un sujet vide : l'intervention n'entre
-      // pas, et « Ce qu'on n'a pas pu lire » porte la limite (§2 règle 5).
       const fenetre = date ? fenetreDe(date, fenetresDuMembre) : null;
       if (!sujet || !date || !fenetre) continue;
 
@@ -180,6 +184,9 @@ export function construireExtraitsGouvernement(gouvernement, lireProfil, debuts 
       const date = intervention.date;
       const sujet = cleDeSujet(intervention);
       if (!sujet || !date || !fenetreDe(date, fenetresDuMembre)) continue;
+      // « Intitulé non publié » se compte et ne s'ouvre pas : ses textes ne
+      // sont pas servis, comme sur la fiche de groupe.
+      if (sujet === SUJET_NON_PUBLIE) continue;
       const [texte, tronque] = extraitDeLIntervention(intervention);
       entrees.push({
         sujet,
@@ -219,4 +226,31 @@ export function lecteurDeProfils(dossierProfils, { cache: garder = true } = {}) 
 /** La même chose, en lisant les profils sur disque. */
 export function construireParolesDepuisDisque(gouvernement, dossierProfils) {
   return construireParoles(gouvernement, lecteurDeProfils(dossierProfils));
+}
+
+/**
+ * LES SUJETS, COMPTÉS — ce que la section montre repliée (revue d'ergonomie du
+ * 04/10/2026) : les débats rangés par nombre de PRISES DE PAROLE, chacun avec
+ * un segment par membre, large comme ce qu'il y a dit de fois. C'est la figure
+ * de la fiche de groupe.
+ *
+ * Une personne passée par deux portefeuilles n'a qu'UN segment : la barre
+ * compte des personnes, le détail ouvert dit sous quel titre elle parlait.
+ *
+ * Rend `{ prises, debats, liste: [{ label, tours, membres, segments: [[nom, tours]] }] }`,
+ * les `limite` premiers débats seulement : le fichier se charge avec la fiche.
+ */
+export function sujetsComptes(paroles, limite = 10) {
+  const liste = Object.entries(paroles || {}).map(([label, entrees]) => {
+    const parNom = new Map();
+    for (const e of entrees) parNom.set(e.membre, (parNom.get(e.membre) || 0) + e.tours);
+    const segments = [...parNom].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'fr'));
+    return { label, tours: segments.reduce((n, [, t]) => n + t, 0), membres: segments.length, segments };
+  }).sort((a, b) => b.tours - a.tours || b.membres - a.membres || a.label.localeCompare(b.label, 'fr'));
+  return {
+    schema_version: 'sujets-de-gouvernement-v1',
+    prises: liste.reduce((n, l) => n + l.tours, 0),
+    debats: liste.length,
+    liste: liste.slice(0, limite),
+  };
 }

@@ -74,7 +74,16 @@ Format d'un profil de gouvernement v1 :
                                               # dump AN — un texte en porte souvent plusieurs
                     "acteur_ref": "PA643210",  # référence AN brute, toujours conservée
                     "membre_id": "sebastien-lecornu",  # null si l'acteur ne figure
-                },                             # pas dans membres[] (couverture partielle)
+                                               # pas dans membres[] (couverture partielle)
+                    # #1204 — le portefeuille tenu le jour du dépôt, lu dans
+                    # membres[] ; null hors de membres[] ou hors de ses périodes
+                    "portefeuille": "Ministère des armées",
+                    # #1204 — où la source nomme la personne
+                    # (KNOWN_RELEVES_INITIATEUR) : "dossier", ou "document_depot"
+                    # pour un ministre que seul le document de dépôt porte,
+                    # comme cosignataire
+                    "releve_dans": "dossier",
+                },
             ],                               # null (jamais []) si la source n'en déclare aucun
             "source_url": None,
             # #689 — la commission saisie AU FOND du dossier, lue dans
@@ -291,6 +300,11 @@ KNOWN_STATUTS_TEXTE_GOUVERNEMENTAL: frozenset[str] = frozenset({
 # d'un gouvernement français).
 KNOWN_CHAMBRES_DEPOT_TEXTE: frozenset[str] = frozenset({"AN", "Senat"})
 
+# Où un initiateur a été lu (#1204) : dans le dossier législatif
+# (`initiateur.acteurs`), ou seulement dans le document de dépôt, dont il est
+# cosignataire — le ministre qui présente le texte au nom du Premier ministre.
+KNOWN_RELEVES_INITIATEUR: frozenset[str] = frozenset({"dossier", "document_depot"})
+
 # Clés obligatoires au niveau racine du profil de gouvernement.
 REQUIRED_TOP_LEVEL_KEYS: frozenset[str] = frozenset({
     "schema_version",
@@ -334,6 +348,15 @@ REQUIRED_TEXTE_KEYS: frozenset[str] = frozenset({
 # Clés obligatoires d'une entrée textes[].initiateurs[] (#435). `acteur_ref` est
 # la référence AN brute (toujours présente) ; `membre_id` est sa résolution vers
 # un membre du gouvernement, `null` quand elle n'est pas possible.
+#
+# #1204 — `portefeuille` est celui que la personne tenait le jour du dépôt,
+# d'après `membres[]` (`null` hors de `membres[]`, ou si aucune période ne
+# contient la date) ; `releve_dans` dit où la source nomme la personne.
+#
+# Ces deux clés ne sont PAS obligatoires : une fiche écrite avant #1204, ou
+# qu'un run n'a pas pu réécrire faute de collecte complète (#427), ne les porte
+# pas, et leur absence n'est pas une faute. Elles sont validées quand elles
+# sont là.
 REQUIRED_INITIATEUR_TEXTE_KEYS: frozenset[str] = frozenset({
     "acteur_ref", "membre_id",
 })
@@ -438,6 +461,25 @@ def _erreurs_initiateurs(
                 f"{prefixe}.acteur_ref doit être une chaîne non vide "
                 f"(reçu : {acteur_ref!r}) : la référence AN brute est conservée "
                 f"même quand aucun membre_id n'est résolu."
+            )
+
+        releve = initiateur.get("releve_dans")
+        if "releve_dans" in initiateur and releve not in KNOWN_RELEVES_INITIATEUR:
+            errors.append(
+                f"{prefixe}.releve_dans inconnu : {releve!r} "
+                f"(attendu : {sorted(KNOWN_RELEVES_INITIATEUR)})."
+            )
+
+        portefeuille = initiateur.get("portefeuille")
+        if portefeuille is not None and (not isinstance(portefeuille, str) or not portefeuille):
+            errors.append(
+                f"{prefixe}.portefeuille doit être une chaîne non vide ou null "
+                f"(reçu : {portefeuille!r})."
+            )
+        elif portefeuille is not None and initiateur["membre_id"] is None:
+            errors.append(
+                f"{prefixe}.portefeuille est renseigné sans membre_id — un "
+                f"portefeuille se lit dans membres[], pas ailleurs."
             )
 
         membre_id = initiateur["membre_id"]

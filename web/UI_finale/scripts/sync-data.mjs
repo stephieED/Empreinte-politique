@@ -10,7 +10,7 @@ import { cleLegislature, construireComparaisons } from './comparaison-groupes.mj
 import { construireCouverture } from './couverture-corpus.mjs';
 import { accumulateurs, projection, ranger } from './actes-gouvernement.mjs';
 import { construireDebatsLignee, construireExtraitsLignee, construireVueLignee, idDePage } from './vue-lignee.mjs';
-import { construireExtraitsGouvernement, construireParoles, lecteurDeProfils } from './vue-parole-gouvernement.mjs';
+import { construireExtraitsGouvernement, construireParoles, lecteurDeProfils, sujetsComptes } from './vue-parole-gouvernement.mjs';
 import { debutDeFenetre } from '../src/utils/filtrePeriode.js';
 import { repartitionsDesMaillons } from './amendements-lignees.mjs';
 import { legislatureDeAmendementId, selectDerniereLectureVotes } from '../src/utils/lecture.js';
@@ -711,6 +711,8 @@ for (const file of gouvernementFiles) {
   const paroles = construireParoles(gouvernement, lireProfil);
   sujetsEcrits += Object.keys(paroles).length;
   writeFileSync(path.join(outDir, 'gouvernements', `${id}.paroles.json`), JSON.stringify(paroles));
+  // Les dix premiers débats, comptés par membre : chargés avec la section (04/10/2026).
+  writeFileSync(path.join(outDir, 'gouvernements', `${id}.sujets.json`), JSON.stringify(sujetsComptes(paroles)));
   // Ce que l'exécutif a fait entrer en vigueur (#1029 voie 1).
   const actes = actesParGouvernement.get(id);
   if (actes) {

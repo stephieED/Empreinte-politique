@@ -772,6 +772,53 @@ def _initiateurs_acteur_refs(dossier: dict[str, Any]) -> Optional[list[str]]:
     return refs or None
 
 
+def _cosignataires_acteur_refs(document: dict[str, Any]) -> Optional[list[str]]:
+    """`acteurRef` des cosignataires d'un document, dans l'ordre du dump et
+    dédoublonnés, ou `None` si le document n'en porte aucun (#1204).
+
+    Sur le document de DÉPÔT d'un projet de loi, l'auteur est le Premier
+    ministre et les cosignataires sont les ministres qui présentent le texte.
+    Le dossier (`initiateur.acteurs`) ne les reprend qu'une fois sur deux :
+    mesuré le 04/10/2026 sur les 1 298 dossiers gouvernementaux des quatre
+    archives dont le dépôt est lu, 654 portent déjà tous leurs cosignataires
+    parmi leurs initiateurs, **620 en portent au moins un que le dossier ne
+    nomme pas**, 24 n'en ont aucun. Même forme que `_initiateurs_acteur_refs` :
+    objet ou liste, `None` et jamais `[]` (AGENTS.md §2.5).
+    """
+    cosignataires = document.get("coSignataires")
+    if not isinstance(cosignataires, dict):
+        return None
+    entrees = cosignataires.get("coSignataire")
+    if isinstance(entrees, dict):
+        entrees = [entrees]
+    if not isinstance(entrees, list):
+        return None
+    refs: list[str] = []
+    for entree in entrees:
+        acteur = entree.get("acteur") if isinstance(entree, dict) else None
+        ref = acteur.get("acteurRef") if isinstance(acteur, dict) else None
+        if isinstance(ref, str) and ref and ref not in refs:
+            refs.append(ref)
+    return refs or None
+
+
+def cosignataires_des_documents(
+    archives: list[tuple[int, Path]],
+) -> dict[str, list[str]]:
+    """`uid de document -> acteurRef de ses cosignataires`, pour les seuls
+    projets de loi qui en portent (#1204). Un document absent de la table n'a
+    pas de cosignataire lisible — ou n'est pas dans les archives lues."""
+    table: dict[str, list[str]] = {}
+    for _legislature, document in iter_documents_bruts(archives):
+        uid = document.get("uid")
+        if not isinstance(uid, str) or not uid.startswith(_DOC_PREFIX_GOUVERNEMENTAL):
+            continue
+        refs = _cosignataires_acteur_refs(document)
+        if refs:
+            table[uid] = refs
+    return table
+
+
 def nature_texte_depose(dossier: dict[str, Any]) -> Optional[str]:
     """Nature du texte déposé, telle que la source l'encode (#689) :
     `"projet_de_loi"` / `"proposition_de_loi"` / `"proposition_de_resolution"`,
@@ -992,10 +1039,20 @@ def _source_url(legislature: Optional[str], titre_chemin: Optional[str]) -> Opti
     return None
 
 
-def parse_dossier_gouvernemental(dossier: dict[str, Any]) -> Optional[dict[str, Any]]:
+def parse_dossier_gouvernemental(
+    dossier: dict[str, Any],
+    cosignataires_par_document: Optional[dict[str, list[str]]] = None,
+) -> Optional[dict[str, Any]]:
     """Extrait un enregistrement de dossier gouvernemental à partir d'un
     `dossierParlementaire` brut (déjà désérialisé), ou `None` si son origine
     n'est pas gouvernementale (signal de préfixe de titre, voir docstring).
+
+    `cosignataires_par_document` (#1204, voir `cosignataires_des_documents`) :
+    quand la table est fournie, l'enregistrement porte
+    `presentateurs_acteur_refs`, les cosignataires du document de dépôt — les
+    ministres qui présentent le texte. `None` quand la table n'est pas fournie,
+    que le dossier n'a pas de document de dépôt, ou que ce document n'en porte
+    aucun : la source ne le dit pas (AGENTS.md §2.5).
 
     Pure : aucun effet de bord, aucun accès réseau. `warnings` (liste, jamais
     absente) accompagne l'enregistrement pour tout `fam_code` non mappé ou
@@ -1013,6 +1070,10 @@ def parse_dossier_gouvernemental(dossier: dict[str, Any]) -> Optional[dict[str, 
     statut, sort_49_3, warning = _determine_statut(dossier_id, actes_legislatifs)
     initiateurs_acteur_refs = _initiateurs_acteur_refs(dossier)
     legislature = dossier.get("legislature")
+    document_depot = _document_depot_initial(actes_legislatifs)
+    presentateurs_acteur_refs = (
+        (cosignataires_par_document or {}).get(document_depot) if document_depot else None
+    )
 
     return {
         "dossier_id": dossier_id,
@@ -1023,6 +1084,8 @@ def parse_dossier_gouvernemental(dossier: dict[str, Any]) -> Optional[dict[str, 
         "date_depot": date_depot,
         "date_dernier_evenement": date_dernier_evenement,
         "initiateurs_acteur_refs": initiateurs_acteur_refs,
+        "document_depot": document_depot,
+        "presentateurs_acteur_refs": presentateurs_acteur_refs,
         "legislature": legislature,
         "source_url": _source_url(legislature, titre_dossier.get("titreChemin")),
         "warnings": [warning] if warning else [],
@@ -1070,8 +1133,9 @@ def collect_dossiers_gouvernementaux_multi(
     disque : c'est la fonction testée par des fixtures ZIP locales."""
     dossiers: list[dict[str, Any]] = []
     warnings: list[str] = []
+    cosignataires = cosignataires_des_documents(archives)
     for _legislature, dossier in iter_dossiers_bruts(archives):
-        record = parse_dossier_gouvernemental(dossier)
+        record = parse_dossier_gouvernemental(dossier, cosignataires)
         if record is None:
             continue
         warnings.extend(record["warnings"])

@@ -729,7 +729,7 @@ Le mentionnent sans le gouverner : [`plafond-roster-et-commit-518`](decisions/pl
 
 ## `src/gouvernement_profile.py`
 
-5 décision(s) le gouvernent ; le module en cite 1.
+6 décision(s) le gouvernent ; le module en cite 1.
 
 | Décision | Nomme |
 | --- | --- |
@@ -737,6 +737,7 @@ Le mentionnent sans le gouverner : [`plafond-roster-et-commit-518`](decisions/pl
 | [`gouvernement_profile.py` : rattachement des textes par `date_depot`, exclusion silencieuse des dossiers non classifiables (#211) (2026-08-14)](decisions/gouvernement-profile-rattachement.md) | `build_gouvernement_profile` |
 | [Un bloc que la projection retire se lit à la demande, il ne revient pas dans la liste (#1020) (2026-09-18)](decisions/lecture-a-la-demande-des-interventions-1020.md) | `agreger_tags_thematiques`, `build_gouvernement_profile` |
 | [Trois lectures du corpus passent à la projection, et chacune a son plafond dans un test (#635, 2026-08-30)](decisions/lectures-pipeline-par-projection-635.md) | `_index_acteur_ref_vers_membre`, `build_gouvernement_profile` |
+| [Le ministre qui présente un projet de loi complète `initiateurs`, avec son portefeuille au jour du dépôt (#1204) (2026-10-04)](decisions/ministres-presentant-un-projet-de-loi-1204.md) | `_initiateurs_texte` |
 | [Un singulier et un pluriel sont le même sujet : la clé groupe, la source publie (#1042) (2026-09-20)](decisions/tags-singulier-et-pluriel-1042.md) | `agreger_tags_thematiques` |
 
 Le mentionnent sans le gouverner : [`audit-599-projection-blocs-lus-628`](decisions/audit-599-projection-blocs-lus-628.md), [`audit-pipeline-gouvernement`](decisions/audit-pipeline-gouvernement.md), [`freshness-timestamps-groupes-gouvernements-partis`](decisions/freshness-timestamps-groupes-gouvernements-partis.md), [`gouvernement-premier-ministre-portefeuille`](decisions/gouvernement-premier-ministre-portefeuille.md), [`gouvernement-textes-fam-codes-archives`](decisions/gouvernement-textes-fam-codes-archives.md), [`gouvernement-textes-fam-codes-manquants`](decisions/gouvernement-textes-fam-codes-manquants.md), [`gouvernement-textes-initiateurs`](decisions/gouvernement-textes-initiateurs.md), [`hors-perimetre`](decisions/hors-perimetre.md), [`parlementaire-en-mission-nest-pas-ministre`](decisions/parlementaire-en-mission-nest-pas-ministre.md), [`pivot-freshness-timestamps-stables`](decisions/pivot-freshness-timestamps-stables.md).
@@ -775,7 +776,7 @@ Le mentionnent sans le gouverner : [`gouvernement-ci-integration`](decisions/gou
 
 ## `src/gouvernement_textes.py`
 
-17 décision(s) le gouvernent ; le module en cite 6.
+18 décision(s) le gouvernent ; le module en cite 6.
 
 | Décision | Nomme |
 | --- | --- |
@@ -791,6 +792,7 @@ Le mentionnent sans le gouverner : [`gouvernement-ci-integration`](decisions/gou
 | [`gouvernement_textes.py` : filtre de statut par décision de séance, pas par `codeActe`/`fam_code` seul (#210) (2026-08-14)](decisions/gouvernement-textes-statut.md) | `DOSSIERS_CACHE_DIR`, `_est_decision_de_seance`, `ensure_dossiers_zip_downloaded` |
 | [`gouvernement_textes.py` : filtre de statut par décision de séance, pas par `codeActe`/`fam_code` seul (#210) (2026-08-14)](decisions/gouvernement-textes-statut-210-version-initiale.md) | `DOSSIERS_CACHE_DIR`, `_est_decision_de_seance`, `ensure_dossiers_zip_downloaded` |
 | [Mandats commission/groupe_amitie/extra_parlementaire sourcés depuis l'AN, fetch_identity NosDéputés rendu conditionnel (#369, complet), watchdog générique sur tous les téléchargements zip (#370, complet) (2026-08-17)](decisions/mandats-officiels-an-369.md) | `ensure_dossiers_zip_downloaded` |
+| [Le ministre qui présente un projet de loi complète `initiateurs`, avec son portefeuille au jour du dépôt (#1204) (2026-10-04)](decisions/ministres-presentant-un-projet-de-loi-1204.md) | `cosignataires_des_documents`, `parse_dossier_gouvernemental` |
 | [Un profil de roster ne porte pas une liste que sa propre collecte déclare écartée — purge des 49 `textes_portes` résiduels (#747)](decisions/purge-textes-portes-roster-747.md) | `_determine_statut` |
 | [Un projet de loi porté au nom du Gouvernement n'est pas une production personnelle (#689) (2026-09-01)](decisions/qualification-textes-portes-689.md) | `nature_texte_depose` |
 | [Un scrutin ne dit pas quel texte il tranche : le lien se lit à l'envers (#758), 07/09/2026](decisions/rattachement-scrutin-dossier-758.md) | `_determine_statut`, `iter_dossiers_bruts` |
@@ -1240,7 +1242,7 @@ Le mentionnent sans le gouverner : [`collecte-mandats-locaux-rne-922`](decisions
 
 ## `src/schema_gouvernement.py`
 
-11 décision(s) le gouvernent ; le module en cite 1.
+12 décision(s) le gouvernent ; le module en cite 1.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1251,6 +1253,7 @@ Le mentionnent sans le gouverner : [`collecte-mandats-locaux-rne-922`](decisions
 | [`gouvernement_textes.py` : filtre de statut par décision de séance, pas par `codeActe`/`fam_code` seul (#210) (2026-08-14)](decisions/gouvernement-textes-statut.md) | `validate_profil_gouvernement` |
 | [`gouvernement_textes.py` : filtre de statut par décision de séance, pas par `codeActe`/`fam_code` seul (#210) (2026-08-14)](decisions/gouvernement-textes-statut-210-version-initiale.md) | `validate_profil_gouvernement` |
 | [`KNOWN_STATUTS_TEXTE_GOUVERNEMENTAL` : ajout de `rejete_49_3` (#208, réouverte) (2026-08-14)](decisions/gouvernement-textes-statut-49-3-rejete.md) | `KNOWN_STATUTS_TEXTE_GOUVERNEMENTAL`, `validate_profil_gouvernement` |
+| [Le ministre qui présente un projet de loi complète `initiateurs`, avec son portefeuille au jour du dépôt (#1204) (2026-10-04)](decisions/ministres-presentant-un-projet-de-loi-1204.md) | `KNOWN_RELEVES_INITIATEUR` |
 | [La qualification d'un scrutin et la clé de son dossier étaient lues puis jetées (#639, rangs 1 et 2)](decisions/qualification-scrutins-et-cle-dossier-639.md) | `REQUIRED_TEXTE_KEYS` |
 | [`check_quality_gate.py` : section gouvernements (§5), couverture ministérielle proxy par `portefeuille` (#212) (2026-08-14)](decisions/quality-gate-gouvernements.md) | `validate_profil_gouvernement` |
 | [Le sort d'un texte entre dans la fiche, à côté de son stade et jamais à sa place (#743 dans #328), 07/09/2026](decisions/sort-des-textes-dans-la-fiche-328.md) | `KNOWN_STATUTS_TEXTE_GOUVERNEMENTAL` |

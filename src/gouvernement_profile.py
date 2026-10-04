@@ -187,9 +187,46 @@ def _index_acteur_ref_vers_membre(
     return index
 
 
+#: Où un initiateur a été lu (#1204). Le dossier nomme le Premier ministre et,
+#: une fois sur deux, les ministres qui présentent le texte ; le document de
+#: dépôt les nomme tous, comme cosignataires.
+RELEVE_DOSSIER = "dossier"
+RELEVE_DOCUMENT_DEPOT = "document_depot"
+
+
+def _portefeuille_a_la_date(
+    membre_id: Optional[str],
+    jour: Optional[str],
+    membres: Optional[list[dict[str, Any]]],
+) -> Optional[str]:
+    """Le portefeuille que `membre_id` tenait le `jour` du dépôt, ou `None`.
+
+    Lu dans `membres[]` de la même fiche : une ligne par période de fonction,
+    donc plusieurs par personne après un remaniement (14 personnes sur la fiche
+    Borne). Deux périodes qui se touchent le même jour — fin de l'une, début de
+    l'autre — rendent la plus récente. `None` quand la personne n'est pas membre,
+    que la date manque ou qu'aucune période ne la contient : rien n'est déduit
+    d'une période voisine (AGENTS.md §2.5).
+    """
+    if not membre_id or not jour or not membres:
+        return None
+    candidates = [
+        m for m in membres
+        if m.get("membre_id") == membre_id
+        and m.get("portefeuille")
+        and (m.get("debut") or "") <= jour <= (m.get("fin") or "9999-12-31")
+    ]
+    if not candidates:
+        return None
+    return max(candidates, key=lambda m: m.get("debut") or "")["portefeuille"]
+
+
 def _initiateurs_texte(
     acteur_refs: Optional[list[str]],
     acteur_ref_vers_membre: dict[str, str],
+    presentateurs_acteur_refs: Optional[list[str]] = None,
+    date_depot: Optional[str] = None,
+    membres: Optional[list[dict[str, Any]]] = None,
 ) -> Optional[list[dict[str, Any]]]:
     """Normalise les `acteurRef` d'un dossier en entrées
     `textes[].initiateurs` (#435), ou `None` si la source n'en déclare aucun.
@@ -198,15 +235,30 @@ def _initiateurs_texte(
     le texte, alors que le fait constaté est que la source ne le dit pas
     (AGENTS.md §2.5). `membre_id` reste `null` quand l'`acteurRef` n'est pas
     résolvable — la référence brute, elle, est toujours conservée.
+
+    #1204 — les ministres qui PRÉSENTENT le texte complètent la liste. Le
+    dossier ne les nomme qu'une fois sur deux ; le document de dépôt les porte
+    comme cosignataires. Ceux que le dossier nomme déjà ne sont pas répétés, et
+    chaque entrée dit où elle a été lue (`releve_dans`). `portefeuille` est
+    celui que la personne tenait le jour du dépôt, d'après `membres[]`.
     """
-    if not acteur_refs:
+    entrees: list[tuple[str, str]] = [(ref, RELEVE_DOSSIER) for ref in acteur_refs or []]
+    deja = {ref for ref, _ in entrees}
+    for ref in presentateurs_acteur_refs or []:
+        if ref not in deja:
+            deja.add(ref)
+            entrees.append((ref, RELEVE_DOCUMENT_DEPOT))
+    if not entrees:
         return None
     return [
         {
             "acteur_ref": acteur_ref,
             "membre_id": acteur_ref_vers_membre.get(acteur_ref),
+            "portefeuille": _portefeuille_a_la_date(
+                acteur_ref_vers_membre.get(acteur_ref), date_depot, membres),
+            "releve_dans": releve,
         }
-        for acteur_ref in acteur_refs
+        for acteur_ref, releve in entrees
     ]
 
 
@@ -274,6 +326,7 @@ def _select_textes_gouvernement(
     g_fin: Optional[date],
     acteur_ref_vers_membre: Optional[dict[str, str]] = None,
     commissions_par_dossier: Optional[dict[str, Any]] = None,
+    membres: Optional[list[dict[str, Any]]] = None,
 ) -> tuple[list[dict[str, Any]], dict[str, int], list[str]]:
     """Filtre `dossiers_gouvernementaux` (sortie non filtrée de
     `gouvernement_textes`) sur la période du gouvernement, normalise chaque
@@ -334,7 +387,9 @@ def _select_textes_gouvernement(
             "date_dernier_evenement": dossier.get("date_dernier_evenement"),
             "sort_49_3": dossier.get("sort_49_3"),
             "initiateurs": _initiateurs_texte(
-                dossier.get("initiateurs_acteur_refs"), acteur_ref_vers_membre
+                dossier.get("initiateurs_acteur_refs"), acteur_ref_vers_membre,
+                dossier.get("presentateurs_acteur_refs"),
+                dossier.get("date_depot"), membres,
             ),
             "source_url": dossier.get("source_url"),
         })
@@ -588,6 +643,7 @@ def build_gouvernement_profile(
     textes, par_statut, textes_warnings = _select_textes_gouvernement(
         dossiers_gouvernementaux, g_debut, g_fin, acteur_ref_vers_membre,
         commissions_par_dossier=commissions_par_dossier,
+        membres=membres,
     )
     warnings.extend(textes_warnings)
 

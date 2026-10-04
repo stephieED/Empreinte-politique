@@ -94,6 +94,8 @@ function dedoublonner(membres) {
  * transition écologique de Philippe II en a eu trois, et trois blocs auraient
  * dit trois ministères.
  */
+const CLES_PREMIER_MINISTRE = new Set(['premier ministre', 'premiere ministre']);
+
 export function organigramme(membres = [], premierMinistre = null, periode = {}) {
   const poles = [];
   const pourCle = (cle, titre, connu) => {
@@ -119,7 +121,12 @@ export function organigramme(membres = [], premierMinistre = null, periode = {})
     pourCle(motsClesPortefeuille(parent), capitale(normaliser(parent)), false).enfants.push(m);
   }
 
-  const pm = poles.find((p) => p.cle === 'premier ministre');
+  /* « Première ministre » est le même pôle que « Premier ministre » (04/10/2026).
+     La clé ne se comparait qu'au masculin : sous Borne, le pôle n'était pas
+     reconnu, une carte de secours « Premier ministre » s'ajoutait en tête, et
+     la vraie carte — ses neuf rattachés compris — restait rangée parmi les
+     ministères. Le libellé affiché reste celui de la source. */
+  const pm = poles.find((p) => CLES_PREMIER_MINISTRE.has(p.cle));
   if (pm) pm.pm = true;
   else if (premierMinistre) {
     poles.unshift({

@@ -271,7 +271,10 @@
   padding: 9px 11px;
   background: var(--card);
   border: 1px solid var(--border-strong);
-  border-top: 2px solid var(--gouv);
+  /* Au neutre depuis le 04/10/2026 : vingt cartes au même liseré marron, c'est
+     une couleur qui ne dit rien. L'encre reste, face au gris d'un titulaire
+     sans fiche. */
+  border-top: 2px solid var(--ink);
   border-radius: 8px;
 }
 
@@ -297,7 +300,7 @@
 
 /* Une passation est un changement DE TITULAIRE À UNE DATE : la flèche le dit,
    la date situe le changement. « X, puis Y » se lisait comme une hiérarchie. */
-.gvp-passation { color: var(--gouv); font-weight: 700; }
+.gvp-passation { color: var(--ink); font-weight: 700; }
 
 .gvp-depuis {
   font-size: 11.5px;
@@ -316,7 +319,9 @@
   padding: 2px 0 0;
   font-size: 11.5px;
   font-weight: 700;
-  color: var(--gouv);
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
   cursor: pointer;
 }
 
@@ -396,7 +401,7 @@
 .gvp-intervention-type { color: var(--texte-2); }
 
 .gvp-intervention-qualite {
-  color: var(--gouv);
+  color: var(--texte-2);
   font-size: 12px;
   max-width: 46ch;
 }
@@ -622,4 +627,159 @@
 .gvp-sujet-via { font-size: 12px; font-weight: 500; color: var(--muted); }
 @media (max-width: 720px) {
   .gvp-membre-bloc { grid-template-columns: 1fr; }
+}
+
+/* Mention temporaire d'une source interrompue (#1199) : l'encre pleine, le
+   contraste le plus fort sans couleur nouvelle. À retirer avec la constante
+   `SOURCE_INTERROMPUE`. */
+.gvp-mention {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  background: var(--ink);
+  color: var(--card);
+  border-radius: 8px;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.gvp-mention strong { font-weight: 800; }
+.gvp-mention-point {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* ── Revue d'ergonomie du 04/10/2026 ───────────────────────────────────── */
+
+/* Le titre d'une section et sa bulle, sur une ligne. */
+.gvp-section-titre-rang {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Les projets de loi en carrés : la grille des fiches candidat et de groupe,
+   avec le nombre de colonnes que la figure calcule. */
+.gvp-car { margin-top: 0; }
+.gvp-chemin {
+  margin: 10px 0 0;
+  min-height: 20px;
+  font-size: 12.5px;
+  color: var(--texte-2);
+  max-width: 100ch;
+}
+.gvp-chemin b { color: var(--ink); font-weight: 700; }
+@media (max-width: 720px) {
+  .gvp-car .cp-car-cols { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 16px 20px; }
+}
+
+/* La pastille 49.3, telle que sur la fiche candidat (`.cp-ter-493` vit dans sa
+   feuille, que cette page ne charge pas forcément). */
+.gvp-car .cp-ter-493 {
+  margin: 12px 0 0; font-size: 12.5px; color: var(--muted);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px;
+}
+.gvp-car .cp-ter-493 b { color: var(--ink); font-weight: 800; }
+.gvp-car .cp-ter-493-bouton {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--border-strong); border-radius: 999px;
+  background: none; color: var(--ink); cursor: pointer;
+  font: inherit; font-size: 12.5px; padding: 3px 12px 3px 4px;
+}
+.gvp-car .cp-ter-493-bouton:hover,
+.gvp-car .cp-ter-493-bouton:focus-visible,
+.gvp-car .cp-ter-493-bouton[aria-pressed='true'] { border-color: var(--ink); }
+.gvp-car .cp-ter-493-marque {
+  background: var(--ink); color: #fff; border-radius: 999px;
+  font-size: 10.5px; font-weight: 800; letter-spacing: 0.02em; padding: 2px 8px;
+}
+.gvp-car .cp-ter-493-quoi { color: var(--texte-2); }
+
+/* ── La parole du gouvernement, comptée : la grille de la fiche de groupe ── */
+.gvp-facette {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--texte-2);
+}
+.gvp-facette i { font-style: normal; font-weight: 500; text-transform: none; letter-spacing: 0; }
+.gvp-mat { margin-top: 12px; }
+.gvp-mr {
+  display: grid;
+  grid-template-columns: minmax(150px, 300px) minmax(140px, 1fr) 96px 76px;
+  gap: 0 16px;
+  align-items: center;
+  padding: 7px 0;
+}
+.gvp-mr--tete { padding: 0 0 4px; }
+.gvp-mr--tete .gvp-mr-n {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--texte-2);
+}
+.gvp-mr-lib {
+  font: inherit;
+  font-size: 13px;
+  color: var(--texte-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  min-width: 0;
+}
+.gvp-mr-lib--cliquable { border: 0; background: none; padding: 0; cursor: pointer; border-radius: 4px; }
+.gvp-mr-lib--cliquable:hover,
+.gvp-mr-lib--cliquable[aria-expanded='true'] { color: var(--ink); font-weight: 700; }
+.gvp-mr-lib--cliquable:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.gvp-mr-lib .gvp-chevron { margin-right: 4px; }
+.gvp-mr-bloc--nd .gvp-mr-lib { font-style: italic; }
+.gvp-mr-rail { display: block; height: 12px; background: #efede9; border-radius: 2px; }
+.gvp-segments { display: flex; gap: 1px; height: 12px; }
+.gvp-segments > * {
+  min-width: 2px;
+  height: 12px;
+  padding: 0;
+  border: 0;
+  border-radius: 1px;
+  background: var(--ink);
+  opacity: 0.55;
+}
+.gvp-segments > *:nth-child(even) { opacity: 0.34; }
+.gvp-segments > button { cursor: pointer; }
+.gvp-segments > button:hover,
+.gvp-segments > button:focus-visible,
+.gvp-segments > .gvp-segment--choisi { opacity: 1; outline: 2px solid var(--ink); outline-offset: 1px; }
+.gvp-mr-n { text-align: right; font-size: 13px; font-variant-numeric: tabular-nums; }
+.gvp-mr-n--sur { color: var(--muted); }
+.gvp-interventions--b { border-left-color: var(--border-strong); margin-top: 6px; }
+.gvp-membre-b { padding: 8px 0 12px; }
+.gvp-membre-b + .gvp-membre-b { border-top: 1px dashed var(--border-strong); }
+.gvp-membre-b-tete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 3px 12px;
+  margin-bottom: 10px;
+  font-size: 12.5px;
+  color: var(--texte-2);
+}
+.gvp-membre-b-tete .gvp-intervention-membre { font-size: 15px; font-weight: 800; }
+.gvp-membre-b-tete .gvp-intervention-qualite { max-width: none; }
+/* Les propos : la date au-dessus, plus aucune colonne — la forme de la fiche de groupe. */
+.gvp-membre-b .xd-cite { grid-template-columns: minmax(0, 1fr); gap: 3px; }
+.gvp-membre-b .xd-cite .xd-date { padding-top: 0; }
+.gvp-membre-b .xd-texte--nu { max-width: 72ch; }
+@media (max-width: 720px) {
+  .gvp-mr { grid-template-columns: minmax(0, 1fr) 72px 64px; }
+  .gvp-mr .gvp-mr-rail { grid-column: 1 / -1; grid-row: 2; }
 }

@@ -13,15 +13,10 @@
 }
 .adg-entonnoir li { padding: 14px 16px; background: var(--card); border-right: 1px solid var(--border); }
 .adg-entonnoir li:last-child { border-right: 0; }
-.adg-entonnoir .adg-reste { background: #f2f0ed; }
+/* Le gris dit ce qui est ÉCARTÉ ; ce que la section montre reste blanc. */
+.adg-entonnoir .adg-ecartes { background: #f2f0ed; }
 .adg-entonnoir b { display: block; font-size: 22px; font-weight: 800; line-height: 1.15; font-variant-numeric: tabular-nums; }
 .adg-entonnoir span { display: block; font-size: 12.5px; color: var(--muted); }
-/* Le repli par le titre est une AUTRE façon de savoir, pas la même : il se lit
-   comme tel ou il se confond avec le rangement de la source (§2 règle 5). */
-.adg-entonnoir .adg-repli {
-  margin-top: 5px; padding-top: 5px; border-top: 1px dotted var(--border-strong);
-  font-size: 11.5px; font-style: italic;
-}
 
 .adg-cadre { border: 1px solid var(--border); border-radius: 3px; background: var(--card); padding: 14px; overflow-x: auto; }
 .adg-flux { display: block; width: 100%; min-width: 760px; height: auto; }
@@ -82,3 +77,79 @@
 .adg-note { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.55; max-width: 78ch; }
 
 @media (prefers-reduced-motion: reduce) { .adg-loi summary::before { transition: none; } }
+
+/* ── Une barre par ministère, à l'encre (revue d'ergonomie du 04/10/2026) ── */
+.adg-barres { margin-top: 18px; }
+.adg-ligne {
+  display: grid;
+  grid-template-columns: minmax(150px, 320px) minmax(120px, 1fr) 76px 96px;
+  gap: 0 16px;
+  align-items: center;
+  width: 100%;
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+.adg-ligne--tete { padding: 0 0 4px; }
+.adg-ligne--tete .adg-n {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--texte-2, #6e6a78);
+}
+/* Le libellé ouvre tout le ministère ; chaque part de la barre, la sienne. */
+.adg-lib--cliquable { border: 0; background: none; padding: 0; font: inherit; font-size: 13px; text-align: left; min-width: 0; cursor: pointer; border-radius: 4px; }
+.adg-lib--cliquable:hover,
+.adg-lib--cliquable[aria-expanded='true'] { color: var(--ink); font-weight: 700; }
+.adg-lib--cliquable:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.adg-lib { font-size: 13px; color: var(--texte-2, #6e6a78); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.adg-rail { display: block; height: 12px; }
+.adg-barre { display: flex; height: 12px; }
+.adg-part { min-width: 2px; height: 12px; padding: 0; border: 0; cursor: pointer; }
+.adg-part:first-child { border-radius: 2px 0 0 2px; }
+.adg-part:last-child { border-radius: 0 2px 2px 0; }
+.adg-part:only-child { border-radius: 2px; }
+.adg-part--lie { background: var(--ink); }
+.adg-part--muet { background: #efede9; }
+.adg-part:hover,
+.adg-part:focus-visible,
+.adg-part--choisie { position: relative; outline: 2px solid var(--ink); outline-offset: 1px; }
+.adg-n { text-align: right; font-size: 13px; font-variant-numeric: tabular-nums; }
+.adg-n--fort { font-weight: 800; }
+.adg-deroule { padding: 4px 0 14px 18px; margin-left: 4px; border-left: 2px solid var(--border-strong); }
+.adg-plus {
+  margin-top: 6px;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+.adg-plus:hover { text-decoration: underline; }
+.adg-plus:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.adg-legende {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  margin: 12px 0 8px;
+  font-size: 12.5px;
+  color: var(--texte-2, #6e6a78);
+}
+.adg-cle { width: 14px; height: 9px; border-radius: 2px; display: inline-block; }
+.adg-cle--lie { background: var(--ink); }
+.adg-cle--muet { background: #efede9; margin-left: 12px; }
+@media (max-width: 720px) {
+  .adg-ligne { grid-template-columns: minmax(0, 1fr) 64px 72px; }
+  .adg-ligne .adg-rail { display: none; }
+}
+/* À la suite de l'étiquette qu'elle précise, sur la même ligne. */
+.adg-legende-limite { margin-left: 6px; }

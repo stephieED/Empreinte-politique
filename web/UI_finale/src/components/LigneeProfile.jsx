@@ -124,6 +124,10 @@ function VideFiltre({ quoi, critere }) {
  * sa phrase, son pied et son renvoi ; dès qu'il le porte, elle prend la
  * nouvelle (`utils/paroleDeGroupe.js`). */
 const LIRE_LA_METHODE = 'Lire la méthode →';
+/* S'ajoute à la note d'« En bref » quand le groupe de la législature en cours
+ * porte « Posture non déclarée » — la phrase de la fiche de gouvernement, mot
+ * pour mot (propriétaire, 04/10/2026). */
+const NOTE_MAJORITE_NON_DITE = 'L’Assemblée nationale ne dit quel groupe est majoritaire qu’une fois la législature achevée.';
 const BULLES = {
   enBref: {
     phrase: 'L’histoire du groupe à l’Assemblée : ses noms, ses effectifs, sa position face au gouvernement.',
@@ -1513,7 +1517,13 @@ export default function LigneeProfile({ lignee, mot = '' }) {
       <section className="lp-section lp-section--bref" data-section="En bref" id="section-bref">
         <div className="lp-section-tete ib-ancre">
           <h2 className="lp-section-titre"><span>En bref</span></h2>
-          <InfoBulle sujet="En bref" {...BULLES.enBref} />
+          <InfoBulle
+            sujet="En bref"
+            {...BULLES.enBref}
+            note={lignee.maillons.some((m) => !m.periode.fin && m.posture?.valeur === 'non_declaree')
+              ? `${BULLES.enBref.note} ${NOTE_MAJORITE_NON_DITE}`
+              : BULLES.enBref.note}
+          />
         </div>
         <Frise aujourdhui={aujourdhui} lignee={lignee} />
       </section>

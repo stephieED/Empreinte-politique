@@ -188,13 +188,18 @@ def test_une_rubrique_absente_retombe_sur_le_titre_et_se_declare() -> None:
     assert p["total"] == 1
 
 
-def test_la_fiche_publie_combien_d_actes_ont_ete_tranches_par_le_titre() -> None:
-    """Deux absences ne se confondent jamais : le repli se lit, ou il passe pour la source."""
-    texte = COMPOSANT.read_text(encoding="utf-8")
-    assert "personnesParTitre" in texte, (
-        "la section doit publier le nombre d'actes que le sommaire du JO n'a pas rangés"
+def test_la_methodologie_dit_que_le_titre_tranche_a_defaut_du_sommaire() -> None:
+    """Deux façons de savoir ne se confondent jamais : le repli par le titre se dit, ou il passe pour la source.
+
+    La carte de la fiche portait « dont N d'après leur titre » ; la propriétaire
+    l'a retirée le 04/10/2026 — la règle se lit en méthodologie, section des actes.
+    """
+    methodologie = (COMPOSANT.parent.parent / "pages" / "MethodologyPage.jsx").read_text(encoding="utf-8")
+    section = methodologie[methodologie.index("id: 'gouv-actes'"):]
+    assert "Mesures nominatives" in section, "la méthodologie doit dire QUI range les actes écartés"
+    assert "à défaut c'est leur titre qui le dit" in section, (
+        "la méthodologie doit dire que le titre tranche quand le sommaire ne range pas"
     )
-    assert "Journal officiel" in texte, "la section doit dire QUI range les actes de personne"
 
 
 def test_le_rangement_du_jo_est_lu_depuis_les_fichiers_mois() -> None:

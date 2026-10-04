@@ -608,6 +608,14 @@ export async function getParolesDuGouvernement(id) {
 }
 
 /**
+ * LES DIX PREMIERS DÉBATS, COMPTÉS PAR MEMBRE (04/10/2026) : quelques
+ * kilo-octets, chargés avec la section. `null` si le build ne les a pas écrits.
+ */
+export async function getSujetsComptesDuGouvernement(id) {
+  return (await fetchJson(`/data/gouvernements/${id}.sujets.json`)) || null;
+}
+
+/**
  * CE QUE L'EXÉCUTIF A FAIT ENTRER EN VIGUEUR (#1029 voie 1), chargé au
  * déploiement de la section et jamais avec la fiche : la projection pèse
  * ~0,4 Mo par gouvernement, quand la fiche entière en fait 1.

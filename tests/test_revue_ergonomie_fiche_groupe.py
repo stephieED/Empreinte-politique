@@ -131,7 +131,10 @@ def test_une_section_qui_a_sa_bulle_n_ecrit_plus_ni_phrase_ni_pied_ni_renvoi() -
     for section in ("QuiSontIls", "CeQuIlsOntVote", "AvecQuiIlsVotent", "CeQuOnNaPasPuLire"):
         corps = fiche.split(f"function {section}(")[1].split("\nfunction ")[0]
         assert "bulle={BULLES." in corps and "pied=" not in corps, section
-    assert '<InfoBulle sujet="En bref" {...BULLES.enBref} />' in fiche
+    assert "{...BULLES.enBref}" in fiche
+    # La législature en cours n'est pas encore qualifiée : la note le dit, au mot près.
+    assert "'L’Assemblée nationale ne dit quel groupe est majoritaire qu’une fois la législature achevée.'" in fiche
+    assert "`${BULLES.enBref.note} ${NOTE_MAJORITE_NON_DITE}`" in fiche
 
 
 def test_les_deux_cartes_de_la_section_trois_portent_chacune_leur_bulle() -> None:

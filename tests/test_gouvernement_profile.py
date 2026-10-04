@@ -186,6 +186,12 @@ def _pivot_ministre(id_: str, nom: str, acteur_ref: str, libelle_an: str = "BAYR
     return profil
 
 
+def _liens(initiateurs):
+    """Le lien membre → texte seul (#435). `portefeuille` et `releve_dans`
+    (#1204) ont leurs propres tests : `tests/test_ministres_presentant_un_projet_1204.py`."""
+    return [{"acteur_ref": i["acteur_ref"], "membre_id": i["membre_id"]} for i in initiateurs]
+
+
 def test_initiateur_resolu_vers_le_membre_id_du_gouvernement():
     profils = [_pivot_ministre("nosdeputes:a", "A", "PA643210")]
     dossiers = [_dossier("D1", date_depot="2025-01-10", initiateurs_acteur_refs=["PA643210"])]
@@ -194,7 +200,7 @@ def test_initiateur_resolu_vers_le_membre_id_du_gouvernement():
         periode_debut="2024-12-24", periode_fin="2025-09-09",
         profils=profils, dossiers_gouvernementaux=dossiers,
     )
-    assert profil["textes"][0]["initiateurs"] == [
+    assert _liens(profil["textes"][0]["initiateurs"]) == [
         {"acteur_ref": "PA643210", "membre_id": "nosdeputes:a"}
     ]
     assert validate_profil_gouvernement(profil) == []
@@ -210,7 +216,7 @@ def test_initiateur_hors_membres_conserve_lacteur_ref_sans_membre_id():
         periode_debut="2024-12-24", periode_fin="2025-09-09",
         profils=profils, dossiers_gouvernementaux=dossiers,
     )
-    assert profil["textes"][0]["initiateurs"] == [
+    assert _liens(profil["textes"][0]["initiateurs"]) == [
         {"acteur_ref": "PA999999", "membre_id": None}
     ]
     assert validate_profil_gouvernement(profil) == []
@@ -232,7 +238,7 @@ def test_initiateurs_multiples_resolution_partielle():
         periode_debut="2024-12-24", periode_fin="2025-09-09",
         profils=profils, dossiers_gouvernementaux=dossiers,
     )
-    assert profil["textes"][0]["initiateurs"] == [
+    assert _liens(profil["textes"][0]["initiateurs"]) == [
         {"acteur_ref": "PA643210", "membre_id": "nosdeputes:a"},
         {"acteur_ref": "PA999999", "membre_id": None},
         {"acteur_ref": "PA721836", "membre_id": "nosdeputes:b"},
@@ -267,7 +273,7 @@ def test_initiateur_dun_profil_non_membre_du_gouvernement_non_resolu():
         profils=profils, dossiers_gouvernementaux=dossiers,
     )
     assert {m["membre_id"] for m in profil["membres"]} == {"nosdeputes:a"}
-    assert profil["textes"][0]["initiateurs"] == [
+    assert _liens(profil["textes"][0]["initiateurs"]) == [
         {"acteur_ref": "PA111111", "membre_id": None}
     ]
 
@@ -284,7 +290,7 @@ def test_acteur_ref_partage_par_deux_profils_nest_pas_tranche():
         periode_debut="2024-12-24", periode_fin="2025-09-09",
         profils=profils, dossiers_gouvernementaux=dossiers,
     )
-    assert profil["textes"][0]["initiateurs"] == [
+    assert _liens(profil["textes"][0]["initiateurs"]) == [
         {"acteur_ref": "PA643210", "membre_id": None}
     ]
     assert any(
@@ -297,7 +303,7 @@ def test_select_textes_sans_index_ne_devine_aucun_membre():
     réduite, jamais un lien deviné."""
     dossiers = [_dossier("D1", date_depot="2025-01-10", initiateurs_acteur_refs=["PA643210"])]
     textes, _, _ = _select_textes_gouvernement(dossiers, _parse_date("2024-12-24"), None)
-    assert textes[0]["initiateurs"] == [{"acteur_ref": "PA643210", "membre_id": None}]
+    assert _liens(textes[0]["initiateurs"]) == [{"acteur_ref": "PA643210", "membre_id": None}]
 
 
 # ---------------------------------------------------------------------------

@@ -129,10 +129,10 @@ def test_les_renvois_remplacent_l_explication_et_atteignent_une_ancre():
     assert '49.3 est un fait de procédure' in source, (
         "le 49.3 se nomme à côté de la figure : aucune forme ne le porte seule"
     )
-    ancres = set(re.findall(r"/methodologie#([a-z]+)", source))
+    ancres = set(re.findall(r"/methodologie#([a-z-]+)", source))
     assert ancres, "aucun renvoi vers la méthodologie"
     methodo = (UI / "src" / "pages" / "MethodologyPage.jsx").read_text(encoding="utf-8")
-    ids = set(re.findall(r"id: '([a-z]+)'", methodo))
+    ids = set(re.findall(r"id: '([a-z-]+)'", methodo))
     assert ancres <= ids, f"renvois vers des ancres inexistantes : {ancres - ids}"
 
 
@@ -190,7 +190,9 @@ def test_la_parole_compte_des_membres_et_publie_son_denominateur():
     assert "membres dont la parole est collectée" in source, (
         "le pied de section nomme la population du dénominateur"
     )
-    assert "/methodologie#paroles" in source, "le renvoi dit d'où viennent les intitulés"
+    # Le renvoi vit dans la bulle depuis la revue d'ergonomie du 04/10/2026, et
+    # mène à la section de méthodologie propre à la fiche de gouvernement.
+    assert "/methodologie#gouv-paroles" in source, "la bulle mène à la méthode"
 
 
 def test_l_etiquetage_des_debats_declare_sa_limite():
@@ -199,7 +201,9 @@ def test_l_etiquetage_des_debats_declare_sa_limite():
     silencieux."""
     source = COMPOSANT.read_text(encoding="utf-8")
     assert "quoi: 'Prises de parole'" in source
-    assert "n’apparaît que si la source publie son intitulé" in source
+    # Depuis le 04/10/2026 une prise de parole sans intitulé est COMPTÉE, sous
+    # « Intitulé non publié » : la limite dit ce qui lui manque, ses propos.
+    assert "est comptée sous « Intitulé non publié », sans ses propos" in source
 
 
 def test_le_detail_d_un_sujet_est_une_ligne_par_membre():
@@ -226,7 +230,9 @@ def test_la_cle_du_detail_est_celle_de_l_agregat():
     projection sur le libellé brut donnait zéro correspondance sur les 1 738
     sujets de Borne."""
     projection = (UI / "scripts" / "vue-parole-gouvernement.mjs").read_text(encoding="utf-8")
-    assert "theme.trim().toLowerCase()" in projection
+    # Le sujet se lit comme sur les fiches candidat et de groupe (04/10/2026) :
+    # le thème, sinon le sujet du chemin — toujours en minuscules sans espaces.
+    assert "intitule.trim().toLowerCase()" in projection
 
 
 def test_aucun_lien_ne_mene_a_une_archive():
