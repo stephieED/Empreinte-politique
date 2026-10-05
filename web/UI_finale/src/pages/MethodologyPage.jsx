@@ -556,8 +556,10 @@ const SECTIONS = [
         <p>
           Un carré est un <strong>projet de loi</strong> : un texte présenté par le gouvernement.
           Il est rangé à l'étape qu'il a atteinte : déposé, en navette — encore en cours d'examen
-          entre l'Assemblée et le Sénat —, adopté, promulgué ou rejeté. Sa couleur est celle de la
-          commission chargée de l'examiner. Les propositions de loi, déposées par des députés ou
+          entre l'Assemblée et le Sénat —, adopté, promulgué ou rejeté. Sa couleur est celle du
+          ministère qui le présente, la même que sur la carte de ce ministère et sur sa barre
+          d'actes. Un carré à plusieurs couleurs est présenté par plusieurs ministères ; un carré
+          gris, par aucun ministère nommé. Les propositions de loi, déposées par des députés ou
           des sénateurs, n'y figurent pas.
         </p>
         <p>

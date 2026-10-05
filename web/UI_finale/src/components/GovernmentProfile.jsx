@@ -33,17 +33,16 @@ import './GovernmentProfile.css';
 import {
   LIBELLE_SORT_TEXTE, SOURCE_BADGE_VERIFIED, formatNumber, pageDuJeuDeDonnees,
 } from '../utils/lecture';
-import {
-  COMMISSIONS_SPECIALES, familleDeCommission, teinteCommission, teinteDeLaFamille,
-} from '../utils/commissions';
 import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
 import InfoBulle from './InfoBulle';
 import {
   MATIERE_ABSENTE,
   chargeDuPortefeuille,
-  organigramme,
 } from '../utils/gouvernement';
 import ActesDuGouvernement from './ActesDuGouvernement';
+import {
+  GRIS_SANS_MINISTERE, clesDuTexte, fondDuTexte, nomCourtDuMinistere, polesDuGouvernement, teintesDesMinisteres,
+} from '../utils/ministere';
 
 /* LES BULLES (revue d'ergonomie du 04/10/2026). Une phrase dit ce que la
  * section présente, une note aide à ne pas mal la lire, un lien mène à la
@@ -336,7 +335,16 @@ function colonnes(poles, nombre) {
   return piles;
 }
 
-function Ministere({ pole, ouvert, onBasculer }) {
+/* Les cartes et leurs teintes, calculées une fois par fiche : la même table
+ * sert la composition, les projets de loi et les actes (`utils/ministere.js`). */
+function useMinisteres(government) {
+  return useMemo(() => {
+    const poles = polesDuGouvernement(government);
+    return { poles, teintes: teintesDesMinisteres(poles, government.textes) };
+  }, [government]);
+}
+
+function Ministere({ pole, ouvert, onBasculer, teinte = null }) {
   const enfants = pole.enfants;
   const basculer = (ev) => {
     ev.stopPropagation();
@@ -344,8 +352,11 @@ function Ministere({ pole, ouvert, onBasculer }) {
   };
   return (
     <div
-      className={`gvp-pole${pole.connu ? '' : ' gvp-pole--absent'}${enfants.length ? ' gvp-pole--cliquable' : ''}`}
+      className={`gvp-pole${pole.connu ? '' : ' gvp-pole--absent'}${enfants.length ? ' gvp-pole--cliquable' : ''}${teinte ? ' gvp-pole--teinte' : ''}`}
       onClick={enfants.length ? basculer : undefined}
+      // Le liseré est la légende des deux sections qui suivent : la teinte du
+      // ministère sur ses projets de loi et sur sa barre d'actes.
+      style={teinte ? { '--ministere': teinte } : undefined}
     >
       <p className="gvp-pole-portefeuille">{pole.titre}</p>
       {pole.titulaires.length ? (
@@ -391,17 +402,7 @@ function QuiLeComposait({ government }) {
   // candidat et de groupe (04/10/2026).
   const carte = useRef(null);
   useReplieAuClicDehors(carte, deplie !== null, () => setDeplie(null));
-  const poles = useMemo(() => {
-    /* La source publie parfois DEUX mandats d'appartenance pour la même
-       personne, dont un sans portefeuille — Damien Abad et Yaël Braun-Pivet
-       sous Borne (#996). L'entrée muette ne dit rien de plus que celle qui
-       nomme le ministère, et en faire un bloc « Portefeuille non renseigné »
-       ferait apparaître la personne deux fois. Elle est donc écartée
-       UNIQUEMENT quand la personne est déjà placée ailleurs. */
-    const nommes = new Set(government.membres.filter((m) => m.portefeuille).map((m) => m.nom));
-    const membres = government.membres.filter((m) => m.portefeuille || !nommes.has(m.nom));
-    return organigramme(membres, government.premierMinistre, government.periode);
-  }, [government]);
+  const { poles, teintes } = useMinisteres(government);
   const piles = colonnes(poles, 3);
 
   return (
@@ -423,6 +424,7 @@ function QuiLeComposait({ government }) {
                   <Ministere
                     key={pole.cle || pole.titre}
                     pole={pole}
+                    teinte={teintes.get(pole.cle) || null}
                     ouvert={deplie === (pole.cle || pole.titre)}
                     onBasculer={() => setDeplie((actuel) => (
                       actuel === (pole.cle || pole.titre) ? null : (pole.cle || pole.titre)
@@ -808,17 +810,19 @@ const COLONNES_PROJETS = [
 ];
 const STATUT_493 = 'adopte_49_3';
 
-const familleDuTexte = (texte) => familleDeCommission(texte.commission);
-
-/** Les colonnes de la figure : les cinq prévues, puis une par statut imprévu. */
-export function colonnesDesProjets(textes) {
+/** Les colonnes de la figure : les cinq prévues, puis une par statut imprévu.
+ *  Dans une colonne, les carrés se rangent par ministère, dans l'ordre des
+ *  cartes de « Qui le composait » : les teintes voisinent au lieu de se mêler. */
+export function colonnesDesProjets(textes, poles = []) {
   const prevus = new Set(COLONNES_PROJETS.flatMap((c) => c.statuts));
   const imprevus = [...new Set(textes.map((t) => t.statut).filter((st) => !prevus.has(st)))];
-  const ordre = (t) => [ORDRE_FAMILLES.indexOf(familleDuTexte(t)), familleDuTexte(t), t.meta || ''];
-  const trier = (liste) => [...liste].sort((x, y) => {
-    const [a, fa, da] = ordre(x); const [b, fb, db] = ordre(y);
-    return a - b || fa.localeCompare(fb, 'fr') || da.localeCompare(db);
-  });
+  const rang = (t) => {
+    const cles = clesDuTexte(poles, t);
+    const k = poles.findIndex((p) => p.cle === cles[0]);
+    return k < 0 ? Number.MAX_SAFE_INTEGER : k;
+  };
+  const trier = (liste) => [...liste].sort((x, y) => rang(x) - rang(y)
+    || String(x.dateDepot || '').localeCompare(String(y.dateDepot || '')));
   return [
     ...COLONNES_PROJETS,
     ...imprevus.map((st) => {
@@ -828,24 +832,24 @@ export function colonnesDesProjets(textes) {
   ].map((c) => ({ ...c, textes: trier(textes.filter((t) => c.statuts.includes(t.statut))) }));
 }
 
-const ORDRE_FAMILLES = [
-  'Affaires culturelles et éducation', 'Affaires économiques', 'Affaires étrangères',
-  'Affaires sociales', 'Défense', 'Développement durable', 'Finances', 'Lois',
-  COMMISSIONS_SPECIALES, MATIERE_ABSENTE,
-];
+/* Ce que la légende écrit pour un projet qu'aucun ministère de la fiche ne
+   présente : le Premier ministre seul, ou une source qui ne nomme personne. */
+const SANS_MINISTERE = 'Aucun ministère nommé';
 
-function retenu(selection, texte) {
+function retenu(selection, texte, poles = []) {
   if (!selection) return true;
+  if (selection.ministere) return clesDuTexte(poles, texte).includes(selection.ministere);
   if (selection.texte) return selection.texte === texte.dossierId;
   if (selection.colonne) return selection.statuts.includes(texte.statut);
-  if (selection.famille) return familleDuTexte(texte) === selection.famille;
   if (selection.p493) return texte.statut === STATUT_493;
   return true;
 }
 
-function CarresDesProjets({ textes, selection, onSelection }) {
-  const colonnes = useMemo(() => colonnesDesProjets(textes), [textes]);
-  const familles = ORDRE_FAMILLES.filter((f) => textes.some((t) => familleDuTexte(t) === f));
+function CarresDesProjets({ textes, selection, onSelection, poles = [], teintes = new Map() }) {
+  // Les ministères qui présentent au moins un projet, dans l'ordre des cartes.
+  const presentes = poles.filter((p) => teintes.has(p.cle) && textes.some((t) => clesDuTexte(poles, t).includes(p.cle)));
+  const sansMinistere = textes.filter((t) => !clesDuTexte(poles, t).some((c) => teintes.has(c))).length;
+  const colonnes = useMemo(() => colonnesDesProjets(textes, poles), [textes, poles]);
   const n493 = textes.filter((t) => t.statut === STATUT_493).length;
   /* LE TEXTE SURVOLÉ SE NOMME DANS UNE INFOBULLE, celle des carrés des fiches
    * candidat et groupe (`.cp-car-bulle`) : posée d'après le carré, ancrée par
@@ -866,7 +870,7 @@ function CarresDesProjets({ textes, selection, onSelection }) {
   const [eclaire493, setEclaire493] = useState(false);
   const meme = (a) => JSON.stringify(a) === JSON.stringify(selection);
   const choisir = (nouvelle) => onSelection(meme(nouvelle) ? null : nouvelle);
-  const voile = (texte) => (eclaire493 ? texte.statut !== STATUT_493 : !retenu(selection, texte));
+  const voile = (texte) => (eclaire493 ? texte.statut !== STATUT_493 : !retenu(selection, texte, poles));
 
   return (
     <div className="cp-car gvp-car" ref={ref}>
@@ -903,7 +907,7 @@ function CarresDesProjets({ textes, selection, onSelection }) {
                     onFocus={(e) => montrer(t, e.currentTarget)}
                     onMouseEnter={(e) => montrer(t, e.currentTarget)}
                     onMouseLeave={cacher}
-                    style={{ background: teinteCommission(t.commission) }}
+                    style={{ background: fondDuTexte(poles, teintes, t) }}
                     type="button"
                   />
                 ))}
@@ -921,26 +925,35 @@ function CarresDesProjets({ textes, selection, onSelection }) {
           style={{ left: bulle.gauche, bottom: bulle.bas, '--fleche': `${bulle.fleche}px` }}
         >
           <b>{bulle.texte.titre}</b>
-          <span>{bulle.texte.commission || MATIERE_ABSENTE} · {LIBELLE_SORT_TEXTE[bulle.texte.statut] || bulle.texte.statut}</span>
+          <span>{[...clesDuTexte(poles, bulle.texte).map((c) => nomCourtDuMinistere(poles.find((p) => p.cle === c)?.titre)), bulle.texte.commission || MATIERE_ABSENTE, LIBELLE_SORT_TEXTE[bulle.texte.statut] || bulle.texte.statut].join(' · ')}</span>
         </div>
       )}
 
+      {/* La légende nomme les ministères, plus les commissions : la couleur d'un
+          carré est celle du ministère qui présente le texte. La commission se
+          lit dans l'infobulle et dans la liste. */}
       <div className="cp-car-legende">
-        {familles.map((f) => {
-          const sel = { famille: f, intitule: f };
+        {presentes.map((p) => {
+          const sel = { ministere: p.cle, intitule: nomCourtDuMinistere(p.titre) };
           return (
             <button
               aria-pressed={meme(sel)}
-              className={['cp-car-cle', selection?.famille && !meme(sel) ? 'cp-car-voile' : ''].filter(Boolean).join(' ')}
-              key={f}
+              className={['cp-car-cle', selection?.ministere && !meme(sel) ? 'cp-car-voile' : ''].filter(Boolean).join(' ')}
+              key={p.cle}
               onClick={() => choisir(sel)}
               type="button"
             >
-              <i aria-hidden="true" style={{ background: teinteDeLaFamille(f) }} />
-              {f}
+              <i aria-hidden="true" style={{ background: teintes.get(p.cle) }} />
+              {nomCourtDuMinistere(p.titre)}
             </button>
           );
         })}
+        {sansMinistere > 0 && (
+          <span className="cp-car-cle gvp-cle-muette">
+            <i aria-hidden="true" style={{ background: GRIS_SANS_MINISTERE }} />
+            {SANS_MINISTERE}
+          </span>
+        )}
       </div>
 
       {n493 > 0 && (
@@ -968,6 +981,7 @@ function CarresDesProjets({ textes, selection, onSelection }) {
 
 function CeQuIlAFaitDeposer({ government, mot = '' }) {
   const actif = useFiltreActif(mot);
+  const { poles, teintes } = useMinisteres(government);
   const couverture = government.textesCouverture || {};
   const horsCouverture = couverture.statut === 'hors_couverture';
   const partielle = couverture.statut === 'partielle';
@@ -990,7 +1004,7 @@ function CeQuIlAFaitDeposer({ government, mot = '' }) {
               : `Aucun projet de loi n’a été déposé entre le ${jour(government.periode.debut)} et le ${jour(government.periode.fin)} : un zéro mesuré, pas une absence de source.`}
           </p>
         ) : (
-          <FluxEtListe mot={mot} textes={government.textes} />
+          <FluxEtListe mot={mot} poles={poles} teintes={teintes} textes={government.textes} />
         )}
       </div>
     </section>
@@ -998,18 +1012,18 @@ function CeQuIlAFaitDeposer({ government, mot = '' }) {
 }
 
 /* La liste ne s'ouvre qu'au clic : 282 cartes sous la figure étaient un mur. */
-function FluxEtListe({ textes, mot = '' }) {
+function FluxEtListe({ textes, mot = '', poles = [], teintes }) {
   const actif = useFiltreActif(mot);
   const [selection, setSelection] = useState(null);
   const racine = useRef(null);
   useReplieAuClicDehors(racine, selection !== null, () => setSelection(null));
   /* Sous un mot, la liste est DÉPLIÉE : les textes retenus s'affichent sans
      qu'il faille cliquer, et un clic les restreint encore. */
-  const choisis = selection ? textes.filter((t) => retenu(selection, t)) : actif ? textes : [];
+  const choisis = selection ? textes.filter((t) => retenu(selection, t, poles)) : actif ? textes : [];
 
   return (
     <div ref={racine}>
-      <CarresDesProjets onSelection={setSelection} selection={selection} textes={textes} />
+      <CarresDesProjets onSelection={setSelection} poles={poles} selection={selection} teintes={teintes} textes={textes} />
       {selection ? (
         <div className="gvp-selection">
           <p className="gvp-selection-tete">
@@ -1029,7 +1043,7 @@ function FluxEtListe({ textes, mot = '' }) {
           <ListeDesTextes textes={choisis} />
         </div>
       ) : (
-        <p className="gvp-invite">Cliquez un carré, une étape ou une commission pour lire les textes.</p>
+        <p className="gvp-invite">Cliquez un carré, une étape ou un ministère pour lire les textes.</p>
       )}
     </div>
   );
@@ -1168,6 +1182,7 @@ export const SOURCE_INTERROMPUE = {
 /* 05 — Ce qu'il a fait entrer en vigueur (#1029 voie 1). La section ne porte
    que son cadre : tout le reste vit dans `ActesDuGouvernement`. */
 function CeQuIlAFaitEntrerEnVigueur({ government }) {
+  const { poles, teintes } = useMinisteres(government);
   // Seul le gouvernement en place peut manquer d'actes récents.
   const interrompue = SOURCE_INTERROMPUE && !government.periode.fin;
   return (
@@ -1184,7 +1199,7 @@ function CeQuIlAFaitEntrerEnVigueur({ government }) {
             <span><strong>{SOURCE_INTERROMPUE.titre}</strong> {SOURCE_INTERROMPUE.texte}</span>
           </p>
         )}
-        <ActesDuGouvernement id={government.id} />
+        <ActesDuGouvernement id={government.id} poles={poles} teintes={teintes} />
       </div>
     </section>
   );

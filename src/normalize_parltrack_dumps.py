@@ -98,6 +98,30 @@ def _date_plausible(brut: Optional[str]) -> tuple[Optional[str], Optional[str]]:
     return None, str(brut)
 
 
+#: Motif d'une date d'activité publiée `null` parce que la seule date que la
+#: source donne est celle de sa REPUBLICATION par ParlTrack (#858).
+MOTIF_DATE_DE_REPUBLICATION = "date_de_republication"
+
+
+def _date_activite(entree: dict[str, Any]) -> tuple[Optional[str], Optional[dict[str, str]]]:
+    """`(date, date_non_resolue)` d'une activité de l'index.
+
+    L'index rend déjà la date de SÉANCE quand la référence ou l'adresse du
+    compte rendu la porte (`parltrack_dumps.date_de_seance`). Quand ce n'est pas
+    le cas — une explication de vote, une question, une proposition de
+    résolution, dont la référence ne donne au mieux qu'une année — la date est
+    publiée `null`, et `date_non_resolue` dit pourquoi en gardant la valeur de
+    la source : jamais la date de republication à la place (§2 règle 5).
+    """
+    date, _ = _date_plausible(entree.get("date"))
+    if date is None and entree.get("date_republication"):
+        return None, {
+            "motif": MOTIF_DATE_DE_REPUBLICATION,
+            "valeur_source": entree["date_republication"],
+        }
+    return date, None
+
+
 def _normaliser_nom(nom: Optional[str]) -> str:
     """Nom réduit à un ensemble de mots, sans accents ni casse ni ordre.
 
@@ -535,7 +559,7 @@ def _make_intervention(
     pas entrer en collision avec l'espace `syceron_`/`question_` de l'Assemblée.
     """
     reference = entree.get("reference")
-    date, _ = _date_plausible(entree.get("date"))
+    date, date_non_resolue = _date_activite(entree)
     intervention: dict[str, Any] = {
         "intervention_id": f"europarl_{reference}" if reference else None,
         "date": date,
@@ -564,6 +588,8 @@ def _make_intervention(
     sous_type = SOUS_TYPE_PAR_ACTIVITE.get(activite)
     if sous_type:
         intervention["sous_type"] = sous_type
+    if date_non_resolue:
+        intervention["date_non_resolue"] = date_non_resolue
     return intervention
 
 
@@ -687,7 +713,7 @@ def _make_texte_porte_activite(
     `activite_sans_dossier` quand l'activité ne vise aucune référence — il n'y a
     alors rien à interroger.
     """
-    date, _ = _date_plausible(entree.get("date"))
+    date, date_non_resolue = _date_activite(entree)
     nature, role = ROLE_PAR_ACTIVITE[activite]
     reference = _reference_dossier_activite(entree)
     if reference is None:
@@ -710,6 +736,7 @@ def _make_texte_porte_activite(
         "sort_non_resolu": {"motif": "source_sans_sort"},
         "date_min": date,
         "date_max": date,
+        **({"date_non_resolue": date_non_resolue} if date_non_resolue else {}),
         "legislature": None,
         "source_url": entree.get("source_url"),
     }

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
 import { getActesDuGouvernement } from '../data';
 import './ActesDuGouvernement.css';
+import { poleDuLibelle } from '../utils/ministere';
 
 /* ── CE QUE L'EXÉCUTIF A FAIT ENTRER EN VIGUEUR (#1029 voie 1) ────────────────
  *
@@ -49,7 +50,7 @@ const enJours = (n) => {
 };
 const enClair = (iso) => (iso ? iso.split('-').reverse().join('/') : '');
 
-export default function ActesDuGouvernement({ id }) {
+export default function ActesDuGouvernement({ id, poles = [], teintes = new Map() }) {
   const [donnees, setDonnees] = useState(null);
   const [erreur, setErreur] = useState(false);
   const [ouvert, setOuvert] = useState(null);
@@ -151,6 +152,9 @@ export default function ActesDuGouvernement({ id }) {
         {visibles.map((l) => {
           const choisi = ouvert === l.nom;
           const muets = l.n - l.lies;
+          // La teinte du ministère, celle de sa carte et de ses projets de loi ;
+          // un ministère que la fiche ne compte pas parmi ses cartes reste à l'encre.
+          const teinte = teintes.get(poleDuLibelle(poles, l.nom)?.cle) || null;
           const cellules = (donnees.cellules || []).filter((c) => c.m === l.nom
             && (part === null || (part === LIES ? c.l !== MUET : c.l === MUET)));
           return (
@@ -167,7 +171,7 @@ export default function ActesDuGouvernement({ id }) {
                         aria-pressed={choisi && part === LIES}
                         className={`adg-part adg-part--lie${choisi && part === LIES ? ' adg-part--choisie' : ''}`}
                         onClick={() => basculer(l.nom, LIES)}
-                        style={{ flex: `${l.lies} 1 0` }}
+                        style={{ flex: `${l.lies} 1 0`, ...(teinte ? { background: teinte } : {}) }}
                         type="button"
                       />
                     )}
@@ -177,7 +181,7 @@ export default function ActesDuGouvernement({ id }) {
                         aria-pressed={choisi && part === MUETS}
                         className={`adg-part adg-part--muet${choisi && part === MUETS ? ' adg-part--choisie' : ''}`}
                         onClick={() => basculer(l.nom, MUETS)}
-                        style={{ flex: `${muets} 1 0` }}
+                        style={{ flex: `${muets} 1 0`, ...(teinte ? { background: teinte, opacity: 0.28 } : {}) }}
                         type="button"
                       />
                     )}

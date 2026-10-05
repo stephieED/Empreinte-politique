@@ -730,8 +730,23 @@ def _compute_cohesion_votes(
     legislature: Optional[str] = None,
     scrutins_index: Optional[ScrutinsIndex] = None,
     chambre: Optional[str] = None,
+    appartenances: Optional[dict[str, Optional[list[tuple[Optional[str], Optional[str]]]]]] = None,
 ) -> list[dict[str, Any]]:
     """Calcule la cohésion de vote pour chaque scrutin couvert par les membres.
+
+    **Un membre compte pour un scrutin s'il appartenait AU GROUPE ce jour-là
+    (#1175).** `appartenances` — `{id de profil: périodes}`, la table que lit
+    déjà la parole (#1073) — fait foi quand elle date l'appartenance. Jusqu'à
+    #1175 le critère était « en mandat de député ce jour-là », sur tous les
+    profils passés par le groupe dans la législature : quiconque l'avait quitté
+    ou n'y était pas encore entré comptait au dénominateur, avec sa voix. Mesuré
+    le 05/10/2026 sur le scrutin `an:17:4241` : 601 éligibles sur les 11 groupes
+    pour une Assemblée de 577, 566 membres ce jour-là ; et 7 126 cases de la XVe
+    portaient la position d'un groupe un jour où il n'avait aucun membre.
+
+    Un membre dont l'appartenance n'est PAS datée (`None` dans la table, ou
+    table absente) garde l'ancien critère, le mandat électif : on ne peut pas
+    l'exclure sur une date qu'on n'a pas (§2 règle 5).
 
     Algorithme :
       1. Collecte tous les scrutins distincts (par numero_scrutin) rencontrés
@@ -800,6 +815,10 @@ def _compute_cohesion_votes(
     eligibility_intervals = [
         _member_eligibility_intervals(p.get("mandats") or [], chambre) for p in profils
     ]
+    # #1175 — les périodes d'appartenance au groupe, quand elles sont datées.
+    periodes_au_groupe = [
+        (appartenances or {}).get(p.get("id") or "") for p in profils
+    ]
 
     # --- 3. Calcul par scrutin ---
     _EXPRESSED = ("pour", "contre", "abstention")
@@ -814,8 +833,15 @@ def _compute_cohesion_votes(
         }
         n_eligible = 0
 
-        for v_index, intervals in zip(vote_indexes, eligibility_intervals):
-            if not _is_eligible_at(intervals, parsed_vote_date):
+        jour = str(vote_date or "")[:10]
+        for v_index, intervals, periodes in zip(
+                vote_indexes, eligibility_intervals, periodes_au_groupe):
+            if periodes is not None and jour:
+                # Membre du groupe ce jour-là, ou pas compté du tout — ni au
+                # dénominateur, ni par sa voix.
+                if not _dans_periodes(jour, periodes):
+                    continue
+            elif not _is_eligible_at(intervals, parsed_vote_date):
                 continue
             n_eligible += 1
 
@@ -2452,6 +2478,7 @@ def build_groupe_profile(
     cohesion_votes = _compute_cohesion_votes(
         profils, seuil_quorum=seuil_quorum, legislature=legislature,
         scrutins_index=scrutins_index, chambre=chambre,
+        appartenances={m["membre_id"]: periodes_d_appartenance(m) for m in membres},
     )
     n_non_resolus = _votes_non_resolus(profils)
     if n_non_resolus:

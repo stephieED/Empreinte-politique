@@ -162,8 +162,20 @@ lui qui rend l'ensemble rattachable, et c'est la clé des deux index de
 09/09/2026. Elles sont publiées `null` avec leur valeur brute à côté, jamais corrigées en
 silence.
 
-**La datation ParlTrack au 22/11/2016** touche les interventions et textes européens : c'est le
-jour de republication du dump, pas celui de la séance. Suivi par #858, non résolu.
+**La datation ParlTrack au 22/11/2016** est celle de la REPUBLICATION, pas de la séance, et
+elle se reconnaît : l'activité porte alors `date-type: "datePublished"`. Mesuré le 05/10/2026
+sur le dump `ep_mep_activities` du 12/09/2026 : **548 598** activités le portent, toutes datées
+du 22/11/2016 (#858).
+
+| Type d'activité | republiées | où lire la date de séance |
+| --- | --- | --- |
+| `CRE`, prise de parole en séance | 354 547 | dans `reference` (`P8_CRE-REV(2017)03-16(…)`) pour 347 322 ; dans `url` (`…/CRE-8-2017-03-16-INT-…`) pour les 7 225 autres, dont la référence vaut `-REV()-` |
+| `WEXP`, `WQ`, `OQ`, `MOTION`, `REPORT`, `COMPARL` et leurs variantes | 194 051 | **nulle part** : la référence (`A8-0042/2017`, `E-001015/2017`) ne donne qu'une année |
+
+Référence et adresse concordent sur les 347 322 comptes rendus qui portent les deux. Une
+activité sans `date-type` porte sa vraie date — il existe des prises de parole réellement
+tenues le 22/11/2016, jour de séance plénière. Résolu par #858 : la date de séance quand elle
+se lit, sinon `date: null` avec `date_non_resolue`.
 
 ## `data.europarl.europa.eu/api/v2/documents/{id}` — ce que la réponse porte, et comment elle se refuse
 
@@ -190,6 +202,20 @@ que la même URL servie depuis un autre réseau rendait 200. Diagnostic : une li
 visait **notre adresse, sur cette ressource**. Deux conséquences dans le code : un disjoncteur
 après cinq silences (`MAX_ECHECS_CONSECUTIFS`), et aucune mesure en boucle depuis la machine
 de développement — vérifier un document isolé passe par un autre réseau.
+
+## `data.europarl.europa.eu/api/v2/meps/{id}` — le nom, et sa casse (05/10/2026)
+
+`label` porte le nom de famille **en capitales** : « Florian PHILIPPOT »,
+« Marine LE PEN ». La même réponse publie `givenName` et `familyName` en casse
+courante (« Florian », « Philippot » ; « Marine », « Le Pen »), ainsi que
+`sortLabel` et `upperFamilyName`. Relevé sur cinq députés, dont un non français
+(« Kinga GÁL » / « Gál »).
+
+`label` a été pris pour nom du profil jusqu'à #1153 : deux candidats déclarés
+s'affichaient en capitales. Le nom se compose désormais de `givenName` et
+`familyName` ; **aucune règle de casse n'est appliquée**, c'est la source qui
+écrit la particule. `label` reste la clé de recherche d'un député par son nom
+(`find_mep_by_name`), où la casse est neutralisée.
 
 ## `data.europarl.europa.eu/api/v2/adopted-texts?year=…` — la même réponse, deux cents à la fois
 

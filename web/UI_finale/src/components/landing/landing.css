@@ -572,6 +572,13 @@
   gap: 8px;
 }
 
+/* `display: flex` l'emporte sur le `[hidden]` du navigateur (#324) : sans cette
+   règle, les trois listes s'affichent à l'arrivée alors que le composant les
+   masque, et un clic sur une porte ne change rien à l'écran. */
+.landing-explorer-liste[hidden] {
+  display: none;
+}
+
 /* Les pastilles de groupe et de gouvernement sont des BOUTONS dans les barres de
    l'explorateur (ce sont des filtres) ; ici ce sont des LIENS, et un lien hérite
    du soulignement global d'`index.css`. Sans cette règle, les trois listes

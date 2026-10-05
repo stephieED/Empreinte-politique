@@ -234,7 +234,7 @@ Format d'un profil de groupe v1 :
                                         # scrutins, 3,15 Mo de méta répété → 1,04 Mo).
                                         # L'index est le même que celui des profils : les 4 104
                                         # scrutins des groupes y sont tous inclus.
-            "membres_eligibles": 64,    # membres en mandat à la date du scrutin
+            "membres_eligibles": 64,    # membres DU GROUPE à la date du scrutin (#1175)
             "position_majoritaire": "contre",
             "pour": 42,
             "contre": 12,

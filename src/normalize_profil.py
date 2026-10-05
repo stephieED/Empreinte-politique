@@ -329,6 +329,11 @@ def _normalize_mandat(m: dict[str, Any]) -> dict[str, Any]:
     if mandat["categorie"] == "mandat_electif":
         chambre_brute = m.get("chambre")
         mandat["chambre"] = _CHAMBRE_MAP.get(chambre_brute) if chambre_brute else None
+        # #682 — FACULTATIVE, comme `categorie_source` : absente d'un mandat
+        # collecté avant ce lot, elle ne dit rien ; présente, elle porte le
+        # relevé de la source, ou `null` si la source n'a pas de lieu.
+        if "lieu_election" in m:
+            mandat["lieu_election"] = m["lieu_election"]
     # #718 — `categorie_source` est une clé FACULTATIVE, et son absence est un
     # sens : « personne n'a établi cette catégorie ». La publier à `null` sur
     # les entrées héritées dirait la même chose sous la forme d'un constat, ce

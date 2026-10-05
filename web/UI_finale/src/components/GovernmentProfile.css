@@ -783,3 +783,8 @@
   .gvp-mr { grid-template-columns: minmax(0, 1fr) 72px 64px; }
   .gvp-mr .gvp-mr-rail { grid-column: 1 / -1; grid-row: 2; }
 }
+
+/* La teinte du ministère (04/10/2026) : le liseré d'une carte est la légende
+   de ses projets de loi et de sa barre d'actes. */
+.gvp-pole--teinte { border-left: 6px solid var(--ministere); }
+.gvp-cle-muette { cursor: default; }

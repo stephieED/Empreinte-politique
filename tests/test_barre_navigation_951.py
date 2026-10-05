@@ -69,6 +69,19 @@ def test_le_menu_masque_a_sa_regle_css() -> None:
     assert "display: none" in css.split(".nav-site-menu-liste[hidden] {")[1].split("}")[0]
 
 
+def test_les_listes_de_l_accueil_masquees_ont_leur_regle_css() -> None:
+    """Même cause, sur l'accueil : les trois listes se sont affichées à l'arrivée.
+
+    Le composant les masque par `hidden`, et `.landing-explorer-liste` pose
+    `display: flex`, qui l'emporte. Signalé par la propriétaire le 05/10/2026.
+    """
+    css = _sans_commentaires(
+        (UI / "src" / "components" / "landing" / "landing.css").read_text(encoding="utf-8")
+    )
+    assert ".landing-explorer-liste[hidden] {" in css, "les listes de l'accueil s'affichent à l'arrivée"
+    assert "display: none" in css.split(".landing-explorer-liste[hidden] {")[1].split("}")[0]
+
+
 def test_le_symbole_porte_des_traits_d_encre() -> None:
     svg = SYMBOLE.read_text(encoding="utf-8")
     traits = set(re.findall(r'stroke="(#[0-9a-fA-F]{6})"', svg))

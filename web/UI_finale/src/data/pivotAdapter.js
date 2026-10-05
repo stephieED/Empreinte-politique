@@ -699,6 +699,7 @@ export function buildGovernmentView(gouvernement, groupesDuManifest = [], slugDu
       // une lecture de son titre (#328, « les grands chiffres »).
       commission: t.commission_saisie_au_fond?.sigle || null,
       sort493: t.sort_49_3 === true,
+      initiateurs: t.initiateurs || [],
       dateDepot: t.date_depot,
       meta: formatFrDate(t.date_depot) || 'Date de dépôt non renseignée',
       sourceUrl: t.source_url,

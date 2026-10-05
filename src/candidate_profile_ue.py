@@ -174,6 +174,22 @@ def find_mep_by_name(nom: str, country: str = "FR", use_cache: bool = True) -> O
     return None
 
 
+def _nom_complet(detail: dict[str, Any]) -> Optional[str]:
+    """Le nom d'un député européen, dans la casse où la source l'écrit (#1153).
+
+    `label` vaut « Florian PHILIPPOT » : le Parlement européen y met le nom de
+    famille en capitales. Il publie à côté `givenName` (« Florian ») et
+    `familyName` (« Philippot »), en casse courante — ce sont eux qu'on
+    assemble. **Aucune règle de casse n'est appliquée** : une règle « une
+    majuscule par mot » casserait les particules et les noms composés. Sans les
+    deux champs, `label` reste publié tel quel.
+    """
+    prenom, nom = detail.get("givenName"), detail.get("familyName")
+    if isinstance(prenom, str) and prenom.strip() and isinstance(nom, str) and nom.strip():
+        return f"{prenom.strip()} {nom.strip()}"
+    return detail.get("label")
+
+
 def fetch_mep_detail(mep_id: str) -> Optional[dict[str, Any]]:
     """Récupère la fiche complète d'un⋅e député⋅e européen⋅ne (identité,
     et historique complet des mandats/fonctions via `hasMembership`)."""
@@ -306,7 +322,7 @@ def build_profile_ue(nom: str, country: str = "FR", use_cache: bool = True) -> O
 
     return {
         "identifiant_pe": mep_id,
-        "nom_complet": detail.get("label"),
+        "nom_complet": _nom_complet(detail),
         "date_naissance": detail.get("bday"),
         "lieu_naissance": detail.get("placeOfBirth"),
         "photo": detail.get("img") or f"https://www.europarl.europa.eu/mepphoto/{mep_id}.jpg",

@@ -336,7 +336,34 @@ def _perimetre(mep_id: Optional[int] = None) -> frozenset[int]:
 #:   4 — #901 : le titre d'une activité perd la queue de boutons de
 #:       téléchargement que ParlTrack scrape avec lui. Même raison qu'au 3 : un
 #:       index caché resservirait les titres pollués.
-VERSION_SCHEMA_INDEX = 4
+#:   5 — #858 : `date` d'une activité republiée est la date de SÉANCE, lue dans
+#:       sa référence ou son adresse, et `date_republication` garde la date de
+#:       ParlTrack quand aucune date de séance ne se lit.
+VERSION_SCHEMA_INDEX = 5
+
+#: `date-type` d'une activité que ParlTrack a REPUBLIÉE : sa `date` est alors
+#: celle de la republication — le 22/11/2016 pour les 548 598 activités du dump
+#: qui le portent (mesuré le 05/10/2026) —, pas celle de la séance (#858).
+DATE_TYPE_REPUBLICATION = "datePublished"
+
+#: La date de séance, là où la source l'écrit : dans la référence du compte
+#: rendu (`P8_CRE-REV(2017)03-16(4-233-0000)`) et dans son adresse
+#: (`…/CRE-8-2017-03-16-INT-4-233-0000_FR.html`). Mesuré sur les 347 322
+#: comptes rendus republiés qui portent les deux : elles concordent sur tous.
+_SEANCE_DANS_REFERENCE = re.compile(r"CRE[^(]*\((\d{4})\)(\d{2})-(\d{2})\(")
+_SEANCE_DANS_ADRESSE = re.compile(r"/CRE-\d+-(\d{4})-(\d{2})-(\d{2})-")
+
+
+def date_de_seance(reference: Optional[str], adresse: Optional[str]) -> Optional[str]:
+    """La date de séance qu'un compte rendu porte dans sa référence, à défaut
+    dans son adresse, ou `None`. Rien n'est déduit d'une autre forme de
+    référence : `A8-0042/2017` ne donne qu'une année, et une année n'est pas
+    une date (§2 règle 5)."""
+    for motif, texte in ((_SEANCE_DANS_REFERENCE, reference), (_SEANCE_DANS_ADRESSE, adresse)):
+        trouve = motif.search(texte) if isinstance(texte, str) else None
+        if trouve:
+            return "-".join(trouve.groups())
+    return None
 
 
 def _empreinte_perimetre(perimetre: frozenset[int]) -> str:
@@ -792,7 +819,18 @@ def build_activities_index(
                 if not isinstance(entree, dict):
                     continue
                 date = entree.get("date") or ""
+                # #858 — une activité REPUBLIÉE ne porte pas sa date : celle de
+                # la séance se lit dans sa référence ou son adresse. À défaut,
+                # `date` est nulle et la date de ParlTrack est gardée à côté,
+                # pour que l'absence se déclare avec son motif.
+                republication = None
+                if entree.get("date-type") == DATE_TYPE_REPUBLICATION:
+                    seance = date_de_seance(entree.get("reference"), entree.get("url"))
+                    if seance is None:
+                        republication = date[:10] or None
+                    date = seance or ""
                 index.setdefault(uid, {}).setdefault(libelle, []).append({
+                    **({"date_republication": republication} if republication else {}),
                     # Nettoyé ICI, à l'entrée du corpus, et une seule fois :
                     # le faire plus loin laisserait chaque consommateur
                     # réinventer sa propre règle, et masquerait le défaut au

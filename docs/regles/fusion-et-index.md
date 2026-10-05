@@ -182,6 +182,15 @@ les charger, ni à les faire grossir. -->
   back as new.
   → `docs/decisions/doublons-textes-europeens-cle-doceo-901.md`
   → `docs/decisions/cle-fusion-textes-portes-668.md`
+- **Correcting a field that sits IN a merge key is done before the merge, on the old
+  entries (#858).** A European vote explanation has no id, so its pivot key is its content,
+  **date included**. Fixing its date after the keyed merge would publish it twice — the
+  defect of #827, by another door. `corriger_dates_de_republication` rewrites the old entry
+  first, on a sourced test (the new twin declares the republication date, or carries the
+  date its own reference writes), so both sides hold the same key when the merge compares
+  them. **Before a named backfill, read the key: if the field is in it, the backfill is a
+  migration.**
+  → `docs/decisions/dates-de-seance-parltrack-858.md`
 - **An empty collection never overwrites a non-empty one (#465)** — per field, not per
   profile, even under `--no-merge`. Lifted only by `--autoriser-collecte-vide`, and the
   preservation is always printed. "Zero observed" is not "collection failed" (§2 rule 5).

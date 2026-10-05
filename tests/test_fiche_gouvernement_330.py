@@ -157,8 +157,11 @@ def test_la_fiche_dit_ce_qu_elle_n_a_pas_pu_lire():
 def test_une_entree_sans_portefeuille_ne_dedouble_pas_une_personne():
     """La source publie deux mandats pour Abad et Braun-Pivet sous Borne, dont
     un sans portefeuille : le muet n'ajoute rien et ne fait pas un second bloc."""
-    source = COMPOSANT.read_text(encoding="utf-8")
+    # La règle a rejoint `utils/ministere.js` le 04/10/2026 : les cartes servent
+    # désormais trois sections, et la fiche les lit toutes au même endroit.
+    source = (UI / "src" / "utils" / "ministere.js").read_text(encoding="utf-8")
     assert "!nommes.has(m.nom)" in source
+    assert "polesDuGouvernement(government)" in COMPOSANT.read_text(encoding="utf-8")
 
 
 def test_le_nom_du_premier_ministre_ne_mene_pas_a_une_page_absente():

@@ -683,6 +683,86 @@ def backfill_sujet_europeen(
     return result
 
 
+def corriger_dates_de_republication(
+    anciennes: Optional[list[dict[str, Any]]],
+    nouvelles: Optional[list[dict[str, Any]]],
+) -> list[dict[str, Any]]:
+    """Reporte la date de séance — ou son absence déclarée — sur une intervention
+    européenne déjà publiée à la date de sa republication (#858).
+
+    ParlTrack date du 22/11/2016 toute activité qu'il a republiée. #858 lit la
+    date de séance dans la référence du compte rendu, et publie `null` avec
+    `date_non_resolue` quand elle ne s'y lit pas. Mais la fusion est additive :
+    l'entrée ancienne gagne, et sa date fausse resterait publiée.
+
+    **S'applique aux ANCIENNES entrées, AVANT la fusion par clé**, et c'est le
+    point : une explication de vote n'a ni identifiant ni, parfois, d'adresse,
+    donc sa clé de fusion est son contenu — **date comprise**
+    (`_pivot_intervention_key`). Corriger la date après la fusion publierait
+    chaque explication deux fois, le défaut de #827. Corrigée avant, l'ancienne
+    entrée a la même clé que la neuve et la fusion la reconnaît.
+
+    **Le critère est sourcé, pas « la nouvelle date gagne »** — deux cas :
+
+    - la jumelle neuve porte `date_non_resolue` de motif
+      `date_de_republication`, et sa `valeur_source` est EXACTEMENT la date de
+      l'ancienne : l'ancienne passe à `null` et reçoit le motif ;
+    - la jumelle neuve porte une date qui est celle que sa propre référence ou
+      son adresse écrivent (`parltrack_dumps.date_de_seance`) : l'ancienne la
+      reçoit.
+
+    La jumelle se cherche par `intervention_id`, à défaut par `source_url`, à
+    défaut par `(sujet, début du texte)` — sans la date, puisque c'est elle qui
+    change. Une entrée non européenne n'est jamais touchée.
+    """
+    from parltrack_dumps import date_de_seance  # noqa: PLC0415 — import tardif, module lourd
+
+    anciennes = list(anciennes or [])
+    if not nouvelles:
+        return anciennes
+
+    def _europeenne(i: Any) -> bool:
+        source = i.get("source") if isinstance(i, dict) else None
+        return isinstance(source, dict) and source.get("institution") == "parlement_europeen"
+
+    def _cles(i: dict[str, Any]) -> list[tuple[str, Any]]:
+        cles: list[tuple[str, Any]] = []
+        if i.get("intervention_id"):
+            return [("id", i["intervention_id"])]
+        if i.get("source_url"):
+            cles.append(("url", i["source_url"]))
+        cles.append(("contenu", (i.get("sujet"), (i.get("texte") or "")[:50])))
+        return cles
+
+    jumelles: dict[tuple[str, Any], dict[str, Any]] = {}
+    for n in nouvelles:
+        if _europeenne(n):
+            for cle in _cles(n):
+                jumelles.setdefault(cle, n)
+    if not jumelles:
+        return anciennes
+
+    resultat: list[dict[str, Any]] = []
+    for a in anciennes:
+        neuve = next((jumelles[c] for c in _cles(a) if c in jumelles), None) if _europeenne(a) else None
+        if neuve is not None and neuve.get("date") != a.get("date"):
+            non_resolue = neuve.get("date_non_resolue")
+            if (
+                neuve.get("date") is None
+                and isinstance(non_resolue, dict)
+                and non_resolue.get("motif") == "date_de_republication"
+                and non_resolue.get("valeur_source") == a.get("date")
+            ):
+                a = {**a, "date": None, "date_non_resolue": dict(non_resolue)}
+            elif neuve.get("date") and neuve["date"] == date_de_seance(
+                str(neuve.get("intervention_id") or ""), neuve.get("source_url")
+            ):
+                a = {k: v for k, v in a.items() if k != "date_non_resolue"}
+                a["date"] = neuve["date"]
+        resultat.append(a)
+    return resultat
+
+
 def backfill_mandat_chambre(
     merged: list[dict[str, Any]],
     new_list: Optional[list[dict[str, Any]]],
@@ -791,6 +871,39 @@ def backfill_sort_texte_porte(
             if neufs:
                 t = {**t, **neufs}
         result.append(t)
+    return result
+
+
+def backfill_mandat_lieu_election(
+    merged: list[dict[str, Any]],
+    new_list: Optional[list[dict[str, Any]]],
+    key_fn: Callable[[dict[str, Any]], Key],
+) -> list[dict[str, Any]]:
+    """Reporte `lieu_election` d'un mandat neuf sur l'entrée ancienne (#682).
+
+    Même famille que `backfill_mandat_chambre` (#492) et
+    `backfill_mandat_categorie_source` (#718) : la clé d'un mandat ne contient
+    pas le lieu, donc l'entrée ancienne gagne et ne le recevrait jamais.
+
+    Strictement monotone : n'écrit que là où la CLÉ manque, jamais sur un lieu
+    déjà posé — fût-il `null`, qui dit « la source n'en porte pas ». Un mandat
+    absent de la collecte neuve reste sans clé.
+    """
+    if not new_list:
+        return merged
+    lieux_neufs: dict[Key, Any] = {}
+    for m in new_list:
+        if isinstance(m, dict) and "lieu_election" in m:
+            lieux_neufs.setdefault(key_fn(m), m["lieu_election"])
+    if not lieux_neufs:
+        return merged
+    result: list[dict[str, Any]] = []
+    for m in merged:
+        if isinstance(m, dict) and "lieu_election" not in m:
+            cle = key_fn(m)
+            if cle in lieux_neufs:
+                m = {**m, "lieu_election": lieux_neufs[cle]}
+        result.append(m)
     return result
 
 
@@ -1772,7 +1885,11 @@ def merge_raw_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> dic
     merged["mandats"] = backfill_mandat_chambre(
         backfill_mandat_organe_source(
             backfill_mandat_categorie_source(
-                merge_lists_by_key(old.get("mandats"), new.get("mandats"), _mandat_key),
+                backfill_mandat_lieu_election(
+                    merge_lists_by_key(old.get("mandats"), new.get("mandats"), _mandat_key),
+                    new.get("mandats"),
+                    _mandat_key,
+                ),
                 new.get("mandats"),
                 _mandat_key,
             ),
@@ -2819,7 +2936,11 @@ def merge_pivot_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> d
     merged["mandats"] = backfill_mandat_chambre(
         backfill_mandat_organe_source(
             backfill_mandat_categorie_source(
-                merge_lists_by_key(old.get("mandats"), new.get("mandats"), _pivot_mandat_key),
+                backfill_mandat_lieu_election(
+                    merge_lists_by_key(old.get("mandats"), new.get("mandats"), _pivot_mandat_key),
+                    new.get("mandats"),
+                    _pivot_mandat_key,
+                ),
                 new.get("mandats"),
                 _pivot_mandat_key,
             ),
@@ -2885,8 +3006,11 @@ def merge_pivot_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> d
         backfill_sujet_europeen(
             backfill_sujet_question(backfill_sujet_seance(
                 reporter_source_syceron(reporter_faits_de_source(promouvoir_forme_complete(
-                    merge_lists_by_key(old.get("interventions"), new.get("interventions"),
-                                       _pivot_intervention_key),
+                    merge_lists_by_key(
+                        # #858 — AVANT la fusion par clé : voir la fonction.
+                        corriger_dates_de_republication(
+                            old.get("interventions"), new.get("interventions")),
+                        new.get("interventions"), _pivot_intervention_key),
                     new.get("interventions"),
                     _pivot_intervention_key,
                 ), new.get("interventions"), _pivot_intervention_key),

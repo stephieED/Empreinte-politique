@@ -244,6 +244,14 @@ Format d'un profil pivot v1 :
             # période de suspension du mandat pour cause de fonction ministérielle :
             # {"debut": "2024-01-08", "fin": "2024-09-05", "suppleant_id": "slug-du-suppleant"}
             # ou null si non applicable.
+            # #682 — "lieu_election" : FACULTATIVE, sur les seuls `mandat_electif`
+            # de l'Assemblée. Le lieu où ce mandat a été gagné, tel qu'AMO30
+            # l'écrit (`election.lieu`), et il peut changer d'un mandat à
+            # l'autre : {"region": "Ile-de-France", "type_region":
+            # "Métropolitain", "departement": "Essonne", "num_departement":
+            # "91", "num_circo": "6"}. `null` si la source n'en porte pas ;
+            # ABSENTE d'un mandat collecté avant ce lot. `identite.num_circo`
+            # reste publié à côté, le temps que plus rien ne le lise.
         }
     ],
     "votes": [                               # MAPPING seul (#432) : un scrutin est identique
@@ -518,6 +526,11 @@ KNOWN_SOURCE_TYPES: frozenset[str] = frozenset({
 })
 
 # Valeurs de chambre reconnues.
+#: Les cinq clés de `mandats[].lieu_election` (#682), recopiées d'AMO30.
+CLES_LIEU_ELECTION: frozenset[str] = frozenset({
+    "region", "type_region", "departement", "num_departement", "num_circo",
+})
+
 KNOWN_CHAMBRES: frozenset[str] = frozenset({"AN", "Senat", "PE", "mairie"})
 
 #: Valeur unique de `interventions[].collecte` (#657). Elle déclare une entrée
@@ -2498,6 +2511,26 @@ def validate_profil(
             # licite (chambre non déterminée) ; une valeur hors nomenclature ne
             # l'est pas — c'est ainsi qu'une chambre brute non mappée
             # ("deputes", "senateurs") se ferait passer pour une chambre pivot.
+            # #682 : le lieu d'élection, quand la clé est là. `null` est licite
+            # (la source n'en porte pas) ; un dict doit porter exactement les
+            # cinq clés, chacune une chaîne non vide ou `null`.
+            if "lieu_election" in m and m["lieu_election"] is not None:
+                lieu = m["lieu_election"]
+                if not isinstance(lieu, dict) or set(lieu) != CLES_LIEU_ELECTION:
+                    errors.append(
+                        f"mandats[{i}].lieu_election doit porter exactement "
+                        f"{sorted(CLES_LIEU_ELECTION)} (reçu : {lieu!r})."
+                    )
+                elif any(v is not None and (not isinstance(v, str) or not v) for v in lieu.values()):
+                    errors.append(
+                        f"mandats[{i}].lieu_election : chaque valeur est une chaîne "
+                        f"non vide ou null (reçu : {lieu!r})."
+                    )
+                elif m.get("categorie") != "mandat_electif":
+                    errors.append(
+                        f"mandats[{i}].lieu_election est porté par un mandat de catégorie "
+                        f"{m.get('categorie')!r} : seul un mandat électif a un lieu d'élection."
+                    )
             chambre_mandat = m.get("chambre")
             if chambre_mandat is not None and chambre_mandat not in KNOWN_CHAMBRES:
                 errors.append(

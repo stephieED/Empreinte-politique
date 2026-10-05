@@ -277,12 +277,20 @@ def test_les_huit_teintes_se_distinguent_entre_elles() -> None:
             assert _ecart(a, b) >= 15, f"{a} et {b} sont à {_ecart(a, b):.1f} : sous 15, on les confond"
 
 
-def test_les_trois_fiches_lisent_la_meme_table() -> None:
-    """La fiche de groupe et la fiche de gouvernement coloraient au rang."""
+def test_les_fiches_lisent_la_meme_table() -> None:
+    """La fiche de groupe colorait au rang ; elle lit la table des commissions.
+
+    La fiche de gouvernement l'a lue du 02 au 04/10/2026, puis ses carrés ont
+    pris la teinte du MINISTÈRE qui présente le texte (forme A, arbitrée par la
+    propriétaire) : elle ne colore plus par commission, et jamais au rang.
+    """
+    source = _sans_commentaires(FICHE.read_text(encoding="utf-8"))
+    assert "teinteCommission(" in source
     for composant in (FICHE, GOUVERNEMENT):
         source = _sans_commentaires(composant.read_text(encoding="utf-8"))
-        assert "teinteCommission(" in source, composant.name
         assert "teinteMatiere(" not in source and "PALETTE_MATIERE" not in source, composant.name
+    gouvernement = _sans_commentaires(GOUVERNEMENT.read_text(encoding="utf-8"))
+    assert "fondDuTexte(poles, teintes, t)" in gouvernement and "teinteCommission(" not in gouvernement
 
 
 # ── 5. Les prises de parole comptées ─────────────────────────────────────────

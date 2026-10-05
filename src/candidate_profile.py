@@ -529,8 +529,9 @@ ACTEURS_HISTORIQUE_CACHE_DIR = Path(".cache") / "acteurs_historique_an"
 # `categorie_socioprofessionnelle`, les deux niveaux de la nomenclature PCS de
 # l'INSEE qu'AMO30 publie et que le pipeline traversait sans rien en garder
 # (#659). `civilite` était déjà écrite dans l'index — c'est en AVAL qu'elle se
-# perdait — mais elle voyage avec eux jusqu'au profil brut.
-NOM_INDEX_IDENTITE = "index_identite_v4.json"
+# perdait — mais elle voyage avec eux jusqu'au profil brut. `v5` : chaque période
+# de `mandats_assemblee` porte `lieu_election` (#682).
+NOM_INDEX_IDENTITE = "index_identite_v5.json"
 NOM_INDEX_ORGANES = "index_organes_v2.json"
 
 # Questions parlementaires (écrites, au gouvernement, orales sans débat).
@@ -3969,6 +3970,34 @@ def _groupe_du_mandat(
     return organe.get("sigle"), organe.get("nom")
 
 
+#: `election.lieu` d'un mandat AMO30 → clés du pivot (#682). Les VALEURS sont
+#: recopiées telles que la source les écrit : c'est elle qui découpe le
+#: territoire, et recomposer un libellé ici serait un acte éditorial.
+_CLES_LIEU_ELECTION: tuple[tuple[str, str], ...] = (
+    ("region", "region"),
+    ("regionType", "type_region"),
+    ("departement", "departement"),
+    ("numDepartement", "num_departement"),
+    ("numCirco", "num_circo"),
+)
+
+
+def _lieu_election(mandat: dict[str, Any]) -> Optional[dict[str, Optional[str]]]:
+    """Le lieu d'élection d'un mandat de député, ou `None` si la source n'en
+    porte pas (#682).
+
+    Mesuré le 05/10/2026 : les 3 954 mandats `ASSEMBLEE` d'AMO30 portent les
+    cinq champs, et 54 personnes ont été élues dans plus d'une circonscription —
+    un numéro rangé sur la personne (`identite.num_circo`) ne pouvait pas le
+    dire, et « 6 » sans département ne désigne aucune circonscription.
+    """
+    lieu = (mandat.get("election") or {}).get("lieu")
+    if not isinstance(lieu, dict):
+        return None
+    releve = {cible: _champ_identite_an(lieu.get(source)) for source, cible in _CLES_LIEU_ELECTION}
+    return releve if any(releve.values()) else None
+
+
 def _periodes_mandats_assemblee(
     mandats: list[Any], organe_index: dict[str, dict[str, Any]]
 ) -> list[dict[str, Any]]:
@@ -4040,6 +4069,7 @@ def _periodes_mandats_assemblee(
                 "debut": debut,
                 "fin": fin,
                 "segments": 1,
+                "lieu_election": _lieu_election(mandat),
             }
             continue
         # Union des périodes : un segment encore ouvert (`fin` absente) absorbe
@@ -4048,6 +4078,10 @@ def _periodes_mandats_assemblee(
             None if periode["fin"] is None or fin is None else max(periode["fin"], fin)
         )
         periode["segments"] += 1
+        # Les segments d'un même siège portent le même lieu ; le premier lu qui
+        # en porte un fait foi.
+        if periode.get("lieu_election") is None:
+            periode["lieu_election"] = _lieu_election(mandat)
 
     periodes = sorted(par_siege.values(), key=lambda p: p["debut"], reverse=True)
     for periode in periodes:
@@ -6313,6 +6347,12 @@ def build_profile(
                 # mandat, y compris pour une période reconstruite
                 # rétrospectivement — AMO30 est l'Assemblée nationale.
                 "chambre": chambre,
+                # #682 — le lieu d'élection, sur le MANDAT : il peut changer de
+                # l'un à l'autre. La clé n'est posée que si la période la porte
+                # (un index d'identité d'avant `v5` ne la connaît pas) ; posée,
+                # elle vaut le relevé de la source ou `None` si elle n'en a pas.
+                **({"lieu_election": periode["lieu_election"]}
+                   if "lieu_election" in periode else {}),
             })
         profile["mandats"] = mandats_an
 
