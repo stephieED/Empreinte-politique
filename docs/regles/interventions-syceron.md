@@ -164,6 +164,15 @@ les charger, ni à les faire grossir. -->
   at. **A closed list read off a frequency table misses the rare code that carries the most
   speech** — re-measure it by what it leaves *without* a subject, not by what it covers.
   → `docs/decisions/intitule-des-lois-de-finances-1197.md`
+- **A paragraph with no speaker id is not thereby a stage direction (#1177).** In the XVth
+  archive, 71 520 paragraphs — all of 2021, half that year's speech — name their speaker and
+  carry `id_acteur`, with no `<orateur><id>`. Filed under "absent", they were never indexed.
+  `id_acteur` is the source's own attribution: it is followed **when the label is one
+  person's** (« M. … », « Mme … ») — a collective speaker (« Un député du groupe LR ») is
+  wrongly tied to the sitting chair, and stays out. **An index is audited against the
+  archive it was built from, speaker by speaker — a total that looks plausible hides a
+  year.**
+  → `docs/decisions/orateur-attribue-par-la-source-1177.md`
 - **What is not measured says so** — per-candidate cost and RSS of the sharded index are
   bounded by construction, not by measurement, and the #429 and #500 balances are
   un-remeasured. Naming them is the rule: §2.5 applies to our own work too.

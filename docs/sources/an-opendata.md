@@ -622,6 +622,20 @@ Stratégie recommandée:
 - full dump par législature (pas de téléchargement ciblé par séance)
 - priorité produit: L17 puis L16, L15 en profondeur historique
 
+### En 2021, la XVe publie l'orateur sans son identifiant (#1177)
+
+Un `<paragraphe>` porte d'ordinaire deux fois son orateur : l'attribut `id_acteur="PA717157"`
+et `<orateur><id>717157</id>`. Dans 499 comptes rendus de la XVe, **tous de 2021**, le second
+manque : 71 520 paragraphes nomment leur orateur (`<nom>M. Jean-Michel Blanquer</nom>`) et
+portent `id_acteur`, sans `<orateur><id>`. C'est la moitié de la parole de l'année.
+
+`id_acteur` y est fiable pour une personne nommée — il concorde avec le nom sur 44 080 des
+44 170 paragraphes hors présidence — et **faux pour un orateur collectif** (« Un député du
+groupe LR »), que la source rattache au président de séance. Les XVIe et XVIIe n'ont pas ce
+défaut : leurs 205 et 179 paragraphes dans ce cas n'ont pas de `<nom>` non plus.
+Mesuré le 05/10/2026 sur les archives en cache.
+
+
 ## Agenda / meetings (committees) - low priority
 
 `.../17/vp/reunions/Agenda.json.zip` (~7.8 MB).

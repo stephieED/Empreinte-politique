@@ -877,8 +877,10 @@ SYCERON_INDEX_PAR_ACTEUR_THEME_DIRNAME = "index_par_acteur_extrait"
 #: `1197` : le parseur lit le titre des lois de finances (`APPEL_PLF_1_20`), donc
 #: `sujet` et `sujet_code_grammaire` changent sur les entrées des débats
 #: budgétaires. `1200` : l'index RÉDUIT garde `fonction` — le parseur n'a pas
-#: changé, mais ce que l'index contient, si.
-SYCERON_VERSION_INDEX = "1200"
+#: changé, mais ce que l'index contient, si. `1177` : les paragraphes sans
+#: identifiant d'orateur que la source attribue par `id_acteur` entrent dans
+#: l'index — 71 520 entrées de plus à la XVe.
+SYCERON_VERSION_INDEX = "1177"
 SYCERON_FICHIER_VERSION = "version_index.txt"
 
 #: Valeur publiée dans `interventions[].collecte` pour une entrée réduite au
@@ -5328,9 +5330,16 @@ def fetch_questions_officielles(
     return questions
 
 
+#: Le libellé d'UNE personne : « M. Jean-Michel Blanquer », « Mme la présidente ».
+#: Un orateur collectif (« Un député du groupe LR », « Plusieurs députés du
+#: groupe LaREM ») ne commence pas par une civilité.
+_ORATEUR_INDIVIDUEL = re.compile(r"^(?:M\.|Mme)\s")
+
+
 def _normaliser_orateur_id_syceron(
     valeur: Any,
     id_acteur: Any = None,
+    orateur_nom: Any = None,
 ) -> tuple[Optional[str], str]:
     """Résout l'identifiant d'orateur Syceron en `acteurRef` AN (#510).
 
@@ -5388,6 +5397,30 @@ def _normaliser_orateur_id_syceron(
     cette fonction corrige.
     """
     if not isinstance(valeur, str) or not valeur.strip():
+        # #1177 — L'IDENTIFIANT D'ORATEUR MANQUE, MAIS LA SOURCE ATTRIBUE.
+        #
+        # Sur la XVe, 71 520 paragraphes — tous de 2021, 499 comptes rendus, la
+        # moitié de la parole de l'année — nomment leur orateur et portent
+        # `id_acteur`, sans `<orateur><id>`. Les ranger sous « absent » les
+        # tenait pour des didascalies : Jean-Michel Blanquer publiait 1 999
+        # prises de parole pour 2 160 dans l'archive.
+        #
+        # `id_acteur` est l'attribution de la source, la même que celle qui
+        # confirme le préfixage plus bas. Mesuré le 05/10/2026 : hors présidence
+        # de séance, l'acteur attribué porte le nom affiché sur 44 080 des
+        # 44 170 paragraphes ; 76 des 90 écarts sont un nom d'usage qui a changé.
+        #
+        # Les 14 autres sont des orateurs COLLECTIFS que la source rattache à
+        # tort au président de séance. D'où la condition : le libellé doit être
+        # celui d'une personne. Sans libellé — 205 paragraphes à la XVIe, 179 à
+        # la XVIIe — rien n'est attribué (§2 règle 2).
+        if (
+            isinstance(id_acteur, str)
+            and re.fullmatch(r"PA[1-9]\d*", id_acteur.strip())
+            and isinstance(orateur_nom, str)
+            and _ORATEUR_INDIVIDUEL.match(orateur_nom.strip())
+        ):
+            return id_acteur.strip(), "attribue_par_id_acteur"
         return None, "absent"
     valeur = valeur.strip()
     if re.fullmatch(r"PA[1-9]\d*", valeur):
@@ -5512,7 +5545,8 @@ def _parse_syceron_intervention_entry(
         return None
 
     acteur_ref, _motif = _normaliser_orateur_id_syceron(
-        intervention.get("orateur_id_source"), intervention.get("orateur_id_acteur")
+        intervention.get("orateur_id_source"), intervention.get("orateur_id_acteur"),
+        intervention.get("orateur_nom"),
     )
     if acteur_ref is None:
         return None
@@ -5859,6 +5893,7 @@ def _build_acteur_interventions_syceron_index(
                     _, motif = _normaliser_orateur_id_syceron(
                         intervention.get("orateur_id_source"),
                         intervention.get("orateur_id_acteur"),
+                        intervention.get("orateur_nom"),
                     )
                     motifs[motif] += 1
                 parsed_entry = _parse_syceron_intervention_entry(

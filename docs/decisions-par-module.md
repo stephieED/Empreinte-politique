@@ -358,7 +358,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 
 ## `src/candidate_profile.py`
 
-102 décision(s) le gouvernent ; le module en cite 14.
+103 décision(s) le gouvernent ; le module en cite 14.
 
 | Décision | Nomme |
 | --- | --- |
@@ -434,6 +434,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [Normalisation de `par_fonction` dans `mandats_agreges`, et requalification du défaut « catégorie commission » (#379) (2026-08-17)](decisions/normalisation-fonction-mandats-agreges.md) | `_TYPE_ORGANE_TO_CATEGORIE` |
 | [OOM persistant : lecture per-candidat de l'index amendements, tentative de mémoïsation revertée (2026-08-17)](decisions/oom-lecture-amendements-par-candidat.md) | `AN_AMENDEMENTS_PATH`, `fetch_amendements_officiels` |
 | [OOM lors de la relecture d'un index amendements figé déjà en cache (exécution locale) (2026-08-17)](decisions/oom-reconstruction-amendements-figees.md) | `AN_AMENDEMENTS_LEGISLATURES_FIGEES`, `AN_AMENDEMENTS_PATH`, `_download_and_build_amendement_index`, `amendements_index_deja_figee` |
+| [La moitié de la parole de 2021 n'était pas indexée : un paragraphe sans identifiant d'orateur suit l'attribution de la source (#1177) (2026-10-05)](decisions/orateur-attribue-par-la-source-1177.md) | `SYCERON_VERSION_INDEX` |
 | [`_build_organe_index` : résoudre `organeRef` via `AMO30` (historique) sans filtrage par `codeType` (#353) (2026-08-16)](decisions/organe-index-organeref.md) | `AN_ACTEURS_HISTORIQUE_ZIP_URL`, `_ACTEURS_HISTORIQUE_ZIP_LOCK`, `_build_acteur_positions_hemicycle_index`, `_build_organe_index`, `_build_organe_positions_index`, `_ensure_acteurs_historique_zip_downloaded`, `fetch_positions_hemicycle_officielles` |
 | [Parallèle RAM entre l'exécution locale et les runners GitHub Actions hébergés, diagnostic ajouté (2026-08-17)](decisions/parallele-oom-local-runner-ci.md) | `build_profile`, `fetch_amendements_officiels` |
 | [Les archives figées se demandent en plage sans borne, la législature en cours garde ses segments (#1123) (2026-09-24)](decisions/plage-sans-borne-archives-figees-1123.md) | `AMENDEMENTS_DOWNLOAD_CHUNK_BYTES`, `AMENDEMENTS_DOWNLOAD_CHUNK_BYTES_FIGEES`, `_telecharger_flux` |

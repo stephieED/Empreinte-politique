@@ -156,10 +156,15 @@ de 60 mois du fonds. Rien sur la portée.
 - **`tarfile` en mode flux** garde la fiche de chaque membre lu : sur le dump global, le
   processus atteint 1,5 Go avant d'avoir rien produit si la liste n'est pas vidée.
 
-### Le serveur refuse toute requête depuis le 02/10/2026 (constaté le 03/10)
+### Le serveur a refusé toute requête du 02/10 au 04/10/2026 (revenu le 05/10)
 
-`extract-actes-jo` réussissait encore au run du 01/10/2026 à 20:24 ; il échoue à **tous**
-les runs depuis celui du 02/10 à 20:23 (cinq runs le 03/10), sur
+**Le service répond de nouveau** : `extract-actes-jo` réussit depuis le run du 05/10/2026 à
+18:08, sans changement de notre côté, et aucune annonce n'a expliqué l'interruption. Ce qui
+suit décrit la panne telle qu'elle a été mesurée — le symptôme à reconnaître si elle revient.
+Suivi : #1199.
+
+`extract-actes-jo` réussissait encore au run du 01/10/2026 à 20:24 ; il a échoué à **tous**
+les runs du 02/10 à 20:23 au 04/10 à 17:28 (cinq runs le 03/10), sur
 `SourceIndisponible: listing DILA injoignable : Remote end closed connection without
 response`.
 
@@ -174,7 +179,9 @@ délibéré en frontal, sur tout `echanges.dila.gouv.fr`.
 changement des conditions d'accès sont tous compatibles avec ce qui se voit. Avant de
 toucher au code : chercher une annonce sur `data.gouv.fr` ou sur le site de la DILA.
 L'effet sur le corpus est borné : le job est non bloquant, les actes déjà publiés restent,
-et ceux parus depuis le 01/10/2026 manquent jusqu'au retour du service.
+et ceux parus pendant l'interruption manquent jusqu'au retour du service : le job relit
+le mois en cours et le précédent (`MOIS_RELUS = 2`), donc le rattrapage est automatique tant
+que la panne dure moins de deux mois.
 
 ## La jointure loi → actes d'application, et sa population
 

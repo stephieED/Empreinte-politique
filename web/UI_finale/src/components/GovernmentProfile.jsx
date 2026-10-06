@@ -1172,12 +1172,14 @@ function limitesDeLaFiche(government) {
  * maquette — l'encre pleine, parce que le gris du bandeau n'alertait pas.
  *
  * Ce n'est PAS une borne de couverture : rien ne la calcule, rien ne l'efface.
- * AU RETOUR DU SERVICE, passer cette constante à `null` — l'issue #1199 ne se
- * ferme pas tant que la mention est affichée. */
-export const SOURCE_INTERROMPUE = {
-  titre: 'Données incomplètes depuis le 2 octobre 2026.',
-  texte: 'Le service qui diffuse le Journal officiel ne répond plus : les actes parus depuis cette date n’apparaissent pas encore ici.',
-};
+ * La constante vaut `null` quand aucune source n'est interrompue, et la
+ * mention ne s'affiche pas.
+ *
+ * RETIRÉE LE 06/10/2026 : le service répond de nouveau depuis le 05/10. Le
+ * texte affiché du 04 au 06/10 était « Données incomplètes depuis le 2 octobre
+ * 2026. Le service qui diffuse le Journal officiel ne répond plus : les actes
+ * parus depuis cette date n’apparaissent pas encore ici. » */
+export const SOURCE_INTERROMPUE = null;
 
 /* 05 — Ce qu'il a fait entrer en vigueur (#1029 voie 1). La section ne porte
    que son cadre : tout le reste vit dans `ActesDuGouvernement`. */
