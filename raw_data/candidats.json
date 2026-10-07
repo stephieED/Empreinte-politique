@@ -345,8 +345,8 @@
       "famille_politique": null,
       "statut": "declare",
       "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Candidatures_%C3%A0_l%27%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027#Candidats_d%C3%A9clar%C3%A9s",
-      "notes": "Ajouté le 2026-09-08 par src/fetch_candidats_declares.py (déclaré). Sans slug : la chaîne d'identifiants n'a rien pu corroborer, donc ce candidat n'a pas de shard extract-an et n'est pas publié. À relire — slug, famille politique, date et source primaire (#753, #757)."
+      "source": "https://www.cnews.fr/france/2026-05-27/presidentielle-2027-qui-est-manolo-mlekuz-ce-candidat-age-de-20-ans-parti",
+      "notes": "Relu le 2026-10-07 (#847) : candidature attestée par la presse — source retenue : CNews, 27/05/2026, faute de source primaire trouvée (ni site, ni communiqué). Date de déclaration non trouvée, laissée vide plutôt que d'emprunter celle d'un article. Famille politique laissée vide : il se dit hors du clivage gauche-droite, et le champ n'est lu par aucune vue. Aucun mandat dans les sources collectées (AMO30, Parlement européen, Répertoire national des élus) : sans slug, rien à collecter."
     },
     {
       "nom": "Antoine Mikolajczak",
@@ -355,8 +355,8 @@
       "famille_politique": null,
       "statut": "declare",
       "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Candidatures_%C3%A0_l%27%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027#Candidats_d%C3%A9clar%C3%A9s",
-      "notes": "Ajouté le 2026-09-11 par src/fetch_candidats_declares.py (déclaré). Sans slug : la chaîne d'identifiants n'a rien pu corroborer, donc ce candidat n'a pas de shard extract-an et n'est pas publié. À relire — slug, famille politique, date et source primaire (#753, #757)."
+      "source": "https://parti-equinoxe.fr/presidentielle-2027/",
+      "notes": "Relu le 2026-10-07 (#847) : candidat d'Équinoxe, désigné par un vote des adhérents au jugement majoritaire — source retenue : la page « Présidentielle 2027 » du parti, source primaire. Date de déclaration non publiée par le parti, laissée vide (premier article trouvé : JHM, 12/07/2026). Famille politique laissée vide : le champ n'est lu par aucune vue. Tête de la liste Équinoxe aux élections d'arrondissement de Paris 5e en mars 2026, non élu. Aucun mandat dans les sources collectées : sans slug, rien à collecter."
     },
     {
       "nom": "Éric Zemmour",
@@ -380,13 +380,13 @@
     },
     {
       "nom": "Mira Markovic",
-      "slug": null,
+      "slug": "mira-markovic",
       "parti": "Parti animaliste",
       "famille_politique": null,
       "statut": "declare",
-      "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Candidatures_%C3%A0_l%27%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027#Candidats_d%C3%A9clar%C3%A9s",
-      "notes": "Ajouté le 2026-10-03 par src/fetch_candidats_declares.py (déclaré). Sans slug : la chaîne d'identifiants n'a rien pu corroborer, donc ce candidat n'a pas de shard extract-an et n'est pas publié. À relire — slug, famille politique, date et source primaire (#753, #757). Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json — même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » jusque-là (#860)."
+      "date_declaration": "2026-10-02",
+      "source": "https://www.cnews.fr/france/2026-10-02/presidentielle-2027-si-nous-ne-sommes-pas-la-personne-ne-parle-des-animaux",
+      "notes": "Relu le 2026-10-07 : candidate du Parti animaliste, dont elle est cofondatrice et coprésidente, présentée par le parti le 02/10/2026 — date rapportée par plusieurs titres (CNews, Le Monde, Contexte, Agra) ; source retenue : CNews, 02/10/2026, faute de communiqué trouvé sur le site du parti. Famille politique laissée vide : le champ n'est lu par aucune vue. Absente de l'archive des acteurs de l'Assemblée et des députés européens français. Une conseillère de Paris sortante en 2026, « Douchka MARKOVIC », née en 1978, figure au fichier des sortants des municipales ; la liste Wikipédia des conseillers de Paris 2020-2026 range une « Douchka Markovic » au Parti animaliste (18e arrondissement). Rattachée à ce mandat par décision de la propriétaire le 2026-10-07 (config/correspondance_elus_rne.json) ; slug posé à ce moment-là et désormais immuable."
     }
   ]
 }
