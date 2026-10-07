@@ -8,11 +8,11 @@ place d'un nom se parcourt en entier à chaque fois. Le tri porte sur `nom` — 
 que le lecteur lit — et non sur un patronyme reconstruit : découper « Le Pen »
 ou « Dupont-Aignan » demanderait une règle que la source ne donne pas.
 
-**Le grisé.** Une pastille grisée dit que la fiche ne porte NI mandat à
-l'Assemblée nationale NI fonction gouvernementale — donc ni vote, ni
-intervention, ni amendement à publier. C'est un fait sur CE QUE LA FICHE MONTRE,
-jamais un rang entre des personnes (§2 règle 1) : la pastille reste cliquable,
-lisible et sélectionnable, et son infobulle écrit ce qu'elle veut dire.
+**Le grisé, retiré le 07/10/2026.** Une pastille grisée disait que la fiche ne
+porte NI mandat à l'Assemblée nationale NI fonction gouvernementale. La
+propriétaire l'a retiré, sur la barre comme sur l'accueil : toutes les pastilles
+ont la même forme, et ce que la fiche ne porte pas se lit sur la fiche. Le
+manifeste garde le fait (`aSiegeOuGouverne`), que plus rien n'affiche.
 
 DEUX FAITS, ET AUCUN DEVINÉ. `chambres` est le champ dérivé des mandats (#493) :
 il vaut `["PE"]` pour un député européen, et un mandat au Parlement européen
@@ -20,12 +20,11 @@ n'est pas un mandat à l'Assemblée. `fonction_gouvernementale` est une catégor
 de mandat, pas une inférence sur un intitulé. Mesuré sur les 30 candidats du
 manifeste : 16 ont l'un des deux, 14 n'ont ni l'un ni l'autre. Ségolène Royal
 n'a aucun vote publié mais sept fonctions gouvernementales : elle n'est PAS
-grisée, parce que le critère porte sur ce qu'elle a exercé et non sur ce que
+comptée sans mandat, parce que le critère porte sur ce qu'elle a exercé et non sur ce que
 nous avons collecté.
 
 CE QUE CES TESTS NE COUVRENT PAS (§2 règle 5) : ils ne rendent aucun composant
-et n'exécutent pas `sync-data.mjs`. L'ordre affiché et les quatorze pastilles
-grisées ont été vérifiés hors dépôt sur le paquet construit, à 1 440 px.
+et n'exécutent pas `sync-data.mjs`. L'ordre affiché a été vérifié hors dépôt sur le paquet construit, à 1 440 px.
 """
 
 from __future__ import annotations
@@ -41,6 +40,7 @@ SYNC = UI / "scripts" / "sync-data.mjs"
 BARRE = UI / "src" / "components" / "CandidatesBar.jsx"
 FEUILLE = UI / "src" / "components" / "CandidatesBar.css"
 CHARGEUR = UI / "src" / "data" / "index.js"
+ACCUEIL_LISTE = UI / "src" / "components" / "landing" / "CommencerAExplorer.jsx"
 
 
 def sans_commentaires(source: str) -> str:
@@ -129,29 +129,17 @@ def test_l_absence_de_cle_ne_grise_pas(chargeur=CHARGEUR) -> None:
     assert "c.aSiegeOuGouverne !== false" in source
 
 
-def test_la_pastille_grisee_reste_une_pastille(barre: str) -> None:
-    """Ni `disabled`, ni retrait de la liste : la fiche existe et s'atteint."""
-    assert "disabled" not in barre
-    assert "cb-chip--sans-mandat" in barre
-    assert "filter((c) => c.aSiegeOuGouverne" not in barre
+def test_aucune_pastille_n_est_grisee(barre: str) -> None:
+    """Retiré par la propriétaire le 07/10/2026, avec son infobulle.
 
-
-def test_le_grise_dit_ce_qu_il_veut_dire(barre: str) -> None:
-    """Une pastille plus pâle sans légende se lit comme un rang."""
-    assert "title={" in barre
-    assert "ni vote, ni intervention, ni amendement" in barre
-
-
-def test_le_grise_n_emprunte_aucune_teinte_de_jugement() -> None:
+    Ni grisé, ni `disabled`, ni retrait de la liste : toutes les pastilles ont
+    la même forme, sur la barre comme sur l'accueil.
+    """
+    accueil = sans_commentaires(ACCUEIL_LISTE.read_text(encoding="utf-8"))
     feuille = sans_commentaires(FEUILLE.read_text(encoding="utf-8"))
-    # L'ancre était `.cb-chip-avatar`, retiré avec les initiales : « GA » posé
-    # contre « Gabriel Attal » n'apprenait rien, et occupait 1 020 des 5 293 px
-    # du rang. Le bloc se ferme désormais sur la règle suivante du fichier.
-    bloc = feuille[feuille.index(".cb-chip--sans-mandat {") :]
-    bloc = bloc[: bloc.index(".cb-chip.active")]
-    au_repos = bloc.split(".cb-chip--sans-mandat.active")[0]
-    assert "var(--accent)" not in au_repos, (
-        "le jaune signal marque la sélection, jamais un état de fiche"
-    )
-    for teinte in ("red", "green", "orange", "var(--vote"):
-        assert teinte not in bloc, f"« {teinte} » ferait du grisé un jugement"
+    for nom, source in (("la barre", barre), ("l'accueil", accueil), ("la feuille", feuille)):
+        assert "sans-mandat" not in source, f"{nom} grise encore une pastille"
+    for nom, source in (("la barre", barre), ("l'accueil", accueil)):
+        assert "disabled" not in source
+        assert "aSiegeOuGouverne" not in source, f"{nom} distingue encore les fiches sans mandat"
+        assert "ni vote, ni intervention, ni amendement" not in source

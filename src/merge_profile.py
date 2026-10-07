@@ -2753,6 +2753,9 @@ def fusionner_couverture(
 
     1. **Une liste dont un écrivain ne dit rien garde ce que l'autre en dit.**
        C'est la règle de #465 et de #484, descendue à la maille de #539.
+       **Depuis #1160, un écrivain qui n'a rien demandé à la source
+       (`non_collecte`/`par_decision`) n'en dit rien non plus** : il ne
+       remplace pas un constat d'un run qui l'a interrogée, même plus ancien.
     2. **Le constat le plus récent l'emporte.** C'est la garde de #539 décision
        4 : une couverture décrit le run, et un `couvert` d'hier ne masque pas un
        `non_collecte` d'aujourd'hui. Elle passe donc AVANT le rang, sans quoi une
@@ -2795,6 +2798,24 @@ def fusionner_couverture(
             continue
         if ancien is None or ancien == neuf:
             fusionne[liste] = neuf
+            continue
+
+        # 1bis (#1160). UN RUN QUI N'A RIEN DEMANDÉ À LA SOURCE NE REMPLACE PAS
+        #    CE QU'UN RUN PRÉCÉDENT A CONSTATÉ, quelle que soit la date. Un
+        #    `non_collecte`/`par_decision` dit « ce run a sauté la liste » :
+        #    c'est une phrase sur le run, pas sur la liste, et la règle 2 lui
+        #    donnait raison parce qu'il était le plus récent. Mesuré le
+        #    06/10/2026 : 15 des 34 fiches de candidats déclarés publiaient leurs
+        #    prises de parole « non collectées » en face de listes pleines —
+        #    5 736 entrées chez Jean-Luc Mélenchon — parce que le dernier run
+        #    avait la case décochée. Arbitrage de la propriétaire, 07/10/2026 :
+        #    la fiche dit ce que le dernier run qui a LU la liste a établi, avec
+        #    sa date ; « non collecté » seulement si aucun ne l'a jamais lue.
+        #
+        #    La règle 2 tient toujours pour tout ce qui a interrogé la source :
+        #    une panne d'aujourd'hui l'emporte encore sur un `couvert` d'hier.
+        if _rang_interrogation(neuf) == 0 and _rang_interrogation(ancien) > 0:
+            fusionne[liste] = ancien
             continue
 
         constat_neuf, constat_ancien = _dernier_constat(neuf), _dernier_constat(ancien)

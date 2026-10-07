@@ -1139,6 +1139,31 @@ référentielle : une perte peut être légitime, une référence orpheline non.
 Le commit ne part que si `check_quality_gate.py` sort en 0, et le push suit la
 §6.
 
+### Les fiches hors schéma : un signalement, et une issue (#1223)
+
+Après les quatre contrôles, l'étape « Fiches hors schéma — validate_profil
+(signalement) » passe `validate_profil()` sur chaque profil publié
+(`src/audit_validation_profils.py`, un profil à la fois). **Elle ne bloque
+pas** — arbitrage de la propriétaire, 06/10/2026 — et n'est donc pas un
+cinquième contrôle : aucun input de tolérance, `continue-on-error`. Son rapport
+part au résumé du job et dans l'artifact `validation-profils`.
+
+Le dernier step du job, « Fiches hors schéma — issue de suivi », ne tourne que
+si les données ont été poussées. Il tient **une** issue sur le dépôt de
+développement, reconnue à l'étiquette `fiches-hors-schema` : ouverte au premier
+run qui trouve une fiche hors schéma, réécrite et commentée à chaque run tant
+que le défaut dure, fermée par le run qui ne le trouve plus.
+
+Il lui faut le secret **`SRC_ISSUES_TOKEN`** sur le dépôt public : un jeton
+fine-grained limité à `Issues: Read and write` sur `Empreinte-politique-src`.
+`SRC_READ_TOKEN` est en lecture seule et ne peut pas servir. **Sans ce secret,
+le step avertit** (`::warning::FICHES_HORS_SCHEMA`) et n'ouvre rien.
+
+Mesuré le 06/10/2026 en local sur 1 402 profils : 31 s, pic à 165 Mio. Les deux
+jointures de `validate_profil()` (scrutin et amendement référencés existent) ne
+sont pas rejouées : le contrôle 2 les tient.
+→ `docs/decisions/validation-des-profils-dans-le-run-1223.md`
+
 
 ### Ce que `merge-and-pivot` ne produit plus : les fiches de parti (#906)
 

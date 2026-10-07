@@ -136,7 +136,9 @@ from normalize_profil import normalize_profil
 from schema_pivot import appliquer_chambres, poser_identifiant
 from mandats_anterieurs import (
     CHEMIN_TABLE as CHEMIN_TABLE_MANDATS_ANTERIEURS,
+    appliquer_mandats_absents_de_la_source,
     appliquer_mandats_anterieurs,
+    charger_absents as charger_mandats_absents_de_la_source,
     charger_table as charger_table_mandats_anterieurs,
 )
 
@@ -157,8 +159,34 @@ def _table_mandats_anterieurs() -> dict[str, list[dict[str, Any]]]:
 
 def vider_table_mandats_anterieurs() -> None:
     """Oublie la table chargée — pour les tests, qui en servent une figée (#767)."""
-    global _TABLE_MANDATS_ANTERIEURS
+    global _TABLE_MANDATS_ANTERIEURS, _MANDATS_ABSENTS_DE_LA_SOURCE
     _TABLE_MANDATS_ANTERIEURS = None
+    _MANDATS_ABSENTS_DE_LA_SOURCE = None
+
+
+_MANDATS_ABSENTS_DE_LA_SOURCE: Optional[dict[str, list[dict[str, Any]]]] = None
+
+
+def _poser_mandats_absents_de_la_source(pivot_profile: dict[str, Any]) -> None:
+    """Repose le champ de #859 depuis le second bloc de la même table.
+
+    Appelée APRÈS la fusion : c'est sur les `mandats` fusionnés qu'on sait si le
+    corpus porte désormais une ligne citée à la main. Une ligne écartée pour
+    cette raison est signalée — elle est à retirer de la table.
+    """
+    global _MANDATS_ABSENTS_DE_LA_SOURCE
+    if _MANDATS_ABSENTS_DE_LA_SOURCE is None:
+        _MANDATS_ABSENTS_DE_LA_SOURCE = charger_mandats_absents_de_la_source(
+            CHEMIN_TABLE_MANDATS_ANTERIEURS
+        )
+    for ligne in appliquer_mandats_absents_de_la_source(
+        pivot_profile, _MANDATS_ABSENTS_DE_LA_SOURCE
+    ):
+        _tprint(
+            f"::warning::{pivot_profile.get('id')} — « {ligne['libelle']} » "
+            f"({ligne['debut']} → {ligne['fin']}) est désormais porté par le corpus : "
+            "la ligne n'est plus publiée, à retirer de config/mandats_anterieurs.json (#859)."
+        )
 from amendements_index import (
     DEFAULT_AMENDEMENTS_DIR,
     rafraichir as rafraichir_amendements,
@@ -983,8 +1011,10 @@ def _normaliser_en_pivot(
             _tprint(f"  ParlTrack MEP {mep_id} : {statut}")
 
     # #539 — la couverture est dérivée en DERNIER, une fois les listes et la
-    # provenance arrêtées, et elle n'est jamais fusionnée : elle décrit le run,
-    # pas la personne (voir merge_profile.merge_pivot_profile).
+    # provenance arrêtées : elle décrit ce run. Elle est ensuite composée liste
+    # par liste avec la couverture publiée (#602, `fusionner_couverture`), où
+    # une liste que ce run a sautée garde le dernier constat d'un run qui l'a
+    # lue (#1160).
     couverture_profil.appliquer(
         pivot_profile,
         decisions=decisions,
@@ -1284,6 +1314,7 @@ def process_candidat(
         # jamais fusionné, comme `chambres` ; et AVANT la comparaison de #343,
         # pour qu'une fiche inchangée garde ses horodatages.
         appliquer_mandats_anterieurs(pivot_profile, _table_mandats_anterieurs())
+        _poser_mandats_absents_de_la_source(pivot_profile)
         # #343 : ne pas ré-avancer genere_le/synchro_le quand --pivot-only re-dérive
         # un contenu strictement identique au pivot déjà commité (pas d'appel réseau).
         pivot_profile = preserve_stable_freshness_timestamps(existing_pivot, pivot_profile)
@@ -1392,6 +1423,22 @@ def process_candidat(
         future_ue = pool.submit(_fetch_ue)
         profile, chambre, warnings_chambres = future_fr.result()
         mandat_ue = future_ue.result()
+
+    # #1160 — UN CANDIDAT DÉCLARÉ RELU PAR LE ROSTER NE DÉCLARE RIEN DE SA
+    # COLLECTE. Ce job-ci a sauté ses interventions exprès (voir
+    # `theme_seul_refuse` ci-dessus) et, comme tout job roster, ses dossiers :
+    # c'est `extract-an` qui les collecte en entier. Mais sa déclaration —
+    # `collecte_ecartee: ["interventions", "textes_portes"]` — vaut pour le
+    # PROFIL une fois fusionnée : le roster est fusionné APRÈS l'AN
+    # (`--dirs an ue roster senat`), et `_declaration_du_run` retient le
+    # dernier écrivain qui pose la clé. Mesuré sur le run `37526734878` (06/10,
+    # `collect_interventions=true`) : le brut de Jean-Luc Mélenchon portait
+    # 3 933 interventions collectées le soir même ET la déclaration qu'elles
+    # avaient été écartées. Sans la clé, la fusion garde celle de l'AN.
+    if theme_seul_refuse and isinstance(profile, dict):
+        meta_collecte = profile.get("meta")
+        if isinstance(meta_collecte, dict):
+            meta_collecte.pop("collecte_ecartee", None)
 
     if profile is None and mandat_ue is None:
         # « introuvable » est un CONSTAT — le référentiel AN ne connaît pas ce
@@ -1552,6 +1599,7 @@ def process_candidat(
                 pivot_profile = merge_pivot_profile(existing_pivot, pivot_profile)
             # #860 — même champ dérivé, même place que sur le chemin pivot-only.
             appliquer_mandats_anterieurs(pivot_profile, _table_mandats_anterieurs())
+            _poser_mandats_absents_de_la_source(pivot_profile)
             # #343 : ne pas ré-avancer genere_le/synchro_le si le contenu régénéré
             # est strictement identique au pivot déjà commité.
             pivot_profile = preserve_stable_freshness_timestamps(existing_pivot, pivot_profile)

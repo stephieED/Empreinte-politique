@@ -74,11 +74,6 @@ const DATE_LISTE_OFFICIELLE = '26 mars 2027';
    La FAQ dit la même chose autrement — « en attendant la liste officielle que
    publiera le Conseil constitutionnel ». Les deux sont vraies : le Conseil
    arrête la liste, le Journal officiel la publie. */
-const SANS_MANDAT =
-  'Aucun mandat à l’Assemblée nationale, au Sénat, au Parlement européen ni au '
-  + 'gouvernement : sa fiche existe, mais elle ne porte ni vote, ni intervention, '
-  + 'ni amendement.';
-
 function Porte({ cle, libelle, n, borne = null, ouverte, onOuvrir }) {
   return (
     <button
@@ -165,14 +160,7 @@ export default function CommencerAExplorer() {
         <ul className="landing-explorer-liste" id="liste-candidats" hidden={ouverte !== 'candidats'}>
           {(candidats || []).map((c) => (
             <li key={c.id}>
-              {/* Le grisé d'une fiche sans mandat est un FAIT sur ce qu'elle
-                  montre, jamais un rang (#328) : il survit au changement de
-                  forme, avec son infobulle. */}
-              <Link
-                className={`cb-chip${c.aSiegeOuGouverne ? '' : ' cb-chip--sans-mandat'}`}
-                to={`/candidats/${c.id}`}
-                title={c.aSiegeOuGouverne ? undefined : SANS_MANDAT}
-              >
+              <Link className="cb-chip" to={`/candidats/${c.id}`}>
                 <span className="cb-chip-label">{c.nom}</span>
               </Link>
             </li>

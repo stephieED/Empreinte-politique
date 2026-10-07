@@ -195,3 +195,15 @@ les charger, ni à les faire grossir. -->
   profile, even under `--no-merge`. Lifted only by `--autoriser-collecte-vide`, and the
   preservation is always printed. "Zero observed" is not "collection failed" (§2 rule 5).
   → `docs/decisions/collecte-vide-necrase-jamais.md`
+
+- **A run that skipped a list says nothing about it (#1160).** In
+  `fusionner_couverture`, a `non_collecte`/`par_decision` entry never replaces an
+  entry from a run that interrogated the source, whatever their dates: the sheet
+  keeps the last real reading, with its `constate_le`, and shows « non collecté »
+  only if no run ever read the list. A failure (`panne`) still beats yesterday's
+  `couvert` — that rule of #602 holds for whatever asked the source. The same
+  principle at the raw level: **the roster job does not write `collecte_ecartee` for
+  a declared candidate** (`theme_seul_refuse`), because its declaration, merged after
+  the AN one (`--dirs an ue roster senat`), became the profile's.
+  → `docs/decisions/liste-sautee-garde-son-constat-1160.md`
+

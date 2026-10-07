@@ -5,7 +5,9 @@
   "borne": "Premier jour de la XIIe législature, premier mandat que les données de l'Assemblée publient. Une ligne de cette table se termine au plus tard la veille ; ce qui commence après relève de la collecte, et un trou APRÈS la borne est un autre défaut (#859).",
   "releve": "Un candidat présent dans `candidats` a été relu : sa liste, vide ou non, est complète pour les institutions de KNOWN_INSTITUTIONS_ANTERIEURES. Un candidat absent n'a PAS été relu, et sa fiche le dit (`mandats_anterieurs_non_resolu`) — absent n'est pas « aucun » (AGENTS §2 règle 5).",
   "non_portes": "Les deux mandats de sénateur de Jean-Luc Mélenchon (Essonne, 28/09/1986 → 27/04/2000, source senat.fr) ne sont PAS portés : #528 a sorti le Sénat du périmètre, y compris l'usage biographique « a été sénateur de … à … ». Leur place est prête (une institution de plus dans le frozenset) le jour où la décision est reprise.",
-  "verifie_le": "2026-09-11"
+  "verifie_le": "2026-09-11",
+  "absents_de_la_source": "Mandats POSTÉRIEURS au 19/06/2002 que le référentiel de l'Assemblée ne porte pas, cités à la main depuis leur source primaire (#859, arbitrage de la propriétaire du 06/10/2026). Deux motifs, jamais confondus : `gouvernement_anterieur_a_la_source` — le référentiel ne porte aucun gouvernement avant le 17/05/2007 (`borne_couverture_gouvernement`), la ligne se termine donc avant ; `mandat_non_porte_par_la_source` — la source couvre la période et ne porte pas ce mandat. Un candidat absent de ce bloc n'a PAS été comparé à une source officielle : sa fiche publie `null` et `non_relu`, jamais une liste vide.",
+  "borne_couverture_gouvernement": "2007-05-17"
  },
  "candidats": {
   "anasse-kazib": {
@@ -336,5 +338,48 @@
     "methode": "lecture_fiche_sycomore"
    }
   }
+ },
+ "absents_de_la_source": {
+  "xavier-bertrand": [
+   {
+    "institution": "assemblee_nationale",
+    "libelle": "Député de l'Aisne",
+    "legislature": "12",
+    "debut": "2002-06-19",
+    "fin": "2004-04-30",
+    "source_url": "https://www2.assemblee-nationale.fr/sycomore/fiche?num_dept=11024",
+    "verifie_le": "2026-10-06",
+    "absence": {
+     "motif": "mandat_non_porte_par_la_source",
+     "constate_le": "2026-10-06"
+    }
+   },
+   {
+    "institution": "gouvernement",
+    "libelle": "Secrétaire d'État à l'assurance maladie",
+    "debut": "2004-03-31",
+    "fin": "2005-05-31",
+    "source_url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000797801",
+    "source_fin_url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000257756",
+    "verifie_le": "2026-10-06",
+    "absence": {
+     "motif": "gouvernement_anterieur_a_la_source",
+     "constate_le": "2026-10-06"
+    }
+   },
+   {
+    "institution": "gouvernement",
+    "libelle": "Ministre de la santé et des solidarités",
+    "debut": "2005-06-02",
+    "fin": "2007-03-26",
+    "source_url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000629661",
+    "source_fin_url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000644838",
+    "verifie_le": "2026-10-06",
+    "absence": {
+     "motif": "gouvernement_anterieur_a_la_source",
+     "constate_le": "2026-10-06"
+    }
+   }
+  ]
  }
 }

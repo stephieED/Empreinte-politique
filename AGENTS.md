@@ -65,7 +65,7 @@ Any schema/display change must preserve them:
 3. No individual attendance rate is ever published.
 4. A 49.3 procedure is never treated as a vote position (separate procedural fact).
 5. Missing data means missing data, never default `0`.
-6. `position_dans_hemicycle` always requires a verifiable `source_url` (enforced by `validate_profil()`).
+6. `position_dans_hemicycle` always requires a verifiable `source_url` (checked by `validate_profil()`, which every run executes and **reports** — it opens an issue, it does not block: #1223).
 7. Group ratios published only with numerator + denominator + sufficient coverage; otherwise `N/D`.
    **An individual index measured against a group average** — cohesion rate, participation rate —
    is **internal quality control** only, never public (`--rapport-interne`). **Juxtaposing, on one
@@ -137,6 +137,7 @@ per domain, and are loaded when you touch that domain — not at every session.
 | [`docs/regles/roster-et-sources.md`](docs/regles/roster-et-sources.md) | **§3d. Scope, sources, rosters** — Senate and NosDéputés out, the slug ↔ AN actor table, AMO30 rosters, group positions, bicameral collection. |
 | [`docs/regles/interventions-syceron.md`](docs/regles/interventions-syceron.md) | **§3e. Interventions (Syceron)** — bare actor ids, verbatim reductions, séance slots, index conformity and sharding, theme-only collection. |
 | [`docs/regles/portail-qualite.md`](docs/regles/portail-qualite.md) | **§3f. Quality gate** — what hard-fails, what stays soft, and why. |
+| [`docs/regles/textes-publies.md`](docs/regles/textes-publies.md) | **§3g. Published site text** — plain words for the general reader, no repository vocabulary, what a note and a title may say. **The site only**: never the docs, the code, the issues or the replies. |
 
 **A new pipeline rule goes into one of those files, never here.** That is the
 whole point: a lot about the merge touches `docs/regles/fusion-et-index.md`, and
@@ -260,7 +261,7 @@ absent from another.
 | File | Update when |
 |---|---|
 | `AGENTS.md` | **A rule that governs everything** — editorial, reporting, what to ask. A rule that governs **one area** goes to `docs/regles/`, never here (#737). **Never a count that a run or a lot moves** — corpus sizes, profile populations, file inventories: here they are read as current long after they stopped being so. The figure lives in the decision that measured it, or in the tool that prints it. Rare edit; stay terse. |
-| `docs/regles/<domaine>.md` | **The rule you are about to add governs one module or one job.** Eight files, one per domain, indexed by `AGENTS.md` §3 — loaded when you touch that domain, not at every session. Keep the instruction, put the measurement and the incident in the decision file. `tests/test_regles_par_domaine_737.py` fails when a file empties, leaves the index, or when a section the repo cites stops being named in `AGENTS.md`. |
+| `docs/regles/<domaine>.md` | **The rule you are about to add governs one module or one job.** Nine files, one per domain, indexed by `AGENTS.md` §3 — loaded when you touch that domain, not at every session. Keep the instruction, put the measurement and the incident in the decision file. `tests/test_regles_par_domaine_737.py` fails when a file empties, leaves the index, or when a section the repo cites stops being named in `AGENTS.md`. |
 | `README.md` | **The front door, one page.** A new setup step, a change to the editorial line or to a coverage limit, a doc that becomes an entry point. Never a command — that is the row below. |
 | `docs/commandes.md` | **An option is added or removed, a script is renamed or retired, a command's output moves.** Not when the pipeline changes: the file says what to type, never how the run works. `tests/test_commandes_documentees.py` fails on a script or a long option that no longer exists. |
 | `docs/data-architecture.md` | A file under `pivot_data/`/`raw_data/` appears or changes shape, a source is added or removed, a normalisation or aggregation step moves. **The schema changed — say what it now publishes, in the same lot.** A value added to a closed vocabulary (`KNOWN_*`) changes what a fiche can carry, and a field added to a raw block reaches nothing until something versates it: both belong here, not only in `src/schema_pivot.py`. `tests/test_sources_documentees.py` fails on a value of `KNOWN_CATEGORIES`, `KNOWN_CHAMBRES` or `KNOWN_CATEGORIE_SOURCES` that no documentation names. **Every volumetry carries its own measurement date**: a row filed under another row's date reads as true on that day — `lignees/` was once dated 30/08, a day it did not exist. |
@@ -354,6 +355,9 @@ unmerged work, pushing to a public repo: those are hers.
 labels, published copy, page text. She has asked for this explicitly, and it is
 the one case where reviewing draft wording is wanted. Render it as it will
 appear (`scripts/rendu_formulaire.py` for workflow inputs), not as source.
+**Text published on the site is written for the general reader, with no
+repository vocabulary** — and that rule stops at the site: docs, code, issues
+and replies keep their exact terms. → `docs/regles/textes-publies.md`
 
 **Do not ask her to review your own work.** Sub-issue bodies, commit messages,
 agent instructions, which files to touch, how to name a branch: that is the

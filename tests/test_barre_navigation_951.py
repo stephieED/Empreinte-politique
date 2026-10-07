@@ -235,7 +235,8 @@ def test_l_accueil_est_le_hero_puis_l_entree_en_deux_temps() -> None:
     # LE TITRE EST LE SIEN (30/09/2026) : « Commencer à explorer » nommait le
     # geste, « Commencer l'exploration » la chose. Elle a donné le second.
     assert "Commencer l’exploration</h2>" in liste
-    assert "cb-chip--sans-mandat" in liste, "le grisé de la barre de l'explorateur, infobulle comprise"
+    # Le grisé des fiches sans mandat a été retiré le 07/10/2026, ici comme sur la barre.
+    assert "cb-chip--sans-mandat" not in liste
     assert 'to={`/groupes/${l.id}`}' in liste and 'to={`/gouvernements/${g.id}`}' in liste
 
 

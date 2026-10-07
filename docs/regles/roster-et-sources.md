@@ -204,6 +204,14 @@ les charger, ni à les faire grossir. -->
   entry of `raw_data/candidats.json` does this too: its `notes` say so
   (`RAPPEL_MANDATS_ANTERIEURS`, written by `fetch_candidats_declares.nouvelle_entree`).
   → `docs/decisions/mandats-anterieurs-couverture-860.md`
+- **A mandate after 19/06/2002 that the source does not carry goes into the other
+  block, never into `candidats` (#859).** `absents_de_la_source`, same file: each line
+  names why the source lacks it (`absence.motif`) and when that was measured. The
+  Assembly's referential carries **no government before 17/05/2007** — the 2002 bound
+  holds for deputies only. An empty entry is refused: nobody has established that the
+  source carries all of anyone's mandates. When the run warns that a line « est
+  désormais porté par le corpus », remove it from the table.
+  → `docs/decisions/mandats-absents-de-la-source-859.md`
 - **A declined candidacy leaves the collection perimeter; its published sheet stays (#760).**
   `src/perimetre_candidats.py` is the **single** predicate, used by both `prepare-an-matrix`
   and `generate_all_profiles` — the filter lived inline in the YAML, and a second copy would

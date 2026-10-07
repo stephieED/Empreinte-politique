@@ -112,6 +112,10 @@ SITES_PYTHON: dict[tuple[str, str], str] = {
     # daté remplace un mandat hérité. Un remplaçant d'une autre chambre n'en est
     # pas un, et le confondre retirerait un fait sans contrepartie.
     ("retrait_heritage_senat.py", "mandats_electifs_remplaces"): MANDAT,
+    # #859 — LIT la `chambre` d'un mandat pour savoir si le corpus porte
+    # désormais un mandat de député cité à la main. Un mandat européen de la
+    # même période n'en est pas un.
+    ("mandats_anterieurs.py", "_porte_par_le_corpus"): MANDAT,
     ("mep_profile.py", "normalize_parltrack"): REPLI,
     # -- La fusion ----------------------------------------------------------
     # `merge_pivot_profile` réécrit les deux champs par `appliquer_chambres`

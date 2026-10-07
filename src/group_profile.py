@@ -958,6 +958,23 @@ def _dans_periodes(jour: str, periodes: list[tuple[Optional[str], Optional[str]]
     return any((debut or "") <= jour <= (fin or "9999-12-31") for debut, fin in periodes)
 
 
+def periodes_depuis_appartenance(
+    appartenance: Optional[dict[str, Any]],
+) -> Optional[list[tuple[Optional[str], Optional[str]]]]:
+    """Les mêmes périodes, lues sur une entrée de `appartenances_depuis_roster`
+    — `{debut, fin, periodes}` — AVANT que `membres[]` existe (#1175). Les deux
+    lectures doivent rendre la même chose pour un même membre : les amendements
+    sont bornés au chargement, la cohésion et la parole après.
+    """
+    if not isinstance(appartenance, dict):
+        return None
+    return periodes_d_appartenance({
+        "periodes": appartenance.get("periodes"),
+        "debut_dans_groupe": appartenance.get("debut"),
+        "fin_dans_groupe": appartenance.get("fin"),
+    })
+
+
 def periodes_d_appartenance(membre: dict[str, Any]) -> Optional[list[tuple[Optional[str], Optional[str]]]]:
     """Les périodes d'appartenance d'une entrée `membres[]`, ou `None` si elle
     n'est pas datée (#1073). `periodes[]` quand la source les donne (#809),
@@ -1792,6 +1809,14 @@ class ContributionAmendements:
     #: **Conservées** — rien ne prouve qu'elles soient hors période, et les
     #: écarter ferait passer une ignorance pour un fait (§2 règle 5).
     sans_legislature: int = 0
+    #: #1175 — **SIGNATURES** écartées parce que posées un jour où le membre
+    #: n'appartenait pas au groupe : avant d'y entrer, après l'avoir quitté, ou
+    #: hors de l'existence du groupe. Comptées, jamais tues, comme `hors_periode`.
+    hors_appartenance: int = 0
+    #: Signatures dont l'amendement n'a pas de date dans l'index (14 amendements
+    #: sur 693 387, mesuré le 06/10/2026). **Conservées** : on n'exclut personne
+    #: sur une date qu'on n'a pas (§2 règle 5).
+    sans_date: int = 0
 
     def __len__(self) -> int:
         return self.nb
@@ -1808,8 +1833,15 @@ def contribution_amendements(
     amendements_index: Optional[AmendementsIndex] = None,
     distincts: Optional[CumulAmendementsDistincts] = None,
     legislature: Optional[str] = None,
+    periodes: Optional[list[tuple[Optional[str], Optional[str]]]] = None,
 ) -> ContributionAmendements:
     """Réduit l'`amendements[]` d'UN membre à ce que l'agrégat en tire.
+
+    `periodes` (#1175) : les périodes d'appartenance de CE membre au groupe de
+    la fiche, telles que `periodes_d_appartenance` les rend. Une signature n'est
+    retenue que si l'amendement a été déposé un jour où le membre y siégeait —
+    la règle de la cohésion (#1218) et de la parole (#1073). `None` : aucune
+    appartenance datée, donc aucun filtre, et seule la législature borne.
 
     C'est le seul endroit qui lit une entrée d'amendement, et il ne la lit
     qu'une fois : appelé au chargement (#635), il permet de relâcher les
@@ -1834,6 +1866,8 @@ def contribution_amendements(
     non_resolus = 0
     hors_periode = 0
     sans_legislature = 0
+    hors_appartenance = 0
+    sans_date = 0
 
     for entree, amendement in joindre_amendements(amendements, amendements_index):
         # #821 — UN AMENDEMENT DÉPOSÉ AILLEURS N'EST PAS L'ACTIVITÉ DE CE
@@ -1861,6 +1895,20 @@ def contribution_amendements(
         if amendement is None and "sort" in entree:
             # Entrée d'avant #431, encore autoportante.
             amendement = entree
+        # #1175 — UN AMENDEMENT SIGNÉ AILLEURS N'EST PAS L'ACTIVITÉ DE CE
+        # GROUPE NON PLUS. La législature ne suffisait pas : Écologie
+        # Démocratie Solidarité a vécu cinq mois de 2020 et publiait 25 903
+        # amendements, ceux que ses 17 membres ont signés de 2017 à 2022, pour
+        # 1 332 déposés pendant qu'ils y siégeaient. La date est celle du dépôt,
+        # dans l'index ; les bornes sont incluses, comme pour un scrutin.
+        # Sans date, la signature est GARDÉE et comptée (§2 règle 5).
+        if periodes is not None:
+            jour = amendement.get("date") if isinstance(amendement, dict) else None
+            if not jour:
+                sans_date += 1
+            elif not _dans_periodes(str(jour)[:10], periodes):
+                hors_appartenance += 1
+                continue
         if not isinstance(amendement, dict):
             non_resolus += 1
             continue
@@ -1877,12 +1925,14 @@ def contribution_amendements(
     return ContributionAmendements(
         nb, total, par_type, non_resolus, cumul,
         hors_periode=hors_periode, sans_legislature=sans_legislature,
+        hors_appartenance=hors_appartenance, sans_date=sans_date,
     )
 
 
 def _aggregate_amendements(
     profils: list[dict[str, Any]],
     amendements_index: Optional[AmendementsIndex] = None,
+    appartenances: Optional[dict[str, Optional[list[tuple[Optional[str], Optional[str]]]]]] = None,
 ) -> tuple[dict[str, Any], int]:
     """Agrège les amendements de tous les profils membres pour servir de comparateur.
 
@@ -1961,16 +2011,26 @@ def _aggregate_amendements(
     non_resolus = 0
     hors_periode = 0
     sans_legislature = 0
+    hors_appartenance = 0
+    sans_date = 0
 
     for profil in profils:
         amendements = profil.get("amendements")
+        # #1175 — un profil déjà réduit a été borné au chargement, avec ses
+        # périodes ; une liste brute (tests, appelant qui charge un profil
+        # isolé) l'est ici, avec la table que lisent la cohésion et la parole.
         contribution = (
             amendements if isinstance(amendements, ContributionAmendements)
-            else contribution_amendements(amendements, amendements_index)
+            else contribution_amendements(
+                amendements, amendements_index,
+                periodes=(appartenances or {}).get(profil.get("id") or ""),
+            )
         )
         non_resolus += contribution.non_resolus
         hors_periode += contribution.hors_periode
         sans_legislature += contribution.sans_legislature
+        hors_appartenance += contribution.hors_appartenance
+        sans_date += contribution.sans_date
         for compteur in _COMPTEURS_AMENDEMENTS:
             signatures[compteur] += contribution.total[compteur]
             for type_deposant, stats in signatures_par_type.items():
@@ -2004,6 +2064,9 @@ def _aggregate_amendements(
     # (§2 règle 7).
     total["nb_signatures_hors_periode_ecartees"] = hors_periode
     total["nb_signatures_sans_legislature_retenues"] = sans_legislature
+    # #1175 — même transparence pour la borne d'appartenance.
+    total["nb_signatures_hors_appartenance_ecartees"] = hors_appartenance
+    total["nb_signatures_sans_date_retenues"] = sans_date
     return total, non_resolus
 
 
@@ -2165,8 +2228,14 @@ def projeter_profil_membre(
     amendements_index: Optional[AmendementsIndex] = None,
     distincts: Optional[CumulAmendementsDistincts] = None,
     legislature: Optional[str] = None,
+    periodes: Optional[list[tuple[Optional[str], Optional[str]]]] = None,
 ) -> dict[str, Any]:
     """Le profil d'un membre réduit à ce que la fiche de groupe en lit.
+
+    `periodes` (#1175) : l'appartenance de ce membre au groupe de la fiche. Elle
+    doit être connue ICI, parce que c'est ici que les entrées d'amendement
+    meurent : une fois réduites à des compteurs, plus rien ne permet de dire
+    quel jour chacune a été déposée.
 
     `amendements[]` est **réduit** et non projeté : c'est le bloc qui pèse
     577,3 des 651,5 Mo du corpus, et 6,09 millions de mappings à deux clés ne
@@ -2199,7 +2268,7 @@ def projeter_profil_membre(
             ]
         elif bloc == "amendements":
             projection[bloc] = contribution_amendements(
-                valeur, amendements_index, distincts, legislature
+                valeur, amendements_index, distincts, legislature, periodes
             )
         else:
             projection[bloc] = valeur
@@ -2212,6 +2281,7 @@ def load_profil_from_file(
     projeter: bool = True,
     distincts: Optional[CumulAmendementsDistincts] = None,
     legislature: Optional[str] = None,
+    periodes: Optional[list[tuple[Optional[str], Optional[str]]]] = None,
 ) -> dict[str, Any]:
     """Charge un profil depuis un fichier JSON et le normalise en pivot v1 si nécessaire.
 
@@ -2262,7 +2332,7 @@ def load_profil_from_file(
         )
 
     return (
-        projeter_profil_membre(profil, amendements_index, distincts, legislature)
+        projeter_profil_membre(profil, amendements_index, distincts, legislature, periodes)
         if projeter else profil
     )
 
@@ -2577,7 +2647,8 @@ def build_groupe_profile(
 
     # --- Amendements agrégés (comparateur du taux d'adoption individuel) ---
     amendements_agreges, n_amendements_non_resolus = _aggregate_amendements(
-        profils, amendements_index
+        profils, amendements_index,
+        appartenances={m["membre_id"]: periodes_d_appartenance(m) for m in membres},
     )
     # #821 — CE QUI EST COMPTÉ ICI EST UNE SIGNATURE, ET LE MESSAGE LE DIT.
     # Le compteur s'incrémente une fois par ENTRÉE d'`amendements[]`, donc une
@@ -2593,6 +2664,21 @@ def build_groupe_profile(
             f"{legislature or '?'}e ont été écartées — ils appartiennent à la "
             "carrière de leurs auteurs, pas à l'activité de ce groupe (#821, même "
             "règle que les votes depuis #403)."
+        )
+    n_hors_appartenance = amendements_agreges.get("nb_signatures_hors_appartenance_ecartees") or 0
+    if n_hors_appartenance:
+        warnings.append(
+            f"amendements_agreges : {n_hors_appartenance} signature(s) posées un "
+            "jour où leur auteur n'appartenait pas à ce groupe ont été écartées — "
+            "avant son entrée, après son départ, ou hors de l'existence du groupe "
+            "(#1175, même règle que la cohésion et la parole)."
+        )
+    n_sans_date = amendements_agreges.get("nb_signatures_sans_date_retenues") or 0
+    if n_sans_date:
+        warnings.append(
+            f"amendements_agreges : {n_sans_date} signature(s) sur des amendements "
+            "sans date de dépôt sont CONSERVÉES — on n'écarte personne sur une date "
+            "qu'on n'a pas (§2 règle 5)."
         )
     n_sans_leg = amendements_agreges.get("nb_signatures_sans_legislature_retenues") or 0
     if n_sans_leg:
@@ -2908,6 +2994,9 @@ def generate_groupe_profile_from_roster(
             profil = load_profil_from_file(
                 pivot_path, amendements_index, distincts=distincts,
                 legislature=legislature,
+                # #1175 — les amendements sont réduits au chargement : c'est
+                # donc ici que l'appartenance les borne, sur les dates du roster.
+                periodes=periodes_depuis_appartenance(table_roster[slug]),
             )
         except (FileNotFoundError, ValueError) as exc:
             print(f"  [!] {exc}", file=sys.stderr)

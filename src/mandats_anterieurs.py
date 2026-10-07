@@ -35,6 +35,30 @@ regardé. `lecture_fiche_sycomore` est une lecture de la source primaire par le
 pipeline, reproductible ; `relecture_humaine` est une signature, que rien
 d'automatique ne pose à la place de quelqu'un.
 
+## Le trou APRÈS la borne (#859)
+
+La table refusait toute ligne se terminant dans la couverture : « un trou après
+la borne est un autre défaut ». Ce défaut a été instruit le 05/10/2026 sur la
+fiche de Xavier Bertrand, et il a deux causes qui ne se confondent pas :
+
+- **le référentiel ne porte aucun gouvernement avant le 17/05/2007** (659
+  mandats `GOUVERNEMENT`, le plus ancien dans Fillon I) : la borne du 19/06/2002
+  ne vaut que pour les mandats de député. Une fonction gouvernementale de
+  2002-2007 est donc antérieure à ce que la source couvre, comme celles de
+  Ségolène Royal le sont à 2002 ;
+- **le référentiel ne porte pas son mandat de député de la XIIe** (19/06/2002 →
+  30/04/2004), que Sycomore établit : la période est couverte, CE mandat manque.
+
+Arbitrage de la propriétaire, 06/10/2026 : les trois sont cités à la main. Ils
+vivent dans le bloc `absents_de_la_source` du même fichier, et sur la fiche dans
+`mandats_absents_de_la_source` — un champ À PART de `mandats_anterieurs`, parce
+que l'interface publie de celui-ci « exercés avant le 19 juin 2002 », ce qui
+serait faux de ces lignes. Chaque ligne nomme son motif.
+
+Le garde-fou de ce bloc est l'inverse de l'autre : une ligne que le corpus
+finit par porter n'est plus publiée (`appliquer_mandats_absents_de_la_source`),
+sinon la fiche citerait à la main ce qu'elle lit déjà à la source.
+
 ## Un champ dérivé, recalculé à l'écriture
 
 Comme `chambres` (#493) ou `meta.licence_donnees` (#530), le champ ne se
@@ -53,6 +77,7 @@ from typing import Any, Optional
 from schema_pivot import (
     KNOWN_INSTITUTIONS_ANTERIEURES,
     KNOWN_METHODES_CONSTAT_ANTERIEUR,
+    KNOWN_MOTIFS_MANDAT_ABSENT_DE_LA_SOURCE,
     KNOWN_MOTIFS_MANDAT_ANTERIEUR_NON_RESOLU,
 )
 
@@ -60,6 +85,22 @@ CHEMIN_TABLE = Path("config") / "mandats_anterieurs.json"
 
 #: Premier jour des données de l'Assemblée : la XIIe législature.
 BORNE_COUVERTURE_AN = "2002-06-19"
+
+#: Plus ancien gouvernement que porte le référentiel de l'Assemblée : Fillon I.
+#: Mesuré le 05/10/2026 et remesuré le 06/10 sur `acteurs_historique.zip` — 659
+#: mandats `GOUVERNEMENT`, le plus ancien du 17/05/2007 ; un seul des 1 162
+#: mandats `MINISTERE` est antérieur (24/12/2002), ce qui ne fait pas une
+#: couverture. La borne du 19/06/2002 ne vaut PAS pour le Gouvernement (#859).
+BORNE_COUVERTURE_GOUVERNEMENT = "2007-05-17"
+
+#: Clé du bloc de la table qui porte les mandats postérieurs au 19/06/2002.
+CLE_ABSENTS = "absents_de_la_source"
+
+#: Institution de la table → catégorie du mandat que le corpus porterait.
+_CATEGORIE_DU_CORPUS = {
+    "assemblee_nationale": "mandat_electif",
+    "gouvernement": "fonction_gouvernementale",
+}
 
 _DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
@@ -231,3 +272,158 @@ def appliquer_mandats_anterieurs(
         profil["mandats_anterieurs_constat"] = dict(entree["constat"])
     else:
         profil.pop("mandats_anterieurs_constat", None)
+
+
+# ---------------------------------------------------------------------------
+# Les mandats POSTÉRIEURS à la borne que la source ne porte pas (#859)
+# ---------------------------------------------------------------------------
+
+def _valider_ligne_absente(slug: str, i: int, ligne: Any) -> None:
+    libelle = f"{CLE_ABSENTS}.{slug}[{i}]"
+    if not isinstance(ligne, dict):
+        raise TableMandatsAnterieursInvalide(f"{libelle} : ligne non-objet.")
+    if ligne.get("institution") not in KNOWN_INSTITUTIONS_ANTERIEURES:
+        raise TableMandatsAnterieursInvalide(
+            f"{libelle} : institution {ligne.get('institution')!r} hors de "
+            f"{sorted(KNOWN_INSTITUTIONS_ANTERIEURES)}."
+        )
+    for cle in ("libelle", "debut", "fin", "source_url", "verifie_le"):
+        if not ligne.get(cle):
+            raise TableMandatsAnterieursInvalide(
+                f"{libelle} : '{cle}' absent — un mandat que la source devrait "
+                "porter est clos et daté, sinon il n'est pas établi."
+            )
+    for cle in ("debut", "fin"):
+        if not _DATE.match(str(ligne[cle])):
+            raise TableMandatsAnterieursInvalide(f"{libelle} : {cle} {ligne[cle]!r} non ISO.")
+    if ligne["fin"] < ligne["debut"]:
+        raise TableMandatsAnterieursInvalide(f"{libelle} : fin antérieure au début.")
+    if not str(ligne["source_url"]).startswith("https://"):
+        raise TableMandatsAnterieursInvalide(
+            f"{libelle} : source_url doit être une URL https (§2 règle 2)."
+        )
+    if ligne["fin"] < BORNE_COUVERTURE_AN:
+        raise TableMandatsAnterieursInvalide(
+            f"{libelle} : se termine le {ligne['fin']}, avant le "
+            f"{BORNE_COUVERTURE_AN} — sa place est dans 'candidats', pas ici."
+        )
+    absence = ligne.get("absence")
+    motif = absence.get("motif") if isinstance(absence, dict) else None
+    if motif not in KNOWN_MOTIFS_MANDAT_ABSENT_DE_LA_SOURCE:
+        raise TableMandatsAnterieursInvalide(
+            f"{libelle} : 'absence.motif' {motif!r} hors de "
+            f"{sorted(KNOWN_MOTIFS_MANDAT_ABSENT_DE_LA_SOURCE)} — une ligne dit "
+            "pourquoi la source ne la porte pas."
+        )
+    if not _DATE.match(str(absence.get("constate_le") or "")):
+        raise TableMandatsAnterieursInvalide(
+            f"{libelle} : 'absence.constate_le' absent ou non ISO — l'absence "
+            "est une mesure de la source, et une source bouge."
+        )
+    # Le motif n'est pas une étiquette libre : chacun se vérifie sur la ligne.
+    gouvernemental = ligne["institution"] == "gouvernement"
+    if motif == "gouvernement_anterieur_a_la_source":
+        if not gouvernemental or ligne["fin"] >= BORNE_COUVERTURE_GOUVERNEMENT:
+            raise TableMandatsAnterieursInvalide(
+                f"{libelle} : 'gouvernement_anterieur_a_la_source' ne vaut que "
+                "pour une fonction gouvernementale terminée avant le "
+                f"{BORNE_COUVERTURE_GOUVERNEMENT}."
+            )
+    elif gouvernemental and ligne["fin"] < BORNE_COUVERTURE_GOUVERNEMENT:
+        raise TableMandatsAnterieursInvalide(
+            f"{libelle} : une fonction gouvernementale terminée avant le "
+            f"{BORNE_COUVERTURE_GOUVERNEMENT} manque à la source pour tout le "
+            "monde — son motif est 'gouvernement_anterieur_a_la_source'."
+        )
+
+
+def charger_absents(chemin: Optional[Path] = None) -> dict[str, list[dict[str, Any]]]:
+    """`slug → lignes` du bloc `absents_de_la_source`, validé. Bloc absent : `{}`.
+
+    Une entrée vide est refusée : elle affirmerait « la source porte tous ses
+    mandats », ce qu'aucune relecture n'a établi pour personne.
+    """
+    chemin = Path(chemin) if chemin is not None else CHEMIN_TABLE
+    try:
+        document = json.loads(chemin.read_text(encoding="utf-8"))
+    except OSError as exc:
+        raise TableMandatsAnterieursInvalide(f"{chemin} illisible : {exc}") from exc
+    except ValueError as exc:
+        raise TableMandatsAnterieursInvalide(f"{chemin} : JSON invalide — {exc}") from exc
+    bloc = document.get(CLE_ABSENTS, {})
+    if not isinstance(bloc, dict):
+        raise TableMandatsAnterieursInvalide(f"{chemin} : '{CLE_ABSENTS}' non-objet.")
+    absents: dict[str, list[dict[str, Any]]] = {}
+    for slug, lignes in bloc.items():
+        if not isinstance(lignes, list) or not lignes:
+            raise TableMandatsAnterieursInvalide(
+                f"{CLE_ABSENTS}.{slug} : liste non vide attendue."
+            )
+        for i, ligne in enumerate(lignes):
+            _valider_ligne_absente(slug, i, ligne)
+        debuts = [l["debut"] for l in lignes]
+        if debuts != sorted(debuts):
+            raise TableMandatsAnterieursInvalide(
+                f"{CLE_ABSENTS}.{slug} : lignes non triées par début."
+            )
+        absents[slug] = lignes
+    return absents
+
+
+def _porte_par_le_corpus(profil: dict[str, Any], ligne: dict[str, Any]) -> bool:
+    """Vrai si la fiche lit déjà, à la source, un mandat qui recouvre la ligne.
+
+    Même catégorie, périodes qui se chevauchent ; pour un mandat de député, la
+    chambre est l'Assemblée — un mandat européen de la même période n'en est pas
+    un. Un mandat du corpus sans début ne prouve rien et ne compte pas.
+    """
+    categorie = _CATEGORIE_DU_CORPUS[ligne["institution"]]
+    for mandat in profil.get("mandats") or []:
+        if not isinstance(mandat, dict) or mandat.get("categorie") != categorie:
+            continue
+        if categorie == "mandat_electif" and mandat.get("chambre") != "AN":
+            continue
+        debut = mandat.get("debut")
+        if not debut:
+            continue
+        fin = mandat.get("fin") or "9999-12-31"
+        if debut <= ligne["fin"] and fin >= ligne["debut"]:
+            return True
+    return False
+
+
+def appliquer_mandats_absents_de_la_source(
+    profil: dict[str, Any], absents: dict[str, list[dict[str, Any]]]
+) -> list[dict[str, Any]]:
+    """Repose `mandats_absents_de_la_source` sur un pivot de CANDIDAT DÉCLARÉ.
+
+    Dans le bloc : ses lignes, MOINS celles que le corpus porte désormais.
+    Hors du bloc : `null` et `non_relu` — personne n'a comparé ses mandats à une
+    source officielle, et absent n'est pas « aucun » (§2 règle 5). Jamais
+    fusionné : recalculé à chaque écriture, après la fusion des `mandats`.
+
+    Rend les lignes écartées parce que le corpus les porte : l'appelant les
+    signale, pour que la table soit nettoyée plutôt que contournée en silence.
+    """
+    cle = "mandats_absents_de_la_source"
+    if (profil.get("meta") or {}).get("provenance") != "candidat_declare":
+        profil.pop(cle, None)
+        profil.pop(f"{cle}_non_resolu", None)
+        return []
+    lignes = absents.get(profil.get("id"))
+    if lignes is None:
+        profil[cle] = None
+        profil[f"{cle}_non_resolu"] = {"motif": "non_relu"}
+        return []
+    gardees = [dict(l) for l in lignes if not _porte_par_le_corpus(profil, l)]
+    ecartees = [dict(l) for l in lignes if _porte_par_le_corpus(profil, l)]
+    if gardees:
+        profil[cle] = gardees
+        profil.pop(f"{cle}_non_resolu", None)
+    else:
+        # Toutes ses lignes sont désormais lues à la source : la relecture a eu
+        # lieu, mais elle ne vaut plus constat. Le champ se tait, il n'affirme
+        # pas une liste vide.
+        profil.pop(cle, None)
+        profil.pop(f"{cle}_non_resolu", None)
+    return ecartees

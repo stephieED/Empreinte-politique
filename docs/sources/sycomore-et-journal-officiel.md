@@ -20,6 +20,11 @@ Written on 11/09/2026, while reviewing the table's 11 lines. Everything below wa
 - **Dates are the Assembly's**: they can differ from Wikipedia and Wikidata by days
   (Royal 13/06/1988 against 23/06 ; Dupont-Aignan 01/06/1997 against 12/06). The
   table keeps Sycomore's.
+- **Sycomore carries mandates the Assembly's open data does not** (#859, read on
+  06/10/2026): page 11024 lists a XIIe mandate, « Du 19 juin 2002 au 30 avril 2004 »,
+  that the AMO30 archive lacks for the same person. The archive's XIIe is partial
+  (572 deputy mandates). On that page the two sources also date later mandates
+  differently — seen, not investigated.
 - **Ministerial functions are not on Sycomore** — Royal's page lists only her
   mandates as a deputy.
 

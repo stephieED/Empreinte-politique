@@ -227,7 +227,10 @@ def generer_une_lignee(
         profils_projetes.append((
             legislature,
             load_profil_from_file(
-                chemin, amendements_index, distincts=cumul, legislature=legislature
+                chemin, amendements_index, distincts=cumul, legislature=legislature,
+                # #1175 — même borne que sur la fiche de groupe : l'union des
+                # périodes du membre dans les maillons de cette législature.
+                periodes=appartenances.get((membre_id, legislature)),
             ),
         ))
 

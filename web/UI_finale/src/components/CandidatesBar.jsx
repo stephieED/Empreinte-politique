@@ -9,11 +9,9 @@ import './CandidatesBar.css';
 /* La barre suit l'ordre alphabétique du manifeste, et n'en refait aucun : deux
  * tris pour une même liste sont deux listes qui divergeront (#328).
  *
- * Une pastille GRISÉE dit que la fiche ne porte ni mandat à l'Assemblée ni
- * fonction gouvernementale — donc ni vote, ni intervention, ni amendement à
- * publier. C'est un fait sur CE QUE LA FICHE MONTRE, jamais un rang entre des
- * personnes (§2 règle 1) : l'infobulle l'écrit, et la pastille reste cliquable,
- * lisible et sélectionnable comme les autres.
+ * TOUTES LES PASTILLES ONT LA MÊME FORME (07/10/2026). Celles des fiches sans
+ * mandat étaient grisées, avec une infobulle ; la propriétaire a retiré le
+ * grisé. Ce que la fiche ne porte pas se lit sur la fiche.
  */
 export default function CandidatesBar() {
   const { selectedGroupId } = useGroupFilter();
@@ -65,15 +63,8 @@ export default function CandidatesBar() {
                 type="button"
                 role="listitem"
                 aria-pressed={active}
-                className={`cb-chip ${active ? 'active' : ''}${
-                  candidate.aSiegeOuGouverne ? '' : ' cb-chip--sans-mandat'
-                }`}
+                className={`cb-chip ${active ? 'active' : ''}`}
                 onClick={() => navigate(`/candidats/${candidate.id}`)}
-                title={
-                  candidate.aSiegeOuGouverne
-                    ? undefined
-                    : 'Aucun mandat à l’Assemblée nationale, au Sénat, au Parlement européen ni au gouvernement : sa fiche existe, mais elle ne porte ni vote, ni intervention, ni amendement.'
-                }
               >
                 <span className="cb-chip-label">{candidate.nom}</span>
               </button>

@@ -71,10 +71,19 @@ def test_le_nom_du_secret_est_le_seul_du_job():
     `test_transport_artifacts_786.py`, verrouille cette moitié-là.
     """
     secrets = set(re.findall(r"secrets\.([A-Z0-9_]+)", BLOC))
-    assert secrets == {"DATA_PUSH_SSH_KEY", "SRC_READ_TOKEN"}, (
+    assert secrets == {"DATA_PUSH_SSH_KEY", "SRC_READ_TOKEN", "SRC_ISSUES_TOKEN"}, (
         f"secrets attendus dans merge-and-pivot : DATA_PUSH_SSH_KEY (la seule "
-        f"identité de PUSH) et SRC_READ_TOKEN ; trouvés : {sorted(secrets)}"
+        f"identité de PUSH), SRC_READ_TOKEN et SRC_ISSUES_TOKEN ; trouvés : "
+        f"{sorted(secrets)}"
     )
+    # `SRC_ISSUES_TOKEN` (#1223) n'est pas davantage une identité de push :
+    # `Issues: Read and write` sur le dépôt privé, rien sur son contenu, et un
+    # seul step le lit — celui qui tient l'issue des fiches hors schéma. Il ne
+    # doit atteindre ni un checkout ni un `git`.
+    etape_issue = BLOC[BLOC.index("- name: Fiches hors schéma — issue de suivi"):]
+    assert BLOC.count("secrets.SRC_ISSUES_TOKEN") == 1
+    assert "secrets.SRC_ISSUES_TOKEN" in etape_issue
+    assert not re.search(r"\bgit (push|commit|clone|fetch)\b", etape_issue)
     # `SRC_READ_TOKEN` n'est pas une identité de push (#1059) : jeton à portée
     # fine, `Contents: Read-only` sur le dépôt privé, et il ne sert qu'au pas de
     # superposition du code. Ce qui reste interdit est ce que #508 visait —

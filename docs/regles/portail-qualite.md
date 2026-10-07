@@ -28,3 +28,12 @@ les charger, ni à les faire grossir. -->
   is committed under `raw_data/amendements_an_figes/`. §3d distinguishes "never built"
   from "present but stale beyond N days" from "frozen".
   → `docs/decisions/amendements-legislatures-figees.md`
+
+- **A profile that fails `validate_profil()` is reported, never blocking (#1223).**
+  `audit_validation_profils.py` runs after the four pre-commit guards and always exits
+  0; the last step of `merge-and-pivot` keeps **one** issue on the development
+  repository, label `fiches-hors-schema`, opened, rewritten and closed by the run
+  itself. Owner's arbitration, 06/10/2026. Do not turn it into a gate, and do not close
+  that issue by hand. A closed vocabulary only holds if this runs: #922 wrote four
+  undeclared values for three weeks while nothing executed the validator.
+  → `docs/decisions/validation-des-profils-dans-le-run-1223.md`

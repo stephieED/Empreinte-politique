@@ -48,34 +48,6 @@
   border-color: var(--dark);
 }
 
-/* NI MANDAT À L'ASSEMBLÉE, NI FONCTION GOUVERNEMENTALE (#328).
-   La pastille se retire au second plan : sa fiche existe et reste atteignable,
-   mais elle ne porte ni vote, ni intervention, ni amendement. C'est un fait sur
-   CE QUE LA FICHE MONTRE, pas un rang entre des personnes — d'où le gris de
-   `--muted`, celui des métadonnées, et jamais une teinte de jugement (§2
-   règle 1). Le contraste reste lisible : #6f6b78 sur #ffffff vaut 5,5:1 (AA),
-   et l'état actif reprend l'encre pleine pour que la sélection ne soit jamais
-   moins visible que sur une autre pastille. */
-.cb-chip--sans-mandat {
-  color: #6f6b78;
-  box-shadow: none;
-  border-color: var(--border-strong);
-}
-
-
-.cb-chip--sans-mandat:hover {
-  box-shadow: 0 4px 14px rgba(20, 15, 40, 0.1);
-}
-
-.cb-chip--sans-mandat.active {
-  color: var(--ink);
-  border-color: var(--dark);
-}
-
-
-
-.cb-chip.active 
-
 .cb-skeleton {
   width: 130px;
   height: 34px;

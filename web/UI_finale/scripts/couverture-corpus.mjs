@@ -418,8 +418,17 @@ export function construireCouverture({ repoRoot, slugsPublies = null }) {
            * 18/05/2007 et que les gouvernements 2002-2007 manquent : la hachure
            * affirmait « la source ne publie pas avant 2002 » sur un fait qui
            * n'est pas établi. Rien n'est hachuré tant que la borne n'est pas
-           * déclarée. */
-          borne: null,
+           * déclarée.
+           *
+           * LA BORNE SE LIT DANS LES DONNÉES, SOUS SON PROPRE NOM (07/10/2026).
+           * L'archive de l'Assemblée ne porte aucun gouvernement avant le
+           * 17/05/2007 ; cette date ne s'écrit pas ici, elle se déclare dans
+           * `couverture.fonctions_gouvernementales` de chaque fiche, sous la
+           * même forme que `couverture.mandats` — une entrée `couvert` dont
+           * `portee.debut` est la borne. `bornesPubliees()` la lit alors comme
+           * les autres. Tant qu'aucune fiche ne la déclare, la valeur reste
+           * `null` et rien n'est hachuré : c'est l'état d'avant. */
+          borne: bornes.fonctions_gouvernementales ?? null,
           couches: [
             couche('cand', CAND, mandatsGouv, dMandat),
             couche('gouv', GOUV, membresGouv, dMembreGouv),

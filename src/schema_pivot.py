@@ -1222,6 +1222,23 @@ KNOWN_TYPES_ORGANE_SOURCE: frozenset[str] = frozenset({
     "groupe_information_senatorial",
     "groupe_liaison_senatorial",
     "organisme_extra_parlementaire_senat",
+    # #922, déclaré par #1223 — l'assemblée LOCALE du mandat, telle que le
+    # Répertoire national des élus la classe par fichier. Tous sont rangés
+    # `mandat_local` : c'est ici que survit ce qui distingue un conseil
+    # municipal d'un conseil régional. Les NEUF valeurs que
+    # `rne_opendata.FICHIERS_LOCAUX` peut écrire y sont, et pas seulement les
+    # quatre que le corpus portait le jour de la mesure — le lot #922 les
+    # écrivait depuis le 15/09/2026 sans les déclarer, et rien ne l'a vu parce
+    # que `validate_profil()` ne tournait dans aucun job.
+    "conseil_municipal",
+    "mairie",
+    "conseil_arrondissement",
+    "conseil_communautaire",
+    "conseil_departemental",
+    "conseil_regional",
+    "assemblee_territoriale",
+    "conseil_francais_etranger",
+    "assemblee_francais_etranger",
 })
 
 KNOWN_CATEGORIES: frozenset[str] = frozenset({
@@ -1599,6 +1616,66 @@ def valider_mandats_anterieurs(profil: dict[str, Any]) -> list[str]:
         if m.get("fin") is None and (m.get("fin_non_resolue") or {}).get("motif") not in KNOWN_MOTIFS_MANDAT_ANTERIEUR_NON_RESOLU:
             errors.append(f"mandats_anterieurs[{i}] : fin nulle sans motif (§2 règle 5).")
     return errors
+
+#: Pourquoi un mandat POSTÉRIEUR au 19/06/2002 est cité à la main (#859), porté
+#: par `mandats_absents_de_la_source`. Les deux valeurs ne disent pas la même
+#: chose de la source, et c'est pour cela qu'elles sont nommées :
+#: `gouvernement_anterieur_a_la_source` — le référentiel de l'Assemblée ne porte
+#: aucun gouvernement avant le 17/05/2007, donc toute fonction antérieure y
+#: manque, pour tout le monde ; `mandat_non_porte_par_la_source` — la source
+#: couvre la période et ne porte pas CE mandat, constaté pour cette personne.
+KNOWN_MOTIFS_MANDAT_ABSENT_DE_LA_SOURCE: frozenset[str] = frozenset(
+    {"gouvernement_anterieur_a_la_source", "mandat_non_porte_par_la_source"}
+)
+
+#: Motif d'un `mandats_absents_de_la_source` publié `null` sur une fiche de
+#: candidat : personne n'a comparé ses mandats à une source officielle.
+KNOWN_MOTIFS_MANDATS_ABSENTS_NON_RESOLUS: frozenset[str] = frozenset({"non_relu"})
+
+
+def valider_mandats_absents_de_la_source(profil: dict[str, Any]) -> list[str]:
+    """`mandats_absents_de_la_source` (#859) : une liste relue, ou `null` et son motif."""
+    errors: list[str] = []
+    valeur = profil.get("mandats_absents_de_la_source")
+    non_resolu = profil.get("mandats_absents_de_la_source_non_resolu")
+    if valeur is None:
+        motif = (non_resolu or {}).get("motif") if isinstance(non_resolu, dict) else None
+        if motif not in KNOWN_MOTIFS_MANDATS_ABSENTS_NON_RESOLUS:
+            errors.append(
+                "'mandats_absents_de_la_source' vaut null sans "
+                "'mandats_absents_de_la_source_non_resolu.motif' dans "
+                f"{sorted(KNOWN_MOTIFS_MANDATS_ABSENTS_NON_RESOLUS)} (§2 règle 5)."
+            )
+        return errors
+    if not isinstance(valeur, list) or not valeur:
+        return [
+            "'mandats_absents_de_la_source' doit être une liste NON VIDE ou null : "
+            "une liste vide affirmerait « la source porte tous ses mandats », ce "
+            "que personne n'a constaté."
+        ]
+    if non_resolu is not None:
+        errors.append("'mandats_absents_de_la_source_non_resolu' présent sur une liste relue.")
+    for i, m in enumerate(valeur):
+        nom = f"mandats_absents_de_la_source[{i}]"
+        if not isinstance(m, dict):
+            errors.append(f"{nom} : objet attendu."); continue
+        if m.get("institution") not in KNOWN_INSTITUTIONS_ANTERIEURES:
+            errors.append(f"{nom} : institution {m.get('institution')!r} inconnue.")
+        if not m.get("source_url"):
+            errors.append(f"{nom} : source_url absente (§2 règle 2).")
+        if not m.get("debut") or not m.get("fin"):
+            errors.append(f"{nom} : debut ou fin absent.")
+        absence = m.get("absence")
+        if not isinstance(absence, dict) or absence.get("motif") not in KNOWN_MOTIFS_MANDAT_ABSENT_DE_LA_SOURCE:
+            errors.append(
+                f"{nom} : 'absence.motif' hors de "
+                f"{sorted(KNOWN_MOTIFS_MANDAT_ABSENT_DE_LA_SOURCE)} — une ligne dit "
+                "pourquoi la source ne la porte pas."
+            )
+        elif not absence.get("constate_le"):
+            errors.append(f"{nom} : 'absence.constate_le' absent.")
+    return errors
+
 
 #: Forme attendue de chaque identifiant. `None` = aucune contrainte de forme.
 #: `an` reprend le motif de `correspondance_acteurs_an` mot pour mot : deux
@@ -2398,6 +2475,10 @@ def validate_profil(
     # une liste relue dont chaque ligne a sa source, ou `null` et son motif.
     if "mandats_anterieurs" in profil:
         errors.extend(valider_mandats_anterieurs(profil))
+
+    # #859 — même statut : facultatif, tenu dès qu'il est présent.
+    if "mandats_absents_de_la_source" in profil:
+        errors.extend(valider_mandats_absents_de_la_source(profil))
 
     # `identite.uri_hatvp` porte un LIEN, donc une chaîne ou `null` — jamais un
     # objet (#556).

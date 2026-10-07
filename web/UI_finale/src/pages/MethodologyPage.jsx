@@ -262,7 +262,8 @@ const SECTIONS = [
           exprimés n'ont pas tous voté de la même façon. Un membre qui s'abstient quand soixante-sept
           votent pour suffit. Les absents et les non-votants sont hors du critère — ne pas voter
           n'est pas voter autrement — et le dénominateur reste les membres éligibles, pas les
-          exprimés.
+          exprimés. Un membre éligible est une personne qui appartenait au groupe le jour du
+          scrutin : quelqu'un qui l'a rejoint après, ou quitté avant, n'y est pas compté.
         </p>
         <p>
           C'est un fait de <strong>groupe</strong>, publié avec son dénominateur, et il donne son
@@ -422,7 +423,8 @@ const SECTIONS = [
       <>
         <p>
           Un amendement compte <strong>une fois</strong>, quel que soit le nombre de membres qui
-          l'ont signé, et seulement s'il a été déposé sous la législature du groupe. Déposer comme
+          l'ont signé, et seulement s'il a été déposé un jour où l'un de ses signataires
+          appartenait au groupe : la même règle que pour les votes et les prises de parole. Déposer comme
           député et déposer comme rapporteur de commission sont deux actes différents : ils se lisent
           séparément, et ne se réunissent que si le lecteur sélectionne les deux — un texte amendé
           au titre des deux ne compte alors qu'une fois. Aucun taux d'adoption commun n'est publié.

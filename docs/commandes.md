@@ -828,6 +828,17 @@ Les quatre derniers écrivent aussi un rapport avec `--out` (Markdown) et
 
 ---
 
+### Chaque profil publié respecte-t-il le schéma ? (#1223)
+
+```bash
+python3 src/audit_validation_profils.py
+```
+
+Passe `validate_profil()` sur chaque `pivot_data/profiles/*.pivot.json` et nomme
+ceux qui ne le passent pas, avec leur population. **Sort toujours en 0** quand
+il a pu lire le répertoire : c'est un signalement, pas un gate — dans le run,
+c'est une issue qui le porte. `--out` et `--out-json` écrivent le rapport.
+
 ## Opérer
 
 ### Régénérer la table slug ↔ acteur AN

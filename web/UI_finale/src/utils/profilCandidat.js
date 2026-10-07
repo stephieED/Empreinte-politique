@@ -20,6 +20,8 @@
  * Chiffres cités : mesurés sur le dépôt au commit `9c702c4b`, 01/09/2026.
  */
 
+import { CLE_MANDATS_ABSENTS, limiteMandatsAbsents } from './mandatsAbsents.js';
+import { paroleEuropeenneNonCouverte } from './paroleEuropeenneNonCouverte.js';
 import {
   SORTS_PROCEDURE_49_3,
   formatNumber,
@@ -3248,6 +3250,11 @@ export function limitesDeclarees({ profil, roles, sieges }) {
     });
   }
 
+  /* LES MANDATS ABSENTS DE LA SOURCE (#859) : la même place et la même forme
+   * que les mandats antérieurs, une phrase à eux. Voir `mandatsAbsents.js`. */
+  const absents = limiteMandatsAbsents(profil?.mandats_absents_de_la_source);
+  if (absents) limites.push(absents);
+
   const enregistrements = electifs.length;
   if (sieges && enregistrements > sieges.length) {
     limites.push({
@@ -3354,9 +3361,10 @@ const deMois = (iso) => (/^[aoAO]/.test(moisEtAnnee(iso)) ? `d’${moisEtAnnee(i
  * mandat de sénateur écrirait « son mandat de 2004 à 2010 n'est pas couvert :
  * la source commence le 20 juin 2012 », d'une source qui ne l'aurait pas
  * couvert davantage après. Le Sénat a sa propre ligne (`mandatsAuSenat`,
- * ci-dessous). Le Parlement européen n'en a pas, et c'est un reste déclaré :
- * ses dates sont fausses ou absentes dans les données (#1163), et une période
- * calculée dessus publierait un fait faux.
+ * ci-dessous). Le Parlement européen aussi, depuis le 07/10/2026, mais pour
+ * les prises de parole seulement et sur une période que les DONNÉES déclarent
+ * (`paroleEuropeenneNonCouverte.js`, #1163) : les dates de ses mandats sont
+ * fausses ou absentes, et une période calculée dessus publierait un fait faux.
  *
  * LES LISTES QUI PARTAGENT LE MÊME MANQUE ET LA MÊME DATE TIENNENT SUR UNE
  * LIGNE : « Votes, Amendements, Textes portés ». Trois lignes identiques au
@@ -3535,7 +3543,7 @@ function lignesDesReperes(manques) {
 const PHRASE_SANS_MANDAT = 'Nos sources ne connaissent aucun mandat parlementaire de cette personne.';
 const PHRASE_SANS_ACTIVITE = 'Il n’y a donc ni vote, ni amendement, ni prise de parole à publier.';
 const LIMITES_EN_TETE = ['position-non-declaree', 'suspension'];
-const RANG_DES_AUTRES_LIMITES = ['sieges-replies', 'mandats-anterieurs'];
+const RANG_DES_AUTRES_LIMITES = ['sieges-replies', 'mandats-anterieurs', CLE_MANDATS_ABSENTS];
 
 export function manquesDeLaFiche({ profil, limites = [], manques = null, bornesDuCorpus = null }) {
   const electifs = (profil?.mandats || []).filter((m) => m.categorie === 'mandat_electif');
@@ -3546,6 +3554,7 @@ export function manquesDeLaFiche({ profil, limites = [], manques = null, bornesD
   const lignes = [
     ...mandatsNonCouverts(profil, bornesDuCorpus),
     ...mandatsAuSenat(profil),
+    ...paroleEuropeenneNonCouverte(profil),
     ...LIMITES_EN_TETE.flatMap((cle) => limites.filter((l) => l.cle === cle)),
     ...lignesDesReperes(manques),
     // Le tri est stable : deux signalements de collecte gardent leur ordre.

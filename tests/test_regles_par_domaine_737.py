@@ -35,6 +35,7 @@ DOMAINES: dict[str, str] = {
     "roster-et-sources.md": "§3d",
     "interventions-syceron.md": "§3e",
     "portail-qualite.md": "§3f",
+    "textes-publies.md": "§3g",
     "schema-pivot.md": "§4",
     "champs-sensibles.md": "§5",
 }

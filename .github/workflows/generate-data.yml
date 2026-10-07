@@ -4484,6 +4484,47 @@ jobs:
             collecte-vs-publie.md
             collecte-vs-publie.json
           if-no-files-found: ignore
+
+      # ──────────────────────────────────────────────────────────────────
+      # FICHES HORS SCHÉMA (#1223) — UN SIGNALEMENT, PAS UN CINQUIÈME CONTRÔLE.
+      #
+      # `validate_profil()` porte les invariants du schéma, et aucun job ne
+      # l'exécutait : 16 des 34 fiches de candidats déclarés ne le passaient
+      # pas le 05/10/2026, depuis trois semaines, sans que rien le dise.
+      #
+      # Arbitrage de la propriétaire, 06/10/2026 : une fiche hors schéma NE
+      # BLOQUE PAS le commit. Elle ouvre une issue de suivi sur le dépôt de
+      # développement (dernier step du job), parce qu'une ligne du résumé de
+      # run est exactement l'endroit où ces erreurs seraient restées non lues.
+      #
+      # Ce step ne fait donc que mesurer et écrire le rapport. Il ne sort en
+      # erreur que si le répertoire est introuvable — et même alors il ne fait
+      # pas tomber le job : priver le site de ses données pour un rapport
+      # manquant serait payer le signalement au prix du blocage écarté.
+      # ──────────────────────────────────────────────────────────────────
+      - name: Fiches hors schéma — validate_profil (signalement)
+        id: validation
+        continue-on-error: true
+        run: |
+          python3 src/audit_validation_profils.py \
+            --profils-dir pivot_data/profiles \
+            --out validation-profils.md \
+            --out-json validation-profils.json
+          {
+            echo "### Fiches hors schéma — validate_profil (#1223)"
+            echo ""
+            cat validation-profils.md
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Rapport de validation des profils — artifact
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: validation-profils
+          path: |
+            validation-profils.md
+            validation-profils.json
+          if-no-files-found: ignore
       # ──────────────────────────────────────────────────────────────────
       # LE GARDE-FOU DE #390/#413 A DISPARU ICI, ET C'EST VOULU (#1059).
       #
@@ -5005,3 +5046,73 @@ jobs:
             echo "\`deploy-pages.yml\` a été déclenché pour les publier (le commit du bot"
             echo "n'émet pas d'événement \`push\`, cf. #416)."
           } >> "$GITHUB_STEP_SUMMARY"
+
+      # ──────────────────────────────────────────────────────────────────
+      # L'ISSUE DE SUIVI DES FICHES HORS SCHÉMA (#1223).
+      #
+      # UNE issue, reconnue à son étiquette : ouverte par le premier run qui
+      # trouve une fiche hors schéma, réécrite et commentée par chaque run
+      # tant que le défaut dure, fermée par le run qui ne le trouve plus. Elle
+      # décrit ce qui vient d'être PUBLIÉ, d'où la condition sur le push : un
+      # commit annulé par un contrôle n'a rien publié, et un run de test non
+      # plus.
+      #
+      # Les issues vivent sur le dépôt de DÉVELOPPEMENT, et ce run tourne sur
+      # le dépôt public : il faut un jeton qui puisse y écrire des issues,
+      # `SRC_ISSUES_TOKEN` (fine-grained, `Issues: Read and write` sur
+      # Empreinte-politique-src, rien d'autre). `SRC_READ_TOKEN` ne le peut
+      # pas — il est en lecture seule, et doit le rester.
+      #
+      # SANS CE SECRET, LE STEP NE SE TAIT PAS : il avertit, sur l'annotation
+      # du run, que des fiches sont hors schéma et qu'aucune issue n'a pu être
+      # ouverte. Et il ne fait jamais tomber le job : les données sont déjà
+      # poussées.
+      # ──────────────────────────────────────────────────────────────────
+      - name: Fiches hors schéma — issue de suivi
+        if: steps.commit.outputs.pushed == 'true' && steps.validation.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.SRC_ISSUES_TOKEN }}
+          DEPOT: stephieED/Empreinte-politique-src
+          ETIQUETTE: fiches-hors-schema
+          URL_RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          NB="$(python3 -c "import json; print(len(json.load(open('validation-profils.json'))['invalides']))")"
+          ERREURS="$(python3 -c "import json; print(json.load(open('validation-profils.json'))['erreurs_total'])")"
+          if [[ -z "${GH_TOKEN}" ]]; then
+            if [[ "$NB" -gt 0 ]]; then
+              echo "::warning::FICHES_HORS_SCHEMA — ${NB} profil(s) publié(s) ne passent pas validate_profil() (${ERREURS} erreur(s)), et AUCUNE issue n'a été ouverte : le secret SRC_ISSUES_TOKEN n'est pas posé. Le détail est dans le résumé du job et dans l'artifact validation-profils (#1223)."
+            fi
+            exit 0
+          fi
+          NUMERO="$(gh issue list --repo "$DEPOT" --state open --label "$ETIQUETTE" --json number --jq '.[0].number // empty')"
+          if [[ "$NB" -eq 0 ]]; then
+            if [[ -n "$NUMERO" ]]; then
+              gh issue close "$NUMERO" --repo "$DEPOT" --reason completed \
+                --comment "Plus aucune fiche hors schéma : tous les profils publiés passent \`validate_profil()\` au run ${URL_RUN}. Fermée par ce run."
+              echo "::notice::Issue #${NUMERO} fermée : plus aucune fiche hors schéma."
+            fi
+            exit 0
+          fi
+          {
+            echo "Ouverte et tenue à jour par le run de données (#1223). **Ne pas la fermer à la main** : le run qui ne trouve plus aucune fiche hors schéma la ferme."
+            echo ""
+            echo "Dernier run : ${URL_RUN}"
+            echo ""
+            cat validation-profils.md
+          } > corps-issue.md
+          if [[ -z "$NUMERO" ]]; then
+            gh label create "$ETIQUETTE" --repo "$DEPOT" --color B60205 \
+              --description "Un profil publié ne passe pas validate_profil()" --force
+            gh issue create --repo "$DEPOT" --label "$ETIQUETTE" \
+              --title "Fiches hors schéma : ${NB} profil(s) publié(s) ne passent pas validate_profil()" \
+              --body-file corps-issue.md
+          else
+            gh issue edit "$NUMERO" --repo "$DEPOT" \
+              --title "Fiches hors schéma : ${NB} profil(s) publié(s) ne passent pas validate_profil()" \
+              --body-file corps-issue.md
+            gh issue comment "$NUMERO" --repo "$DEPOT" \
+              --body "Toujours ${NB} profil(s) hors schéma (${ERREURS} erreur(s)) au run ${URL_RUN}. Le détail est dans le corps de l'issue, réécrit par ce run."
+          fi
+          echo "::warning::FICHES_HORS_SCHEMA — ${NB} profil(s) publié(s) ne passent pas validate_profil() (${ERREURS} erreur(s)). Issue de suivi tenue à jour sur ${DEPOT}."
