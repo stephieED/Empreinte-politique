@@ -36,6 +36,7 @@ import { isWholeTextVote } from '../src/utils/lecture.js';
 import { personnesParMaillon, serieEffectif, signalementsDuMaillon } from '../src/utils/lignee.js';
 import { construireExtraits, extraitDeLIntervention } from '../src/utils/extraits.js';
 import { SUJET_NON_PUBLIE, sujetDeIntervention } from '../src/utils/sujetIntervention.js';
+import { formesDesSujets } from '../src/utils/sujetsRegroupes.js';
 import { agregerParoles, estParoleDuGroupe, natureDeParole, porteUnRoleDeSeance } from '../src/utils/paroleDeGroupe.js';
 
 /* Les amendements d'un maillon : le total distinct publié, et la répartition
@@ -316,7 +317,8 @@ export function construireExtraitsLignee({ lignee, fiches, idsDeFiche, lireProfi
         : [{ debut: membre.debut_dans_groupe, fin: membre.fin_dans_groupe }]).filter((p) => p.debut);
       if (liste.length) periodes.set(membre.membre_id, liste);
     }
-    return { id: idsDeFiche.get(maillon.fichier), periodes, entrees: [], paroles: [], rolesVus: false };
+    const formesPubliees = (groupe.tags_thematiques_agreges || []).map((t) => t.tag);
+    return { id: idsDeFiche.get(maillon.fichier), periodes, formesPubliees, entrees: [], paroles: [], rolesVus: false };
   });
   (lignee.membres || []).forEach((personne, rang) => {
     const siens = maillons.filter((m) => m.periodes.has(personne.membre_id));
@@ -358,9 +360,17 @@ export function construireExtraitsLignee({ lignee, fiches, idsDeFiche, lireProfi
   });
   /* `paroles` et `rolesVus` voyagent avec les extraits du maillon : les profils
      ne sont lus qu'une fois (#635). */
-  return Object.fromEntries(maillons.map((m) => [m.id, {
-    ...construireExtraits(m.entrees, debuts),
-    paroles: agregerParoles(m.paroles),
-    rolesVus: m.rolesVus,
-  }]));
+  return Object.fromEntries(maillons.map((m) => {
+    /* « MOTION DE CENSURE » ET « MOTIONS DE CENSURE » SONT UN SEUL DÉBAT (#1177).
+       L'agrégat de la fiche les range sous une clé ; lire l'intitulé exact
+       donnait deux lignes, et 26 membres là où il en publie 34 (EPR, XVIIe).
+       La figure et les extraits prennent la même forme, celle de l'agrégat. */
+    const formes = formesDesSujets(m.paroles.map((p) => p.sujet), m.formesPubliees);
+    const sous = (e) => ({ ...e, sujet: formes.get(e.sujet) ?? e.sujet });
+    return [m.id, {
+      ...construireExtraits(m.entrees.map(sous), debuts),
+      paroles: agregerParoles(m.paroles.map(sous)),
+      rolesVus: m.rolesVus,
+    }];
+  }));
 }

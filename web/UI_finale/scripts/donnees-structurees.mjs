@@ -76,7 +76,6 @@ export function jsonldCandidat(entree, profil, url) {
     name: entree.nom,
     url,
     ...(sameAs.length ? { sameAs } : {}),
-    ...(entree.parti ? { affiliation: { '@type': 'Organization', name: entree.parti } } : {}),
     ...(mandats.length ? { memberOf: mandats.map(role) } : {}),
   };
 }

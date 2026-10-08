@@ -110,6 +110,13 @@ def test_chaque_mandat_porte_sa_source_ou_dit_qu_elle_manque(blocs):
     assert "source non publiée" in sortie
 
 
+def test_le_parti_n_est_pas_ecrit(blocs):
+    """Retiré le 07/10/2026 : il vient de la liste lue sur Wikipédia, jamais relue."""
+    assert "<p>Candidature déclarée à l'élection présidentielle de 2027</p>" in blocs["sans"]
+    for cle, parti in (("melenchon", "Insoumise (LFI)"), ("tondelier", "Écologistes"), ("sans", "Lutte Ouvrière")):
+        assert parti not in blocs[cle], cle
+
+
 def test_aucun_compte_d_activite_ni_avertissement(blocs):
     """§2 règle 1 : un compte d'activité se lit comme un indicateur."""
     for cle in ("melenchon", "tondelier", "sans"):

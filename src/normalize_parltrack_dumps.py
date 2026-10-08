@@ -492,6 +492,48 @@ def _make_vote(scrutin: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def retirer_votes_publies_deux_fois(profil: dict[str, Any], doublons: set[str]) -> int:
+    """Retire d'un profil les votes européens portés par la copie composite
+    d'un scrutin que ParlTrack publie deux fois (#1011). Rend le nombre retiré.
+
+    C'est un RETRAIT NOMMÉ, appliqué au profil FUSIONNÉ : l'index des votes
+    n'écrit plus ces copies (`parltrack_dumps.doublons_de_seance`), mais la
+    fusion est additive et garderait celles qu'un run précédent a publiées. Le
+    jumeau à identifiant entier, lui, reste : c'est le même vote, une fois.
+
+    Le critère est la source, pas une ressemblance : seul un `numero_scrutin`
+    que `doublons_de_seance` a reconnu dans le dump est retiré. Un composite
+    sans jumeau est le seul exemplaire de son vote, et il reste.
+    """
+    votes = profil.get("votes")
+    if not doublons or not isinstance(votes, list):
+        return 0
+    gardes = [
+        v for v in votes
+        if not (
+            isinstance(v, dict)
+            and (v.get("scrutin_non_resolu") or {}).get("institution") == "parlement_europeen"
+            and str((v.get("scrutin_non_resolu") or {}).get("numero_scrutin")) in doublons
+        )
+    ]
+    retires = len(votes) - len(gardes)
+    if retires:
+        profil["votes"] = gardes
+    return retires
+
+
+def porte_un_vote_europeen_composite(profil: dict[str, Any]) -> bool:
+    """Vrai si le profil porte au moins un vote européen à `numero_scrutin`
+    composite — la seule condition qui justifie de lire le dump des votes."""
+    for v in profil.get("votes") or ():
+        non_resolu = v.get("scrutin_non_resolu") if isinstance(v, dict) else None
+        if isinstance(non_resolu, dict) and non_resolu.get("institution") == "parlement_europeen":
+            numero = non_resolu.get("numero_scrutin")
+            if numero is not None and not str(numero).isdigit():
+                return True
+    return False
+
+
 # ---------------------------------------------------------------------------
 # Les interventions : trois natures, une seule liste (#683)
 # ---------------------------------------------------------------------------

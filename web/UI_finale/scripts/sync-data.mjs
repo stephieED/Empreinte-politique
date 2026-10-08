@@ -256,7 +256,6 @@ const manifestCandidates = candidats
   .map((c) => ({
     slug: c.slug,
     nom: c.nom,
-    parti: c.parti,
     famillePolitique: c.famille_politique,
     statut: c.statut,
     aSiegeOuGouverne: aSiegeOuGouverne(c.slug),
@@ -577,7 +576,12 @@ if (vuesAJour) {
   const candidatsPublies = new Set(manifestCandidates.map((c) => c.slug));
   // La dernière lecture de chaque texte, choisie par la date sur le corpus
   // ENTIER (#711) : une fois pour les treize lignées.
-  const dernieresLectures = new Set(selectDerniereLectureVotes(scrutinsListe).map((s) => s.id));
+  // Avec le dossier de chaque scrutin (#854) : un texte renommé entre deux
+  // lectures reste un texte, sur la fiche de lignée comme sur la fiche candidat.
+  const dossiersDesScrutins = existsSync(scrutinsDossiersPath)
+    ? JSON.parse(readFileSync(scrutinsDossiersPath, 'utf-8'))
+    : null;
+  const dernieresLectures = new Set(selectDerniereLectureVotes(scrutinsListe, dossiersDesScrutins).map((s) => s.id));
   const aujourdhui = new Date().toISOString().slice(0, 10);
   for (const entree of manifestLignees) {
     const lignee = JSON.parse(readFileSync(path.join(pivotLigneesDir, `lignee-${entree.id}.json`), 'utf-8'));

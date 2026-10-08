@@ -88,6 +88,11 @@ def test_la_personne_porte_ses_mandats_dates_et_leur_organisation(objets):
     }
 
 
+def test_la_personne_ne_porte_aucune_affiliation(objets):
+    """Le parti est retiré le 07/10/2026 : il vient de la liste lue sur Wikipédia, jamais relue."""
+    assert "affiliation" not in objets["personne"]
+
+
 def test_un_mandat_clos_sans_fin_n_a_pas_de_date_de_fin(objets):
     """§2 règle 5 : la date manque, elle ne s'invente pas (#922/#966)."""
     local = next(r for r in objets["personne"]["memberOf"] if r["roleName"] == "Mandat local")

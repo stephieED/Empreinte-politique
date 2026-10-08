@@ -129,6 +129,71 @@ def _rang_forme(item: dict[str, Any]) -> Optional[int]:
     return _RANG_FORME.get(item.get("collecte"))
 
 
+def _paragraphe_syceron(item: dict[str, Any], champ_id: str) -> Optional[str]:
+    """Le numéro de paragraphe de l'Assemblée, pour une prise de parole Syceron."""
+    if not str(item.get(champ_id) or "").startswith("syceron_"):
+        return None
+    paragraphe = item.get("id_syceron")
+    return None if paragraphe in (None, "") else str(paragraphe)
+
+
+def dedoublonner_paragraphes_syceron(
+    merged: list[dict[str, Any]],
+    new_list: Optional[list[dict[str, Any]]],
+    champ_id: str,
+) -> list[dict[str, Any]]:
+    """Un paragraphe de compte rendu n'est publié qu'une fois, quel que soit
+    l'identifiant sous lequel la source l'a republié.
+
+    L'identifiant d'une prise de parole (`syceron_<compte rendu>_<rang>`) porte
+    le RANG du paragraphe dans le compte rendu. Quand l'Assemblée republie un
+    compte rendu provisoire avec une autre numérotation, le même paragraphe
+    revient sous un autre rang, et la fusion additive le garde deux ou trois
+    fois. Mesuré le 08/10/2026 sur main `3665078d3` : **643 entrées en trop sur
+    81 profils** — 399 d'octobre 2026 (session ouverte le 01/10, comptes rendus
+    renumérotés), 244 de février 2021 et juillet 2017 (le même paragraphe sous un
+    identifiant de la XVe et un de la XVIe). Les 497 groupes sont le même
+    paragraphe : même date, même texte, à une coquille corrigée près (3).
+
+    `id_syceron` est le numéro du paragraphe chez l'Assemblée, et il ne change
+    pas. Parmi les copies, on garde : la forme la plus riche (#1029, jamais une
+    forme plus pauvre), puis celle que la collecte du jour vient de rendre (la
+    numérotation et le texte que la source publie aujourd'hui), puis la
+    première. Elle prend la place de la première copie.
+    """
+    groupes: dict[str, list[int]] = {}
+    for rang, item in enumerate(merged):
+        if isinstance(item, dict):
+            paragraphe = _paragraphe_syceron(item, champ_id)
+            if paragraphe is not None:
+                groupes.setdefault(paragraphe, []).append(rang)
+    if all(len(rangs) == 1 for rangs in groupes.values()):
+        return merged
+
+    neufs = {
+        str(item.get(champ_id)) for item in (new_list or [])
+        if isinstance(item, dict) and item.get(champ_id)
+    }
+    garde: dict[int, dict[str, Any]] = {}
+    retires: set[int] = set()
+    for rangs in groupes.values():
+        if len(rangs) == 1:
+            continue
+        meilleur = max(
+            rangs,
+            key=lambda r: (
+                _rang_forme(merged[r]) if _rang_forme(merged[r]) is not None else -1,
+                str(merged[r].get(champ_id)) in neufs,
+                -r,
+            ),
+        )
+        garde[rangs[0]] = merged[meilleur]
+        retires.update(r for r in rangs[1:])
+    return [
+        garde.get(rang, item) for rang, item in enumerate(merged) if rang not in retires
+    ]
+
+
 def promouvoir_forme_complete(
     merged: list[dict[str, Any]],
     new_list: Optional[list[dict[str, Any]]],
@@ -1964,7 +2029,7 @@ def merge_raw_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> dic
     # Sans lui, l'entrée ancienne gagne et le profil brut garderait indéfiniment
     # le nom d'un créneau de séance — donc `normalize_profil` republierait le faux
     # thème dans `theme_officiel` puis dans `tags_thematiques`.
-    merged["interventions"] = normaliser_dates_interventions(backfill_sujet_question(backfill_sujet_seance(
+    merged["interventions"] = dedoublonner_paragraphes_syceron(normaliser_dates_interventions(backfill_sujet_question(backfill_sujet_seance(
         reporter_faits_de_source(promouvoir_forme_complete(
             merge_lists_by_key(old.get("interventions"), new.get("interventions"), _intervention_key),
             new.get("interventions"),
@@ -1973,7 +2038,7 @@ def merge_raw_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> dic
         new.get("interventions"),
         _intervention_key,
         preuve=lambda i: CLE_PREUVE_SUJET in i,
-    ), new.get("interventions"), _intervention_key))
+    ), new.get("interventions"), _intervention_key)), new.get("interventions"), "id")
     # merge_dossier_records (nouvelle valeur gagne en cas de collision, aucune perte
     # sinon) : un echec/vide transitoire de l'open data amendements ne doit pas
     # effacer des amendements deja collectes lors d'une regeneration precedente.
@@ -3023,7 +3088,7 @@ def merge_pivot_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> d
     # `clean_stale_interventions` : reprise des entrées d'avant #540, qui n'ont
     # pas d'`intervention_id` et seraient republiées EN DOUBLE à côté de leur
     # renormalisation identifiée. Voir sa docstring pour la preuve de non-perte.
-    merged["interventions"] = normaliser_dates_interventions(clean_stale_interventions(
+    merged["interventions"] = dedoublonner_paragraphes_syceron(normaliser_dates_interventions(clean_stale_interventions(
         backfill_sujet_europeen(
             backfill_sujet_question(backfill_sujet_seance(
                 reporter_source_syceron(reporter_faits_de_source(promouvoir_forme_complete(
@@ -3043,7 +3108,7 @@ def merge_pivot_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> d
             new.get("interventions"),
             _pivot_intervention_key,
         )
-    ))
+    )), new.get("interventions"), "intervention_id")
     # merge_dossier_records (nouvelle valeur gagne en cas de collision, aucune perte
     # sinon) : un echec/vide transitoire de l'open data amendements (voir
     # candidate_profile.fetch_amendements_officiels) ne doit pas effacer des

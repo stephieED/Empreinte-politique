@@ -97,6 +97,19 @@ qu'on a mal lu, ne se voit pas dans notre code.
 chaînes composites (`'2017-06-01 00:00:00-1.'`), espaces et point final compris, sur les 5 571
 scrutins que le corpus cite. Comparer un entier à une chaîne lève.
 
+**Certains jours, le même scrutin est publié sous les deux formes** (#1011, mesuré le
+07/10/2026 sur le dump en cache du 12/09) : 13 jours portent les deux, et **1 042 des 1 043**
+composites de ces jours ont un jumeau entier unique à la même seconde — le composite est
+horodaté à minuit, son heure réelle est recopiée au bout de l'intitulé
+(`… - Vote unique 12/12/2018 12:51:11.000`), et 1 041 des paires ont les mêmes totaux. Les
+autres jours (82 dans le dump), un composite est le seul exemplaire de son vote.
+`parltrack_dumps.doublons_de_seance` reconnaît la copie ; rien d'autre ne la distingue.
+
+**Des scrutins ne sont rattachés à aucun dossier.** Mesuré le 07/10/2026 sur `main` : 476 des
+5 571 scrutins européens publiés n'ont ni `epref` ni `doc` qui mène à un dossier titré ; leur
+seul libellé est l'intitulé du scrutin (`A8-0299/2018 - Bart Staes - Résolution`). C'est une
+limite de la source, acceptée comme telle le 07/10/2026 (#1011).
+
 ### `ep_dossiers` — les dossiers
 
 `procedure.reference` est renseigné à **100 %** ; `procedure.stage_reached` sur **20 442 des
@@ -137,6 +150,27 @@ qui n'ont que `meta.created`, pas `meta.updated`. **Le libellé a changé avec l
 **anglais** seulement ; le site OEIL en français répond `307` à une requête simple.
 
 ### `ep_mep_activities` — les activités
+
+**Des prises de parole manquent pour des législatures entières, et aucune source ne les
+rend** (#1163, mesuré le 07/10/2026). La fiche d'activités d'Emmanuel Maurel (`24505`,
+député européen 2014-2024) ne porte que ses 76 prises de parole de la IXe ; celle de
+Raphaël Glucksmann (`197694`, depuis 2019), que ses 43 de la Xe. Vérifié au-delà du dump
+du 12/09 : la page publique `parltrack.org/activities/<id>` porte la même chose (Maurel :
+0 de la VIIIe ; Marine Le Pen, témoin : 660 de la VIIIe), et `parltrack.org/dumps` ne
+garde que les trois derniers jours — aucun historique à télécharger. Croisé sur les 4 585
+fiches du dump : les fiches créées en 2019-2020 (3 411) portent des activités des IVe à
+VIIIe législatures, celles créées en 2021-2024 (445) presque seulement de la IXe, celles
+de 2025-2026 (729) seulement de la Xe. Ce n'est pas absolu — la page de Maurel garde 9
+rapports ou résolutions de la VIIIe — et la cause côté ParlTrack n'est pas établie.
+
+**Le portail du Parlement européen ne les comble pas non plus.**
+`data.europarl.europa.eu/api/v2/speeches?person-id=<id>` rend, lu par pages le
+07/10/2026, 49 prises de parole de Maurel, toutes de 2021 à 2024, et **aucune** de Marine
+Le Pen (2004-2017) : il commence plus tard que ParlTrack. Ses filtres de date
+(`sitting-date`, `sitting-date-end`) rendaient un 204 même sur un témoin : lire sans eux.
+Arbitrage de la propriétaire, 07/10/2026 : ce trou se **déclare** dans « Ce qu'on n'a pas
+pu lire » ; aucune autre source n'est cherchée pour l'instant. Où ranger la période non
+couverte reste à trancher (commentaire du 07/10 sur #1163).
 
 Une entrée `REPORT` porte `dossiers[]`, la référence de procédure visée, sur **144 des 146**
 entrées d'un échantillon de 300 MEP. C'est ce qui permet de résoudre le stade d'un texte porté

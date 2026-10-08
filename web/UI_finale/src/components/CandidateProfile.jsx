@@ -1792,10 +1792,11 @@ export default function CandidateProfile({ candidate, mot = '' }) {
         {/* LA SOURCE TERMINE LA LIGNE QU'ELLE SOURCE. Elle était posée en
             dessous, sur sa propre ligne : le lecteur devait rattacher un badge
             flottant à un texte, alors qu'il atteste exactement ces faits-là —
-            profession, groupe, parti, naissance. */}
+            profession, groupe, naissance. */}
         <p className="cp-qui">
           <span>
-            {[c.profession].filter(Boolean).map((t) => `${t} · `)}
+            {c.profession}
+            {c.profession && c.groupe ? ' · ' : ''}
             {c.groupe && (
               <>
                 {/* LE LIEN N'EST POSÉ QUE S'IL MÈNE AU GROUPE QUE LE TEXTE
@@ -1809,11 +1810,13 @@ export default function CandidateProfile({ candidate, mot = '' }) {
                 {c.groupeFiche
                   ? <Link to={`/groupes/${c.groupeFiche.id}`}>{c.groupe}</Link>
                   : c.groupe}
-                {c.parti ? ' · ' : ''}
               </>
             )}
-            {c.parti}
-            {c.naissance && `. ${c.voix.ne} le ${jour(c.naissance.date)}${c.naissance.lieu ? ` à ${c.naissance.lieu}` : ''}.`}
+            {/* LE PARTI N'EST PLUS AFFICHÉ (07/10/2026, décision de la
+                propriétaire) : il vient de la liste des candidatures lue sur
+                Wikipédia, que personne n'a relue. Le groupe parlementaire, lui,
+                est sourcé et reste. */}
+            {c.naissance && `${c.profession || c.groupe ? '. ' : ''}${c.voix.ne} le ${jour(c.naissance.date)}${c.naissance.lieu ? ` à ${c.naissance.lieu}` : ''}.`}
           </span>
           <BadgeSource url={c.sourceUrl} />
         </p>
@@ -1921,7 +1924,11 @@ export default function CandidateProfile({ candidate, mot = '' }) {
       >
         <Couverture
           manques={c.ceQuiManque}
-          ecartsSansFiche={!c.ecarts.fiches.length}
+          /* Seulement pour qui a siégé (#1161) : sans mandat parlementaire, la
+             phrase de tête dit déjà pourquoi il n'y a rien à comparer, et
+             « les groupes où cette personne a siégé » supposait un siège —
+             Anasse Kazib, aucun mandat. */
+          ecartsSansFiche={!c.ecarts.fiches.length && !c.ceQuiManque.phrase}
         />
       </Section>
       )}

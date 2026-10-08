@@ -1,0 +1,601 @@
+{
+ "_meta": {
+  "description": "Prises de parole que l'Assemblée rattache à un député alors que leur libellé nomme une autre personne — le plus souvent l'invité d'un débat (#1177). Retirées des fiches après la fusion ; la collecte ne les indexe plus.",
+  "archives": {
+   "15": "syseron.xml.zip",
+   "16": "syseron.xml.zip",
+   "17": "syseron17.xml.zip"
+  },
+  "regle": "candidate_profile.libelle_designe_une_autre_personne"
+ },
+ "paroles": {
+  "1010474": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2017E1N026",
+   "libelle": "Mme Sandra Marsaud",
+   "acteur": "PA722142"
+  },
+  "1229184": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2018O1N184",
+   "libelle": "M. Sébastien Jumel",
+   "acteur": "PA719578"
+  },
+  "1352077": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2018O1N288",
+   "libelle": "M. Laurent Furst",
+   "acteur": "PA1012"
+  },
+  "1433720": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2019O1N002",
+   "libelle": "M. Jérôme Nury",
+   "acteur": "PA607619"
+  },
+  "1434486": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2019O1N002",
+   "libelle": "M. Roland Lescure, rapporteur de la commission spéciale",
+   "acteur": "PA721836"
+  },
+  "1443390": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2019O1N010",
+   "libelle": "M. Roland Lescure, rapporteur",
+   "acteur": "PA719684"
+  },
+  "1451262": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2019O1N016",
+   "libelle": "M. Laurent Pietraszewski",
+   "acteur": "PA331567"
+  },
+  "2162001": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2020E1N020",
+   "libelle": "M. Adrien Taquet",
+   "acteur": "PA720746"
+  },
+  "2162029": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2020E1N020",
+   "libelle": "M. Adrien Taquet",
+   "acteur": "PA722190"
+  },
+  "2162030": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2020E1N020",
+   "libelle": "M. Adrien Taquet",
+   "acteur": "PA722190"
+  },
+  "2162133": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2020E1N020",
+   "libelle": "M. Adrien Taquet",
+   "acteur": "PA722190"
+  },
+  "2165577": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2020E1N022",
+   "libelle": "M. Hervé Saulignac",
+   "acteur": "PA1874"
+  },
+  "2172891": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2020E1N028",
+   "libelle": "Mme Marie-Noëlle Battistel",
+   "acteur": "PA1592"
+  },
+  "2203560": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2021O1N003",
+   "libelle": "M. Jean Lassalle",
+   "acteur": "PA1206"
+  },
+  "2350972": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2021O1N114",
+   "libelle": "M. Jacques Maire",
+   "acteur": "PA720870"
+  },
+  "2375190": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2021O1N134",
+   "libelle": "M. Pacôme Rupin",
+   "acteur": "PA722142"
+  },
+  "2393477": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2021O1N152",
+   "libelle": "M. François de Rugy",
+   "acteur": "PA606507"
+  },
+  "2394545": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2021O1N153",
+   "libelle": "M. Éric Poulliat",
+   "acteur": "PA607846"
+  },
+  "2394546": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2021O1N153",
+   "libelle": "M. Éric Poulliat",
+   "acteur": "PA721824"
+  },
+  "2401674": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2021O1N159",
+   "libelle": "M. Jean-Pierre Vigier",
+   "acteur": "PA721314"
+  },
+  "2406105": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2021O1N163",
+   "libelle": "M. Florent Boudié",
+   "acteur": "PA721328"
+  },
+  "2429842": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2021O1N183",
+   "libelle": "M. Jean-Luc Fugit",
+   "acteur": "PA1874"
+  },
+  "2669883": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2022O1N049",
+   "libelle": "Mme Marie-Noëlle Battistel,",
+   "acteur": "PA720892"
+  },
+  "2692711": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2022O1N068",
+   "libelle": "M. Alain Griset",
+   "acteur": "PA783457"
+  },
+  "2744439": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2022O1N112",
+   "libelle": "M. Oubi Bouchraya Bachir",
+   "acteur": "PA335612"
+  },
+  "2744447": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2022O1N112",
+   "libelle": "M. Gilles Devers",
+   "acteur": "PA335612"
+  },
+  "2744454": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2022O1N112",
+   "libelle": "Mme Claude Mangin",
+   "acteur": "PA335612"
+  },
+  "2752288": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2022O1N121",
+   "libelle": "M. Jean-Luc Mélenchon",
+   "acteur": "PA721210"
+  },
+  "2768292": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2022O1N135",
+   "libelle": "M. Patrick Vignal",
+   "acteur": "PA748954"
+  },
+  "2768790": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2022O1N136",
+   "libelle": "M. Patrick Vignal",
+   "acteur": "PA748954"
+  },
+  "2768801": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2022O1N136",
+   "libelle": "M. Patrick Vignal",
+   "acteur": "PA748954"
+  },
+  "2768806": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2022O1N136",
+   "libelle": "M. Patrick Vignal",
+   "acteur": "PA748954"
+  },
+  "2774965": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2022O1N142",
+   "libelle": "M. Jacques Rey",
+   "acteur": "PA330788"
+  },
+  "2803273": {
+   "legislature": "15",
+   "compte_rendu": "CRSANR5L15S2022O1N168",
+   "libelle": "M. Volodymyr Zelensky,",
+   "acteur": "PA720124"
+  },
+  "2828183": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2022E1N016",
+   "libelle": "M. David Guiraud et M. Olivier Faure",
+   "acteur": "PA794138"
+  },
+  "2847336": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N001",
+   "libelle": "M. Fabien Lainé (Dem)",
+   "acteur": "PA718978"
+  },
+  "2896316": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N043",
+   "libelle": "Mme Fanta Berete",
+   "acteur": "PA794434"
+  },
+  "2909413": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N053",
+   "libelle": "M. Florent Boudié",
+   "acteur": "PA722150"
+  },
+  "2909415": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N053",
+   "libelle": "M. Florent Boudié",
+   "acteur": "PA722150"
+  },
+  "2909418": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N053",
+   "libelle": "M. Florent Boudié",
+   "acteur": "PA722150"
+  },
+  "2925943": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N067",
+   "libelle": "M. Erwan Balanant et plusieurs députés du groupe LFI-NUPES",
+   "acteur": "PA720892"
+  },
+  "2972059": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "Mme Prisca Kergoat,",
+   "acteur": "PA794130"
+  },
+  "2972109": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "M. Christophe Doré",
+   "acteur": "PA795144"
+  },
+  "2972120": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "Mme Sigrid Gérardin",
+   "acteur": "PA795144"
+  },
+  "2972125": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "M. Christophe Doré",
+   "acteur": "PA795144"
+  },
+  "2972128": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "Mme Prisca Kergoat",
+   "acteur": "PA795144"
+  },
+  "2972137": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "Mme Sigrid Gérardin",
+   "acteur": "PA795144"
+  },
+  "2972699": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "Mme Sigrid Gérardin",
+   "acteur": "PA794470"
+  },
+  "2972702": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "Mme Prisca Kergoat",
+   "acteur": "PA794470"
+  },
+  "2972705": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "M. Christophe Doré",
+   "acteur": "PA794470"
+  },
+  "2972710": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "Mme Sigrid Gérardin",
+   "acteur": "PA794470"
+  },
+  "2972717": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "M. Christophe Doré",
+   "acteur": "PA720546"
+  },
+  "2972722": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "Mme Prisca Kergoat",
+   "acteur": "PA795266"
+  },
+  "2972761": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "Mme Prisca Kergoat",
+   "acteur": "PA795844"
+  },
+  "2972765": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "M. Christophe Doré",
+   "acteur": "PA1008"
+  },
+  "2972775": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "Mme Prisca Kergoat",
+   "acteur": "PA722046"
+  },
+  "2972780": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "Mme Sigrid Gérardin",
+   "acteur": "PA719890"
+  },
+  "2972788": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N106",
+   "libelle": "M. Christophe Doré",
+   "acteur": "PA795176"
+  },
+  "3015402": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N146",
+   "libelle": "M. René Pilato",
+   "acteur": "PA794270"
+  },
+  "3015407": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N146",
+   "libelle": "M. René Pilato",
+   "acteur": "PA794270"
+  },
+  "3015411": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N146",
+   "libelle": "M. René Pilato",
+   "acteur": "PA794270"
+  },
+  "3022660": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N152",
+   "libelle": "M. Louis Boyard et M. Ugo Bernalicis",
+   "acteur": "PA795200"
+  },
+  "3028751": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N156",
+   "libelle": "Mme Anne Lauseig",
+   "acteur": "PA794330"
+  },
+  "3028755": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N156",
+   "libelle": "Mme Anne Lauseig",
+   "acteur": "PA794330"
+  },
+  "3028758": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N156",
+   "libelle": "M. André Bouchut",
+   "acteur": "PA794030"
+  },
+  "3028763": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N156",
+   "libelle": "Mme Anne Lauseig",
+   "acteur": "PA605991"
+  },
+  "3028770": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N156",
+   "libelle": "Mme Anne Lauseig",
+   "acteur": "PA605991"
+  },
+  "3180635": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2023O1N292",
+   "libelle": "M. René Pilato",
+   "acteur": "PA794166"
+  },
+  "3319482": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2024O1N076",
+   "libelle": "M. Laurent Alexandre",
+   "acteur": "PA795636"
+  },
+  "3334246": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2024O1N088",
+   "libelle": "Mme Sylvie Bonnet",
+   "acteur": "PA608416"
+  },
+  "3334248": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2024O1N088",
+   "libelle": "Mme Sylvie Bonnet",
+   "acteur": "PA608416"
+  },
+  "3354698": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2024O1N107",
+   "libelle": "M. Patrick Vignal",
+   "acteur": "PA719512"
+  },
+  "3374614": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2024O1N123",
+   "libelle": "Mme Caroline Fiat",
+   "acteur": "PA720908"
+  },
+  "3374626": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2024O1N123",
+   "libelle": "Mme Caroline Fiat",
+   "acteur": "PA720908"
+  },
+  "3374679": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2024O1N123",
+   "libelle": "Mme Caroline Fiat",
+   "acteur": "PA720908"
+  },
+  "3414632": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2024O1N157",
+   "libelle": "M. Raphaël Gérard",
+   "acteur": "PA720230"
+  },
+  "3432828": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2024O1N174",
+   "libelle": "M. Sébastien Chenu",
+   "acteur": "PA721908"
+  },
+  "3432873": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2024O1N174",
+   "libelle": "M. Sébastien Chenu",
+   "acteur": "PA721908"
+  },
+  "3441757": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2024O1N181",
+   "libelle": "Mme Caroline Fiat",
+   "acteur": "PA719874"
+  },
+  "3464693": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2024O1N201",
+   "libelle": "M. Sébastien Chenu",
+   "acteur": "PA721908"
+  },
+  "3476294": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2024O1N210",
+   "libelle": "Mme Manon Meunier",
+   "acteur": "PA335999"
+  },
+  "3477892": {
+   "legislature": "16",
+   "compte_rendu": "CRSANR5L16S2024O1N209",
+   "libelle": "M. Marc Fesneau",
+   "acteur": "PA719664"
+  },
+  "3599085": {
+   "legislature": "17",
+   "compte_rendu": "CRSANR5L17S2025O1N074",
+   "libelle": "M. José Beaurain",
+   "acteur": "PA775292"
+  },
+  "3599098": {
+   "legislature": "17",
+   "compte_rendu": "CRSANR5L17S2025O1N074",
+   "libelle": "M. Romain Tonussi",
+   "acteur": "PA793158"
+  },
+  "3863945": {
+   "legislature": "17",
+   "compte_rendu": "CRSANR5L17S2026O1N016",
+   "libelle": "M. Daniel Labaronne",
+   "acteur": "PA795228"
+  },
+  "3984042": {
+   "legislature": "17",
+   "compte_rendu": "CRSANR5L17S2026O1N105",
+   "libelle": "Mme Olga Douin",
+   "acteur": "PA791812"
+  },
+  "3984123": {
+   "legislature": "17",
+   "compte_rendu": "CRSANR5L17S2026O1N106",
+   "libelle": "M. Jean-Marc Cantais",
+   "acteur": "PA793214"
+  },
+  "3984138": {
+   "legislature": "17",
+   "compte_rendu": "CRSANR5L17S2026O1N106",
+   "libelle": "Mme Assa Traoré",
+   "acteur": "PA793214"
+  },
+  "3984220": {
+   "legislature": "17",
+   "compte_rendu": "CRSANR5L17S2026O1N105",
+   "libelle": "Mme Olga Douin",
+   "acteur": "PA793214"
+  },
+  "3984231": {
+   "legislature": "17",
+   "compte_rendu": "CRSANR5L17S2026O1N105",
+   "libelle": "Mme Liliana Tanguy (EPR)",
+   "acteur": "PA793214"
+  },
+  "3984233": {
+   "legislature": "17",
+   "compte_rendu": "CRSANR5L17S2026O1N105",
+   "libelle": "Mme Emmanuelle Coint",
+   "acteur": "PA793214"
+  },
+  "3984236": {
+   "legislature": "17",
+   "compte_rendu": "CRSANR5L17S2026O1N105",
+   "libelle": "Mme Emmanuelle Coint",
+   "acteur": "PA793214"
+  },
+  "3984241": {
+   "legislature": "17",
+   "compte_rendu": "CRSANR5L17S2026O1N105",
+   "libelle": "Mme Emmanuelle Coint",
+   "acteur": "PA793214"
+  },
+  "3984243": {
+   "legislature": "17",
+   "compte_rendu": "CRSANR5L17S2026O1N105",
+   "libelle": "M. Daniel Goldberg",
+   "acteur": "PA793214"
+  },
+  "3984247": {
+   "legislature": "17",
+   "compte_rendu": "CRSANR5L17S2026O1N105",
+   "libelle": "M. Daniel Goldberg",
+   "acteur": "PA793214"
+  },
+  "3984252": {
+   "legislature": "17",
+   "compte_rendu": "CRSANR5L17S2026O1N105",
+   "libelle": "M. Daniel Goldberg",
+   "acteur": "PA793214"
+  },
+  "4113378": {
+   "legislature": "17",
+   "compte_rendu": "CRSANR5L17S2026O1N260",
+   "libelle": "M. Frédéric Valletoux",
+   "acteur": "PA795310"
+  },
+  "4113789": {
+   "legislature": "17",
+   "compte_rendu": "CRSANR5L17S2026O1N260",
+   "libelle": "M. Frédéric Valletoux",
+   "acteur": "PA795310"
+  }
+ }
+}

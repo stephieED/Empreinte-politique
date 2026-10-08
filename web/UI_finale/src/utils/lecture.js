@@ -627,24 +627,102 @@ function ordreDesLectures(a, b) {
  * manipule, comme `selectWholeTextVotes` dont ce regroupement est le
  * prolongement.
  */
-export function grouperLecturesParTexte(scrutins) {
+/* ── UN TEXTE CHANGE DE TITRE EN COURS DE ROUTE (#854, 08/10/2026) ───────────
+ *
+ * L'intitulé ne suffit pas à reconnaître un texte. Mesuré sur 931 votes sur un
+ * texte entier : 38 textes ont été RENOMMÉS entre deux lectures (« relative à
+ * la sécurité globale » devient « pour une sécurité globale préservant les
+ * libertés »), ou repris sous la législature suivante, et 3 ne diffèrent que
+ * par une graphie (« relatif » / « relative », « spoliation » /
+ * « spoliations », une virgule). Chacun gardait deux « dernières lectures », et
+ * la première s'affichait comme la position sur le texte — 110 positions sur 15
+ * fiches de candidats.
+ *
+ * Arbitré par la propriétaire (piste C) : deux lectures sont celles d'un même
+ * texte si elles partagent L'UNE de ces trois clés.
+ *
+ *   1. l'intitulé (`cleDuTexteVote`), comme avant ;
+ *   2. le DOSSIER de l'Assemblée (`scrutins_dossiers.json`, #758), quand il est
+ *      connu — 669 des 931 votes. C'est une donnée de la source, pas une
+ *      ressemblance de mots, et elle traverse les législatures : le dossier
+ *      d'un texte repris après une élection reste le même ;
+ *   3. l'intitulé ASSOUPLI (`cleAssouplieDuTexteVote`), dans une même
+ *      législature : il rattrape une graphie quand le dossier manque.
+ *
+ * CE QUE CELA CHANGE AU MODE D'ÉCHEC. L'intitulé seul échouait à regrouper et
+ * ne rapprochait jamais à tort. Le dossier rapproche sur la foi de
+ * l'Assemblée : les 38 réunions ont été relues une à une le 08/10/2026. Pour
+ * les votes sans dossier connu, un texte renommé reste compté deux fois —
+ * c'est un manque, pas une affirmation.
+ */
+export function cleAssouplieDuTexteVote(scrutin) {
+  const cle = cleDuTexteVote(scrutin);
+  if (!cle) return null;
+  const [legislature, titre] = cle.split('\u0000');
+  const mots = titre.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean)
+    .map((mot) => (/^relati(f|ve|fs|ves)$/.test(mot) ? 'relatif' : mot))
+    .map((mot) => (mot.length > 3 && mot.endsWith('s') ? mot.slice(0, -1) : mot));
+  return mots.length ? `${legislature}\u0000${mots.join(' ')}` : null;
+}
+
+/* `dossiers` est `scrutins_dossiers.json` entier, ou sa table `scrutins`
+   (identifiant de scrutin → identifiant de dossier). `null` : aucun dossier
+   n'est lu, et le regroupement retombe sur les deux clés d'intitulé. */
+function dossierDuScrutin(dossiers) {
+  const table = dossiers?.scrutins ?? dossiers ?? null;
+  return (scrutin) => (table && scrutin?.id && table[scrutin.id] ? String(table[scrutin.id]) : null);
+}
+
+export function grouperLecturesParTexte(scrutins, dossiers = null) {
+  const dossierDe = dossierDuScrutin(dossiers);
+  const votes = selectWholeTextVotes(scrutins).filter((scrutin) => cleDuTexteVote(scrutin));
+
+  // Union : deux lectures se rejoignent dès qu'elles partagent une clé.
+  const parent = votes.map((_, i) => i);
+  const racine = (i) => {
+    let r = i;
+    while (parent[r] !== r) r = parent[r];
+    while (parent[i] !== r) { const suivant = parent[i]; parent[i] = r; i = suivant; }
+    return r;
+  };
+  const cles = [
+    (scrutin) => cleDuTexteVote(scrutin),
+    (scrutin) => cleAssouplieDuTexteVote(scrutin),
+    (scrutin) => dossierDe(scrutin),
+  ];
+  cles.forEach((cleDe, rang) => {
+    const premier = new Map();
+    votes.forEach((scrutin, i) => {
+      const cle = cleDe(scrutin);
+      if (!cle) return;
+      const vu = premier.get(`${rang}\u0000${cle}`);
+      if (vu === undefined) premier.set(`${rang}\u0000${cle}`, i);
+      else parent[racine(i)] = racine(vu);
+    });
+  });
+
+  const lecturesParRacine = new Map();
+  votes.forEach((scrutin, i) => {
+    const r = racine(i);
+    if (!lecturesParRacine.has(r)) lecturesParRacine.set(r, []);
+    lecturesParRacine.get(r).push(scrutin);
+  });
+
+  /* Le groupe porte le titre et la clé de sa DERNIÈRE lecture : c'est le nom
+     sous lequel le texte a fini, celui que la page affiche. */
   const groupes = new Map();
-
-  for (const scrutin of selectWholeTextVotes(scrutins)) {
-    const cle = cleDuTexteVote(scrutin);
-    if (!cle) continue;
-
-    const entree = groupes.get(cle) ?? {
+  for (const lectures of lecturesParRacine.values()) {
+    lectures.sort(ordreDesLectures);
+    const derniere = lectures[lectures.length - 1];
+    const cle = cleDuTexteVote(derniere);
+    groupes.set(cle, {
       cle,
-      legislature: scrutin.legislature ?? null,
-      titre: titreDuTexteVote(scrutin.texte),
-      lectures: [],
-    };
-    entree.lectures.push(scrutin);
-    groupes.set(cle, entree);
+      legislature: derniere.legislature ?? null,
+      titre: titreDuTexteVote(derniere.texte),
+      lectures,
+    });
   }
-
-  for (const entree of groupes.values()) entree.lectures.sort(ordreDesLectures);
   return groupes;
 }
 
@@ -671,9 +749,9 @@ export function derniereLecture(lectures) {
  * Un scrutin par texte : celui de sa dernière lecture. C'est la sélection que
  * les vues appellent pour compter des TEXTES plutôt que des votes.
  */
-export function selectDerniereLectureVotes(scrutins) {
+export function selectDerniereLectureVotes(scrutins, dossiers = null) {
   const retenus = [];
-  for (const entree of grouperLecturesParTexte(scrutins).values()) {
+  for (const entree of grouperLecturesParTexte(scrutins, dossiers).values()) {
     const derniere = derniereLecture(entree.lectures);
     if (derniere) retenus.push(derniere);
   }
@@ -697,7 +775,7 @@ export const LAST_READING_RULE = {
   phrase:
     'Un texte voté plusieurs fois ne compte qu’une fois : la position retenue est celle de sa dernière lecture.',
   pourquoi:
-    'Un même texte revient devant l’Assemblée — première lecture, nouvelle lecture, texte de la commission mixte paritaire, lecture définitive. Compter chacune séparément gonfle le décompte, et afficher une position de première lecture comme la position sur la loi serait faux dès qu’un vote plus tardif l’a suivie. Nous regroupons donc les lectures d’un même texte par leur intitulé, et nous retenons la plus récente par sa date : le rang de lecture n’est pas un champ de la source. Quand la personne n’a pas de position enregistrée sur cette dernière lecture, le texte n’est pas affiché — nous ne pouvons pas dire pourquoi elle y manque, et le dire serait publier une absence individuelle.',
+    'Un même texte revient devant l’Assemblée — première lecture, nouvelle lecture, texte de la commission mixte paritaire, lecture définitive. Compter chacune séparément gonfle le décompte, et afficher une position de première lecture comme la position sur la loi serait faux dès qu’un vote plus tardif l’a suivie. Nous regroupons donc les lectures d’un même texte par son dossier à l’Assemblée quand il est connu, sinon par son intitulé, et nous retenons la plus récente par sa date : le rang de lecture n’est pas un champ de la source. Quand la personne n’a pas de position enregistrée sur cette dernière lecture, le texte n’est pas affiché — nous ne pouvons pas dire pourquoi elle y manque, et le dire serait publier une absence individuelle.',
 };
 
 /* ── Livrable : la borne, en texte publié ────────────────────────────────────

@@ -680,13 +680,14 @@ def test_la_reduction_se_lit_dans_le_rapport(tmp_path):
     assert "deux fois" in relation["justification"]
 
 
-def test_une_seule_relation_porte_une_reduction():
-    """Quatre relations sur cinq ne retirent rien, et `None` le dit : une
+def test_deux_relations_seulement_portent_une_reduction():
+    """Trois relations sur cinq ne retirent rien, et `None` le dit : une
     réduction qu'on ajouterait ailleurs sans la mesurer serait exactement la
-    marge non attribuée que #545 refuse."""
+    marge non attribuée que #545 refuse. La seconde, sur `interventions`, est
+    le retrait de #1177, mesuré au run `37738655769` : 98 entrées, 60 profils."""
     avec_reduction = [r.champ_pivot for r in RELATIONS if r.reduction is not None]
 
-    assert avec_reduction == ["mandats"]
+    assert avec_reduction == ["interventions", "mandats"]
     for relation in RELATIONS:
         if relation.reduction is not None:
             assert relation.reduction.justification

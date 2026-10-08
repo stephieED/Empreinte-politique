@@ -138,6 +138,27 @@ def test_le_roster_n_ecrit_pas_la_declaration_d_un_candidat_declare(monkeypatch,
     assert "collecte_ecartee" not in brut["meta"]
 
 
+def test_la_declaration_du_brut_existant_ne_survit_pas_a_la_fusion(monkeypatch, tmp_path):
+    """Run `37666329944` (07/10) : le shard relit le brut publié, qui porte la
+    déclaration d'un run précédent, et la fusion la rendait."""
+    _fausse_collecte(monkeypatch)
+    raw = tmp_path / "raw"
+    raw.mkdir()
+    (raw / "jean-luc-melenchon.json").write_text(json.dumps({
+        "slug": "jean-luc-melenchon", "identite": {"nom": "jean-luc-melenchon"},
+        "mandats": [], "votes": [], "interventions": [], "amendements": [],
+        "dossiers_legislatifs": [],
+        "meta": {"warnings": [], "collecte_ecartee": ["interventions", "textes_portes"]},
+    }), encoding="utf-8")
+    generate_all_profiles.process_candidat(
+        {"nom": "Jean-Luc Mélenchon", "slug": "jean-luc-melenchon",
+         "statut": "roster_groupe", "acteur_ref": "PA2150"},
+        _args_roster_theme_seul("jean-luc-melenchon"), raw, tmp_path / "pivot",
+    )
+    brut = json.loads((raw / "jean-luc-melenchon.json").read_text(encoding="utf-8"))
+    assert "collecte_ecartee" not in brut["meta"]
+
+
 def test_un_membre_de_roster_ordinaire_declare_toujours_ce_qu_il_saute(monkeypatch, tmp_path):
     _fausse_collecte(monkeypatch)
     generate_all_profiles.process_candidat(

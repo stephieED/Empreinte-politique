@@ -73,8 +73,9 @@ export function metaCandidat(entree, profil) {
   if (quoi && chambres.length) quoi += ` ${enumerer(chambres.map((c) => PREPOSITION[c]))}`;
   quoi = quoi ? quoi[0].toUpperCase() + quoi.slice(1) : '';
 
-  const tete = [quoi, entree.parti].filter(Boolean).join(' · ');
-  /* « Debout ! » : pas de point après une ponctuation finale. */
+  /* Le parti n'entre plus dans la description (07/10/2026) : il vient de la
+     liste des candidatures lue sur Wikipédia, que personne n'a relue. */
+  const tete = quoi;
   const phrase = tete && !/[.!?]$/.test(tete) ? `${tete}.` : tete;
   return {
     titre: `${entree.nom}, présidentielle 2027 — parcours politique sourcé`,

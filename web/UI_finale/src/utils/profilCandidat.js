@@ -1861,13 +1861,40 @@ function cascadeDesTextes(publies, commissionDuDossier) {
  *    parce que ses mandats disent qu'il n'exerçait rien d'autre à ces dates.
  *    Elle est donc déclarée comme telle sur la page.
  */
+const VOTES_EUROPEENS_ECARTES = /^Parlement européen — votes non publiés :/;
+
+/* « N des M explication(s) de vote sont publiées sans lien… », ou « N
+ * explication(s)… » quand toutes le sont : la phrase est récrite depuis ses
+ * deux nombres. Un message qui ne suit pas cette forme rend `null`, et reste
+ * affiché tel quel — on ne fait pas disparaître ce qu'on n'a pas su lire. */
+const EXPLICATIONS_SANS_LIEN = /^Parlement européen — explications de vote : (\d+)(?: des (\d+))? explication\(s\) de vote sont publiées sans lien vers le document officiel/;
+
+export function explicationsSansLien(message) {
+  const lu = EXPLICATIONS_SANS_LIEN.exec(message || '');
+  if (!lu) return null;
+  const sans = Number(lu[1]);
+  const total = lu[2] ? Number(lu[2]) : sans;
+  const nb = (n) => n.toLocaleString('fr-FR');
+  const fin = 'sans lien vers le document officiel.';
+  let texte;
+  if (sans >= total) {
+    texte = total === 1 ? `Son explication de vote est publiée ${fin}` : `Ses ${nb(total)} explications de vote sont publiées ${fin}`;
+  } else {
+    texte = `${nb(sans)} de ses ${nb(total)} explications de vote ${sans === 1 ? 'est publiée' : 'sont publiées'} ${fin}`;
+  }
+  return { titre: 'Explications de vote au Parlement européen', texte };
+}
+
 export const TYPES_INTERVENTION = [
   { cles: ['loi'], label: 'Débats sur un texte de loi' },
   { cles: ['debat'], label: 'Débats' },
   { cles: ['question', 'question_orale'], label: 'Questions écrites et orales' },
   { cles: ['question_gouvernement'], label: 'Questions au gouvernement' },
   { cles: ['motion_censure'], label: 'Motions de censure' },
-  { cles: ['explication_vote'], label: 'Explications de vote' },
+  /* Le Parlement européen écrit `explication_de_vote`, l'Assemblée
+     `explication_vote`. Sans la seconde clé, la ligne sortait sous son nom
+     technique : 48 sur Raphaël Glucksmann, 683 sur Emmanuel Maurel (#1161). */
+  { cles: ['explication_vote', 'explication_de_vote'], label: 'Explications de vote' },
   { cles: ['commission'], label: 'Commission' },
 ];
 
@@ -2010,6 +2037,7 @@ export function votesDuProfil(
   appartenances,
   rolesParlementaires,
   scrutinsCorpus = null,
+  scrutinsDossiers = null,
 ) {
   const liste = votesJoints || [];
   const surEnsemble = liste.filter((v) => isWholeTextVote(v.scrutin));
@@ -2035,7 +2063,7 @@ export function votesDuProfil(
   // être lu : « je ne sais pas quelle est la dernière lecture » n'est pas
   // « aucun texte » (§2 règle 5).
   const dernieresLectures = scrutinsCorpus
-    ? new Set(selectDerniereLectureVotes(scrutinsCorpus).map((s) => s.id))
+    ? new Set(selectDerniereLectureVotes(scrutinsCorpus, scrutinsDossiers).map((s) => s.id))
     : null;
   const retenus = dernieresLectures
     ? surEnsemble.filter((v) => dernieresLectures.has(v.scrutin_id))
@@ -3133,6 +3161,17 @@ export function limitesDeclarees({ profil, roles, sieges }) {
    * devine pas un intitulé qui n'existe pas. */
   for (const a of profil?.meta?.avertissements || []) {
     if (a.destinataire !== 'lecteur') continue;
+    /* DEUX MESSAGES ÉCRITS POUR NOUS NE SE LISENT PAS TELS QUELS (#1161,
+     * arbitré sur maquette le 02/10/2026). « Votes non publiés » dit un choix,
+     * pas un manque, et rien ne dit la même chose côté français : il n'est plus
+     * adressé au lecteur. « Explications de vote » est réécrit, sans « (s) »,
+     * sans parenthèse, sans le nom de la source. */
+    if (VOTES_EUROPEENS_ECARTES.test(a.message)) continue;
+    const reecrit = explicationsSansLien(a.message);
+    if (reecrit) {
+      limites.push({ cle: `avertissement:${a.message}`, ...reecrit });
+      continue;
+    }
     const coupe = /^(.+?)\s+—\s+([\s\S]+)$/.exec(a.message);
     limites.push({
       cle: `avertissement:${a.message}`,

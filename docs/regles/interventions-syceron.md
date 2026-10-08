@@ -185,3 +185,18 @@ les charger, ni à les faire grossir. -->
   check cannot qualify a field that is only set where it applies (`role_seance`),
   and the run of 03/10/2026 republished an index written before #1169.
   → `docs/decisions/version-de-l-index-des-interventions-1169.md`
+
+- **A speech whose label names another person is not attributed (#1177).** The
+  Assembly sometimes ties a debate guest's words to the deputy who requested the
+  debate — both identifiers agree, only `<nom>` gives it away (08/01/2026: « M.
+  Jean-Marc Cantais, policier, lanceur d'alerte » under Audrey Abadie-Amiel).
+  `libelle_designe_une_autre_personne` refuses a PERSON label (« M./Mme Prénom
+  Nom », not « M. le président », not a collective) that shares no word with the
+  actor's name or first name — narrow on purpose: a one-letter name (Cédric O), a
+  changed married name, a completed name all stay attributed. Motif
+  `libelle_d_une_autre_personne`; without the identity referential nothing is
+  checked. Those already published are removed after the merge by the named
+  retraction table `config/paroles_d_une_autre_personne.json`, from the profile
+  the source wrongly tied them to only.
+  → `docs/decisions/parole-d-une-autre-personne-1177.md`
+

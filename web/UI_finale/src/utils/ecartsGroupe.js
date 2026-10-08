@@ -27,6 +27,7 @@
  * un compte.
  */
 import { isWholeTextVote, titreDuTexteVote } from './lecture';
+import { etaitMembreLe, periodesDansLeGroupe } from './appartenanceAuGroupe';
 
 export const POSITIONS_COMPARABLES = ['pour', 'contre', 'abstention'];
 
@@ -106,6 +107,7 @@ export function ecartsAvecLeGroupe(
   fichesGroupe,
   matiereDuScrutin = () => null,
   retenus = null,
+  membreId = null,
 ) {
   const fiches = (fichesGroupe || []).filter(Boolean);
   if (!fiches.length) {
@@ -122,9 +124,11 @@ export function ecartsAvecLeGroupe(
   let communs = 0;
   const bande = [];
   for (const fiche of fiches) {
+    const periodes = periodesDansLeGroupe(fiche, membreId);
     for (const c of fiche.cohesion_votes || []) {
       const mien = parScrutin.get(c.scrutin_id);
       if (!mien) continue;
+      if (!etaitMembreLe(periodes, mien.date)) continue;
       communs += 1;
       if (!c.position_majoritaire) continue;
       if (!POSITIONS_COMPARABLES.includes(mien.position)) continue;

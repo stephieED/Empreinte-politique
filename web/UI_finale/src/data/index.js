@@ -253,7 +253,6 @@ export async function getCandidatesList() {
      * servi par le manifeste et perdu ici, si bien que sélectionner un groupe
      * ne retenait AUCUN candidat (constaté en câblant les lignées, #329). */
     groupIds: c.groupIds || [],
-    parti: c.parti,
     /* Calculé par `scripts/sync-data.mjs` : un banc — « AN » ou « PE » dans
        `chambres` — ou au moins un mandat de catégorie
        `fonction_gouvernementale` (#328). L'ordre de la liste est déjà

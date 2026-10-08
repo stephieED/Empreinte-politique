@@ -207,3 +207,19 @@ les charger, ni à les faire grossir. -->
   the AN one (`--dirs an ue roster senat`), became the profile's.
   → `docs/decisions/liste-sautee-garde-son-constat-1160.md`
 
+- **A European ballot that ParlTrack publishes twice is counted once (#1011).** The
+  votes index skips the composite copy (`doublons_de_seance`: same day, same second,
+  same totals, one candidate), and `retirer_votes_publies_deux_fois` — a named
+  retraction applied **after** the merge — removes the copies already published,
+  keeping the integer twin. A composite with no twin is the only copy of its vote, and
+  stays. Both read the votes dump already on disk, never the network.
+  → `docs/decisions/scrutins-europeens-publies-deux-fois-1011.md`
+
+- **A Syceron paragraph is published once, whatever rank the source republished it
+  under.** The intervention id (`syceron_<compte rendu>_<rang>`) carries the paragraph's
+  RANK, and the Assemblée renumbers provisional reports when it republishes them: the
+  same paragraph came back two or three times. `dedoublonner_paragraphes_syceron`, the
+  last step of the interventions merge **at both layers**, keeps one entry per
+  `id_syceron`: richest form first, then the one today's collection returned, then the
+  first. The publication guard replays it (named reduction on `interventions`).
+  → `docs/decisions/paragraphe-syceron-publie-une-fois.md`

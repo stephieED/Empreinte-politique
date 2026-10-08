@@ -339,7 +339,9 @@ def _perimetre(mep_id: Optional[int] = None) -> frozenset[int]:
 #:   5 — #858 : `date` d'une activité republiée est la date de SÉANCE, lue dans
 #:       sa référence ou son adresse, et `date_republication` garde la date de
 #:       ParlTrack quand aucune date de séance ne se lit.
-VERSION_SCHEMA_INDEX = 5
+#:   6 — #1011 : l'index des votes ne porte plus la copie d'un scrutin que le
+#:       dump publie deux fois (voir `doublons_de_seance`).
+VERSION_SCHEMA_INDEX = 6
 
 #: `date-type` d'une activité que ParlTrack a REPUBLIÉE : sa `date` est alors
 #: celle de la republication — le 22/11/2016 pour les 548 598 activités du dump
@@ -670,6 +672,102 @@ _POSITIONS_PARLTRACK: dict[str, str] = {
 }
 
 
+#: Un `voteid` composite : `"2018-12-12 00:00:00-1."` — le jour, minuit, puis
+#: le rang du scrutin dans la séance (#1011).
+_VOTEID_COMPOSITE = re.compile(r"^(\d{4}-\d{2}-\d{2}) 00:00:00-(\d+)\.?\s*$")
+
+#: L'heure qu'un intitulé de scrutin composite porte à sa fin :
+#: `"A8-0399/2018 - Siegfried Mureşan - Vote unique 12/12/2018 12:51:11.000"`.
+_HEURE_DANS_LE_TITRE = re.compile(r"(\d{2})/(\d{2})/(\d{4}) (\d{2}:\d{2}:\d{2})")
+
+
+def _totaux(scrutin: dict[str, Any]) -> tuple[Any, ...]:
+    votes = scrutin.get("votes") if isinstance(scrutin.get("votes"), dict) else {}
+    return tuple(
+        (votes.get(signe) or {}).get("total") if isinstance(votes.get(signe), dict) else None
+        for signe in ("+", "-", "0")
+    )
+
+
+def doublons_de_seance(scrutins: Iterable[dict[str, Any]]) -> set[str]:
+    """Les `voteid` composites dont le dump publie AUSSI le scrutin sous son
+    identifiant entier (#1011).
+
+    ## Le constat
+
+    Sur certains jours, `ep_votes` publie chaque scrutin DEUX fois : une fois
+    sous l'identifiant du Parlement (`97747`, horodaté à la seconde), une fois
+    sous un identifiant composite (`"2018-12-12 00:00:00-1."`, horodaté à
+    minuit, l'heure réelle recopiée au bout de l'intitulé). Mesuré le
+    07/10/2026 sur le dump en cache : 13 jours portent les deux formes,
+    1 043 scrutins composites y figurent, et 1 042 ont un jumeau unique —
+    même jour, même seconde —, dont 1 041 aux mêmes totaux. L'index publié en
+    portait 153 paires sur 10 jours, et les fiches comptaient ces votes deux
+    fois.
+
+    ## La règle
+
+    Un composite est un doublon si et seulement si son intitulé donne une heure,
+    qu'un scrutin à identifiant entier du même jour porte exactement cette
+    heure, qu'il est le seul, et que les totaux pour/contre/abstention sont les
+    mêmes. Sinon il est gardé : un composite sans jumeau — 563 scrutins sur 62
+    jours de l'index publié — est le seul exemplaire du vote, et rien ne permet
+    d'en écarter un sur une ressemblance.
+    """
+    entiers: dict[tuple[str, str], list[tuple[Any, ...]]] = {}
+    composites: list[tuple[str, str, Optional[str], tuple[Any, ...]]] = []
+    for scrutin in scrutins:
+        voteid = scrutin.get("voteid")
+        horodatage = str(scrutin.get("ts") or "")
+        jour = horodatage[:10]
+        if isinstance(voteid, int) or str(voteid).isdigit():
+            entiers.setdefault((jour, horodatage[11:19]), []).append(_totaux(scrutin))
+            continue
+        composite = _VOTEID_COMPOSITE.match(str(voteid))
+        if not composite:
+            continue
+        heure = _HEURE_DANS_LE_TITRE.search(str(scrutin.get("title") or ""))
+        composites.append((str(voteid), composite.group(1), heure.group(4) if heure else None, _totaux(scrutin)))
+    doublons: set[str] = set()
+    for voteid, jour, heure, totaux in composites:
+        if heure is None:
+            continue
+        jumeaux = entiers.get((jour, heure), [])
+        if len(jumeaux) == 1 and jumeaux[0] == totaux:
+            doublons.add(voteid)
+    return doublons
+
+
+def get_votes_doublons(force_download: bool = False, telecharger: bool = True) -> set[str]:
+    """`doublons_de_seance` sur le dump des votes, mis en cache à côté de lui.
+
+    Ensemble vide si le dump est absent : on n'écarte rien de ce qu'on n'a pas
+    pu lire. `telecharger=False` : ne lit que le dump déjà présent — le retrait
+    après fusion tourne aussi en `--pivot-only`, qui ne fait aucun appel réseau.
+    """
+    if telecharger:
+        dump_path = ensure_dump(_DUMP_VOTES, force_download)
+    else:
+        local = PARLTRACK_CACHE_DIR / _DUMP_VOTES
+        dump_path = local if local.is_file() else None
+    if dump_path is None:
+        return set()
+    cache = PARLTRACK_CACHE_DIR / f"doublons_votes-v{VERSION_SCHEMA_INDEX}.json"
+    if not force_download and cache.is_file() and cache.stat().st_mtime >= dump_path.stat().st_mtime:
+        try:
+            return set(json.loads(cache.read_text(encoding="utf-8")))
+        except (OSError, ValueError):
+            pass
+    doublons = doublons_de_seance(_lire_dump(dump_path, _DUMP_VOTES))
+    try:
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        cache.write_text(json.dumps(sorted(doublons)), encoding="utf-8")
+    except OSError:
+        pass
+    print(f"  · {len(doublons)} scrutin(s) publié(s) deux fois par le dump : la copie composite est écartée (#1011).")
+    return doublons
+
+
 def build_votes_index(
     force_download: bool = False,
     perimetre: Optional[frozenset[int]] = None,
@@ -703,7 +801,12 @@ def build_votes_index(
     print("→ Indexation des scrutins ParlTrack (séance plénière)…")
     index: dict[int, list[dict[str, Any]]] = {}
     sans_detail = 0
+    # #1011 — un scrutin publié deux fois n'entre qu'une fois : sous son
+    # identifiant entier. Sans cela la fiche compte le même vote deux fois.
+    doublons = get_votes_doublons(force_download)
     for scrutin in _lire_dump(dump_path, _DUMP_VOTES):
+        if str(scrutin.get("voteid")) in doublons:
+            continue
         positions = scrutin.get("votes")
         if not isinstance(positions, dict):
             # Le scrutin existe, son détail nominatif n'est pas publié : 92 cas

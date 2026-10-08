@@ -1,0 +1,98 @@
+{
+ "_source": "Copié de pivot_data/scrutins.json et pivot_data/scrutins_dossiers.json le 08/10/2026 (main 98327b0c0). Champs conservés : ceux que utils/lecture.js lit.",
+ "scrutins": [
+  {
+   "id": "an:17:4963",
+   "legislature": "17",
+   "numero_scrutin": "4963",
+   "date": "2026-01-13",
+   "texte": "l'ensemble du projet de loi relative à l'organisation des jeux Olympiques et Paralympiques de 2030 (première lecture).",
+   "type_vote": "vote_texte"
+  },
+  {
+   "id": "an:17:5296",
+   "legislature": "17",
+   "numero_scrutin": "5296",
+   "date": "2026-02-03",
+   "texte": "l'ensemble du projet de loi relatif à l'organisation des jeux Olympiques et Paralympiques de 2030 (texte de la commission mixte paritaire).",
+   "type_vote": "vote_texte"
+  },
+  {
+   "id": "an:16:2118",
+   "legislature": "16",
+   "numero_scrutin": "2118",
+   "date": "2023-06-29",
+   "texte": "l'ensemble du projet de loi relatif à la restitution des biens culturels ayant fait l'objet de spoliation dans le contexte des persécutions antisémites perpétrées entre 1933 et 1945 (première lecture).",
+   "type_vote": "vote_texte"
+  },
+  {
+   "id": "an:16:2282",
+   "legislature": "16",
+   "numero_scrutin": "2282",
+   "date": "2023-07-13",
+   "texte": "l'ensemble du projet de loi relatif à la restitution des biens culturels ayant fait l’objet de spoliations dans le contexte des persécutions antisémites perpétrées entre 1933 et 1945 (texte de la commission mixte paritaire).",
+   "type_vote": "vote_texte"
+  },
+  {
+   "id": "an:15:3254",
+   "legislature": "15",
+   "numero_scrutin": "3254",
+   "date": "2020-11-24",
+   "texte": "l'ensemble de la proposition de loi relative à la sécurité globale (première lecture).",
+   "type_vote": "vote_texte"
+  },
+  {
+   "id": "an:15:3658",
+   "legislature": "15",
+   "numero_scrutin": "3658",
+   "date": "2021-04-15",
+   "texte": "l'ensemble de la proposition de loi pour une sécurité globale préservant les libertés (texte de la commission mixte paritaire).",
+   "type_vote": "vote_texte"
+  },
+  {
+   "id": "an:15:4182",
+   "legislature": "15",
+   "numero_scrutin": "4182",
+   "date": "2021-11-25",
+   "texte": "l'ensemble de la proposition de loi visant à faire évoluer la formation de sage-femme (première lecture).",
+   "type_vote": "vote_texte"
+  },
+  {
+   "id": "an:16:839",
+   "legislature": "16",
+   "numero_scrutin": "839",
+   "date": "2023-01-16",
+   "texte": "l'ensemble de la proposition de loi visant à faire évoluer la formation de sage-femme (deuxième lecture).",
+   "type_vote": "vote_texte"
+  },
+  {
+   "id": "an:15:2039",
+   "legislature": "15",
+   "numero_scrutin": "2039",
+   "date": "2019-07-09",
+   "texte": "l'ensemble de la proposition de loi visant à lutter contre la haine sur internet (première lecture).",
+   "type_vote": "vote_texte"
+  },
+  {
+   "id": "an:15:2742",
+   "legislature": "15",
+   "numero_scrutin": "2742",
+   "date": "2020-05-13",
+   "texte": "l'ensemble de la proposition de loi visant à lutter contre les contenus haineux sur internet (lecture définitive).",
+   "type_vote": "vote_texte"
+  }
+ ],
+ "dossiers": {
+  "scrutins": {
+   "an:17:4963": "DLR5L17N52100",
+   "an:17:5296": "DLR5L17N52100",
+   "an:16:2118": "DLR5L16N47616",
+   "an:15:3254": "DLR5L15N40712",
+   "an:15:3658": "DLR5L15N40712",
+   "an:15:4182": "DLR5L15N43746",
+   "an:16:839": "DLR5L15N43746",
+   "an:15:2039": "DLR5L15N37327",
+   "an:15:2742": "DLR5L15N37327"
+  }
+ }
+}

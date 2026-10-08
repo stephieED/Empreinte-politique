@@ -879,8 +879,10 @@ SYCERON_INDEX_PAR_ACTEUR_THEME_DIRNAME = "index_par_acteur_extrait"
 #: budgétaires. `1200` : l'index RÉDUIT garde `fonction` — le parseur n'a pas
 #: changé, mais ce que l'index contient, si. `1177` : les paragraphes sans
 #: identifiant d'orateur que la source attribue par `id_acteur` entrent dans
-#: l'index — 71 520 entrées de plus à la XVe.
-SYCERON_VERSION_INDEX = "1177"
+#: l'index — 71 520 entrées de plus à la XVe. `1177-libelle` : une prise de
+#: parole dont le libellé nomme une AUTRE personne que l'acteur attribué n'entre
+#: plus dans l'index (`libelle_designe_une_autre_personne`).
+SYCERON_VERSION_INDEX = "1177-libelle"
 SYCERON_FICHIER_VERSION = "version_index.txt"
 
 #: Valeur publiée dans `interventions[].collecte` pour une entrée réduite au
@@ -5335,11 +5337,86 @@ def fetch_questions_officielles(
 #: groupe LaREM ») ne commence pas par une civilité.
 _ORATEUR_INDIVIDUEL = re.compile(r"^(?:M\.|Mme)\s")
 
+#: Un libellé de FONCTION (« M. le président », « Mme la ministre ») : il désigne
+#: un rôle, et la source a raison de l'attribuer à qui l'exerce ce jour-là.
+_LIBELLE_DE_FONCTION = re.compile(r"^(?:M\.|Mme)\s+(?:le|la|les|l['’])\b", re.IGNORECASE)
+
+#: Les particules d'un nom de famille ne suffisent pas à reconnaître une
+#: personne : « de » est dans « Arnaud de Broca » comme dans « Charles de Courson ».
+_PARTICULES = frozenset({"de", "du", "des", "la", "le", "les", "d", "l", "von", "van", "di", "da", "del"})
+
+
+def _jetons_de_nom(texte: Any) -> set[str]:
+    """Les mots d'un nom, sans accents ni casse, découpés aux espaces, traits
+    d'union et apostrophes ; particules retirées. Un nom d'une lettre (« O »)
+    reste un mot."""
+    if not isinstance(texte, str):
+        return set()
+    plat = "".join(
+        c for c in unicodedata.normalize("NFD", texte) if unicodedata.category(c) != "Mn"
+    ).lower().replace("’", "'")
+    return {t for t in re.split(r"[\s\-'.]+", plat) if t and t not in _PARTICULES}
+
+
+def libelle_designe_une_autre_personne(orateur_nom: Any, identite: Any) -> bool:
+    """Vrai si le libellé nomme une personne qui n'est PAS l'acteur attribué (#1177).
+
+    L'Assemblée rattache parfois la parole d'un INVITÉ au député qui a demandé
+    le débat : le 08/01/2026, « M. Jean-Marc Cantais, policier, lanceur
+    d'alerte » et « Mme Assa Traoré » portent l'identifiant d'Audrey
+    Abadie-Amiel, aux deux endroits où la source l'écrit. Rien ne se contredit
+    dans les identifiants ; seul le nom trahit l'erreur. Arbitrage de la
+    propriétaire, 07/10/2026 : une telle parole n'est pas attribuée.
+
+    Le critère est volontairement étroit, mesuré sur les trois archives :
+
+    - seul un libellé de PERSONNE est comparé (« M. Prénom Nom ») — un libellé
+      de fonction (« M. le président ») ou collectif ne l'est pas ;
+    - il concorde dès qu'il contient un mot du NOM ou du PRÉNOM de l'acteur :
+      un nom d'usage changé (« Christine Cloarec », devenue Christine
+      Le Nabour) ou complété (« Benjamin Lucas », Lucas-Lundy) n'est pas un
+      autre orateur, et un nom d'une lettre (Cédric O) reste un nom.
+
+    Ainsi borné, il écarte 105 paragraphes sur 817 084 attribués (XVe 33, XVIe
+    56, XVIIe 16, archives en cache), pour 68 acteurs. Sans identité connue,
+    il ne conclut rien : `False`.
+    """
+    if not isinstance(orateur_nom, str) or not isinstance(identite, dict):
+        return False
+    libelle = re.sub(r"\(.*?\)", "", orateur_nom).split(",")[0].strip()
+    if not _ORATEUR_INDIVIDUEL.match(libelle) or _LIBELLE_DE_FONCTION.match(libelle):
+        return False
+    mots = _jetons_de_nom(re.sub(r"^(?:M\.|Mme)\s+", "", libelle))
+    if not mots:
+        return False
+    reconnus = _jetons_de_nom(identite.get("nom")) | _jetons_de_nom(identite.get("prenom"))
+    return not (mots & reconnus)
+
+
+def identites_des_acteurs() -> Optional[dict[str, Any]]:
+    """`acteurRef → identité` (prénom, nom) du référentiel déjà chargé, sans
+    jamais rien télécharger ; `None` s'il ne l'est pas. Même règle que
+    `nb_acteurs_referentiel_charge` : constater le cache, pas le fabriquer."""
+    index_path = ACTEURS_HISTORIQUE_CACHE_DIR / NOM_INDEX_IDENTITE
+    memoise = _index_historique_memoise(index_path)
+    if isinstance(memoise, dict):
+        return memoise
+    if index_path.is_file():
+        try:
+            with open(index_path, encoding="utf-8") as f:
+                index = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            return None
+        if isinstance(index, dict):
+            return index
+    return None
+
 
 def _normaliser_orateur_id_syceron(
     valeur: Any,
     id_acteur: Any = None,
     orateur_nom: Any = None,
+    identites: Optional[dict[str, Any]] = None,
 ) -> tuple[Optional[str], str]:
     """Résout l'identifiant d'orateur Syceron en `acteurRef` AN (#510).
 
@@ -5420,7 +5497,12 @@ def _normaliser_orateur_id_syceron(
             and isinstance(orateur_nom, str)
             and _ORATEUR_INDIVIDUEL.match(orateur_nom.strip())
         ):
-            return id_acteur.strip(), "attribue_par_id_acteur"
+            acteur = id_acteur.strip()
+            if identites is not None and libelle_designe_une_autre_personne(
+                orateur_nom, identites.get(acteur)
+            ):
+                return None, "libelle_d_une_autre_personne"
+            return acteur, "attribue_par_id_acteur"
         return None, "absent"
     valeur = valeur.strip()
     if re.fullmatch(r"PA[1-9]\d*", valeur):
@@ -5438,6 +5520,12 @@ def _normaliser_orateur_id_syceron(
 
     if isinstance(id_acteur, str) and id_acteur.strip() and id_acteur.strip() != acteur_ref:
         return None, "attribution_refusee_par_la_source"
+    # #1177 — les deux identifiants concordent, mais le libellé nomme quelqu'un
+    # d'autre : l'invité d'un débat rattaché au député qui l'a demandé.
+    if identites is not None and libelle_designe_une_autre_personne(
+        orateur_nom, identites.get(acteur_ref)
+    ):
+        return None, "libelle_d_une_autre_personne"
     return acteur_ref, motif
 
 
@@ -5528,6 +5616,7 @@ def _parse_syceron_intervention_entry(
     index_in_source: int,
     *,
     theme_seul: bool = False,
+    identites: Optional[dict[str, Any]] = None,
 ) -> Optional[tuple[str, dict[str, Any]]]:
     """Convertit une intervention Syceron en entrée d'index acteurRef -> interventions.
 
@@ -5546,7 +5635,7 @@ def _parse_syceron_intervention_entry(
 
     acteur_ref, _motif = _normaliser_orateur_id_syceron(
         intervention.get("orateur_id_source"), intervention.get("orateur_id_acteur"),
-        intervention.get("orateur_nom"),
+        intervention.get("orateur_nom"), identites=identites,
     )
     if acteur_ref is None:
         return None
@@ -5878,6 +5967,11 @@ def _build_acteur_interventions_syceron_index(
 
         index: dict[str, list[dict[str, Any]]] = {}
         motifs: Counter[str] = Counter()
+        # #1177 — le référentiel déjà chargé, pour comparer le libellé à
+        # l'acteur. Absent, rien n'est vérifié, et le compteur le dit.
+        identites = identites_des_acteurs()
+        if identites is None:
+            motifs["libelle_non_verifie_referentiel_absent"] += 1
         fichiers_lus = 0
         indexees_sans_sujet = 0
         for xml_path in iter_syceron_xml_files(legislature):
@@ -5894,10 +5988,12 @@ def _build_acteur_interventions_syceron_index(
                         intervention.get("orateur_id_source"),
                         intervention.get("orateur_id_acteur"),
                         intervention.get("orateur_nom"),
+                        identites=identites,
                     )
                     motifs[motif] += 1
                 parsed_entry = _parse_syceron_intervention_entry(
-                    intervention, legislature, idx, theme_seul=theme_seul
+                    intervention, legislature, idx, theme_seul=theme_seul,
+                    identites=identites,
                 )
                 if parsed_entry is None:
                     continue

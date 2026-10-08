@@ -101,7 +101,7 @@ def test_la_cause_des_ecarts_est_dite_en_section_six() -> None:
     sans laquelle le vide se lirait « il n'a jamais divergé »."""
     fiche = FICHE.read_text(encoding="utf-8")
     assert "cp-couv-ecarts" in fiche
-    assert "ecartsSansFiche={!c.ecarts.fiches.length}" in fiche
+    assert "ecartsSansFiche={!c.ecarts.fiches.length && !c.ceQuiManque.phrase}" in fiche
     assert "ne dit pas qu’elle n’a jamais divergé" in fiche
 
 

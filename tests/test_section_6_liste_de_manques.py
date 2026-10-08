@@ -207,7 +207,7 @@ def test_un_mandat_de_senateur_n_est_pas_oppose_a_une_source_de_l_assemblee(sect
     """
     lignes = _lignes(sections, "jean-luc-melenchon")
     assert [titre for titre, _ in lignes] == [
-        "Sénat", "Votes", "Prises de parole", "Mandats antérieurs", "Parlement européen", "Parlement européen",
+        "Sénat", "Votes", "Prises de parole", "Mandats antérieurs", "Explications de vote au Parlement européen",
     ]
     assert not any("la source commence" in texte for _, texte in lignes), (
         "une borne de l'Assemblée est opposée à un mandat qui n'y a pas été exercé"
@@ -219,16 +219,18 @@ def test_un_mandat_de_senateur_n_est_pas_oppose_a_une_source_de_l_assemblee(sect
         "ne sont pas couverts : ni vote, ni amendement, ni prise de parole."
     )
     assert lignes[1][1] == "Sur ses 101 votes, 37 n’ont pas de commission connue et 37 n’ont pas de sort connu."
-    # Les signalements de collecte gardent leur texte, coupé sur son tiret.
-    assert lignes[4][1].startswith("votes non publiés : 6253 scrutin(s) du Parlement européen")
-    assert lignes[5][1].startswith("explications de vote : 1 des 49 explication(s)")
+    # DEUX SIGNALEMENTS DE COLLECTE NE SE LISENT PLUS TELS QUELS (#1161, arbitré
+    # le 02/10/2026) : « votes non publiés » dit un choix, pas un manque, et
+    # n'est plus adressé au lecteur ; « explications de vote » est réécrit.
+    assert not any("scrutin(s)" in texte or "explication(s)" in texte for _, texte in lignes)
+    assert lignes[4][1] == "1 de ses 49 explications de vote est publiée sans lien vers le document officiel."
 
 
 def test_emmanuel_maurel_garde_les_lignes_que_la_collecte_signale(sections: dict) -> None:
     """Deux mandats européens (2014-2024), un à l'Assemblée depuis 2024."""
     lignes = _lignes(sections, "emmanuel-maurel")
     assert [titre for titre, _ in lignes] == [
-        "Votes", "Prises de parole", "Parlement européen", "Parlement européen", "Avant juin 2002",
+        "Votes", "Prises de parole", "Explications de vote au Parlement européen", "Avant juin 2002",
     ]
     assert lignes[1][1] == (
         "Sur 1 562 prises de parole, 162 n’ont pas de texte et 1 532 n’indiquent pas à quel "

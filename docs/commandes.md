@@ -839,6 +839,20 @@ ceux qui ne le passent pas, avec leur population. **Sort toujours en 0** quand
 il a pu lire le répertoire : c'est un signalement, pas un gate — dans le run,
 c'est une issue qui le porte. `--out` et `--out-json` écrivent le rapport.
 
+### Les prises de parole rattachées à une autre personne (#1177)
+
+```bash
+PYTHONPATH=src python3 src/paroles_d_une_autre_personne.py \
+  --archive 15=<archive XVe> --archive 16=<archive XVIe> --archive 17=<archive XVIIe> \
+  --identites .cache/acteurs_historique_an/index_identite_v5.json
+```
+
+Régénère `config/paroles_d_une_autre_personne.json`, la liste du retrait nommé :
+les paragraphes que l'Assemblée attribue à un député alors que leur libellé
+nomme une autre personne. `--out` change le fichier écrit. À relancer quand une
+archive Syceron s'enrichit d'un débat avec invités ; la collecte, elle, les
+refuse déjà.
+
 ## Opérer
 
 ### Régénérer la table slug ↔ acteur AN

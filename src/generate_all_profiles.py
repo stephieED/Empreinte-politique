@@ -157,6 +157,51 @@ def _table_mandats_anterieurs() -> dict[str, list[dict[str, Any]]]:
     return _TABLE_MANDATS_ANTERIEURS
 
 
+def _retirer_votes_europeens_publies_deux_fois(pivot_profile: dict[str, Any]) -> None:
+    """#1011 — retrait nommé, APRÈS la fusion : voir
+    `normalize_parltrack_dumps.retirer_votes_publies_deux_fois`. Le dump des
+    votes n'est lu que si le profil porte un vote européen composite."""
+    from normalize_parltrack_dumps import (  # noqa: PLC0415 — module lourd, rarement utile
+        porte_un_vote_europeen_composite,
+        retirer_votes_publies_deux_fois,
+    )
+    from parltrack_dumps import get_votes_doublons  # noqa: PLC0415
+
+    if not porte_un_vote_europeen_composite(pivot_profile):
+        return
+    retires = retirer_votes_publies_deux_fois(pivot_profile, get_votes_doublons(telecharger=False))
+    if retires:
+        _tprint(
+            f"  · {pivot_profile.get('id')} : {retires} vote(s) européen(s) retiré(s) — "
+            "copie d'un scrutin que ParlTrack publie deux fois (#1011)."
+        )
+
+
+_TABLE_PAROLES_D_UNE_AUTRE_PERSONNE: Optional[dict[str, dict[str, Any]]] = None
+
+
+def _retirer_paroles_d_une_autre_personne(pivot_profile: dict[str, Any]) -> None:
+    """#1177 — retrait nommé, APRÈS la fusion : les prises de parole que la
+    source rattache à ce député alors que leur libellé nomme une autre
+    personne. Voir `paroles_d_une_autre_personne`."""
+    from paroles_d_une_autre_personne import (  # noqa: PLC0415
+        charger_table,
+        retirer_paroles_d_une_autre_personne,
+    )
+
+    global _TABLE_PAROLES_D_UNE_AUTRE_PERSONNE
+    if _TABLE_PAROLES_D_UNE_AUTRE_PERSONNE is None:
+        _TABLE_PAROLES_D_UNE_AUTRE_PERSONNE = charger_table()
+    retirees = retirer_paroles_d_une_autre_personne(
+        pivot_profile, _TABLE_PAROLES_D_UNE_AUTRE_PERSONNE
+    )
+    if retirees:
+        _tprint(
+            f"  · {pivot_profile.get('id')} : {retirees} prise(s) de parole retirée(s) — "
+            "le libellé de la source nomme une autre personne (#1177)."
+        )
+
+
 def vider_table_mandats_anterieurs() -> None:
     """Oublie la table chargée — pour les tests, qui en servent une figée (#767)."""
     global _TABLE_MANDATS_ANTERIEURS, _MANDATS_ABSENTS_DE_LA_SOURCE
@@ -1314,6 +1359,8 @@ def process_candidat(
         # jamais fusionné, comme `chambres` ; et AVANT la comparaison de #343,
         # pour qu'une fiche inchangée garde ses horodatages.
         appliquer_mandats_anterieurs(pivot_profile, _table_mandats_anterieurs())
+        _retirer_votes_europeens_publies_deux_fois(pivot_profile)
+        _retirer_paroles_d_une_autre_personne(pivot_profile)
         _poser_mandats_absents_de_la_source(pivot_profile)
         # #343 : ne pas ré-avancer genere_le/synchro_le quand --pivot-only re-dérive
         # un contenu strictement identique au pivot déjà commité (pas d'appel réseau).
@@ -1435,10 +1482,14 @@ def process_candidat(
     # `collect_interventions=true`) : le brut de Jean-Luc Mélenchon portait
     # 3 933 interventions collectées le soir même ET la déclaration qu'elles
     # avaient été écartées. Sans la clé, la fusion garde celle de l'AN.
-    if theme_seul_refuse and isinstance(profile, dict):
-        meta_collecte = profile.get("meta")
-        if isinstance(meta_collecte, dict):
-            meta_collecte.pop("collecte_ecartee", None)
+    #
+    # Le retrait se fait APRÈS la fusion avec le brut existant, plus bas : fait
+    # ici, `merge_raw_profile` rendait l'ancienne déclaration (`_declaration_du_run`
+    # garde celle d'avant quand le nouvel écrivain n'a pas la clé). Mesuré sur
+    # le run `37666329944` (07/10, interventions cochées) : l'artifact du
+    # shard 2 portait encore `["interventions", "textes_portes"]` pour
+    # Mélenchon, et 15 des 35 candidats déclarés restaient « non collecté » sur
+    # des listes pleines.
 
     if profile is None and mandat_ue is None:
         # « introuvable » est un CONSTAT — le référentiel AN ne connaît pas ce
@@ -1550,6 +1601,13 @@ def process_candidat(
                         "Relancer avec --autoriser-collecte-vide pour forcer le vidage."
                     )
 
+    # #1160 — voir plus haut : la déclaration retirée ici l'est aussi de ce que
+    # la fusion a repris du brut existant.
+    if theme_seul_refuse and isinstance(profile, dict):
+        meta_collecte = profile.get("meta")
+        if isinstance(meta_collecte, dict):
+            meta_collecte.pop("collecte_ecartee", None)
+
     # #580 : l'écriture produit désormais la forme PARTITIONNÉE — un socle
     # `<slug>.json` sans `amendements`, plus `<slug>/<legislature>.json`. Un
     # profil relu monolithique et réécrit ici migre donc de lui-même, sans
@@ -1599,6 +1657,8 @@ def process_candidat(
                 pivot_profile = merge_pivot_profile(existing_pivot, pivot_profile)
             # #860 — même champ dérivé, même place que sur le chemin pivot-only.
             appliquer_mandats_anterieurs(pivot_profile, _table_mandats_anterieurs())
+            _retirer_votes_europeens_publies_deux_fois(pivot_profile)
+            _retirer_paroles_d_une_autre_personne(pivot_profile)
             _poser_mandats_absents_de_la_source(pivot_profile)
             # #343 : ne pas ré-avancer genere_le/synchro_le si le contenu régénéré
             # est strictement identique au pivot déjà commité.

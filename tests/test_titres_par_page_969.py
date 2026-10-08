@@ -101,24 +101,27 @@ def textes() -> dict:
 def test_la_fiche_complete_porte_le_texte_de_la_maquette(textes):
     assert textes["jean-luc-melenchon"] == {
         "titre": "Jean-Luc Mélenchon, présidentielle 2027 — parcours politique sourcé",
-        "description": "Mandats, votes et textes à l'Assemblée nationale, au Sénat et au Parlement européen"
-        f" · La France Insoumise (LFI). {SOURCE}",
+        "description": f"Mandats, votes et textes à l'Assemblée nationale, au Sénat et au Parlement européen. {SOURCE}",
     }
 
 
 def test_une_fiche_sans_vote_n_annonce_pas_de_vote(textes):
-    assert textes["marine-tondelier"]["description"] == f"Mandats locaux · Les Écologistes. {SOURCE}"
+    assert textes["marine-tondelier"]["description"] == f"Mandats locaux. {SOURCE}"
     royal = textes["segolene-royal"]["description"]
-    assert royal == f"Mandats à l'Assemblée nationale · Parti Socialiste (PS). {SOURCE}"
+    assert royal == f"Mandats à l'Assemblée nationale. {SOURCE}"
     assert "vote" not in royal and "texte" not in royal
 
 
-def test_une_fiche_sans_mandat_ne_dit_que_l_etiquette(textes):
-    assert textes["nathalie-arthaud"]["description"] == f"Lutte Ouvrière (LO). {SOURCE}"
+def test_une_fiche_sans_mandat_ne_dit_que_la_source(textes):
+    assert textes["nathalie-arthaud"]["description"] == SOURCE
 
 
-def test_pas_de_point_apres_une_ponctuation_finale(textes):
-    assert "Debout ! Chaque fait" in textes["francois-ruffin"]["description"]
+def test_le_parti_n_entre_dans_aucune_description(textes):
+    """Retiré le 07/10/2026 : il vient de la liste lue sur Wikipédia, jamais relue."""
+    for slug, parti in (("jean-luc-melenchon", "Insoumise"), ("marine-tondelier", "Écologistes"),
+                        ("segolene-royal", "Socialiste"), ("nathalie-arthaud", "Lutte"),
+                        ("francois-ruffin", "Debout")):
+        assert parti not in textes[slug]["description"], slug
 
 
 def test_le_titre_est_le_meme_pour_toutes_les_fiches_candidat(textes):
@@ -169,7 +172,7 @@ def test_une_chambre_mairie_ne_bloque_pas_et_n_est_pas_nommee():
         " {chambres:['mairie'], mandats:[{categorie:'mandat_electif'}], votes:[], textes_portes:[]})));"
     )
     assert res.returncode == 0, res.stderr
-    assert json.loads(res.stdout)["description"].startswith("Mandats · P.")
+    assert json.loads(res.stdout)["description"].startswith("Mandats. ")
 
 
 def test_chaque_balise_du_vrai_index_html_est_remplacee_une_fois():

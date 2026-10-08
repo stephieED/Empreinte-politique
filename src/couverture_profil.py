@@ -120,6 +120,7 @@ from datetime import date, timedelta
 from typing import Any, Iterable, NamedTuple, Optional
 
 from groupes_config import CLE_SUSPENSION, libelle_groupe
+from mandats_anterieurs import BORNE_COUVERTURE_GOUVERNEMENT
 from population_profils import PROVENANCES_ROSTER
 from schema_pivot import (
     CAUSE_DEFAUT_COLLECTE,
@@ -882,6 +883,89 @@ def bornes_europeennes(profil: dict[str, Any]) -> dict[str, tuple[str, str]]:
     return bornes
 
 
+#: Le libellé que l'adaptateur européen donne au mandat lui-même, à côté des
+#: commissions, délégations et groupes qui portent la même `categorie_source`.
+LIBELLE_MANDAT_PE = "Mandat de député européen"
+
+
+def mandats_europeens_sans_parole(
+    profil: dict[str, Any],
+) -> list[tuple[str, Optional[str]]]:
+    """Les mandats de député européen pendant lesquels la source ne publie
+    AUCUNE prise de parole datée (#1163), en `(debut, fin)`.
+
+    Mesuré le 07/10/2026 : ParlTrack (dump `ep_mep_activities` et site) ne
+    porte aucune prise de parole d'Emmanuel Maurel en 2014-2019 ni de Raphaël
+    Glucksmann en 2019-2024, et l'API speeches du portail européen non plus
+    (`docs/sources/parltrack-et-europarl.md`). Ce n'est pas un silence de ces
+    députés, c'est une limite de la source : la fiche la déclare.
+
+    **Rien n'est déclaré dès qu'une prise de parole européenne du profil est
+    sans date** : elle pourrait appartenir à n'importe lequel des mandats, et
+    l'affirmation « aucune » deviendrait une supposition (§2 règle 5). Un mandat
+    sans date de début n'est pas déclaré non plus : la portée serait inventée.
+    """
+    dates: list[str] = []
+    for interv in profil.get("interventions") or ():
+        if not isinstance(interv, dict):
+            continue
+        if _lire(interv, ("source", "institution")) != INSTITUTION_PE:
+            continue
+        date = interv.get("date")
+        if not isinstance(date, str) or not date:
+            return []
+        dates.append(date[:10])
+
+    sans_parole: list[tuple[str, Optional[str]]] = []
+    for mandat in profil.get("mandats") or ():
+        if not isinstance(mandat, dict):
+            continue
+        if mandat.get("categorie_source") != "europarl" or mandat.get("label") != LIBELLE_MANDAT_PE:
+            continue
+        debut, fin = mandat.get("debut"), mandat.get("fin")
+        if not isinstance(debut, str) or not debut:
+            continue
+        if any(debut <= d <= (fin or "9999-12-31") for d in dates):
+            continue
+        sans_parole.append((debut, fin))
+    return sorted(set(sans_parole))
+
+
+def _preuve_mandat_europeen_sans_parole(debut: str, fin: Optional[str]) -> str:
+    """La preuve d'un mandat européen sans prise de parole publiée (#1163)."""
+    return (
+        f"Mandat de député européen du {debut} au {fin or 'présent'} : le matériau du "
+        f"Parlement européen collecté (dumps ParlTrack, parltrack.org/dumps, ODbL v1.0) "
+        f"ne porte aucune prise de parole datée dans cette période, alors qu'il en porte "
+        f"pour d'autres périodes de ce profil. Mesuré le 07/10/2026 : ni ParlTrack (dump "
+        f"et site) ni l'API speeches du portail européen ne les publient "
+        f"(#1163, docs/sources/parltrack-et-europarl.md)."
+    )
+
+
+#: La preuve de la borne gouvernementale : mesurée, jamais recopiée d'une page.
+PREUVE_BORNE_GOUVERNEMENT = (
+    "AMO30 (référentiel historique des acteurs AN, acteurs_historique.zip) — "
+    "mesuré les 05 et 06/10/2026 : 659 mandats GOUVERNEMENT, le plus ancien du "
+    f"{BORNE_COUVERTURE_GOUVERNEMENT} (gouvernement Fillon I) ; aucun gouvernement "
+    "antérieur n'est publié, pour personne. Un mandat gouvernemental plus ancien se "
+    "cite à la main, depuis le Journal officiel (mandats_anterieurs, "
+    "mandats_absents_de_la_source, #859)"
+)
+
+
+def borne_fonctions_gouvernementales(constate_le: str) -> list[dict[str, Any]]:
+    """Les deux entrées de la borne gouvernementale (#859) : couvert à partir du
+    17/05/2007, hors couverture jusqu'à la veille."""
+    veille = (date.fromisoformat(BORNE_COUVERTURE_GOUVERNEMENT) - timedelta(days=1)).isoformat()
+    return [
+        _entree(ETAT_COUVERT, PREUVE_BORNE_GOUVERNEMENT, constate_le,
+                portee={"debut": BORNE_COUVERTURE_GOUVERNEMENT, "fin": None}),
+        _entree(ETAT_HORS_COUVERTURE, PREUVE_BORNE_GOUVERNEMENT, constate_le,
+                portee={"debut": None, "fin": veille}),
+    ]
+
+
 def _preuve_europeenne(liste: str, fin: str) -> str:
     """La preuve d'une couverture européenne — construite, jamais recopiée."""
     return (
@@ -1096,6 +1180,23 @@ def deriver(
                 source=INSTITUTION_PE,
             )
         )
+
+    # #1163 — UN MANDAT EUROPÉEN SANS AUCUNE PRISE DE PAROLE SE DÉCLARE.
+    if "interventions" in bornes_europeennes(profil):
+        for debut, fin in mandats_europeens_sans_parole(profil):
+            couverture.setdefault("interventions", []).append(
+                _entree(
+                    ETAT_HORS_COUVERTURE,
+                    _preuve_mandat_europeen_sans_parole(debut, fin),
+                    constate_le,
+                    portee={"debut": debut, "fin": fin},
+                    source=INSTITUTION_PE,
+                )
+            )
+
+    # #859 — LA BORNE DES FONCTIONS GOUVERNEMENTALES, la même pour tout le
+    # monde : posée sur chaque profil, comme celle des mandats de l'Assemblée.
+    couverture["fonctions_gouvernementales"] = borne_fonctions_gouvernementales(constate_le)
 
     return couverture
 

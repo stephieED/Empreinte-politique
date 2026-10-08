@@ -239,7 +239,8 @@ def test_la_completude_est_obligatoire():
     """Aucun défaut implicite : « pas d'entrée = couvert » ferait porter à l'UI
     une hypothèse qu'aucune mesure n'étaye."""
     couverture = cv.deriver(_profil(), constate_le=LE_JOUR)
-    assert set(couverture) == set(LISTES_COUVERTES)
+    # Les listes métier, plus la borne de corpus de #859, qui n'en est pas une.
+    assert set(couverture) == set(LISTES_COUVERTES) | {"fonctions_gouvernementales"}
     assert all(couverture[liste] for liste in LISTES_COUVERTES)
 
     del couverture["votes"]

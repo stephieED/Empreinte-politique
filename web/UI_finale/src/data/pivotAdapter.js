@@ -276,6 +276,12 @@ function* joinAmendements(amendements, amendementsIndex) {
  * retiré, et l'ordre a changé — ce qu'il a VOTÉ et ses ÉCARTS passent avant ce
  * qu'il a DIT. Voir `docs/decisions/six-emplacements-fiche-candidat-328.md`.
  */
+/* Deux libellés disent-ils la même chose, à la casse et aux espaces près ? */
+function memeLibelle(a, b) {
+  const net = (t) => String(t || '').trim().toLowerCase();
+  return Boolean(net(a)) && net(a) === net(b);
+}
+
 export function buildCandidateView(
   pivot,
   manifestEntry,
@@ -428,6 +434,10 @@ export function buildCandidateView(
     appartenances,
     roles.filter((r) => r.institution === INSTITUTION_PARLEMENT),
     scrutinsIndex,
+    /* Le dossier de chaque scrutin : un texte renommé entre deux lectures
+       reste UN texte (#854). `null` si la table n'a pas pu être lue — le
+       regroupement retombe alors sur l'intitulé. */
+    scrutinsDossiers,
   );
   /* La matière d'un scrutin : le même chemin que « ce qu'il a voté » —
      scrutin → dossier (#758), dossier → commission saisie au fond (#328). Elle
@@ -447,6 +457,7 @@ export function buildCandidateView(
     fichesGroupe,
     matiereDuScrutin,
     lectureVotes.derniereLectureDisponible ? lectureVotes.retenus : null,
+    manifestEntry.slug,
   );
 
   /* « Ce qu'il a voté » : les positions de dernière lecture, rangées par
@@ -543,8 +554,17 @@ export function buildCandidateView(
   return {
     id: manifestEntry.slug,
     nom: pivot.nom,
-    parti: pivot.parti || manifestEntry.parti || '',
-    groupe: pivot.groupe || '',
+    /* LE PARTI N'EST PLUS TRANSMIS À LA FICHE (07/10/2026, décision de la
+     * propriétaire) : il vient de la liste des candidatures lue sur Wikipédia,
+     * que personne n'a relue.
+     *
+     * ET LE LIBELLÉ DE GROUPE LE PORTAIT ENCORE. Pour une personne sans groupe
+     * parlementaire, `pivot.groupe` recopie le parti : 13 des 35 profils de
+     * candidats mesurés ce jour-là (« Lutte Ouvrière (LO) », « Reconquête »,
+     * « Sans étiquette »…), que la fiche affichait « Groupe Lutte Ouvrière ».
+     * Un libellé de groupe égal au parti n'est donc pas un groupe, et ne
+     * s'affiche pas. */
+    groupe: memeLibelle(pivot.groupe, pivot.parti) ? '' : (pivot.groupe || ''),
     /* LE LIEN VERS LA FICHE DE GROUPE, ET SEULEMENT QUAND IL MÈNE AU BON.
      *
      * `pivot.groupe` est un LIBELLÉ, et il ne nomme pas toujours un groupe

@@ -73,7 +73,7 @@ export function blocCandidat(entree, profil, dateDuBuild) {
     : "<p>Aucun mandat n'est publié sur cette fiche. La collecte des mandats locaux commence en 2020 :"
       + " une absence avant cette date n'est pas une absence de mandat.</p>";
   return `<h1>${ech(entree.nom)}</h1>`
-    + `<p>Candidature déclarée à l'élection présidentielle de 2027${entree.parti ? ` · ${ech(entree.parti)}` : ''}</p>`
+    + `<p>Candidature déclarée à l'élection présidentielle de 2027</p>`
     + corps
     + pied(dateDuBuild, 'les votes, les textes portés, les amendements et les interventions');
 }

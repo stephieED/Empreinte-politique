@@ -75,8 +75,14 @@ tolerance is **partitioned** — no input disarms another's check.
   **0**: an entry that is nobody's duplicate is still a deficit, and two entries the
   source *both* classifies are never reduced (§2 rule 2). A reduction is added only
   once it is **measured**; without that it is the unattributed margin #545 refuses.
+  **A named retraction applied after the merge is a reduction too (#1177)**: a pivot-only
+  retraction (`_retirer_…` beside `appliquer_mandats_anterieurs`) leaves the raw untouched,
+  so the guard reads its size as a deficit — the run of 08/10/2026 blocked on exactly the
+  98 entries #1177 retracts. **Whoever writes such a retraction declares it here in the
+  same lot**, by replaying the retraction's own function.
   → `docs/decisions/collecte-vs-publie-545.md`,
-  `docs/decisions/reduction-nommee-collecte-vs-publie-888.md`
+  `docs/decisions/reduction-nommee-collecte-vs-publie-888.md`,
+  `docs/decisions/garde-connait-le-retrait-1177.md`
 - **A progress file is not a profile — and `Path.glob` disagrees (#518, third incident).**
   `Path.glob("*.json")` **returns dotfiles**, unlike the `glob` module: every inventory of
   `raw_data/profiles/` skips `name.startswith(".")`, safe by construction since no slug

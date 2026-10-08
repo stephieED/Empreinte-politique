@@ -292,8 +292,10 @@ class Reduction:
     libelle: str
     #: Pourquoi la source publie ces entrées en double, en une phrase.
     justification: str
-    #: `(raw_dir, slug) -> nombre d'entrées écartées`.
-    compter: Callable[[Path, str], int]
+    #: `(raw_dir, slug, pivot_dir) -> nombre d'entrées écartées`. Le répertoire
+    #: pivot sert à la réduction qui dépend d'un fait que seul le pivot porte
+    #: (l'acteur publié, #1177).
+    compter: Callable[[Path, str, Path], int]
 
 
 #: Les seules clés dont `dedupliquer_appartenances` a besoin pour trancher :
@@ -336,7 +338,7 @@ def _crochet_appartenances(pairs: list[tuple[str, Any]]) -> Optional[dict[str, A
     return garde or None
 
 
-def compter_doublons_europeens(raw_dir: Path, slug: str) -> int:
+def compter_doublons_europeens(raw_dir: Path, slug: str, pivot_dir: Optional[Path] = None) -> int:
     """Combien d'appartenances européennes la normalisation écarte, pour ce profil.
 
     Rend 0 pour un profil sans bloc européen — l'écrasante majorité — et pour un
@@ -361,7 +363,88 @@ def compter_doublons_europeens(raw_dir: Path, slug: str) -> int:
     return len(ecartes)
 
 
-#: La seule réduction nommée du corpus à ce jour (#879, mesurée par #888).
+#: Les clés que `retirer_paroles_d_une_autre_personne` lit : l'identifiant du
+#: paragraphe dans le brut, l'acteur dans le pivot. Rien d'autre n'est gardé.
+CLES_PAROLES_RETIREES = frozenset({"interventions", "id", "id_syceron", "collecte", "identifiants", "an"})
+
+
+def _crochet_paroles(pairs: list[tuple[str, Any]]) -> Optional[dict[str, Any]]:
+    garde = {cle: valeur for cle, valeur in pairs if cle in CLES_PAROLES_RETIREES}
+    return garde or None
+
+
+def _lire_borne(chemin: Path) -> Optional[dict[str, Any]]:
+    try:
+        with chemin.open(encoding="utf-8") as flux:
+            racine = json.load(flux, object_pairs_hook=_crochet_paroles)
+    except (OSError, ValueError):
+        return None
+    return racine if isinstance(racine, dict) else None
+
+
+def compter_paroles_d_une_autre_personne(
+    raw_dir: Path, slug: str, pivot_dir: Optional[Path] = None
+) -> int:
+    """Combien de prises de parole du brut le retrait de #1177 écarte du pivot.
+
+    Rejoue `paroles_d_une_autre_personne.retirer_paroles_d_une_autre_personne`
+    — la fonction que `generate_all_profiles` applique après la fusion — sur
+    les interventions du brut et l'acteur que le pivot publie. Rend 0 sans
+    pivot, sans acteur ou sur un fichier illisible : l'appelant relève déjà ces
+    cas, et rien n'est alors retiré.
+    """
+    from paroles_d_une_autre_personne import (  # noqa: PLC0415
+        charger_table,
+        retirer_paroles_d_une_autre_personne,
+    )
+
+    if pivot_dir is None:
+        return 0
+    brut = _lire_borne(raw_dir / f"{slug}{SUFFIXE_BRUT}")
+    pivot = _lire_borne(pivot_dir / f"{slug}{SUFFIXE_PIVOT}")
+    if brut is None or pivot is None:
+        return 0
+    from merge_profile import dedoublonner_paragraphes_syceron  # noqa: PLC0415
+
+    interventions = [i for i in brut.get("interventions") or [] if isinstance(i, dict)]
+    # Dans l'ordre du pivot : le paragraphe publié deux fois n'y est plus qu'une
+    # fois, PUIS le retrait de #1177 s'applique à cette copie. Additionner les
+    # deux comptes retirerait deux fois un paragraphe à la fois doublé et retiré.
+    distinctes = dedoublonner_paragraphes_syceron(interventions, interventions, "id")
+    profil = {"identifiants": pivot.get("identifiants") or {}, "interventions": distinctes}
+    retirees = retirer_paroles_d_une_autre_personne(profil, _table_paroles(charger_table))
+    return (len(interventions) - len(distinctes)) + retirees
+
+
+_TABLE_PAROLES: Optional[dict[str, dict[str, Any]]] = None
+
+
+def _table_paroles(charger: Callable[[], dict[str, dict[str, Any]]]) -> dict[str, dict[str, Any]]:
+    global _TABLE_PAROLES
+    if _TABLE_PAROLES is None:
+        _TABLE_PAROLES = charger()
+    return _TABLE_PAROLES
+
+
+#: #1177 — la seconde réduction nommée : un retrait, et non un doublon.
+REDUCTION_PAROLES_D_UNE_AUTRE_PERSONNE = Reduction(
+    libelle="paragraphes publiés deux fois et paroles d'une autre personne (#1177)",
+    justification=(
+        "La source attribue à un député des paragraphes dont le libellé nomme une "
+        "autre personne ; `paroles_d_une_autre_personne` les retire du pivot après "
+        "la fusion (table `config/paroles_d_une_autre_personne.json`). Le brut les "
+        "garde parce qu'il dit ce que la source a rendu. Sans cette soustraction, "
+        "le run `37738655769` (08/10/2026) a bloqué sur 60 profils et 98 entrées, "
+        "exactement le retrait déclaré. Depuis le 08/10/2026, la même réduction "
+        "rejoue aussi `merge_profile.dedoublonner_paragraphes_syceron` : un "
+        "paragraphe que l'Assemblée republie sous un autre rang n'est publié "
+        "qu'une fois (643 copies sur 81 profils, mesuré sur main `3665078d3`)."
+    ),
+    compter=compter_paroles_d_une_autre_personne,
+)
+
+
+#: La première réduction nommée du corpus (#879, mesurée par #888).
 REDUCTION_DOUBLONS_EUROPEENS = Reduction(
     libelle="doublons du portail européen (#879)",
     justification=(
@@ -409,8 +492,9 @@ RELATIONS: tuple[Relation, ...] = (
             "`normalize_profil.py:448` mappe un pour un ; c'est la clé de "
             "FUSION pivot qui écrasait un débat entier sur une entrée. Mesuré "
             "avant correctif (`deb28a7`) : 7 767 collectées, 891 publiées. "
-            "Après (`3104e37`) : 16 242 des deux côtés, 0 profil en écart. Depuis #683 s'y ajoutent les interventions, questions et explications de vote du Parlement européen, sans contrepartie brute."
+            "Après (`3104e37`) : 16 242 des deux côtés, 0 profil en écart. Depuis #683 s'y ajoutent les interventions, questions et explications de vote du Parlement européen, sans contrepartie brute. **Moins le retrait de #1177** : les paroles qu'un libellé attribue à une autre personne."
         ),
+        reduction=REDUCTION_PAROLES_D_UNE_AUTRE_PERSONNE,
     ),
     Relation(
         champ_pivot="textes_portes",
@@ -825,7 +909,7 @@ def auditer(
                 # (#888). Jamais en dessous de 0 — une réduction qui dépasserait
                 # son propre chemin serait un défaut de ce module, pas un
                 # excédent du corpus.
-                collecte = max(0, collecte - relation.reduction.compter(raw_dir, slug))
+                collecte = max(0, collecte - relation.reduction.compter(raw_dir, slug, pivot_dir))
             publie = _longueur(releve_pivot, (relation.champ_pivot,))
             total = totaux[relation.champ_pivot]
             total.collecte += collecte

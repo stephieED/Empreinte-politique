@@ -60,9 +60,11 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/lignee_profile.py` | 1 |
 | `src/normalize_europarl.py` | 1 |
 | `src/normalize_senat.py` | 1 |
+| `src/paroles_d_une_autre_personne.py` | 1 |
 | `src/purge_interventions_heritees.py` | 1 |
 | `src/retrait_heritage_senat.py` | 1 |
 | `src/scrutins_dossiers_an.py` | 1 |
+| `src/scrutins_europeens.py` | 1 |
 | `src/scrutins_legislature.py` | 1 |
 | `src/senat_mandats.py` | 1 |
 | `src/textes_promulgues.py` | 1 |
@@ -140,11 +142,12 @@ Le mentionnent sans le gouverner : [`cle-fusion-interventions-540`](decisions/cl
 
 ## `src/audit_collecte_vs_publie.py`
 
-2 décision(s) le gouvernent ; le module en cite 1.
+3 décision(s) le gouvernent ; le module en cite 1.
 
 | Décision | Nomme |
 | --- | --- |
 | [« Collecté = publié » compte une tranche dérivée dans l'archive (#691, lot 3a)](decisions/audit-compte-les-tranches-derivees-691.md) | `compter_listes_profil_brut` |
+| [La garde « collecté = publié » soustrait le retrait des paroles d'une autre personne (#1177) (2026-10-08)](decisions/garde-connait-le-retrait-1177.md) | `REDUCTION_PAROLES_D_UNE_AUTRE_PERSONNE` |
 | [Le seuil de blob sort du critère de sortie, et les profils bruts se partitionnent par législature (#580) (2026-08-29)](decisions/partition-profils-legislature-580.md) | `compter_listes_profil_brut` |
 
 Le mentionnent sans le gouverner : [`cle-fusion-textes-portes-668`](decisions/cle-fusion-textes-portes-668.md), [`collecte-vs-publie-545`](decisions/collecte-vs-publie-545.md), [`defaut-collecte-vs-panne-562`](decisions/defaut-collecte-vs-panne-562.md), [`dossier-des-amendements-639`](decisions/dossier-des-amendements-639.md), [`populations-profils-portees-par-les-outils-630`](decisions/populations-profils-portees-par-les-outils-630.md), [`qualification-scrutins-et-cle-dossier-639`](decisions/qualification-scrutins-et-cle-dossier-639.md), [`reconstruction-tranches-depuis-archive-691`](decisions/reconstruction-tranches-depuis-archive-691.md), [`reduction-nommee-collecte-vs-publie-888`](decisions/reduction-nommee-collecte-vs-publie-888.md), [`tranches-derivees-lecteur-691`](decisions/tranches-derivees-lecteur-691.md).
@@ -362,7 +365,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 
 ## `src/candidate_profile.py`
 
-104 décision(s) le gouvernent ; le module en cite 14.
+105 décision(s) le gouvernent ; le module en cite 14.
 
 | Décision | Nomme |
 | --- | --- |
@@ -441,6 +444,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [La moitié de la parole de 2021 n'était pas indexée : un paragraphe sans identifiant d'orateur suit l'attribution de la source (#1177) (2026-10-05)](decisions/orateur-attribue-par-la-source-1177.md) | `SYCERON_VERSION_INDEX` |
 | [`_build_organe_index` : résoudre `organeRef` via `AMO30` (historique) sans filtrage par `codeType` (#353) (2026-08-16)](decisions/organe-index-organeref.md) | `AN_ACTEURS_HISTORIQUE_ZIP_URL`, `_ACTEURS_HISTORIQUE_ZIP_LOCK`, `_build_acteur_positions_hemicycle_index`, `_build_organe_index`, `_build_organe_positions_index`, `_ensure_acteurs_historique_zip_downloaded`, `fetch_positions_hemicycle_officielles` |
 | [Parallèle RAM entre l'exécution locale et les runners GitHub Actions hébergés, diagnostic ajouté (2026-08-17)](decisions/parallele-oom-local-runner-ci.md) | `build_profile`, `fetch_amendements_officiels` |
+| [Une prise de parole dont le libellé nomme une autre personne n'est pas attribuée (#1177) (2026-10-07)](decisions/parole-d-une-autre-personne-1177.md) | `SYCERON_VERSION_INDEX`, `_normaliser_orateur_id_syceron`, `libelle_designe_une_autre_personne` |
 | [Les archives figées se demandent en plage sans borne, la législature en cours garde ses segments (#1123) (2026-09-24)](decisions/plage-sans-borne-archives-figees-1123.md) | `AMENDEMENTS_DOWNLOAD_CHUNK_BYTES`, `AMENDEMENTS_DOWNLOAD_CHUNK_BYTES_FIGEES`, `_telecharger_flux` |
 | [La preuve d'une entrée de couverture peut citer un champ, une constante ou une issue (#1160) (2026-10-07)](decisions/preuve-de-couverture-reste-technique-1160.md) | `AN_SCRUTINS_LEGISLATURES` |
 | [Un code de nomenclature n'est pas une profession, et « sans activité professionnelle » n'en est pas une (#641) (2026-08-31)](decisions/profession-code-nomenclature-641.md) | `_profession_an` |
@@ -546,7 +550,7 @@ Le mentionnent sans le gouverner : [`absences-publiees-comme-faits-556-558-560`]
 
 ## `src/couverture_profil.py`
 
-9 décision(s) le gouvernent ; le module en cite 3.
+10 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -557,6 +561,7 @@ Le mentionnent sans le gouverner : [`absences-publiees-comme-faits-556-558-560`]
 | [`meta.warnings[]` déclare son destinataire, dans un jumeau typé et aligné (#642) (2026-08-31)](decisions/destinataire-avertissements-642.md) | `MOTIFS_DEFAUT_COLLECTE`, `MOTIFS_JAMAIS_PANNE`, `MOTIFS_PANNE` |
 | [Corriger là où un champ est jeté ne suffit pas : il faut trouver tous les endroits où l'objet est fabriqué (#901) (2026-09-14)](decisions/deux-fabriques-textes-portes-europeens-901.md) | `GroupeSuspendu` |
 | [Les dossiers du roster passent sous une case, le motif qui les écartait est tombé (#817)](decisions/dossiers-legislatifs-sous-le-formulaire-817.md) | `DECISIONS_ROSTER` |
+| [Un mandat de député européen sans prise de parole publiée se déclare, calculé à chaque run (#1163) (2026-10-08)](decisions/mandat-europeen-sans-parole-1163.md) | `mandats_europeens_sans_parole` |
 | [Le Parlement européen prend sa place sur `/couverture`, et cesse de déplacer les bornes de l'Assemblée — 11/09/2026 (#328)](decisions/parlement-europeen-sur-la-couverture-328.md) | `bornes_europeennes` |
 | [L'européen entre dans les listes que la fiche a déjà (#683, lot 2)](decisions/stockage-europeen-dans-les-listes-existantes-683.md) | `bornes_europeennes` |
 
@@ -960,7 +965,7 @@ Le mentionnent sans le gouverner : [`dila-et-amo30-en-jobs-1129`](decisions/dila
 | [Un mandat que la source devrait porter et ne porte pas se cite à la main, dans un champ à part (#859) (2026-10-06)](decisions/mandats-absents-de-la-source-859.md) | `BORNE_COUVERTURE_GOUVERNEMENT`, `appliquer_mandats_absents_de_la_source` |
 | [Les mandats antérieurs à la couverture de l'Assemblée entrent par une table relue (#860)](decisions/mandats-anterieurs-couverture-860.md) | `appliquer_mandats_anterieurs`, `charger_table` |
 
-Le mentionnent sans le gouverner : [`accueil-borne-par-institution-328`](decisions/accueil-borne-par-institution-328.md), [`borne-mandats-locaux-2020-922`](decisions/borne-mandats-locaux-2020-922.md), [`constat-absence-mandats-anterieurs-860`](decisions/constat-absence-mandats-anterieurs-860.md), [`correspondance-elus-rne-relue-922`](decisions/correspondance-elus-rne-relue-922.md), [`mention-mandats-anterieurs-fiche-candidat-860`](decisions/mention-mandats-anterieurs-fiche-candidat-860.md), [`repertoire-config-1057`](decisions/repertoire-config-1057.md), [`reponse-au-retour-ux-fiche-candidat`](decisions/reponse-au-retour-ux-fiche-candidat.md), [`sediment-nosdeputes-839`](decisions/sediment-nosdeputes-839.md).
+Le mentionnent sans le gouverner : [`accueil-borne-par-institution-328`](decisions/accueil-borne-par-institution-328.md), [`borne-mandats-locaux-2020-922`](decisions/borne-mandats-locaux-2020-922.md), [`constat-absence-mandats-anterieurs-860`](decisions/constat-absence-mandats-anterieurs-860.md), [`correspondance-elus-rne-relue-922`](decisions/correspondance-elus-rne-relue-922.md), [`mention-mandats-anterieurs-fiche-candidat-860`](decisions/mention-mandats-anterieurs-fiche-candidat-860.md), [`repertoire-config-1057`](decisions/repertoire-config-1057.md), [`reponse-au-retour-ux-fiche-candidat`](decisions/reponse-au-retour-ux-fiche-candidat.md), [`scrutins-europeens-publies-deux-fois-1011`](decisions/scrutins-europeens-publies-deux-fois-1011.md), [`sediment-nosdeputes-839`](decisions/sediment-nosdeputes-839.md).
 
 ## `src/mep_profile.py`
 
@@ -974,7 +979,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 
 ## `src/merge_profile.py`
 
-80 décision(s) le gouvernent ; le module en cite 5.
+81 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1025,6 +1030,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [Le référentiel type l'organe, il n'y a rien à interpréter (#730) (2026-09-04)](decisions/mandats-gouvernementaux-en-commission-730.md) | `merge_pivot_profile` |
 | [`merge-and-pivot` : garde-fou #390 hors `main`, entrées de configuration, budget de temps mur, permissions (#413) (2026-08-18)](decisions/merge-and-pivot-budget-permissions-413.md) | `merge_pivot_profile` |
 | [`overwrite_profiles` : écraser les profils sans purger le cache (2026-08-19)](decisions/overwrite-profiles-sans-purge-cache.md) | `merge_lists_by_key` |
+| [Un paragraphe de compte rendu republié sous un autre rang n'est publié qu'une fois (2026-10-08)](decisions/paragraphe-syceron-publie-une-fois.md) | `dedoublonner_paragraphes_syceron`, `merge_pivot_profile`, `merge_raw_profile` |
 | [Le `label` d'un mandat `MINISTERE` ne dit pas si c'est un maroquin (#474) (2026-08-20)](decisions/parlementaire-en-mission-nest-pas-ministre.md) | `preserve_stable_freshness_timestamps` |
 | [Le seuil de blob sort du critère de sortie, et les profils bruts se partitionnent par législature (#580) (2026-08-29)](decisions/partition-profils-legislature-580.md) | `merge_raw_dirs` |
 | [Un champ d'identité publié ne meurt plus sans un run à perte déclarée (#601) (2026-08-30)](decisions/permanence-champs-identite-601.md) | `fusionner_identite` |
@@ -1073,7 +1079,7 @@ Le mentionnent sans le gouverner : [`chambre-par-mandat-electif`](decisions/cham
 
 ## `src/normalize_parltrack_dumps.py`
 
-15 décision(s) le gouvernent ; le module en cite 3.
+16 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1087,6 +1093,7 @@ Le mentionnent sans le gouverner : [`chambre-par-mandat-electif`](decisions/cham
 | [Le versant AN passe en Licence Ouverte, et `meta.licence_donnees` devient un champ dérivé (#530, lot 6 de l'épic « une seule source AN ») (2026-08-27)](decisions/licence-lot-6-530.md) | `enrich_pivot_with_parltrack` |
 | [La projection d'un index est une fabrique, et elle jetait la référence de dossier (#901) (2026-09-14)](decisions/projection-index-activites-jette-le-dossier-901.md) | `_make_texte_porte`, `_make_texte_porte_activite` |
 | [Un profil de roster ne porte pas une liste que sa propre collecte déclare écartée — purge des 49 `textes_portes` résiduels (#747)](decisions/purge-textes-portes-roster-747.md) | `_make_texte_porte` |
+| [Un scrutin européen que ParlTrack publie deux fois n'est compté qu'une fois (#1011) (2026-10-07)](decisions/scrutins-europeens-publies-deux-fois-1011.md) | `_make_vote`, `retirer_votes_publies_deux_fois` |
 | [L'européen entre dans les listes que la fiche a déjà (#683, lot 2)](decisions/stockage-europeen-dans-les-listes-existantes-683.md) | `NATURES_VOTE_SUR_ENSEMBLE` |
 | [Le sujet nettoyé d'une question européenne n'atteignait pas l'entrée déjà publiée (#980) (2026-09-16)](decisions/sujet-europeen-sans-boutons-a-la-fusion-980.md) | `_make_intervention`, `enrich_pivot_with_parltrack` |
 | [L'empreinte thématique d'une fiche est celle de sa législature (#825)](decisions/tags-agreges-dans-la-periode-825.md) | `_make_intervention` |
@@ -1125,7 +1132,7 @@ Le mentionnent sans le gouverner : [`civilite-et-pcs-insee-659`](decisions/civil
 
 ## `src/parltrack_dumps.py`
 
-9 décision(s) le gouvernent ; le module en cite 3.
+10 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1134,12 +1141,23 @@ Le mentionnent sans le gouverner : [`civilite-et-pcs-insee-659`](decisions/civil
 | [Le lecteur des dumps ParlTrack n'avait jamais lu une ligne (#683, lot 1)](decisions/lecture-dumps-parltrack-683.md) | `DUMPS_LUS`, `DumpParltrackIllisible`, `_lire_dump`, `_perimetre`, `definir_perimetre_meps`, `iter_dump_zst` |
 | [La projection d'un index est une fabrique, et elle jetait la référence de dossier (#901) (2026-09-14)](decisions/projection-index-activites-jette-le-dossier-901.md) | `VERSION_SCHEMA_INDEX`, `build_activities_index` |
 | [Un profil de roster ne porte pas une liste que sa propre collecte déclare écartée — purge des 49 `textes_portes` résiduels (#747)](decisions/purge-textes-portes-roster-747.md) | `get_dossiers_for_mep` |
+| [Un scrutin européen que ParlTrack publie deux fois n'est compté qu'une fois (#1011) (2026-10-07)](decisions/scrutins-europeens-publies-deux-fois-1011.md) | `VERSION_SCHEMA_INDEX`, `build_votes_index`, `doublons_de_seance` |
 | [Le stade d'un dossier européen se publie dans sa propre nomenclature, jamais traduit en stade français (#901) (2026-09-13)](decisions/stade-procedural-europeen-901.md) | `VERSION_SCHEMA_INDEX`, `_empreinte_perimetre`, `build_dossiers_index` |
 | [L'européen entre dans les listes que la fiche a déjà (#683, lot 2)](decisions/stockage-europeen-dans-les-listes-existantes-683.md) | `definir_perimetre_meps` |
 | [Le sujet nettoyé d'une question européenne n'atteignait pas l'entrée déjà publiée (#980) (2026-09-16)](decisions/sujet-europeen-sans-boutons-a-la-fusion-980.md) | `build_activities_index` |
 | [Un titre européen perd ses boutons de téléchargement, et rien d'autre (#901) (2026-09-15)](decisions/titres-europeens-sans-boutons-901.md) | `VERSION_SCHEMA_INDEX`, `build_activities_index` |
 
 Le mentionnent sans le gouverner : [`investigation-sources-ue`](decisions/investigation-sources-ue.md), [`mandats-officiels-an-369`](decisions/mandats-officiels-an-369.md).
+
+## `src/paroles_d_une_autre_personne.py`
+
+1 décision(s) le gouvernent ; le module en cite 0.
+
+| Décision | Nomme |
+| --- | --- |
+| [La garde « collecté = publié » soustrait le retrait des paroles d'une autre personne (#1177) (2026-10-08)](decisions/garde-connait-le-retrait-1177.md) | `retirer_paroles_d_une_autre_personne` |
+
+Le mentionnent sans le gouverner : [`parole-d-une-autre-personne-1177`](decisions/parole-d-une-autre-personne-1177.md).
 
 ## `src/parse_syceron.py`
 
@@ -1297,13 +1315,14 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 
 ## `src/schema_pivot.py`
 
-60 décision(s) le gouvernent ; le module en cite 5.
+62 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
 | [Trois absences publiées comme des faits (#556, #558, #560) (2026-08-29)](decisions/absences-publiees-comme-faits-556-558-560.md) | `validate_profil` |
 | [La parole d'un gouvernement se compte dans la fenêtre de chaque membre, pas dans celle du gouvernement (#1020) (2026-09-18)](decisions/agregat-parole-gouvernement-1020.md) | `deriver_tags_thematiques` |
 | [La cascade des textes portés entre dans l'UI, et la section s'aligne sur la maquette (#328), 06/09/2026](decisions/alignement-section-propose-ui-328.md) | `KNOWN_STADES_PROCEDURAUX` |
+| [La borne des fonctions gouvernementales est posée sur chaque profil, sous sa propre clé (#859) (2026-10-08)](decisions/borne-fonctions-gouvernementales-859.md) | `BORNES_COUVERTURE_CORPUS`, `LISTES_COUVERTES`, `valider_couverture` |
 | [La cascade des textes portés passe au versant européen : une porte, et la nomenclature de la source (#901) (2026-09-16)](decisions/cascade-europeenne-une-porte-901.md) | `STADES_UE_NON_PUBLIES` |
 | [Un mandat dit quel référentiel a établi sa catégorie, et l'absence n'accuse personne (#718) (2026-09-03)](decisions/categorie-source-des-mandats-718.md) | `KNOWN_CATEGORIE_SOURCES` |
 | [`chambres` au niveau profil : une liste dérivée, et `chambre` qui n'en est plus que le premier élément (#493) (2026-08-20)](decisions/chambres-profil-derivees.md) | `ChambresDerivees`, `KNOWN_CHAMBRES`, `ORDRE_CHAMBRES`, `appliquer_chambres`, `deriver_chambres`, `validate_profil` |
@@ -1356,6 +1375,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 | [Un texte porté dit ce qu'il est devenu, et son sort ne se déduit jamais de son stade (#743) (2026-09-06)](decisions/sort-des-textes-portes-743.md) | `KNOWN_SORTS_TEXTE_PORTE`, `KNOWN_STADES_PROCEDURAUX` |
 | [Le stade d'un dossier européen se publie dans sa propre nomenclature, jamais traduit en stade français (#901) (2026-09-13)](decisions/stade-procedural-europeen-901.md) | `KNOWN_STADES_PROCEDURAUX` |
 | [L'européen entre dans les listes que la fiche a déjà (#683, lot 2)](decisions/stockage-europeen-dans-les-listes-existantes-683.md) | `COLLECTE_SANS_VERBATIM_SOURCE` |
+| [La fiche de groupe regroupe ses sujets de parole avec la clé de l'agrégat (#1177) (2026-10-08)](decisions/sujets-regroupes-fiche-de-groupe-1177.md) | `cle_tag_thematique` |
 | [L'empreinte thématique d'une fiche est celle de sa législature (#825)](decisions/tags-agreges-dans-la-periode-825.md) | `deriver_tags_thematiques`, `legislature_de_intervention` |
 | [Un singulier et un pluriel sont le même sujet : la clé groupe, la source publie (#1042) (2026-09-20)](decisions/tags-singulier-et-pluriel-1042.md) | `cle_tag_thematique`, `deriver_tags_thematiques`, `forme_publiee` |
 | [Taxonomie des mandats : exploitation des `typeOrgane` AN non mappés (#382, option « mixte ») (2026-08-17)](decisions/taxonomie-mandats-typeorgane-an.md) | `KNOWN_CATEGORIES`, `validate_profil` |
@@ -1373,6 +1393,12 @@ Le mentionnent sans le gouverner : [`gouvernement-premier-ministre-portefeuille`
 | [Un scrutin ne dit pas quel texte il tranche : le lien se lit à l'envers (#758), 07/09/2026](decisions/rattachement-scrutin-dossier-758.md) | `cle_depuis_uid` |
 
 ## `src/scrutins_europeens.py`
+
+1 décision(s) le gouvernent ; le module en cite 0.
+
+| Décision | Nomme |
+| --- | --- |
+| [Un scrutin européen que ParlTrack publie deux fois n'est compté qu'une fois (#1011) (2026-10-07)](decisions/scrutins-europeens-publies-deux-fois-1011.md) | `ordre_dans_la_seance` |
 
 Le mentionnent sans le gouverner : [`cascade-europeenne-une-porte-901`](decisions/cascade-europeenne-une-porte-901.md), [`index-reecrits-seulement-si-le-contenu-change-1075`](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md), [`index-scrutins-europeens-901`](decisions/index-scrutins-europeens-901.md), [`lecture-europeenne-themes-et-votes-901`](decisions/lecture-europeenne-themes-et-votes-901.md), [`pas-d-ecarts-groupe-europeens-901`](decisions/pas-d-ecarts-groupe-europeens-901.md).
 

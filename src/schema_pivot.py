@@ -1700,6 +1700,20 @@ LISTES_COUVERTES: tuple[str, ...] = (
     "mandats", "votes", "textes_portes", "interventions", "amendements",
 )
 
+#: #859 — LES BORNES DE CORPUS, à côté des listes métier et jamais parmi elles.
+#:
+#: Une borne qui ne dépend ni de la personne ni de sa collecte : la source ne
+#: publie AUCUN gouvernement avant le 17/05/2007, pour tout le monde. Elle vit
+#: dans `couverture` parce que c'est là que l'interface lit toutes les autres
+#: (`couverture-corpus.mjs`, `bornesPubliees()`), sous sa propre clé parce que
+#: les fonctions gouvernementales sont une partie de `mandats` : rangée dans
+#: `mandats`, la page retiendrait la plus ancienne des deux dates (2002) et
+#: celle de 2007 disparaîtrait.
+#:
+#: **Facultative**, à la différence des listes métier : un profil écrit avant
+#: ce lot ne la porte pas, et la dérivation la pose à la prochaine écriture.
+BORNES_COUVERTURE_CORPUS: tuple[str, ...] = ("fonctions_gouvernementales",)
+
 #: Les quatre états de couverture (#539). Nomenclature fermée, alignée sur celle
 #: déjà fermée pour les gouvernements (`couverture_dossiers.py`, #399) plutôt que
 #: réinventée.
@@ -2040,7 +2054,7 @@ def valider_couverture(couverture: Any) -> list[str]:
         return [f"'couverture' doit être un dict, reçu : {type(couverture).__name__}."]
 
     errors: list[str] = []
-    inconnues = sorted(set(couverture) - set(LISTES_COUVERTES))
+    inconnues = sorted(set(couverture) - set(LISTES_COUVERTES) - set(BORNES_COUVERTURE_CORPUS))
     if inconnues:
         errors.append(
             f"'couverture' porte des listes hors nomenclature : {inconnues!r}. "
@@ -2054,7 +2068,7 @@ def valider_couverture(couverture: Any) -> list[str]:
             "couvert » réintroduirait l'ambiguïté que le bloc retire."
         )
 
-    for liste in LISTES_COUVERTES:
+    for liste in LISTES_COUVERTES + BORNES_COUVERTURE_CORPUS:
         entrees = couverture.get(liste)
         if entrees is None:
             continue

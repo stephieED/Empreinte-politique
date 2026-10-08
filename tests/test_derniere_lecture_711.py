@@ -512,7 +512,7 @@ def test_la_regle_est_ecrite_dans_le_module_partage(regles):
 def test_le_regroupement_part_de_la_selection_de_672(regles):
     """`grouperLecturesParTexte` REGROUPE ce que #672 sélectionne ; il ne
     redéfinit pas ce qu'est un vote sur l'ensemble d'un texte."""
-    corps = _corps(regles, r"grouperLecturesParTexte\(scrutins\)")
+    corps = _corps(regles, r"grouperLecturesParTexte\(scrutins, dossiers = null\)")
     assert "selectWholeTextVotes(" in corps, (
         "le regroupement doit partir de `selectWholeTextVotes` (#672) : une "
         "seconde définition de « vote sur l'ensemble d'un texte » est "
@@ -760,7 +760,7 @@ def test_le_decompte_lit_le_corpus_des_scrutins_pas_les_votes_du_profil():
         "`votesDuProfil` doit recevoir le CORPUS des scrutins : la dernière "
         "lecture ne se déduit pas des seuls votes de la personne (#711)"
     )
-    assert "selectDerniereLectureVotes(scrutinsCorpus)" in corps.group(2), (
+    assert "selectDerniereLectureVotes(scrutinsCorpus, scrutinsDossiers)" in corps.group(2), (
         "la sélection vient du module partagé (`utils/lecture.js`) et n'est pas "
         "réécrite dans la fiche candidat"
     )

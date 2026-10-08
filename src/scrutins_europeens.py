@@ -57,6 +57,7 @@ Usage :
 from __future__ import annotations
 
 import argparse
+import re
 import json
 import sys
 import time
@@ -90,6 +91,27 @@ class DumpVotesIndisponible(RuntimeError):
     """Le dump n'a pas pu être obtenu. Levée, jamais avalée : un index vide se
     lirait comme « aucun scrutin européen », et c'est la confusion que #510 a
     payée."""
+
+
+_RANG_COMPOSITE = re.compile(r"-(\d+)\.?\s*$")
+
+
+def ordre_dans_la_seance(voteid: Any) -> Optional[int]:
+    """Un entier qui ordonne les scrutins d'un même jour (#1011), ou `None`.
+
+    Le `voteid` entier du Parlement croît avec l'ordre des votes ; le composite
+    (`"2018-12-12 00:00:00-13."`) porte son rang dans la séance en dernier.
+    Les deux ne se comparent qu'entre scrutins de la même forme — ce qui est le
+    cas d'un jour donné depuis que la copie composite d'un scrutin publié deux
+    fois est écartée. Rendu pour que l'interface n'ait plus à relire la chaîne.
+    """
+    if isinstance(voteid, int):
+        return voteid
+    texte = str(voteid or "")
+    if texte.isdigit():
+        return int(texte)
+    rang = _RANG_COMPOSITE.search(texte)
+    return int(rang.group(1)) if rang else None
 
 
 def identifiant(voteid: Any) -> str:
@@ -186,6 +208,7 @@ def construire(
         entrees.append({
             "id": identifiant(voteid),
             "numero_scrutin": voteid,
+            "ordre_dans_la_seance": ordre_dans_la_seance(voteid),
             "date": (scrutin.get("ts") or "")[:10] or None,
             "texte": scrutin.get("title") or None,
             "reference_dossier": _reference(scrutin),
