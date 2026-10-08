@@ -56,7 +56,7 @@ _LITTERAL_PLAT = re.compile(r'"raw_data/([\w./-]+)"?')
 #: de correspondance, et il est au budget le plus serré du premier étage.
 JOBS_AVEC_LISTE_BLANCHE = ("rafraichir-candidats", "prepare-an-matrix", "extract-an",
                            "extract-actes-jo", "extract-gouvernements",
-                           "extract-amendements-an")
+                           "extract-amendements-an", "extract-articles-votes")
 
 
 def _tranche_du_job(job: str) -> str:
@@ -335,6 +335,14 @@ def test_le_job_des_gouvernements_ne_prend_que_ce_qu_il_ecrit():
         "ce job ne lit pas le corpus pivot — zéro occurrence de `pivot_data` "
         "dans gouvernements_amo30.py, c'est la raison même de l'avoir sorti"
     )
+
+
+def test_le_job_des_articles_votes_ne_prend_que_ce_qu_il_ecrit():
+    """#1264 : il lit ses archives au réseau et n'écrit qu'un fichier du pivot."""
+    tranche = _tranche_du_job("extract-articles-votes")
+    assert "src" in tranche
+    assert "pivot_data/articles_votes.json" in tranche
+    assert "raw_data" not in tranche
 
 
 def test_le_job_des_amendements_garde_ses_deux_replis(tmp_path):

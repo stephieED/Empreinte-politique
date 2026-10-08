@@ -78,6 +78,34 @@ See `AN_SCRUTINS_ZIP_NAME` / `_parse_scrutins_zip` / `fetch_votes_officiels` in
 `src/candidate_profile.py`, and
 `docs/decisions/votes-multi-legislature.md`.
 
+### What a scrutin says about its text (measured 2026-10-08, #1264)
+
+`objet.referenceLegislative` is null everywhere, but two other fields link a
+scrutin to its file, and neither was read before #1264:
+
+- `seanceRef` — the sitting (`RUANR5L17S2027IDS30920`). Every
+  `AN?-DEBATS-SEANCE` act of a legislative file carries the same uid as
+  `reunionRef`, and the sitting's agenda (Agenda archive, below) lists every file
+  discussed in it. This is the link `src/articles_votes.py` uses.
+- `objet.dossierLegislatif.dossierRef` — the file itself, **on legislature 17
+  only**: 2 783 of 8 609 scrutins (275 of the 902 article scrutins). Empty on 15
+  and 16.
+
+The text of an article: `https://www.assemblee-nationale.fr/dyn/opendata/<uid>.html`,
+next to the JSON notice (`dyn/opendata/<uid>.json`). Its paragraphs carry
+structure classes: `assnat4Titre*`, `assnat5Chapitre*`, `assnat6Section*`,
+`assnat9ArticleNum`, `assnatLoiTexte`. Measured on 32 texts (8 per legislature,
+14 to 17): **none on 14** (404), 23 of 24 marked up on 15-17, only 5 with titles or
+chapters. Finance bills use another template (`assnatFPF*`, `assnatFAR*`), not
+read yet. The article number may carry a shuttle mention (« 4 (nouveau) »), and a
+committee text may group articles (« Articles 1er à 3 »). The Word and PDF
+versions live on `docparl.assemblee-nationale.fr`, which did not resolve from the
+work machine on 2026-10-08.
+
+**Transfers get cut.** The 15th's scrutins and agenda archives were cut mid-way
+several times on 2026-10-08 (`curl: (18) transfer closed`). The server does not
+always honour `Range`, so every download is checked as a readable zip.
+
 ## Amendments
 
 | Legislature | Dataset | File | Approx. size |
@@ -636,13 +664,16 @@ défaut : leurs 205 et 179 paragraphes dans ce cas n'ont pas de `<nom>` non plus
 Mesuré le 05/10/2026 sur les archives en cache.
 
 
-## Agenda / meetings (committees) - low priority
+## Agenda / meetings
 
-`.../17/vp/reunions/Agenda.json.zip` (~7.8 MB).
+`.../17/vp/reunions/Agenda.json.zip` (~8.3 MB), `.../16/vp/reunions/Agenda.json.zip`
+(~7.9 MB), `.../15/vp/reunions/Agenda_XV.json.zip` (~38 MB) — measured 2026-10-08.
 
-Describes committee/plenary meetings (location, agenda, refs), but data is
-organized by meeting/body rather than directly by `acteurRef`. Useful for
-procedural chronology, not yet implemented.
+**Collected since #1264**, by `src/articles_votes.py`, for one thing only: a
+sitting's agenda (`reunion.ODJ.pointsODJ.pointODJ[].dossiersLegislatifsRefs.dossierRef`)
+lists **every** file discussed in it, including those whose own sitting act does
+not carry the sitting's uid. It is the complete candidate list when a scrutin is
+attached to its text. Organized by meeting, never by `acteurRef`.
 
 ## Extra-parliamentary bodies (CSV) - low priority
 

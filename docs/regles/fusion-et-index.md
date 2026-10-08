@@ -203,9 +203,14 @@ les charger, ni à les faire grossir. -->
   only if no run ever read the list. A failure (`panne`) still beats yesterday's
   `couvert` — that rule of #602 holds for whatever asked the source. The same
   principle at the raw level: **the roster job does not write `collecte_ecartee` for
-  a declared candidate** (`theme_seul_refuse`), because its declaration, merged after
-  the AN one (`--dirs an ue roster senat`), became the profile's.
-  → `docs/decisions/liste-sautee-garde-son-constat-1160.md`
+  a declared candidate** (`theme_seul_refuse`), and neither does the European job
+  (`--source ue`), because their declaration, merged after the AN one
+  (`--dirs an ue roster senat`), became the profile's. **The converse, compared source
+  by source**: at an equal date, a writer that read a source the old one declared
+  `par_decision` wins, as long as it loses no other source — a list also carries
+  European entries, and ranked over the whole list the two tied.
+  → `docs/decisions/liste-sautee-garde-son-constat-1160.md`,
+  `docs/decisions/couverture-a-date-egale-source-par-source-1160.md`
 
 - **A European ballot that ParlTrack publishes twice is counted once (#1011).** The
   votes index skips the composite copy (`doublons_de_seance`: same day, same second,

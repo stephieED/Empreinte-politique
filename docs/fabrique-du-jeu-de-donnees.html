@@ -387,6 +387,7 @@ svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
     rech:{titre:"rechauffer-le-portail-europeen", lit:"Le portail du Parlement européen et le dump des dossiers", fait:"Vingt minutes de réseau sorties du chemin critique : la passe des domaines EuroVoc pesait 21,5 des 52,5 minutes de la fusion. Ce n'est pas un calcul, c'est un budget de requêtes.", ecrit:"L'artifact <code>portail-europeen-chaud</code> — le cache des réponses", garde:"Son échec ne bloque pas le run : la fusion repart du cache qu'elle a."},
     ean:{titre:"extract-an × 32", lit:"L'open data de l'Assemblée, un shard par candidat", fait:"Collecte le volet français : identité, mandats, votes, amendements, textes portés, interventions.", ecrit:"L'artifact <code>raw-profiles-an</code>", garde:"Il ne dépend pas du SUCCÈS de l'index d'amendements : celui-ci arrive en <code>continue-on-error</code>, avec repli sur le cache."},
     erg:{titre:"extract-roster-groupes × 8", lit:"La composition réelle des groupes (~750 membres)", fait:"La même chaîne qu'<code>extract-an</code>, mais pilotée par le roster plutôt que par la liste éditoriale, et en <b>mode léger</b>.", ecrit:"L'artifact <code>raw-profiles-roster</code> (217 Mo)", garde:"Ces profils alimentent les agrégats de groupe et de gouvernement ; leur bloc d'identité n'est jamais lu."},
+    art:{titre:"extract-articles-votes", lit:"Les archives Scrutins, Dossiers législatifs et Agenda des XVe-XVIIe, et le texte HTML de chaque texte discuté (<code>dyn/opendata/&lt;uid&gt;.html</code>)", fait:"Rattache chaque scrutin sur un article à son texte par la séance (<code>seanceRef</code> → acte de séance du dossier → texte discuté), puis lit le titre, le chapitre et le début de l'article.", ecrit:"L'artifact <code>articles-votes</code> : <code>pivot_data/articles_votes.json</code>", garde:"Une archive illisible arrête l'écriture : le fichier du run précédent reste. Un scrutin non rattaché est publié avec son motif (#1264)."},
     jo:{titre:"extract-actes-jo", lit:"Les livraisons quotidiennes de la DILA (<code>echanges.dila.gouv.fr</code>), et les mois déjà publiés", fait:"Les décrets, arrêtés et ordonnances parus depuis 2007, un fichier par mois de parution ; relève en chemin la table <code>numéro de loi → JORFTEXT</code>.", ecrit:"L'artifact <code>actes-jo</code> : les seuls fichiers modifiés (0 ou 2 mois par run), et <code>lois_jorf.json</code>", garde:"Sorti de la fusion par #1129 : les textes promulgués y lisaient la table du run <b>précédent</b>. En amont, elle arrive fraîche."},
     amo:{titre:"extract-gouvernements", lit:"L'archive AMO30 de l'Assemblée", fait:"Liste les 17 gouvernements depuis 2007. Ne lit pas une ligne du corpus pivot, donc n'a pas à attendre la fusion (#1129).", ecrit:"L'artifact <code>gouvernements-amo30</code> (6 Ko) : <code>raw_data/gouvernements_reels.json</code>", garde:"Une archive illisible lève avant toute écriture : la liste committée reste, et la fusion travaille dessus."},
     mrg:{titre:"merge-and-pivot", lit:"Tous les artifacts du run", fait:"Le seul job qui écrit dans le dépôt. Dans l'ordre : contrôle du transport des artifacts, <b>fusion additive</b> des profils bruts, passage au format pivot, recomposition des agrégats — groupes, lignées, gouvernements —, puis le portail qualité.", ecrit:"<code>pivot_data/</code>, et le commit du run", garde:"Le portail qualité <b>bloque le commit</b> : ce qui ne passe pas n'est pas publié."}
@@ -438,6 +439,7 @@ svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
     {id:"prr", c:1, k:"parl",  t:"prepare-roster-matrix", s:"la matrice des groupes"},
     {id:"jo",  c:1, k:"gouv",  t:"extract-actes-jo", s:"DILA · actes, lois"},
     {id:"amo", c:1, k:"gouv",  t:"extract-gouvernements", s:"AMO30 · 17 gouvernements"},
+    {id:"art", c:1, k:"parl",  t:"extract-articles-votes", s:"articles soumis au vote"},
     {id:"pra", c:2, k:"parl",  t:"prepare-an-matrix", s:"la matrice des profils"},
     {id:"rech",c:2, k:"pe",    t:"rechauffer-le-portail", s:"cache du portail européen"},
     {id:"ean", c:3, k:"parl",  t:"extract-an × 32", s:"un shard par candidat"},
@@ -453,11 +455,11 @@ svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
   ];
   var LIENS = [
     ["epi","cand","encre"],["epi","amd","encre"],["epi","ue","encre"],["epi","plt","encre"],
-    ["epi","sen","encre"],["epi","loc","encre"],["epi","prr","encre"],["epi","jo","encre"],["epi","amo","encre"],["epi","p1","encre"],
+    ["epi","sen","encre"],["epi","loc","encre"],["epi","prr","encre"],["epi","jo","encre"],["epi","amo","encre"],["epi","art","encre"],["epi","p1","encre"],
     ["cand","pra","neutre"],["plt","rech","pe"],["amd","ean","parl"],["pra","ean","parl"],
     ["ean","erg","parl"],["amd","erg","parl"],["ue","erg","pe"],["plt","erg","pe"],["prr","erg","parl"],
     ["ean","p2","parl"],["erg","p2","parl"],["ue","p2","pe"],["sen","p2","senat"],["loc","p2","neutre"],
-    ["plt","p2","pe"],["rech","p2","pe"],["cand","p2","neutre"],["jo","p2","gouv"],["amo","p2","gouv"],
+    ["plt","p2","pe"],["rech","p2","pe"],["cand","p2","neutre"],["jo","p2","gouv"],["amo","p2","gouv"],["art","p2","parl"],
     ["amd","p4","parl"],["prr","p4","parl"]
   ];
   var H = 42, TOP = 44, HAUT = 600;
@@ -690,10 +692,10 @@ svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
     "prepare-roster-matrix":"la composition des groupes","extract-senat":"appartenances seulement","extract-parltrack":"dumps européens",
     "extract-ue-officiel":"portail du Parlement européen","extract-mandats-locaux":"répertoire national des élus","rechauffer-le-portail-europeen":"cache du portail",
     "extract-amendements-an":"index des amendements","extract-an":"shards, un par candidat","extract-roster-groupes":"shards, membres de groupe",
-    "merge-and-pivot":"fusion, contrôles, commit, push","extract-actes-jo":"actes du Journal officiel","extract-gouvernements":"les gouvernements, depuis AMO30"};
+    "merge-and-pivot":"fusion, contrôles, commit, push","extract-actes-jo":"actes du Journal officiel","extract-gouvernements":"les gouvernements, depuis AMO30","extract-articles-votes":"les articles soumis au vote"};
   var TEINTE = {"extract-senat":"--senat","extract-parltrack":"--pe","extract-ue-officiel":"--pe","rechauffer-le-portail-europeen":"--pe",
     "extract-mandats-locaux":"--neutre","extract-amendements-an":"--parl","extract-an":"--parl","extract-roster-groupes":"--parl",
-    "extract-actes-jo":"--gouv","extract-gouvernements":"--gouv"};
+    "extract-actes-jo":"--gouv","extract-gouvernements":"--gouv","extract-articles-votes":"--parl"};
   /* Ce que chaque option ajoute, quand l'écart dépasse le bruit : entre ces
      trois runs, les jobs qui ne lisent aucune option varient déjà jusqu'à
      2,4 min. */

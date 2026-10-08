@@ -33,12 +33,13 @@ date qu'elle porte : un job ajouté ici ne s'y ajoute pas seul.
 | `extract-mandats-locaux` | `epingler-le-code` | le Répertoire national des élus et les sortants 2026, par `tabular-api.data.gouv.fr` (#922) | artifact `raw-profiles-mandats-locaux`, **aucun cache** |
 | `extract-actes-jo` | `epingler-le-code` | les livraisons quotidiennes de `echanges.dila.gouv.fr` (#1029 voie 1) | artifact `actes-jo` — **seulement les fichiers que le run change**, `pivot_data/actes_reglementaires/<AAAA-MM>.json` des mois relus et `raw_data/lois_jorf.json` |
 | `extract-gouvernements` | `epingler-le-code` | l'archive AMO30 | artifact `gouvernements-amo30` : `raw_data/gouvernements_reels.json` (6 Ko) |
-| `merge-and-pivot` | `extract-an`, `extract-ue-officiel`, `extract-parltrack`, `extract-roster-groupes`, `extract-senat`, `extract-actes-jo`, `extract-gouvernements` | tous les artifacts ci-dessus, et les **quatre archives de dossiers** (XIV à XVII, deux formats depuis #1019) | le contrôle du transport, la fusion, les deux passes pivot, les fiches de groupe, de lignée et **de gouvernement** (rattachement par `organe_ref`, #996 lot 4), les fiches de gouvernement à partir de la liste que `extract-gouvernements` a collectée, les quatre contrôles, le commit et le push |
+| `extract-articles-votes` | `epingler-le-code` | les archives Scrutins, Dossiers législatifs et Agenda des XVe-XVIIe, et le texte HTML de chaque texte discuté (#1264) | artifact `articles-votes` — `pivot_data/articles_votes.json` |
+| `merge-and-pivot` | `extract-an`, `extract-ue-officiel`, `extract-parltrack`, `extract-roster-groupes`, `extract-senat`, `extract-actes-jo`, `extract-gouvernements`, `extract-articles-votes` | tous les artifacts ci-dessus, et les **quatre archives de dossiers** (XIV à XVII, deux formats depuis #1019) | le contrôle du transport, la fusion, les deux passes pivot, les fiches de groupe, de lignée et **de gouvernement** (rattachement par `organe_ref`, #996 lot 4), les fiches de gouvernement à partir de la liste que `extract-gouvernements` a collectée, les quatre contrôles, le commit et le push |
 
 Neuf jobs ne dépendent que de l'épinglage du code et démarrent ensemble
 (`rafraichir-candidats` en fait partie depuis #757, `extract-senat` depuis #885,
 `extract-mandats-locaux` depuis #922, `extract-actes-jo` et
-`extract-gouvernements` depuis #1129 ; `prepare-an-matrix` attend le premier). Le **chemin critique réel,
+`extract-gouvernements` depuis #1129, `extract-articles-votes` depuis #1264 ; `prepare-an-matrix` attend le premier). Le **chemin critique réel,
 ce sont les deux matrices** (`extract-an` puis la matrice roster), pas le nombre
 de jobs. `extract-an` n'est **plus en série à tous les runs depuis #1137** : il
 l'est au premier run de la semaine, quand le cache AN est froid et que ses
@@ -559,6 +560,39 @@ frais fixes de `actions/checkout`, pas le temps de calcul
 **Ce job a de la profondeur** — rollout, régénération de l'existant, les six
 combinaisons des deux axes du formulaire, les trois codes de sortie du roster :
 → [`extract-roster-groupes.md`](./extract-roster-groupes.md)
+
+#### `extract-articles-votes`
+
+```
+python3 src/articles_votes.py --telecharger --out pivot_data/articles_votes.json
+```
+
+Sur quoi porte un article soumis au vote (#1264). Pour chaque scrutin dont le
+libellé commence par « l'article », le module retrouve le texte discuté et y lit
+le titre, le chapitre, la section et le début de l'article. Module unique :
+`articles_votes.py`.
+
+**Le rattachement ne passe que par des identifiants de la source.** Un scrutin
+ne porte aucune référence législative exploitable, mais il porte sa séance
+(`seanceRef`). Chaque acte « discussion en séance publique » d'un dossier porte la
+sienne (`reunionRef`), et l'ordre du jour de la séance (archive Agenda) nomme
+**tous** les dossiers discutés. Le texte retenu est celui que la commission a
+adopté dans cette lecture, à défaut le texte déposé. Quand plusieurs dossiers
+sont discutés dans la séance, on retient le seul dont le texte porte l'article,
+à condition que **toutes** les versions des autres aient été lues. Aucune
+ressemblance de titre (`regrouper-nest-pas-joindre-639`).
+
+**Ce qu'il lit, et ce qu'il garde en cache.** Les archives des XVe et XVIe sont
+téléchargées une fois, sous une clé fixe (`public-data-cache-articles-votes-sources-clos-v1`),
+et celles de la XVIIe à chaque run (≈ 46 Mo). Le texte HTML de chaque texte
+(`dyn/opendata/<uid>.html`) est réduit à sa structure : seule celle-ci est mise
+en cache (`.cache/textes_an_structure/v1/`, clé par run restaurée par préfixe).
+Mesuré le 08/10/2026 : 252 textes, 199 Mo en HTML, 25 Mo en structure ; 3 min 36 s
+pour un run dont les textes sont en cache.
+
+**Ce qu'il refuse.** Une archive illisible arrête l'écriture (code 1,
+`ARTICLES_VOTES_SOURCE_INDISPONIBLE`). Le job est `continue-on-error`, et le
+fichier commité du run précédent reste.
 
 #### `extract-actes-jo`
 

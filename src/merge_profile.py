@@ -2780,6 +2780,16 @@ def _rang_interrogation(entrees: Any) -> int:
     return rang
 
 
+def _rangs_par_source(entrees: Any) -> dict[str, int]:
+    """`source → rang d'interrogation` d'une liste (`_rang_interrogation`, par source)."""
+    rangs: dict[str, int] = {}
+    for entree in entrees if isinstance(entrees, list) else ():
+        if isinstance(entree, dict):
+            source = entree.get("source") or _SOURCE_IMPLICITE
+            rangs[source] = max(rangs.get(source, 0), _rang_interrogation([entree]))
+    return rangs
+
+
 #: Ce que porte une entrée de couverture qui ne nomme pas sa source : la
 #: couverture de l'Assemblée nationale. C'est le cas de 100 % des entrées
 #: écrites avant #683, et l'absence de clé le dit sans backfill.
@@ -2927,6 +2937,22 @@ def fusionner_couverture(
         #    une panne d'aujourd'hui l'emporte encore sur un `couvert` d'hier.
         if _rang_interrogation(neuf) == 0 and _rang_interrogation(ancien) > 0:
             fusionne[liste] = ancien
+            continue
+
+        # 1ter (#1160). LA RÉCIPROQUE, SOURCE PAR SOURCE : un écrivain qui a lu
+        #    une source que l'ancien déclarait « rien demandé » l'emporte, même
+        #    à date égale, pourvu qu'il ne descende sur aucune autre source.
+        #    Le rang se compare PAR SOURCE, parce qu'une liste porte aussi des
+        #    entrées européennes : sur toute la liste, l'ancien de Maurel
+        #    (`non_collecte`/`par_decision` pour l'AN, `couvert` pour le PE)
+        #    égalait le neuf (`couvert` partout), la règle 4 ne tranchait pas,
+        #    et le « non collecté » survivait à un run qui avait lu la liste.
+        #    Mesuré au run `37823704331` (08/10/2026), second run du jour :
+        #    Maurel, Mélenchon et Le Pen.
+        rangs_neuf, rangs_ancien = _rangs_par_source(neuf), _rangs_par_source(ancien)
+        if any(rangs_ancien.get(source, 0) == 0 < rang for source, rang in rangs_neuf.items()) \
+                and all(rangs_neuf.get(source, 0) >= rang for source, rang in rangs_ancien.items()):
+            fusionne[liste] = neuf
             continue
 
         constat_neuf, constat_ancien = _dernier_constat(neuf), _dernier_constat(ancien)

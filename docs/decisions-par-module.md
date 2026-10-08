@@ -137,6 +137,10 @@ Le mentionnent sans le gouverner : [`fiche-de-lignee-836`](decisions/fiche-de-li
 
 Le mentionnent sans le gouverner : [`derivation-des-groupes-depuis-amo30-1168`](decisions/derivation-des-groupes-depuis-amo30-1168.md), [`periodes-jetees-par-le-filtre-809`](decisions/periodes-jetees-par-le-filtre-809.md).
 
+## `src/articles_votes.py`
+
+Le mentionnent sans le gouverner : [`articles-votes-par-la-seance-1264`](decisions/articles-votes-par-la-seance-1264.md).
+
 ## `src/audit_collecte_non_publiee.py`
 
 Le mentionnent sans le gouverner : [`cle-fusion-interventions-540`](decisions/cle-fusion-interventions-540.md), [`cloisonnement-branche-roster-524`](decisions/cloisonnement-branche-roster-524.md), [`collecte-non-publiee`](decisions/collecte-non-publiee.md), [`collecte-vs-publie-545`](decisions/collecte-vs-publie-545.md), [`extraction-groupe-suspendue-516`](decisions/extraction-groupe-suspendue-516.md), [`fiches-groupe-17e-legislature-700`](decisions/fiches-groupe-17e-legislature-700.md), [`partition-profils-legislature-580`](decisions/partition-profils-legislature-580.md), [`roster-unique-par-run-518`](decisions/roster-unique-par-run-518.md).
@@ -987,7 +991,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 
 ## `src/merge_profile.py`
 
-82 décision(s) le gouvernent ; le module en cite 5.
+83 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1006,6 +1010,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [Un constat « aucune donnée » ne survit pas à l'arrivée de données (#683, lot 3)](decisions/constats-parltrack-perimes-683.md) | `FAMILLES_WARNINGS`, `clean_stale_interventions`, `clean_stale_textes_portes`, `merge_pivot_profile`, `retirer_constats_parltrack_perimes`, `unir_warnings` |
 | [Un artifact ne porte plus que les champs que son job a collectés (#997) (2026-09-19)](decisions/contribution-par-champs-997.md) | `CHAMPS_PROTEGES_DU_VIDE`, `merge_raw_dirs`, `preserver_collectes_non_vides` |
 | [La corroboration porte sur les chambres publiées, pas sur la complétude des mandats — et la condition de retrait de `chambre` devient atteignable (#486) (2026-08-30)](decisions/corroboration-chambres-publiees-486.md) | `FAMILLES_WARNINGS`, `_prefer_non_empty`, `backfill_mandat_chambre`, `merge_pivot_profile` |
+| [À date égale, celui qui a lu la source l'emporte, comparé source par source (#1160) (2026-10-08)](decisions/couverture-a-date-egale-source-par-source-1160.md) | `_rangs_par_source`, `fusionner_couverture` |
 | [La couverture européenne n'atteignait pas la fiche (#683, lot 4)](decisions/couverture-europeenne-tranchee-683.md) | `retirer_constats_parltrack_perimes` |
 | [Ce qu'une liste vide veut dire : les quatre états de couverture (#539) (2026-08-28)](decisions/couverture-listes-539.md) | `_prefer_non_empty` |
 | [La couverture se remplace à la maille où #539 la publie, et un cas non tranchable se déclare (#602) (2026-08-30)](decisions/couverture-remplacee-par-liste-602.md) | `FAMILLES_WARNINGS`, `_prefer_non_empty`, `fusionner_couverture` |

@@ -3267,8 +3267,94 @@ jobs:
           path: raw_data/gouvernements_reels.json
           if-no-files-found: warn
 
+  extract-articles-votes:
+    # #1264 — SUR QUOI PORTE UN ARTICLE SOUMIS AU VOTE.
+    #
+    #   entrée   : src/articles_votes.py --telecharger
+    #   lit      : les archives Scrutins, Dossiers législatifs et Agenda des XVe-XVIIe
+    #              (open data AN), et le texte HTML de chaque texte discuté
+    #              (`dyn/opendata/<uid>.html`)
+    #   produit  : pivot_data/articles_votes.json (artifact `articles-votes`)
+    #
+    # Job réseau à part, comme les actes du Journal officiel : il ne rallonge pas
+    # le chemin critique, et `continue-on-error` — s'il échoue, le fichier commité
+    # du run précédent reste. Une archive illisible arrête l'écriture (code 1),
+    # jamais un fichier amputé. Les archives des législatures closes et les
+    # structures de texte lues sont gardées en cache ; la 17e se relit à chaque run.
+    needs: epingler-le-code
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            .gitignore
+            requirements.txt
+            scripts
+            src
+            pivot_data/articles_votes.json
+
+      - uses: ./.github/actions/code-du-prive
+        with:
+          sha: ${{ needs.epingler-le-code.outputs.sha }}
+          token: ${{ secrets.SRC_READ_TOKEN }}
+
+      - uses: ./.github/actions/bootstrap-extraction
+
+      # Les archives des XVe et XVIe ne changent plus : une clé fixe suffit.
+      - uses: actions/cache/restore@v5
+        id: cache_articles_sources
+        with:
+          path: |
+            .cache/articles_votes/15
+            .cache/articles_votes/16
+          key: public-data-cache-articles-votes-sources-clos-v1
+
+      # Les structures de texte : un texte publié ne change plus. La clé change
+      # à chaque run pour que les textes lus s'ajoutent (même motif que le cache
+      # des documents européens, #827), et se restaure par préfixe.
+      - uses: actions/cache/restore@v5
+        with:
+          path: .cache/textes_an_structure
+          key: public-data-cache-textes-an-structure-v1-${{ github.run_id }}
+          restore-keys: |
+            public-data-cache-textes-an-structure-v1-
+
+      - name: Rattacher les scrutins d'article à leur texte (#1264)
+        run: python3 src/articles_votes.py --telecharger --out pivot_data/articles_votes.json
+
+      - name: Sauvegarde des archives closes
+        if: ${{ always() && steps.cache_articles_sources.outputs.cache-hit != 'true' && hashFiles('.cache/articles_votes/16/*') != '' }}
+        continue-on-error: true
+        uses: actions/cache/save@v5
+        with:
+          path: |
+            .cache/articles_votes/15
+            .cache/articles_votes/16
+          key: public-data-cache-articles-votes-sources-clos-v1
+
+      - name: Sauvegarde des structures de texte
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v5
+        with:
+          path: .cache/textes_an_structure
+          key: public-data-cache-textes-an-structure-v1-${{ github.run_id }}
+
+      - name: Upload artifact articles votés
+        uses: actions/upload-artifact@v6
+        with:
+          name: articles-votes
+          path: pivot_data/articles_votes.json
+          if-no-files-found: warn
+
   merge-and-pivot:
-    needs: [extract-an, extract-ue-officiel, extract-parltrack, extract-roster-groupes, extract-senat, extract-mandats-locaux, extract-actes-jo, extract-gouvernements, epingler-le-code, rechauffer-le-portail-europeen]
+    needs: [extract-an, extract-ue-officiel, extract-parltrack, extract-roster-groupes, extract-senat, extract-mandats-locaux, extract-actes-jo, extract-gouvernements, extract-articles-votes, epingler-le-code, rechauffer-le-portail-europeen]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     # 60 → 120 (#827). Le job tournait en 28 min ; la PREMIÈRE interrogation du
@@ -3480,6 +3566,14 @@ jobs:
         with:
           name: actes-jo
           path: .
+
+      # #1264 — le fichier commité du run précédent reste si l'artifact manque.
+      - name: Download artifact articles votés (optionnel)
+        uses: actions/download-artifact@v7
+        continue-on-error: true
+        with:
+          name: articles-votes
+          path: pivot_data/
 
       - name: Download artifact liste des gouvernements (optionnel)
         uses: actions/download-artifact@v7
@@ -4687,6 +4781,11 @@ jobs:
           # plus.
           if [ -d pivot_data/actes_reglementaires ]; then
             git add pivot_data/actes_reglementaires
+          fi
+          # Articles soumis au vote (#1264) : même garde, le job qui le
+          # construit est `continue-on-error`.
+          if [ -f pivot_data/articles_votes.json ]; then
+            git add pivot_data/articles_votes.json
           fi
           if git diff --cached --quiet; then
             echo "Aucun changement de données à committer."

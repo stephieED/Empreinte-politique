@@ -207,3 +207,32 @@ def test_le_job_europeen_ne_recopie_pas_la_declaration_du_brut(monkeypatch, tmp_
     brut = json.loads((raw / "emmanuel-maurel.json").read_text(encoding="utf-8"))
     assert "collecte_ecartee" not in brut["meta"]
     assert brut["interventions"] == [{"id": "x"}]
+
+
+def test_a_date_egale_celui_qui_a_lu_la_source_l_emporte_source_par_source():
+    """Run `37823704331` (08/10, second run du jour), Emmanuel Maurel : l'ancien
+    porte `par_decision` pour l'AN ET `couvert` pour le PE ; sur toute la liste
+    il égalait le neuf, et le « non collecté » survivait."""
+    pe = {"etat": "couvert", "source": "parlement_europeen",
+          "portee": {"debut": "2019-07-16", "fin": "2024-04-25"},
+          "preuve": "matériau européen", "constate_le": "2026-10-08"}
+    ancien = {"interventions": [
+        {"etat": "non_collecte", "cause": "par_decision",
+         "preuve": "collecte écartée par le run qui a produit le profil brut",
+         "constate_le": "2026-10-08"}, pe]}
+    neuf = {"interventions": [
+        {"etat": "couvert", "portee": {"debut": "2017-06-21", "fin": None},
+         "preuve": "Syceron", "constate_le": "2026-10-08"}, pe]}
+    bloc, non_tranchees = fusionner_couverture(ancien, neuf)
+    assert bloc["interventions"] == neuf["interventions"]
+    assert non_tranchees == []
+
+
+def test_a_date_egale_un_neuf_qui_perd_une_source_ne_l_emporte_pas():
+    pe = {"etat": "couvert", "source": "parlement_europeen", "preuve": "p", "constate_le": "2026-10-08"}
+    ancien = {"interventions": [
+        {"etat": "non_collecte", "cause": "par_decision", "preuve": "x", "constate_le": "2026-10-08"}, pe]}
+    neuf = {"interventions": [{"etat": "couvert", "preuve": "Syceron", "constate_le": "2026-10-08"},
+                              dict(pe, etat="non_collecte", cause="par_decision")]}
+    bloc, _ = fusionner_couverture(ancien, neuf)
+    assert bloc["interventions"] == ancien["interventions"]

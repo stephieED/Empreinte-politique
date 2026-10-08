@@ -48,7 +48,7 @@ Le détail et le raisonnement : [`AGENTS.md`](AGENTS.md) §2 et §6.
 
 | Source | Ce qu'elle apporte | Licence |
 |---|---|---|
-| [Open data de l'Assemblée nationale](https://data.assemblee-nationale.fr/) | **La seule source de l'activité parlementaire française** : identité, mandats, votes, amendements, dossiers, comptes rendus Syceron, questions | Licence Ouverte (Etalab) — attribution |
+| [Open data de l'Assemblée nationale](https://data.assemblee-nationale.fr/) | **La seule source de l'activité parlementaire française** : identité, mandats, votes, amendements, dossiers, comptes rendus Syceron, questions, ordre du jour des séances et texte des articles soumis au vote (#1264) | Licence Ouverte (Etalab) — attribution |
 | [Open data du Sénat](https://data.senat.fr/) | **Les appartenances sénatoriales seulement** — mandats, groupes, commissions. Le jeu ne porte **ni scrutin ni compte rendu** | Licence Ouverte 2.0 (Etalab) — attribution |
 | [Parltrack](https://parltrack.org) | Le volet européen des anciens eurodéputés | ODbL v1.0 — **partage à l'identique** |
 | [Parlement européen](https://data.europarl.europa.eu/) | Le mandat européen, les scrutins et les dossiers cités | CC BY 4.0 — attribution, `User-Agent` identifiant le réutilisateur |

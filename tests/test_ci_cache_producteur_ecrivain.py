@@ -95,6 +95,14 @@ INVENTAIRE_STEPS = {
     # télécharge et remplit son cache.
     ("extract-senat", 0): True,
     ("extract-amendements-an", 0): True,
+    # #1264 : deux caches, chacun en restauration puis en sauvegarde explicites.
+    # Les archives des XVe-XVIe sous une clé fixe (elles ne changent plus), les
+    # structures de texte sous une clé par run, restaurée par préfixe, pour que
+    # les textes lus s'ajoutent.
+    ("extract-articles-votes", 0): False,
+    ("extract-articles-votes", 1): False,
+    ("extract-articles-votes", 2): True,
+    ("extract-articles-votes", 3): True,
     # #505 : le job roster ne produit ni questions/débats (--skip-interventions)
     # ni dossiers (--skip-dossiers-legislatifs). Restauration seule sur les deux.
     ("extract-roster-groupes", 0): False,
