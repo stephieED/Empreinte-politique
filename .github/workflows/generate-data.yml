@@ -537,7 +537,13 @@ jobs:
       - name: Semaine ISO courante (clé de cache AN, partagée avec extract-an)
         id: week
         if: ${{ !inputs.cold_start && !(needs.epingler-le-code.outputs.interventions == 'true') }}
-        run: echo "week=$(date +%G-W%V)" >> "$GITHUB_OUTPUT"
+        # Le JOUR s'ajoute à la semaine pour la seule clé du cache AN : la 17e
+        # siège, et une séance tenue en semaine attendait le lundi suivant pour
+        # entrer (la séance du 07/10/2026 manquait au run du 08/10). Les clés
+        # des dossiers et des amendements restent hebdomadaires (`week`).
+        run: |
+          echo "week=$(date +%G-W%V)" >> "$GITHUB_OUTPUT"
+          echo "jour=$(date +%G-W%V)-j$(date +%u)" >> "$GITHUB_OUTPUT"
 
       # `lookup-only: true` : on ne veut que la réponse, aucune extraction — et
       # AUCUN `restore-keys`, le repli par préfixe servirait une entrée d'une
@@ -553,7 +559,7 @@ jobs:
             .cache/scrutins_an
             .cache/questions_an/*/index_par_acteur.json
             .cache/syceron_an/*/index_par_acteur
-          key: public-data-cache-an-${{ steps.week.outputs.week }}
+          key: public-data-cache-an-${{ steps.week.outputs.jour }}
 
       # Le résultat se LIT dans l'interface : sans cette ligne, un run
       # parallélisé ne se distingue pas d'un run qui ne l'est pas, et la seule
@@ -1033,7 +1039,13 @@ jobs:
 
       - name: Semaine ISO courante (clé de cache AN)
         id: week
-        run: echo "week=$(date +%G-W%V)" >> "$GITHUB_OUTPUT"
+        # Le JOUR s'ajoute à la semaine pour la seule clé du cache AN : la 17e
+        # siège, et une séance tenue en semaine attendait le lundi suivant pour
+        # entrer (la séance du 07/10/2026 manquait au run du 08/10). Les clés
+        # des dossiers et des amendements restent hebdomadaires (`week`).
+        run: |
+          echo "week=$(date +%G-W%V)" >> "$GITHUB_OUTPUT"
+          echo "jour=$(date +%G-W%V)-j$(date +%u)" >> "$GITHUB_OUTPUT"
 
       # #550 : L'EMPREINTE DE COMPLÉTUDE ATTENDUE, seconde dimension de la clé.
       # Elle dit quelles législatures d'index un cache COMPLET porte, et elle
@@ -1158,9 +1170,10 @@ jobs:
             .cache/scrutins_an
             .cache/questions_an/*/index_par_acteur.json
             .cache/syceron_an/*/index_par_acteur
-          key: public-data-cache-an-${{ steps.week.outputs.week }}${{ needs.epingler-le-code.outputs.interventions == 'true' && format('-interv-{0}', steps.empreinte_attendue.outputs.empreinte) || '' }}
+          key: public-data-cache-an-${{ steps.week.outputs.jour }}${{ needs.epingler-le-code.outputs.interventions == 'true' && format('-interv-{0}', steps.empreinte_attendue.outputs.empreinte) || '' }}
           restore-keys: |
-            ${{ needs.epingler-le-code.outputs.interventions == 'true' && format('public-data-cache-an-{0}-interv', steps.week.outputs.week) || '' }}
+            ${{ needs.epingler-le-code.outputs.interventions == 'true' && format('public-data-cache-an-{0}-interv', steps.week.outputs.jour) || '' }}
+            public-data-cache-an-${{ steps.week.outputs.week }}-
             public-data-cache-an-
 
       # #555 — PÉREMPTION SÉLECTIVE, job PRODUCTEUR.
@@ -1190,7 +1203,7 @@ jobs:
         continue-on-error: true
         run: |
           python3 src/cache_an_fraicheur.py \
-            --semaine "${{ steps.week.outputs.week }}" \
+            --semaine "${{ steps.week.outputs.jour }}" \
             --cle-restauree "${{ steps.cache_an.outputs.cache-matched-key }}" \
             --perimer
 
@@ -1484,7 +1497,7 @@ jobs:
           ${{ !cancelled() && !inputs.cold_start
           && steps.empreinte_obtenue.outputs.empreinte != ''
           && steps.cache_an.outputs.cache-matched-key !=
-          format('public-data-cache-an-{0}{1}', steps.week.outputs.week,
+          format('public-data-cache-an-{0}{1}', steps.week.outputs.jour,
           needs.epingler-le-code.outputs.interventions == 'true' &&
           format('-interv-{0}', steps.empreinte_obtenue.outputs.empreinte) || '') }}
         continue-on-error: true
@@ -1495,7 +1508,7 @@ jobs:
             .cache/scrutins_an
             .cache/questions_an/*/index_par_acteur.json
             .cache/syceron_an/*/index_par_acteur
-          key: public-data-cache-an-${{ steps.week.outputs.week }}${{ needs.epingler-le-code.outputs.interventions == 'true' && format('-interv-{0}', steps.empreinte_obtenue.outputs.empreinte) || '' }}
+          key: public-data-cache-an-${{ steps.week.outputs.jour }}${{ needs.epingler-le-code.outputs.interventions == 'true' && format('-interv-{0}', steps.empreinte_obtenue.outputs.empreinte) || '' }}
 
       # Blocs factorisés en action composite (#412 §3). Le `if:` reste porté par
       # le step appelant : cancelled()/failure() évalués à l'intérieur de
@@ -2454,7 +2467,13 @@ jobs:
 
       - name: Semaine ISO courante (clé de cache AN, partagée avec extract-an)
         id: week
-        run: echo "week=$(date +%G-W%V)" >> "$GITHUB_OUTPUT"
+        # Le JOUR s'ajoute à la semaine pour la seule clé du cache AN : la 17e
+        # siège, et une séance tenue en semaine attendait le lundi suivant pour
+        # entrer (la séance du 07/10/2026 manquait au run du 08/10). Les clés
+        # des dossiers et des amendements restent hebdomadaires (`week`).
+        run: |
+          echo "week=$(date +%G-W%V)" >> "$GITHUB_OUTPUT"
+          echo "jour=$(date +%G-W%V)-j$(date +%u)" >> "$GITHUB_OUTPUT"
 
       # #657 — MÊME EMPREINTE QUE extract-an, et pour la même raison qu'à #505.
       # Ce job restaure sous la clé de la semaine ; extract-an, en mode
@@ -2529,9 +2548,10 @@ jobs:
             .cache/scrutins_an
             .cache/questions_an/*/index_par_acteur.json
             .cache/syceron_an/*/index_par_acteur
-          key: public-data-cache-an-${{ steps.week.outputs.week }}${{ needs.epingler-le-code.outputs.interventions == 'true' && format('-interv-{0}', steps.empreinte_attendue.outputs.empreinte) || '' }}
+          key: public-data-cache-an-${{ steps.week.outputs.jour }}${{ needs.epingler-le-code.outputs.interventions == 'true' && format('-interv-{0}', steps.empreinte_attendue.outputs.empreinte) || '' }}
           restore-keys: |
-            ${{ needs.epingler-le-code.outputs.interventions == 'true' && format('public-data-cache-an-{0}-interv', steps.week.outputs.week) || '' }}
+            ${{ needs.epingler-le-code.outputs.interventions == 'true' && format('public-data-cache-an-{0}-interv', steps.week.outputs.jour) || '' }}
+            public-data-cache-an-${{ steps.week.outputs.week }}-
             public-data-cache-an-
 
       # #555 — DÉCLARATION SEULE, job CONSOMMATEUR (pas de `--perimer`).
@@ -2549,7 +2569,7 @@ jobs:
         continue-on-error: true
         run: |
           python3 src/cache_an_fraicheur.py \
-            --semaine "${{ steps.week.outputs.week }}" \
+            --semaine "${{ steps.week.outputs.jour }}" \
             --cle-restauree "${{ steps.cache_an.outputs.cache-matched-key }}"
 
       # Clé DÉDIÉE aux dossiers législatifs (#427), séparée de la clé AN.

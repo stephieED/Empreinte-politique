@@ -51,6 +51,7 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/mandats_anterieurs.py` | 2 |
 | `src/titres_europeens.py` | 2 |
 | `src/audit_filiation_lignees.py` | 1 |
+| `src/cache_an_fraicheur.py` | 1 |
 | `src/candidate_profile_ue.py` | 1 |
 | `src/collecte_mandats_locaux.py` | 1 |
 | `src/documents_europeens.py` | 1 |
@@ -282,7 +283,7 @@ Le mentionnent sans le gouverner : [`fenetre-historique-donnees`](decisions/fene
 | [Le sédiment se compte avant de se juger : sept familles, deux couches, aucun retrait (#839, lot A) (2026-09-12)](decisions/audit-sediment-inventaire-839.md) | `AVERTISSEMENTS_HERITES` |
 | [`meta.warnings[]` déclare son destinataire, dans un jumeau typé et aligné (#642) (2026-08-31)](decisions/destinataire-avertissements-642.md) | `AVERTISSEMENTS_HERITES`, `Avertissement`, `DESTINATAIRES_AVERTISSEMENT`, `PREFIXES_HERITES`, `avertissement`, `deriver_avertissements` |
 
-Le mentionnent sans le gouverner : [`amendements-zero-pas-de-hard-fail`](decisions/amendements-zero-pas-de-hard-fail.md), [`bloc-lisible-sans-javascript-969`](decisions/bloc-lisible-sans-javascript-969.md), [`bloc-sans-fond-484`](decisions/bloc-sans-fond-484.md), [`constats-parltrack-perimes-683`](decisions/constats-parltrack-perimes-683.md), [`controle-perte-nomme-les-echanges-823`](decisions/controle-perte-nomme-les-echanges-823.md), [`couverture-dossiers-hors-couverture-vs-zero`](decisions/couverture-dossiers-hors-couverture-vs-zero.md), [`fiche-de-lignee-ui-329`](decisions/fiche-de-lignee-ui-329.md), [`liste-candidats-declares-753`](decisions/liste-candidats-declares-753.md), [`mentions-legales-sans-regards-citoyens`](decisions/mentions-legales-sans-regards-citoyens.md), [`profil-de-groupe-lecture-329`](decisions/profil-de-groupe-lecture-329.md), [`reponse-au-retour-ux-fiche-candidat`](decisions/reponse-au-retour-ux-fiche-candidat.md), [`residus-source-retiree-839`](decisions/residus-source-retiree-839.md), [`retour-ux-sur-les-fiches-candidat`](decisions/retour-ux-sur-les-fiches-candidat.md), [`retrait-senat-528`](decisions/retrait-senat-528.md), [`union-warnings-extinction-600`](decisions/union-warnings-extinction-600.md), [`verification-bout-en-bout-legislatures-figees`](decisions/verification-bout-en-bout-legislatures-figees.md), [`versant-europeen-et-ecarts-de-la-revue-ux-fiche-candidat`](decisions/versant-europeen-et-ecarts-de-la-revue-ux-fiche-candidat.md).
+Le mentionnent sans le gouverner : [`amendements-zero-pas-de-hard-fail`](decisions/amendements-zero-pas-de-hard-fail.md), [`avertissements-europeens-reecrits-1161`](decisions/avertissements-europeens-reecrits-1161.md), [`bloc-lisible-sans-javascript-969`](decisions/bloc-lisible-sans-javascript-969.md), [`bloc-sans-fond-484`](decisions/bloc-sans-fond-484.md), [`constats-parltrack-perimes-683`](decisions/constats-parltrack-perimes-683.md), [`controle-perte-nomme-les-echanges-823`](decisions/controle-perte-nomme-les-echanges-823.md), [`couverture-dossiers-hors-couverture-vs-zero`](decisions/couverture-dossiers-hors-couverture-vs-zero.md), [`fiche-de-lignee-ui-329`](decisions/fiche-de-lignee-ui-329.md), [`liste-candidats-declares-753`](decisions/liste-candidats-declares-753.md), [`mentions-legales-sans-regards-citoyens`](decisions/mentions-legales-sans-regards-citoyens.md), [`profil-de-groupe-lecture-329`](decisions/profil-de-groupe-lecture-329.md), [`reponse-au-retour-ux-fiche-candidat`](decisions/reponse-au-retour-ux-fiche-candidat.md), [`residus-source-retiree-839`](decisions/residus-source-retiree-839.md), [`retour-ux-sur-les-fiches-candidat`](decisions/retour-ux-sur-les-fiches-candidat.md), [`retrait-senat-528`](decisions/retrait-senat-528.md), [`union-warnings-extinction-600`](decisions/union-warnings-extinction-600.md), [`verification-bout-en-bout-legislatures-figees`](decisions/verification-bout-en-bout-legislatures-figees.md), [`versant-europeen-et-ecarts-de-la-revue-ux-fiche-candidat`](decisions/versant-europeen-et-ecarts-de-la-revue-ux-fiche-candidat.md).
 
 ## `src/budget_collecte.py`
 
@@ -361,11 +362,17 @@ Le mentionnent sans le gouverner : [`cache-completude-interventions-550`](decisi
 
 ## `src/cache_an_fraicheur.py`
 
+1 décision(s) le gouvernent ; le module en cite 0.
+
+| Décision | Nomme |
+| --- | --- |
+| [La 17e se réindexe chaque jour, le référentiel des acteurs chaque semaine (#1261) (2026-10-08)](decisions/cache-an-du-jour-1261.md) | `PERIME_DU_JOUR` |
+
 Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisions/cache-fraicheur-interventions-555.md).
 
 ## `src/candidate_profile.py`
 
-105 décision(s) le gouvernent ; le module en cite 14.
+106 décision(s) le gouvernent ; le module en cite 14.
 
 | Décision | Nomme |
 | --- | --- |
@@ -418,6 +425,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [Un texte renvoyé en commission n'est pas un texte examiné (#997) (2026-09-18)](decisions/examen-en-commission-997.md) | `_stade_from_code_acte` |
 | [La parole des membres de groupe et de gouvernement publie un extrait de 280 caractères (#1029) (2026-09-22)](decisions/extrait-de-la-parole-des-rosters-1029.md) | `_reduire_a_l_extrait` |
 | [Un filtre de publication posé avant la fusion ne filtre rien (#641, réouverture) (2026-08-31)](decisions/filtre-publication-apres-fusion-641.md) | `_profession_an` |
+| [Une date de fin de mandat publiée après la première collecte est reportée (2026-10-08)](decisions/fin-de-mandat-reportee.md) | `_extract_mandats_officiels` |
 | [La qualité de l'orateur survit à la forme réduite : `fonction` pour les membres de groupe et de gouvernement (#1200) (2026-10-04)](decisions/fonction-sur-la-forme-reduite-1200.md) | `SYCERON_VERSION_INDEX`, `_reduire_au_theme` |
 | [L'archive vivante se reprend au changement de semaine, les mortes jamais (#762), 07/09/2026](decisions/fraicheur-dossiers-762.md) | `AN_SCRUTINS_LEGISLATURES_FIGEES` |
 | [La rotation de clé hebdomadaire était toute la politique de fraîcheur, et son propre repli la désamorçait (#749)](decisions/fraicheur-index-amendements-749.md) | `_download_and_build_amendement_index`, `amendements_index_en_cache_utilisable` |
@@ -979,7 +987,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 
 ## `src/merge_profile.py`
 
-81 décision(s) le gouvernent ; le module en cite 5.
+82 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1012,6 +1020,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [La parole des membres de groupe et de gouvernement publie un extrait de 280 caractères (#1029) (2026-09-22)](decisions/extrait-de-la-parole-des-rosters-1029.md) | `aligner_collecte_reduite`, `promouvoir_forme_complete` |
 | [Borner l'historique de données : ce que ça rend vraiment, et quand (#434) (2026-08-20)](decisions/fenetre-historique-donnees.md) | `merge_raw_profile` |
 | [Un filtre de publication posé avant la fusion ne filtre rien (#641, réouverture) (2026-08-31)](decisions/filtre-publication-apres-fusion-641.md) | `FILTRES_PUBLICATION_IDENTITE`, `_composer_identite`, `bloc_sans_fond`, `deriver_provenance_champs`, `filtrer_identite_publiee`, `merge_pivot_profile` |
+| [Une date de fin de mandat publiée après la première collecte est reportée (2026-10-08)](decisions/fin-de-mandat-reportee.md) | `_mandat_key`, `_pivot_mandat_key`, `backfill_mandat_fin`, `backfill_mandat_lieu_election`, `merge_raw_profile` |
 | [La qualité de l'orateur survit à la forme réduite : `fonction` pour les membres de groupe et de gouvernement (#1200) (2026-10-04)](decisions/fonction-sur-la-forme-reduite-1200.md) | `CHAMPS_FAITS_DE_SOURCE`, `reporter_faits_de_source` |
 | [Extension de la stabilité des horodatages aux profils groupe/gouvernement/parti (#343, complet) (2026-08-17)](decisions/freshness-timestamps-groupes-gouvernements-partis.md) | `load_existing_document`, `preserve_stable_freshness_timestamps` |
 | [Un champ qu'une contribution ne porte pas n'est plus effacé (#997) (2026-09-19)](decisions/fusion-conserve-les-champs-absents-997.md) | `CHAMPS_PROTEGES_DU_VIDE`, `_prefer_non_empty`, `merge_raw_profile` |
@@ -1065,7 +1074,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [Vérification de bout en bout des législatures figées 15/16 (#273, clôture de l'epic #268) (2026-08-17)](decisions/verification-bout-en-bout-legislatures-figees.md) | `_amendement_key`, `_prune_stale_warnings` |
 | [Votes : agrégation des législatures 14 à 17, index dédupliqué, 14/15/16 figées (#403) (2026-08-18)](decisions/votes-multi-legislature.md) | `merge_lists_by_key` |
 
-Le mentionnent sans le gouverner : [`bascule-identite-an-primaire`](decisions/bascule-identite-an-primaire.md), [`deux-axes-formulaire-578`](decisions/deux-axes-formulaire-578.md), [`investigation-sources-ue`](decisions/investigation-sources-ue.md), [`marquage-tranches-derivees-691`](decisions/marquage-tranches-derivees-691.md), [`profession-code-nomenclature-641`](decisions/profession-code-nomenclature-641.md), [`reconstruction-tranches-depuis-archive-691`](decisions/reconstruction-tranches-depuis-archive-691.md), [`restauration-interventions`](decisions/restauration-interventions.md).
+Le mentionnent sans le gouverner : [`avertissements-europeens-reecrits-1161`](decisions/avertissements-europeens-reecrits-1161.md), [`bascule-identite-an-primaire`](decisions/bascule-identite-an-primaire.md), [`deux-axes-formulaire-578`](decisions/deux-axes-formulaire-578.md), [`investigation-sources-ue`](decisions/investigation-sources-ue.md), [`marquage-tranches-derivees-691`](decisions/marquage-tranches-derivees-691.md), [`profession-code-nomenclature-641`](decisions/profession-code-nomenclature-641.md), [`reconstruction-tranches-depuis-archive-691`](decisions/reconstruction-tranches-depuis-archive-691.md), [`restauration-interventions`](decisions/restauration-interventions.md).
 
 ## `src/normalize_europarl.py`
 
@@ -1100,7 +1109,7 @@ Le mentionnent sans le gouverner : [`chambre-par-mandat-electif`](decisions/cham
 | [Le titre français cherchait sa référence là où elle n'est jamais (#901) (2026-09-16)](decisions/titre-francais-lu-dans-source-url-901.md) | `_titre_publie` |
 | [L'adresse est dérivée, l'existence est prouvée (#827)](decisions/urls-explications-vote-europeennes-827.md) | `_make_intervention` |
 
-Le mentionnent sans le gouverner : [`investigation-sources-ue`](decisions/investigation-sources-ue.md).
+Le mentionnent sans le gouverner : [`avertissements-europeens-reecrits-1161`](decisions/avertissements-europeens-reecrits-1161.md), [`investigation-sources-ue`](decisions/investigation-sources-ue.md).
 
 ## `src/normalize_profil.py`
 

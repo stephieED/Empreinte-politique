@@ -98,7 +98,12 @@ PREFIXE_CLE_AN = "public-data-cache-an-"
 
 #: `public-data-cache-an-2026-W35`, `…-W35-interv`, `…-W35-interv-syc17-q16.17`.
 #: La semaine est le premier champ après le préfixe, et le seul qu'on lise.
-_CLE_AN = re.compile(rf"^{re.escape(PREFIXE_CLE_AN)}(\d{{4}}-W\d{{2}})(?:-.*)?$")
+_CLE_AN = re.compile(rf"^{re.escape(PREFIXE_CLE_AN)}(\d{{4}}-W\d{{2}})(?:-(j[1-7]))?(?:-.*)?$")
+
+#: `2026-W41-j4` : la semaine ISO et le jour de la semaine (1 = lundi), la forme
+#: que le workflow passe en `--semaine` depuis le 08/10/2026. La semaine seule
+#: (`2026-W41`) reste lue : c'est la forme des entrées écrites avant.
+_PERIODE = re.compile(r"^(\d{4}-W\d{2})(?:-(j[1-7]))?$")
 
 #: Un répertoire de législature dans `.cache` : `17`, `16`…
 _LEGISLATURE = re.compile(r"^\d+$")
@@ -106,6 +111,12 @@ _LEGISLATURE = re.compile(r"^\d+$")
 #: Verdicts possibles, en clair dans les journaux du run.
 FRAIS = "frais"
 PERIME = "périmé"
+#: Même semaine, autre jour : seules les législatures VIVANTES périment. Le
+#: référentiel des acteurs reste hebdomadaire, comme avant. Mesuré le 08/10/2026 :
+#: la séance du 07/10 manquait au run du 08/10, l'index de la 17e restauré de la
+#: semaine ayant été construit le 07/10 au soir (#1261). Coût : la 17e se
+#: réindexe en 42 s (#550).
+PERIME_DU_JOUR = "périmé du jour"
 CACHE_FROID = "cache froid"
 INDECIDABLE = "indécidable"
 
@@ -134,6 +145,14 @@ def semaine_de_la_cle(cle: Optional[str]) -> Optional[str]:
         return None
     trouve = _CLE_AN.match(cle.strip())
     return trouve.group(1) if trouve else None
+
+
+def jour_de_la_cle(cle: Optional[str]) -> Optional[str]:
+    """Le jour (`j1`…`j7`) porté par une clé de cache AN, ou `None` s'il n'y en a pas."""
+    if not cle:
+        return None
+    trouve = _CLE_AN.match(cle.strip())
+    return trouve.group(2) if trouve else None
 
 
 def chemins_perissables(
@@ -193,7 +212,7 @@ class Verdict:
         réindexation de la législature en cours ; le silence, lui, coûterait la
         fraîcheur de toutes les suivantes.
         """
-        return self.etat in (PERIME, INDECIDABLE)
+        return self.etat in (PERIME, PERIME_DU_JOUR, INDECIDABLE)
 
     def message(self) -> str:
         if self.etat == FRAIS:
@@ -205,6 +224,13 @@ class Verdict:
             return (
                 f"Aucune entrée de cache AN restaurée (semaine {self.semaine_courante}) : "
                 "rien à périmer, tout sera reconstruit."
+            )
+        if self.etat == PERIME_DU_JOUR:
+            return (
+                f"Cache AN restauré de la semaine courante mais pas du jour "
+                f"({self.cle_restauree!r}, nous sommes en {self.semaine_courante}) : les "
+                "législatures vivantes sont périmées, le référentiel des acteurs reste "
+                "hebdomadaire (#1261)."
             )
         if self.etat == INDECIDABLE:
             return (
@@ -224,14 +250,20 @@ class Verdict:
 def evaluer(semaine_courante: str, cle_restauree: Optional[str]) -> Verdict:
     """Compare la semaine de la clé restaurée à la semaine courante."""
     semaine = semaine_de_la_cle(cle_restauree)
+    periode = _PERIODE.match(semaine_courante.strip())
+    semaine_du_run, jour_du_run = (periode.group(1), periode.group(2)) if periode else (semaine_courante, None)
     if not (cle_restauree or "").strip():
         etat = CACHE_FROID
     elif semaine is None:
         etat = INDECIDABLE
-    elif semaine == semaine_courante:
+    elif semaine != semaine_du_run:
+        etat = PERIME
+    elif jour_du_run is None or jour_de_la_cle(cle_restauree) == jour_du_run:
         etat = FRAIS
     else:
-        etat = PERIME
+        # Même semaine, autre jour — ou une entrée écrite avant que la clé ne
+        # porte le jour, dont on ne sait donc pas de quel jour elle date.
+        etat = PERIME_DU_JOUR
     return Verdict(
         etat=etat,
         semaine_courante=semaine_courante,
@@ -263,7 +295,8 @@ def perimer(chemins: Iterable[Path]) -> list[Path]:
 
 def main(argv: Optional[list[str]] = None) -> int:
     parseur = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    parseur.add_argument("--semaine", required=True, help="semaine ISO courante (%%G-W%%V)")
+    parseur.add_argument("--semaine", required=True,
+                         help="période courante : semaine ISO, suivie du jour (%%G-W%%V-j%%u)")
     parseur.add_argument(
         "--cle-restauree",
         default="",
@@ -290,6 +323,9 @@ def main(argv: Optional[list[str]] = None) -> int:
         return 0
 
     chemins = chemins_perissables()
+    if verdict.etat == PERIME_DU_JOUR:
+        acteurs = _cp.ACTEURS_HISTORIQUE_CACHE_DIR
+        chemins = [c for c in chemins if Path(c) != Path(acteurs)]
     if not chemins:
         print("  Aucun chemin périssable présent sur le disque.")
         return 0

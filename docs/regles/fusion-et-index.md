@@ -223,3 +223,10 @@ les charger, ni à les faire grossir. -->
   `id_syceron`: richest form first, then the one today's collection returned, then the
   first. The publication guard replays it (named reduction on `interventions`).
   → `docs/decisions/paragraphe-syceron-publie-une-fois.md`
+- **A mandate's end date published after its first collection is carried over.** The
+  mandate key does not contain `fin`, so the old entry won and a mandate collected while
+  open stayed open forever. `backfill_mandat_fin`, at both layers, writes the new
+  collection's `fin` (and `actif`) whenever the new collection has one — never erasing a
+  published `fin`. The AMO30 snapshot is renewed weekly in CI (#555), so an end date
+  reaches the fiche within a week of its publication.
+  → `docs/decisions/fin-de-mandat-reportee.md`

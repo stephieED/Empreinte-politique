@@ -176,3 +176,34 @@ def test_sans_la_cle_la_fusion_garde_la_declaration_de_l_an():
     roster = {"slug": "x", "meta": {"warnings": []}, "interventions": []}
     fusionne = merge_raw_profile(an, roster)
     assert fusionne["meta"]["collecte_ecartee"] == []
+
+
+def test_le_job_europeen_ne_recopie_pas_la_declaration_du_brut(monkeypatch, tmp_path):
+    """Run `37805452919` (08/10) : l'artifact européen portait la déclaration du
+    brut publié pour Maurel, Mélenchon et Le Pen, et la fusion la remettait
+    après celle de l'AN."""
+    monkeypatch.setattr(generate_all_profiles, "build_profile_ue",
+                        lambda nom: {"mandats_europeens": [{"type": "membre", "debut": "2014-07-01"}]})
+    monkeypatch.setattr(generate_all_profiles.time, "sleep", lambda s: None)
+    raw = tmp_path / "raw"
+    raw.mkdir()
+    (raw / "emmanuel-maurel.json").write_text(json.dumps({
+        "slug": "emmanuel-maurel", "identite": {"nom": "emmanuel-maurel"},
+        "mandats": [], "votes": [], "interventions": [{"id": "x"}], "amendements": [],
+        "dossiers_legislatifs": [],
+        "meta": {"warnings": [], "collecte_ecartee": ["interventions", "textes_portes"]},
+    }), encoding="utf-8")
+    args = argparse.Namespace(
+        source="ue", pivot_only=False, skip_existing=False,
+        skip_interventions=False, interventions_theme_seul=False,
+        skip_dossiers_legislatifs=False, budget_interventions_secondes=0,
+        budget_collecte_secondes=0, skip_ue=False, pivot=False, no_merge=False,
+        enrich_parltrack=False, candidats_declares=frozenset(),
+    )
+    generate_all_profiles.process_candidat(
+        {"nom": "Emmanuel Maurel", "slug": "emmanuel-maurel", "statut": "declare"},
+        args, raw, tmp_path / "pivot",
+    )
+    brut = json.loads((raw / "emmanuel-maurel.json").read_text(encoding="utf-8"))
+    assert "collecte_ecartee" not in brut["meta"]
+    assert brut["interventions"] == [{"id": "x"}]

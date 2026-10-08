@@ -490,7 +490,7 @@ l'index amendements téléchargé depuis l'artifact `amendements-index-an` — �
 défaut, `actions/cache/restore` sur la clé amendements, jamais de sauvegarde,
 puisque ce job ne produit pas d'amendements. **Produit** un artifact
 `raw-profiles-an-<slug>` par shard, et écrit les clés
-`public-data-cache-an-<semaine>[-interv-<empreinte>]` et
+`public-data-cache-an-<semaine>-j<jour>[-interv-<empreinte>]` et
 `public-data-cache-dossiers-<semaine>`.
 
 **Un profil brut n'est plus un fichier** : `<slug>.json` est le **socle** (le
@@ -825,7 +825,7 @@ la plus proche :
 
 | Clé | Répertoire | Qui l'**écrit** | Qui la **lit seulement** |
 |---|---|---|---|
-| `public-data-cache-an-<semaine>[-interv-<empreinte>]` | `.cache/acteurs_historique_an`, `.cache/scrutins_an`, `.cache/questions_an/*/index_par_acteur.json`, `.cache/syceron_an/*/index_par_acteur` | `extract-an` (`actions/cache/save`) | `extract-roster-groupes` (`actions/cache/restore`, **même suffixe** depuis #657) |
+| `public-data-cache-an-<semaine>-j<jour>[-interv-<empreinte>]` (le jour depuis #1261, 08/10/2026 : la 17e se réindexe chaque jour, le référentiel des acteurs chaque semaine) | `.cache/acteurs_historique_an`, `.cache/scrutins_an`, `.cache/questions_an/*/index_par_acteur.json`, `.cache/syceron_an/*/index_par_acteur` | `extract-an` (`actions/cache/save`) | `extract-roster-groupes` (`actions/cache/restore`, **même suffixe** depuis #657) |
 | `public-data-cache-amendements-<semaine>` | `.cache/amendements_an` | `extract-amendements-an` (`actions/cache`) | `extract-an`, `extract-roster-groupes` (`restore`) |
 | `public-data-cache-dossiers-<semaine>` | `.cache/dossiers_an` | `extract-an`, `merge-and-pivot` | `extract-roster-groupes` (`restore`) |
 | `public-data-cache-ue-<semaine>` | `.cache/europarl` | `extract-ue-officiel` | `epingler-le-code` |

@@ -195,7 +195,8 @@ def test_la_sauvegarde_ne_reecrit_pas_la_cle_qu_elle_vient_de_restaurer():
     )
     for morceau in (
         "public-data-cache-an-",
-        "steps.week.outputs.week",
+        # Le jour s'ajoute à la semaine depuis le 08/10/2026 (#1261).
+        "steps.week.outputs.jour",
         "steps.empreinte_obtenue.outputs.empreinte",
         "needs.epingler-le-code.outputs.interventions == 'true'",
         "-interv-",

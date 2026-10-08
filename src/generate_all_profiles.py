@@ -1603,7 +1603,17 @@ def process_candidat(
 
     # #1160 — voir plus haut : la déclaration retirée ici l'est aussi de ce que
     # la fusion a repris du brut existant.
-    if theme_seul_refuse and isinstance(profile, dict):
+    #
+    # Le job européen (`--source ue`) est dans le même cas : il n'interroge
+    # aucune source française, donc il n'a rien à déclarer des listes de
+    # l'Assemblée, mais il recopiait la déclaration du brut publié. Fusionné
+    # APRÈS l'AN (`--dirs an ue roster senat`), il la remettait à chaque run.
+    # Mesuré au run `37805452919` (08/10/2026) : l'AN déclare `[]` pour
+    # Emmanuel Maurel, l'artifact `raw-profiles-ue-officiel` porte
+    # `["interventions", "textes_portes"]` pour lui, Jean-Luc Mélenchon et
+    # Marine Le Pen — les trois candidats déclarés à mandat européen encore
+    # « non collecté » sur des listes pleines.
+    if (theme_seul_refuse or source == "ue") and isinstance(profile, dict):
         meta_collecte = profile.get("meta")
         if isinstance(meta_collecte, dict):
             meta_collecte.pop("collecte_ecartee", None)

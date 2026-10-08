@@ -972,6 +972,48 @@ def backfill_mandat_lieu_election(
     return result
 
 
+def backfill_mandat_fin(
+    merged: list[dict[str, Any]],
+    new_list: Optional[list[dict[str, Any]]],
+    key_fn: Callable[[dict[str, Any]], Key],
+) -> list[dict[str, Any]]:
+    """Reporte la date de fin qu'un mandat a reçue à la source depuis sa
+    première collecte, et `actif` avec elle.
+
+    La clé d'un mandat ne contient pas sa fin, donc l'entrée ancienne gagne :
+    un mandat collecté en cours le restait pour toujours, même quand
+    l'Assemblée publiait ensuite sa date de fin. Mesuré le 08/10/2026 contre
+    AMO30 du jour : **au moins 767 mandats publiés « en cours » sur 273
+    profils** sont fermés à la source — 428 commissions, 175 groupes d'amitié
+    et d'études, 71 commissions d'enquête et spéciales, 11 fonctions
+    gouvernementales. Signalé par la session COM (commission spéciale
+    « réponse intégrale » : 30 fins manquantes sur 125 mandats).
+
+    La collecte du jour l'emporte **dès qu'elle porte une fin**, y compris pour
+    corriger une fin déjà publiée : la source dit quand le mandat s'est
+    terminé. Une fin publiée n'est jamais effacée par une collecte qui n'en
+    porte pas — un mandat absent ou rendu ouvert par erreur ne rouvre rien.
+    """
+    if not new_list:
+        return merged
+    fins_neuves: dict[Key, dict[str, Any]] = {}
+    for m in new_list:
+        if isinstance(m, dict) and m.get("fin"):
+            fins_neuves.setdefault(key_fn(m), m)
+    if not fins_neuves:
+        return merged
+    result: list[dict[str, Any]] = []
+    for m in merged:
+        if isinstance(m, dict):
+            neuf = fins_neuves.get(key_fn(m))
+            if neuf is not None and neuf["fin"] != m.get("fin"):
+                m = {**m, "fin": neuf["fin"]}
+                if "actif" in neuf:
+                    m["actif"] = neuf["actif"]
+        result.append(m)
+    return result
+
+
 def backfill_mandat_categorie_source(
     merged: list[dict[str, Any]],
     new_list: Optional[list[dict[str, Any]]],
@@ -1951,7 +1993,11 @@ def merge_raw_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> dic
         backfill_mandat_organe_source(
             backfill_mandat_categorie_source(
                 backfill_mandat_lieu_election(
-                    merge_lists_by_key(old.get("mandats"), new.get("mandats"), _mandat_key),
+                    backfill_mandat_fin(
+                        merge_lists_by_key(old.get("mandats"), new.get("mandats"), _mandat_key),
+                        new.get("mandats"),
+                        _mandat_key,
+                    ),
                     new.get("mandats"),
                     _mandat_key,
                 ),
@@ -3023,7 +3069,11 @@ def merge_pivot_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> d
         backfill_mandat_organe_source(
             backfill_mandat_categorie_source(
                 backfill_mandat_lieu_election(
-                    merge_lists_by_key(old.get("mandats"), new.get("mandats"), _pivot_mandat_key),
+                    backfill_mandat_fin(
+                        merge_lists_by_key(old.get("mandats"), new.get("mandats"), _pivot_mandat_key),
+                        new.get("mandats"),
+                        _pivot_mandat_key,
+                    ),
                     new.get("mandats"),
                     _pivot_mandat_key,
                 ),

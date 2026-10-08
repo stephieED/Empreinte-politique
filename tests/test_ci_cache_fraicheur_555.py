@@ -190,7 +190,8 @@ def test_la_fraicheur_lit_la_cle_reellement_restauree(job):
     assert identifiant, f"{job} : la restauration AN n'a pas d'`id:`, sa clé est illisible."
     step = steps[_rang(steps, "cache_an_fraicheur.py")]
     assert f"steps.{identifiant.group(1)}.outputs.cache-matched-key" in step
-    assert "steps.week.outputs.week" in step
+    # La période passée porte le jour depuis le 08/10/2026 (#1261).
+    assert "steps.week.outputs.jour" in step
 
 
 def test_le_producteur_perime():

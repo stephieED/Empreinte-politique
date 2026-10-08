@@ -201,8 +201,11 @@ def test_la_sonde_et_extract_an_ont_la_meme_cle():
     sonde = _steps_de_cache(_job("prepare-an-matrix"))[0]
     cle_sonde = re.search(r"\n\s+key: (.+)\n", sonde)
     assert cle_sonde, "La sonde n'a plus de `key:`."
+    # La clé porte le jour depuis le 08/10/2026 (#1261) : la sonde pose la
+    # même, donc le premier run de chaque JOUR (et non plus de chaque semaine)
+    # trouve une clé froide et sérialise ses shards.
     assert cle_sonde.group(1).strip() == (
-        "public-data-cache-an-${{ steps.week.outputs.week }}"
+        "public-data-cache-an-${{ steps.week.outputs.jour }}"
     ), (
         f"Clé de la sonde : {cle_sonde.group(1).strip()}. Elle doit être celle "
         "qu'extract-an restaure en mode par défaut, sans quoi la réponse porte "

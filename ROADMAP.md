@@ -587,17 +587,6 @@ Convention d'écriture : `AGENTS.md` §8.
 
 ## Ideas not yet scheduled
 
-- **Une recherche par mot-clé à l'intérieur d'une fiche** — idée de la propriétaire,
-  13/09/2026, **pas priorisée**. Un champ qui filtre le contenu de la fiche affichée
-  sur un mot : retrouver « retraites » dans les votes, les amendements, les textes
-  portés et les interventions d'une personne, sans faire défiler quinze écrans.
-  **Ce qu'il faudra trancher avant de commencer**, et qui n'est pas tranché : le mot
-  cherché traverse des listes que la fiche ne charge pas toutes (les index de
-  scrutins et d'amendements sont partagés et chargés à la demande) ; et une
-  recherche qui ne trouve rien doit dire **si la liste est vide ou si elle n'est
-  pas couverte** (§2 règle 5) — sinon elle se lit comme « cette personne ne s'en
-  est jamais occupée ». Ne pas confondre avec un moteur de recherche **entre**
-  fiches, qui est un autre sujet et poserait un classement (§2 règle 1).
 - **Notifications de suivi (candidats/groupes)** — idée identifiée, **pas priorisée**.
   Piste retenue : un **flux RSS/Atom par candidat ou par groupe**, généré en sortie du
   pivot à partir du **diff entre deux régénérations** — zéro compte, zéro donnée

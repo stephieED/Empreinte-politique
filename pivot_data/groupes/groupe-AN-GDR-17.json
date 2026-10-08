@@ -108630,8 +108630,7 @@
       "nb_membres_cumul_historique": 14,
       "effectif_reference": 18,
       "par_fonction": {
-        "membre": 13,
-        "secrétaire": 1
+        "membre": 14
       },
       "membres": [
         {
@@ -108645,7 +108644,7 @@
         {
           "membre_id": "nicolas-sansu",
           "nom": "Nicolas Sansu",
-          "fonction": "Secrétaire",
+          "fonction": "Membre",
           "debut": "2026-07-23",
           "fin": null,
           "actif": true
@@ -108734,7 +108733,7 @@
           "membre_id": "emmanuel-maurel",
           "nom": "Emmanuel Maurel",
           "fonction": "Membre",
-          "debut": "2026-06-12",
+          "debut": "2026-10-02",
           "fin": null,
           "actif": true
         },
@@ -108863,8 +108862,7 @@
       "nb_membres_cumul_historique": 11,
       "effectif_reference": 18,
       "par_fonction": {
-        "membre": 10,
-        "secrétaire": 1
+        "membre": 11
       },
       "membres": [
         {
@@ -108886,7 +108884,7 @@
         {
           "membre_id": "soumya-bourouaha",
           "nom": "Soumya Bourouaha",
-          "fonction": "Secrétaire",
+          "fonction": "Membre",
           "debut": "2026-06-11",
           "fin": null,
           "actif": true
@@ -109100,42 +109098,6 @@
           "nom": "Émeline K/Bidi",
           "fonction": "Membre",
           "debut": "2025-01-28",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
-      "categorie": "commission_enquete",
-      "label": "Commission spéciale chargée d'examiner la proposition de loi apportant une réponse intégrale au phénomène des violences sexuelles et sexistes contre les femmes et les enfants et la proposition de loi organique visant à adapter l'autorité judiciaire à la lutte contre les violences sexuelles et intrafamiliales",
-      "nb_membres_a_la_date_de_reference": 3,
-      "nb_membres_cumul_historique": 3,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 3
-      },
-      "membres": [
-        {
-          "membre_id": "soumya-bourouaha",
-          "nom": "Soumya Bourouaha",
-          "fonction": "Membre",
-          "debut": "2026-09-16",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "elsa-faucillon",
-          "nom": "Elsa Faucillon",
-          "fonction": "Membre",
-          "debut": "2026-09-08",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "karine-lebon",
-          "nom": "Karine Lebon",
-          "fonction": "Membre",
-          "debut": "2026-07-24",
           "fin": null,
           "actif": true
         }
@@ -109539,7 +109501,7 @@
           "membre_id": "emeline-k-bidi",
           "nom": "Émeline K/Bidi",
           "fonction": "Membre",
-          "debut": "2026-07-09",
+          "debut": "2026-10-02",
           "fin": null,
           "actif": true
         },
@@ -109884,6 +109846,42 @@
           "nom": "Yannick Monnet",
           "fonction": "Membre",
           "debut": "2026-06-25",
+          "fin": null,
+          "actif": true
+        }
+      ]
+    },
+    {
+      "categorie": "commission_enquete",
+      "label": "Commission spéciale chargée d'examiner la proposition de loi apportant une réponse intégrale au phénomène des violences sexuelles et sexistes contre les femmes et les enfants et la proposition de loi organique visant à adapter l'autorité judiciaire à la lutte contre les violences sexuelles et intrafamiliales",
+      "nb_membres_a_la_date_de_reference": 2,
+      "nb_membres_cumul_historique": 3,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre": 3
+      },
+      "membres": [
+        {
+          "membre_id": "soumya-bourouaha",
+          "nom": "Soumya Bourouaha",
+          "fonction": "Membre",
+          "debut": "2026-09-23",
+          "fin": "2026-09-23",
+          "actif": false
+        },
+        {
+          "membre_id": "elsa-faucillon",
+          "nom": "Elsa Faucillon",
+          "fonction": "Membre",
+          "debut": "2026-09-24",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "karine-lebon",
+          "nom": "Karine Lebon",
+          "fonction": "Membre",
+          "debut": "2026-07-24",
           "fin": null,
           "actif": true
         }
@@ -111438,26 +111436,6 @@
       ]
     },
     {
-      "categorie": "commission",
-      "label": "Commission chargée de l'application de l'article 26 de la Constitution",
-      "nb_membres_a_la_date_de_reference": 1,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre titulaire": 1
-      },
-      "membres": [
-        {
-          "membre_id": "emeline-k-bidi",
-          "nom": "Émeline K/Bidi",
-          "fonction": "Membre titulaire",
-          "debut": "2025-10-17",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
       "categorie": "commission_enquete",
       "label": "Commission d'enquête sur le coût réel des aides sociales et les effets de désincitation au travail engendrés par leur cumul",
       "nb_membres_a_la_date_de_reference": 1,
@@ -111492,26 +111470,6 @@
           "nom": "Karine Lebon",
           "fonction": "Secrétaire",
           "debut": "2026-06-17",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
-      "categorie": "commission_enquete",
-      "label": "Commission d’enquête relative à l’imposition des plus hauts patrimoines et des revenus les plus élevés et à leur contribution au financement des services publics",
-      "nb_membres_a_la_date_de_reference": 1,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "secrétaire": 1
-      },
-      "membres": [
-        {
-          "membre_id": "emmanuel-maurel",
-          "nom": "Emmanuel Maurel",
-          "fonction": "Secrétaire",
-          "debut": "2026-02-25",
           "fin": null,
           "actif": true
         }
@@ -112619,26 +112577,6 @@
     },
     {
       "categorie": "mission_information",
-      "label": "Mission d'information commune sur l'articulation et la compatibilité des défenses européennes et atlantiques",
-      "nb_membres_a_la_date_de_reference": 1,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 1
-      },
-      "membres": [
-        {
-          "membre_id": "edouard-benard",
-          "nom": "Édouard Bénard",
-          "fonction": "Membre",
-          "debut": "2025-05-28",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
-      "categorie": "mission_information",
       "label": "Mission d'information sur le bilan de la mise en œuvre du rapport « Pour une amélioration de la délivrance des visas » – dit « Hermelin » – et du processus d’externalisation de certains aspects de la délivrance des visas",
       "nb_membres_a_la_date_de_reference": 1,
       "nb_membres_cumul_historique": 1,
@@ -112967,6 +112905,26 @@
       ]
     },
     {
+      "categorie": "commission",
+      "label": "Commission chargée de l'application de l'article 26 de la Constitution",
+      "nb_membres_a_la_date_de_reference": 0,
+      "nb_membres_cumul_historique": 1,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre titulaire": 1
+      },
+      "membres": [
+        {
+          "membre_id": "emeline-k-bidi",
+          "nom": "Émeline K/Bidi",
+          "fonction": "Membre titulaire",
+          "debut": "2025-10-17",
+          "fin": "2026-09-30",
+          "actif": false
+        }
+      ]
+    },
+    {
       "categorie": "commission_enquete",
       "label": "Commission d'enquête concernant l’organisation des élections en France",
       "nb_membres_a_la_date_de_reference": 0,
@@ -113062,6 +113020,26 @@
           "fonction": "Membre",
           "debut": "2024-10-17",
           "fin": "2025-04-02",
+          "actif": false
+        }
+      ]
+    },
+    {
+      "categorie": "commission_enquete",
+      "label": "Commission d’enquête relative à l’imposition des plus hauts patrimoines et des revenus les plus élevés et à leur contribution au financement des services publics",
+      "nb_membres_a_la_date_de_reference": 0,
+      "nb_membres_cumul_historique": 1,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "secrétaire": 1
+      },
+      "membres": [
+        {
+          "membre_id": "emmanuel-maurel",
+          "nom": "Emmanuel Maurel",
+          "fonction": "Secrétaire",
+          "debut": "2026-02-25",
+          "fin": "2026-07-08",
           "actif": false
         }
       ]
@@ -113488,6 +113466,26 @@
     },
     {
       "categorie": "mission_information",
+      "label": "Mission d'information commune sur l'articulation et la compatibilité des défenses européennes et atlantiques",
+      "nb_membres_a_la_date_de_reference": 0,
+      "nb_membres_cumul_historique": 1,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre": 1
+      },
+      "membres": [
+        {
+          "membre_id": "edouard-benard",
+          "nom": "Édouard Bénard",
+          "fonction": "Membre",
+          "debut": "2025-05-28",
+          "fin": "2026-09-30",
+          "actif": false
+        }
+      ]
+    },
+    {
+      "categorie": "mission_information",
       "label": "Mission d'information sur l'articulation des politiques publiques ayant un impact sur l'artificialisation des sols",
       "nb_membres_a_la_date_de_reference": 0,
       "nb_membres_cumul_historique": 1,
@@ -113745,107 +113743,107 @@
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA267306",
-      "synchro_le": "2026-10-08T16:57:51+0000"
+      "synchro_le": "2026-10-08T19:00:15+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA335612",
-      "synchro_le": "2026-10-08T16:57:40+0000"
+      "synchro_le": "2026-10-08T19:09:46+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA605745",
-      "synchro_le": "2026-10-08T16:57:26+0000"
+      "synchro_le": "2026-10-08T19:09:50+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA720838",
-      "synchro_le": "2026-10-08T16:58:21+0000"
+      "synchro_le": "2026-10-08T19:00:25+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA721270",
-      "synchro_le": "2026-10-08T16:57:58+0000"
+      "synchro_le": "2026-10-08T19:00:33+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA721896",
-      "synchro_le": "2026-10-08T16:57:53+0000"
+      "synchro_le": "2026-10-08T19:00:15+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA774962",
-      "synchro_le": "2026-10-08T16:57:57+0000"
+      "synchro_le": "2026-10-08T19:10:14+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793174",
-      "synchro_le": "2026-10-08T16:57:43+0000"
+      "synchro_le": "2026-10-08T19:09:58+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794710",
-      "synchro_le": "2026-10-08T16:58:16+0000"
+      "synchro_le": "2026-10-08T19:10:37+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795240",
-      "synchro_le": "2026-10-08T16:57:53+0000"
+      "synchro_le": "2026-10-08T19:00:16+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795820",
-      "synchro_le": "2026-10-08T16:57:41+0000"
+      "synchro_le": "2026-10-08T19:09:47+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795868",
-      "synchro_le": "2026-10-08T16:57:26+0000"
+      "synchro_le": "2026-10-08T19:09:50+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795876",
-      "synchro_le": "2026-10-08T16:57:57+0000"
+      "synchro_le": "2026-10-08T19:10:15+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795998",
-      "synchro_le": "2026-10-08T16:57:44+0000"
+      "synchro_le": "2026-10-08T19:09:58+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA796010",
-      "synchro_le": "2026-10-08T16:58:22+0000"
+      "synchro_le": "2026-10-08T19:00:25+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA796106",
-      "synchro_le": "2026-10-08T16:58:33+0000"
+      "synchro_le": "2026-10-08T19:01:28+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA842271",
-      "synchro_le": "2026-10-08T16:57:55+0000"
+      "synchro_le": "2026-10-08T19:10:13+0000"
     },
     {
       "type": "europarl",
       "url": "https://www.europarl.europa.eu/meps/fr/24505",
-      "synchro_le": "2026-10-08T16:58:06+0000"
+      "synchro_le": "2026-10-08T19:10:30+0000"
     },
     {
       "type": "parltrack",
       "url": "https://parltrack.org/dumps",
-      "synchro_le": "2026-10-08T17:15:38"
+      "synchro_le": "2026-10-08T19:27:09"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA842299",
-      "synchro_le": "2026-10-08T16:58:31+0000"
+      "synchro_le": "2026-10-08T19:00:40+0000"
     }
   ],
   "meta": {
     "schema_version": "1",
-    "genere_le": "2026-10-08T17:33:39+0000",
+    "genere_le": "2026-10-08T19:58:08+0000",
     "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr + CC BY 4.0 (Parlement européen, Open Data Portal - data.europarl.europa.eu) + ODbL v1.0 (ParlTrack — https://parltrack.org/dumps)",
     "profils_sources": [
       "andre-chassaigne",
