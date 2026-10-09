@@ -220,14 +220,17 @@ function loadDossiersEuropeens() {
 }
 
 /**
- * Charge les seules législatures que le mapping du profil référence, et rend
- * `{ legislature: { id: amendement } }`.
+ * Les amendements que le profil référence, rendus `{ legislature: { amendements,
+ * textes } }`.
  *
- * Les index par législature ne sont pas fusionnés en un seul objet : la
- * résolution se fait par législature, lue dans l'identifiant, donc la fusion ne
- * servirait qu'à recopier jusqu'à 207 238 entrées pour rien.
+ * Lus dans l'extrait que `sync-data` écrit par candidat (#1273) : la fiche
+ * téléchargeait l'index entier de chaque législature, 162 Mo de JSON pour
+ * François Ruffin, et restait blanche une dizaine de secondes. Si l'extrait
+ * manque, l'index entier est chargé comme avant, pour les seules législatures
+ * que le mapping référence : une fiche lente plutôt qu'une fiche sans
+ * amendements.
  */
-async function loadAmendementsPour(pivot) {
+async function loadAmendementsPour(pivot, slug) {
   const legislatures = [
     ...new Set(
       (pivot?.amendements || [])
@@ -235,6 +238,9 @@ async function loadAmendementsPour(pivot) {
         .filter(Boolean),
     ),
   ];
+  if (!legislatures.length) return {};
+  const extrait = await fetchJson(`/data/profiles/${slug}.amendements.json`).catch(() => null);
+  if (extrait?.legislatures) return extrait.legislatures;
   const parts = await Promise.all(legislatures.map(loadAmendementsLegislature));
   return Object.fromEntries(legislatures.map((l, i) => [l, parts[i]]));
 }
@@ -366,7 +372,7 @@ export async function chargerSourcesCandidat(id) {
   if (!pivot) return null;
   // L'index des amendements se charge APRÈS le profil : ce sont les
   // identifiants du mapping qui disent quelles législatures aller chercher.
-  const amendements = await loadAmendementsPour(pivot);
+  const amendements = await loadAmendementsPour(pivot, entry.slug);
   return {
     manifest, entry, pivot, scrutins, fichesGroupe, commissions, scrutinsDossiers,
     dossiersEuropeens, documentsEuropeens, scrutinsEuropeens, amendements,

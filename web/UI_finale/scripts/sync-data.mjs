@@ -15,6 +15,7 @@ import { debutDeFenetre } from '../src/utils/filtrePeriode.js';
 import { repartitionsDesMaillons } from './amendements-lignees.mjs';
 import { legislatureDeAmendementId, selectDerniereLectureVotes } from '../src/utils/lecture.js';
 import { vocabulairesDesFiches } from '../src/utils/amendementsMots.js';
+import { extraitDesAmendements } from '../src/utils/extraitAmendements.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(here, '..');
@@ -329,6 +330,49 @@ const manifestCandidates = candidats
     writeFileSync(cible, texte);
   }
   console.log(`sync-data : vocabulaire des amendements de ${parCandidat.size} candidat(s) — ${(octets / 1e6).toFixed(1)} Mo écrits.`);
+}
+
+/* ── L'EXTRAIT DE L'INDEX DES AMENDEMENTS DE CHAQUE CANDIDAT (#1273) ──────────
+ * La fiche téléchargeait l'index entier de chaque législature : 162 Mo de JSON
+ * lus par le navigateur pour François Ruffin, dont 8 % le concernent, et une
+ * page blanche de 10 à 14 secondes (mesuré le 09/10/2026). Un fichier par
+ * candidat, de la forme même de l'index. Une législature à la fois : l'index de
+ * la XVe pèse 83 Mo. */
+{
+  const parLegislature = new Map();
+  for (const c of manifestCandidates) {
+    const profil = JSON.parse(readFileSync(path.join(pivotProfilesDir, `${c.slug}.pivot.json`), 'utf-8'));
+    for (const a of profil.amendements || []) {
+      const leg = legislatureDeAmendementId(a?.amendement_id);
+      if (!leg) continue;
+      if (!parLegislature.has(leg)) parLegislature.set(leg, new Map());
+      const fiches = parLegislature.get(leg);
+      if (!fiches.has(c.slug)) fiches.set(c.slug, new Set());
+      fiches.get(c.slug).add(a.amendement_id);
+    }
+  }
+  const parCandidat = new Map();
+  for (const [leg, fiches] of parLegislature) {
+    const chemin = path.join(amendementsDir, `${leg}.json`);
+    if (!existsSync(chemin)) continue;
+    const index = JSON.parse(readFileSync(chemin, 'utf-8'));
+    for (const [slug, ids] of fiches) {
+      if (!parCandidat.has(slug)) parCandidat.set(slug, {});
+      parCandidat.get(slug)[leg] = extraitDesAmendements(index, ids);
+    }
+  }
+  let octets = 0;
+  for (const c of manifestCandidates) {
+    const cible = path.join(outDir, 'profiles', `${c.slug}.amendements.json`);
+    if (!parCandidat.has(c.slug)) {
+      if (existsSync(cible)) rmSync(cible);
+      continue;
+    }
+    const texte = JSON.stringify({ legislatures: parCandidat.get(c.slug) });
+    octets += Buffer.byteLength(texte);
+    writeFileSync(cible, texte);
+  }
+  console.log(`sync-data : extrait des amendements de ${parCandidat.size} candidat(s) — ${(octets / 1e6).toFixed(1)} Mo écrits.`);
 }
 
 const CHAMBRE_HORS_INTERFACE = 'Senat';

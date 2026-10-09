@@ -89,7 +89,30 @@ recuperer_donnees() {
 
 Régénérées par un run sur le dépôt public, reprises ici pour que le
 développement porte sur le corpus réel."
-  info "Fait : $(git rev-parse --short HEAD). Pousser vers le privé avec : git push origin main"
+  info "Fait : $(git rev-parse --short HEAD). Pousser vers le privé avec : git push origin HEAD:main"
+}
+
+pousser_vers_le_prive() {
+  # `HEAD:main`, jamais `main` : ce script tourne aussi depuis un worktree
+  # détaché, où la branche `main` LOCALE est celle du checkout partagé, loin
+  # derrière. Le 08/10/2026, `--tout` a poussé cette branche-là au lieu du
+  # commit de récupération — refusé par le distant, sans dégât.
+  git fetch --quiet origin
+  if git merge-base --is-ancestor HEAD origin/main; then
+    info "Rien à pousser vers le privé : origin/main porte déjà ce commit."
+    return 0
+  fi
+  local commit
+  commit=$(git rev-parse HEAD)
+  git push origin "$commit:refs/heads/main"
+
+  # Vérifier la RÉFÉRENCE, jamais le message de la commande qui précède.
+  if [ "$(git ls-remote origin refs/heads/main | cut -f1)" = "$commit" ]; then
+    info "Poussé vers le privé : $(git rev-parse --short "$commit")"
+  else
+    rouge "Le push vers le privé n'a pas abouti — la référence distante ne porte pas ce commit."
+    exit 1
+  fi
 }
 
 publier_code() {
@@ -136,7 +159,7 @@ case "${1:-}" in
   --etat)               etat ;;
   --recuperer-donnees)  verifier_remotes; recuperer_donnees ;;
   --publier-code)       verifier_remotes; publier_code "${2:-}" ;;
-  --tout)               verifier_remotes; recuperer_donnees; git push origin main; publier_code "${2:-}" ;;
+  --tout)               verifier_remotes; recuperer_donnees; pousser_vers_le_prive; publier_code "${2:-}" ;;
   *)
     cat >&2 <<USAGE
 Usage : $0 --etat | --recuperer-donnees | --publier-code <version> | --tout <version>
