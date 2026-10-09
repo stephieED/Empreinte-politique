@@ -371,12 +371,12 @@
             }
           ]
         },
-        "effectif_amo30": 70,
+        "effectif_amo30": 71,
         "effectif_publie": null,
         "succede_a": [
           "AN:SOC:16"
         ],
-        "verifie_le": "2026-08-26",
+        "verifie_le": "2026-10-09",
         "ecart_motif": "Publication configurée par #700 : cette entrée est désormais dans `groupes[]`, la fiche paraît au prochain run. 29 des 70 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les 41 autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution ; la mention « lot 1b » qui figurait ici désignait #527, qui a basculé la SOURCE du roster sur AMO30 et n'a jamais publié de fiche.",
         "membres_avec_slug": 29,
         "ecart_membres": [],
@@ -420,12 +420,12 @@
             }
           ]
         },
-        "effectif_amo30": 131,
+        "effectif_amo30": 134,
         "effectif_publie": null,
         "succede_a": [
           "AN:RN:16"
         ],
-        "verifie_le": "2026-08-26",
+        "verifie_le": "2026-10-09",
         "ecart_motif": "Publication configurée par #700 : cette entrée est désormais dans `groupes[]`, la fiche paraît au prochain run. 79 des 131 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les 52 autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution ; la mention « lot 1b » qui figurait ici désignait #527, qui a basculé la SOURCE du roster sur AMO30 et n'a jamais publié de fiche.",
         "membres_avec_slug": 79,
         "ecart_membres": [],
@@ -1193,9 +1193,9 @@
             }
           ]
         },
-        "effectif_amo30": 44,
+        "effectif_amo30": 45,
         "effectif_publie": null,
-        "verifie_le": "2026-09-11",
+        "verifie_le": "2026-10-09",
         "membres_avec_slug": 14,
         "ecart_membres": [],
         "succede_a": [
