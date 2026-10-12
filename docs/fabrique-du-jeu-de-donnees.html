@@ -126,7 +126,7 @@ svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
     <span><i class="puce" style="background:var(--ph1)"></i>arrive dans Préparer</span>
     <span><i class="puce" style="background:var(--neutre)"></i>entre jobs amont</span>
   </div>
-  <p class="note">Relevé le 25/09/2026 dans <code>.github/workflows/generate-data.yml</code> (<code>origin/main</code> b38076708, après #1129 : 15 jobs, 52 étapes dans <code>merge-and-pivot</code>). Les durées sont dans la figure suivante. L'ordre des nœuds et leurs positions sont calculés pour limiter les croisements.</p>
+  <p class="note">Relevé le 12/10/2026 dans <code>.github/workflows/generate-data.yml</code> (après #1053, qui ajoute <code>extract-finances-etat</code> : 17 jobs, 58 étapes dans <code>merge-and-pivot</code>). Les durées sont dans la figure suivante. L'ordre des nœuds et leurs positions sont calculés pour limiter les croisements.</p>
 </section>
 
 
@@ -389,12 +389,13 @@ svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
     erg:{titre:"extract-roster-groupes × 8", lit:"La composition réelle des groupes (~750 membres)", fait:"La même chaîne qu'<code>extract-an</code>, mais pilotée par le roster plutôt que par la liste éditoriale, et en <b>mode léger</b>.", ecrit:"L'artifact <code>raw-profiles-roster</code> (217 Mo)", garde:"Ces profils alimentent les agrégats de groupe et de gouvernement ; leur bloc d'identité n'est jamais lu."},
     art:{titre:"extract-articles-votes", lit:"Les archives Scrutins, Dossiers législatifs et Agenda des XVe-XVIIe, et le texte HTML de chaque texte discuté (<code>dyn/opendata/&lt;uid&gt;.html</code>)", fait:"Rattache chaque scrutin sur un article à son texte par la séance (<code>seanceRef</code> → acte de séance du dossier → texte discuté), puis lit le titre, le chapitre et le début de l'article.", ecrit:"L'artifact <code>articles-votes</code> : <code>pivot_data/articles_votes.json</code>", garde:"Une archive illisible arrête l'écriture : le fichier du run précédent reste. Un scrutin non rattaché est publié avec son motif (#1264)."},
     jo:{titre:"extract-actes-jo", lit:"Les livraisons quotidiennes de la DILA (<code>echanges.dila.gouv.fr</code>), et les mois déjà publiés", fait:"Les décrets, arrêtés et ordonnances parus depuis 2007, un fichier par mois de parution ; relève en chemin la table <code>numéro de loi → JORFTEXT</code>.", ecrit:"L'artifact <code>actes-jo</code> : les seuls fichiers modifiés (0 ou 2 mois par run), et <code>lois_jorf.json</code>", garde:"Sorti de la fusion par #1129 : les textes promulgués y lisaient la table du run <b>précédent</b>. En amont, elle arrive fraîche."},
-    amo:{titre:"extract-gouvernements", lit:"L'archive AMO30 de l'Assemblée", fait:"Liste les 17 gouvernements depuis 2007. Ne lit pas une ligne du corpus pivot, donc n'a pas à attendre la fusion (#1129).", ecrit:"L'artifact <code>gouvernements-amo30</code> (6 Ko) : <code>raw_data/gouvernements_reels.json</code>", garde:"Une archive illisible lève avant toute écriture : la liste committée reste, et la fusion travaille dessus."},
+    amo:{titre:"extract-gouvernements", lit:"L'archive AMO30 de l'Assemblée", fait:"Liste les 17 gouvernements depuis 2007. Ne lit pas une ligne du corpus pivot, donc n'a pas à attendre la fusion (#1129). Dérive aussi, de la même archive, la liste des députés non inscrits avec leurs périodes (#1265).", ecrit:"L'artifact <code>gouvernements-amo30</code> (6 Ko) : <code>raw_data/gouvernements_reels.json</code> ; l'artifact <code>non-inscrits-amo30</code> (96 Ko) : <code>raw_data/non_inscrits.json</code>", garde:"Une archive illisible lève avant toute écriture : la liste committée reste, et la fusion travaille dessus."},
+    fin:{titre:"extract-finances-etat", lit:"Le portail des ministères économiques et financiers (<code>data.economie.gouv.fr</code>), ceux de la Drees et de l'Unédic, et les deux fichiers déjà publiés", fait:"Les recettes de l'État par impôt depuis 2013, et les crédits du budget général votés et consommés, programme par programme avec leur ministère, depuis 2015 (#1053). Ne relit pas un exercice clos et résolu. Puis, dans une seconde étape, les comptes des caisses sociales : ressources de la protection sociale, prestations par régime, recettes de l'assurance chômage.", ecrit:"L'artifact <code>finances-etat</code> : <code>raw_data/finances_etat.json</code> et <code>raw_data/finances_sociales.json</code>", garde:"Un côté que la source ne publie pas est déclaré, jamais mis à zéro. Une lecture en échec n'écrase pas ce qui était résolu, et un fichier de moins de 100 programmes est refusé."},
     mrg:{titre:"merge-and-pivot", lit:"Tous les artifacts du run", fait:"Le seul job qui écrit dans le dépôt. Dans l'ordre : contrôle du transport des artifacts, <b>fusion additive</b> des profils bruts, passage au format pivot, recomposition des agrégats — groupes, lignées, gouvernements —, puis le portail qualité.", ecrit:"<code>pivot_data/</code>, et le commit du run", garde:"Le portail qualité <b>bloque le commit</b> : ce qui ne passe pas n'est pas publié."}
   }
   var PHASES = {  
     p1:["1 Préparer",{lit:"Le dépôt public (données), le code du privé au SHA épinglé, le cache <code>.cache/dossiers_an</code>", fait:"Superpose le code, installe les dépendances, restaure les archives de dossiers de la semaine et reprend la seule législature encore vivante.", ecrit:"Rien dans le dépôt", garde:"La reprise des archives est absorbée si elle échoue (<code>continue-on-error</code>)."}],
-    p2:["2 Recevoir",{lit:"Les artifacts de dix jobs amont : AN, UE, roster, Sénat, mandats locaux, actes du JO, gouvernements, ParlTrack, portail européen, candidats", fait:"Télécharge chaque artifact, tous optionnels ; dit le périmètre publié ; puis contrôle le transport.", ecrit:"<code>_artifacts/</code> ; les actes du JO et <code>lois_jorf.json</code> directement à leur place, la liste des gouvernements dans <code>raw_data/</code>", garde:"<code>verifier_transport_artifacts.py</code> : un artifact publié mais absent du disque est rattrapé, puis bloque. Une source qui n'a rien publié reste silencieuse."}],
+    p2:["2 Recevoir",{lit:"Les artifacts de onze jobs amont : AN, UE, roster, Sénat, mandats locaux, actes du JO, gouvernements, finances de l'État, ParlTrack, portail européen, candidats", fait:"Télécharge chaque artifact, tous optionnels ; dit le périmètre publié ; puis contrôle le transport.", ecrit:"<code>_artifacts/</code> ; les actes du JO et <code>lois_jorf.json</code> directement à leur place, la liste des gouvernements dans <code>raw_data/</code>", garde:"<code>verifier_transport_artifacts.py</code> : un artifact publié mais absent du disque est rattrapé, puis bloque. Une source qui n'a rien publié reste silencieuse."}],
     p3:["3 Fusionner",{lit:"<code>_artifacts/an</code>, <code>ue</code>, <code>roster</code>, <code>senat</code>, <code>mandats-locaux</code>", fait:"<b>Fusion additive</b> des profils bruts, et reconduction des tranches d'amendements closes.", ecrit:"<code>raw_data/profiles/</code>", garde:"Une collecte vide n'écrase rien : seuls les slugs présents dans les artifacts sont réécrits."}],
     p4:["4 Passer au pivot",{lit:"<code>raw_data/profiles/</code>, <code>candidats.json</code>, le roster du run, l'artifact d'amendements, les dumps ParlTrack", fait:"Télécharge l'index d'amendements <b>avant</b> les passes (#1101), puis deux passes <code>--pivot-only</code> : les candidats avec ParlTrack, puis le roster.", ecrit:"<code>pivot_data/profiles/</code>, <code>scrutins.json</code>, <code>amendements/</code>", garde:"Sans artifact de roster, la liste est reconstruite en repli."}],
     p5:["5 Indexer",{lit:"Les archives de dossiers, les dumps ParlTrack, le cache du portail européen, et <code>lois_jorf.json</code> tout juste livré par <code>extract-actes-jo</code>", fait:"Commissions au fond, textes promulgués, scrutins → dossiers, trois index européens. Seul réseau restant : les libellés EuroVoc, par SPARQL, qui dérivent de l'index qu'on vient de composer.", ecrit:"<code>commissions_dossiers.json</code>, <code>textes_promulgues.json</code>, <code>scrutins_dossiers.json</code>, <code>*_europeens.json</code>", garde:"Aucune tolérance sur les index européens : un dump absent fait échouer l'étape plutôt que d'écrire un index vide."}],
@@ -439,13 +440,14 @@ svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
     {id:"prr", c:1, k:"parl",  t:"prepare-roster-matrix", s:"la matrice des groupes"},
     {id:"jo",  c:1, k:"gouv",  t:"extract-actes-jo", s:"DILA · actes, lois"},
     {id:"amo", c:1, k:"gouv",  t:"extract-gouvernements", s:"AMO30 · 17 gouvernements"},
+    {id:"fin", c:1, k:"gouv",  t:"extract-finances-etat", s:"budget de l'État"},
     {id:"art", c:1, k:"parl",  t:"extract-articles-votes", s:"articles soumis au vote"},
     {id:"pra", c:2, k:"parl",  t:"prepare-an-matrix", s:"la matrice des profils"},
     {id:"rech",c:2, k:"pe",    t:"rechauffer-le-portail", s:"cache du portail européen"},
     {id:"ean", c:3, k:"parl",  t:"extract-an × 32", s:"un shard par candidat"},
     {id:"erg", c:4, k:"parl",  t:"extract-roster × 8", s:"les groupes réels"},
     {id:"p1", c:5, t:"1 Préparer", s:"7 étapes · caches, code"},
-    {id:"p2", c:5, t:"2 Recevoir", s:"13 étapes · 10 artifacts"},
+    {id:"p2", c:5, t:"2 Recevoir", s:"15 étapes · 12 artifacts"},
     {id:"p3", c:5, t:"3 Fusionner", s:"1 étape · merge_profile"},
     {id:"p4", c:5, t:"4 Passer au pivot", s:"5 étapes · 2 passes"},
     {id:"p5", c:5, t:"5 Indexer", s:"7 étapes · AN, UE"},
@@ -455,11 +457,11 @@ svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
   ];
   var LIENS = [
     ["epi","cand","encre"],["epi","amd","encre"],["epi","ue","encre"],["epi","plt","encre"],
-    ["epi","sen","encre"],["epi","loc","encre"],["epi","prr","encre"],["epi","jo","encre"],["epi","amo","encre"],["epi","art","encre"],["epi","p1","encre"],
+    ["epi","sen","encre"],["epi","loc","encre"],["epi","prr","encre"],["epi","jo","encre"],["epi","amo","encre"],["epi","fin","encre"],["epi","art","encre"],["epi","p1","encre"],
     ["cand","pra","neutre"],["plt","rech","pe"],["amd","ean","parl"],["pra","ean","parl"],
     ["ean","erg","parl"],["amd","erg","parl"],["ue","erg","pe"],["plt","erg","pe"],["prr","erg","parl"],
     ["ean","p2","parl"],["erg","p2","parl"],["ue","p2","pe"],["sen","p2","senat"],["loc","p2","neutre"],
-    ["plt","p2","pe"],["rech","p2","pe"],["cand","p2","neutre"],["jo","p2","gouv"],["amo","p2","gouv"],["art","p2","parl"],
+    ["plt","p2","pe"],["rech","p2","pe"],["cand","p2","neutre"],["jo","p2","gouv"],["amo","p2","gouv"],["fin","p2","gouv"],["art","p2","parl"],
     ["amd","p4","parl"],["prr","p4","parl"]
   ];
   var H = 42, TOP = 44, HAUT = 600;
@@ -692,10 +694,10 @@ svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
     "prepare-roster-matrix":"la composition des groupes","extract-senat":"appartenances seulement","extract-parltrack":"dumps européens",
     "extract-ue-officiel":"portail du Parlement européen","extract-mandats-locaux":"répertoire national des élus","rechauffer-le-portail-europeen":"cache du portail",
     "extract-amendements-an":"index des amendements","extract-an":"shards, un par candidat","extract-roster-groupes":"shards, membres de groupe",
-    "merge-and-pivot":"fusion, contrôles, commit, push","extract-actes-jo":"actes du Journal officiel","extract-gouvernements":"les gouvernements, depuis AMO30","extract-articles-votes":"les articles soumis au vote"};
+    "merge-and-pivot":"fusion, contrôles, commit, push","extract-actes-jo":"actes du Journal officiel","extract-gouvernements":"les gouvernements, depuis AMO30","extract-finances-etat":"le budget de l'État","extract-articles-votes":"les articles soumis au vote"};
   var TEINTE = {"extract-senat":"--senat","extract-parltrack":"--pe","extract-ue-officiel":"--pe","rechauffer-le-portail-europeen":"--pe",
     "extract-mandats-locaux":"--neutre","extract-amendements-an":"--parl","extract-an":"--parl","extract-roster-groupes":"--parl",
-    "extract-actes-jo":"--gouv","extract-gouvernements":"--gouv","extract-articles-votes":"--parl"};
+    "extract-actes-jo":"--gouv","extract-gouvernements":"--gouv","extract-finances-etat":"--gouv","extract-articles-votes":"--parl"};
   /* Ce que chaque option ajoute, quand l'écart dépasse le bruit : entre ces
      trois runs, les jobs qui ne lisent aucune option varient déjà jusqu'à
      2,4 min. */

@@ -328,6 +328,14 @@ Format d'un profil pivot v1 :
                                              # Le fait sourcé : préfixe de l'uid du document
                                              # déposé (PRJL/PION/PNRE). null = la source ne
                                              # l'établit pas — jamais tiré du libellé.
+            "type_resolution": null,         # ce qu'une proposition de résolution DEMANDE
+                                             # (#1276), cf. KNOWN_TYPES_RESOLUTION. Lu dans
+                                             # `classification.sousType` du document déposé,
+                                             # jamais dans le titre. null pour tout texte qui
+                                             # n'est pas une résolution de l'Assemblée.
+            "type_resolution_non_resolu": null,  # {"motif": …} SEULEMENT pour une résolution
+                                             # de l'Assemblée dont le type est null, et il
+                                             # l'explique. cf. KNOWN_MOTIFS_TYPE_RESOLUTION_NON_RESOLU
             "type_rapport": null,            # nomenclature officielle, descriptive uniquement :
                                              # "rapporteur_fond" | "rapporteur_avis" |
                                              # "rapporteur_special_budget" | "mission_information"
@@ -1433,6 +1441,43 @@ KNOWN_STADES_PROCEDURAUX: frozenset[str] = STADES_PROCEDURAUX_AN | STADES_PROCED
 # dérivée d'un libellé rouille, et se tait en rouillant (#672).
 KNOWN_NATURES_TEXTE: frozenset[str] = frozenset({
     "projet_de_loi", "proposition_de_loi", "proposition_de_resolution",
+})
+
+# Ce qu'une proposition de résolution demande (#1276). `nature_texte` range sous
+# une seule valeur un vœu adressé au Gouvernement, une résolution européenne,
+# une modification du Règlement et une demande de commission d'enquête ; le
+# titre du dossier n'en dit rien non plus (« Les violences commises sur les
+# mineurs dans les temps périscolaires et extrascolaires » est une demande de
+# commission d'enquête). L'Assemblée le dit sur le document déposé,
+# `classification.sousType.code`, que `gouvernement_textes.type_resolution_depose`
+# traduit par `TYPE_RESOLUTION_PAR_SOUS_TYPE` — sept codes sur les archives XIV
+# à XVII, mesurés le 12/10/2026.
+#
+# **Reading aid à part entière, pas une qualification du rôle** : `role` n'en
+# dérive pas, et aucun compte publié ne change.
+KNOWN_TYPES_RESOLUTION: frozenset[str] = frozenset({
+    "article_34_1",
+    "travaux_institutions_europeennes",
+    "creation_commission_d_enquete",
+    "modification_reglement_an",
+    "mise_en_accusation_president",
+    "suspension_de_poursuites",
+    "propositions_d_actes_communautaires",
+})
+
+#: Pourquoi une proposition de résolution de l'Assemblée ne porte pas son type
+#: (#1276). Fermé, et chaque motif se répare ailleurs : `sans_document` — le
+#: dossier n'a pas de document de dépôt ; `document_absent` — il en nomme un que
+#: l'archive ne contient pas ; `sous_type_absent` — le document est là, sans
+#: classification ; `sous_type_inconnu` — la source a posé un code que la table
+#: ne connaît pas (le motif porte alors `code`) ; `non_relu` — l'entrée a été
+#: collectée avant #1276 et aucun run n'a relu son dossier depuis.
+KNOWN_MOTIFS_TYPE_RESOLUTION_NON_RESOLU: frozenset[str] = frozenset({
+    "sans_document",
+    "document_absent",
+    "sous_type_absent",
+    "sous_type_inconnu",
+    "non_relu",
 })
 
 # Rôle factuel de l'élu sur le texte. ``None`` signifie que la source ne
@@ -2765,6 +2810,51 @@ def validate_profil(
                         f"nature_texte={nature_texte!r}, qui appelle {attendu!r} "
                         "(#689). Le rôle d'un initiateur est dérivé de la nature "
                         "du texte, jamais collecté à côté d'elle."
+                    )
+            # #1276 — le type d'une résolution et le motif de son absence, même
+            # couple que `sort` / `sort_non_resolu`. L'obligation de nommer la
+            # cause ne porte que sur les résolutions de l'Assemblée : une
+            # activité du Parlement européen ne passe pas par cette lecture.
+            type_resolution = t.get("type_resolution")
+            type_non_resolu = t.get("type_resolution_non_resolu")
+            if type_resolution is not None:
+                if type_resolution not in KNOWN_TYPES_RESOLUTION:
+                    errors.append(
+                        f"textes_portes[{i}].type_resolution non reconnu : "
+                        f"{type_resolution!r}. Valeurs connues : "
+                        f"{sorted(KNOWN_TYPES_RESOLUTION)}."
+                    )
+                if nature_texte != "proposition_de_resolution":
+                    errors.append(
+                        f"textes_portes[{i}] porte type_resolution={type_resolution!r} "
+                        f"sur nature_texte={nature_texte!r} — seul un texte de "
+                        "nature proposition_de_resolution a un type (#1276)."
+                    )
+                if type_non_resolu is not None:
+                    errors.append(
+                        f"textes_portes[{i}] porte à la fois type_resolution et "
+                        "type_resolution_non_resolu — un type lu n'a pas de motif "
+                        "d'absence."
+                    )
+            elif (
+                nature_texte == "proposition_de_resolution"
+                and t.get("institution") != "parlement_europeen"
+                and type_non_resolu is None
+            ):
+                errors.append(
+                    f"textes_portes[{i}] : proposition de résolution sans "
+                    "type_resolution ni type_resolution_non_resolu — une absence "
+                    "doit nommer sa cause (AGENTS.md §2 règle 5)."
+                )
+            if type_non_resolu is not None:
+                if not isinstance(type_non_resolu, dict):
+                    errors.append(
+                        f"textes_portes[{i}].type_resolution_non_resolu doit être un dict.")
+                elif type_non_resolu.get("motif") not in KNOWN_MOTIFS_TYPE_RESOLUTION_NON_RESOLU:
+                    errors.append(
+                        f"textes_portes[{i}].type_resolution_non_resolu.motif inconnu : "
+                        f"{type_non_resolu.get('motif')!r}. Valeurs connues : "
+                        f"{sorted(KNOWN_MOTIFS_TYPE_RESOLUTION_NON_RESOLU)}."
                     )
             type_rapport = t.get("type_rapport")
             if type_rapport is not None and type_rapport not in KNOWN_TYPES_RAPPORT:

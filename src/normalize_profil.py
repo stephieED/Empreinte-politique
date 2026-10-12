@@ -60,7 +60,9 @@ from schema_pivot import (
     CHAMBRE_COLLECTE_VERS_PIVOT,
     COLLECTE_EXTRAIT,
     COLLECTE_THEME_SEUL,
+    KNOWN_MOTIFS_TYPE_RESOLUTION_NON_RESOLU,
     KNOWN_NATURES_TEXTE,
+    KNOWN_TYPES_RESOLUTION,
     ROLE_INITIATEUR_PAR_NATURE,
     SCHEMA_VERSION,
     appliquer_chambres,
@@ -376,6 +378,34 @@ def _role_texte_porte(role_brut: Any, nature: Optional[str]) -> Optional[str]:
     return ROLE_INITIATEUR_PAR_NATURE.get(nature, "auteur")
 
 
+def _type_resolution(
+    d: dict[str, Any], nature: Optional[str]
+) -> tuple[Optional[str], Optional[dict[str, Any]]]:
+    """Le type d'une proposition de résolution et, à défaut, son motif (#1276).
+
+    `(None, None)` pour tout autre texte : la question ne s'y pose pas.
+
+    Une entrée brute collectée avant #1276 ne porte aucune des deux clés. Elle
+    sort `non_relu` — ce qui est exactement ce qu'on en sait — jusqu'à ce qu'un
+    run relise son dossier : `merge_dossier_records` fait gagner l'entrée neuve,
+    donc le type arrive seul, sans report à écrire. Un dossier que l'Assemblée
+    ne sert plus garde `non_relu`, et c'est un trou déclaré (AGENTS.md §2
+    règle 5).
+    """
+    if nature != "proposition_de_resolution":
+        return None, None
+    type_resolution = d.get("type_resolution")
+    if type_resolution in KNOWN_TYPES_RESOLUTION:
+        return type_resolution, None
+    non_resolu = d.get("type_resolution_non_resolu")
+    if (
+        isinstance(non_resolu, dict)
+        and non_resolu.get("motif") in KNOWN_MOTIFS_TYPE_RESOLUTION_NON_RESOLU
+    ):
+        return None, non_resolu
+    return None, {"motif": "non_relu"}
+
+
 def _normalize_texte_porte(d: dict[str, Any]) -> dict[str, Any]:
     """Normalise un dossier législatif brut vers le format pivot `textes_portes`.
 
@@ -408,11 +438,14 @@ def _normalize_texte_porte(d: dict[str, Any]) -> dict[str, Any]:
     nature = d.get("nature_texte")
     if nature not in KNOWN_NATURES_TEXTE:
         nature = None
+    type_resolution, type_resolution_non_resolu = _type_resolution(d, nature)
     return {
         "titre": d.get("titre") or None,
         "dossier_id": d.get("id") or None,
         "role": _role_texte_porte(d.get("role"), nature),
         "nature_texte": nature,
+        "type_resolution": type_resolution,
+        "type_resolution_non_resolu": type_resolution_non_resolu,
         "type_rapport": d.get("type_rapport"),
         "stade_procedural": d.get("stade_procedural"),
         # #743 — l'ISSUE du dossier, à côté de sa PROGRESSION et jamais à sa

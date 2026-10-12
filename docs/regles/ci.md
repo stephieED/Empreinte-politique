@@ -53,10 +53,11 @@ les charger, ni à les faire grossir. -->
   besides `github` and `inputs`, that `strategy` and `timeout-minutes` accept. **The cron
   is live since that same lot**, and one test refuses the combination that would hurt:
   **a live `schedule:` without those bash defaults.** A second one requires the `on:`
-  block to state both the zone and **the local time the cron amounts to**: GitHub reads
-  cron in **UTC only**, so `0 6` was 8 a.m. locally, not 6 — the lot's own first draft
-  read the value as local. A fixed value also shifts by an hour twice a year, and nothing
-  on GitHub's side can express it otherwise. A scheduled trigger can be served late at
+  block to **declare its zone** — `timezone: "Europe/Paris"`, beside the cron — and to
+  state what the cron amounts to without it: GitHub reads a cron in **UTC by default**, so
+  `0 6` was 8 a.m. locally, not 6 — the lot's own first draft read the value as local.
+  The two lines go together: drop the zone and the run silently moves by two hours in
+  summer. A scheduled trigger can be served late at
   peak hours: it is a cadence, not an appointment.
   → `docs/decisions/defauts-d-inputs-sur-declenchement-programme-1054.md`
 - **A timeout is a cancellation, not a failure, and `continue-on-error` does not cover it

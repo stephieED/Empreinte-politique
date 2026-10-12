@@ -179,11 +179,14 @@ def test_le_cache_disque_change_de_version():
     l'index gagne 3 402 dossiers. Quatrième incrément, même règle — un cache
     porte le code ET les sources qui l'ont écrit.
 
+    **`_v6` depuis #1276** : chaque proposition de résolution gagne son type,
+    lu dans le document déposé. Cinquième incrément.
+
     Aucune version antérieure ne doit subsister dans le source.
     """
     source = Path(candidate_profile.__file__).read_text(encoding="utf-8")
-    assert "index_acteur_textes_v5.json" in source
-    for perimee in ("v4", "v3", "v2"):
+    assert "index_acteur_textes_v6.json" in source
+    for perimee in ("v5", "v4", "v3", "v2"):
         assert f"index_acteur_textes_{perimee}.json" not in source
 
 
@@ -309,7 +312,14 @@ def _profil_avec_texte(**texte) -> dict:
 
 def test_un_role_coherent_avec_sa_nature_est_valide():
     for nature, role in ROLE_INITIATEUR_PAR_NATURE.items():
-        assert validate_profil(_profil_avec_texte(role=role, nature_texte=nature)) == []
+        # #1276 : une résolution de l'Assemblée nomme son type ou la cause de
+        # son absence — ici celle d'une entrée qu'aucun run n'a relue.
+        non_resolu = (
+            {"type_resolution_non_resolu": {"motif": "non_relu"}}
+            if nature == "proposition_de_resolution" else {}
+        )
+        assert validate_profil(
+            _profil_avec_texte(role=role, nature_texte=nature, **non_resolu)) == []
     assert validate_profil(_profil_avec_texte(role="auteur", nature_texte=None)) == []
     assert validate_profil(_profil_avec_texte(role="rapporteur", nature_texte="projet_de_loi")) == []
 

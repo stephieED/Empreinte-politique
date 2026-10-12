@@ -451,11 +451,15 @@ def test_un_cron_actif_ne_va_jamais_sans_ses_defauts_en_bash():
         )
 
 
-def test_le_cron_est_lu_en_utc_et_reste_une_seule_cadence():
+def test_le_cron_dit_son_fuseau_et_reste_une_seule_cadence():
     """Deux choses qu'on ne veut pas découvrir à l'usage : que l'heure était
-    comprise comme locale — GitHub ne connaît que l'UTC — et qu'un second cron
-    se soit ajouté sans qu'on s'en aperçoive, un run de données n'étant pas
-    rejouable sans conséquence (il committe)."""
+    comprise comme locale alors que GitHub la lisait en UTC, et qu'un second
+    cron se soit ajouté sans qu'on s'en aperçoive, un run de données n'étant
+    pas rejouable sans conséquence (il committe).
+
+    Depuis le 12/10/2026 le fuseau est DÉCLARÉ (`timezone:`), et c'est cette
+    ligne qui fait de l'heure une heure de Paris : la retirer rend le cron à
+    l'UTC, deux heures plus tard en été, sans erreur."""
     contenu = GENERATE.read_text(encoding="utf-8")
     crons = re.findall(r"^    - cron: '([^']+)'\s*$", contenu, re.MULTILINE)
     if not crons:
@@ -464,9 +468,16 @@ def test_le_cron_est_lu_en_utc_et_reste_une_seule_cadence():
     champs = crons[0].split()
     assert len(champs) == 5, f"cron mal formé : {crons[0]!r}"
     entete = contenu[: contenu.index("  workflow_dispatch:")]
+    fuseaux = re.findall(r"^      timezone: \"([^\"]+)\"\s*$", entete, re.MULTILINE)
+    assert fuseaux == ["Europe/Paris"], (
+        f"fuseau(x) du cron : {fuseaux}. Sans la ligne `timezone:`, GitHub lit "
+        "le cron en UTC et le run part deux heures plus tard en été ; avec un "
+        "autre fuseau, l'heure écrite n'est plus celle que la propriétaire a "
+        "demandée."
+    )
     assert "UTC" in entete, (
-        "le bloc `on:` ne dit plus que l'heure du cron est en UTC : c'est la "
-        "seule information qui manque pour lire la ligne correctement."
+        "le bloc `on:` ne dit plus ce que vaut le cron SANS son fuseau : c'est "
+        "ce qui fait comprendre que les deux lignes vont ensemble."
     )
     assert "Paris" in entete, (
         "le bloc `on:` ne donne plus l'heure LOCALE que vaut ce cron. C'est "

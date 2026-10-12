@@ -123,19 +123,42 @@ def test_le_serveur_de_developpement_resout_les_adresses_sans_extension() -> Non
 
 
 def test_un_instantane_ne_se_nomme_pas_autrement_dans_son_texte() -> None:
-    """Un article de type instantané : ni « rapport », ni « panorama » dans le texte visible.
+    """Un article de type instantané ne se désigne pas lui-même comme « ce rapport » ou « ce panorama ».
 
     Le 23/09/2026 la même page se nommait de trois façons — « instantané » dans
     la barre, « ce rapport » dans un titre, « ce panorama » dans le chapeau.
     L'adresse `/rapports` reste, elle : c'est un identifiant, pas un mot lu.
+
+    **Ce que la garde vise, c'est le nom que la page se donne, pas le mot.**
+    Jusqu'au 12/10/2026 elle refusait toute occurrence de « rapport » ou de
+    « panorama » : elle a alors bloqué le titre d'une figure (« Panorama des
+    textes déposés par les groupes parlementaires ») et le titre d'un texte de
+    l'Assemblée (« … l'équilibre dans les rapports locatifs »), qui ne nomment
+    ni l'un ni l'autre l'article. La propriétaire, le 12/10 : « il ne
+    s'agissait pas d'appliquer une règle aussi stricte ».
+    → `docs/decisions/rapport-et-panorama-mots-permis-1217.md`
     """
+    se_nomme = re.compile(
+        r"\b(?:ce|cet|le présent|la présente|notre)\s+(?:nouveau\s+|nouvelle\s+)?(rapport|panorama)\b",
+        re.IGNORECASE,
+    )
     for page in instantanes():
         visible = re.sub(r"<[^>]*>", " ", page.read_text(encoding="utf-8"))
         visible = re.sub(r"\s+", " ", visible)
-        for mot in ("rapport", "panorama"):
-            # Le nom seul, jamais un mot qui le contient : « rien n'est rapporté
-            # à un possible » est une phrase de la page, et elle est juste.
-            trouve = re.search(rf"\b{mot}s?\b", visible, re.IGNORECASE)
-            assert trouve is None, (
-                f"{page.name} nomme son objet « {mot} » : le mot publié est « article », de type « instantané »"
-            )
+        trouve = se_nomme.search(visible)
+        assert trouve is None, (
+            f"{page.name} se désigne par « {trouve.group(0) if trouve else ''} » : "
+            "le mot publié pour l'objet est « article », de type « instantané »"
+        )
+
+
+def test_la_garde_du_nom_laisse_passer_un_titre_de_figure_et_refuse_ce_rapport() -> None:
+    """La garde ci-dessus, sur les deux phrases qui l'ont fait resserrer et sur celle qu'elle doit encore refuser."""
+    se_nomme = re.compile(
+        r"\b(?:ce|cet|le présent|la présente|notre)\s+(?:nouveau\s+|nouvelle\s+)?(rapport|panorama)\b",
+        re.IGNORECASE,
+    )
+    assert se_nomme.search("Panorama des textes déposés par les groupes parlementaires") is None
+    assert se_nomme.search("Retrouver la confiance et l’équilibre dans les rapports locatifs") is None
+    assert se_nomme.search("Ce que ce rapport ne dit pas") is not None
+    assert se_nomme.search("ce panorama liste les interventions") is not None

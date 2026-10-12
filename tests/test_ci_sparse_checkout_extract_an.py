@@ -56,6 +56,7 @@ _LITTERAL_PLAT = re.compile(r'"raw_data/([\w./-]+)"?')
 #: de correspondance, et il est au budget le plus serré du premier étage.
 JOBS_AVEC_LISTE_BLANCHE = ("rafraichir-candidats", "prepare-an-matrix", "extract-an",
                            "extract-actes-jo", "extract-gouvernements",
+                           "extract-finances-etat",
                            "extract-amendements-an", "extract-articles-votes")
 
 
@@ -327,14 +328,38 @@ def test_le_job_des_actes_prend_les_mois_deja_publies():
     )
 
 
-def test_le_job_des_gouvernements_ne_prend_que_ce_qu_il_ecrit():
-    tranche = _tranche_du_job("extract-gouvernements")
-    assert "src" in tranche
-    assert "raw_data/gouvernements_reels.json" in tranche
-    assert "pivot_data" not in tranche, (
-        "ce job ne lit pas le corpus pivot — zéro occurrence de `pivot_data` "
-        "dans gouvernements_amo30.py, c'est la raison même de l'avoir sorti"
+def test_le_job_des_gouvernements_ne_prend_que_ce_qu_il_ecrit(tmp_path):
+    """Depuis #1265 le job écrit aussi `raw_data/non_inscrits.json`, et lit la
+    table de correspondance pour le faire. Il ne touche toujours pas au corpus
+    pivot — la raison même de l'avoir sorti."""
+    assert "pivot_data" not in _tranche_du_job("extract-gouvernements")
+    chemins = _liste_blanche("extract-gouvernements", tmp_path)
+    assert "src" in chemins
+    assert "raw_data/gouvernements_reels.json" in chemins
+    assert "raw_data/correspondance_acteurs_an.json" in chemins, (
+        "sans la table de correspondance, `non_inscrits_amo30.py` refuse d'écrire"
     )
+    assert not [c for c in chemins if c.startswith("pivot_data")], (
+        "ce job ne lit pas le corpus pivot — zéro occurrence de `pivot_data` "
+        "dans gouvernements_amo30.py, et `non_inscrits_amo30.py` n'en lit pas "
+        "davantage"
+    )
+
+
+def test_le_job_des_finances_prend_son_fichier_pour_ne_pas_tout_relire():
+    """#1053 : un exercice clos et résolu ne se relit pas — à condition que le
+    fichier committé soit sur le disque. Hors de la liste blanche, chaque run
+    relirait les onze exercices."""
+    tranche = _tranche_du_job("extract-finances-etat")
+    assert "src" in tranche
+    assert "raw_data/finances_etat.json" in tranche
+    assert "pivot_data" not in tranche, "finances_etat.py ne lit pas le corpus pivot"
+
+
+def test_le_job_des_finances_prend_aussi_le_fichier_des_caisses_sociales():
+    """#1053 : une partie non lue garde celle déjà publiée — à condition que le
+    fichier committé soit sur le disque."""
+    assert "raw_data/finances_sociales.json" in _tranche_du_job("extract-finances-etat")
 
 
 def test_le_job_des_articles_votes_ne_prend_que_ce_qu_il_ecrit():

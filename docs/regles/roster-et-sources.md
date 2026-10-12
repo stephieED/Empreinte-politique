@@ -109,6 +109,17 @@ les charger, ni à les faire grossir. -->
   dated line in `membres_sans_slug`. Guarded by `tests/test_an_roster.py`, on a
   **reduction** of the real archive — never a hand-written fixture (#510).
   → `docs/decisions/roster-an-derive-amo30-526.md`
+- **The non-attached deputies are a list, never a group sheet (#1265).**
+  `non_inscrits_amo30.py` reads the `NI` organ the roster deliberately skips and
+  writes `raw_data/non_inscrits.json`: people and their periods, nothing else —
+  no cohesion, no ratio, no thematic footprint. **It is not meant for the site**
+  (arbitrated 12/10/2026): it completes articles, so it lives in `raw_data/`,
+  never in `pivot_data/`, the only layer `web/` reads. The opening transit is dropped by the roster's own rule
+  (`est_mandat_de_transit`) **and counted** in `transit_d_ouverture`; a short
+  stay outside that transit is published as the source gives it, with no duration
+  threshold. A person without a table entry keeps `membre_id: null` — never a
+  fabricated slug, which would point at a sheet that does not exist.
+  → `docs/decisions/liste-des-deputes-non-inscrits-1265.md`
 - **A group's political position is the Assembly's own declaration, read from the
   committed table (#686).** `organe.positionPolitique` qualifies 40 of the 63 `GP` organs;
   the sheet publishes `position_politique` — `position`, `source_url` **required even on

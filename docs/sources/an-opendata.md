@@ -332,6 +332,27 @@ like any deputy, with her `etatCivil`. A roster built on `GP` mandates alone
 cannot see them, which is why `gouvernement_roster_an.py` reads the organes
 directly.
 
+### L'organe « Non inscrit » : un organe `GP` qui n'est pas un groupe (#526, #1265)
+
+Les députés non inscrits sont publiés comme un organe `codeType == "GP"` de
+`libelleAbrev` `NI`, **un par législature** — mesuré de la XIIe à la XVIIe
+(`PO840056` sur la XVIIe). Rien dans l'organe ne le distingue d'un groupe ; c'est
+son sigle qui le dit.
+
+**Il ouvre avec la législature, avant que les groupes se constituent**
+(2024-07-01 contre 2024-07-18 sur la XVIIe) : tous les députés y transitent
+entre les deux dates. Mesuré sur l'archive du 17/08/2026 : 577 mandats de transit
+sur la XVe, 576 sur la XVIe, 577 sur la XVIIe, **aucun** sur la XIVe. Un mandat
+`NI` clos au plus tard le jour où le premier groupe de la législature s'ouvre est
+un passage administratif, pas une appartenance.
+
+**Hors de ce transit, la plupart des passages durent quelques jours** : 81 des
+98 périodes de la XVIIe sont closes en sept jours au plus — un député qui arrive
+en cours de législature y passe avant de rejoindre son groupe. Compter « les
+non-inscrits » sans date n'a donc pas de sens ; il faut dire à quelle date.
+
+Ce qu'on en fait : `docs/decisions/liste-des-deputes-non-inscrits-1265.md`.
+
 ## Legislative files (bulk, multi-legislature in one file)
 
 `.../17/loi/dossiers_legislatifs/Dossiers_Legislatifs.json.zip` (~10 MB,
@@ -453,6 +474,46 @@ dossier gouvernemental et n'est donc pas mappé. Les arbitrages — en particuli
 Le retrait a son propre `codeActe` dédié, sans `statutConclusion` associé :
 `AN1-RTRINI` (53 occurrences, ex. `DLR5L17N51314`) / `ANLUNI-RTRINI`
 (29 occurrences, ex. `DLR5L17N52157`).
+
+### Ce qu'une proposition de résolution demande : `classification.sousType` (mesuré le 12/10/2026, #1276)
+
+Le **dossier** d'une résolution ne dit pas ce qu'elle demande. Son titre est
+l'objet seul, et sa procédure est la même pour toutes :
+
+```json
+"titreDossier": {"titre": "Les violences commises sur les mineurs dans les temps périscolaires et extrascolaires"},
+"procedureParlementaire": {"code": "8", "libelle": "Résolution"}
+```
+
+Le **document déposé** (`json/document/PNRE….json`, celui que nomme
+`texteAssocie` sur l'acte `*-DEPOT`) le dit deux fois : dans son titre long, et
+dans sa classification.
+
+```json
+"titres": {"titrePrincipal": "proposition de résolution tendant à la création d'une commission d'enquête relative aux violences commises sur les mineurs…",
+           "titrePrincipalCourt": "Les violences commises sur les mineurs…"},
+"classification": {"type": {"code": "PNRE", "libelle": "Proposition de résolution"},
+                   "sousType": {"code": "COMENQ", "libelle": "tendant à la création d'une commission d'enquête"}}
+```
+
+On lit `sousType.code`, jamais le titre. Mesuré sur les quatre archives lues
+(XIV à XVII, copies locales du 18/08 au 23/09/2026), 1 810 dossiers de
+résolution :
+
+| `sousType.code` | Libellé de la source | Dossiers |
+| --- | --- | ---: |
+| `APPART341` | en application de l'article 34-1 de la Constitution | 904 |
+| `COMENQ` | tendant à la création d'une commission d'enquête | 536 |
+| `TVXINSTITEUROP` | sur les travaux conduits par les institutions européennes | 320 |
+| `MODREGLTAN` | modifiant le Règlement de l'Assemblée nationale | 38 |
+| `ACCPRESRP` | portant mise en accusation du Président de la République | 5 |
+| `SUSPOURS` | demandant la suspension de poursuites | 2 |
+| `PROPACTCOM` | portant sur des propositions d'actes communautaires | 2 |
+| — | document nommé par le dossier, absent de l'archive (XVe) | 2 |
+| — | dossier sans document de dépôt (XVIe) | 1 |
+
+`sousType` existe aussi sur les lois (`ORG`, `CONST`, `FIN`, `FINSSOC`,
+`AUTRATCONV`…) : **non lu**, hors de #1276.
 
 ### Le piège des `codeActe` de commission : la saisine est automatique (2026-09-18)
 

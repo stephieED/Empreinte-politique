@@ -86,18 +86,18 @@ def test_un_index_relu_du_cache_le_dit(monkeypatch, tmp_path, capsys):
     PAS reconstruit, donc il porte le code qui l'a écrit, pas celui qui
     tourne."""
     _isole(monkeypatch, tmp_path)
-    (tmp_path / "index_acteur_textes_v5.json").write_text('{"PA1": []}', encoding="utf-8")
+    (tmp_path / "index_acteur_textes_v6.json").write_text('{"PA1": []}', encoding="utf-8")
 
     candidate_profile._build_acteur_textes_portes_index()
 
     err = capsys.readouterr().err
-    assert "index relu depuis index_acteur_textes_v5.json" in err
+    assert "index relu depuis index_acteur_textes_v6.json" in err
     assert "AUCUNE reconstruction" in err
 
 
 def test_un_cache_illisible_le_dit_et_reconstruit(monkeypatch, tmp_path, capsys):
     _isole(monkeypatch, tmp_path)
-    (tmp_path / "index_acteur_textes_v5.json").write_text("{ pas du json", encoding="utf-8")
+    (tmp_path / "index_acteur_textes_v6.json").write_text("{ pas du json", encoding="utf-8")
     monkeypatch.setattr(candidate_profile, "ensure_dossiers_zips_downloaded", lambda: [])
 
     candidate_profile._build_acteur_textes_portes_index()

@@ -189,6 +189,11 @@ APPELANTS_ATTENDUS = {
     # index GP. Elle ne dérive aucun roster, n'écrit rien, et aucun job ne la
     # lit encore. → docs/decisions/derivation-des-groupes-depuis-amo30-1168.md
     "groupes_amo30.py",
+    # #1265 : la liste des députés non inscrits lit l'index GP et la règle du
+    # transit d'ouverture, pour le seul organe `NI` que le roster écarte. Elle
+    # ne dérive aucun roster et ne collecte personne.
+    # → docs/decisions/liste-des-deputes-non-inscrits-1265.md
+    "non_inscrits_amo30.py",
     # `group_profile.py` n'y est PLUS depuis #529. Il lisait le drapeau pour
     # choisir entre deux rédactions du `meta.warnings` de fraîcheur — celle
     # d'AMO30 et celle de NosDéputés. Le repli retiré, il n'y a plus qu'une

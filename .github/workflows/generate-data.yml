@@ -13,18 +13,21 @@ on:
   # lus. Voir docs/decisions/defauts-d-inputs-sur-declenchement-programme-1054.md
   # et tests/test_ci_inputs_workflow.py, qui refuse un cron actif sans eux.
   #
-  # L'HEURE EST EN UTC, et c'est le seul fuseau que GitHub connaisse. `0 18`
-  # vaut donc **20 h à Paris** en heure d'été et **19 h** en heure d'hiver : une
-  # valeur fixe décale d'une heure deux fois par an, et il n'existe aucun moyen
-  # de l'exprimer autrement côté GitHub. C'est l'heure LOCALE qui est visée, et
-  # la première rédaction de #1054 avait pris la valeur UTC pour telle.
+  # L'HEURE EST CELLE DE PARIS, parce que la ligne `timezone:` le dit : `15 18`
+  # vaut **18 h 15 à Paris**, été comme hiver. SANS cette ligne, GitHub lit le
+  # cron en UTC — le même `15 18` vaudrait 20 h 15 en été et 19 h 15 en hiver.
+  # Les deux lignes vont ensemble : retirer la seconde décale le run de deux
+  # heures sans rien signaler. La première rédaction de #1054 avait pris une
+  # valeur UTC pour une heure locale ; jusqu'au 12/10/2026 le cron était
+  # `0 18` en UTC, GitHub n'acceptant alors aucun fuseau.
   #
   # UN CRON EST UNE CADENCE, PAS UN RENDEZ-VOUS, et ce dépôt l'a mesuré : les
   # deux premiers runs programmés ont été servis avec **5 h 40** puis **6 h 19**
   # de retard sur l'heure demandée (27 et 28/09/2026). L'heure ci-dessus dit
   # quand le run devient éligible, pas quand il démarre.
   schedule:
-    - cron: '0 18 * * *'
+    - cron: '15 18 * * *'
+      timezone: "Europe/Paris"
   workflow_dispatch:
     inputs:
       # These strings are the FORM LABELS: GitHub shows the description and
@@ -3226,6 +3229,12 @@ jobs:
   # Même raison de le sortir, sans le défaut d'ordre : `gouvernements_amo30.py`
   # ne lit pas une ligne du corpus pivot (zéro occurrence de `pivot_data`), il
   # n'avait donc rien à faire dans la fusion. Sa sortie pèse 6 Ko.
+  #
+  # IL DÉRIVE AUSSI LA LISTE DES DÉPUTÉS NON INSCRITS (#1265), de la même
+  # archive : `non_inscrits_amo30.py` ne lit pas davantage le corpus pivot, et
+  # un job de plus aurait payé un second checkout pour 100 Ko. La liste va dans
+  # `raw_data/` et non dans `pivot_data/` : elle n'est pas destinée au site. Les deux étapes
+  # sont indépendantes — l'une peut échouer sans emporter l'artifact de l'autre.
   # ──────────────────────────────────────────────────────────────────────────
   extract-gouvernements:
     needs: epingler-le-code
@@ -3248,6 +3257,7 @@ jobs:
             scripts
             src
             raw_data/gouvernements_reels.json
+            raw_data/correspondance_acteurs_an.json
 
       - uses: ./.github/actions/code-du-prive
         with:
@@ -3259,12 +3269,99 @@ jobs:
       - name: Lister les gouvernements depuis AMO30
         run: python3 src/gouvernements_amo30.py --out raw_data/gouvernements_reels.json
 
+      # #1265 — `if: always()` : une liste des gouvernements en échec ne doit
+      # pas priver le run de celle des non-inscrits. La table de correspondance
+      # lue est celle du commit précédent : une fiche créée par CE run n'est
+      # rattachée (`membre_id`) qu'au run suivant, la personne et ses périodes
+      # étant publiées dès celui-ci.
+      - name: Lister les députés non inscrits depuis AMO30
+        if: always()
+        run: python3 src/non_inscrits_amo30.py --out raw_data/non_inscrits.json
+
+      - name: Upload artifact liste des non-inscrits
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: non-inscrits-amo30
+          path: raw_data/non_inscrits.json
+          if-no-files-found: warn
+
       - name: Upload artifact liste des gouvernements
         if: always()
         uses: actions/upload-artifact@v6
         with:
           name: gouvernements-amo30
           path: raw_data/gouvernements_reels.json
+          if-no-files-found: warn
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # JOB D'EXTRACTION — les finances de l'État (#1053)
+  #
+  #   entrée   : src/finances_etat.py, puis src/finances_sociales.py
+  #   lit      : le portail des ministères économiques et financiers
+  #              (data.economie.gouv.fr) — une vingtaine de fichiers au plus,
+  #              7 s mesurées le 12/10/2026 pour les onze exercices
+  #              puis les portails de la Drees et de l'Unédic — quatre
+  #              requêtes, 2 s mesurées le 12/10/2026
+  #   produit  : raw_data/finances_etat.json et raw_data/finances_sociales.json
+  #              (artifact `finances-etat`)
+  #
+  # Job réseau à part, comme la liste des gouvernements : il ne lit pas une
+  # ligne du corpus pivot et ne rallonge pas le chemin critique. Un exercice
+  # clos et résolu ne se relit pas — le fichier committé est donc dans la liste
+  # blanche, sans quoi chaque run relirait tout.
+  #
+  # `continue-on-error` : le module rend 1 dès qu'un fichier n'a pas pu être lu,
+  # APRÈS avoir écrit ce qu'il a obtenu sans écraser ce qui était résolu. La
+  # fusion retombe alors sur l'artifact partiel, ou sur le fichier du run
+  # précédent si le job n'a rien publié.
+  # ──────────────────────────────────────────────────────────────────────────
+  extract-finances-etat:
+    needs: epingler-le-code
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    continue-on-error: true
+
+    steps:
+      # Checkout CREUX, même idiome qu'`extract-gouvernements` : ce job ne lit
+      # que du code et son propre fichier, de quelques centaines de Ko.
+      - uses: actions/checkout@v5
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            .gitignore
+            requirements.txt
+            scripts
+            src
+            raw_data/finances_etat.json
+            raw_data/finances_sociales.json
+
+      - uses: ./.github/actions/code-du-prive
+        with:
+          sha: ${{ needs.epingler-le-code.outputs.sha }}
+          token: ${{ secrets.SRC_READ_TOKEN }}
+
+      - uses: ./.github/actions/bootstrap-extraction
+
+      - name: Lire les finances de l'État au portail du ministère de l'Économie
+        run: python3 src/finances_etat.py
+
+      # `always()` : les deux lectures ne dépendent pas l'une de l'autre, et la
+      # première rend 1 dès qu'un de ses fichiers manque.
+      - name: Lire les comptes des caisses sociales aux portails de la Drees et de l'Unédic
+        if: always()
+        run: python3 src/finances_sociales.py
+
+      - name: Upload artifact finances de l'État
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: finances-etat
+          path: |
+            raw_data/finances_etat.json
+            raw_data/finances_sociales.json
           if-no-files-found: warn
 
   extract-articles-votes:
@@ -3354,7 +3451,7 @@ jobs:
           if-no-files-found: warn
 
   merge-and-pivot:
-    needs: [extract-an, extract-ue-officiel, extract-parltrack, extract-roster-groupes, extract-senat, extract-mandats-locaux, extract-actes-jo, extract-gouvernements, extract-articles-votes, epingler-le-code, rechauffer-le-portail-europeen]
+    needs: [extract-an, extract-ue-officiel, extract-parltrack, extract-roster-groupes, extract-senat, extract-mandats-locaux, extract-actes-jo, extract-gouvernements, extract-finances-etat, extract-articles-votes, epingler-le-code, rechauffer-le-portail-europeen]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     # 60 → 120 (#827). Le job tournait en 28 min ; la PREMIÈRE interrogation du
@@ -3580,6 +3677,22 @@ jobs:
         continue-on-error: true
         with:
           name: gouvernements-amo30
+          path: raw_data/
+
+      # #1053 — le fichier committé du run précédent reste si l'artifact manque.
+      - name: Download artifact finances de l'État (optionnel)
+        uses: actions/download-artifact@v7
+        continue-on-error: true
+        with:
+          name: finances-etat
+          path: raw_data/
+
+      # #1265 — le fichier commité du run précédent reste si l'artifact manque.
+      - name: Download artifact liste des non-inscrits (optionnel)
+        uses: actions/download-artifact@v7
+        continue-on-error: true
+        with:
+          name: non-inscrits-amo30
           path: raw_data/
 
       - name: Download artifact ParlTrack (optionnel)
@@ -4724,6 +4837,9 @@ jobs:
           # figés. À part, et conditionnel : `git add` d'un chemin absent est
           # FATAL, et la table peut ne pas avoir été composée.
           if [ -f raw_data/groupes_du_run.json ]; then git add raw_data/groupes_du_run.json; fi
+          # `raw_data/non_inscrits.json` (#1265) : même raison d'être à part
+          # — absent tant qu'aucun run ne l'a produit.
+          if [ -f raw_data/non_inscrits.json ]; then git add raw_data/non_inscrits.json; fi
           # LE CODE ENTRE DANS LE MÊME COMMIT (#1059) — et SEULEMENT le code
           # (#1066). La liste vient de l'action de superposition : ce sont
           # les entrées de tête de l'arbre du dépôt privé, données exclues.
@@ -4781,6 +4897,15 @@ jobs:
           # plus.
           if [ -d pivot_data/actes_reglementaires ]; then
             git add pivot_data/actes_reglementaires
+          fi
+          # Finances de l'État (#1053) : même garde, le job qui les lit est
+          # `continue-on-error`, et le fichier n'existe pas avant son premier
+          # passage réussi.
+          if [ -f raw_data/finances_etat.json ]; then
+            git add raw_data/finances_etat.json
+          fi
+          if [ -f raw_data/finances_sociales.json ]; then
+            git add raw_data/finances_sociales.json
           fi
           # Articles soumis au vote (#1264) : même garde, le job qui le
           # construit est `continue-on-error`.

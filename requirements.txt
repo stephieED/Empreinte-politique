@@ -5,3 +5,7 @@ requests>=2.31
 urllib3==2.7.0
 beautifulsoup4>=4.12
 zstandard>=0.22
+# Lu par finances_etat.py (#1053) pour deux fichiers seulement : le ministère de
+# l'Économie n'a publié l'exécution budgétaire 2019 et 2020 qu'en classeur .xls.
+# Version installée et éprouvée sur les vrais classeurs le 12/10/2026.
+xlrd==2.0.1

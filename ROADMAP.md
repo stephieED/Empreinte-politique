@@ -358,6 +358,14 @@ Convention d'écriture : `AGENTS.md` §8.
   seulement le check requis. Depuis #685 chaque run le signale ; il ne le répare
   pas.
 
+- **Un député non inscrit qui n'a jamais appartenu à un groupe n'a pas de fiche
+  (#1265, mesuré le 12/10/2026).** Le roster n'a que deux portes, le groupe et le
+  gouvernement. Sur la XVIIe, trois des 94 personnes de `raw_data/non_inscrits.json`
+  sont dans ce cas — Véronique Besse et Philippe Bonnecarrère, non inscrits depuis
+  le 19/07/2024, et Stéphane Chouin, un jour : leurs votes et leurs amendements ne
+  sont dans aucun profil. La liste les nomme (`membre_id: null`) ; les collecter
+  est un lot à part. → `docs/decisions/liste-des-deputes-non-inscrits-1265.md`
+
 - **`amendements_agreges` est un dénominateur publié qu'aucun contrôle pré-commit
   ne regarde** (relevé pendant #643, 31/08/2026). `audit_diff_profils.py` ne compare
   que les champs déclarés dans ses `Collection`, et `COLLECTION_GROUPES` ne nomme

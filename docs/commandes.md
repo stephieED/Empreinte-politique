@@ -199,6 +199,13 @@ est réécrit à chaque run, ne pas l'éditer à la main :
 python3 src/gouvernements_amo30.py --out raw_data/gouvernements_reels.json
 ```
 
+La liste des députés non inscrits, avec leurs périodes, se lit dans la même
+archive (#1265) ; même régime, le fichier est réécrit à chaque run :
+
+```bash
+python3 src/non_inscrits_amo30.py --out raw_data/non_inscrits.json
+```
+
 Le roster des membres de gouvernement part avec celui des groupes : dans
 `rosters_bruts.json`, et — depuis #996 lot 3 — dans `roster_candidats.json`,
 d'où leur collecte part. `--sans-gouvernements` débranche les deux :
@@ -332,6 +339,51 @@ de première lecture.
 matière de chaque ligne. Sans lui, les lignes sont publiées avec `commission:
 null`, jamais avec une matière devinée.
 → `docs/decisions/textes-promulgues-population-du-parlement.md`.
+
+### Les finances de l'État (#1053)
+
+```bash
+# Ce qui peut avoir bougé : les grandes lignes, les deux derniers exercices,
+# et tout côté resté « à retenter ».
+python3 src/finances_etat.py
+
+# Tout relire, exercices clos compris — une vingtaine de fichiers, moins d'une minute.
+python3 src/finances_etat.py --tout
+
+# Un ou plusieurs exercices précis.
+python3 src/finances_etat.py --exercices 2024 2025
+
+# Écrire ailleurs que dans le dépôt, pour regarder sans rien changer.
+python3 src/finances_etat.py --sortie /tmp/finances_etat.json
+```
+
+Produit : `raw_data/finances_etat.json` — les recettes par impôt et les dépenses
+par nature depuis 2013, et les crédits du budget général votés et consommés,
+programme par programme avec leur ministère, de 2015 à 2025. Une ligne par
+exercice est imprimée, avec ce qui manque et pourquoi. Le code de sortie est 1 si
+une lecture a échoué ; ce qui était déjà résolu reste en place.
+
+Le job `extract-finances-etat` lance la première forme à chaque run.
+→ `docs/decisions/finances-etat-collecte-1053.md`, `docs/sources/finances-etat.md`.
+
+### Les comptes des caisses sociales (#1053)
+
+```bash
+# Tout relire : quatre requêtes, quelques secondes.
+python3 src/finances_sociales.py
+
+# Écrire ailleurs que dans le dépôt, pour regarder sans rien changer.
+python3 src/finances_sociales.py --sortie /tmp/finances_sociales.json
+```
+
+Produit : `raw_data/finances_sociales.json` — les ressources de la protection
+sociale par nature depuis 1959, les prestations versées par chaque régime, et les
+recettes de l'assurance chômage depuis 2011, en millions d'euros. Une ligne par
+partie est imprimée. Le code de sortie est 1 si une lecture a échoué ; ce qui
+était déjà publié reste en place.
+
+Le même job `extract-finances-etat` la lance à chaque run, dans une seconde étape.
+→ `docs/decisions/finances-sociales-collecte-1053.md`, `docs/sources/finances-sociales.md`.
 
 ### Les actes réglementaires du Journal officiel (#1029 voie 1)
 

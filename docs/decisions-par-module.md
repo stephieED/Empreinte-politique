@@ -116,7 +116,7 @@ Le mentionnent sans le gouverner : [`fiche-de-lignee-836`](decisions/fiche-de-li
 
 ## `src/an_roster.py`
 
-14 décision(s) le gouvernent ; le module en cite 3.
+15 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -126,6 +126,7 @@ Le mentionnent sans le gouverner : [`fiche-de-lignee-836`](decisions/fiche-de-li
 | [L'effectif d'un groupe dans le temps : `min_historique` et `max_historique` portent leur date (#702) — 01/09/2026](decisions/effectif-du-groupe-dans-le-temps-702.md) | `_fusionner_periodes` |
 | [Une entrée dérivée gèle un slug fabriqué, elle ne prouve plus rien (#715) (2026-09-02)](decisions/entree-derivee-correspondance-715.md) | `resoudre_slugs` |
 | [Les lignées MoDem, Horizons et LIOT, et un tri qui plantait sur un seul député (#815)](decisions/lignees-modem-horizons-liot-815.md) | `deriver_roster_groupe`, `fusionner_intervalles` |
+| [Les députés non inscrits sont publiés comme une liste, pas comme un groupe (#1265)](decisions/liste-des-deputes-non-inscrits-1265.md) | `SIGLE_NON_INSCRIT`, `date_constitution_groupes`, `est_mandat_de_transit` |
 | [L'appartenance publiée cesse d'être une enveloppe (#809)](decisions/periodes-appartenance-809.md) | `_fusionner_periodes` |
 | [La position politique d'un groupe est celle que l'Assemblée déclare, lue dans une table committée (#686) (2026-09-01)](decisions/position-politique-groupes-686.md) | `VERSION_INDEX_GP` |
 | [NosDéputés sort du pipeline (#529, lot 5 de l'épic « une seule source AN ») (2026-08-27)](decisions/retrait-nosdeputes-529.md) | `AN_ROSTER_ACTIF`, `RosterAnInactif` |
@@ -645,6 +646,14 @@ Le mentionnent sans le gouverner : [`licence-parlement-europeen-cc-by-983`](deci
 
 Le mentionnent sans le gouverner : [`lectures-du-depot-dans-les-tests-791`](decisions/lectures-du-depot-dans-les-tests-791.md), [`liste-candidats-declares-753`](decisions/liste-candidats-declares-753.md).
 
+## `src/finances_etat.py`
+
+Le mentionnent sans le gouverner : [`finances-etat-collecte-1053`](decisions/finances-etat-collecte-1053.md).
+
+## `src/finances_sociales.py`
+
+Le mentionnent sans le gouverner : [`finances-sociales-collecte-1053`](decisions/finances-sociales-collecte-1053.md).
+
 ## `src/garde_fou_blobs.py`
 
 2 décision(s) le gouvernent ; le module en cite 1.
@@ -801,7 +810,7 @@ Le mentionnent sans le gouverner : [`gouvernement-ci-integration`](decisions/gou
 
 ## `src/gouvernement_textes.py`
 
-18 décision(s) le gouvernent ; le module en cite 6.
+19 décision(s) le gouvernent ; le module en cite 6.
 
 | Décision | Nomme |
 | --- | --- |
@@ -823,6 +832,7 @@ Le mentionnent sans le gouverner : [`gouvernement-ci-integration`](decisions/gou
 | [Un scrutin ne dit pas quel texte il tranche : le lien se lit à l'envers (#758), 07/09/2026](decisions/rattachement-scrutin-dossier-758.md) | `_determine_statut`, `iter_dossiers_bruts` |
 | [Résilience de `generate-data.yml` face aux `shutdown signal` runner : continue-on-error généralisé, watchdog réseau, retry générique sur `_get_payload`, retry `retry-generate-data.yml` non-régressif, et appels NosDéputés morts pour les députés (dossiers, votes) (2026-08-16)](decisions/resilience-generate-data-shutdown-signal.md) | `ensure_dossiers_zip_downloaded` |
 | [Un texte porté dit ce qu'il est devenu, et son sort ne se déduit jamais de son stade (#743) (2026-09-06)](decisions/sort-des-textes-portes-743.md) | `_determine_statut`, `parse_dossier_gouvernemental` |
+| [Une proposition de résolution dit ce qu'elle demande (#1276)](decisions/type-de-resolution-1276.md) | `TYPE_RESOLUTION_PAR_SOUS_TYPE`, `nature_texte_depose`, `type_resolution_depose` |
 
 Le mentionnent sans le gouverner : [`audit-pipeline-gouvernement`](decisions/audit-pipeline-gouvernement.md), [`couverture-dossiers-hors-couverture-vs-zero`](decisions/couverture-dossiers-hors-couverture-vs-zero.md), [`gouvernement-ci-integration`](decisions/gouvernement-ci-integration.md), [`gouvernement-doc-cloture`](decisions/gouvernement-doc-cloture.md), [`gouvernement-profile-rattachement`](decisions/gouvernement-profile-rattachement.md), [`gouvernement-textes-statut-49-3-rejete`](decisions/gouvernement-textes-statut-49-3-rejete.md), [`hors-perimetre`](decisions/hors-perimetre.md), [`plafond-roster-et-commit-518`](decisions/plafond-roster-et-commit-518.md), [`quality-gate-gouvernements`](decisions/quality-gate-gouvernements.md).
 
@@ -895,15 +905,16 @@ Le mentionnent sans le gouverner : [`cloisonnement-branche-roster-524`](decision
 
 ## `src/groupes_amo30.py`
 
-5 décision(s) le gouvernent ; le module en cite 3.
+4 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
-| [Les groupes ajoutés par le run : depuis 2017, sous le dernier nom de l'Assemblée et son sigle tel quel (#1168)](decisions/borne-noms-et-sigles-des-groupes-ajoutes-1168.md) | `PREMIERE_LEGISLATURE`, `mettre_a_jour_table`, `suivre_le_dernier_nom` |
-| [Les groupes et leurs lignées se dérivent d'AMO30 : le calcul retrouve la table (#1168, lot 1)](decisions/derivation-des-groupes-depuis-amo30-1168.md) | `PREMIERE_LEGISLATURE` |
+| [Les groupes ajoutés par le run : depuis 2017, sous le dernier nom de l'Assemblée et son sigle tel quel (#1168)](decisions/borne-noms-et-sigles-des-groupes-ajoutes-1168.md) | `mettre_a_jour_table`, `suivre_le_dernier_nom` |
 | [Un lien entre groupes se publie « établi par comparaison des membres », et seulement s'il est mesuré (#1168, lot 3)](decisions/lien-etabli-par-comparaison-1168.md) | `mesurer_liens` |
 | [La table des groupes du run : composée à chaque run, dans `raw_data/` (#1168, lot 2c)](decisions/table-des-groupes-du-run-1168.md) | `composer_table`, `mettre_a_jour_table` |
 | [La table des groupes se met à jour depuis AMO30, sans réécrire ce qui est nommé (#1168, lot 2a)](decisions/table-des-groupes-mise-a-jour-depuis-amo30-1168.md) | `mettre_a_jour_table` |
+
+Le mentionnent sans le gouverner : [`derivation-des-groupes-depuis-amo30-1168`](decisions/derivation-des-groupes-depuis-amo30-1168.md).
 
 ## `src/groupes_config.py`
 
@@ -992,7 +1003,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 
 ## `src/merge_profile.py`
 
-83 décision(s) le gouvernent ; le module en cite 5.
+84 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1076,6 +1087,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [Régénérer l'existant : `--refresh-existing`, l'inverse de `--skip-existing` (#445) (2026-08-19)](decisions/telechargement-an-trois-modes-defaillance.md) | `merge_raw_dirs` |
 | [Le lecteur accepte une tranche dérivée, et le silence reste une panne (#691, lot 2)](decisions/tranches-derivees-lecteur-691.md) | `merge_dossier_records` |
 | [Une panne de transport n'est pas une source absente (#786)](decisions/transport-artifacts-panne-ou-absence-786.md) | `merge_raw_dirs` |
+| [Une proposition de résolution dit ce qu'elle demande (#1276)](decisions/type-de-resolution-1276.md) | `merge_dossier_records` |
 | [L'union des avertissements peut ressusciter un démenti, et deux familles Syceron s'éteignent (#600) (2026-08-30)](decisions/union-warnings-extinction-600.md) | `_defaut_collecte_dementi_par_les_donnees`, `merge_pivot_profile`, `merge_raw_profile` |
 | [Vérification de bout en bout des législatures figées 15/16 (#273, clôture de l'epic #268) (2026-08-17)](decisions/verification-bout-en-bout-legislatures-figees.md) | `_amendement_key`, `_prune_stale_warnings` |
 | [Votes : agrégation des législatures 14 à 17, index dédupliqué, 14/15/16 figées (#403) (2026-08-18)](decisions/votes-multi-legislature.md) | `merge_lists_by_key` |
@@ -1330,7 +1342,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 
 ## `src/schema_pivot.py`
 
-63 décision(s) le gouvernent ; le module en cite 5.
+64 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1396,6 +1408,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 | [Un singulier et un pluriel sont le même sujet : la clé groupe, la source publie (#1042) (2026-09-20)](decisions/tags-singulier-et-pluriel-1042.md) | `cle_tag_thematique`, `deriver_tags_thematiques`, `forme_publiee` |
 | [Taxonomie des mandats : exploitation des `typeOrgane` AN non mappés (#382, option « mixte ») (2026-08-17)](decisions/taxonomie-mandats-typeorgane-an.md) | `KNOWN_CATEGORIES`, `validate_profil` |
 | [La trame du profil candidat : l'institution est une colonne, jamais un chapitre (#328)](decisions/trame-profil-candidat-328.md) | `KNOWN_POSITIONS_HEMICYCLE`, `lire_chambres` |
+| [Une proposition de résolution dit ce qu'elle demande (#1276)](decisions/type-de-resolution-1276.md) | `KNOWN_TYPES_RESOLUTION`, `validate_profil` |
 | [`validate_profil()` tourne dans le run, et une fiche hors schéma ouvre une issue (#1223) (2026-10-06)](decisions/validation-des-profils-dans-le-run-1223.md) | `KNOWN_TYPES_ORGANE_SOURCE`, `validate_profil` |
 
 Le mentionnent sans le gouverner : [`gouvernement-premier-ministre-portefeuille`](decisions/gouvernement-premier-ministre-portefeuille.md), [`retrait-fetch-activity-synthesis`](decisions/retrait-fetch-activity-synthesis.md), [`synchro-sources-derniere-recuperation-600`](decisions/synchro-sources-derniere-recuperation-600.md), [`verification-bout-en-bout-legislatures-figees`](decisions/verification-bout-en-bout-legislatures-figees.md).
@@ -1492,7 +1505,7 @@ Le mentionnent sans le gouverner : [`archive-dossiers-xiv-1019`](decisions/archi
 | --- | --- |
 | [Les textes promulgués sont une population du Parlement, pas d'un gouvernement (2026-09-23)](decisions/textes-promulgues-population-du-parlement.md) | `chambre_premiere_lecture` |
 
-Le mentionnent sans le gouverner : [`actes-sur-la-fiche-de-gouvernement-1029`](decisions/actes-sur-la-fiche-de-gouvernement-1029.md), [`dila-et-amo30-en-jobs-1129`](decisions/dila-et-amo30-en-jobs-1129.md), [`liens-des-actes-vers-les-lois`](decisions/liens-des-actes-vers-les-lois.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
+Le mentionnent sans le gouverner : [`actes-sur-la-fiche-de-gouvernement-1029`](decisions/actes-sur-la-fiche-de-gouvernement-1029.md), [`dila-et-amo30-en-jobs-1129`](decisions/dila-et-amo30-en-jobs-1129.md), [`finances-etat-collecte-1053`](decisions/finances-etat-collecte-1053.md), [`liens-des-actes-vers-les-lois`](decisions/liens-des-actes-vers-les-lois.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
 
 ## `src/textes_vises_figes.py`
 

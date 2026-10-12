@@ -32,14 +32,16 @@ date qu'elle porte : un job ajouté ici ne s'y ajoute pas seul.
 | `extract-senat` | `epingler-le-code` | `export_sens.zip` de `data.senat.fr` (#885) | artifact `raw-profiles-senat`, cache `public-data-cache-senat-<date>` |
 | `extract-mandats-locaux` | `epingler-le-code` | le Répertoire national des élus et les sortants 2026, par `tabular-api.data.gouv.fr` (#922) | artifact `raw-profiles-mandats-locaux`, **aucun cache** |
 | `extract-actes-jo` | `epingler-le-code` | les livraisons quotidiennes de `echanges.dila.gouv.fr` (#1029 voie 1) | artifact `actes-jo` — **seulement les fichiers que le run change**, `pivot_data/actes_reglementaires/<AAAA-MM>.json` des mois relus et `raw_data/lois_jorf.json` |
-| `extract-gouvernements` | `epingler-le-code` | l'archive AMO30 | artifact `gouvernements-amo30` : `raw_data/gouvernements_reels.json` (6 Ko) |
+| `extract-gouvernements` | `epingler-le-code` | l'archive AMO30, et la table de correspondance des acteurs pour la seconde sortie | artifact `gouvernements-amo30` : `raw_data/gouvernements_reels.json` (6 Ko) ; artifact `non-inscrits-amo30` : `raw_data/non_inscrits.json` (96 Ko, #1265) |
+| `extract-finances-etat` | `epingler-le-code` | le portail des ministères économiques et financiers, `data.economie.gouv.fr`, puis ceux de la Drees et de l'Unédic (#1053) | artifact `finances-etat` : `raw_data/finances_etat.json` et `raw_data/finances_sociales.json`, **aucun cache** |
 | `extract-articles-votes` | `epingler-le-code` | les archives Scrutins, Dossiers législatifs et Agenda des XVe-XVIIe, et le texte HTML de chaque texte discuté (#1264) | artifact `articles-votes` — `pivot_data/articles_votes.json` |
-| `merge-and-pivot` | `extract-an`, `extract-ue-officiel`, `extract-parltrack`, `extract-roster-groupes`, `extract-senat`, `extract-actes-jo`, `extract-gouvernements`, `extract-articles-votes` | tous les artifacts ci-dessus, et les **quatre archives de dossiers** (XIV à XVII, deux formats depuis #1019) | le contrôle du transport, la fusion, les deux passes pivot, les fiches de groupe, de lignée et **de gouvernement** (rattachement par `organe_ref`, #996 lot 4), les fiches de gouvernement à partir de la liste que `extract-gouvernements` a collectée, les quatre contrôles, le commit et le push |
+| `merge-and-pivot` | `extract-an`, `extract-ue-officiel`, `extract-parltrack`, `extract-roster-groupes`, `extract-senat`, `extract-actes-jo`, `extract-gouvernements`, `extract-finances-etat`, `extract-articles-votes` | tous les artifacts ci-dessus, et les **quatre archives de dossiers** (XIV à XVII, deux formats depuis #1019) | le contrôle du transport, la fusion, les deux passes pivot, les fiches de groupe, de lignée et **de gouvernement** (rattachement par `organe_ref`, #996 lot 4), les fiches de gouvernement à partir de la liste que `extract-gouvernements` a collectée, les quatre contrôles, le commit et le push |
 
-Neuf jobs ne dépendent que de l'épinglage du code et démarrent ensemble
+Dix jobs ne dépendent que de l'épinglage du code et démarrent ensemble
 (`rafraichir-candidats` en fait partie depuis #757, `extract-senat` depuis #885,
 `extract-mandats-locaux` depuis #922, `extract-actes-jo` et
-`extract-gouvernements` depuis #1129, `extract-articles-votes` depuis #1264 ; `prepare-an-matrix` attend le premier). Le **chemin critique réel,
+`extract-gouvernements` depuis #1129, `extract-articles-votes` depuis #1264,
+`extract-finances-etat` depuis #1053 ; `prepare-an-matrix` attend le premier). Le **chemin critique réel,
 ce sont les deux matrices** (`extract-an` puis la matrice roster), pas le nombre
 de jobs. `extract-an` n'est **plus en série à tous les runs depuis #1137** : il
 l'est au premier run de la semaine, quand le cache AN est froid et que ses
@@ -666,6 +668,70 @@ du run précédent, qui est committée.
 **Consomme** l'archive AMO30. **Produit** l'artifact `gouvernements-amo30`, que
 `generate_gouvernement_profiles.py` lit en `--config` dans la fusion.
 
+**Il dérive aussi la liste des députés non inscrits (#1265)**, de la même archive :
+
+```
+python3 src/non_inscrits_amo30.py --out raw_data/non_inscrits.json
+```
+
+Module : `non_inscrits_amo30.py`, qui lit `an_roster.py` (l'index des organes
+`GP`, la règle du transit d'ouverture) et `raw_data/correspondance_acteurs_an.json`
+— d'où l'entrée ajoutée au checkout creux du job. Un job de plus aurait payé un
+second checkout pour 96 Ko. L'étape est en `if: always()` : une liste des
+gouvernements en échec ne prive pas le run de celle-ci, et l'inverse.
+
+La table de correspondance lue est celle du commit précédent : une fiche créée
+par ce run n'est rattachée (`membre_id`) qu'au run suivant ; la personne et ses
+périodes sont publiées dès celui-ci.
+
+**Produit** l'artifact `non-inscrits-amo30`, que la fusion pose dans `raw_data/`
+et committe **s'il existe** (`git add` d'un chemin absent est fatal). Aucune étape
+de la fusion ne le lit.
+→ `docs/decisions/liste-des-deputes-non-inscrits-1265.md`
+
+#### `extract-finances-etat`
+
+```
+python3 src/finances_etat.py
+python3 src/finances_sociales.py
+```
+
+Le budget de l'État, lu au portail des ministères économiques et financiers
+(#1053). Module : `finances_etat.py`, qui importe `licences.py` et `json_io.py` et
+**ne lit pas une ligne du corpus pivot**. Deux blocs dans un seul fichier : les
+grandes lignes de la DGFiP — recettes par impôt, dépenses par nature, en cumul
+mensuel depuis 2013 — et les crédits de paiement du budget général, votés et
+consommés, programme par programme avec leur ministère, de 2015 à 2025.
+
+Une vingtaine de fichiers au plus, 7 s mesurées le 12/10/2026 pour les onze
+exercices — et bien moins en régime : **un exercice clos depuis plus d'un an et
+entièrement résolu ne se relit pas**. C'est pourquoi le fichier committé est dans
+la liste blanche du checkout : sans lui, chaque run relirait tout.
+
+Le module rend 1 dès qu'un fichier n'a pas pu être lu, **après** avoir écrit ce
+qu'il a obtenu : une lecture en échec n'écrase pas un bloc résolu, et devient un
+`*_non_resolu` marqué `a_retenter` que le run suivant reprend. Le job est
+`continue-on-error` — son échec laisse la fusion travailler sur l'artifact
+partiel, ou sur le fichier du run précédent.
+
+La seconde étape lit les comptes des caisses sociales, que le budget de l'État ne
+porte pas. Module : `finances_sociales.py`, qui importe `finances_etat.py`
+(décodage, appel réseau), `licences.py` et `json_io.py`. Trois parties dans un
+fichier : les ressources de la protection sociale par nature (classeur de la
+Drees), les prestations versées par chaque régime (API de la Drees), les recettes
+et les dépenses de l'assurance chômage (Unédic). Quatre requêtes, 2 s mesurées le
+12/10/2026 ; **tout est relu à chaque run**, la source révisant ses années
+récentes. L'étape est `if: always()` : elle tourne même si la première a rendu 1.
+Même contrat d'échec : une partie non lue garde celle déjà publiée.
+
+**Consomme** `data.economie.gouv.fr`, deux archives de `static.data.gouv.fr`,
+`data.drees.solidarites-sante.gouv.fr` et `data.unedic.org`.
+**Produit** l'artifact `finances-etat` — les deux fichiers —, que la fusion pose
+dans `raw_data/` et committe. **Aucun module ne les lit encore** : le pivot attend
+la maquette.
+→ `docs/decisions/finances-etat-collecte-1053.md`, `docs/sources/finances-etat.md`,
+  `docs/decisions/finances-sociales-collecte-1053.md`, `docs/sources/finances-sociales.md`.
+
 #### `merge-and-pivot`
 
 **Le seul job qui écrit dans le dépôt.** Il enchaîne, dans cet ordre : **le contrôle du transport des artifacts** (`verifier_transport_artifacts.py`, #786 — un artifact que le run a publié et qui n'est pas sur le disque est rattrapé par `gh run download`, puis bloque ; une source qui n'a rien publié reste silencieuse, et un inventaire illisible n'échoue pas) ; fusion
@@ -720,7 +786,7 @@ recule au 2012-06-20**, et quatre gouvernements cessent de publier `textes: []`.
 Les XII et XIII répondent 404 — Fillon I, II et III restent hors couverture.
 
 **Trois index de ce job portent un numéro de version**, et il change dès que
-leur CONTENU change, pas seulement leur forme : `index_acteur_textes_v5`,
+leur CONTENU change, pas seulement leur forme : `index_acteur_textes_v6`,
 `index_texte_dossier_v2`, `index_dossier_commission_v2`. Le cache
 `.cache/dossiers_an` est restauré d'une semaine sur l'autre par ses
 `restore-keys` : un correctif qui ne change pas la clé ne change rien, ce qui a
@@ -816,11 +882,13 @@ ensemble ou pas du tout, deux cases séparées autoriseraient « périmètre ré
 Les quatre tolérances sont **cloisonnées** : aucune ne désarme le contrôle d'une
 autre.
 
-**Le run est programmé depuis #1054** : `schedule: - cron: '0 18 * * *'`, un passage
-quotidien à **20 h heure de Paris** — 19 h en heure d'hiver, GitHub ne lisant que l'**UTC**
-et aucune valeur fixe ne suivant le changement d'heure. **L'heure dit quand le run devient
-éligible, pas quand il démarre** : les deux premiers runs programmés ont été servis avec
-5 h 40 puis 6 h 19 de retard (27 et 28/09/2026).
+**Le run est programmé depuis #1054** : `schedule: - cron: '15 18 * * *'` avec
+`timezone: "Europe/Paris"`, un passage quotidien à **18 h 15 heure de Paris**, été comme
+hiver (jusqu'au 12/10/2026 : `0 18` en UTC, soit 20 h en été et 19 h en hiver). **Les deux
+lignes vont ensemble** : sans le fuseau, GitHub lit le cron en UTC. **L'heure dit quand le
+run devient éligible, pas quand il démarre** : les deux premiers runs programmés ont été
+servis avec 5 h 40 puis 6 h 19 de retard (27 et 28/09/2026), les huit du 04 au 11/10/2026
+avec 20 à 23 minutes — sauf un, 1 h 07.
 
 **Et il collecte comme un run complet depuis #1149** : `epingler-le-code` publie les deux
 modes effectifs du run (`interventions`, `dossiers_legislatifs`), vrais dès que le

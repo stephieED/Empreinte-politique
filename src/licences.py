@@ -101,6 +101,21 @@ LICENCE_SENAT = "Licence Ouverte / Open Licence (Sénat) — data.senat.fr"
 #: fiche de personne.
 LICENCE_JORF = "Licence Ouverte / Open Licence (Etalab) — Journal officiel (DILA)"
 
+#: Les finances de l'État (#1053) : `data.economie.gouv.fr`, portail des
+#: ministères économiques et financiers. Licence Ouverte 2.0, attribution seule,
+#: pas de partage à l'identique — mesuré sur les jeux lus, pas sur le portail
+#: entier (562 de ses 617 jeux la déclaraient le 08/10/2026).
+LICENCE_FINANCES_ETAT = (
+    "Licence Ouverte / Open Licence (Etalab) — data.economie.gouv.fr")
+
+#: Les comptes des caisses sociales (#1053) : le portail du service statistique
+#: du ministère de la Santé (Drees) et celui de l'Unédic. Licence Ouverte 2.0
+#: sur les deux jeux lus, attribution seule, pas de partage à l'identique —
+#: relevé sur chaque jeu le 12/10/2026, pas sur les portails entiers.
+LICENCE_FINANCES_SOCIALES = (
+    "Licence Ouverte / Open Licence (Etalab) — "
+    "data.drees.solidarites-sante.gouv.fr, data.unedic.org")
+
 #: NosDéputés.fr / NosSénateurs.fr (Regards Citoyens). **Plus collectée**
 #: (#528, #529), mais toujours due aux champs déjà publiés qui en dérivent.
 #: https://opendatacommons.org/licenses/odbl/1-0/

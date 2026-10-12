@@ -76,6 +76,8 @@ from gouvernement_textes import (
     est_examen_en_commission,
     iter_dossiers_bruts,
     nature_texte_depose,
+    sous_types_des_resolutions,
+    type_resolution_depose,
 )
 from profil_brut import ecrire_profil_brut
 from licences import LICENCE_AN
@@ -3685,7 +3687,10 @@ def _build_acteur_textes_portes_index() -> dict[str, list[dict[str, Any]]]:
         # quoi il ne change rien.
         # `_v5` depuis #1019 : l'archive XIV entre dans la couverture, donc
         # l'index gagne 3 402 dossiers. Même règle, quatrième fois.
-        index_path = DOSSIERS_CACHE_DIR / "index_acteur_textes_v5.json"  # cf. #400, #689, #997, #1019
+        # `_v6` depuis #1276 : chaque proposition de résolution gagne son type.
+        # Même règle, cinquième fois — un index `_v5` relu republierait les
+        # résolutions sans type, sans qu'aucune étape n'échoue.
+        index_path = DOSSIERS_CACHE_DIR / "index_acteur_textes_v6.json"  # cf. #400, #689, #997, #1019, #1276
         if index_path.is_file():
             try:
                 with open(index_path, encoding="utf-8") as f:
@@ -3711,6 +3716,11 @@ def _build_acteur_textes_portes_index() -> dict[str, list[dict[str, Any]]]:
                 "portés publiés restent ceux du run précédent, inchangés.")
             return {}
 
+        # #1276 : ce qu'une résolution demande est dit par le DOCUMENT déposé,
+        # seconde famille de fichiers des mêmes archives. Lu une fois, avant
+        # les dossiers.
+        sous_types_resolutions = sous_types_des_resolutions(archives)
+
         index: dict[str, list[dict[str, Any]]] = {}
         # Multi-archives dédupliqué par uid (#400) : sans déduplication, un
         # dossier présent dans deux archives serait compté deux fois dans les
@@ -3733,6 +3743,12 @@ def _build_acteur_textes_portes_index() -> dict[str, list[dict[str, Any]]]:
             # ministre. L'information n'était pas perdue à la source : elle
             # était jetée ici.
             nature = nature_texte_depose(dossier)
+            # #1276 : une proposition de résolution ne dit pas ce qu'elle
+            # demande — vœu, résolution européenne, commission d'enquête. Les
+            # deux champs voyagent ensemble, comme `sort` et son motif.
+            type_resolution, type_resolution_non_resolu = type_resolution_depose(
+                dossier, sous_types_resolutions
+            )
             # #743 : l'ISSUE du dossier, lue dans la MÊME archive et par la MÊME
             # fonction que les fiches de gouvernement — `_determine_statut` ne
             # dépend pas de l'origine du dossier, c'est `parse_dossier_gouvernemental`
@@ -3766,6 +3782,8 @@ def _build_acteur_textes_portes_index() -> dict[str, list[dict[str, Any]]]:
                     "titre": titre,
                     "role": role,
                     "nature_texte": nature,
+                    "type_resolution": type_resolution,
+                    "type_resolution_non_resolu": type_resolution_non_resolu,
                     "type_rapport": type_rapport,
                     "stade_procedural": stade,
                     "sort": sort,

@@ -74,8 +74,9 @@ def test_le_reste_du_texte_porte_est_inchange():
     assert set(normalise) == {
         "titre", "dossier_id", "role", "nature_texte", "type_rapport",
         "stade_procedural", "date_min", "date_max", "legislature", "source_url",
-        "sort", "sort_non_resolu",
-    }, "clés ajoutées : `nature_texte` (#689), `sort` et `sort_non_resolu` (#743)"
+        "sort", "sort_non_resolu", "type_resolution", "type_resolution_non_resolu",
+    }, ("clés ajoutées : `nature_texte` (#689), `sort` et `sort_non_resolu` (#743), "
+        "`type_resolution` et `type_resolution_non_resolu` (#1276)")
     # #743 — l'ISSUE se lit à côté de la PROGRESSION, jamais à sa place.
     # #747 — le sort de la fixture est RECOPIÉ, pas dérivé : la preuve tient au
     # contre-exemple ci-dessous, où stade et sort divergent, et non à une

@@ -863,6 +863,89 @@ def nature_texte_depose(dossier: dict[str, Any]) -> Optional[str]:
     return None
 
 
+#: Préfixe de l'uid d'une proposition de résolution déposée.
+_DOC_PREFIX_RESOLUTION = "PNRE"
+
+#: Ce qu'une proposition de résolution demande, par le code que l'Assemblée
+#: pose sur le document déposé (`classification.sousType.code`, #1276). Mesuré
+#: le 12/10/2026 sur les archives XIV à XVII : 1 810 dossiers de résolution,
+#: 1 807 portent l'un de ces sept codes, 2 renvoient à un document que l'archive
+#: ne contient pas, 1 n'a pas de document de dépôt.
+#:
+#: Les valeurs sont celles de `schema_pivot.KNOWN_TYPES_RESOLUTION`. Un code
+#: que cette table ne connaît pas n'est jamais rangé sous un voisin : il sort
+#: `None`, avec son code dans le motif (AGENTS.md §2 règle 5).
+TYPE_RESOLUTION_PAR_SOUS_TYPE: dict[str, str] = {
+    "APPART341": "article_34_1",
+    "TVXINSTITEUROP": "travaux_institutions_europeennes",
+    "COMENQ": "creation_commission_d_enquete",
+    "MODREGLTAN": "modification_reglement_an",
+    "ACCPRESRP": "mise_en_accusation_president",
+    "SUSPOURS": "suspension_de_poursuites",
+    "PROPACTCOM": "propositions_d_actes_communautaires",
+}
+
+
+def sous_types_des_resolutions(
+    archives: list[tuple[int, Path]],
+) -> dict[str, Optional[str]]:
+    """`uid de document -> code de sous-type`, pour les propositions de
+    résolution des archives (#1276).
+
+    Le dossier ne dit pas ce qu'une résolution demande : ni son titre — l'objet
+    seul, « Les violences commises sur les mineurs… » pour une demande de
+    commission d'enquête — ni sa procédure (`code: "8"`, « Résolution », pour
+    toutes). Le **document déposé** le dit, dans `classification.sousType`.
+
+    Un document présent sans sous-type est dans la table, à `None` : « l'archive
+    le contient et ne le qualifie pas » n'est pas « l'archive ne le contient
+    pas », et `type_resolution_depose` nomme les deux séparément.
+    """
+    table: dict[str, Optional[str]] = {}
+    for _legislature, document in iter_documents_bruts(archives):
+        uid = document.get("uid")
+        if not isinstance(uid, str) or not uid.startswith(_DOC_PREFIX_RESOLUTION):
+            continue
+        classification = document.get("classification")
+        sous_type = classification.get("sousType") if isinstance(classification, dict) else None
+        code = sous_type.get("code") if isinstance(sous_type, dict) else None
+        table[uid] = code if isinstance(code, str) and code else None
+    return table
+
+
+def type_resolution_depose(
+    dossier: dict[str, Any],
+    sous_types: dict[str, Optional[str]],
+) -> tuple[Optional[str], Optional[dict[str, str]]]:
+    """Ce qu'une proposition de résolution demande, et à défaut pourquoi on ne
+    le sait pas (#1276) : `(type, None)` ou `(None, {"motif": …})`.
+
+    `(None, None)` pour tout dossier qui n'est pas une proposition de
+    résolution : la question ne s'y pose pas, il n'y a pas d'absence à
+    expliquer.
+
+    **Jamais lu dans le titre.** Le titre long du document le dit en clair
+    (« proposition de résolution tendant à la création d'une commission
+    d'enquête relative à… »), mais une clé tirée d'un libellé rouille (#672) :
+    c'est le code de classification qui est lu, par le même document de dépôt
+    que `nature_texte_depose`.
+    """
+    if nature_texte_depose(dossier) != "proposition_de_resolution":
+        return None, None
+    document = _document_depot_initial(dossier.get("actesLegislatifs"))
+    if not document:
+        return None, {"motif": "sans_document"}
+    if document not in sous_types:
+        return None, {"motif": "document_absent"}
+    code = sous_types[document]
+    if code is None:
+        return None, {"motif": "sous_type_absent"}
+    type_resolution = TYPE_RESOLUTION_PAR_SOUS_TYPE.get(code)
+    if type_resolution is None:
+        return None, {"motif": "sous_type_inconnu", "code": code}
+    return type_resolution, None
+
+
 def _origine(dossier: dict[str, Any]) -> Optional[str]:
     """Classe un dossier en `"gouvernemental"` / `"parlementaire"` / `None`
     (non déterminable, donc exclu plutôt que deviné — AGENTS.md §2.5).
