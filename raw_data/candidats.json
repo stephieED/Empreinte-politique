@@ -293,10 +293,10 @@
       "slug": "philippe-brun",
       "parti": "Parti socialiste",
       "famille_politique": null,
-      "statut": "declare",
+      "statut": "decline",
       "date_declaration": null,
       "source": "https://fr.wikipedia.org/wiki/Philippe_Brun",
-      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré dans le cadre d'une primaire). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+      "notes": "Candidature écartée de la primaire présidentielle socialiste (BFMTV, 17/09/2026 : https://www.bfmtv.com/politique/parti-socialiste/philippe-brun-ecarte-de-la-primaire-socialiste-comment-l-annonce-des-candidats-a-vire-au-coup-de-theatre_AN-202609170468.html). Il ne figure plus parmi les déclarés de l'article des candidatures (relevé le 2026-10-12). Statut passé de declare à decline le 2026-10-12, à la main, sur vérification de la propriétaire. Entrée conservée : son slug est publié."
     },
     {
       "nom": "Olivier Faure",
@@ -333,10 +333,10 @@
       "slug": "fabien-verdier",
       "parti": "Divers gauche",
       "famille_politique": null,
-      "statut": "declare",
+      "statut": "decline",
       "date_declaration": null,
       "source": "https://fr.wikipedia.org/wiki/Candidatures_%C3%A0_l%27%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027#Candidats_d%C3%A9clar%C3%A9s",
-      "notes": "Relu à la main le 2026-09-07 : aucun acteur AMO30 ne porte ce nom, donc entrée hors_an dans raw_data/correspondance_acteurs_an.json. Slug posé à ce moment-là et désormais immuable (#460/#470). Famille politique, date et source primaire de la déclaration restent à compléter."
+      "notes": "Candidature écartée de la primaire de la gauche unitaire, faute des parrainages nécessaires (Magcentre, 16/09/2026 : https://www.magcentre.fr/377292-fabien-verdier-ecarte-de-la-primaire-de-la-gauche/). L'article ne dit pas s'il se maintient hors primaire ; il ne figure plus parmi les déclarés de l'article des candidatures (relevé le 2026-10-12). Statut passé de declare à decline le 2026-10-12, à la main, sur vérification de la propriétaire. Entrée conservée : son slug est publié."
     },
     {
       "nom": "Manolo Mlekuz",
