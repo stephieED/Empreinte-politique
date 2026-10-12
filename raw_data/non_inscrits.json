@@ -1,0 +1,3914 @@
+{
+  "schema_version": 1,
+  "type_document": "non_inscrits",
+  "meta": {
+    "description": "Produit à chaque run par src/non_inscrits_amo30.py (#1265) : les députés de l'Assemblée nationale qui n'appartiennent à aucun groupe, par législature, avec leurs périodes. Lu dans l'organe « Non inscrit » du référentiel AMO30 de l'Assemblée nationale. Ce n'est pas une fiche de groupe : les non-inscrits ne sont pas un groupe. Ne pas éditer à la main : le prochain run réécrit ce fichier.",
+    "avertissements": [
+      "Une période ouverte (`fin` : null) l'était dans l'archive lue par le run qui a produit ce fichier.",
+      "Le transit d'ouverture est écarté : en début de législature, tous les députés passent par cet organe avant que les groupes se constituent. `transit_d_ouverture` compte ce qui est écarté ; avant `date_constitution_groupes`, la liste ne dit donc pas qui était non inscrit.",
+      "Hors transit d'ouverture, un passage de quelques jours est publié tel que la source le donne.",
+      "`membre_id` : null signifie qu'aucune fiche n'a été collectée pour cette personne, pas qu'elle n'a rien fait."
+    ],
+    "source": "AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+    "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr"
+  },
+  "legislatures": [
+    {
+      "legislature": "14",
+      "organe_ref": "PO645633",
+      "periode": {
+        "debut": "2012-06-20",
+        "fin": "2017-06-20"
+      },
+      "date_constitution_groupes": "2012-06-26",
+      "transit_d_ouverture": {
+        "mandats_ecartes": 0,
+        "personnes": 0
+      },
+      "membres": [
+        {
+          "membre_id": "patrick-devedjian",
+          "acteur_ref": "PA1124",
+          "nom": "Patrick Devedjian",
+          "periodes": [
+            {
+              "debut": "2012-12-17",
+              "fin": "2012-12-18"
+            }
+          ]
+        },
+        {
+          "membre_id": "nicolas-dupont-aignan",
+          "acteur_ref": "PA1206",
+          "nom": "Nicolas Dupont-Aignan",
+          "periodes": [
+            {
+              "debut": "2012-06-26",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "jerome-guedj",
+          "acteur_ref": "PA1567",
+          "nom": "Jérôme Guedj",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-23"
+            }
+          ]
+        },
+        {
+          "membre_id": "francois-lamy",
+          "acteur_ref": "PA1816",
+          "nom": "François Lamy",
+          "periodes": [
+            {
+              "debut": "2014-05-03",
+              "fin": "2014-05-04"
+            }
+          ]
+        },
+        {
+          "membre_id": "jean-lassalle",
+          "acteur_ref": "PA1838",
+          "nom": "Jean Lassalle",
+          "periodes": [
+            {
+              "debut": "2012-06-26",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA2045",
+          "nom": "Noël Mamère",
+          "periodes": [
+            {
+              "debut": "2016-05-20",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "pierre-moscovici",
+          "acteur_ref": "PA2240",
+          "nom": "Pierre Moscovici",
+          "periodes": [
+            {
+              "debut": "2014-05-03",
+              "fin": "2014-05-04"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA266863",
+          "nom": "Jean-Pierre Fougerat",
+          "periodes": [
+            {
+              "debut": "2012-07-21",
+              "fin": "2012-07-25"
+            }
+          ]
+        },
+        {
+          "membre_id": "philippe-martin",
+          "acteur_ref": "PA267278",
+          "nom": "Philippe Martin",
+          "periodes": [
+            {
+              "debut": "2014-05-03",
+              "fin": "2014-05-04"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA267433",
+          "nom": "Gilles Bourdouleix",
+          "periodes": [
+            {
+              "debut": "2013-08-30",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "manuel-valls",
+          "acteur_ref": "PA267622",
+          "nom": "Manuel Valls",
+          "periodes": [
+            {
+              "debut": "2017-01-07",
+              "fin": "2017-01-09"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA267623",
+          "nom": "Carlos Da Silva",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-23"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA267918",
+          "nom": "Thérèse Guilbert",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-25"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA267954",
+          "nom": "Danièle Hoffman-Rispal",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-25"
+            }
+          ]
+        },
+        {
+          "membre_id": "victorin-lurel",
+          "acteur_ref": "PA268048",
+          "nom": "Victorin Lurel",
+          "periodes": [
+            {
+              "debut": "2014-05-03",
+              "fin": "2014-05-04"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA271",
+          "nom": "Sylvie Andrieux",
+          "periodes": [
+            {
+              "debut": "2013-06-04",
+              "fin": "2016-12-08"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA2800",
+          "nom": "Gérard Terrier",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-25"
+            }
+          ]
+        },
+        {
+          "membre_id": "marisol-touraine",
+          "acteur_ref": "PA2825",
+          "nom": "Marisol Touraine",
+          "periodes": [
+            {
+              "debut": "2017-06-18",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "alain-vidalies",
+          "acteur_ref": "PA2912",
+          "nom": "Alain Vidalies",
+          "periodes": [
+            {
+              "debut": "2014-05-01",
+              "fin": "2014-05-04"
+            },
+            {
+              "debut": "2017-06-18",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA309643",
+          "nom": "Véronique Besse",
+          "periodes": [
+            {
+              "debut": "2012-06-26",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "jean-marc-ayrault",
+          "acteur_ref": "PA328",
+          "nom": "Jean-Marc Ayrault",
+          "periodes": [
+            {
+              "debut": "2014-05-01",
+              "fin": "2014-05-04"
+            }
+          ]
+        },
+        {
+          "membre_id": "martine-pinville",
+          "acteur_ref": "PA330981",
+          "nom": "Martine Pinville",
+          "periodes": [
+            {
+              "debut": "2017-06-18",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "michele-delaunay",
+          "acteur_ref": "PA331924",
+          "nom": "Michèle Delaunay",
+          "periodes": [
+            {
+              "debut": "2014-05-03",
+              "fin": "2014-05-04"
+            }
+          ]
+        },
+        {
+          "membre_id": "guillaume-garot",
+          "acteur_ref": "PA333285",
+          "nom": "Guillaume Garot",
+          "periodes": [
+            {
+              "debut": "2014-05-03",
+              "fin": "2014-05-04"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA337550",
+          "nom": "Patrick Lebreton",
+          "periodes": [
+            {
+              "debut": "2016-05-21",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "annick-girardin",
+          "acteur_ref": "PA337633",
+          "nom": "Annick Girardin",
+          "periodes": [
+            {
+              "debut": "2014-06-30",
+              "fin": "2014-07-29"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA341481",
+          "nom": "Guy Lefrand",
+          "periodes": [
+            {
+              "debut": "2017-06-18",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA342332",
+          "nom": "Jean-Marie Beffara",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-23"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA342539",
+          "nom": "Florence Delaunay",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-23"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA342564",
+          "nom": "Monique Lubin",
+          "periodes": [
+            {
+              "debut": "2017-03-22",
+              "fin": "2017-03-29"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA342997",
+          "nom": "Jean-Claude Gouget",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-25"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA345994",
+          "nom": "Jean-Luc Drapeau",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-23"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA346170",
+          "nom": "Jacques Moignard",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-23"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA347627",
+          "nom": "Catherine Pen",
+          "periodes": [
+            {
+              "debut": "2014-05-10",
+              "fin": "2014-05-10"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA563",
+          "nom": "Jacques Bompard",
+          "periodes": [
+            {
+              "debut": "2012-06-26",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "cecile-duflot",
+          "acteur_ref": "PA588872",
+          "nom": "Cécile Duflot",
+          "periodes": [
+            {
+              "debut": "2014-05-03",
+              "fin": "2014-05-04"
+            },
+            {
+              "debut": "2016-05-20",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "stephane-le-foll",
+          "acteur_ref": "PA588886",
+          "nom": "Stéphane Le Foll",
+          "periodes": [
+            {
+              "debut": "2017-06-18",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "marie-arlette-carlotti",
+          "acteur_ref": "PA590034",
+          "nom": "Marie-Arlette Carlotti",
+          "periodes": [
+            {
+              "debut": "2014-05-03",
+              "fin": "2014-05-04"
+            }
+          ]
+        },
+        {
+          "membre_id": "clotilde-valter",
+          "acteur_ref": "PA605606",
+          "nom": "Clotilde Valter",
+          "periodes": [
+            {
+              "debut": "2017-06-18",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA605625",
+          "nom": "Isabelle Attard",
+          "periodes": [
+            {
+              "debut": "2016-05-20",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA605922",
+          "nom": "Brigitte Allain",
+          "periodes": [
+            {
+              "debut": "2016-05-20",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA606212",
+          "nom": "Gilbert Collard",
+          "periodes": [
+            {
+              "debut": "2012-06-26",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA606225",
+          "nom": "Patrice Prat",
+          "periodes": [
+            {
+              "debut": "2016-07-23",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA606375",
+          "nom": "Émilienne Poumirol",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-25"
+            }
+          ]
+        },
+        {
+          "membre_id": "jean-louis-roumegas",
+          "acteur_ref": "PA606545",
+          "nom": "Jean-Louis Roumégas",
+          "periodes": [
+            {
+              "debut": "2016-05-20",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA606910",
+          "nom": "Michèle Bonneton",
+          "periodes": [
+            {
+              "debut": "2016-05-20",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA607632",
+          "nom": "Philippe Noguès",
+          "periodes": [
+            {
+              "debut": "2015-06-30",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA608186",
+          "nom": "Danielle Auroi",
+          "periodes": [
+            {
+              "debut": "2016-05-20",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "helene-geoffroy",
+          "acteur_ref": "PA608574",
+          "nom": "Hélène Geoffroy",
+          "periodes": [
+            {
+              "debut": "2017-06-18",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "thomas-thevenoud",
+          "acteur_ref": "PA608672",
+          "nom": "Thomas Thévenoud",
+          "periodes": [
+            {
+              "debut": "2014-09-11",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "sylvie-tolmont",
+          "acteur_ref": "PA608741",
+          "nom": "Sylvie Tolmont",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-23"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA609016",
+          "nom": "Denis Baupin",
+          "periodes": [
+            {
+              "debut": "2016-05-11",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA609222",
+          "nom": "Dominique Chauvel",
+          "periodes": [
+            {
+              "debut": "2016-05-28",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA609465",
+          "nom": "Jean-Philippe Mallé",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-23"
+            }
+          ]
+        },
+        {
+          "membre_id": "pascale-boistard",
+          "acteur_ref": "PA609513",
+          "nom": "Pascale Boistard",
+          "periodes": [
+            {
+              "debut": "2017-06-18",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "barbara-pompili",
+          "acteur_ref": "PA609520",
+          "nom": "Barbara Pompili",
+          "periodes": [
+            {
+              "debut": "2017-06-18",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA609709",
+          "nom": "Marion Maréchal-Le Pen",
+          "periodes": [
+            {
+              "debut": "2012-06-26",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA609764",
+          "nom": "Yannick Moreau",
+          "periodes": [
+            {
+              "debut": "2012-06-26",
+              "fin": "2013-06-17"
+            }
+          ]
+        },
+        {
+          "membre_id": "eva-sas",
+          "acteur_ref": "PA610002",
+          "nom": "Eva Sas",
+          "periodes": [
+            {
+              "debut": "2016-05-20",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA610125",
+          "nom": "Jean-Christophe Fromantin",
+          "periodes": [
+            {
+              "debut": "2015-12-08",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA610427",
+          "nom": "Laurence Abeille",
+          "periodes": [
+            {
+              "debut": "2016-05-20",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA610615",
+          "nom": "Ary Chalus",
+          "periodes": [
+            {
+              "debut": "2012-06-26",
+              "fin": "2012-07-04"
+            }
+          ]
+        },
+        {
+          "membre_id": "ericka-bareigts",
+          "acteur_ref": "PA610681",
+          "nom": "Ericka Bareigts",
+          "periodes": [
+            {
+              "debut": "2017-06-18",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA610824",
+          "nom": "David Vergé",
+          "periodes": [
+            {
+              "debut": "2012-06-26",
+              "fin": "2012-07-25"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA610860",
+          "nom": "Sergio Coronado",
+          "periodes": [
+            {
+              "debut": "2016-05-20",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "axelle-lemaire",
+          "acteur_ref": "PA610873",
+          "nom": "Axelle Lemaire",
+          "periodes": [
+            {
+              "debut": "2017-03-28",
+              "fin": "2017-05-09"
+            }
+          ]
+        },
+        {
+          "membre_id": "pouria-amirshahi",
+          "acteur_ref": "PA610968",
+          "nom": "Pouria Amirshahi",
+          "periodes": [
+            {
+              "debut": "2016-03-08",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642651",
+          "nom": "Esther Baron",
+          "periodes": [
+            {
+              "debut": "2017-06-18",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642682",
+          "nom": "Avi Assouly",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-25"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642684",
+          "nom": "Jean-Pierre Maggi",
+          "periodes": [
+            {
+              "debut": "2012-07-01",
+              "fin": "2012-07-10"
+            }
+          ]
+        },
+        {
+          "membre_id": "eric-bothorel",
+          "acteur_ref": "PA642695",
+          "nom": "Éric Bothorel",
+          "periodes": [
+            {
+              "debut": "2017-05-06",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642699",
+          "nom": "Alain Ballay",
+          "periodes": [
+            {
+              "debut": "2016-03-04",
+              "fin": "2016-03-07"
+            }
+          ]
+        },
+        {
+          "membre_id": "frederic-barbier",
+          "acteur_ref": "PA642724",
+          "nom": "Frédéric Barbier",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-23"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642736",
+          "nom": "Marie-Thérèse Le Roy",
+          "periodes": [
+            {
+              "debut": "2016-02-28",
+              "fin": "2016-02-29"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642739",
+          "nom": "Gwenegan Bui",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-23"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642741",
+          "nom": "Claire Mallejac",
+          "periodes": [
+            {
+              "debut": "2017-06-18",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642743",
+          "nom": "Vincent Feltesse",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-25"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642759",
+          "nom": "Laurence Arribagé",
+          "periodes": [
+            {
+              "debut": "2014-06-02",
+              "fin": "2014-06-02"
+            }
+          ]
+        },
+        {
+          "membre_id": "olivier-veran",
+          "acteur_ref": "PA642788",
+          "nom": "Olivier Véran",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-23"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642805",
+          "nom": "Régine Povéda",
+          "periodes": [
+            {
+              "debut": "2014-10-05",
+              "fin": "2014-10-05"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642836",
+          "nom": "Geneviève Gosselin-Fleury",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-23"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642844",
+          "nom": "Sylvie Pichot",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-23"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642876",
+          "nom": "Patrick Weiten",
+          "periodes": [
+            {
+              "debut": "2016-04-16",
+              "fin": "2016-04-25"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642940",
+          "nom": "Fanélie Carrey-Conte",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-23"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642963",
+          "nom": "Jean-Louis Rousselin",
+          "periodes": [
+            {
+              "debut": "2017-06-16",
+              "fin": "2017-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642984",
+          "nom": "Pierre Léautey",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-23"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA642987",
+          "nom": "Guillaume Bachelay",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-25"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA643053",
+          "nom": "Yannick Trigance",
+          "periodes": [
+            {
+              "debut": "2017-01-07",
+              "fin": "2017-01-09"
+            }
+          ]
+        },
+        {
+          "membre_id": "helene-vainqueur-christophe",
+          "acteur_ref": "PA643145",
+          "nom": "Hélène Vainqueur-Christophe",
+          "periodes": [
+            {
+              "debut": "2012-07-22",
+              "fin": "2012-07-23"
+            }
+          ]
+        },
+        {
+          "membre_id": "napole-polutele",
+          "acteur_ref": "PA693008",
+          "nom": "Napole Polutele",
+          "periodes": [
+            {
+              "debut": "2013-03-24",
+              "fin": "2013-05-31"
+            }
+          ]
+        },
+        {
+          "membre_id": "maina-sage",
+          "acteur_ref": "PA702052",
+          "nom": "Maina Sage",
+          "periodes": [
+            {
+              "debut": "2014-06-30",
+              "fin": "2014-07-07"
+            }
+          ]
+        },
+        {
+          "membre_id": "bernard-cazeneuve",
+          "acteur_ref": "PA785",
+          "nom": "Bernard Cazeneuve",
+          "periodes": [
+            {
+              "debut": "2017-06-16",
+              "fin": "2017-06-20"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "legislature": "15",
+      "organe_ref": "PO723569",
+      "periode": {
+        "debut": "2017-06-21",
+        "fin": "2022-06-21"
+      },
+      "date_constitution_groupes": "2017-06-27",
+      "transit_d_ouverture": {
+        "mandats_ecartes": 577,
+        "personnes": 577
+      },
+      "membres": [
+        {
+          "membre_id": "nicolas-dupont-aignan",
+          "acteur_ref": "PA1206",
+          "nom": "Nicolas Dupont-Aignan",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "jean-lassalle",
+          "acteur_ref": "PA1838",
+          "nom": "Jean Lassalle",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2020-01-29"
+            }
+          ]
+        },
+        {
+          "membre_id": "yannick-favennec-becot",
+          "acteur_ref": "PA267042",
+          "nom": "Yannick Favennec-Bécot",
+          "periodes": [
+            {
+              "debut": "2020-09-09",
+              "fin": "2020-09-23"
+            }
+          ]
+        },
+        {
+          "membre_id": "joel-giraud",
+          "acteur_ref": "PA267336",
+          "nom": "Joël Giraud",
+          "periodes": [
+            {
+              "debut": "2022-06-21",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "philippe-vigier",
+          "acteur_ref": "PA331582",
+          "nom": "Philippe Vigier",
+          "periodes": [
+            {
+              "debut": "2020-09-09",
+              "fin": "2020-09-23"
+            }
+          ]
+        },
+        {
+          "membre_id": "delphine-batho",
+          "acteur_ref": "PA335999",
+          "nom": "Delphine Batho",
+          "periodes": [
+            {
+              "debut": "2018-05-03",
+              "fin": "2020-05-19"
+            },
+            {
+              "debut": "2020-10-17",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "sylvia-pinel",
+          "acteur_ref": "PA336175",
+          "nom": "Sylvia Pinel",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2018-10-17"
+            }
+          ]
+        },
+        {
+          "membre_id": "jean-michel-clement",
+          "acteur_ref": "PA336439",
+          "nom": "Jean-Michel Clément",
+          "periodes": [
+            {
+              "debut": "2018-06-16",
+              "fin": "2018-10-17"
+            }
+          ]
+        },
+        {
+          "membre_id": "annick-girardin",
+          "acteur_ref": "PA337633",
+          "nom": "Annick Girardin",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2017-06-28"
+            },
+            {
+              "debut": "2022-06-21",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "michele-victory",
+          "acteur_ref": "PA340357",
+          "nom": "Michèle Victory",
+          "periodes": [
+            {
+              "debut": "2017-12-25",
+              "fin": "2017-12-25"
+            }
+          ]
+        },
+        {
+          "membre_id": "claudia-rouaux",
+          "acteur_ref": "PA342196",
+          "nom": "Claudia Rouaux",
+          "periodes": [
+            {
+              "debut": "2020-02-12",
+              "fin": "2020-02-19"
+            }
+          ]
+        },
+        {
+          "membre_id": "jean-luc-bourgeaux",
+          "acteur_ref": "PA342240",
+          "nom": "Jean-Luc Bourgeaux",
+          "periodes": [
+            {
+              "debut": "2020-08-01",
+              "fin": "2020-08-01"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA563",
+          "nom": "Jacques Bompard",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2017-08-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "damien-abad",
+          "acteur_ref": "PA605036",
+          "nom": "Damien Abad",
+          "periodes": [
+            {
+              "debut": "2022-05-24",
+              "fin": "2022-06-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "olivier-falorni",
+          "acteur_ref": "PA605694",
+          "nom": "Olivier Falorni",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2018-10-17"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA606212",
+          "nom": "Gilbert Collard",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2019-07-01"
+            }
+          ]
+        },
+        {
+          "membre_id": "stephane-travert",
+          "acteur_ref": "PA607395",
+          "nom": "Stéphane Travert",
+          "periodes": [
+            {
+              "debut": "2018-11-17",
+              "fin": "2018-11-18"
+            }
+          ]
+        },
+        {
+          "membre_id": "jeanine-dubie",
+          "acteur_ref": "PA608292",
+          "nom": "Jeanine Dubié",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2018-10-17"
+            }
+          ]
+        },
+        {
+          "membre_id": "barbara-pompili",
+          "acteur_ref": "PA609520",
+          "nom": "Barbara Pompili",
+          "periodes": [
+            {
+              "debut": "2022-06-21",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "joel-aviragnet",
+          "acteur_ref": "PA642764",
+          "nom": "Joël Aviragnet",
+          "periodes": [
+            {
+              "debut": "2018-03-19",
+              "fin": "2018-03-19"
+            }
+          ]
+        },
+        {
+          "membre_id": "gregory-labille",
+          "acteur_ref": "PA643004",
+          "nom": "Grégory Labille",
+          "periodes": [
+            {
+              "debut": "2020-10-08",
+              "fin": "2020-10-08"
+            }
+          ]
+        },
+        {
+          "membre_id": "philippe-naillet",
+          "acteur_ref": "PA643157",
+          "nom": "Philippe Naillet",
+          "periodes": [
+            {
+              "debut": "2020-07-14",
+              "fin": "2020-07-14"
+            }
+          ]
+        },
+        {
+          "membre_id": "maina-sage",
+          "acteur_ref": "PA702052",
+          "nom": "Maina Sage",
+          "periodes": [
+            {
+              "debut": "2020-09-08",
+              "fin": "2020-09-28"
+            }
+          ]
+        },
+        {
+          "membre_id": "stephane-claireaux",
+          "acteur_ref": "PA702054",
+          "nom": "Stéphane Claireaux",
+          "periodes": [
+            {
+              "debut": "2017-07-22",
+              "fin": "2017-07-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "mounir-mahjoubi",
+          "acteur_ref": "PA717167",
+          "nom": "Mounir Mahjoubi",
+          "periodes": [
+            {
+              "debut": "2019-04-28",
+              "fin": "2019-04-28"
+            }
+          ]
+        },
+        {
+          "membre_id": "emmanuelle-fontaine-domeizel",
+          "acteur_ref": "PA718706",
+          "nom": "Emmanuelle Fontaine-Domeizel",
+          "periodes": [
+            {
+              "debut": "2017-07-22",
+              "fin": "2017-07-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "delphine-bagarry",
+          "acteur_ref": "PA718744",
+          "nom": "Delphine Bagarry",
+          "periodes": [
+            {
+              "debut": "2020-03-04",
+              "fin": "2020-05-19"
+            },
+            {
+              "debut": "2020-10-17",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA718752",
+          "nom": "Jean Deguerry",
+          "periodes": [
+            {
+              "debut": "2022-06-21",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "sebastien-david",
+          "acteur_ref": "PA718998",
+          "nom": "Sébastien David",
+          "periodes": [
+            {
+              "debut": "2021-08-03",
+              "fin": "2021-08-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "julien-ravier",
+          "acteur_ref": "PA719002",
+          "nom": "Julien Ravier",
+          "periodes": [
+            {
+              "debut": "2020-10-08",
+              "fin": "2020-10-08"
+            }
+          ]
+        },
+        {
+          "membre_id": "nathalie-porte",
+          "acteur_ref": "PA719020",
+          "nom": "Nathalie Porte",
+          "periodes": [
+            {
+              "debut": "2020-07-28",
+              "fin": "2020-07-28"
+            }
+          ]
+        },
+        {
+          "membre_id": "frederique-tuffnell",
+          "acteur_ref": "PA719092",
+          "nom": "Frédérique Tuffnell",
+          "periodes": [
+            {
+              "debut": "2020-02-08",
+              "fin": "2020-05-19"
+            },
+            {
+              "debut": "2020-10-17",
+              "fin": "2020-11-30"
+            }
+          ]
+        },
+        {
+          "membre_id": "michel-castellani",
+          "acteur_ref": "PA719138",
+          "nom": "Michel Castellani",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2018-10-17"
+            }
+          ]
+        },
+        {
+          "membre_id": "jean-felix-acquaviva",
+          "acteur_ref": "PA719146",
+          "nom": "Jean-Félix Acquaviva",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2018-10-17"
+            }
+          ]
+        },
+        {
+          "membre_id": "yolaine-de-courson",
+          "acteur_ref": "PA719194",
+          "nom": "Yolaine de Courson",
+          "periodes": [
+            {
+              "debut": "2020-10-17",
+              "fin": "2021-01-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "paul-andre-colombani",
+          "acteur_ref": "PA719286",
+          "nom": "Paul-André Colombani",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2018-10-17"
+            }
+          ]
+        },
+        {
+          "membre_id": "severine-gipson",
+          "acteur_ref": "PA719326",
+          "nom": "Séverine Gipson",
+          "periodes": [
+            {
+              "debut": "2017-07-22",
+              "fin": "2017-07-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "luc-lamirault",
+          "acteur_ref": "PA719382",
+          "nom": "Luc Lamirault",
+          "periodes": [
+            {
+              "debut": "2021-01-22",
+              "fin": "2021-01-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "nicolas-meizonnet",
+          "acteur_ref": "PA719436",
+          "nom": "Nicolas Meizonnet",
+          "periodes": [
+            {
+              "debut": "2020-02-01",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "annie-chapelier",
+          "acteur_ref": "PA719448",
+          "nom": "Annie Chapelier",
+          "periodes": [
+            {
+              "debut": "2020-10-17",
+              "fin": "2020-10-25"
+            }
+          ]
+        },
+        {
+          "membre_id": "sebastien-nadot",
+          "acteur_ref": "PA719464",
+          "nom": "Sébastien Nadot",
+          "periodes": [
+            {
+              "debut": "2018-12-22",
+              "fin": "2020-05-19"
+            },
+            {
+              "debut": "2020-10-17",
+              "fin": "2021-03-02"
+            }
+          ]
+        },
+        {
+          "membre_id": "olivier-gaillard",
+          "acteur_ref": "PA719480",
+          "nom": "Olivier Gaillard",
+          "periodes": [
+            {
+              "debut": "2020-05-13",
+              "fin": "2021-06-26"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA719608",
+          "nom": "Emmanuelle Ménard",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "pascal-lavergne",
+          "acteur_ref": "PA719664",
+          "nom": "Pascal Lavergne",
+          "periodes": [
+            {
+              "debut": "2018-11-17",
+              "fin": "2018-11-18"
+            }
+          ]
+        },
+        {
+          "membre_id": "sabine-thillaye",
+          "acteur_ref": "PA719822",
+          "nom": "Sabine Thillaye",
+          "periodes": [
+            {
+              "debut": "2020-01-30",
+              "fin": "2020-05-19"
+            }
+          ]
+        },
+        {
+          "membre_id": "genevieve-darrieussecq",
+          "acteur_ref": "PA719914",
+          "nom": "Geneviève Darrieussecq",
+          "periodes": [
+            {
+              "debut": "2022-06-21",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "fabien-laine",
+          "acteur_ref": "PA719918",
+          "nom": "Fabien Lainé",
+          "periodes": [
+            {
+              "debut": "2017-07-22",
+              "fin": "2017-07-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "stephane-baudu",
+          "acteur_ref": "PA719942",
+          "nom": "Stéphane Baudu",
+          "periodes": [
+            {
+              "debut": "2018-11-17",
+              "fin": "2018-11-18"
+            }
+          ]
+        },
+        {
+          "membre_id": "guillaume-peltier",
+          "acteur_ref": "PA719946",
+          "nom": "Guillaume Peltier",
+          "periodes": [
+            {
+              "debut": "2022-01-11",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "sarah-el-hairy",
+          "acteur_ref": "PA720002",
+          "nom": "Sarah El Haïry",
+          "periodes": [
+            {
+              "debut": "2022-06-21",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "sandrine-josso",
+          "acteur_ref": "PA720038",
+          "nom": "Sandrine Josso",
+          "periodes": [
+            {
+              "debut": "2020-09-09",
+              "fin": "2020-09-23"
+            }
+          ]
+        },
+        {
+          "membre_id": "gregory-galbadon",
+          "acteur_ref": "PA720198",
+          "nom": "Grégory Galbadon",
+          "periodes": [
+            {
+              "debut": "2017-07-22",
+              "fin": "2017-07-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "berangere-abba",
+          "acteur_ref": "PA720242",
+          "nom": "Bérangère Abba",
+          "periodes": [
+            {
+              "debut": "2022-06-21",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "matthieu-orphelin",
+          "acteur_ref": "PA720278",
+          "nom": "Matthieu Orphelin",
+          "periodes": [
+            {
+              "debut": "2019-02-15",
+              "fin": "2019-09-27"
+            },
+            {
+              "debut": "2020-10-17",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "emilie-cariou",
+          "acteur_ref": "PA720298",
+          "nom": "Émilie Cariou",
+          "periodes": [
+            {
+              "debut": "2020-10-17",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "sebastien-chenu",
+          "acteur_ref": "PA720468",
+          "nom": "Sébastien Chenu",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "valerie-six",
+          "acteur_ref": "PA720488",
+          "nom": "Valérie Six",
+          "periodes": [
+            {
+              "debut": "2020-06-23",
+              "fin": "2020-06-23"
+            }
+          ]
+        },
+        {
+          "membre_id": "laurent-pietraszewski",
+          "acteur_ref": "PA720512",
+          "nom": "Laurent Pietraszewski",
+          "periodes": [
+            {
+              "debut": "2022-06-21",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "jennifer-de-temmerman",
+          "acteur_ref": "PA720538",
+          "nom": "Jennifer De Temmerman",
+          "periodes": [
+            {
+              "debut": "2019-11-27",
+              "fin": "2020-05-19"
+            }
+          ]
+        },
+        {
+          "membre_id": "agnes-thill",
+          "acteur_ref": "PA720568",
+          "nom": "Agnès Thill",
+          "periodes": [
+            {
+              "debut": "2019-06-27",
+              "fin": "2020-06-22"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA720606",
+          "nom": "Ludovic Pajot",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2021-04-21"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA720610",
+          "nom": "Myriane Houplain",
+          "periodes": [
+            {
+              "debut": "2021-04-22",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "marine-le-pen",
+          "acteur_ref": "PA720614",
+          "nom": "Marine Le Pen",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA720664",
+          "nom": "José Evrard",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2022-01-07"
+            }
+          ]
+        },
+        {
+          "membre_id": "emmanuel-blairy",
+          "acteur_ref": "PA720668",
+          "nom": "Emmanuel Blairy",
+          "periodes": [
+            {
+              "debut": "2022-01-11",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA720680",
+          "nom": "Ludovic Loquet",
+          "periodes": [
+            {
+              "debut": "2020-08-07",
+              "fin": "2020-09-27"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA720798",
+          "nom": "Louis Aliot",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2020-08-02"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA720802",
+          "nom": "Catherine Pujol",
+          "periodes": [
+            {
+              "debut": "2020-08-03",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "bruno-bilde",
+          "acteur_ref": "PA720822",
+          "nom": "Bruno Bilde",
+          "periodes": [
+            {
+              "debut": "2017-06-27",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "fiona-lazaar",
+          "acteur_ref": "PA720916",
+          "nom": "Fiona Lazaar",
+          "periodes": [
+            {
+              "debut": "2021-01-06",
+              "fin": "2021-06-28"
+            }
+          ]
+        },
+        {
+          "membre_id": "nathalie-elimas",
+          "acteur_ref": "PA720924",
+          "nom": "Nathalie Elimas",
+          "periodes": [
+            {
+              "debut": "2022-04-07",
+              "fin": "2022-04-12"
+            }
+          ]
+        },
+        {
+          "membre_id": "aurelien-tache",
+          "acteur_ref": "PA720952",
+          "nom": "Aurélien Taché",
+          "periodes": [
+            {
+              "debut": "2020-10-17",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "olivier-serva",
+          "acteur_ref": "PA720960",
+          "nom": "Olivier Serva",
+          "periodes": [
+            {
+              "debut": "2022-06-02",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA720972",
+          "nom": "Ghylaine Jeanne",
+          "periodes": [
+            {
+              "debut": "2022-06-21",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "m-jid-el-guerrab",
+          "acteur_ref": "PA720996",
+          "nom": "M'jid El Guerrab",
+          "periodes": [
+            {
+              "debut": "2017-09-06",
+              "fin": "2018-10-17"
+            }
+          ]
+        },
+        {
+          "membre_id": "manuela-keclard-mondesir",
+          "acteur_ref": "PA721012",
+          "nom": "Manuéla Kéclard-Mondésir",
+          "periodes": [
+            {
+              "debut": "2018-04-24",
+              "fin": "2018-04-29"
+            }
+          ]
+        },
+        {
+          "membre_id": "paula-forteza",
+          "acteur_ref": "PA721142",
+          "nom": "Paula Forteza",
+          "periodes": [
+            {
+              "debut": "2020-01-31",
+              "fin": "2020-05-19"
+            },
+            {
+              "debut": "2020-10-17",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "samantha-cazebonne",
+          "acteur_ref": "PA721166",
+          "nom": "Samantha Cazebonne",
+          "periodes": [
+            {
+              "debut": "2018-04-23",
+              "fin": "2018-05-08"
+            }
+          ]
+        },
+        {
+          "membre_id": "joachim-son-forget",
+          "acteur_ref": "PA721174",
+          "nom": "Joachim Son-Forget",
+          "periodes": [
+            {
+              "debut": "2019-01-09",
+              "fin": "2019-01-14"
+            },
+            {
+              "debut": "2019-12-19",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "albane-gaillot",
+          "acteur_ref": "PA721246",
+          "nom": "Albane Gaillot",
+          "periodes": [
+            {
+              "debut": "2020-03-05",
+              "fin": "2020-05-19"
+            },
+            {
+              "debut": "2020-10-17",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA721502",
+          "nom": "Margaux Pech",
+          "periodes": [
+            {
+              "debut": "2022-06-21",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "muriel-roques-etienne",
+          "acteur_ref": "PA721538",
+          "nom": "Muriel Roques-Etienne",
+          "periodes": [
+            {
+              "debut": "2020-10-08",
+              "fin": "2020-10-08"
+            }
+          ]
+        },
+        {
+          "membre_id": "benjamin-griveaux",
+          "acteur_ref": "PA721560",
+          "nom": "Benjamin Griveaux",
+          "periodes": [
+            {
+              "debut": "2019-04-28",
+              "fin": "2019-04-28"
+            }
+          ]
+        },
+        {
+          "membre_id": "elise-fajgeles",
+          "acteur_ref": "PA721564",
+          "nom": "Élise Fajgeles",
+          "periodes": [
+            {
+              "debut": "2017-07-22",
+              "fin": "2017-07-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "sylvie-bouchet-bellecourt",
+          "acteur_ref": "PA721576",
+          "nom": "Sylvie Bouchet Bellecourt",
+          "periodes": [
+            {
+              "debut": "2020-06-23",
+              "fin": "2020-06-23"
+            }
+          ]
+        },
+        {
+          "membre_id": "patricia-lemoine",
+          "acteur_ref": "PA721632",
+          "nom": "Patricia Lemoine",
+          "periodes": [
+            {
+              "debut": "2018-11-17",
+              "fin": "2018-11-18"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA721640",
+          "nom": "Bernadette Beauvais",
+          "periodes": [
+            {
+              "debut": "2021-07-28",
+              "fin": "2021-08-25"
+            }
+          ]
+        },
+        {
+          "membre_id": "stephanie-atger",
+          "acteur_ref": "PA721674",
+          "nom": "Stéphanie Atger",
+          "periodes": [
+            {
+              "debut": "2019-05-01",
+              "fin": "2019-05-01"
+            }
+          ]
+        },
+        {
+          "membre_id": "maud-gatel",
+          "acteur_ref": "PA721760",
+          "nom": "Maud Gatel",
+          "periodes": [
+            {
+              "debut": "2021-01-13",
+              "fin": "2021-01-14"
+            }
+          ]
+        },
+        {
+          "membre_id": "sandra-boelle",
+          "acteur_ref": "PA721832",
+          "nom": "Sandra Boëlle",
+          "periodes": [
+            {
+              "debut": "2020-05-28",
+              "fin": "2020-06-03"
+            }
+          ]
+        },
+        {
+          "membre_id": "adrien-morenas",
+          "acteur_ref": "PA721876",
+          "nom": "Adrien Morenas",
+          "periodes": [
+            {
+              "debut": "2017-07-22",
+              "fin": "2017-07-24"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA721912",
+          "nom": "Damien Derelle",
+          "periodes": [
+            {
+              "debut": "2022-06-21",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "marie-france-lorho",
+          "acteur_ref": "PA721932",
+          "nom": "Marie-France Lorho",
+          "periodes": [
+            {
+              "debut": "2017-08-22",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "delphine-o",
+          "acteur_ref": "PA721956",
+          "nom": "Delphine O",
+          "periodes": [
+            {
+              "debut": "2017-07-22",
+              "fin": "2017-07-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "patrick-loiseau",
+          "acteur_ref": "PA721996",
+          "nom": "Patrick Loiseau",
+          "periodes": [
+            {
+              "debut": "2019-07-08",
+              "fin": "2019-09-19"
+            }
+          ]
+        },
+        {
+          "membre_id": "adrien-taquet",
+          "acteur_ref": "PA722086",
+          "nom": "Adrien Taquet",
+          "periodes": [
+            {
+              "debut": "2022-06-21",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "benedicte-petelle",
+          "acteur_ref": "PA722090",
+          "nom": "Bénédicte Pételle",
+          "periodes": [
+            {
+              "debut": "2019-02-26",
+              "fin": "2019-02-27"
+            }
+          ]
+        },
+        {
+          "membre_id": "guillaume-chiche",
+          "acteur_ref": "PA722126",
+          "nom": "Guillaume Chiche",
+          "periodes": [
+            {
+              "debut": "2020-10-17",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "florence-provendier",
+          "acteur_ref": "PA722194",
+          "nom": "Florence Provendier",
+          "periodes": [
+            {
+              "debut": "2018-11-17",
+              "fin": "2018-11-18"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA722198",
+          "nom": "Bastien Coriton",
+          "periodes": [
+            {
+              "debut": "2020-06-18",
+              "fin": "2020-06-23"
+            }
+          ]
+        },
+        {
+          "membre_id": "jean-baptiste-djebbari",
+          "acteur_ref": "PA722236",
+          "nom": "Jean-Baptiste Djebbari",
+          "periodes": [
+            {
+              "debut": "2022-06-21",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "cedric-villani",
+          "acteur_ref": "PA722260",
+          "nom": "Cédric Villani",
+          "periodes": [
+            {
+              "debut": "2020-10-17",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "martine-wonner",
+          "acteur_ref": "PA722268",
+          "nom": "Martine Wonner",
+          "periodes": [
+            {
+              "debut": "2020-05-07",
+              "fin": "2020-05-19"
+            },
+            {
+              "debut": "2021-07-20",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "philippe-meyer",
+          "acteur_ref": "PA722280",
+          "nom": "Philippe Meyer",
+          "periodes": [
+            {
+              "debut": "2020-06-28",
+              "fin": "2020-06-29"
+            }
+          ]
+        },
+        {
+          "membre_id": "nathalie-serre",
+          "acteur_ref": "PA722308",
+          "nom": "Nathalie Serre",
+          "periodes": [
+            {
+              "debut": "2020-06-18",
+              "fin": "2020-06-18"
+            }
+          ]
+        },
+        {
+          "membre_id": "hubert-julien-laferriere",
+          "acteur_ref": "PA722344",
+          "nom": "Hubert Julien-Laferrière",
+          "periodes": [
+            {
+              "debut": "2020-10-17",
+              "fin": "2022-06-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "ramlati-ali",
+          "acteur_ref": "PA724827",
+          "nom": "Ramlati Ali",
+          "periodes": [
+            {
+              "debut": "2018-03-26",
+              "fin": "2018-03-26"
+            }
+          ]
+        },
+        {
+          "membre_id": "sylvain-brial",
+          "acteur_ref": "PA755549",
+          "nom": "Sylvain Brial",
+          "periodes": [
+            {
+              "debut": "2018-04-16",
+              "fin": "2018-10-17"
+            }
+          ]
+        },
+        {
+          "membre_id": "francis-chouat",
+          "acteur_ref": "PA760658",
+          "nom": "Francis Chouat",
+          "periodes": [
+            {
+              "debut": "2018-11-26",
+              "fin": "2018-11-27"
+            }
+          ]
+        },
+        {
+          "membre_id": "philippe-benassaya",
+          "acteur_ref": "PA774952",
+          "nom": "Philippe Benassaya",
+          "periodes": [
+            {
+              "debut": "2020-09-28",
+              "fin": "2020-09-28"
+            }
+          ]
+        },
+        {
+          "membre_id": "anne-laure-blin",
+          "acteur_ref": "PA774954",
+          "nom": "Anne-Laure Blin",
+          "periodes": [
+            {
+              "debut": "2020-09-28",
+              "fin": "2020-09-28"
+            }
+          ]
+        },
+        {
+          "membre_id": "yves-hemedinger",
+          "acteur_ref": "PA774956",
+          "nom": "Yves Hemedinger",
+          "periodes": [
+            {
+              "debut": "2020-09-28",
+              "fin": "2020-09-28"
+            }
+          ]
+        },
+        {
+          "membre_id": "gerard-leseul",
+          "acteur_ref": "PA774958",
+          "nom": "Gérard Leseul",
+          "periodes": [
+            {
+              "debut": "2020-09-28",
+              "fin": "2020-09-28"
+            }
+          ]
+        },
+        {
+          "membre_id": "isabelle-santiago",
+          "acteur_ref": "PA774960",
+          "nom": "Isabelle Santiago",
+          "periodes": [
+            {
+              "debut": "2020-09-28",
+              "fin": "2020-09-28"
+            }
+          ]
+        },
+        {
+          "membre_id": "karine-lebon",
+          "acteur_ref": "PA774962",
+          "nom": "Karine Lebon",
+          "periodes": [
+            {
+              "debut": "2020-09-28",
+              "fin": "2020-09-28"
+            }
+          ]
+        },
+        {
+          "membre_id": "christophe-leclercq",
+          "acteur_ref": "PA784314",
+          "nom": "Christophe Leclercq",
+          "periodes": [
+            {
+              "debut": "2021-07-06",
+              "fin": "2021-07-06"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "legislature": "16",
+      "organe_ref": "PO793087",
+      "periode": {
+        "debut": "2022-06-22",
+        "fin": "2024-06-09"
+      },
+      "date_constitution_groupes": "2022-06-28",
+      "transit_d_ouverture": {
+        "mandats_ecartes": 576,
+        "personnes": 576
+      },
+      "membres": [
+        {
+          "membre_id": "nicolas-dupont-aignan",
+          "acteur_ref": "PA1206",
+          "nom": "Nicolas Dupont-Aignan",
+          "periodes": [
+            {
+              "debut": "2022-06-29",
+              "fin": "2024-06-09"
+            }
+          ]
+        },
+        {
+          "membre_id": "david-habib",
+          "acteur_ref": "PA1592",
+          "nom": "David Habib",
+          "periodes": [
+            {
+              "debut": "2022-06-29",
+              "fin": "2024-06-09"
+            }
+          ]
+        },
+        {
+          "membre_id": "agnes-firmin-le-bodo",
+          "acteur_ref": "PA267780",
+          "nom": "Agnès Firmin Le Bodo",
+          "periodes": [
+            {
+              "debut": "2024-02-12",
+              "fin": "2024-02-12"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA309643",
+          "nom": "Véronique Besse",
+          "periodes": [
+            {
+              "debut": "2022-06-29",
+              "fin": "2024-06-09"
+            }
+          ]
+        },
+        {
+          "membre_id": "olivier-dussopt",
+          "acteur_ref": "PA330357",
+          "nom": "Olivier Dussopt",
+          "periodes": [
+            {
+              "debut": "2024-02-12",
+              "fin": "2024-02-12"
+            }
+          ]
+        },
+        {
+          "membre_id": "philippe-vigier",
+          "acteur_ref": "PA331582",
+          "nom": "Philippe Vigier",
+          "periodes": [
+            {
+              "debut": "2024-02-12",
+              "fin": "2024-02-12"
+            }
+          ]
+        },
+        {
+          "membre_id": "jean-louis-bricout",
+          "acteur_ref": "PA605069",
+          "nom": "Jean-Louis Bricout",
+          "periodes": [
+            {
+              "debut": "2022-06-29",
+              "fin": "2022-09-15"
+            }
+          ]
+        },
+        {
+          "membre_id": "olivier-falorni",
+          "acteur_ref": "PA605694",
+          "nom": "Olivier Falorni",
+          "periodes": [
+            {
+              "debut": "2022-06-29",
+              "fin": "2022-09-28"
+            }
+          ]
+        },
+        {
+          "membre_id": "olivier-becht",
+          "acteur_ref": "PA642935",
+          "nom": "Olivier Becht",
+          "periodes": [
+            {
+              "debut": "2024-02-12",
+              "fin": "2024-02-12"
+            }
+          ]
+        },
+        {
+          "membre_id": "virginie-lanlo",
+          "acteur_ref": "PA643048",
+          "nom": "Virginie Lanlo",
+          "periodes": [
+            {
+              "debut": "2023-08-21",
+              "fin": "2023-08-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "meyer-habib",
+          "acteur_ref": "PA695100",
+          "nom": "Meyer Habib",
+          "periodes": [
+            {
+              "debut": "2023-04-17",
+              "fin": "2023-04-17"
+            }
+          ]
+        },
+        {
+          "membre_id": "philippe-frei",
+          "acteur_ref": "PA719190",
+          "nom": "Philippe Frei",
+          "periodes": [
+            {
+              "debut": "2023-08-21",
+              "fin": "2023-08-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "veronique-de-montchalin",
+          "acteur_ref": "PA719376",
+          "nom": "Véronique de Montchalin",
+          "periodes": [
+            {
+              "debut": "2024-03-09",
+              "fin": "2024-03-09"
+            }
+          ]
+        },
+        {
+          "membre_id": "jean-charles-larsonneur",
+          "acteur_ref": "PA719396",
+          "nom": "Jean-Charles Larsonneur",
+          "periodes": [
+            {
+              "debut": "2023-12-21",
+              "fin": "2024-06-09"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA719608",
+          "nom": "Emmanuelle Ménard",
+          "periodes": [
+            {
+              "debut": "2022-06-29",
+              "fin": "2024-06-09"
+            }
+          ]
+        },
+        {
+          "membre_id": "genevieve-darrieussecq",
+          "acteur_ref": "PA719914",
+          "nom": "Geneviève Darrieussecq",
+          "periodes": [
+            {
+              "debut": "2023-08-21",
+              "fin": "2023-08-23"
+            }
+          ]
+        },
+        {
+          "membre_id": "carole-grandjean",
+          "acteur_ref": "PA720170",
+          "nom": "Carole Grandjean",
+          "periodes": [
+            {
+              "debut": "2024-02-12",
+              "fin": "2024-02-12"
+            }
+          ]
+        },
+        {
+          "membre_id": "adrien-quatennens",
+          "acteur_ref": "PA720422",
+          "nom": "Adrien Quatennens",
+          "periodes": [
+            {
+              "debut": "2022-12-14",
+              "fin": "2023-04-12"
+            }
+          ]
+        },
+        {
+          "membre_id": "hubert-julien-laferriere",
+          "acteur_ref": "PA722344",
+          "nom": "Hubert Julien-Laferrière",
+          "periodes": [
+            {
+              "debut": "2024-02-16",
+              "fin": "2024-06-09"
+            }
+          ]
+        },
+        {
+          "membre_id": "clement-beaune",
+          "acteur_ref": "PA774109",
+          "nom": "Clément Beaune",
+          "periodes": [
+            {
+              "debut": "2024-02-12",
+              "fin": "2024-02-12"
+            }
+          ]
+        },
+        {
+          "membre_id": "laurent-panifous",
+          "acteur_ref": "PA793210",
+          "nom": "Laurent Panifous",
+          "periodes": [
+            {
+              "debut": "2022-06-29",
+              "fin": "2022-09-15"
+            }
+          ]
+        },
+        {
+          "membre_id": "didier-parakian",
+          "acteur_ref": "PA793282",
+          "nom": "Didier Parakian",
+          "periodes": [
+            {
+              "debut": "2023-08-21",
+              "fin": "2023-08-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "laurent-leclercq",
+          "acteur_ref": "PA793644",
+          "nom": "Laurent Leclercq",
+          "periodes": [
+            {
+              "debut": "2023-08-21",
+              "fin": "2023-08-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "david-taupiac",
+          "acteur_ref": "PA793796",
+          "nom": "David Taupiac",
+          "periodes": [
+            {
+              "debut": "2022-06-29",
+              "fin": "2022-09-15"
+            }
+          ]
+        },
+        {
+          "membre_id": "alexandra-martin-1",
+          "acteur_ref": "PA793944",
+          "nom": "Alexandra Martin (Gironde)",
+          "periodes": [
+            {
+              "debut": "2023-08-21",
+              "fin": "2023-08-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "mathilde-desjonqueres",
+          "acteur_ref": "PA794194",
+          "nom": "Mathilde Desjonquères",
+          "periodes": [
+            {
+              "debut": "2022-07-23",
+              "fin": "2022-07-25"
+            }
+          ]
+        },
+        {
+          "membre_id": "benjamin-saint-huile",
+          "acteur_ref": "PA794626",
+          "nom": "Benjamin Saint-Huile",
+          "periodes": [
+            {
+              "debut": "2022-06-29",
+              "fin": "2022-09-15"
+            }
+          ]
+        },
+        {
+          "membre_id": "julien-bayou",
+          "acteur_ref": "PA795058",
+          "nom": "Julien Bayou",
+          "periodes": [
+            {
+              "debut": "2024-04-03",
+              "fin": "2024-06-09"
+            }
+          ]
+        },
+        {
+          "membre_id": "didier-padey",
+          "acteur_ref": "PA795124",
+          "nom": "Didier Padey",
+          "periodes": [
+            {
+              "debut": "2024-03-09",
+              "fin": "2024-03-09"
+            }
+          ]
+        },
+        {
+          "membre_id": "mereana-reid-arbelot",
+          "acteur_ref": "PA795240",
+          "nom": "Mereana Reid Arbelot",
+          "periodes": [
+            {
+              "debut": "2023-06-10",
+              "fin": "2023-06-10"
+            }
+          ]
+        },
+        {
+          "membre_id": "eleonore-caroit",
+          "acteur_ref": "PA795330",
+          "nom": "Eléonore Caroit",
+          "periodes": [
+            {
+              "debut": "2023-04-17",
+              "fin": "2023-04-17"
+            }
+          ]
+        },
+        {
+          "membre_id": "juliette-vilgrain",
+          "acteur_ref": "PA795354",
+          "nom": "Juliette Vilgrain",
+          "periodes": [
+            {
+              "debut": "2024-03-09",
+              "fin": "2024-03-09"
+            }
+          ]
+        },
+        {
+          "membre_id": "karim-ben-cheikh",
+          "acteur_ref": "PA795454",
+          "nom": "Karim Ben Cheikh",
+          "periodes": [
+            {
+              "debut": "2023-04-17",
+              "fin": "2023-04-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "denis-bernaert",
+          "acteur_ref": "PA795572",
+          "nom": "Denis Bernaert",
+          "periodes": [
+            {
+              "debut": "2024-02-12",
+              "fin": "2024-02-12"
+            }
+          ]
+        },
+        {
+          "membre_id": "philippe-emmanuel",
+          "acteur_ref": "PA795688",
+          "nom": "Philippe Emmanuel",
+          "periodes": [
+            {
+              "debut": "2023-08-21",
+              "fin": "2023-08-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "eric-husson",
+          "acteur_ref": "PA795708",
+          "nom": "Éric Husson",
+          "periodes": [
+            {
+              "debut": "2024-03-09",
+              "fin": "2024-03-09"
+            }
+          ]
+        },
+        {
+          "membre_id": "ingrid-dordain",
+          "acteur_ref": "PA795774",
+          "nom": "Ingrid Dordain",
+          "periodes": [
+            {
+              "debut": "2023-09-25",
+              "fin": "2023-09-25"
+            }
+          ]
+        },
+        {
+          "membre_id": "catherine-jaouen",
+          "acteur_ref": "PA796114",
+          "nom": "Catherine Jaouen",
+          "periodes": [
+            {
+              "debut": "2023-06-05",
+              "fin": "2023-06-05"
+            }
+          ]
+        },
+        {
+          "membre_id": "martine-froger",
+          "acteur_ref": "PA822617",
+          "nom": "Martine Froger",
+          "periodes": [
+            {
+              "debut": "2023-04-03",
+              "fin": "2023-05-08"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "legislature": "17",
+      "organe_ref": "PO840056",
+      "periode": {
+        "debut": "2024-07-01",
+        "fin": null
+      },
+      "date_constitution_groupes": "2024-07-18",
+      "transit_d_ouverture": {
+        "mandats_ecartes": 577,
+        "personnes": 577
+      },
+      "membres": [
+        {
+          "membre_id": "valerie-letard",
+          "acteur_ref": "PA227089",
+          "nom": "Valérie Létard",
+          "periodes": [
+            {
+              "debut": "2025-11-06",
+              "fin": "2025-11-07"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA309643",
+          "nom": "Véronique Besse",
+          "periodes": [
+            {
+              "debut": "2024-07-19",
+              "fin": null
+            }
+          ]
+        },
+        {
+          "membre_id": "marie-christine-dalloz",
+          "acteur_ref": "PA332523",
+          "nom": "Marie-Christine Dalloz",
+          "periodes": [
+            {
+              "debut": "2025-04-07",
+              "fin": "2025-04-07"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA569",
+          "nom": "Philippe Bonnecarrère",
+          "periodes": [
+            {
+              "debut": "2024-07-19",
+              "fin": null
+            }
+          ]
+        },
+        {
+          "membre_id": "sophie-errante",
+          "acteur_ref": "PA607193",
+          "nom": "Sophie Errante",
+          "periodes": [
+            {
+              "debut": "2024-09-21",
+              "fin": null
+            }
+          ]
+        },
+        {
+          "membre_id": "patrick-hetzel",
+          "acteur_ref": "PA608416",
+          "nom": "Patrick Hetzel",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "eric-liegeon",
+          "acteur_ref": "PA642725",
+          "nom": "Eric Liégeon",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "eric-gerard",
+          "acteur_ref": "PA642734",
+          "nom": "Éric Gérard",
+          "periodes": [
+            {
+              "debut": "2026-07-26",
+              "fin": "2026-09-23"
+            }
+          ]
+        },
+        {
+          "membre_id": "paul-christophe",
+          "acteur_ref": "PA642868",
+          "nom": "Paul Christophe",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "jean-louis-thieriot",
+          "acteur_ref": "PA643089",
+          "nom": "Jean-Louis Thiériot",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "christelle-minard",
+          "acteur_ref": "PA643104",
+          "nom": "Christelle Minard",
+          "periodes": [
+            {
+              "debut": "2025-07-08",
+              "fin": "2025-07-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "stella-dupont",
+          "acteur_ref": "PA643175",
+          "nom": "Stella Dupont",
+          "periodes": [
+            {
+              "debut": "2024-10-04",
+              "fin": null
+            }
+          ]
+        },
+        {
+          "membre_id": "vincent-ledoux",
+          "acteur_ref": "PA712014",
+          "nom": "Vincent Ledoux",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "elisabeth-borne",
+          "acteur_ref": "PA717161",
+          "nom": "Élisabeth Borne",
+          "periodes": [
+            {
+              "debut": "2025-11-13",
+              "fin": "2025-11-13"
+            }
+          ]
+        },
+        {
+          "membre_id": "olga-givernet",
+          "acteur_ref": "PA718674",
+          "nom": "Olga Givernet",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "pauline-cestrieres",
+          "acteur_ref": "PA718820",
+          "nom": "Pauline Cestrières",
+          "periodes": [
+            {
+              "debut": "2026-04-27",
+              "fin": "2026-04-27"
+            }
+          ]
+        },
+        {
+          "membre_id": "xavier-lacombe",
+          "acteur_ref": "PA719282",
+          "nom": "Xavier Lacombe",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "guillaume-kasbarian",
+          "acteur_ref": "PA719372",
+          "nom": "Guillaume Kasbarian",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "camille-galliard-minier",
+          "acteur_ref": "PA719736",
+          "nom": "Camille Galliard-Minier",
+          "periodes": [
+            {
+              "debut": "2025-01-20",
+              "fin": "2025-01-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "genevieve-darrieussecq",
+          "acteur_ref": "PA719914",
+          "nom": "Geneviève Darrieussecq",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "fabien-laine",
+          "acteur_ref": "PA719918",
+          "nom": "Fabien Lainé",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "stephanie-rist",
+          "acteur_ref": "PA720066",
+          "nom": "Stéphanie Rist",
+          "periodes": [
+            {
+              "debut": "2026-01-26",
+              "fin": "2026-01-26"
+            }
+          ]
+        },
+        {
+          "membre_id": "aurelien-pradie",
+          "acteur_ref": "PA720100",
+          "nom": "Aurélien Pradié",
+          "periodes": [
+            {
+              "debut": "2024-07-19",
+              "fin": null
+            }
+          ]
+        },
+        {
+          "membre_id": "belkhir-belhaddad",
+          "acteur_ref": "PA720362",
+          "nom": "Belkhir Belhaddad",
+          "periodes": [
+            {
+              "debut": "2025-02-11",
+              "fin": "2025-09-29"
+            }
+          ]
+        },
+        {
+          "membre_id": "jerome-end",
+          "acteur_ref": "PA720390",
+          "nom": "Jérôme End",
+          "periodes": [
+            {
+              "debut": "2026-04-21",
+              "fin": "2026-04-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "charlotte-parmentier-lecocq",
+          "acteur_ref": "PA720480",
+          "nom": "Charlotte Parmentier-Lecocq",
+          "periodes": [
+            {
+              "debut": "2026-03-27",
+              "fin": "2026-03-27"
+            }
+          ]
+        },
+        {
+          "membre_id": "anne-genetet",
+          "acteur_ref": "PA721024",
+          "nom": "Anne Genetet",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "raphael-schellenberger",
+          "acteur_ref": "PA721314",
+          "nom": "Raphaël Schellenberger",
+          "periodes": [
+            {
+              "debut": "2024-07-19",
+              "fin": null
+            }
+          ]
+        },
+        {
+          "membre_id": "carole-guillerm",
+          "acteur_ref": "PA721612",
+          "nom": "Carole Guillerm",
+          "periodes": [
+            {
+              "debut": "2026-03-27",
+              "fin": "2026-03-27"
+            }
+          ]
+        },
+        {
+          "membre_id": "patricia-lemoine",
+          "acteur_ref": "PA721632",
+          "nom": "Patricia Lemoine",
+          "periodes": [
+            {
+              "debut": "2026-04-17",
+              "fin": "2026-04-17"
+            }
+          ]
+        },
+        {
+          "membre_id": "sacha-houlie",
+          "acteur_ref": "PA722150",
+          "nom": "Sacha Houlié",
+          "periodes": [
+            {
+              "debut": "2024-07-19",
+              "fin": "2025-09-29"
+            }
+          ]
+        },
+        {
+          "membre_id": "eliane-kremer",
+          "acteur_ref": "PA722328",
+          "nom": "Eliane Kremer",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "agnes-pannier-runacher",
+          "acteur_ref": "PA759832",
+          "nom": "Agnès Pannier-Runacher",
+          "periodes": [
+            {
+              "debut": "2025-11-13",
+              "fin": "2025-11-13"
+            }
+          ]
+        },
+        {
+          "membre_id": "lionel-vuibert",
+          "acteur_ref": "PA793194",
+          "nom": "Lionel Vuibert",
+          "periodes": [
+            {
+              "debut": "2024-12-09",
+              "fin": null
+            }
+          ]
+        },
+        {
+          "membre_id": "audrey-abadie-amiel",
+          "acteur_ref": "PA793214",
+          "nom": "Audrey Abadie-Amiel",
+          "periodes": [
+            {
+              "debut": "2025-11-13",
+              "fin": "2025-11-13"
+            }
+          ]
+        },
+        {
+          "membre_id": "cyril-tribuiani",
+          "acteur_ref": "PA793334",
+          "nom": "Cyril Tribuiani",
+          "periodes": [
+            {
+              "debut": "2026-04-02",
+              "fin": "2026-04-02"
+            }
+          ]
+        },
+        {
+          "membre_id": "freddy-sertin",
+          "acteur_ref": "PA793416",
+          "nom": "Freddy Sertin",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "sabine-gervais",
+          "acteur_ref": "PA793556",
+          "nom": "Sabine Gervais",
+          "periodes": [
+            {
+              "debut": "2026-04-27",
+              "fin": "2026-04-27"
+            }
+          ]
+        },
+        {
+          "membre_id": "philippe-brun",
+          "acteur_ref": "PA793624",
+          "nom": "Philippe Brun",
+          "periodes": [
+            {
+              "debut": "2026-09-17",
+              "fin": null
+            }
+          ]
+        },
+        {
+          "membre_id": "david-taupiac",
+          "acteur_ref": "PA793796",
+          "nom": "David Taupiac",
+          "periodes": [
+            {
+              "debut": "2024-07-19",
+              "fin": "2024-10-15"
+            }
+          ]
+        },
+        {
+          "membre_id": "marie-sophie-bernadeau",
+          "acteur_ref": "PA793924",
+          "nom": "Marie-Sophie Bernadeau",
+          "periodes": [
+            {
+              "debut": "2026-07-20",
+              "fin": "2026-07-20"
+            }
+          ]
+        },
+        {
+          "membre_id": "alexandra-martin-1",
+          "acteur_ref": "PA793944",
+          "nom": "Alexandra Martin (Gironde)",
+          "periodes": [
+            {
+              "debut": "2026-04-27",
+              "fin": "2026-04-27"
+            }
+          ]
+        },
+        {
+          "membre_id": "sylvie-dezarnaud",
+          "acteur_ref": "PA794042",
+          "nom": "Sylvie Dezarnaud",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "patricia-maussion",
+          "acteur_ref": "PA794262",
+          "nom": "Patricia Maussion",
+          "periodes": [
+            {
+              "debut": "2026-04-27",
+              "fin": "2026-04-28"
+            }
+          ]
+        },
+        {
+          "membre_id": "michel-criaud",
+          "acteur_ref": "PA794430",
+          "nom": "Michel Criaud",
+          "periodes": [
+            {
+              "debut": "2025-11-13",
+              "fin": "2025-11-13"
+            }
+          ]
+        },
+        {
+          "membre_id": "jean-moulliere",
+          "acteur_ref": "PA794466",
+          "nom": "Jean Moulliere",
+          "periodes": [
+            {
+              "debut": "2024-10-28",
+              "fin": "2024-10-28"
+            }
+          ]
+        },
+        {
+          "membre_id": "pierre-marle",
+          "acteur_ref": "PA794518",
+          "nom": "Pierre Marle",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            },
+            {
+              "debut": "2026-04-07",
+              "fin": "2026-04-07"
+            }
+          ]
+        },
+        {
+          "membre_id": "salvatore-castiglione",
+          "acteur_ref": "PA794554",
+          "nom": "Salvatore Castiglione",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "veronique-ludmann",
+          "acteur_ref": "PA794578",
+          "nom": "Véronique Ludmann",
+          "periodes": [
+            {
+              "debut": "2026-03-02",
+              "fin": "2026-03-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "christine-engrand",
+          "acteur_ref": "PA794718",
+          "nom": "Christine Engrand",
+          "periodes": [
+            {
+              "debut": "2024-11-20",
+              "fin": null
+            }
+          ]
+        },
+        {
+          "membre_id": "thierry-liger",
+          "acteur_ref": "PA794750",
+          "nom": "Thierry Liger",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "alexandre-portier",
+          "acteur_ref": "PA794994",
+          "nom": "Alexandre Portier",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "marina-ferrari",
+          "acteur_ref": "PA795120",
+          "nom": "Marina Ferrari",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "didier-padey",
+          "acteur_ref": "PA795124",
+          "nom": "Didier Padey",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            },
+            {
+              "debut": "2025-11-13",
+              "fin": "2025-11-13"
+            }
+          ]
+        },
+        {
+          "membre_id": "antoine-armand",
+          "acteur_ref": "PA795144",
+          "nom": "Antoine Armand",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "marie-agnes-poussier-winsback",
+          "acteur_ref": "PA795270",
+          "nom": "Marie-Agnès Poussier-Winsback",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "christopher-weissberg",
+          "acteur_ref": "PA795326",
+          "nom": "Christopher Weissberg",
+          "periodes": [
+            {
+              "debut": "2025-11-13",
+              "fin": "2025-11-13"
+            }
+          ]
+        },
+        {
+          "membre_id": "benoit-larrouquis",
+          "acteur_ref": "PA795334",
+          "nom": "Benoît Larrouquis",
+          "periodes": [
+            {
+              "debut": "2025-11-13",
+              "fin": "2025-11-13"
+            }
+          ]
+        },
+        {
+          "membre_id": "sandrine-lalanne",
+          "acteur_ref": "PA795390",
+          "nom": "Sandrine Lalanne",
+          "periodes": [
+            {
+              "debut": "2025-11-13",
+              "fin": "2025-11-13"
+            }
+          ]
+        },
+        {
+          "membre_id": "nathalie-coggia",
+          "acteur_ref": "PA795402",
+          "nom": "Nathalie Coggia",
+          "periodes": [
+            {
+              "debut": "2025-10-13",
+              "fin": "2025-10-13"
+            }
+          ]
+        },
+        {
+          "membre_id": "daniel-grenon",
+          "acteur_ref": "PA795540",
+          "nom": "Daniel Grenon",
+          "periodes": [
+            {
+              "debut": "2024-07-19",
+              "fin": null
+            }
+          ]
+        },
+        {
+          "membre_id": "marie-ange-rousselot",
+          "acteur_ref": "PA795888",
+          "nom": "Marie-Ange Rousselot",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "catherine-ibled",
+          "acteur_ref": "PA795954",
+          "nom": "Catherine Ibled",
+          "periodes": [
+            {
+              "debut": "2025-11-13",
+              "fin": "2025-11-13"
+            }
+          ]
+        },
+        {
+          "membre_id": "josephine-missoffe",
+          "acteur_ref": "PA795962",
+          "nom": "Joséphine Missoffe",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "anne-bergantz",
+          "acteur_ref": "PA805166",
+          "nom": "Anne Bergantz",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "gabriel-tomatis",
+          "acteur_ref": "PA840067",
+          "nom": "Gabriel Tomatis",
+          "periodes": [
+            {
+              "debut": "2026-04-22",
+              "fin": "2026-04-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "bernard-chaumeil",
+          "acteur_ref": "PA840107",
+          "nom": "Bernard Chaumeil",
+          "periodes": [
+            {
+              "debut": "2026-04-26",
+              "fin": "2026-04-26"
+            }
+          ]
+        },
+        {
+          "membre_id": "sandra-delannoy",
+          "acteur_ref": "PA840119",
+          "nom": "Sandra Delannoy",
+          "periodes": [
+            {
+              "debut": "2026-01-06",
+              "fin": null
+            }
+          ]
+        },
+        {
+          "membre_id": "dorine-bregman",
+          "acteur_ref": "PA840175",
+          "nom": "Dorine Bregman",
+          "periodes": [
+            {
+              "debut": "2026-04-10",
+              "fin": "2026-04-10"
+            }
+          ]
+        },
+        {
+          "membre_id": "sophie-delorme-duret",
+          "acteur_ref": "PA840713",
+          "nom": "Sophie Delorme Duret",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "edouard-jordan",
+          "acteur_ref": "PA840745",
+          "nom": "Édouard Jordan",
+          "periodes": [
+            {
+              "debut": "2026-04-21",
+              "fin": "2026-04-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "isabelle-mesnard",
+          "acteur_ref": "PA841013",
+          "nom": "Isabelle Mesnard",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "catherine-dellong-meng",
+          "acteur_ref": "PA841059",
+          "nom": "Catherine Dellong Meng",
+          "periodes": [
+            {
+              "debut": "2026-04-14",
+              "fin": "2026-04-14"
+            }
+          ]
+        },
+        {
+          "membre_id": "alix-fruchon",
+          "acteur_ref": "PA841151",
+          "nom": "Alix Fruchon",
+          "periodes": [
+            {
+              "debut": "2025-11-13",
+              "fin": "2025-11-13"
+            }
+          ]
+        },
+        {
+          "membre_id": "hugo-prevost",
+          "acteur_ref": "PA841167",
+          "nom": "Hugo Prevost",
+          "periodes": [
+            {
+              "debut": "2024-10-10",
+              "fin": "2024-10-15"
+            }
+          ]
+        },
+        {
+          "membre_id": null,
+          "acteur_ref": "PA841347",
+          "nom": "Stéphane Chouin",
+          "periodes": [
+            {
+              "debut": "2025-11-13",
+              "fin": "2025-11-13"
+            }
+          ]
+        },
+        {
+          "membre_id": "constance-de-pelichy",
+          "acteur_ref": "PA841359",
+          "nom": "Constance de Pélichy",
+          "periodes": [
+            {
+              "debut": "2024-07-19",
+              "fin": "2024-07-29"
+            }
+          ]
+        },
+        {
+          "membre_id": "emeline-rey-rinchet",
+          "acteur_ref": "PA841377",
+          "nom": "Emeline Rey-Rinchet",
+          "periodes": [
+            {
+              "debut": "2026-04-21",
+              "fin": "2026-04-21"
+            }
+          ]
+        },
+        {
+          "membre_id": "sheherazade-bentorki",
+          "acteur_ref": "PA841531",
+          "nom": "Shéhérazade Bentorki",
+          "periodes": [
+            {
+              "debut": "2026-04-08",
+              "fin": "2026-04-08"
+            }
+          ]
+        },
+        {
+          "membre_id": "cendrine-chaze",
+          "acteur_ref": "PA841595",
+          "nom": "Cendrine Chazé",
+          "periodes": [
+            {
+              "debut": "2026-04-15",
+              "fin": "2026-04-15"
+            }
+          ]
+        },
+        {
+          "membre_id": "pauline-levasseur",
+          "acteur_ref": "PA841601",
+          "nom": "Pauline Levasseur",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "emmanuelle-hoffman",
+          "acteur_ref": "PA841709",
+          "nom": "Emmanuelle Hoffman",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "pascale-bay",
+          "acteur_ref": "PA841745",
+          "nom": "Pascale Bay",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "daniele-carteron",
+          "acteur_ref": "PA841801",
+          "nom": "Danièle Carteron",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            },
+            {
+              "debut": "2026-04-28",
+              "fin": "2026-04-28"
+            }
+          ]
+        },
+        {
+          "membre_id": "david-guerin",
+          "acteur_ref": "PA841833",
+          "nom": "David Guerin",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "michel-gonord",
+          "acteur_ref": "PA841869",
+          "nom": "Michel Gonord",
+          "periodes": [
+            {
+              "debut": "2024-10-28",
+              "fin": "2024-10-28"
+            }
+          ]
+        },
+        {
+          "membre_id": "anne-sophie-ronceret",
+          "acteur_ref": "PA841927",
+          "nom": "Anne-Sophie Ronceret",
+          "periodes": [
+            {
+              "debut": "2025-01-24",
+              "fin": "2025-01-24"
+            }
+          ]
+        },
+        {
+          "membre_id": "pierre-henri-carbonnel",
+          "acteur_ref": "PA841973",
+          "nom": "Pierre-Henri Carbonnel",
+          "periodes": [
+            {
+              "debut": "2025-10-13",
+              "fin": "2025-10-13"
+            }
+          ]
+        },
+        {
+          "membre_id": "dominique-paillat",
+          "acteur_ref": "PA841993",
+          "nom": "Dominique Paillat",
+          "periodes": [
+            {
+              "debut": "2026-05-24",
+              "fin": "2026-06-07"
+            }
+          ]
+        },
+        {
+          "membre_id": "nicolas-tryzna",
+          "acteur_ref": "PA842121",
+          "nom": "Nicolas Tryzna",
+          "periodes": [
+            {
+              "debut": "2025-11-13",
+              "fin": "2025-11-13"
+            }
+          ]
+        },
+        {
+          "membre_id": "elisabeth-de-maistre",
+          "acteur_ref": "PA842141",
+          "nom": "Élisabeth de Maistre",
+          "periodes": [
+            {
+              "debut": "2025-02-10",
+              "fin": "2025-02-10"
+            }
+          ]
+        },
+        {
+          "membre_id": "christophe-mongardien",
+          "acteur_ref": "PA842147",
+          "nom": "Christophe Mongardien",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            },
+            {
+              "debut": "2025-11-13",
+              "fin": "2025-11-13"
+            }
+          ]
+        },
+        {
+          "membre_id": "benoit-blanchard",
+          "acteur_ref": "PA842183",
+          "nom": "Benoît Blanchard",
+          "periodes": [
+            {
+              "debut": "2025-11-13",
+              "fin": "2025-11-13"
+            }
+          ]
+        },
+        {
+          "membre_id": "remi-provendier",
+          "acteur_ref": "PA842323",
+          "nom": "Remi Provendier",
+          "periodes": [
+            {
+              "debut": "2024-10-22",
+              "fin": "2024-10-22"
+            }
+          ]
+        },
+        {
+          "membre_id": "alim-latreche",
+          "acteur_ref": "PA857021",
+          "nom": "Alim Latrèche",
+          "periodes": [
+            {
+              "debut": "2026-03-27",
+              "fin": "2026-03-27"
+            }
+          ]
+        },
+        {
+          "membre_id": "lionel-duparay",
+          "acteur_ref": "PA870009",
+          "nom": "Lionel Duparay",
+          "periodes": [
+            {
+              "debut": "2025-11-13",
+              "fin": "2025-11-13"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
