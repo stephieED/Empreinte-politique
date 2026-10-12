@@ -24,7 +24,10 @@ Trois catégories de constats, deux statuts :
 
   - **listes stables** — une baisse est une alerte **bloquante**. Votes,
     mandats, textes portés, interventions, tags thématiques, cohésion de vote
-    d'un groupe n'ont aucune raison de diminuer d'un run à l'autre.
+    d'un groupe n'ont aucune raison de diminuer d'un run à l'autre. Les tags
+    d'un profil sont **dérivés** de ses interventions : leur baisse ne bloque
+    que si une intervention a disparu ou a perdu son intitulé — sinon la
+    source a réuni deux intitulés, et c'est signalé (`listes_derivees`).
   - **listes signalées** — une baisse est relevée sans bloquer : les
     amendements (la correction de clé de #440 les fait varier des deux côtés,
     × 2,8 à × 7,1 selon la législature) et `sources`, dont l'historique montre
@@ -153,6 +156,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from profil_brut import CLE_MANIFESTE, CLE_PARTITIONNEE
+from schema_pivot import porte_un_tag_thematique
 
 
 @dataclass(frozen=True)
@@ -177,6 +181,14 @@ class Collection:
     #: coûterait des millions de clés, et c'est pourquoi ce n'est pas le
     #: comportement par défaut.
     listes_nommees: tuple[str, ...] = ()
+    #: Listes stables DÉRIVÉES d'une autre liste du même document, en couples
+    #: (liste dérivée, liste source). Leur baisse ne bloque que si sa CAUSE est
+    #: une perte : la source a perdu des entrées, ou moins d'entrées de la
+    #: source alimentent la dérivée. Sinon c'est la source qui a renommé — deux
+    #: intitulés devenus un seul — et la baisse est signalée, ses entrées
+    #: nommées par `listes_nommees`. Ce que « alimenter » veut dire se déclare
+    #: dans `ALIMENTE_LA_DERIVEE`.
+    listes_derivees: tuple[tuple[str, str], ...] = ()
     scalaires: tuple[str, ...] = ()
     motif_present: str = "*.json"
     #: Motif des fichiers présents mais volontairement non ouverts. `fnmatch`
@@ -201,6 +213,14 @@ class Collection:
         return not any(m and fnmatch.fnmatch(nom_fichier, m) for m in motifs)
 
 
+#: Pour chaque liste dérivée, ce qui fait qu'une entrée de sa source
+#: l'alimente. Une fonction par champ, importée de la fabrique qui dérive : le
+#: contrôle ne redéfinit pas la règle, il la lit.
+ALIMENTE_LA_DERIVEE = {
+    "tags_thematiques": porte_un_tag_thematique,
+}
+
+
 #: Combien d'entrées disparues un constat d'échange nomme au plus. Le rapport
 #: est lu par un humain qui cherche une cause, pas un inventaire : au-delà, le
 #: compte total (`nb_disparues`) dit l'ampleur et les premières disent la
@@ -213,6 +233,15 @@ LIMITE_ENTREES_NOMMEES = 20
 # **publié** (AGENTS.md §6), il est passé de 647 à 0 dans le run `a125e9e` que
 # #460 documente — et il ne figurait dans aucune des deux catégories. Le
 # rapport de #460 le comptait dans ses dégâts sans que le contrôle le regarde.
+#
+# **Sa baisse ne bloque que sur sa cause** depuis le 12/10/2026. Les runs des
+# 10 et 11/10 ont échoué sur 7 profils à −1 tag : l'Assemblée avait unifié deux
+# intitulés du même texte (« Réponse intégrale au phénomène des violences… » et
+# « Réponse intégrale aux violences… »), si bien qu'un profil qui portait les
+# deux n'en portait plus qu'un — sans qu'aucune intervention ait perdu le sien.
+# Le cas que #470 a payé (647 → 0) est d'une autre nature : les interventions
+# avaient disparu. `listes_derivees` sépare les deux par leur cause, pas par un
+# seuil. → `docs/decisions/perte-de-tags-bloque-sur-sa-cause.md`
 #
 # `dossiers_legislatifs` est conservé bien qu'inerte : mesuré sur les 209
 # profils de `3a8455a` et sur les 7 refs de l'historique récent, aucun pivot ne
@@ -244,6 +273,7 @@ COLLECTION_PROFILS = Collection(
     ),
     listes_signalees=("amendements", "sources", "chambres"),
     listes_nommees=("tags_thematiques",),
+    listes_derivees=(("tags_thematiques", "interventions"),),
     scalaires=("id", "nom", "chambre", "parti", "groupe", "identite",
                "meta.provenance"),
     motif_present="*.json",
@@ -569,6 +599,18 @@ def relever(doc: Any, collection: Collection) -> dict[str, Any]:
     releve: dict[str, Any] = {"listes": listes, "scalaires": scalaires, "lu": True}
     if valeurs:
         releve["valeurs"] = valeurs
+    # Combien d'entrées de la source alimentent chaque liste dérivée. Absent
+    # quand la source n'est pas une liste : un compte qu'on n'a pas pu prendre
+    # ne se publie pas à 0 (§2 règle 5), et `comparer` bloque alors.
+    alimentent: dict[str, int] = {}
+    for derivee, source in collection.listes_derivees:
+        entrees = _chemin_pointe(doc, source)
+        if isinstance(entrees, list):
+            alimentent[derivee] = sum(
+                1 for entree in entrees if ALIMENTE_LA_DERIVEE[derivee](entree)
+            )
+    if alimentent:
+        releve["alimentent"] = alimentent
     return releve
 
 
@@ -727,6 +769,30 @@ def _listes(releve: dict[str, Any], champ: str) -> int:
     return int(releve.get("listes", {}).get(champ, 0))
 
 
+def _baisse_expliquee_par_la_source(
+    a: dict[str, Any], b: dict[str, Any], champ: str, collection: Collection
+) -> Optional[str]:
+    """La liste source d'une baisse sur une liste dérivée, si elle l'explique.
+
+    Elle l'explique quand rien n'a été perdu en amont : la source porte au
+    moins autant d'entrées, et au moins autant d'entre elles alimentent la
+    dérivée. La baisse vient alors de valeurs que la source a réunies. Rend
+    `None` dans tous les autres cas — y compris quand un des deux comptes
+    manque : ce qu'on n'a pas pu mesurer ne lève pas un blocage.
+    """
+    sources = dict(collection.listes_derivees)
+    source = sources.get(champ)
+    if source is None:
+        return None
+    if _listes(b, source) < _listes(a, source):
+        return None
+    avant_n = a.get("alimentent", {}).get(champ)
+    apres_n = b.get("alimentent", {}).get(champ)
+    if avant_n is None or apres_n is None or apres_n < avant_n:
+        return None
+    return source
+
+
 def comparer(
     avant: dict[str, dict[str, Any]],
     apres: dict[str, dict[str, Any]],
@@ -736,7 +802,8 @@ def comparer(
 
     Trois familles de constats bloquants :
       - un fichier présent avant et absent après ;
-      - une baisse sur une liste stable ;
+      - une baisse sur une liste stable — sauf, pour une liste dérivée,
+        quand sa source n'a rien perdu (`listes_derivees`) ;
       - un scalaire surveillé passé de renseigné à `null`.
 
     Et deux familles non bloquantes, relevées dans le rapport : les baisses sur
@@ -787,9 +854,14 @@ def comparer(
         for champ in collection.tous_champs:
             av, ap = _listes(a, champ), _listes(b, champ)
             if ap < av:
-                pertes.append({"fichier": fichier, "champ": champ,
-                               "avant": av, "apres": ap,
-                               "stable": champ in collection.listes_stables})
+                perte = {"fichier": fichier, "champ": champ,
+                         "avant": av, "apres": ap,
+                         "stable": champ in collection.listes_stables}
+                source = _baisse_expliquee_par_la_source(a, b, champ, collection)
+                if source is not None:
+                    perte["stable"] = False
+                    perte["renommage_dans"] = source
+                pertes.append(perte)
             elif ap > av:
                 gains.append({"fichier": fichier, "champ": champ,
                               "avant": av, "apres": ap,
@@ -943,7 +1015,18 @@ def _section_collection(rapport: dict[str, Any]) -> list[str]:
             lignes.append(f"| … | | | | {len(echanges) - _PLAFOND} de plus |")
         lignes += ["", "</details>", ""]
 
-    signalees = [p for p in rapport["pertes"] if not p["stable"]]
+    renommees = [p for p in rapport["pertes"] if p.get("renommage_dans")]
+    if renommees:
+        lignes += [
+            f"**{len(renommees)} baisse(s) sur une liste dérivée, sans perte en "
+            "amont** — la source porte autant d'entrées et autant d'entre elles "
+            "alimentent la liste : elle a réuni des valeurs, elle n'en a pas "
+            "perdu. Non bloquant ; les entrées disparues sont nommées ci-dessus.",
+            "",
+        ]
+        lignes += _tableau(renommees, "| Fichier | Champ | Avant | Après |")
+    signalees = [p for p in rapport["pertes"]
+                 if not p["stable"] and not p.get("renommage_dans")]
     if signalees:
         lignes += [f"<details><summary>{len(signalees)} baisse(s) signalée(s), "
                    "non bloquante(s)</summary>", ""]

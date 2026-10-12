@@ -7,7 +7,7 @@
       "decline",
       "officiel"
     ],
-    "derniere_verification": "2026-10-03",
+    "derniere_verification": "2026-10-12",
     "sources_de_veille": [
       "https://lcp.fr/actualites/presidentielle-2027-la-liste-des-candidats-deja-en-lice-et-des-pretendants-436373",
       "https://www.france24.com/fr/france/20260524-france-presidentielle-2027-qui-sont-les-candidats-officiellement-declares",
@@ -387,6 +387,16 @@
       "date_declaration": "2026-10-02",
       "source": "https://www.cnews.fr/france/2026-10-02/presidentielle-2027-si-nous-ne-sommes-pas-la-personne-ne-parle-des-animaux",
       "notes": "Relu le 2026-10-07 : candidate du Parti animaliste, dont elle est cofondatrice et coprésidente, présentée par le parti le 02/10/2026 — date rapportée par plusieurs titres (CNews, Le Monde, Contexte, Agra) ; source retenue : CNews, 02/10/2026, faute de communiqué trouvé sur le site du parti. Famille politique laissée vide : le champ n'est lu par aucune vue. Absente de l'archive des acteurs de l'Assemblée et des députés européens français. Une conseillère de Paris sortante en 2026, « Douchka MARKOVIC », née en 1978, figure au fichier des sortants des municipales ; la liste Wikipédia des conseillers de Paris 2020-2026 range une « Douchka Markovic » au Parti animaliste (18e arrondissement). Rattachée à ce mandat par décision de la propriétaire le 2026-10-07 (config/correspondance_elus_rne.json) ; slug posé à ce moment-là et désormais immuable."
+    },
+    {
+      "nom": "Gilles Platret",
+      "slug": null,
+      "parti": "Divers droite",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Candidatures_%C3%A0_l%27%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027#Candidats_d%C3%A9clar%C3%A9s",
+      "notes": "Ajouté le 2026-10-12 par src/fetch_candidats_declares.py (déclaré). Sans slug : la chaîne d'identifiants n'a rien pu corroborer, donc ce candidat n'a pas de shard extract-an et n'est pas publié. À relire — slug, famille politique, date et source primaire (#753, #757). Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json — même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » jusque-là (#860)."
     }
   ]
 }

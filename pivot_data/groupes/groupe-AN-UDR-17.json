@@ -297,7 +297,7 @@
   },
   "succede_a": null,
   "date_reference": {
-    "date": "2026-10-09",
+    "date": "2026-10-12",
     "origine": "generation"
   },
   "effectif": {
@@ -312,6 +312,51 @@
     }
   },
   "cohesion_votes": [
+    {
+      "scrutin_id": "an:17:8641",
+      "membres_eligibles": 17,
+      "position_majoritaire": "pour",
+      "pour": 3,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 14,
+      "excuses": 0,
+      "taux_participation": 0.1765,
+      "taux_coherence": 0.1765,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:8639",
+      "membres_eligibles": 17,
+      "position_majoritaire": "pour",
+      "pour": 1,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 16,
+      "excuses": 0,
+      "taux_participation": 0.0588,
+      "taux_coherence": 0.0588,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:8640",
+      "membres_eligibles": 17,
+      "position_majoritaire": "contre",
+      "pour": 0,
+      "contre": 1,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 16,
+      "excuses": 0,
+      "taux_participation": 0.0588,
+      "taux_coherence": 0.0588,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
     {
       "scrutin_id": "an:17:8609",
       "membres_eligibles": 17,
@@ -110712,6 +110757,15 @@
       }
     },
     {
+      "tag": "abrogation des zones à faibles émissions-mobilités",
+      "nb_membres_porteurs": 2,
+      "poids_relatif": 0.1111,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 2,
+        "6_mois": 2
+      }
+    },
+    {
       "tag": "accompagnement et soins palliatifs - droit à l’aide à mourir",
       "nb_membres_porteurs": 2,
       "poids_relatif": 0.1111,
@@ -111180,6 +111234,15 @@
       }
     },
     {
+      "tag": "refonder l’espace schengen",
+      "nb_membres_porteurs": 2,
+      "poids_relatif": 0.1111,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 2,
+        "6_mois": 2
+      }
+    },
+    {
       "tag": "refus de ratifier l’accord commercial entre l’union européenne et le mercosur",
       "nb_membres_porteurs": 2,
       "poids_relatif": 0.1111,
@@ -111217,15 +111280,6 @@
     },
     {
       "tag": "réduire les risques sanitaires liés aux contaminations au cadmium",
-      "nb_membres_porteurs": 2,
-      "poids_relatif": 0.1111,
-      "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 2,
-        "6_mois": 2
-      }
-    },
-    {
-      "tag": "réponse intégrale aux violences sexuelles et sexistes contre les femmes et les enfants",
       "nb_membres_porteurs": 2,
       "poids_relatif": 0.1111,
       "nb_membres_porteurs_par_fenetre": {
@@ -111379,6 +111433,15 @@
     },
     {
       "tag": "accords entre la france et la moldavie dans les domaines de la défense et de la sécurité sociale",
+      "nb_membres_porteurs": 1,
+      "poids_relatif": 0.0556,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 1,
+        "6_mois": 1
+      }
+    },
+    {
+      "tag": "accès continu à l’eau potable dans les territoires ultramarins",
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0556,
       "nb_membres_porteurs_par_fenetre": {
@@ -112161,6 +112224,15 @@
       }
     },
     {
+      "tag": "entrée au panthéon d’olympe de gouges, de l’abbé charles-michel de l’épée et de zéna m’déré",
+      "nb_membres_porteurs": 1,
+      "poids_relatif": 0.0556,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 1,
+        "6_mois": 1
+      }
+    },
+    {
       "tag": "examen de la proposition de loi pour luttercontre les mariages simulés et arrangés",
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0556,
@@ -112301,7 +112373,7 @@
       "poids_relatif": 0.0556,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 1,
-        "6_mois": 1
+        "6_mois": 0
       }
     },
     {
@@ -112706,7 +112778,7 @@
       "poids_relatif": 0.0556,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 1,
-        "6_mois": 1
+        "6_mois": 0
       }
     },
     {
@@ -112854,6 +112926,15 @@
       }
     },
     {
+      "tag": "mobiliser la commande publique au service de l’emploi",
+      "nb_membres_porteurs": 1,
+      "poids_relatif": 0.0556,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 1,
+        "6_mois": 1
+      }
+    },
+    {
       "tag": "mode d’élection des membres du conseil de paris et des conseils municipaux de lyon et marseille",
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0556,
@@ -112967,7 +113048,7 @@
       "poids_relatif": 0.0556,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 1,
-        "6_mois": 1
+        "6_mois": 0
       }
     },
     {
@@ -113120,7 +113201,7 @@
       "poids_relatif": 0.0556,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 1,
-        "6_mois": 1
+        "6_mois": 0
       }
     },
     {
@@ -113363,7 +113444,7 @@
       "poids_relatif": 0.0556,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 1,
-        "6_mois": 1
+        "6_mois": 0
       }
     },
     {
@@ -113462,7 +113543,7 @@
       "poids_relatif": 0.0556,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 1,
-        "6_mois": 1
+        "6_mois": 0
       }
     },
     {
@@ -113715,6 +113796,24 @@
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 1,
         "6_mois": 0
+      }
+    },
+    {
+      "tag": "réponse intégrale aux violences sexuelles et sexistes contre les femmes et les enfants",
+      "nb_membres_porteurs": 1,
+      "poids_relatif": 0.0556,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 1,
+        "6_mois": 1
+      }
+    },
+    {
+      "tag": "réponse intégrale aux violences sexuelles et sexistes contre les femmes et les enfants - adapter l’autorité judiciaire à la lutte contre les violences sexuelles et intrafamiliales",
+      "nb_membres_porteurs": 1,
+      "poids_relatif": 0.0556,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 1,
+        "6_mois": 1
       }
     },
     {
@@ -115931,142 +116030,6 @@
     },
     {
       "categorie": "commission",
-      "label": "Commission des affaires culturelles et de l'éducation",
-      "nb_membres_a_la_date_de_reference": 3,
-      "nb_membres_cumul_historique": 7,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 7
-      },
-      "membres": [
-        {
-          "membre_id": "sophie-ricourt-vaginay",
-          "nom": "Sophie Ricourt Vaginay",
-          "fonction": "Membre",
-          "debut": "2025-03-19",
-          "fin": "2025-03-19",
-          "actif": false
-        },
-        {
-          "membre_id": "vincent-trebuchet",
-          "nom": "Vincent Trébuchet",
-          "fonction": "Membre",
-          "debut": "2026-10-07",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "olivier-fayssat",
-          "nom": "Olivier Fayssat",
-          "fonction": "Membre",
-          "debut": "2025-06-04",
-          "fin": "2025-06-27",
-          "actif": false
-        },
-        {
-          "membre_id": "bartolome-lenoir",
-          "nom": "Bartolomé Lenoir",
-          "fonction": "Membre",
-          "debut": "2025-06-28",
-          "fin": "2026-05-26",
-          "actif": false
-        },
-        {
-          "membre_id": "hanane-mansouri",
-          "nom": "Hanane Mansouri",
-          "fonction": "Membre",
-          "debut": "2026-07-08",
-          "fin": "2026-07-08",
-          "actif": false
-        },
-        {
-          "membre_id": "charles-alloncle",
-          "nom": "Charles Alloncle",
-          "fonction": "Membre",
-          "debut": "2026-06-03",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "maxime-michelet",
-          "nom": "Maxime Michelet",
-          "fonction": "Membre",
-          "debut": "2026-07-09",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
-      "categorie": "commission",
-      "label": "Commission des finances, de l'économie générale et du contrôle budgétaire",
-      "nb_membres_a_la_date_de_reference": 3,
-      "nb_membres_cumul_historique": 7,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre": 7
-      },
-      "membres": [
-        {
-          "membre_id": "eric-ciotti",
-          "nom": "Éric Ciotti",
-          "fonction": "Membre",
-          "debut": "2026-05-21",
-          "fin": "2026-06-02",
-          "actif": false
-        },
-        {
-          "membre_id": "vincent-trebuchet",
-          "nom": "Vincent Trébuchet",
-          "fonction": "Membre",
-          "debut": "2026-07-01",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "olivier-fayssat",
-          "nom": "Olivier Fayssat",
-          "fonction": "Membre",
-          "debut": "2026-05-20",
-          "fin": "2026-05-20",
-          "actif": false
-        },
-        {
-          "membre_id": "gerault-verny",
-          "nom": "Gérault Verny",
-          "fonction": "Membre",
-          "debut": "2025-06-28",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "alexandre-allegret-pilot",
-          "nom": "Alexandre Allegret-Pilot",
-          "fonction": "Membre",
-          "debut": "2026-06-03",
-          "fin": "2026-06-30",
-          "actif": false
-        },
-        {
-          "membre_id": "hanane-mansouri",
-          "nom": "Hanane Mansouri",
-          "fonction": "Membre",
-          "debut": "2025-02-19",
-          "fin": "2025-02-19",
-          "actif": false
-        },
-        {
-          "membre_id": "charles-alloncle",
-          "nom": "Charles Alloncle",
-          "fonction": "Membre",
-          "debut": "2026-10-07",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
-      "categorie": "commission",
       "label": "Commission de la défense nationale et des forces armées",
       "nb_membres_a_la_date_de_reference": 3,
       "nb_membres_cumul_historique": 3,
@@ -116558,10 +116521,10 @@
       "categorie": "commission",
       "label": "Commission des affaires économiques",
       "nb_membres_a_la_date_de_reference": 2,
-      "nb_membres_cumul_historique": 8,
+      "nb_membres_cumul_historique": 9,
       "effectif_reference": 18,
       "par_fonction": {
-        "membre": 8
+        "membre": 9
       },
       "membres": [
         {
@@ -116571,6 +116534,14 @@
           "debut": "2026-06-25",
           "fin": "2026-06-30",
           "actif": false
+        },
+        {
+          "membre_id": "vincent-trebuchet",
+          "nom": "Vincent Trébuchet",
+          "fonction": "Membre",
+          "debut": "2026-10-09",
+          "fin": null,
+          "actif": true
         },
         {
           "membre_id": "olivier-fayssat",
@@ -116601,8 +116572,8 @@
           "nom": "Alexandre Allegret-Pilot",
           "fonction": "Membre",
           "debut": "2026-07-01",
-          "fin": null,
-          "actif": true
+          "fin": "2026-10-08",
+          "actif": false
         },
         {
           "membre_id": "charles-alloncle",
@@ -116626,6 +116597,142 @@
           "fonction": "Membre",
           "debut": "2026-06-24",
           "fin": "2026-06-24",
+          "actif": false
+        }
+      ]
+    },
+    {
+      "categorie": "commission",
+      "label": "Commission des affaires culturelles et de l'éducation",
+      "nb_membres_a_la_date_de_reference": 2,
+      "nb_membres_cumul_historique": 7,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre": 7
+      },
+      "membres": [
+        {
+          "membre_id": "sophie-ricourt-vaginay",
+          "nom": "Sophie Ricourt Vaginay",
+          "fonction": "Membre",
+          "debut": "2025-03-19",
+          "fin": "2025-03-19",
+          "actif": false
+        },
+        {
+          "membre_id": "vincent-trebuchet",
+          "nom": "Vincent Trébuchet",
+          "fonction": "Membre",
+          "debut": "2026-10-07",
+          "fin": "2026-10-07",
+          "actif": false
+        },
+        {
+          "membre_id": "olivier-fayssat",
+          "nom": "Olivier Fayssat",
+          "fonction": "Membre",
+          "debut": "2025-06-04",
+          "fin": "2025-06-27",
+          "actif": false
+        },
+        {
+          "membre_id": "bartolome-lenoir",
+          "nom": "Bartolomé Lenoir",
+          "fonction": "Membre",
+          "debut": "2025-06-28",
+          "fin": "2026-05-26",
+          "actif": false
+        },
+        {
+          "membre_id": "hanane-mansouri",
+          "nom": "Hanane Mansouri",
+          "fonction": "Membre",
+          "debut": "2026-07-08",
+          "fin": "2026-07-08",
+          "actif": false
+        },
+        {
+          "membre_id": "charles-alloncle",
+          "nom": "Charles Alloncle",
+          "fonction": "Membre",
+          "debut": "2026-10-08",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "maxime-michelet",
+          "nom": "Maxime Michelet",
+          "fonction": "Membre",
+          "debut": "2026-07-09",
+          "fin": null,
+          "actif": true
+        }
+      ]
+    },
+    {
+      "categorie": "commission",
+      "label": "Commission des finances, de l'économie générale et du contrôle budgétaire",
+      "nb_membres_a_la_date_de_reference": 2,
+      "nb_membres_cumul_historique": 7,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre": 7
+      },
+      "membres": [
+        {
+          "membre_id": "eric-ciotti",
+          "nom": "Éric Ciotti",
+          "fonction": "Membre",
+          "debut": "2026-05-21",
+          "fin": "2026-06-02",
+          "actif": false
+        },
+        {
+          "membre_id": "vincent-trebuchet",
+          "nom": "Vincent Trébuchet",
+          "fonction": "Membre",
+          "debut": "2026-10-08",
+          "fin": "2026-10-08",
+          "actif": false
+        },
+        {
+          "membre_id": "olivier-fayssat",
+          "nom": "Olivier Fayssat",
+          "fonction": "Membre",
+          "debut": "2026-05-20",
+          "fin": "2026-05-20",
+          "actif": false
+        },
+        {
+          "membre_id": "gerault-verny",
+          "nom": "Gérault Verny",
+          "fonction": "Membre",
+          "debut": "2025-06-28",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "alexandre-allegret-pilot",
+          "nom": "Alexandre Allegret-Pilot",
+          "fonction": "Membre",
+          "debut": "2026-10-09",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "hanane-mansouri",
+          "nom": "Hanane Mansouri",
+          "fonction": "Membre",
+          "debut": "2025-02-19",
+          "fin": "2025-02-19",
+          "actif": false
+        },
+        {
+          "membre_id": "charles-alloncle",
+          "nom": "Charles Alloncle",
+          "fonction": "Membre",
+          "debut": "2026-10-07",
+          "fin": "2026-10-07",
           "actif": false
         }
       ]
@@ -116815,6 +116922,43 @@
           "debut": "2025-10-15",
           "fin": null,
           "actif": true
+        }
+      ]
+    },
+    {
+      "categorie": "commission",
+      "label": "Commission chargée de l'application de l'article 26 de la Constitution",
+      "nb_membres_a_la_date_de_reference": 2,
+      "nb_membres_cumul_historique": 3,
+      "effectif_reference": 18,
+      "par_fonction": {
+        "membre titulaire": 1,
+        "membre suppléant": 2
+      },
+      "membres": [
+        {
+          "membre_id": "olivier-fayssat",
+          "nom": "Olivier Fayssat",
+          "fonction": "Membre titulaire",
+          "debut": "2026-10-09",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "matthieu-bloch",
+          "nom": "Matthieu Bloch",
+          "fonction": "Membre suppléant",
+          "debut": "2026-10-09",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "eric-michoux",
+          "nom": "Éric Michoux",
+          "fonction": "Membre suppléant",
+          "debut": "2024-09-20",
+          "fin": "2025-09-30",
+          "actif": false
         }
       ]
     },
@@ -119017,26 +119161,6 @@
       ]
     },
     {
-      "categorie": "commission",
-      "label": "Commission chargée de l'application de l'article 26 de la Constitution",
-      "nb_membres_a_la_date_de_reference": 0,
-      "nb_membres_cumul_historique": 1,
-      "effectif_reference": 18,
-      "par_fonction": {
-        "membre suppléant": 1
-      },
-      "membres": [
-        {
-          "membre_id": "eric-michoux",
-          "nom": "Éric Michoux",
-          "fonction": "Membre suppléant",
-          "debut": "2024-09-20",
-          "fin": "2025-09-30",
-          "actif": false
-        }
-      ]
-    },
-    {
       "categorie": "commission_enquete",
       "label": "Commission d'enquête concernant l’organisation des élections en France",
       "nb_membres_a_la_date_de_reference": 0,
@@ -119458,14 +119582,14 @@
     }
   ],
   "amendements_agreges": {
-    "nb_amendements": 4631,
-    "nb_adoptes": 118,
-    "nb_rejetes": 1417,
-    "nb_irrecevables": 588,
-    "nb_retires_ou_tombes": 1928,
-    "nb_sort_non_renseigne": 580,
+    "nb_amendements": 4932,
+    "nb_adoptes": 122,
+    "nb_rejetes": 1441,
+    "nb_irrecevables": 593,
+    "nb_retires_ou_tombes": 1967,
+    "nb_sort_non_renseigne": 809,
     "nb_sort_non_reconnu": 0,
-    "taux_adoption": 0.0255,
+    "taux_adoption": 0.0247,
     "nb_sans_identifiant": 0,
     "par_type_deposant": {
       "commission_rapporteur": {
@@ -119479,14 +119603,14 @@
         "taux_adoption": 0.6364
       },
       "depute": {
-        "nb_amendements": 4598,
-        "nb_adoptes": 97,
-        "nb_rejetes": 1409,
-        "nb_irrecevables": 588,
-        "nb_retires_ou_tombes": 1924,
-        "nb_sort_non_renseigne": 580,
+        "nb_amendements": 4899,
+        "nb_adoptes": 101,
+        "nb_rejetes": 1433,
+        "nb_irrecevables": 593,
+        "nb_retires_ou_tombes": 1963,
+        "nb_sort_non_renseigne": 809,
         "nb_sort_non_reconnu": 0,
-        "taux_adoption": 0.0211
+        "taux_adoption": 0.0206
       },
       "gouvernement": {
         "nb_amendements": 0,
@@ -119510,13 +119634,13 @@
       }
     },
     "signatures": {
-      "nb_signatures": 19529,
+      "nb_signatures": 21364,
       "par_type_deposant": {
         "commission_rapporteur": {
           "nb_signatures": 54
         },
         "depute": {
-          "nb_signatures": 19475
+          "nb_signatures": 21310
         },
         "gouvernement": {
           "nb_signatures": 0
@@ -119535,97 +119659,97 @@
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA267561",
-      "synchro_le": "2026-10-09T03:25:06+0000"
+      "synchro_le": "2026-10-12T05:58:24+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA330240",
-      "synchro_le": "2026-10-09T03:23:57+0000"
+      "synchro_le": "2026-10-12T06:05:22+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793322",
-      "synchro_le": "2026-10-09T03:23:58+0000"
+      "synchro_le": "2026-10-12T06:05:24+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840657",
-      "synchro_le": "2026-10-09T03:25:30+0000"
+      "synchro_le": "2026-10-12T05:58:20+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840685",
-      "synchro_le": "2026-10-09T03:24:23+0000"
+      "synchro_le": "2026-10-12T06:05:57+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840701",
-      "synchro_le": "2026-10-09T03:24:33+0000"
+      "synchro_le": "2026-10-12T06:06:27+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840721",
-      "synchro_le": "2026-10-09T03:25:27+0000"
+      "synchro_le": "2026-10-12T06:09:00+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840773",
-      "synchro_le": "2026-10-09T03:24:51+0000"
+      "synchro_le": "2026-10-12T06:07:07+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840809",
-      "synchro_le": "2026-10-09T03:24:53+0000"
+      "synchro_le": "2026-10-12T05:57:58+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840889",
-      "synchro_le": "2026-10-09T03:25:26+0000"
+      "synchro_le": "2026-10-12T05:58:50+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840983",
-      "synchro_le": "2026-10-09T03:25:06+0000"
+      "synchro_le": "2026-10-12T05:58:24+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841067",
-      "synchro_le": "2026-10-09T03:25:30+0000"
+      "synchro_le": "2026-10-12T05:58:20+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841183",
-      "synchro_le": "2026-10-09T03:24:23+0000"
+      "synchro_le": "2026-10-12T06:05:57+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841207",
-      "synchro_le": "2026-10-09T03:24:33+0000"
+      "synchro_le": "2026-10-12T06:06:27+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841395",
-      "synchro_le": "2026-10-09T03:25:28+0000"
+      "synchro_le": "2026-10-12T06:09:00+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841769",
-      "synchro_le": "2026-10-09T03:24:51+0000"
+      "synchro_le": "2026-10-12T06:07:07+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841973",
-      "synchro_le": "2026-10-09T03:24:53+0000"
+      "synchro_le": "2026-10-12T05:57:58+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA878242",
-      "synchro_le": "2026-10-09T03:25:26+0000"
+      "synchro_le": "2026-10-12T05:58:51+0000"
     }
   ],
   "meta": {
     "schema_version": "1",
-    "genere_le": "2026-10-09T04:08:37+0000",
+    "genere_le": "2026-10-12T06:52:14+0000",
     "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
     "profils_sources": [
       "brigitte-bareges",
@@ -119649,8 +119773,8 @@
     ],
     "seuil_quorum": 0.5,
     "warnings": [
-      "date_reference : tous les comptes de cette fiche se rapportent au 2026-10-09, date de génération — au moins une appartenance au groupe est encore ouverte, la législature court. La valeur bougera au prochain run (#653).",
-      "effectif_sur_la_periode : entre 2024-07-19 et 2026-10-09, le groupe a compté au minimum 15 membres (2025-07-12) et au maximum 17 (2026-02-02) — première date à laquelle chaque borne est atteinte. L'effectif est réévalué à chaque entrée et à chaque lendemain de sortie, jamais hors de cette fenêtre. `membres[]` ne porte qu'un intervalle par membre (périodes recollées, #526) : un départ suivi d'un retour n'y apparaît pas, et aucune de ces deux bornes ne le voit (#702).",
+      "date_reference : tous les comptes de cette fiche se rapportent au 2026-10-12, date de génération — au moins une appartenance au groupe est encore ouverte, la législature court. La valeur bougera au prochain run (#653).",
+      "effectif_sur_la_periode : entre 2024-07-19 et 2026-10-12, le groupe a compté au minimum 15 membres (2025-07-12) et au maximum 17 (2026-02-02) — première date à laquelle chaque borne est atteinte. L'effectif est réévalué à chaque entrée et à chaque lendemain de sortie, jamais hors de cette fenêtre. `membres[]` ne porte qu'un intervalle par membre (périodes recollées, #526) : un départ suivi d'un retour n'y apparaît pas, et aucune de ces deux bornes ne le voit (#702).",
       "tags_thematiques_agreges : 1738 intervention(s) tenue(s) sous une autre législature que la 17e n'ont pas nourri l'empreinte thématique — elles appartiennent à la carrière de leurs auteurs, pas à l'activité de ce groupe (#825, même règle que les votes depuis #403 et que les amendements depuis #821).",
       "amendements_agreges : 11268 signature(s) portant sur des amendements déposés sous une autre législature que la 17e ont été écartées — ils appartiennent à la carrière de leurs auteurs, pas à l'activité de ce groupe (#821, même règle que les votes depuis #403).",
       "fraicheur_donnees : composition dérivée du référentiel AMO30 de l'Assemblée nationale (data.assemblee-nationale.fr, Licence Ouverte), et non plus de www.nosdeputes.fr depuis #527. Une législature close y est complète : les mandats terminés en cours de législature y figurent, alors que la dernière composition connue d'un miroir les perd. La fiche reflète donc l'appartenance au groupe telle que l'Assemblée la publie à la date de meta.genere_le ; un membre sans profil publié n'y apparaît pas (voir meta.couverture_roster)."
@@ -119663,13 +119787,13 @@
   },
   "fenetres_parole": {
     "12_mois": {
-      "debut": "2025-10-09",
-      "fin": "2026-10-09",
+      "debut": "2025-10-12",
+      "fin": "2026-10-12",
       "nb_membres": 17
     },
     "6_mois": {
-      "debut": "2026-04-09",
-      "fin": "2026-10-09",
+      "debut": "2026-04-12",
+      "fin": "2026-10-12",
       "nb_membres": 17
     }
   }

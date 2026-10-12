@@ -949,6 +949,25 @@ def forme_publiee(formes: "Counter[str]") -> str:
     return min(formes.items(), key=lambda item: (-item[1], item[0]))[0]
 
 
+def porte_un_tag_thematique(intervention: Any) -> bool:
+    """Vrai si `deriver_tags_thematiques` tire au moins un tag de cette entrée.
+
+    Le contrôle de perte s'en sert pour distinguer un intitulé RENOMMÉ par la
+    source d'un intitulé PERDU : renommée, l'intervention porte toujours un
+    tag ; perdue, elle n'en porte plus. Même lecture que la fabrique
+    ci-dessous, à tenir avec elle (`tests/test_perte_tags_bloque_sur_la_cause.py`).
+    """
+    if not isinstance(intervention, dict):
+        return False
+    theme = intervention.get("theme_officiel")
+    if theme and isinstance(theme, str):
+        return bool(theme.strip())
+    return any(
+        isinstance(kw, str) and kw.strip()
+        for kw in (intervention.get("mots_cles") or [])
+    )
+
+
 def deriver_tags_thematiques(interventions: Optional[list[dict[str, Any]]]) -> list[str]:
     """Les tags thématiques d'un profil, dérivés de ses interventions.
 

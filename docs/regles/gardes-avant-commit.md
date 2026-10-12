@@ -30,10 +30,19 @@ tolerance is **partitioned** — no input disarms another's check.
   swaps entries; what this adds is an **explanation**, not a second lock. Not generalised:
   5 911 distinct values over 53 183 entries is affordable, millions of `amendements` keys
   are not.
+  **A drop on a derived list blocks on its cause, never on its count (12/10/2026)**:
+  `tags_thematiques` of a profile is derived from its `interventions`, and the source
+  renames sitting items — two titles merged into one is one tag fewer, with nothing lost.
+  The drop blocks only when an intervention disappeared, or when fewer interventions feed
+  the list (`listes_derivees`, `schema_pivot.porte_un_tag_thematique`); otherwise it is
+  reported, its vanished entries named. **Not extended to `tags_thematiques_agreges`**: a
+  group fiche does not carry the interventions, so the cause cannot be read there — its
+  drop still blocks.
   → `docs/decisions/controle-de-perte-avant-commit.md`,
   `docs/decisions/perimetre-controle-perte.md`,
   `docs/decisions/agregats-publies-controle-perte-649.md`,
-  `docs/decisions/controle-perte-nomme-les-echanges-823.md`
+  `docs/decisions/controle-perte-nomme-les-echanges-823.md`,
+  `docs/decisions/perte-de-tags-bloque-sur-sa-cause.md`
   **A group fiche leaves by name, never by hand (#1168)**: data only changes through a
   run, and nothing deletes the file of a group that left `groupes[]` — the quality gate
   then blocks on « fiche publiée sans entrée ». Declare it in `fiches_retirees[]` of
