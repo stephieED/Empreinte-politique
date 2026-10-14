@@ -156,7 +156,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from profil_brut import CLE_MANIFESTE, CLE_PARTITIONNEE
-from schema_pivot import porte_un_tag_thematique
+from schema_pivot import cle_tag_thematique, porte_un_tag_thematique
 
 
 @dataclass(frozen=True)
@@ -189,6 +189,15 @@ class Collection:
     #: nommées par `listes_nommees`. Ce que « alimenter » veut dire se déclare
     #: dans `ALIMENTE_LA_DERIVEE`.
     listes_derivees: tuple[tuple[str, str], ...] = ()
+    #: Listes d'une fiche AGRÉGÉE dont la matière est le `tags_thematiques`
+    #: des profils (run planifié du 13/10/2026). La fiche ne porte pas
+    #: les interventions, donc sa cause ne se lit pas dans le document : elle
+    #: se lit dans la collection des profils du même run. Une baisse n'y bloque
+    #: pas quand chaque intitulé disparu a aussi disparu d'un profil, et
+    #: qu'aucun profil n'a perdu de tag ni d'intervention en bloquant
+    #: (`_expliquer_par_les_profils`). Les valeurs doivent être relevées :
+    #: chaque champ nommé ici l'est aussi dans `listes_nommees`.
+    listes_des_tags_des_profils: tuple[str, ...] = ()
     scalaires: tuple[str, ...] = ()
     motif_present: str = "*.json"
     #: Motif des fichiers présents mais volontairement non ouverts. `fnmatch`
@@ -341,6 +350,7 @@ COLLECTION_GROUPES = Collection(
     # qu'il naissait à l'étage profil : une union expose ce que ses membres
     # masquent. Nommer des deux côtés dit lequel des deux étages a bougé.
     listes_nommees=("tags_thematiques_agreges",),
+    listes_des_tags_des_profils=("tags_thematiques_agreges",),
     scalaires=("groupe_id", "groupe_sigle", "groupe_nom", "chambre",
                "legislature", "periode.debut",
                "meta.couverture_roster.roster_total",
@@ -367,6 +377,7 @@ COLLECTION_LIGNEES = Collection(
                     "amendements_agreges.par_type_deposant"),
     listes_signalees=("sources",),
     listes_nommees=("tags_thematiques_agreges",),
+    listes_des_tags_des_profils=("tags_thematiques_agreges",),
     scalaires=("lignee_id", "lignee_nom", "chambre", "periode.debut",
                "effectif.cumul_historique",
                "amendements_agreges.nb_amendements",
@@ -379,6 +390,7 @@ COLLECTION_PARTIS = Collection(
     listes_stables=("candidats", "tags_thematiques_agreges"),
     listes_signalees=("sources",),
     listes_nommees=("tags_thematiques_agreges",),
+    listes_des_tags_des_profils=("tags_thematiques_agreges",),
     scalaires=("parti_id", "parti_nom"),
 )
 
@@ -905,12 +917,79 @@ def comparer(
     }
 
 
+#: Ce que la baisse d'une liste agrégée cite comme cause quand les profils
+#: l'expliquent : la liste de la collection où le renommage s'est vu.
+SOURCE_DES_TAGS_AGREGES = f"{COLLECTION_PROFILS.nom} · tags_thematiques"
+
+
+def _tags_disparus_des_profils(
+    rapport: dict[str, Any],
+    avant: Optional[dict[str, dict[str, Any]]],
+    apres: Optional[dict[str, dict[str, Any]]],
+) -> Optional[set[str]]:
+    """Les intitulés disparus d'au moins un profil, quand rien n'a été perdu.
+
+    Rend leurs clés (`cle_tag_thematique`), ou `None` — et alors aucune baisse
+    agrégée ne s'explique — quand un profil a perdu en bloquant sur
+    `tags_thematiques` ou `interventions`, ou quand un des deux côtés n'a pas
+    été lu : ce qu'on n'a pas mesuré ne lève pas un blocage.
+    """
+    if not avant or not apres:
+        return None
+    if any(p["champ"] in ("tags_thematiques", "interventions")
+           for p in rapport["pertes_sur_champs_stables"]):
+        return None
+    disparus: set[str] = set()
+    for fichier in set(avant) & set(apres):
+        va = avant[fichier].get("valeurs", {}).get("tags_thematiques")
+        vb = apres[fichier].get("valeurs", {}).get("tags_thematiques")
+        if va is None or vb is None:
+            continue
+        disparus |= {cle_tag_thematique(t) for t in set(va) - set(vb)}
+    return disparus
+
+
+def _expliquer_par_les_profils(
+    rapport: dict[str, Any],
+    collection: Collection,
+    avant: dict[str, dict[str, Any]],
+    apres: dict[str, dict[str, Any]],
+    disparus_des_profils: set[str],
+) -> None:
+    """Lève le blocage d'une baisse agrégée que les profils expliquent.
+
+    La fiche de groupe ne porte pas les interventions : `tags_thematiques_agreges`
+    est l'union de ce que ses membres portent. Un intitulé ne la quitte que si
+    plus aucun membre ne le porte — et si, dans le même run, il a quitté des
+    profils sans qu'aucun perde une intervention, c'est la source qui l'a
+    renommé. **Tous** les intitulés disparus de la fiche doivent l'être aussi
+    d'un profil : un seul qui ne l'est pas — un membre sorti de la fenêtre,
+    une règle d'agrégation changée — et la baisse bloque.
+    """
+    for perte in rapport["pertes"]:
+        champ = perte["champ"]
+        if not perte["stable"] or champ not in collection.listes_des_tags_des_profils:
+            continue
+        va = avant.get(perte["fichier"], {}).get("valeurs", {}).get(champ)
+        vb = apres.get(perte["fichier"], {}).get("valeurs", {}).get(champ)
+        if va is None or vb is None:
+            continue
+        disparues = {cle_tag_thematique(t) for t in set(va) - set(vb)}
+        if disparues and disparues <= disparus_des_profils:
+            perte["stable"] = False
+            perte["renommage_dans"] = SOURCE_DES_TAGS_AGREGES
+    rapport["pertes_sur_champs_stables"] = [p for p in rapport["pertes"] if p["stable"]]
+    rapport["bloquant"] = (bool(rapport["pertes_sur_champs_stables"])
+                           or bool(rapport["pertes_scalaires"]))
+
+
 def comparer_tout(
     releves: list[tuple[Collection, Optional[dict], Optional[dict]]]
 ) -> dict[str, Any]:
     """Assemble les rapports de chaque collection en un verdict unique."""
     rapports: list[dict[str, Any]] = []
     ignorees: list[str] = []
+    disparus_des_profils: Optional[set[str]] = None
     for collection, avant, apres in releves:
         if avant is None and apres is None:
             ignorees.append(collection.nom)
@@ -918,6 +997,11 @@ def comparer_tout(
         rapport = comparer(avant or {}, apres or {}, collection)
         rapport["absente_avant"] = avant is None
         rapport["absente_apres"] = apres is None
+        if collection is COLLECTION_PROFILS:
+            disparus_des_profils = _tags_disparus_des_profils(rapport, avant, apres)
+        elif collection.listes_des_tags_des_profils and disparus_des_profils:
+            _expliquer_par_les_profils(rapport, collection, avant or {},
+                                       apres or {}, disparus_des_profils)
         rapports.append(rapport)
     return {
         "collections": rapports,
@@ -1015,7 +1099,20 @@ def _section_collection(rapport: dict[str, Any]) -> list[str]:
             lignes.append(f"| … | | | | {len(echanges) - _PLAFOND} de plus |")
         lignes += ["", "</details>", ""]
 
-    renommees = [p for p in rapport["pertes"] if p.get("renommage_dans")]
+    renommees = [p for p in rapport["pertes"]
+                 if p.get("renommage_dans") and p["renommage_dans"] != SOURCE_DES_TAGS_AGREGES]
+    par_les_profils = [p for p in rapport["pertes"]
+                       if p.get("renommage_dans") == SOURCE_DES_TAGS_AGREGES]
+    if par_les_profils:
+        lignes += [
+            f"**{len(par_les_profils)} baisse(s) d'une liste agrégée, expliquée(s) "
+            "par les profils** — chaque intitulé disparu a quitté aussi des "
+            "profils dans ce run, et aucun profil n'a perdu de tag ni "
+            "d'intervention en bloquant : la source a renommé. Non bloquant ; "
+            "les entrées disparues sont nommées ci-dessus.",
+            "",
+        ]
+        lignes += _tableau(par_les_profils, "| Fichier | Champ | Avant | Après |")
     if renommees:
         lignes += [
             f"**{len(renommees)} baisse(s) sur une liste dérivée, sans perte en "

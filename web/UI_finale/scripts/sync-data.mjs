@@ -750,6 +750,22 @@ const fenetres = gouvernementFiles.map((file) => {
   };
 });
 const { par: actesParGouvernement, lus: actesLus } = projeterLesActes(fenetres);
+
+/* LES BUDGETS QUE CHAQUE GOUVERNEMENT A FAIT VOTER (#1053). Le fichier dit
+   déjà quelle année revient à qui : il est découpé par gouvernement, sans rien
+   recalculer, et seuls ceux qui ont fait voter un budget reçoivent un fichier.
+   Absent — avant la première étape de run qui le produit —, la section ne
+   s'affiche sur aucune fiche. */
+const budgetsPath = path.join(repoRoot, 'pivot_data', 'budgets_gouvernements.json');
+const budgetsParGouvernement = new Map();
+if (existsSync(budgetsPath)) {
+  const budgets = JSON.parse(readFileSync(budgetsPath, 'utf-8'));
+  for (const [gouvernementId, entree] of Object.entries(budgets.gouvernements || {})) {
+    if ((entree.exercices || []).length) budgetsParGouvernement.set(gouvernementId, entree.exercices);
+  }
+} else {
+  console.warn('sync-data : pivot_data/budgets_gouvernements.json absent — section des budgets non publiée (#1053).');
+}
 let octetsActes = 0;
 for (const file of gouvernementFiles) {
   cpSync(path.join(pivotGouvernementsDir, file), path.join(outDir, 'gouvernements', file));
@@ -768,6 +784,11 @@ for (const file of gouvernementFiles) {
     const contenu = JSON.stringify(actes);
     writeFileSync(cible, contenu);
     octetsActes += contenu.length;
+  }
+  // Les budgets qu'il a fait voter (#1053).
+  const budgets = budgetsParGouvernement.get(gouvernement.gouvernement_id);
+  if (budgets) {
+    writeFileSync(path.join(outDir, 'gouvernements', `${id}.budgets.json`), JSON.stringify({ exercices: budgets }));
   }
   // Ce qui a été dit (#1029) : les extraits des membres, pendant leurs fonctions.
   octetsExtraitsGouvernements += ecrireExtraits(
@@ -794,6 +815,9 @@ for (const file of gouvernementFiles) {
     // #1029 voie 1 : ce que l'exécutif a fait entrer en vigueur, chargé au
     // déploiement de la section et pas avec la fiche (0,4 Mo).
     actes: actesParGouvernement.has(id) ? `${id}.actes.json` : null,
+    // #1053 : les budgets qu'il a fait voter ; `null` pour les neuf qui n'en
+    // ont fait voter aucun, et la section n'est pas dessinée.
+    budgets: budgetsParGouvernement.has(gouvernement.gouvernement_id) ? `${id}.budgets.json` : null,
     // #1029 : ce qui a été dit, par débat — `<id>.extraits.index.json` pour le
     // filtre, `<id>.extraits.<paquet>.json` pour un débat ouvert.
     extraits: id,

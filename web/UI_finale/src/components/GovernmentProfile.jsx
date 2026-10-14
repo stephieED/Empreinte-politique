@@ -22,7 +22,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Condition, EtiquetteFiltre, useFiltreActif } from './Recherche';
-import { getPaquetExtraitsGouvernement, getParolesDuGouvernement, getSujetsComptesDuGouvernement } from '../data';
+import { getBudgetsDuGouvernement, getPaquetExtraitsGouvernement, getParolesDuGouvernement, getSujetsComptesDuGouvernement } from '../data';
 import { ProposDuMembre, usePaquetExtraits } from './ExtraitsDuDebat';
 import { extraitsDuDebat, paquetDe } from '../utils/extraits';
 import { motsDuFiltre } from '../utils/filtreIntitule';
@@ -40,6 +40,7 @@ import {
   chargeDuPortefeuille,
 } from '../utils/gouvernement';
 import ActesDuGouvernement from './ActesDuGouvernement';
+import BudgetsDuGouvernement from './BudgetsDuGouvernement';
 import {
   GRIS_SANS_MINISTERE, clesDuTexte, fondDuTexte, nomCourtDuMinistere, polesDuGouvernement, teintesDesMinisteres,
 } from '../utils/ministere';
@@ -81,6 +82,12 @@ export const BULLES = {
     phrase: 'Les décrets, arrêtés et ordonnances parus au Journal officiel pendant ce gouvernement, par ministère.',
     note: 'Note : Seuls les actes qui touchent au droit sont pris en compte et non ceux qui relèvent du fonctionnement interne de l’État (nominations, promotions…). Un acte peut appliquer une loi adoptée avant ce gouvernement.',
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#gouv-actes' }],
+  },
+  /* Texte de la maquette du 13/10/2026, pas encore relu par la propriétaire ;
+     sans lien tant que la méthodologie n'a pas d'entrée pour la section. */
+  budgets: {
+    phrase: 'Les recettes et les dépenses des budgets de l’État votés sous ce gouvernement, et celles de la sécurité sociale les mêmes années.',
+    note: 'Note : Un budget voté sous un gouvernement peut être exécuté sous un autre. L’emprunt de l’État n’est pas le déficit public, qui compte aussi la sécurité sociale et les collectivités.',
   },
   couverture: {
     phrase: 'Les limites de cette fiche : ce que les sources ne disent pas sur ce gouvernement.',
@@ -1207,13 +1214,44 @@ function CeQuIlAFaitEntrerEnVigueur({ government }) {
   );
 }
 
-function CeQuOnNaPasPuLire({ government }) {
+/* 06 — Les budgets qu'il a fait voter (#1053). Une année revient au
+   gouvernement sous lequel sa loi de finances a été promulguée : neuf fiches
+   sur dix-sept n'en ont aucune, et n'ont pas la section. */
+function LesBudgetsQuIlAFaitVoter({ exercices }) {
+  return (
+    <section className="gvp-section" data-section="Les budgets qu’il a fait voter" id="section-budgets">
+      <div className="gvp-section-tete">
+        <span className="gvp-section-numero">06</span>
+        <span className="gvp-section-trait" />
+      </div>
+      <TitreDeSection bulle={BULLES.budgets} titre="Les budgets que ce gouvernement a fait voter" />
+      <BudgetsDuGouvernement exercices={exercices} />
+    </section>
+  );
+}
+
+/* Les budgets se chargent à part, après la fiche : `null` tant qu'ils ne sont
+   pas arrivés, et pour un gouvernement qui n'en a fait voter aucun. */
+function useBudgets(id) {
+  const [budgets, setBudgets] = useState(null);
+  useEffect(() => {
+    let vivant = true;
+    setBudgets(null);
+    getBudgetsDuGouvernement(id)
+      .then((d) => { if (vivant) setBudgets(d?.exercices?.length ? d.exercices : null); })
+      .catch(() => { if (vivant) setBudgets(null); });
+    return () => { vivant = false; };
+  }, [id]);
+  return budgets;
+}
+
+function CeQuOnNaPasPuLire({ government, numero }) {
   const lignes = limitesDeLaFiche(government);
 
   return (
     <section className="gvp-section" data-section="Ce qu’on n’a pas pu lire" id="section-limites">
       <div className="gvp-section-tete">
-        <span className="gvp-section-numero">06</span>
+        <span className="gvp-section-numero">{numero}</span>
         <span className="gvp-section-trait" />
       </div>
       <TitreDeSection bulle={BULLES.couverture} titre="Ce qu’on n’a pas pu lire" />
@@ -1235,6 +1273,7 @@ function CeQuOnNaPasPuLire({ government }) {
 
 export default function GovernmentProfile({ government, chronologie = [], mot = '', debut = null }) {
   const actif = useFiltreActif(mot);
+  const budgets = useBudgets(government.id);
   // « Première ministre » quand la source l'écrit ainsi : le libellé se lit, il
   // ne s'accorde pas à la main.
   const titreDuChef = government.membres.find((m) => m.nom === government.premierMinistre
@@ -1280,7 +1319,8 @@ export default function GovernmentProfile({ government, chronologie = [], mot = 
       <SurQuoiIlsOntPrisLaParole debut={debut} government={government} key={`paroles-${mot}-${debut}`} mot={mot} />
       <CeQuIlAFaitDeposer government={government} key={`textes-${mot}`} mot={mot} />
       <CeQuIlAFaitEntrerEnVigueur government={government} />
-      <CeQuOnNaPasPuLire government={government} />
+      {budgets && <LesBudgetsQuIlAFaitVoter exercices={budgets} />}
+      <CeQuOnNaPasPuLire government={government} numero={budgets ? '07' : '06'} />
     </main>
   );
 }

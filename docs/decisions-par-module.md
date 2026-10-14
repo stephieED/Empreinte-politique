@@ -160,7 +160,7 @@ Le mentionnent sans le gouverner : [`cle-fusion-textes-portes-668`](decisions/cl
 
 ## `src/audit_diff_profils.py`
 
-7 décision(s) le gouvernent ; le module en cite 3.
+8 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -170,6 +170,7 @@ Le mentionnent sans le gouverner : [`cle-fusion-textes-portes-668`](decisions/cl
 | [L'effectif d'un groupe dans le temps : `min_historique` et `max_historique` portent leur date (#702) — 01/09/2026](decisions/effectif-du-groupe-dans-le-temps-702.md) | `COLLECTION_GROUPES` |
 | [L'`id` d'un profil pivot est le slug : le préfixe de provenance était instable (#487) (2026-08-20)](decisions/id-pivot-sans-prefixe.md) | `COLLECTION_PROFILS` |
 | [Le libellé d'organe du chef du gouvernement s'accorde en genre, la qualité jamais (#658) (2026-08-31)](decisions/libelle-chef-du-gouvernement-au-feminin-658.md) | `COLLECTION_GOUVERNEMENTS` |
+| [Une baisse de tags agrégés bloque sur sa cause, lue dans les profils](decisions/perte-de-tags-agreges-bloque-sur-sa-cause.md) | `Collection`, `comparer_tout` |
 | [Une baisse de tags thématiques bloque sur sa cause, pas sur son compte](decisions/perte-de-tags-bloque-sur-sa-cause.md) | `Collection` |
 
 Le mentionnent sans le gouverner : [`amendements-par-appartenance-1175`](decisions/amendements-par-appartenance-1175.md), [`bascule-roster-an-amo30-527`](decisions/bascule-roster-an-amo30-527.md), [`boucle-perimetre-candidats-757`](decisions/boucle-perimetre-candidats-757.md), [`cache-amendements-existence-nest-pas-conformite`](decisions/cache-amendements-existence-nest-pas-conformite.md), [`chambres-profil-derivees`](decisions/chambres-profil-derivees.md), [`civilite-et-pcs-insee-659`](decisions/civilite-et-pcs-insee-659.md), [`cle-fusion-interventions-540`](decisions/cle-fusion-interventions-540.md), [`cle-fusion-textes-portes-668`](decisions/cle-fusion-textes-portes-668.md), [`cohesion-par-appartenance-1175`](decisions/cohesion-par-appartenance-1175.md), [`collecte-interventions-reduite-au-theme-657`](decisions/collecte-interventions-reduite-au-theme-657.md), [`collecte-non-publiee`](decisions/collecte-non-publiee.md), [`collecte-vs-publie-545`](decisions/collecte-vs-publie-545.md), [`consommateurs-chambres-migres`](decisions/consommateurs-chambres-migres.md), [`controle-de-perte-avant-commit`](decisions/controle-de-perte-avant-commit.md), [`correspondance-acteurs-an-525`](decisions/correspondance-acteurs-an-525.md), [`creneau-de-seance-nest-pas-un-sujet-710`](decisions/creneau-de-seance-nest-pas-un-sujet-710.md), [`date-de-reference-des-comptes-de-groupe-653`](decisions/date-de-reference-des-comptes-de-groupe-653.md), [`dates-appartenance-groupe-653`](decisions/dates-appartenance-groupe-653.md), [`derniere-lecture-retenue-711`](decisions/derniere-lecture-retenue-711.md), [`destinataire-avertissements-642`](decisions/destinataire-avertissements-642.md), [`dossier-des-amendements-639`](decisions/dossier-des-amendements-639.md), [`doublons-textes-europeens-cle-doceo-901`](decisions/doublons-textes-europeens-cle-doceo-901.md), [`extraction-groupe-suspendue-516`](decisions/extraction-groupe-suspendue-516.md), [`fenetre-historique-donnees`](decisions/fenetre-historique-donnees.md), [`fenetre-recalibrage-551`](decisions/fenetre-recalibrage-551.md), [`fiches-groupe-17e-legislature-700`](decisions/fiches-groupe-17e-legislature-700.md), [`fiches-masquees-candidatures-declinees-761`](decisions/fiches-masquees-candidatures-declinees-761.md), [`filtre-publication-apres-fusion-641`](decisions/filtre-publication-apres-fusion-641.md), [`identite-profils-539`](decisions/identite-profils-539.md), [`licence-lot-6-530`](decisions/licence-lot-6-530.md), [`liste-candidats-declares-753`](decisions/liste-candidats-declares-753.md), [`mandat-electif-perdu-fausse-le-denominateur`](decisions/mandat-electif-perdu-fausse-le-denominateur.md), [`mandats-agreges-siege-vs-passe-656`](decisions/mandats-agreges-siege-vs-passe-656.md), [`mandats-electifs-liste-complete-640`](decisions/mandats-electifs-liste-complete-640.md), [`marquage-tranches-derivees-691`](decisions/marquage-tranches-derivees-691.md), [`nettoyage-sediment-839`](decisions/nettoyage-sediment-839.md), [`notifications-de-suivi`](decisions/notifications-de-suivi.md), [`overwrite-profiles-sans-purge-cache`](decisions/overwrite-profiles-sans-purge-cache.md), [`partition-profils-legislature-580`](decisions/partition-profils-legislature-580.md), [`perimetre-collecte-candidatures-declinees-760`](decisions/perimetre-collecte-candidatures-declinees-760.md), [`profession-code-nomenclature-641`](decisions/profession-code-nomenclature-641.md), [`publication-dun-job-annule`](decisions/publication-dun-job-annule.md), [`publication-scopee-artifacts`](decisions/publication-scopee-artifacts.md), [`qualification-perdue-a-la-fusion-639`](decisions/qualification-perdue-a-la-fusion-639.md), [`qualification-scrutins-et-cle-dossier-639`](decisions/qualification-scrutins-et-cle-dossier-639.md), [`qualification-textes-portes-689`](decisions/qualification-textes-portes-689.md), [`reconstruction-tranches-depuis-archive-691`](decisions/reconstruction-tranches-depuis-archive-691.md), [`restauration-interventions`](decisions/restauration-interventions.md), [`retrait-groupes-senat-nossenateurs`](decisions/retrait-groupes-senat-nossenateurs.md), [`retrait-nosdeputes-529`](decisions/retrait-nosdeputes-529.md), [`retrait-senat-528`](decisions/retrait-senat-528.md), [`roster-an-derive-amo30-526`](decisions/roster-an-derive-amo30-526.md), [`slug-fabrique-membre-de-roster-708`](decisions/slug-fabrique-membre-de-roster-708.md), [`tranches-derivees-lecteur-691`](decisions/tranches-derivees-lecteur-691.md).
@@ -652,7 +653,7 @@ Le mentionnent sans le gouverner : [`finances-etat-collecte-1053`](decisions/fin
 
 ## `src/finances_sociales.py`
 
-Le mentionnent sans le gouverner : [`finances-sociales-collecte-1053`](decisions/finances-sociales-collecte-1053.md).
+Le mentionnent sans le gouverner : [`finances-sociales-collecte-1053`](decisions/finances-sociales-collecte-1053.md), [`finances-sociales-par-bloc-1053`](decisions/finances-sociales-par-bloc-1053.md).
 
 ## `src/garde_fou_blobs.py`
 
@@ -1342,7 +1343,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 
 ## `src/schema_pivot.py`
 
-64 décision(s) le gouvernent ; le module en cite 5.
+65 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1381,6 +1382,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 | [Les mandats antérieurs à la couverture de l'Assemblée entrent par une table relue (#860)](decisions/mandats-anterieurs-couverture-860.md) | `KNOWN_INSTITUTIONS_ANTERIEURES`, `validate_profil` |
 | [Normaliser les amendements : le coût n'est pas l'amendement, c'est sa liste de cosignataires (#431) (2026-08-19)](decisions/normalisation-amendements.md) | `validate_amendements_index`, `validate_profil` |
 | [Normaliser les votes : une liste partagée, un mapping, et deux invariants devenus des jointures (#432) (2026-08-19)](decisions/normalisation-votes.md) | `validate_profil`, `validate_scrutins_index` |
+| [Une baisse de tags agrégés bloque sur sa cause, lue dans les profils](decisions/perte-de-tags-agreges-bloque-sur-sa-cause.md) | `cle_tag_thematique` |
 | [Une baisse de tags thématiques bloque sur sa cause, pas sur son compte](decisions/perte-de-tags-bloque-sur-sa-cause.md) | `deriver_tags_thematiques`, `porte_un_tag_thematique` |
 | [`genere_le`/`synchro_le` des pivots ne doivent avancer que si le contenu change réellement (#343) (2026-08-16)](decisions/pivot-freshness-timestamps-stables.md) | `make_empty_profil` |
 | [Les deux populations de `pivot_data/profiles/` sont portées par les outils, pas par une consigne (#630, 2026-08-30)](decisions/populations-profils-portees-par-les-outils-630.md) | `KNOWN_PROVENANCES` |

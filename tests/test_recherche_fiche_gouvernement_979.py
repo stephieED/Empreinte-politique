@@ -173,7 +173,8 @@ def test_deux_sections_se_retirent_la_couverture_reste():
     assert "{!actif && <EnBref" in source
     assert "{!actif && <QuiLeComposait" in source
     ligne = [l for l in source.splitlines() if "<CeQuOnNaPasPuLire" in l][0]
-    assert ligne.strip() == "<CeQuOnNaPasPuLire government={government} />"
+    # #1053 : son numéro suit la section des budgets, la section reste sans condition.
+    assert ligne.strip() == "<CeQuOnNaPasPuLire government={government} numero={budgets ? '07' : '06'} />"
 
 
 def test_chaque_figure_porte_le_mot():

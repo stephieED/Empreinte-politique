@@ -632,6 +632,15 @@ export async function getActesDuGouvernement(id) {
   return (await fetchJson(`/data/gouvernements/${entry.actes}`)) || null;
 }
 
+/* Les budgets qu'un gouvernement a fait voter (#1053), écrits par `sync-data`.
+ * `null` quand il n'en a fait voter aucun : la fiche n'a pas la section. */
+export async function getBudgetsDuGouvernement(id) {
+  const manifest = await loadManifest();
+  const entry = (manifest.gouvernements || []).find((g) => g.id === id);
+  if (!entry?.budgets) return null;
+  return (await fetchJson(`/data/gouvernements/${entry.budgets}`)) || null;
+}
+
 /* ── Ce qui a été dit (#1029) ─────────────────────────────────────────────────
  *
  * Écrits par `sync-data` (`src/utils/extraits.js`) : un INDEX par fiche — le

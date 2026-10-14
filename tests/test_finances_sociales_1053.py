@@ -3,8 +3,9 @@
 Chaque lecteur est éprouvé sur **le vrai fichier**, copié le 12/10/2026 sous
 `tests/fixtures/finances_sociales/` :
 
-- `classeur_2024.xlsx` — le classeur de la Drees, réduit aux deux feuilles lues
-  (les XML d'origine, non réécrits : seules les dix autres feuilles manquent) ;
+- `classeur_2024.xlsx` — le classeur de la Drees, réduit aux cinq feuilles lues
+  (les XML d'origine, non réécrits : seules les sept autres feuilles manquent),
+  recopié le 13/10/2026 ;
 - `fiche_drees.json` — la liste des pièces jointes du jeu, telle que l'API la rend ;
 - `regimes_1975_1989_2023.json` — trois années de l'export des prestations par
   régime, une par régime de la source : sans détail, détail incomplet, complet ;
@@ -55,7 +56,10 @@ def test_le_classeur_est_retrouve_par_son_type_pas_par_son_nom():
     bloc = fs.lire_protection_sociale(appel)
     assert bloc["source_urls"] == [URL_CLASSEUR]
     assert bloc["classeur"] == "La protection sociale en France de 1959 à 2024.xlsx"
-    assert set(bloc["champs"]) == {"ensemble_des_regimes", "administrations_de_securite_sociale"}
+    assert set(bloc["champs"]) == {
+        "ensemble_des_regimes", "administrations_de_securite_sociale",
+        "administrations_publiques_centrales_et_locales",
+        "societes_financieres_et_non_financieres", "instituts_sans_but_lucratif"}
 
 
 def test_les_ressources_de_2023_sont_celles_du_fichier():
@@ -68,6 +72,35 @@ def test_les_ressources_de_2023_sont_celles_du_fichier():
     asso = champs["administrations_de_securite_sociale"]
     assert ligne(asso, "TOTAL DES RESSOURCES HORS TRANSFERTS")["2023"] == 722838.32
     assert sorted(asso["statuts"]) == ["2020", "2021", "2022", "2023", "2024"]
+
+
+def test_chaque_ressource_se_lit_bloc_par_bloc():
+    """Les cotisations d'employeurs de 2023, réparties entre les quatre blocs
+    par la source elle-même : leur somme est la ligne de l'ensemble."""
+    champs = fs.lire_protection_sociale(appel)["champs"]
+    libelle = "Cotisations sociales d'employeurs"
+    blocs = {c: ligne(b, libelle)["2023"] for c, b in champs.items()
+             if c != fs.ENSEMBLE and any(l["libelle"] == libelle for l in b["lignes"])}
+    assert blocs == {"administrations_de_securite_sociale": 280242.62,
+                     "administrations_publiques_centrales_et_locales": 566.0,
+                     "societes_financieres_et_non_financieres": 1072.69}
+    assert round(sum(blocs.values()), 2) == ligne(champs[fs.ENSEMBLE], libelle)["2023"] == 281881.31
+
+
+def test_les_blocs_ne_couvrent_que_les_dernieres_annees():
+    champs = fs.lire_protection_sociale(appel)["champs"]
+    for champ, bloc in champs.items():
+        if champ != fs.ENSEMBLE:
+            assert sorted(bloc["statuts"]) == ["2020", "2021", "2022", "2023", "2024"], champ
+
+
+def test_des_blocs_qui_ne_font_plus_l_ensemble_font_echouer():
+    champs = fs.lire_protection_sociale(appel)["champs"]
+    total = next(l for l in champs["instituts_sans_but_lucratif"]["lignes"]
+                 if l["libelle"] == fs.TOTAL_RESSOURCES)
+    total["valeurs"]["2022"] += 500
+    with pytest.raises(fs.FinancesIndisponibles, match="somme des blocs"):
+        fs._verifier_blocs(champs)
 
 
 def test_le_statut_de_chaque_annee_est_garde():

@@ -23,20 +23,33 @@ jeu**, pas sur les portails. L'étiquette canonique est
 
 ### Drees — le classeur joint au jeu
 
-`La protection sociale en France de 1959 à 2024.xlsx`, douze feuilles. Deux sont
-lues :
+`La protection sociale en France de 1959 à 2024.xlsx`, douze feuilles : deux de
+notice, cinq « opérations » (emplois et ressources), cinq « prestations » (par
+risque). Les cinq feuilles d'opérations sont lues :
 
-| Feuille | Champ | Années | Lignes |
+| Feuille | Champ, tel que le sommaire du classeur le nomme | Années | Lignes |
 | --- | --- | --- | --- |
-| `opérations_1959_2024` | l'ensemble des régimes | 1959 à 2024 | emplois et ressources par nature, 20 lignes |
-| `opérations_ASSO` | les administrations de sécurité sociale | 2020 à 2024 | les mêmes, 18 lignes |
+| `opérations_1959_2024` | l'ensemble des régimes | 1959 à 2024 | 20 |
+| `opérations_ASSO` | les administrations de sécurité sociale | 2020 à 2024 | 18 |
+| `opérations_APUC_APUL` | les administrations publiques centrales et locales | 2020 à 2024 | 12 |
+| `opérations_SF_SNF` | les sociétés financières et non financières | 2020 à 2024 | 10 |
+| `opérations_ISBLSM` | les instituts sans but lucratif au service des ménages | 2020 à 2024 | 5 |
 
 Les ressources par nature : cotisations sociales d'employeurs, de salariés, autres
 cotisations, cotisations imputées, impôts et taxes affectés, contributions
 publiques, produits financiers, autres recettes, recettes du compte de capital.
-Montants en millions d'euros. Vérifié sur toutes les années des deux feuilles : le
-total des ressources hors transferts vaut la somme des lignes qui le suivent, à
-moins de 2 M€.
+Un bloc ne porte que les lignes qui le concernent. Montants en millions d'euros,
+**hors transferts** : ce qu'un bloc reverse à un autre n'y figure pas.
+
+**Les quatre blocs font l'ensemble.** Vérifié le 13/10/2026 sur les 20 lignes et
+les cinq années 2020 à 2024 : pour chaque ligne, la somme des blocs vaut la ligne
+de l'ensemble — c'est ce qui permet de dire quel bloc reçoit quelle ressource. Une
+exception, en 2024 : 7 537 M€ de cotisations de salariés sont sur leur ligne dans
+un bloc et fondus dans la ligne « employeurs » de l'ensemble ; les deux écarts
+s'annulent, et le total des ressources, lui, se recoupe.
+
+Vérifié aussi sur toutes les années des cinq feuilles : le total des ressources
+hors transferts vaut la somme des lignes qui le suivent, à moins de 2 M€.
 
 L'en-tête de chaque colonne colle l'année à son statut : `2022DEF` (définitif),
 `2023SD` (semi-définitif), `2024PROV` (provisoire).
@@ -65,8 +78,9 @@ lignes à moins de 2 M€.
 ## Ce qu'aucune des deux ne publie
 
 **Les ressources caisse par caisse** — vieillesse, maladie, famille, retraites
-complémentaires. Le classeur les donne pour un ensemble de régimes, l'API ne porte
-que des prestations ; seule l'assurance chômage a ses deux côtés. Ce détail existe
+complémentaires. Le classeur les donne par bloc, et le bloc des administrations de
+sécurité sociale réunit toutes les caisses, Unédic et retraites complémentaires
+comprises, sans les séparer ; l'API ne porte que des prestations ; seule l'assurance chômage a ses deux côtés. Ce détail existe
 sans doute dans les annexes des lois de financement de la Sécurité sociale, **non
 ouvertes** à la date de ce relevé.
 

@@ -13,8 +13,10 @@ Trois parties, lues et gardées séparément :
 
 - `protection_sociale` — le classeur des comptes de la protection sociale du
   service statistique du ministère de la Santé (Drees) : pour l'ensemble des
-  régimes depuis 1959, et pour les seules administrations de sécurité sociale
-  sur les dernières années, les emplois et les ressources par nature
+  régimes depuis 1959, et sur les dernières années pour chacun des quatre
+  blocs qui le composent (administrations de sécurité sociale, administrations
+  publiques centrales et locales, sociétés, instituts sans but lucratif), les
+  emplois et les ressources par nature
   (cotisations d'employeurs, de salariés, impôts et taxes affectés,
   contributions publiques…) ;
 - `prestations_par_regime` — le même jeu, par son API : le total des
@@ -29,8 +31,8 @@ Les libellés sont ceux de la source, mot pour mot.
 ## Ce que la source ne donne pas
 
 **Les ressources caisse par caisse** — vieillesse, maladie, famille, retraites
-complémentaires — ne sont dans aucun des trois : le classeur les donne pour un
-ensemble de régimes, l'API ne porte que des prestations. Seule l'assurance
+complémentaires — ne sont dans aucun des trois : le classeur les donne par bloc,
+et son bloc des caisses les réunit toutes sans les séparer, l'API ne porte que des prestations. Seule l'assurance
 chômage a les deux côtés. Mesuré le 12/10/2026 ; rien n'est déduit pour combler.
 
 ## Les pièges, payés en mesurant
@@ -95,12 +97,18 @@ URL_UNEDIC = _API.format(portail=PORTAIL_UNEDIC, jeu=JEU_UNEDIC) + "/exports/jso
 
 TYPE_CLASSEUR = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 
-#: Les deux feuilles lues, reconnues à la forme de leur nom : la première porte
+#: Les cinq feuilles lues, reconnues à la forme de leur nom : la première porte
 #: ses bornes (« opérations_1959_2024 ») et les change à chaque édition.
 FEUILLES = {
     "ensemble_des_regimes": re.compile(r"^opérations_\d{4}_\d{4}$"),
     "administrations_de_securite_sociale": re.compile(r"^opérations_ASSO$"),
+    "administrations_publiques_centrales_et_locales": re.compile(r"^opérations_APUC_APUL$"),
+    "societes_financieres_et_non_financieres": re.compile(r"^opérations_SF_SNF$"),
+    "instituts_sans_but_lucratif": re.compile(r"^opérations_ISBLSM$"),
 }
+#: Le champ qui vaut la somme des quatre autres, les blocs de la comptabilité
+#: nationale : c'est ce qui relie chaque ressource au bloc qui la reçoit.
+ENSEMBLE = "ensemble_des_regimes"
 TOTAL_RESSOURCES = "TOTAL DES RESSOURCES HORS TRANSFERTS"
 TOTAL_EMPLOIS = "TOTAL DES EMPLOIS HORS TRANSFERTS"
 
@@ -214,8 +222,28 @@ def _verifier_totaux(lignes: list[dict[str, Any]], quoi: str) -> None:
                 f"{quoi} {an} : total des ressources {total}, somme des lignes {somme:.2f}")
 
 
+def _verifier_blocs(champs: dict[str, dict[str, Any]]) -> None:
+    """Les quatre blocs font l'ensemble, année par année.
+
+    La garde porte sur le total des ressources, pas sur chaque ligne : en année
+    provisoire la source ne range pas les cotisations sur les mêmes lignes dans
+    l'ensemble et dans les blocs (7 537 M€ en 2024, mesuré le 13/10/2026), et
+    les deux écarts s'annulent.
+    """
+    def total(champ: str) -> dict[str, Optional[float]]:
+        return next(l["valeurs"] for l in champs[champ]["lignes"] if l["libelle"] == TOTAL_RESSOURCES)
+
+    ensemble = total(ENSEMBLE)
+    blocs = [total(c) for c in champs if c != ENSEMBLE]
+    for an in sorted(set.intersection(*(set(b) for b in blocs))):
+        somme = sum(b[an] or 0 for b in blocs)
+        if ensemble.get(an) is None or abs(ensemble[an] - somme) > TOLERANCE:
+            raise FinancesIndisponibles(
+                f"{an} : ensemble des régimes {ensemble.get(an)}, somme des blocs {somme:.2f}")
+
+
 def lire_protection_sociale(appel: Callable[[str], bytes]) -> dict[str, Any]:
-    """Le classeur, retrouvé dans la fiche du jeu, et ses deux feuilles."""
+    """Le classeur, retrouvé dans la fiche du jeu, et ses cinq feuilles."""
     fiche = json.loads(decoder(appel(URL_JEU_DREES)))
     pieces = [p for p in fiche.get("attachments") or [] if p.get("mimetype") == TYPE_CLASSEUR]
     if len(pieces) != 1:
@@ -227,6 +255,7 @@ def lire_protection_sociale(appel: Callable[[str], bytes]) -> dict[str, Any]:
         if len(noms) != 1:
             raise FinancesIndisponibles(f"{champ} : {len(noms)} feuille(s) reconnue(s)")
         champs[champ] = {"feuille": noms[0], **lire_operations(feuilles[noms[0]], champ)}
+    _verifier_blocs(champs)
     return {"source_urls": [pieces[0]["url"]], "classeur": pieces[0].get("title"),
             "fiche": _FICHE.format(portail=PORTAIL_DREES, jeu=JEU_DREES), "champs": champs}
 

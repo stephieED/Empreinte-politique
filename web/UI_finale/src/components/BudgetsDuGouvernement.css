@@ -1,0 +1,81 @@
+/*
+ * Les budgets que ce gouvernement a fait voter (#1053). Valeurs reprises de la
+ * maquette arrêtée le 13/10/2026 (version 68) ; les boutons de la bascule sont
+ * ceux de la section des actes (`.adg-bouton`).
+ */
+
+.bdg-defile { overflow-x: auto; }
+
+/* La carte de l'État : les deux colonnes, et la cascade à leur droite. Elle
+   passe dessous quand la place manque. */
+.bdg-rang { display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: flex-start; }
+.bdg-rang .bdg-titre { flex: 0 0 100%; }
+.bdg-colonnes { flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+/* Sans colonnes, la phrase prend la ligne et la cascade passe dessous, à gauche. */
+.bdg-colonnes--vide { flex-basis: 100%; }
+
+.bdg-titre { font-size: 14px; font-weight: 800; margin: 0 0 8px; }
+.gvp-carte > .bdg-titre + .adg-filtres { margin-bottom: 8px; }
+
+.bdg-colonnes-svg text { font-family: 'Manrope', system-ui, sans-serif; }
+.bdg-col-titre { font-weight: 800; font-size: 12.5px; fill: #17141f; }
+.bdg-col-total { font-size: 12px; fill: var(--texte-2); }
+.bdg-ligne { font-size: 11.5px; fill: var(--texte-2); }
+.bdg-valeur { font-weight: 800; fill: #17141f; }
+.bdg-renvoi { stroke: #c4c0b9; stroke-width: 1; }
+
+.bdg-cascade {
+  flex: 0 0 auto;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: content-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #fbfaf8;
+}
+.bdg-cascade svg text { font-family: 'Manrope', system-ui, sans-serif; fill: var(--texte-2); font-size: 10px; }
+.bdg-cascade svg .bdg-casc-an { font-weight: 700; fill: var(--ink); font-size: 11px; }
+.bdg-cascade svg .bdg-casc-nombre { font-weight: 700; font-size: 9px; fill: #fff; }
+
+.bdg-periode { margin: 0 0 2px; font-size: 11.5px; color: var(--texte-2); }
+.bdg-periode b { color: var(--ink); }
+
+.bdg-legende {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  color: var(--texte-2);
+  font-size: 11.5px;
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+}
+.bdg-legende span { display: inline-flex; align-items: center; gap: 6px; }
+.bdg-legende i { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+
+.bdg-nonpub { margin: 0; font-size: 12.5px; color: var(--texte-2); }
+
+/* La bulle d'un poste : son montant, puis ce qui le compose. */
+.bdg-ancre { position: relative; }
+.bdg-poste { cursor: pointer; }
+.bdg-poste:hover rect { opacity: 0.85; }
+.bdg-bulle {
+  position: absolute;
+  z-index: 5;
+  width: 320px;
+  pointer-events: none;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 8px;
+  padding: 9px 11px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.bdg-bulle > b { display: block; }
+.bdg-bulle-total { display: block; opacity: 0.8; }
+.bdg-bulle ul { list-style: none; margin: 6px 0 0; padding: 6px 0 0; border-top: 1px solid rgba(255, 255, 255, 0.25); }
+.bdg-bulle li { display: flex; justify-content: space-between; gap: 10px; }
+.bdg-bulle li b { white-space: nowrap; font-variant-numeric: tabular-nums; }

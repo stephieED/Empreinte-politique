@@ -1,6 +1,6 @@
 {
   "schema_version": "correspondance-acteurs-an-v2",
-  "genere_le": "2026-10-12T06:54:05+0000",
+  "genere_le": "2026-10-14T17:19:59+0000",
   "source_referentiel": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
   "correspondances": {
     "abdelkader-lahmar": {
@@ -20242,6 +20242,26 @@
       "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA693008",
       "verifie_le": "2026-10-03",
       "origine": "derivee"
+    },
+    "natacha-polony": {
+      "identifiants": {
+        "an": null,
+        "senat": null,
+        "europarl": null,
+        "hatvp": null
+      },
+      "etat_civil": {
+        "civilite": null,
+        "prenom": null,
+        "nom": null,
+        "nom_complet": "Natacha Polony",
+        "date_naissance": null
+      },
+      "ecart": "hors_an",
+      "motif": "Fait négatif corroboré par deux sources indépendantes le 2026-10-14 : l'élément Wikidata de cette personne ne porte pas la propriété P4123 (identifiant Assemblée nationale), et le profil collecté depuis le référentiel AMO30 ne rend aucun acteur. Entrée SOURCÉE et non relue : ni le Sénat ni le Parlement européen ne sont couverts par cette déclaration.",
+      "preuve": "https://www.wikidata.org/wiki/Q941949",
+      "verifie_le": "2026-10-14",
+      "origine": "sourcee"
     },
     "natalia-pouzyreff": {
       "identifiants": {

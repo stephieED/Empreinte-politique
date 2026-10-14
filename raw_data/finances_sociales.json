@@ -1,6 +1,6 @@
 {
   "schema_version": "finances-sociales-v1",
-  "genere_le": "2026-10-12T16:18:42Z",
+  "genere_le": "2026-10-14T15:53:04Z",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.drees.solidarites-sante.gouv.fr, data.unedic.org",
   "unite": "millions d'euros",
   "protection_sociale": {
@@ -1691,6 +1691,312 @@
               "2022": -4757.97,
               "2023": -4417.22,
               "2024": -5063.88
+            }
+          }
+        ]
+      },
+      "administrations_publiques_centrales_et_locales": {
+        "feuille": "opérations_APUC_APUL",
+        "statuts": {
+          "2020": "DEF",
+          "2021": "DEF",
+          "2022": "DEF",
+          "2023": "SD",
+          "2024": "PROV"
+        },
+        "lignes": [
+          {
+            "libelle": "TOTAL DES EMPLOIS HORS TRANSFERTS",
+            "valeurs": {
+              "2020": 168140.19,
+              "2021": 160415.21,
+              "2022": 155012.51,
+              "2023": 156826.63,
+              "2024": 161903.31
+            }
+          },
+          {
+            "libelle": "Prestations sociales en espèces",
+            "valeurs": {
+              "2020": 123855.03,
+              "2021": 116623.87,
+              "2022": 110735.09,
+              "2023": 112840.7,
+              "2024": 161856.31
+            }
+          },
+          {
+            "libelle": "Prestations sociales en nature",
+            "valeurs": {
+              "2020": 42287.66,
+              "2021": 42904.94,
+              "2022": 41905.42,
+              "2023": 44079.93,
+              "2024": null
+            }
+          },
+          {
+            "libelle": "Autres emplois (depuis 1981)",
+            "valeurs": {
+              "2020": null,
+              "2021": 367.0,
+              "2022": 464.0,
+              "2023": null,
+              "2024": null
+            }
+          },
+          {
+            "libelle": "Emplois du compte de capital (depuis 2006)",
+            "valeurs": {
+              "2020": 1997.5,
+              "2021": 519.4,
+              "2022": 1908.0,
+              "2023": -94.0,
+              "2024": 47.0
+            }
+          },
+          {
+            "libelle": "TOTAL DES RESSOURCES HORS TRANSFERTS",
+            "valeurs": {
+              "2020": 176412.64,
+              "2021": 167274.81,
+              "2022": 160943.39,
+              "2023": 167169.47,
+              "2024": 172927.0
+            }
+          },
+          {
+            "libelle": "Cotisations sociales d'employeurs",
+            "valeurs": {
+              "2020": 1060.0,
+              "2021": 849.0,
+              "2022": 618.0,
+              "2023": 566.0,
+              "2024": 460.0
+            }
+          },
+          {
+            "libelle": "Cotisations sociales de salariés",
+            "valeurs": {
+              "2020": 7132.0,
+              "2021": 7148.0,
+              "2022": 7237.0,
+              "2023": 7391.0,
+              "2024": 7537.0
+            }
+          },
+          {
+            "libelle": "Cotisations sociales imputées",
+            "valeurs": {
+              "2020": 43483.0,
+              "2021": 43660.0,
+              "2022": 45224.0,
+              "2023": 46847.0,
+              "2024": 49837.0
+            }
+          },
+          {
+            "libelle": "Impôts et taxes affectés",
+            "valeurs": {
+              "2020": 11027.19,
+              "2021": 8399.42,
+              "2022": 7193.74,
+              "2023": 5534.15,
+              "2024": 5878.71
+            }
+          },
+          {
+            "libelle": "Contributions publiques",
+            "valeurs": {
+              "2020": 112896.26,
+              "2021": 106383.57,
+              "2022": 99866.89,
+              "2023": 105977.27,
+              "2024": 108309.43
+            }
+          },
+          {
+            "libelle": "Autres recettes (depuis 1981)",
+            "valeurs": {
+              "2020": 814.19,
+              "2021": 834.82,
+              "2022": 803.76,
+              "2023": 854.05,
+              "2024": 904.86
+            }
+          }
+        ]
+      },
+      "societes_financieres_et_non_financieres": {
+        "feuille": "opérations_SF_SNF",
+        "statuts": {
+          "2020": "DEF",
+          "2021": "DEF",
+          "2022": "DEF",
+          "2023": "SD",
+          "2024": "PROV"
+        },
+        "lignes": [
+          {
+            "libelle": "TOTAL DES EMPLOIS HORS TRANSFERTS",
+            "valeurs": {
+              "2020": 49714.22,
+              "2021": 53080.38,
+              "2022": 55400.0,
+              "2023": 57438.98,
+              "2024": 60162.82
+            }
+          },
+          {
+            "libelle": "Prestations sociales en espèces",
+            "valeurs": {
+              "2020": 32758.22,
+              "2021": 33687.94,
+              "2022": 34849.0,
+              "2023": 35887.12,
+              "2024": 60130.46
+            }
+          },
+          {
+            "libelle": "Prestations sociales en nature",
+            "valeurs": {
+              "2020": 16922.1,
+              "2021": 19336.12,
+              "2022": 20518.08,
+              "2023": 21519.42,
+              "2024": null
+            }
+          },
+          {
+            "libelle": "Frais non financiers",
+            "valeurs": {
+              "2020": 33.9,
+              "2021": 56.32,
+              "2022": 32.92,
+              "2023": 32.44,
+              "2024": 32.36
+            }
+          },
+          {
+            "libelle": "TOTAL DES RESSOURCES HORS TRANSFERTS",
+            "valeurs": {
+              "2020": 58518.59,
+              "2021": 63008.76,
+              "2022": 64680.14,
+              "2023": 69285.09,
+              "2024": 73236.53
+            }
+          },
+          {
+            "libelle": "Cotisations sociales d'employeurs",
+            "valeurs": {
+              "2020": 962.61,
+              "2021": 983.03,
+              "2022": 1031.1,
+              "2023": 1072.69,
+              "2024": 51174.04
+            }
+          },
+          {
+            "libelle": "Cotisations sociales de salariés",
+            "valeurs": {
+              "2020": 962.61,
+              "2021": 983.03,
+              "2022": 1031.1,
+              "2023": 1072.69,
+              "2024": null
+            }
+          },
+          {
+            "libelle": "Autres cotisations sociales",
+            "valeurs": {
+              "2020": 38577.12,
+              "2021": 41926.9,
+              "2022": 42126.46,
+              "2023": 45696.63,
+              "2024": null
+            }
+          },
+          {
+            "libelle": "Cotisations sociales imputées",
+            "valeurs": {
+              "2020": 17220.45,
+              "2021": 18345.19,
+              "2022": 19534.62,
+              "2023": 20457.59,
+              "2024": 20958.33
+            }
+          },
+          {
+            "libelle": "Produits financiers (depuis 1981)",
+            "valeurs": {
+              "2020": 795.8,
+              "2021": 770.61,
+              "2022": 956.86,
+              "2023": 985.49,
+              "2024": 1104.16
+            }
+          }
+        ]
+      },
+      "instituts_sans_but_lucratif": {
+        "feuille": "opérations_ISBLSM",
+        "statuts": {
+          "2020": "DEF",
+          "2021": "DEF",
+          "2022": "DEF",
+          "2023": "SD",
+          "2024": "PROV"
+        },
+        "lignes": [
+          {
+            "libelle": "TOTAL DES EMPLOIS HORS TRANSFERTS",
+            "valeurs": {
+              "2020": 27097.8,
+              "2021": 27918.1,
+              "2022": 29946.0,
+              "2023": 31991.8,
+              "2024": 33137.4
+            }
+          },
+          {
+            "libelle": "Prestations sociales en espèces",
+            "valeurs": {
+              "2020": 401.0,
+              "2021": 432.0,
+              "2022": 546.2,
+              "2023": 587.2,
+              "2024": 33137.4
+            }
+          },
+          {
+            "libelle": "Prestations sociales en nature",
+            "valeurs": {
+              "2020": 26696.8,
+              "2021": 27486.1,
+              "2022": 29399.8,
+              "2023": 31404.6,
+              "2024": null
+            }
+          },
+          {
+            "libelle": "TOTAL DES RESSOURCES HORS TRANSFERTS",
+            "valeurs": {
+              "2020": 759.0,
+              "2021": 816.0,
+              "2022": 883.0,
+              "2023": 940.0,
+              "2024": 990.0
+            }
+          },
+          {
+            "libelle": "Autres recettes (depuis 1981)",
+            "valeurs": {
+              "2020": 759.0,
+              "2021": 816.0,
+              "2022": 883.0,
+              "2023": 940.0,
+              "2024": 990.0
             }
           }
         ]
