@@ -14,13 +14,12 @@
       "https://fr.wikipedia.org/wiki/%C3%89lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027",
       "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
       "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
-      "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
       "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque"
     ],
     "avertissement": "Statuts et alliances très mouvants à ce stade (plus d'un an avant le scrutin). Vérifier chaque entrée avant usage public.",
     "regle_slug": "slug = identifiant du profil, et donc nom de son fichier (pivot_data/profiles/<slug>.pivot.json) — jamais un identifiant de source (#487, #539). Il vient de slugify(nom) et il est FABRIQUÉ UNE SEULE FOIS, à la première publication : une fois écrit ici il est immuable, jamais re-dérivé, parce que renommer un fichier publié est une suppression que audit_diff_profils bloque (#460/#470). En cas d'homonymie, suffixe numérique attribué au second (alexandra-martin / alexandra-martin-1), jamais réattribué ni recalculé. Il valait null pour cinq candidats jusqu'à #539 — l'ancienne règle le liait à la présence sur nosdeputes.fr/nossenateurs.fr, plateformes hors pipeline depuis #529, et ce null les rendait invisibles du matrix extract-an comme du manifeste de l'interface.",
     "regle_statut": "statut = où en est la candidature, jamais un jugement sur elle. « decline » nomme une candidature explicitement abandonnée ou jamais engagée par une personne que nous portions comme declare/pressenti : l'entrée est CONSERVÉE et non supprimée, parce que son slug est publié et que retirer un fichier publié est une disparition qu'audit_diff_profils bloque (#460/#470). src/fetch_candidats_declares.py ne pose jamais cette valeur lui-même : il ne lit que la section des déclarés, où l'absence d'une personne ne distingue pas un retrait d'un déplacement de section — il signale, un humain tranche avec sa source (#753).",
-    "regle_sources": "sources = chaque article qui atteste la candidature (ou le retrait, pour un decline), relu entrée par entrée : {url, media (nom lisible), date (AAAA-MM-JJ, dernière mise à jour affichée par l'article à la lecture, sinon sa date de publication ; null si l'article n'est pas daté ou n'a pas pu être lu)}. Le premier élément est toujours `source`, gardé pour les lecteurs qui ne lisent qu'une URL. Un article qui cite le nom sans attester la candidature n'y entre pas (#1298)."
+    "regle_sources": "sources = chaque article qui atteste la candidature (ou le retrait, pour un decline), relu entrée par entrée : {url, media (nom lisible), date (AAAA-MM-JJ, dernière mise à jour affichée par l'article à la lecture, sinon sa date de publication ; null si l'article n'est pas daté ou n'a pas pu être lu)}. Le premier élément est toujours `source`, gardé pour les lecteurs qui ne lisent qu'une URL. Un article qui cite le nom sans attester la candidature n'y entre pas (#1298). Toute l'Europe et election-presidentielle-francaise-2027.fr n'y entrent pas : écartés le 2026-10-15 par la propriétaire, sites jugés peu sérieux."
   },
   "candidats": [
     {
@@ -30,13 +29,8 @@
       "famille_politique": "extrême gauche",
       "statut": "declare",
       "date_declaration": "2025-12",
-      "source": "https://election-presidentielle-francaise-2027.fr/les-candidats-declares-pour-lelection-de-2027/",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
       "sources": [
-        {
-          "url": "https://election-presidentielle-francaise-2027.fr/les-candidats-declares-pour-lelection-de-2027/",
-          "media": "election-presidentielle-francaise-2027.fr",
-          "date": "2026-10-06"
-        },
         {
           "url": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
           "media": "Le Nouvel Obs",
@@ -46,14 +40,9 @@
           "url": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
           "media": "franceinfo",
           "date": "2026-10-14"
-        },
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
         }
       ],
-      "notes": "4e candidature consécutive."
+      "notes": "4e candidature consécutive. Source retenue remplacée le 2026-10-15 par Le Nouvel Obs : Toute l'Europe et election-presidentielle-francaise-2027.fr écartés par la propriétaire (#1298)."
     },
     {
       "nom": "Jean-Luc Mélenchon",
@@ -78,11 +67,6 @@
           "url": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
           "media": "franceinfo",
           "date": "2026-10-14"
-        },
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
         },
         {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
@@ -117,11 +101,6 @@
           "date": "2026-10-14"
         },
         {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
-        {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
           "media": "Public Sénat",
           "date": "2026-10-14"
@@ -147,11 +126,6 @@
           "url": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
           "media": "franceinfo",
           "date": "2026-10-14"
-        },
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
         }
       ],
       "notes": "Le Nouvel Obs (15/10/2026) le range parmi ceux qui « ont déjà renoncé ou été écartés » avec la primaire socialiste ; franceinfo (trombinoscope au 14/10/2026) l'étiquette « Retiré ». Détail : renoncé ou écarté dans le cadre de la primaire. Statut passé de declare à decline le 2026-10-15, à la main, sur vérification de la propriétaire (#1251). Entrée conservée : son slug est publié."
@@ -174,11 +148,6 @@
           "url": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
           "media": "franceinfo",
           "date": "2026-10-14"
-        },
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
         }
       ],
       "notes": "Le Nouvel Obs (15/10/2026) la range parmi ceux qui « ont déjà renoncé ou été écartés » avec la primaire socialiste ; franceinfo (trombinoscope au 14/10/2026) l'étiquette « Retirée ». Détail : renoncé ou écartée dans le cadre de la primaire. Statut passé de declare à decline le 2026-10-15, à la main, sur vérification de la propriétaire (#1251). Entrée conservée : son slug est publié."
@@ -206,11 +175,6 @@
           "url": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
           "media": "franceinfo",
           "date": "2026-10-14"
-        },
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
         },
         {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
@@ -245,11 +209,6 @@
           "date": "2026-10-14"
         },
         {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
-        {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
           "media": "Public Sénat",
           "date": "2026-10-14"
@@ -264,21 +223,11 @@
       "famille_politique": "droite",
       "statut": "declare",
       "date_declaration": null,
-      "source": "https://election-presidentielle-francaise-2027.fr/les-candidats-declares-pour-lelection-de-2027/",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
       "sources": [
-        {
-          "url": "https://election-presidentielle-francaise-2027.fr/les-candidats-declares-pour-lelection-de-2027/",
-          "media": "election-presidentielle-francaise-2027.fr",
-          "date": "2026-10-06"
-        },
         {
           "url": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
           "media": "Le Nouvel Obs",
-          "date": "2026-10-15"
-        },
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
           "date": "2026-10-15"
         },
         {
@@ -287,7 +236,7 @@
           "date": "2026-10-14"
         }
       ],
-      "notes": "Ancien ministre, président des Hauts-de-France."
+      "notes": "Ancien ministre, président des Hauts-de-France. Source retenue remplacée le 2026-10-15 par Le Nouvel Obs : Toute l'Europe et election-presidentielle-francaise-2027.fr écartés par la propriétaire (#1298)."
     },
     {
       "nom": "Bruno Retailleau",
@@ -312,11 +261,6 @@
           "url": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
           "media": "franceinfo",
           "date": "2026-10-14"
-        },
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
         },
         {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
@@ -368,11 +312,6 @@
           "date": "2026-10-14"
         },
         {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
-        {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
           "media": "Public Sénat",
           "date": "2026-10-14"
@@ -403,11 +342,6 @@
           "url": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
           "media": "franceinfo",
           "date": "2026-10-14"
-        },
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
         },
         {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
@@ -454,11 +388,6 @@
           "date": "2026-10-14"
         },
         {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
-        {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
           "media": "Public Sénat",
           "date": "2026-10-14"
@@ -484,11 +413,6 @@
           "url": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
           "media": "franceinfo",
           "date": "2026-10-14"
-        },
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
         },
         {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
@@ -518,11 +442,6 @@
           "date": "2026-10-14"
         },
         {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
-        {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
           "media": "Public Sénat",
           "date": "2026-10-14"
@@ -542,11 +461,6 @@
         {
           "url": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
           "media": "Le Nouvel Obs",
-          "date": "2026-10-15"
-        },
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
           "date": "2026-10-15"
         }
       ],
@@ -570,11 +484,6 @@
           "url": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
           "media": "franceinfo",
           "date": "2026-10-14"
-        },
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
         },
         {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
@@ -626,11 +535,6 @@
           "date": "2026-10-14"
         },
         {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
-        {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
           "media": "Public Sénat",
           "date": "2026-10-14"
@@ -663,11 +567,6 @@
           "date": "2026-10-14"
         },
         {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
-        {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
           "media": "Public Sénat",
           "date": "2026-10-14"
@@ -693,11 +592,6 @@
           "url": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
           "media": "franceinfo",
           "date": "2026-10-14"
-        },
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
         },
         {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
@@ -732,11 +626,6 @@
           "date": "2026-10-14"
         },
         {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
-        {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
           "media": "Public Sénat",
           "date": "2026-10-14"
@@ -764,11 +653,6 @@
           "date": "2026-10-14"
         },
         {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
-        {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
           "media": "Public Sénat",
           "date": "2026-10-14"
@@ -794,11 +678,6 @@
           "url": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
           "media": "franceinfo",
           "date": "2026-10-14"
-        },
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
         },
         {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
@@ -850,11 +729,6 @@
           "date": "2026-10-14"
         },
         {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
-        {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
           "media": "Public Sénat",
           "date": "2026-10-14"
@@ -904,11 +778,6 @@
           "date": "2026-10-14"
         },
         {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
-        {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
           "media": "Public Sénat",
           "date": "2026-10-14"
@@ -936,11 +805,6 @@
           "date": "2026-10-14"
         },
         {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
-        {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
           "media": "Public Sénat",
           "date": "2026-10-14"
@@ -966,11 +830,6 @@
           "url": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
           "media": "franceinfo",
           "date": "2026-10-14"
-        },
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
         }
       ],
       "notes": "Le Nouvel Obs (15/10/2026) le range parmi ceux qui « ont déjà renoncé ou été écartés » avec la primaire socialiste ; franceinfo (trombinoscope au 14/10/2026) l'étiquette « Retiré ». Détail : écarté à la primaire sociale-démocrate, remportée par Raphaël Glucksmann. Statut passé de declare à decline le 2026-10-15, à la main, sur vérification de la propriétaire (#1251). Entrée conservée : son slug est publié."
@@ -1054,11 +913,6 @@
           "date": "2026-10-14"
         },
         {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
-        {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
           "media": "Public Sénat",
           "date": "2026-10-14"
@@ -1081,11 +935,6 @@
           "date": "2026-10-15"
         },
         {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
-        {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
           "media": "Public Sénat",
           "date": "2026-10-14"
@@ -1100,13 +949,8 @@
       "famille_politique": null,
       "statut": "declare",
       "date_declaration": "2026-09-24",
-      "source": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
       "sources": [
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
         {
           "url": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
           "media": "Le Nouvel Obs",
@@ -1123,7 +967,7 @@
           "date": "2026-10-14"
         }
       ],
-      "notes": "Relu le 2026-10-15 (#1251) : candidature annoncée le jeudi 24 septembre (2026), comme candidat de « l'extrême centre ». Source retenue : Toute l'Europe, mis à jour le 14/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue. Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json — même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » jusque-là (#860)."
+      "notes": "Relu le 2026-10-15 (#1251) : candidature annoncée le jeudi 24 septembre (2026), comme candidat de « l'extrême centre ». Source retenue : Toute l'Europe, mis à jour le 14/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue. Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json — même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » jusque-là (#860). Source retenue remplacée le 2026-10-15 par Le Nouvel Obs : Toute l'Europe et election-presidentielle-francaise-2027.fr écartés par la propriétaire (#1298)."
     },
     {
       "nom": "Mira Markovic",
@@ -1138,11 +982,6 @@
           "url": "https://www.cnews.fr/france/2026-10-02/presidentielle-2027-si-nous-ne-sommes-pas-la-personne-ne-parle-des-animaux",
           "media": "CNews",
           "date": "2026-10-02"
-        },
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
         },
         {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
@@ -1199,11 +1038,6 @@
           "date": "2026-10-14"
         },
         {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
-        {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
           "media": "Public Sénat",
           "date": "2026-10-14"
@@ -1231,11 +1065,6 @@
           "date": "2026-10-14"
         },
         {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
-        },
-        {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
           "media": "Public Sénat",
           "date": "2026-10-14"
@@ -1261,11 +1090,6 @@
           "url": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
           "media": "franceinfo",
           "date": "2026-10-14"
-        },
-        {
-          "url": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
-          "media": "Toute l'Europe",
-          "date": "2026-10-15"
         },
         {
           "url": "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque",
