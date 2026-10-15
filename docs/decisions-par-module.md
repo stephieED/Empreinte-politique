@@ -140,7 +140,7 @@ Le mentionnent sans le gouverner : [`derivation-des-groupes-depuis-amo30-1168`](
 
 ## `src/articles_votes.py`
 
-Le mentionnent sans le gouverner : [`articles-votes-par-la-seance-1264`](decisions/articles-votes-par-la-seance-1264.md).
+Le mentionnent sans le gouverner : [`articles-votes-par-la-seance-1264`](decisions/articles-votes-par-la-seance-1264.md), [`instantane-violences-sexuelles-1261`](decisions/instantane-violences-sexuelles-1261.md).
 
 ## `src/audit_collecte_non_publiee.py`
 
