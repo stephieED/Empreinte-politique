@@ -863,7 +863,11 @@ if (!existsSync(couverturePath) || statSync(couverturePath).mtimeMs < entreesCou
   const debut = Date.now();
   writeFileSync(
     couverturePath,
-    JSON.stringify(construireCouverture({ repoRoot, slugsPublies: availableSlugs })),
+    JSON.stringify(construireCouverture({
+      repoRoot,
+      slugsPublies: availableSlugs,
+      ligneesPubliees: manifestLignees.map((l) => l.id),
+    })),
   );
   console.log(`sync-data : couverture.json reconstruit en ${((Date.now() - debut) / 1000).toFixed(1)} s.`);
 } else {

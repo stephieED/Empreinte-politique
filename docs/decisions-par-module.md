@@ -87,6 +87,10 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 
 Le mentionnent sans le gouverner : [`actes-reglementaires-du-journal-officiel-1029`](decisions/actes-reglementaires-du-journal-officiel-1029.md), [`etalement-disque-index-de-mots-1121`](decisions/etalement-disque-index-de-mots-1121.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
 
+## `src/alerte_votes_sans_dossier.py`
+
+Le mentionnent sans le gouverner : [`rattachement-deduit-votes-sans-dossier-1289`](decisions/rattachement-deduit-votes-sans-dossier-1289.md).
+
 ## `src/amendements_contenu.py`
 
 6 décision(s) le gouvernent ; le module en cite 3.
@@ -357,7 +361,7 @@ Le mentionnent sans le gouverner : [`bascule-roster-an-amo30-527`](decisions/bas
 
 ## `src/build_scrutins_dossiers.py`
 
-Le mentionnent sans le gouverner : [`index-reecrits-seulement-si-le-contenu-change-1075`](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md), [`rattachement-scrutin-dossier-758`](decisions/rattachement-scrutin-dossier-758.md).
+Le mentionnent sans le gouverner : [`index-reecrits-seulement-si-le-contenu-change-1075`](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md), [`rattachement-deduit-votes-sans-dossier-1289`](decisions/rattachement-deduit-votes-sans-dossier-1289.md), [`rattachement-scrutin-dossier-758`](decisions/rattachement-scrutin-dossier-758.md).
 
 ## `src/build_scrutins_index.py`
 
@@ -1280,6 +1284,10 @@ Le mentionnent sans le gouverner : [`purge-mandats-nosdeputes-718`](decisions/pu
 
 Le mentionnent sans le gouverner : [`fraicheur-dossiers-762`](decisions/fraicheur-dossiers-762.md).
 
+## `src/rattachement_deduit.py`
+
+Le mentionnent sans le gouverner : [`rattachement-deduit-votes-sans-dossier-1289`](decisions/rattachement-deduit-votes-sans-dossier-1289.md).
+
 ## `src/reprise_mandats_gouvernementaux.py`
 
 Le mentionnent sans le gouverner : [`purge-doublons-herites-729`](decisions/purge-doublons-herites-729.md).
@@ -1347,7 +1355,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 
 ## `src/schema_pivot.py`
 
-65 décision(s) le gouvernent ; le module en cite 5.
+66 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1415,6 +1423,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 | [Taxonomie des mandats : exploitation des `typeOrgane` AN non mappés (#382, option « mixte ») (2026-08-17)](decisions/taxonomie-mandats-typeorgane-an.md) | `KNOWN_CATEGORIES`, `validate_profil` |
 | [La trame du profil candidat : l'institution est une colonne, jamais un chapitre (#328)](decisions/trame-profil-candidat-328.md) | `KNOWN_POSITIONS_HEMICYCLE`, `lire_chambres` |
 | [Une proposition de résolution dit ce qu'elle demande (#1276)](decisions/type-de-resolution-1276.md) | `KNOWN_TYPES_RESOLUTION`, `validate_profil` |
+| [Le type d'une résolution remplace la mention générique, à la même place (#1276) (2026-10-15)](decisions/type-de-resolution-affiche-1276.md) | `KNOWN_TYPES_RESOLUTION` |
 | [`validate_profil()` tourne dans le run, et une fiche hors schéma ouvre une issue (#1223) (2026-10-06)](decisions/validation-des-profils-dans-le-run-1223.md) | `KNOWN_TYPES_ORGANE_SOURCE`, `validate_profil` |
 
 Le mentionnent sans le gouverner : [`gouvernement-premier-ministre-portefeuille`](decisions/gouvernement-premier-ministre-portefeuille.md), [`retrait-fetch-activity-synthesis`](decisions/retrait-fetch-activity-synthesis.md), [`synchro-sources-derniere-recuperation-600`](decisions/synchro-sources-derniere-recuperation-600.md), [`verification-bout-en-bout-legislatures-figees`](decisions/verification-bout-en-bout-legislatures-figees.md).

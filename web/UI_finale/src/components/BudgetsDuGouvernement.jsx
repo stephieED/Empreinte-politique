@@ -263,7 +263,12 @@ function Cascade({ exercices }) {
   };
 
   return (
-    <div className="bdg-cascade" style={{ maxWidth: `${Math.max(W, 230)}px` }}>
+    /* La largeur de la cascade, mais jamais plus que sa carte (#867) : le
+       cadre est en `content-box`, ses 14 px de marge et son filet s'ajoutent.
+       Sur Philippe II (trois exercices, 320 px de dessin), la fiche
+       débordait à 391 px pour un écran de 360 ; le dessin défile désormais
+       dans son cadre (`.bdg-defile`), comme les colonnes. */
+    <div className="bdg-cascade" style={{ maxWidth: `min(${Math.max(W, 230)}px, calc(100% - 30px))` }}>
       <p className="bdg-periode">
         <b>Solde du budget de l’État</b>
       </p>

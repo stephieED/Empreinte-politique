@@ -17,6 +17,7 @@ import './CandidateProfile.css';
 import { BadgeSource, ListeVide } from './Lecture';
 import InfoBulle, { BulleDePastille } from './InfoBulle';
 import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
+import { useEcranEtroit } from '../hooks/useLargeur';
 import { Condition, EtiquetteFiltre, VideDuFiltre, useFiltreActif } from './Recherche';
 import { teinteThemeUe } from '../utils/matiere';
 import { teinteCommission } from '../utils/commissions';
@@ -421,8 +422,88 @@ const LEGENDE_FRISE = [
   { piste: INSTITUTION_LOCAL, classe: 'cp-fs--local', label: 'Mandat local', renvoi: true },
 ];
 
+/* ── AU TÉLÉPHONE, LA FRISE DESCEND (#867, forme B du 15/10/2026) ───────────
+ *
+ * À 360 px, la frise horizontale superposait ses années (« 1986 » et « 1990 »
+ * rendus « 19⁸90 ») et coupait ses sigles (« GU ») : une figure illisible
+ * change de forme plutôt que de rétrécir (DESIGN_SYSTEM). Le temps descend,
+ * une colonne par ligne de la frise large — le même rangement, `r.ligne` —,
+ * et chaque fonction est écrite en toutes lettres à hauteur de son début, avec
+ * ses années. Les teintes sont celles de la frise large (`cp-fs--*`), la
+ * légende et le pli « Détails du parcours » ne changent pas. */
+const FV = { gauche: 40, colonne: 16, barre: 12, haut: 8, ecartLibelle: 15 };
+
+function libelleVertical(r) {
+  if (r.institution === INSTITUTION_GOUVERNEMENT || r.institution === INSTITUTION_MISSION) return r.role;
+  if (r.institution === INSTITUTION_LOCAL) return [r.role, r.detail].filter(Boolean).join(' · ');
+  return [r.role, r.sigle].filter(Boolean).join(' · ');
+}
+
+function anneesVerticales(r) {
+  if (r.actif) return `depuis ${annee(r.debut)}`;
+  if (r.finNonPubliee) return `${annee(r.debut)} → fin non publiée`;
+  const a = annee(r.debut);
+  const b = annee(r.fin);
+  return a === b ? a : `${a}–${b}`;
+}
+
+function FriseVerticale({ roles, nbLignes, bornes }) {
+  const an0 = Date.parse(bornes.debut);
+  const an1 = Date.parse(bornes.fin);
+  const etendue = Math.max((an1 - an0) / (365.25 * 864e5), 1);
+  const k = Math.min(26, Math.max(9, 300 / etendue));
+  const y = (iso) => FV.haut + (positionSurAxe(iso, bornes) / 100) * etendue * k;
+  const xLibelle = FV.gauche + nbLignes * FV.colonne + 10;
+
+  let dernier = -Infinity;
+  const lignes = roles.map((r) => {
+    const y0 = y(r.debut);
+    const y1 = Math.max(y(r.fin), y0 + 3);
+    const yl = Math.max(y0, dernier + FV.ecartLibelle);
+    dernier = yl;
+    return { r, y0, y1, yl };
+  });
+  const hauteur = Math.max(y(bornes.fin), dernier + FV.ecartLibelle) + FV.haut;
+
+  const pas = [1, 2, 5, 10, 20].find((p) => p * k >= 22) ?? 25;
+  const debut = Number(annee(bornes.debut));
+  const fin = Number(annee(bornes.fin));
+  const annees = [];
+  // Le 1er janvier d'avant le début se poserait sur la borne, collé à l'année
+  // suivante (« 2017 » sur « 2018 » chez Attal) : l'axe commence après.
+  const premier = `${debut}-01-01` < bornes.debut ? debut + 1 : debut;
+  for (let a = Math.ceil(premier / pas) * pas; a <= fin; a += pas) annees.push(a);
+
+  return (
+    <div className="cp-fv" style={{ height: hauteur }}>
+      {annees.map((a) => (
+        <span className="cp-fv-annee" key={a} style={{ top: y(`${a}-01-01`) }}>{a}</span>
+      ))}
+      <svg aria-hidden="true" className="cp-fv-traits" height={hauteur} width="100%">
+        {lignes.map(({ r, y0, yl }) => (
+          <line key={r.numero} x1={FV.gauche + r.ligne * FV.colonne + FV.barre} x2={xLibelle - 3} y1={y0 + 1} y2={yl + 7} />
+        ))}
+      </svg>
+      {lignes.map(({ r, y0, y1 }) => (
+        <span
+          className={`cp-fs cp-fv-barre ${classeInstitution(r)}`}
+          key={r.numero}
+          style={{ left: FV.gauche + r.ligne * FV.colonne, top: y0, height: y1 - y0, width: FV.barre }}
+          title={`${r.role}${r.detail ? ` · ${r.detail}` : ''} — ${periodeDuRole(r)}`}
+        />
+      ))}
+      {lignes.map(({ r, yl }) => (
+        <span className="cp-fv-libelle" key={r.numero} style={{ left: xLibelle, top: yl }}>
+          <b>{libelleVertical(r)}</b> {anneesVerticales(r)}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function Frise({ parcours }) {
   const { roles, nbLignes, bornes } = parcours;
+  const etroit = useEcranEtroit();
   if (!roles.length || !bornes) return null;
   /* LA LÉGENDE LIT LES CLASSES DESSINÉES, PAS LES PISTES. « Membre du
    * gouvernement » et « Chef du gouvernement » partagent la piste
@@ -447,6 +528,8 @@ function Frise({ parcours }) {
 
   return (
     <div className="cp-carte cp-frise">
+      {etroit ? <FriseVerticale bornes={bornes} nbLignes={nbLignes} roles={roles} /> : (
+      <>
       <div className="cp-reperes" style={{ height: deuxNiveaux ? 46 : 30 }}>
         {reperes.map((r) => (
           <span
@@ -489,6 +572,8 @@ function Frise({ parcours }) {
           </span>
         ))}
       </div>
+      </>
+      )}
 
       <div className="cp-legende">
         <div className="cp-legende-grille">

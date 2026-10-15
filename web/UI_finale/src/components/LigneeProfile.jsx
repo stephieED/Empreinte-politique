@@ -30,6 +30,7 @@ import { paquetDe } from '../utils/extraits';
 import { SUJET_NON_PUBLIE } from '../utils/sujetIntervention.js';
 import { motsDuFiltre } from '../utils/filtreIntitule';
 import NavigationPeriodes from './NavigationPeriodes';
+import { useEcranEtroit, useLargeur } from '../hooks/useLargeur';
 import InfoBulle from './InfoBulle';
 import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
 import { ListeVide } from './Lecture';
@@ -326,25 +327,34 @@ function Pave({ motif }) {
 
 function Frise({ lignee, aujourdhui }) {
   const [survol, setSurvol] = useState(null);
+  /* AU TÉLÉPHONE, LA COURBE SE REDESSINE À SA LARGEUR (#867, forme A du
+   * 15/10/2026) : une unité pour un pixel, au lieu de mille unités réduites au
+   * tiers — années, graduations et noms y tombaient à 3 px. Moins haute, et
+   * une année sur deux quand la lignée en couvre plus de six. */
+  const [ref, largeur] = useLargeur();
+  const etroit = useEcranEtroit();
+  const aLaLargeur = etroit && largeur > 0;
+  const L = aLaLargeur ? largeur : LARGEUR;
   const { maillons } = lignee;
   const derniere = maillons[maillons.length - 1];
   const debut = Date.parse(maillons[0].periode.debut);
   const fin = Date.parse(lignee.periode.fin && !derniere.periode.actif ? lignee.periode.fin : aujourdhui);
-  const x = (iso) => MARGE.g + ((Date.parse(iso) - debut) / Math.max(1, fin - debut)) * (LARGEUR - MARGE.g - MARGE.d);
+  const x = (iso) => MARGE.g + ((Date.parse(iso) - debut) / Math.max(1, fin - debut)) * (L - MARGE.g - MARGE.d);
   // Un effectif ne se trace que s'il est DATÉ : les deux fiches Sénat gelées ne
   // portent que l'ancien compteur, rapporté à aucune date (#653).
   const trace = (m) => Boolean(m.serie?.length && m.effectif != null && m.dateReference);
   const avecEffectif = maillons.some(trace);
   // Sans effectif tracé, la frise se réduit à sa bande : une hauteur vide se
   // lirait comme un effectif nul.
-  const HAUTEUR = avecEffectif ? 230 : 96;
+  const HAUTEUR = avecEffectif ? (aLaLargeur ? 180 : 230) : 96;
   const max = Math.max(1, ...maillons.flatMap((m) => (m.serie || []).map((p) => p[1])));
   const y = (v) => HAUTEUR - MARGE.b - (v / (max * 1.12)) * (HAUTEUR - MARGE.b - MARGE.h);
   const pas = max > 200 ? 100 : max > 80 ? 50 : max > 30 ? 20 : 10;
   const graduations = [];
   for (let v = pas; v < max * 1.12; v += pas) graduations.push(v);
   const annees = [];
-  for (let a = new Date(debut).getUTCFullYear() + 1; a <= new Date(fin).getUTCFullYear(); a += 1) annees.push(a);
+  const pasAnnees = aLaLargeur && new Date(fin).getUTCFullYear() - new Date(debut).getUTCFullYear() > 6 ? 2 : 1;
+  for (let a = new Date(debut).getUTCFullYear() + 1; a <= new Date(fin).getUTCFullYear(); a += pasAnnees) annees.push(a);
 
   const bande = (m) => {
     const x0 = x(m.periode.debut);
@@ -365,8 +375,8 @@ function Frise({ lignee, aujourdhui }) {
 
   const surDeplacement = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const px = ((e.clientX - rect.left) / rect.width) * LARGEUR;
-    const t = new Date(debut + ((px - MARGE.g) / (LARGEUR - MARGE.g - MARGE.d)) * (fin - debut));
+    const px = ((e.clientX - rect.left) / rect.width) * L;
+    const t = new Date(debut + ((px - MARGE.g) / (L - MARGE.g - MARGE.d)) * (fin - debut));
     const iso = t.toISOString().slice(0, 10);
     const m = maillons.find((mm) => mm.periode.debut <= iso && iso <= (mm.periode.fin || aujourdhui));
     let v = null;
@@ -378,22 +388,22 @@ function Frise({ lignee, aujourdhui }) {
   const source = maillons.find((m) => m.posture?.sourceUrl)?.posture.sourceUrl ?? null;
 
   return (
-    <div className="lp-carte lp-frise">
+    <div className="lp-carte lp-frise" ref={ref}>
       <svg
         aria-label={`Effectif du groupe dans le temps, ${maillons.length} groupe${maillons.length > 1 ? 's' : ''} successif${maillons.length > 1 ? 's' : ''}`}
         onMouseLeave={() => setSurvol(null)}
         onMouseMove={avecEffectif ? surDeplacement : undefined}
         role="img"
-        viewBox={`0 0 ${LARGEUR} ${HAUTEUR}`}
+        viewBox={`0 0 ${L} ${HAUTEUR}`}
       >
         <DefsMotifs />
         {avecEffectif && graduations.map((v) => (
           <g key={v}>
-            <line stroke="var(--border)" x1={MARGE.g} x2={LARGEUR - MARGE.d} y1={y(v)} y2={y(v)} />
+            <line stroke="var(--border)" x1={MARGE.g} x2={L - MARGE.d} y1={y(v)} y2={y(v)} />
             <text className="lp-axe" textAnchor="end" x={MARGE.g - 6} y={y(v) + 3.5}>{v}</text>
           </g>
         ))}
-        <line stroke="var(--border-strong)" x1={MARGE.g} x2={LARGEUR - MARGE.d} y1={y(0)} y2={y(0)} />
+        <line stroke="var(--border-strong)" x1={MARGE.g} x2={L - MARGE.d} y1={y(0)} y2={y(0)} />
         {maillons.map((m, i) => {
           const motif = motifDePosture(m.posture);
           const x0 = x(m.periode.debut);
@@ -431,7 +441,7 @@ function Frise({ lignee, aujourdhui }) {
         })}
         {annees.map((a) => {
           const xx = x(`${a}-01-01`);
-          return xx > MARGE.g && xx < LARGEUR - MARGE.d ? (
+          return xx > MARGE.g && xx < L - MARGE.d ? (
             <text className="lp-axe" key={a} textAnchor="middle" x={xx} y={HAUTEUR - 6}>{a}</text>
           ) : null;
         })}
@@ -739,7 +749,7 @@ function ParolesComptees({ lignee, maillon, paroles }) {
       ) : (
         <>
           <span className="lp-facette-quoi">Débat <i>— {formatNumber(vue.lignes.length)} sur {formatNumber(vue.nDebats)} sous la sélection</i></span>
-          <div className="lp-mat" onMouseLeave={() => setSurvol(null)}>
+          <div className="lp-mat lp-mat--debats" onMouseLeave={() => setSurvol(null)}>
             <div className="lp-mr lp-mr--tete">
               <span />
               <span className="lp-mr-rail" />

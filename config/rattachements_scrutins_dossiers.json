@@ -1,0 +1,66 @@
+{
+ "_meta": {
+  "description": "Rattachements vote → dossier législatif RELUS À LA MAIN (#1289). DERNIER rang de la cascade de `src/build_scrutins_dossiers.py` : une ligne ne sert qu'à un vote que ni la source (`actesLegislatifs[].voteRefs`) ni la déduction par la date et le titre (`src/rattachement_deduit.py`) ne rattachent. Elle ne remplace jamais ni l'une ni l'autre ; devenue inutile, le run la nomme pour qu'on la retire. Publiée avec `provenance: table_relue` dans `pivot_data/scrutins_dossiers.json`.",
+  "rattachements": "Une ligne par vote : le dossier, la date de relecture, et la preuve lue dans le dossier — l'étape inscrite le jour du vote. Ne s'y ajoute qu'un vote que la propriétaire a validé, d'ordinaire depuis l'issue de suivi `votes-sans-dossier`.",
+  "textes_distincts": "Chaque groupe liste des votes jugés porter sur des textes DIFFÉRENTS malgré des intitulés proches. Ils ne sont plus signalés par `src/alerte_votes_sans_dossier.py`.",
+  "aucun_run_n_ecrit_ici": "Table écrite par une personne (#1057). Un run la lit, jamais ne l'écrit."
+ },
+ "rattachements": {
+  "an:15:998": {
+   "dossier": "DLR5L15N36488",
+   "verifie_le": "2026-10-15",
+   "preuve": "Le dossier inscrit le 2018-07-03 : AN1-DEBATS-DEC, AN1-DEBATS-SEANCE. Loi ordinaire. Deux dossiers jumeaux les mêmes jours, aux titres presque identiques : la règle ne choisit pas seule. Validé par la propriétaire sur la page de relecture."
+  },
+  "an:15:999": {
+   "dossier": "DLR5L15N36468",
+   "verifie_le": "2026-10-15",
+   "preuve": "Le dossier inscrit le 2018-07-03 : AN1-DEBATS-DEC, AN1-DEBATS-SEANCE. Loi organique, jumelle de la précédente. Validé par la propriétaire sur la page de relecture."
+  },
+  "an:15:1214": {
+   "dossier": "DLR5L15N36488",
+   "verifie_le": "2026-10-15",
+   "preuve": "Le dossier inscrit le 2018-10-09 : ANNLEC-DEBATS-DEC, ANNLEC-DEBATS-SEANCE. Loi ordinaire. Deux dossiers jumeaux les mêmes jours, aux titres presque identiques : la règle ne choisit pas seule. Validé par la propriétaire sur la page de relecture."
+  },
+  "an:15:1431": {
+   "dossier": "DLR5L15N36488",
+   "verifie_le": "2026-10-15",
+   "preuve": "Le dossier inscrit le 2018-11-20 : ANLDEF-DEBATS-DEC, ANLDEF-DEBATS-SEANCE. Loi ordinaire. Deux dossiers jumeaux les mêmes jours, aux titres presque identiques : la règle ne choisit pas seule. Validé par la propriétaire sur la page de relecture."
+  },
+  "an:15:1432": {
+   "dossier": "DLR5L15N36468",
+   "verifie_le": "2026-10-15",
+   "preuve": "Le dossier inscrit le 2018-11-20 : ANLDEF-DEBATS-DEC, ANLDEF-DEBATS-SEANCE. Loi organique, jumelle de la précédente. Validé par la propriétaire sur la page de relecture."
+  },
+  "an:15:1570": {
+   "dossier": "DLR5L15N36627",
+   "verifie_le": "2026-10-15",
+   "preuve": "Le dossier inscrit le 2018-12-11 : AN1-DEBATS-DEC, AN1-DEBATS-SEANCE. Le titre du dossier ne dit pas « organique », mais c’est la loi organique : ses deux autres votes, rattachés par l’Assemblée, sont des votes sur la loi organique. Validé par la propriétaire sur la page de relecture."
+  },
+  "an:15:1724": {
+   "dossier": "DLR5L15N36915",
+   "verifie_le": "2026-10-15",
+   "preuve": "Le dossier inscrit le 2019-03-12 : AN1-DEBATS-DEC, AN1-DEBATS-SEANCE. Deux dossiers le même jour (loi ordinaire et loi organique sur l’Agence) : la règle ne choisit pas seule. Validé par la propriétaire sur la page de relecture."
+  },
+  "an:15:2040": {
+   "dossier": "DLR5L15N36915",
+   "verifie_le": "2026-10-15",
+   "preuve": "Le dossier inscrit le 2019-07-09 : ANLDEF-DEBATS-DEC, ANLDEF-DEBATS-SEANCE. Deux dossiers le même jour (loi ordinaire et loi organique sur l’Agence) : la règle ne choisit pas seule. Validé par la propriétaire sur la page de relecture."
+  },
+  "an:16:2137": {
+   "dossier": "DLR5L16N46695",
+   "verifie_le": "2026-10-15",
+   "preuve": "Le dossier inscrit le 2023-07-05 : CMP-DEBATS-AN-SEANCE. Le dossier inscrit la séance de CMP ce jour-là, sans décision. Validé par la propriétaire sur la page de relecture."
+  },
+  "an:17:2954": {
+   "dossier": "DLR5L17N50692",
+   "verifie_le": "2026-10-15",
+   "preuve": "Le dossier inscrit le 2025-07-07 : ANNLEC-DEBATS-SEANCE, CMP-DEBATS-DEC. Le dossier inscrit la séance de nouvelle lecture ce jour-là, sans décision. Validé par la propriétaire sur la page de relecture."
+  }
+ },
+ "textes_distincts": [
+  [
+   "an:15:4355",
+   "an:15:4356"
+  ]
+ ]
+}

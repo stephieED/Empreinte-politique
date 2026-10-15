@@ -779,9 +779,15 @@
 .gvp-membre-b .xd-cite { grid-template-columns: minmax(0, 1fr); gap: 3px; }
 .gvp-membre-b .xd-cite .xd-date { padding-top: 0; }
 .gvp-membre-b .xd-texte--nu { max-width: 72ch; }
+/* AU TÉLÉPHONE, LE TITRE DU DÉBAT EN ENTIER (#867, forme B du 15/10/2026).
+   Coupé après une quinzaine de signes, « projet de loi de finances… » ne disait
+   plus l'année. Le titre prend sa ligne ; la barre et les deux nombres passent
+   dessous, en colonnes. L'en-tête perd sa case de titre, ce qui le remet
+   au-dessus des nombres — il était décalé d'une colonne. */
 @media (max-width: 720px) {
-  .gvp-mr { grid-template-columns: minmax(0, 1fr) 72px 64px; }
-  .gvp-mr .gvp-mr-rail { grid-column: 1 / -1; grid-row: 2; }
+  .gvp-mr { grid-template-columns: minmax(0, 1fr) 72px 56px; gap: 4px 10px; }
+  .gvp-mr .gvp-mr-lib { grid-column: 1 / -1; white-space: normal; }
+  .gvp-mr--tete > :first-child { display: none; }
 }
 
 /* La teinte du ministère (04/10/2026) : le liseré d'une carte est la légende

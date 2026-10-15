@@ -522,3 +522,40 @@ def test_les_mandats_locaux_sont_comptes_avec_leur_borne(tmp_path: Path) -> None
     frise = FRISE.read_text(encoding="utf-8")
     assert "fc-seg fc-seg--${x.cle}" in frise and "aucune donnée publiée avant le" in frise
     assert ".fc-seg--local" in FRISE_CSS.read_text(encoding="utf-8")
+
+
+def test_les_groupes_en_tete_sont_les_fiches_publiees(tmp_path: Path) -> None:
+    """`/sources` annonçait « 31 groupes » quand l'accueil en montrait 15
+    (relevé le 09/10/2026) : le repère comptait les fichiers de
+    `pivot_data/groupes/`, un par groupe ET par législature, que l'interface ne
+    publie pas tels quels. Il compte les fiches de lignée (#836) que `sync-data`
+    publie, la liste même de l'accueil."""
+    import json
+    import shutil
+    import subprocess
+
+    if shutil.which("node") is None:
+        pytest.skip("node absent")
+    racine = _corpus_minimal(tmp_path)
+    groupes = racine / "pivot_data" / "groupes"
+    groupes.mkdir(parents=True, exist_ok=True)
+    for i in range(3):
+        (groupes / f"groupe-AN-X-1{i + 5}.json").write_text('{"membres": []}', encoding="utf-8")
+    lignees = racine / "pivot_data" / "lignees"
+    lignees.mkdir(parents=True, exist_ok=True)
+    (lignees / "lignee-AN-X.json").write_text("{}", encoding="utf-8")
+    script = f"""
+      const m = await import({json.dumps(GENERATEUR.as_uri())});
+      const r = (opts) => m.construireCouverture({{ repoRoot: {json.dumps(str(racine))}, ...opts }}).reperes;
+      process.stdout.write(JSON.stringify([r({{}}), r({{ ligneesPubliees: ['AN-X', 'AN-Y'] }})]));
+    """
+    res = subprocess.run(["node", "--input-type=module", "-e", script],
+                         capture_output=True, text=True, check=False)
+    assert res.returncode == 0, res.stderr
+    sans_liste, avec_liste = json.loads(res.stdout)
+    assert sans_liste["groupes"] == 1, "trois fichiers de groupe, une seule lignée"
+    assert avec_liste["groupes"] == 2
+    assert avec_liste["fichesPubliees"] == avec_liste["candidats"] + 2 + avec_liste["gouvernements"]
+
+    sync = _sans_commentaires(SYNC.read_text(encoding="utf-8"))
+    assert "ligneesPubliees: manifestLignees.map" in sync, "sync-data passe la liste qu'il publie"

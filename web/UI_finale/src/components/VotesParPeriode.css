@@ -375,8 +375,11 @@
     grid-template-columns: 1fr;
   }
 
+  /* Pleine largeur, le nom peut aller à la ligne : « Commission spéciale lutte
+     dérèglement climatique » débordait de 5 px à 360 (Mélenchon, #867). */
   .vp-nom {
     text-align: left;
+    white-space: normal;
   }
 
   .vp-tot {

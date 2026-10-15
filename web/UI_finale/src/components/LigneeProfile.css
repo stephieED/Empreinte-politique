@@ -1038,6 +1038,29 @@ button.lp-point {
   }
 }
 
+/* LES DÉBATS GARDENT LEUR BARRE ET LEUR TITRE ENTIER (#867, forme B du
+   15/10/2026) : le titre prend sa ligne, la barre et les deux nombres passent
+   dessous. Les autres tableaux de la fiche gardent la règle ci-dessus. */
+@media (max-width: 720px) {
+  .lp-mat--debats .lp-mr {
+    grid-template-columns: minmax(0, 1fr) 72px 56px;
+    gap: 4px 10px;
+  }
+
+  .lp-mat--debats .lp-mr-lib {
+    grid-column: 1 / -1;
+    white-space: normal;
+  }
+
+  .lp-mat--debats .lp-mr-rail {
+    display: block;
+  }
+
+  .lp-mat--debats .lp-mr--tete > :first-child {
+    display: none;
+  }
+}
+
 /* Ce qui se déroule au clic : les textes d'une commission, d'un segment. */
 .lp-deroule {
   margin: 4px 0 12px;

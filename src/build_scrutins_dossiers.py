@@ -30,6 +30,14 @@ et le fichier déjà publié est **conservé** : une collecte vide n'écrase jam
 une collecte non vide (AGENTS.md §3a, #465). `--no-merge` force la
 reconstruction complète, à réserver à un run qui a bien lu toutes les archives.
 
+LA CASCADE DE #1289. Un vote que l'Assemblée ne pose dans aucun dossier (265
+des 934 votes sur l'ensemble, 15/10/2026) reçoit le sien, dans cet ordre : la
+source, puis la déduction de `rattachement_deduit`, puis — en dernier, pour ce
+que ni l'une ni l'autre ne rattache — la table relue à la main
+(`config/rattachements_scrutins_dossiers.json`). Ce qui ne vient pas de la
+source est nommé dans une troisième table, `provenance` (`table_relue`,
+`deduit_date_et_titre`). → `docs/decisions/rattachement-deduit-votes-sans-dossier-1289.md`
+
 Usage :
     python3 src/build_scrutins_dossiers.py
     python3 src/build_scrutins_dossiers.py --out pivot_data/scrutins_dossiers.json
@@ -46,14 +54,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from json_io import dumps_indente, ecrire_index_json  # noqa: E402
 from licences import LICENCE_AN  # noqa: E402
+import rattachement_deduit as rd  # noqa: E402
+from gouvernement_textes import ensure_dossiers_zips_downloaded  # noqa: E402
 from scrutins_dossiers_an import SCHEMA_VERSION, charger_table  # noqa: E402
+from scrutins_index import DEFAULT_SCRUTINS_PATH, charger as charger_scrutins  # noqa: E402
 
 DEFAUT_SORTIE = Path("pivot_data") / "scrutins_dossiers.json"
 
 
 def _lire_existant(chemin: Path) -> dict[str, dict]:
     """Tables déjà publiées, ou vides — un fichier illisible ne fait pas échouer."""
-    vide: dict[str, dict] = {"scrutins": {}, "dossiers": {}}
+    vide: dict[str, dict] = {"scrutins": {}, "dossiers": {}, "provenance": {}}
     if not chemin.is_file():
         return vide
     try:
@@ -65,7 +76,82 @@ def _lire_existant(chemin: Path) -> dict[str, dict]:
         return vide
     return {
         cle: (publie.get(cle) if isinstance(publie.get(cle), dict) else {})
-        for cle in ("scrutins", "dossiers")
+        for cle in ("scrutins", "dossiers", "provenance")
+    }
+
+
+def _decisions_des_archives() -> dict:
+    """Les décisions de séance des archives — déjà téléchargées par
+    `charger_table`, relues ici sans réseau supplémentaire."""
+    archives = ensure_dossiers_zips_downloaded()
+    if not archives:
+        return {"decisions": {}, "dossiers": {}}
+    return rd.indexer_decisions(archives)
+
+
+def composer(
+    ancienne: dict[str, dict],
+    collectee: dict[str, dict],
+    scrutins_publies: list[dict],
+    decisions: dict | None,
+    table: dict,
+) -> dict[str, dict]:
+    """La cascade de #1289 : source, puis déduction, puis table relue.
+
+    La table relue ne comble que ce qui reste : une de ses lignes n'écrase
+    jamais un rattachement de la source ni une déduction (arbitrage de la
+    propriétaire, 15/10/2026). Une ligne devenue inutile est comptée, pour
+    qu'on la retire.
+
+    `decisions` à `None` veut dire « archives non lues à ce run » : les
+    rattachements déduits d'un run précédent sont alors gardés tels quels,
+    jamais recalculés à vide (§3a, #465). Lues, ils sont recalculés en entier —
+    une déduction que la source rend inutile, ou qu'une décision prise entre-
+    temps rend ambiguë, disparaît.
+    """
+    provenance_avant = ancienne.get("provenance") or {}
+    source = {
+        cle: uid for cle, uid in (ancienne.get("scrutins") or {}).items()
+        if cle not in provenance_avant
+    }
+    source.update(collectee.get("scrutins") or {})
+    dossiers = dict(ancienne.get("dossiers") or {})
+    dossiers.update(collectee.get("dossiers") or {})
+
+    if decisions is None:
+        deduits = {
+            cle: ancienne["scrutins"][cle]
+            for cle, origine in provenance_avant.items()
+            if origine == rd.PROVENANCE_DEDUITE and cle in (ancienne.get("scrutins") or {})
+            and cle not in source
+        }
+    else:
+        deduits = rd.deduire(scrutins_publies, set(source), decisions)
+
+    manuels = {cle: ligne["dossier"] for cle, ligne in table["rattachements"].items()}
+
+    scrutins = dict(source)
+    provenance: dict[str, str] = {}
+    for cle, uid in deduits.items():
+        scrutins[cle] = uid
+        provenance[cle] = rd.PROVENANCE_DEDUITE
+    inutiles = []
+    for cle, uid in manuels.items():
+        if cle in scrutins:
+            inutiles.append(cle)
+            continue
+        scrutins[cle] = uid
+        provenance[cle] = rd.PROVENANCE_TABLE
+
+    connus = (decisions or {}).get("dossiers") or {}
+    for cle in provenance:
+        uid = scrutins[cle]
+        if uid not in dossiers:
+            info = connus.get(uid) or {}
+            dossiers[uid] = {"statut": info.get("statut"), "sort_49_3": info.get("sort_49_3")}
+    return {
+        "scrutins": scrutins, "dossiers": dossiers, "provenance": provenance,
+        "lignes_inutiles": sorted(inutiles),
     }
 
 
@@ -85,6 +171,17 @@ def main(argv: list[str] | None = None) -> int:
              "est publié. À réserver à un run qui a lu toutes les archives : sur "
              "un run partiel, les rattachements non revus disparaîtraient.",
     )
+    parser.add_argument(
+        "--scrutins",
+        default=str(DEFAULT_SCRUTINS_PATH),
+        help="Index des scrutins publiés, dont les votes sans dossier reçoivent "
+             f"une déduction (défaut : {DEFAULT_SCRUTINS_PATH}).",
+    )
+    parser.add_argument(
+        "--table",
+        default=str(rd.TABLE_MANUELLE),
+        help=f"Table relue à la main (défaut : {rd.TABLE_MANUELLE}).",
+    )
     args = parser.parse_args(argv)
 
     chemin = Path(args.out)
@@ -95,12 +192,21 @@ def main(argv: list[str] | None = None) -> int:
               "scrutin → dossier collecté à ce run.")
 
     ancienne = (
-        {"scrutins": {}, "dossiers": {}} if args.no_merge else _lire_existant(chemin)
+        {"scrutins": {}, "dossiers": {}, "provenance": {}}
+        if args.no_merge else _lire_existant(chemin)
     )
-    scrutins = dict(ancienne["scrutins"])
-    scrutins.update(collectee.get("scrutins") or {})
-    dossiers = dict(ancienne["dossiers"])
-    dossiers.update(collectee.get("dossiers") or {})
+    lue = bool(collectee.get("scrutins"))
+    publies = list(charger_scrutins(Path(args.scrutins)).par_id.values()) if lue else []
+    composee = composer(
+        ancienne,
+        collectee,
+        publies,
+        _decisions_des_archives() if lue else None,
+        rd.charger_table_manuelle(Path(args.table)),
+    )
+    scrutins, dossiers, provenance = (
+        composee["scrutins"], composee["dossiers"], composee["provenance"]
+    )
 
     if not scrutins:
         print("  [!] Table vide et rien de publié : aucun fichier écrit.")
@@ -114,14 +220,30 @@ def main(argv: list[str] | None = None) -> int:
             "licence_donnees": LICENCE_AN,
             "scrutins": scrutins,
             "dossiers": dossiers,
+            # Absent d'ici, un rattachement est celui que l'Assemblée publie (#1289).
+            "provenance": provenance,
         },
         dumps_indente,
     )
-    conservees = len(scrutins) - len(collectee.get("scrutins") or {})
+    lus = collectee.get("scrutins") or {}
+    conservees = sum(1 for cle in scrutins if cle not in lus and cle not in provenance)
     sans_statut = sum(1 for d in dossiers.values() if not d.get("statut"))
     print(f"  ✓ {len(scrutins)} scrutin(s) rattaché(s) à {len(dossiers)} dossier(s) → {chemin}")
     if sans_statut:
         print(f"      dont {sans_statut} dossier(s) sans statut résolu (absence déclarée)")
+    for origine, libelle in (
+        (rd.PROVENANCE_DEDUITE, "déduit(s) par la date et le titre"),
+        (rd.PROVENANCE_TABLE, "pris dans la table relue à la main"),
+    ):
+        nombre = sum(1 for p in provenance.values() if p == origine)
+        if nombre:
+            print(f"      dont {nombre} rattachement(s) {libelle} (#1289)")
+    if composee["lignes_inutiles"]:
+        print(
+            f"  [!] {len(composee['lignes_inutiles'])} ligne(s) de {args.table} sans effet : "
+            f"la source ou la déduction rattache déjà ces votes — à retirer de la table : "
+            + ", ".join(composee["lignes_inutiles"])
+        )
     if conservees > 0:
         print(f"      dont {conservees} rattachement(s) conservé(s) d'un run précédent")
     return 0

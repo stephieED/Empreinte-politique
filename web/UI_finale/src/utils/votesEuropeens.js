@@ -51,15 +51,14 @@ export function cleNatureDuVote(reference) {
   return NATURES_UE.find((n) => n.procedures.includes(code))?.cle ?? null;
 }
 
-/* 716 des 5 571 scrutins portent un numéro mal formé — « 2017-06-01
- * 00:00:00-13. » au lieu de 13 (signalé à la collecte le 17/09/2026). Il reste
- * unique, donc la jointure tient ; seul l'ordre dans la séance se lit sur le
- * nombre final. */
-export function rangDansLaSeance(numero) {
-  if (typeof numero === 'number') return numero;
-  const m = /(\d+)\.?\s*$/.exec(String(numero ?? ''));
-  return m ? Number(m[1]) : -1;
-}
+/* L'ORDRE DANS LA SÉANCE EST UNE DONNÉE PUBLIÉE (#1011). Il se lisait sur la
+ * fin du numéro de scrutin, que 716 scrutins portaient sous la forme
+ * « 2017-06-01 00:00:00-13. » ; la collecte publie depuis le 08/10/2026
+ * `ordre_dans_la_seance`, un entier, sur chaque scrutin — 5 418 sur 5 418 le
+ * 15/10. Il ne départage que deux scrutins du même jour. Absent, il ne fait
+ * passer aucun scrutin devant un autre : un rang inventé choisirait la
+ * position à la place de la source (§2 règle 5). */
+const ordreDansLaSeance = (scrutin) => scrutin?.ordre_dans_la_seance ?? -1;
 
 /** Les positions européennes, une par texte : le dernier scrutin de chaque
  *  dossier. Rend aussi les deux dénominateurs — positions collectées, positions
@@ -81,7 +80,7 @@ export function votesEuropeensRetenus(votes, scrutinsParNumero) {
     const plusTard = !courant
       || scrutin.date > courant.scrutin.date
       || (scrutin.date === courant.scrutin.date
-        && rangDansLaSeance(scrutin.numero_scrutin) > rangDansLaSeance(courant.scrutin.numero_scrutin));
+        && ordreDansLaSeance(scrutin) > ordreDansLaSeance(courant.scrutin));
     if (plusTard) {
       parTexte.set(cle, { position: v.position, scrutin, reference: n.reference_dossier || null });
     }

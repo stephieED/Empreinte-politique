@@ -303,6 +303,14 @@ python3 src/build_commissions_dossiers.py --no-merge
 # tranche, le lien n'existe qu'en sens inverse dans `voteRefs`.
 python3 src/build_scrutins_dossiers.py
 python3 src/build_scrutins_dossiers.py --no-merge
+# Depuis #1289 : cascade source, puis déduction, puis table relue (le reste). Les deux entrées
+# qu'elle lit, à changer pour un essai hors du dépôt.
+python3 src/build_scrutins_dossiers.py --scrutins pivot_data/scrutins.json --table config/rattachements_scrutins_dossiers.json
+
+# Les doublons possibles qu'aucun rattachement ne règle (#1289) : ce que l'issue
+# de suivi `votes-sans-dossier` affiche, relevé à la main.
+python3 src/alerte_votes_sans_dossier.py
+python3 src/alerte_votes_sans_dossier.py --md alerte.md --json alerte.json
 
 # Reprendre les archives de dossiers encore vivantes (#762) — la 17e seulement,
 # les 15e et 16e étant dissoutes. Le workflow l'appelle quand la clé de cache

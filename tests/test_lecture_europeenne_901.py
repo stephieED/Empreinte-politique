@@ -95,11 +95,11 @@ def _executer(script: str, module: Path = VOTES_UE) -> object:
 
 _SCRUTINS = """
 const scrutins = {
-  11: { id: 'pe:11', numero_scrutin: 11, date: '2018-10-24', texte: 'A8-0299/2018 - proposition de la Commission', document: 'A8-0299/2018', source_url: 'https://parltrack.org/11' },
-  12: { id: 'pe:12', numero_scrutin: 12, date: '2018-10-24', texte: 'A8-0299/2018 - résolution législative', document: 'A8-0299/2018', source_url: 'https://parltrack.org/12' },
-  9: { id: 'pe:9', numero_scrutin: 9, date: '2017-06-01', texte: 'Ancienne lecture', document: 'A8-0299/2018', source_url: null },
-  40: { id: 'pe:40', numero_scrutin: '2017-06-01 00:00:00-40.', date: '2019-03-12', texte: 'RC-B8-0351 - Résolution', document: 'RC-B8-0351', source_url: null },
-  41: { id: 'pe:41', numero_scrutin: '2017-06-01 00:00:00-7.', date: '2019-03-12', texte: 'RC-B8-0351 - Amendement', document: 'RC-B8-0351', source_url: null },
+  11: { id: 'pe:11', numero_scrutin: 11, ordre_dans_la_seance: 1, date: '2018-10-24', texte: 'A8-0299/2018 - proposition de la Commission', document: 'A8-0299/2018', source_url: 'https://parltrack.org/11' },
+  12: { id: 'pe:12', numero_scrutin: 12, ordre_dans_la_seance: 2, date: '2018-10-24', texte: 'A8-0299/2018 - résolution législative', document: 'A8-0299/2018', source_url: 'https://parltrack.org/12' },
+  9: { id: 'pe:9', numero_scrutin: 9, ordre_dans_la_seance: 1, date: '2017-06-01', texte: 'Ancienne lecture', document: 'A8-0299/2018', source_url: null },
+  40: { id: 'pe:40', numero_scrutin: '2017-06-01 00:00:00-40.', ordre_dans_la_seance: 40, date: '2019-03-12', texte: 'RC-B8-0351 - Résolution', document: 'RC-B8-0351', source_url: null },
+  41: { id: 'pe:41', numero_scrutin: '2017-06-01 00:00:00-7.', ordre_dans_la_seance: 7, date: '2019-03-12', texte: 'RC-B8-0351 - Amendement', document: 'RC-B8-0351', source_url: null },
 };
 const pe = (numero, date, reference, position) => ({
   position,
@@ -146,20 +146,22 @@ def test_le_vote_retenu_est_le_dernier_de_son_dossier() -> None:
     assert out == [["pe:12", "pour"]]
 
 
-def test_un_numero_mal_forme_garde_son_rang_de_seance() -> None:
-    """716 des 5 571 scrutins portent « 2017-06-01 00:00:00-13. » au lieu de 13.
-    Comparés comme des chaînes, « -7. » passerait après « -40. »."""
-    out = _executer("""
-      console.log(JSON.stringify([13, '2017-06-01 00:00:00-13.', '2017-06-01 00:00:00-7.', null].map(u.rangDansLaSeance)));
-    """)
-    assert out == [13, 13, 7, -1]
+def test_l_ordre_dans_la_seance_est_lu_jamais_deduit_du_numero() -> None:
+    """Le rang se lisait sur la fin du numéro (« 2017-06-01 00:00:00-13. ») ; la
+    collecte publie `ordre_dans_la_seance` depuis le 08/10/2026 (#1011). Le
+    numéro de `pe:41` finit par 7 et son ordre est 7 : c'est l'ordre qui décide,
+    et un scrutin sans ordre ne passe devant aucun autre."""
+    regles = VOTES_UE.read_text(encoding="utf-8")
+    assert "rangDansLaSeance" not in regles, "la lecture du numéro est retirée"
 
     dernier = _executer(_SCRUTINS + """
       const votes = [pe(41, '2019-03-12', '2019/2000(RSP)', 'contre'), pe(40, '2019-03-12', '2019/2000(RSP)', 'pour')];
       const r = u.votesEuropeensRetenus(votes, scrutins);
-      console.log(JSON.stringify(r.retenus.map((x) => x.scrutin.id)));
+      const sansOrdre = { ...scrutins, 41: { ...scrutins[41], ordre_dans_la_seance: 99 }, 40: { ...scrutins[40], ordre_dans_la_seance: null } };
+      const r2 = u.votesEuropeensRetenus(votes, sansOrdre);
+      console.log(JSON.stringify([r.retenus.map((x) => x.scrutin.id), r2.retenus.map((x) => x.scrutin.id)]));
     """)
-    assert dernier == ["pe:40"]
+    assert dernier == [["pe:40"], ["pe:41"]]
 
 
 def test_un_vote_sans_dossier_reste_un_texte() -> None:

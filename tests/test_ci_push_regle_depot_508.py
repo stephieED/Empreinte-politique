@@ -78,12 +78,16 @@ def test_le_nom_du_secret_est_le_seul_du_job():
     )
     # `SRC_ISSUES_TOKEN` (#1223) n'est pas davantage une identité de push :
     # `Issues: Read and write` sur le dépôt privé, rien sur son contenu, et un
-    # seul step le lit — celui qui tient l'issue des fiches hors schéma. Il ne
-    # doit atteindre ni un checkout ni un `git`.
-    etape_issue = BLOC[BLOC.index("- name: Fiches hors schéma — issue de suivi"):]
-    assert BLOC.count("secrets.SRC_ISSUES_TOKEN") == 1
-    assert "secrets.SRC_ISSUES_TOKEN" in etape_issue
-    assert not re.search(r"\bgit (push|commit|clone|fetch)\b", etape_issue)
+    # seuls les deux steps qui tiennent une issue de suivi le lisent — fiches
+    # hors schéma (#1223), votes sans dossier (#1289). Ils ne doivent
+    # atteindre ni un checkout ni un `git`.
+    assert BLOC.count("secrets.SRC_ISSUES_TOKEN") == 2
+    for nom in ("- name: Fiches hors schéma — issue de suivi", "- name: Votes sans dossier — issue de suivi"):
+        debut = BLOC.index(nom)
+        suivant = BLOC.find("\n      - name:", debut + 1)
+        etape_issue = BLOC[debut:suivant if suivant != -1 else None]
+        assert "secrets.SRC_ISSUES_TOKEN" in etape_issue, nom
+        assert not re.search(r"\bgit (push|commit|clone|fetch)\b", etape_issue), nom
     # `SRC_READ_TOKEN` n'est pas une identité de push (#1059) : jeton à portée
     # fine, `Contents: Read-only` sur le dépôt privé, et il ne sert qu'au pas de
     # superposition du code. Ce qui reste interdit est ce que #508 visait —

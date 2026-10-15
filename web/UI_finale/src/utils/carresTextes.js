@@ -53,6 +53,7 @@ export const ETAPES_DES_CARRES = [
  * par défaut (§2 règle 5). */
 export function faitDuTexte(texte) {
   return [
+    texte.typeResolution,
     texte.matiere,
     texte.stade,
     texte.sortCle ? LIBELLE_SORT_TEXTE[texte.sortCle] || texte.sortCle : 'Sort non résolu',

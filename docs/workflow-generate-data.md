@@ -803,6 +803,19 @@ dire ni sur quoi porte un texte voté ni ce qu'il est devenu. Non bloquante et
 additive comme la première ; le `git add` du push la protège par un test
 d'existence, l'étape étant `continue-on-error`.
 
+**Depuis #1289, cette étape compose une cascade** : le lien de la source, puis
+la déduction par la date et le titre (`src/rattachement_deduit.py`), puis, pour
+les seuls votes qui restent, la table relue à la main
+(`config/rattachements_scrutins_dossiers.json`) — les deux dernières marquées
+dans `provenance`. Elle lit `pivot_data/scrutins.json` pour savoir quels votes sont
+sans dossier. Juste après, `src/alerte_votes_sans_dossier.py` relève ce qui reste
+sans dossier et ressemble à un autre texte (`alerte-votes-sans-dossier.md`, au
+résumé du job) ; après le push, l'étape « Votes sans dossier — issue de suivi »
+tient l'issue `votes-sans-dossier` du dépôt privé avec `SRC_ISSUES_TOKEN`,
+comme celle des fiches hors schéma (#1223) — commentée seulement quand la liste
+change. Ni l'une ni l'autre ne fait échouer le run.
+→ `docs/decisions/rattachement-deduit-votes-sans-dossier-1289.md`
+
 **Et une étape amont, dans les trois jobs qui cachent ces archives**
 (`rafraichir_dossiers_actifs.py`, #762) : elle reprend la seule législature
 **encore vivante** quand la clé hebdomadaire n'a pas été touchée (`cache-hit !=

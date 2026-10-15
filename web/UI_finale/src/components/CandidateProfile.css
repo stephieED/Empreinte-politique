@@ -1238,6 +1238,21 @@
   white-space: nowrap;
 }
 
+/* AU TÉLÉPHONE, LES TOTAUX PASSENT SOUS LE TITRE (#867). Sur une ligne, dans
+   une colonne `auto`, « 2 831 amendements · 25 dossiers · 1 adopté » élargissait
+   tout le document : 419 px pour Mélenchon, 440 pour Guedj, mesurés à 360 et à
+   400 px le 15/10/2026 — la fiche glissait de côté. */
+@media (max-width: 720px) {
+  .cp-gouv-tete {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+
+  .cp-gouv-periode {
+    white-space: normal;
+  }
+}
+
 /* ── § 4 — les mesures ───────────────────────────────────────────────────── */
 .cp-mesures {
   list-style: none;
@@ -2063,4 +2078,54 @@
 .cp-couv-ecarts b {
   color: var(--ink);
   font-weight: 700;
+}
+
+/* ── La frise verticale du téléphone (#867, forme B du 15/10/2026) ──────────
+   Une unité pour un pixel : rien ne se réduit. Les barres reprennent les
+   teintes de `.cp-fs--*` ; seuls la forme et le rembourrage changent. */
+.cp-fv {
+  position: relative;
+  margin-bottom: 4px;
+}
+
+.cp-fv-annee {
+  position: absolute;
+  left: 0;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.cp-fv-traits {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.cp-fv-traits line {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+
+.cp-fv-barre {
+  min-width: 0;
+  padding: 0;
+  border-radius: 2px;
+}
+
+.cp-fv-libelle {
+  position: absolute;
+  right: 0;
+  font-size: 11.5px;
+  line-height: 14px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cp-fv-libelle b {
+  font-weight: 700;
+  color: var(--ink);
 }

@@ -160,7 +160,8 @@ def test_la_construction_est_additive_et_ne_vide_jamais_le_publie(monkeypatch, t
         encoding="utf-8",
     )
     monkeypatch.setattr(build, "charger_table", lambda: {"scrutins": {}, "dossiers": {}})
-    assert build.main(["--out", str(sortie)]) == 0
+    # La table relue du dépôt ajouterait ses lignes (#1289) : hors sujet ici.
+    assert build.main(["--out", str(sortie), "--table", str(tmp_path / "absente.json")]) == 0
     publie = json.loads(sortie.read_text(encoding="utf-8"))
     assert publie["scrutins"] == {"an:16:1": "D0"}, (
         "une collecte vide a écrasé un rattachement déjà publié"

@@ -335,6 +335,7 @@ export function textesDuMaillon(entrees, commissionDuDossier = () => null) {
         dossier_id: t.dossier_id,
         titre: t.titre ?? null,
         nature_texte: t.nature_texte ?? null,
+        type_resolution: t.type_resolution ?? null,
         stade_procedural: t.stade_procedural ?? null,
         sort: t.sort ?? null,
         sort_non_resolu: t.sort_non_resolu ?? null,

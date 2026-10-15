@@ -196,7 +196,7 @@ def test_une_page_sans_description_propre_garde_celle_du_site():
         "console.log(html);"
     )
     assert res.returncode == 0, res.stderr
-    assert res.stdout.count("sans note ni classement.\" />") == 3
+    assert res.stdout.count("Sans note ni classement.\" />") == 3
 
 
 def test_une_balise_perdue_dans_index_html_arrete_le_build():
@@ -210,10 +210,10 @@ def test_une_balise_perdue_dans_index_html_arrete_le_build():
 
 def test_l_accueil_porte_le_texte_de_la_maquette():
     gabarit = INDEX.read_text(encoding="utf-8")
-    assert "<title>Présidentielle 2027 : les parcours politiques des candidats, sourcés</title>" in gabarit
+    assert "<title>Empreinte politique : l’action politique, sourcée</title>" in gabarit
     assert gabarit.count(
-        "Mandats, votes et textes des candidats déclarés, par candidat, par groupe ou par gouvernement. "
-        "Des faits sourcés, sans note ni classement."
+        "Mandats, votes et textes des groupes parlementaires, des gouvernements et des candidats à 2027, "
+        "tirés des données officielles. Sans note ni classement."
     ) == 3
     assert 'rel="canonical"' not in gabarit, "la canonical de l'accueil est posée au build, après 404.html"
 

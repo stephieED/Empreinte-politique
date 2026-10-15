@@ -31,6 +31,11 @@ par libellé que `regrouper-nest-pas-joindre-639` interdit. Mesuré au
 07/09/2026 : 719 scrutins rattachés, soit 424 des 697 textes en dernière
 lecture (61 %). Les 39 % restants sont un trou à déclarer, pas à remplir.
 
+Depuis #1289, ce trou se comble AILLEURS, et à découvert : `rattachement_deduit`
+déduit le dossier des votes sur l'ensemble que ce module ne rattache pas, et
+`build_scrutins_dossiers` publie la déduction marquée dans `provenance`. Ce
+module, lui, reste la lecture de la source et rien d'autre.
+
 `texte_lie_id` reste réservé aux motions de censure (AGENTS.md §5) et n'est ni
 recouvert ni remplacé : il répond à une autre question — quel texte une motion
 vise —, et il est nul partout ailleurs.

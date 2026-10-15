@@ -630,3 +630,37 @@ def test_un_segment_de_siege_ne_porte_que_le_sigle_et_la_place(composant, regles
     assert "role.sigle" in bloc
     assert "candidates.push(role.role)" not in bloc
     assert "export function sigleDuSiege(" in regles
+
+
+def test_l_objet_d_une_cellule_s_accorde_au_nombre():
+    """« 1 projets de loi » s'affichait (relevé le 09/10/2026) : les cellules de
+    textes et d'amendements écrivaient leur objet au pluriel en dur, quand la
+    cellule européenne voisine l'accordait déjà. Exécuté, pas lu : un pluriel
+    en dur ne se voit que pour un nombre égal à 1."""
+    import json
+    import shutil
+    import subprocess
+
+    if shutil.which("node") is None:
+        pytest.skip("node absent")
+    script = f"""
+      const a = await import({json.dumps(MODULE_REGLES.as_uri())});
+      const appel = (n) => a.grandsChiffres({{
+        roles: [{{ institution: 'parlement', chambre: 'AN', debut: '2017-06-21' }},
+                {{ institution: 'gouvernement', debut: '2020-07-06' }}],
+        textes: {{ publies: [
+          ...Array(n).fill({{ roleCle: 'auteur_proposition_de_loi', role: 'auteur' }}),
+          ...Array(n).fill({{ roleCle: 'initiateur_projet_de_loi', role: 'initiateur' }}),
+        ] }},
+        amendements: {{ totalAuteur: n, dossiers: {{ distincts: 1, nommes: [] }} }},
+      }});
+      const objets = (g) => g.lignes.flatMap((l) => Object.values(l.cellules))
+        .filter((c) => c && c.objet).map((c) => c.objet);
+      console.log(JSON.stringify([objets(appel(1)), objets(appel(2))]));
+    """
+    res = subprocess.run(["node", "--input-type=module", "-e", script],
+                         capture_output=True, text=True, check=False)
+    assert res.returncode == 0, res.stderr
+    un, deux = json.loads(res.stdout.strip().splitlines()[-1])
+    assert un == ["proposition de loi", "projet de loi", "amendement"]
+    assert deux == ["propositions de loi", "projets de loi", "amendements"]

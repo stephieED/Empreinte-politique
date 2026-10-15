@@ -4067,9 +4067,29 @@ jobs:
         continue-on-error: true
         run: python3 src/budgets_gouvernements.py
 
+      # La cascade de #1289 : le lien que l'Assemblée publie, puis la déduction
+      # par la date et le titre (`src/rattachement_deduit.py`), puis, pour ce
+      # qui reste, la table relue à la main (config/) — marquées dans
+      # `provenance`. Lit
+      # `pivot_data/scrutins.json` pour savoir quels votes sont sans dossier.
       - name: Construire le rattachement des scrutins aux dossiers
         continue-on-error: true
         run: python3 src/build_scrutins_dossiers.py
+
+      # Ce que la cascade laisse sans dossier et qui ressemble à un autre texte :
+      # un doublon possible sur les fiches. Relevé seulement — l'issue de suivi
+      # est tenue à jour après le push (« Votes sans dossier — issue de suivi »).
+      # Jamais bloquant.
+      - name: Relever les doublons possibles de votes sans dossier
+        id: alerte_votes
+        continue-on-error: true
+        run: |
+          python3 src/alerte_votes_sans_dossier.py
+          {
+            echo "### Votes sans dossier : doublons possibles (#1289)"
+            echo ""
+            cat alerte-votes-sans-dossier.md
+          } >> "$GITHUB_STEP_SUMMARY"
 
       # existing_profiles=overwrite → recréation complète des groupes.
       # Sinon → --merge-existing : membres absents du roster live réintégrés
@@ -5310,6 +5330,67 @@ jobs:
             echo "\`deploy-pages.yml\` a été déclenché pour les publier (le commit du bot"
             echo "n'émet pas d'événement \`push\`, cf. #416)."
           } >> "$GITHUB_STEP_SUMMARY"
+
+      # ──────────────────────────────────────────────────────────────────
+      # L'ISSUE DE SUIVI DES VOTES SANS DOSSIER (#1289).
+      #
+      # Même contrat que celle des fiches hors schéma, juste en dessous : UNE
+      # issue, reconnue à son étiquette, ouverte par le premier run qui relève
+      # une paire à relire, réécrite à chaque run, fermée par celui qui n'en
+      # relève plus. Un commentaire seulement quand la liste CHANGE : la même
+      # liste répétée chaque soir se lirait comme du bruit, une paire nouvelle
+      # doit se voir. Jamais bloquant : les données sont déjà poussées.
+      # ──────────────────────────────────────────────────────────────────
+      - name: Votes sans dossier — issue de suivi
+        if: steps.commit.outputs.pushed == 'true' && steps.alerte_votes.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.SRC_ISSUES_TOKEN }}
+          DEPOT: stephieED/Empreinte-politique-src
+          ETIQUETTE: votes-sans-dossier
+          URL_RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          NB="$(python3 -c "import json; print(len(json.load(open('alerte-votes-sans-dossier.json'))['paires']))")"
+          SIGNATURE="$(python3 -c "import json,hashlib; p=json.load(open('alerte-votes-sans-dossier.json'))['paires']; print(hashlib.sha1(json.dumps([sorted(x['a']['votes']+x['b']['votes']) for x in p]).encode()).hexdigest()[:12])")"
+          if [[ -z "${GH_TOKEN}" ]]; then
+            if [[ "$NB" -gt 0 ]]; then
+              echo "::warning::VOTES_SANS_DOSSIER — ${NB} paire(s) de textes à relire (doublon possible sur les fiches), et AUCUNE issue n'a été ouverte : le secret SRC_ISSUES_TOKEN n'est pas posé. Le détail est dans le résumé du job (#1289)."
+            fi
+            exit 0
+          fi
+          NUMERO="$(gh issue list --repo "$DEPOT" --state open --label "$ETIQUETTE" --json number --jq '.[0].number // empty')"
+          if [[ "$NB" -eq 0 ]]; then
+            if [[ -n "$NUMERO" ]]; then
+              gh issue close "$NUMERO" --repo "$DEPOT" --reason completed \
+                --comment "Plus aucune paire de textes à relire au run ${URL_RUN}. Fermée par ce run."
+              echo "::notice::Issue #${NUMERO} fermée : plus aucun doublon possible de vote sans dossier."
+            fi
+            exit 0
+          fi
+          {
+            echo "Ouverte et tenue à jour par le run de données (#1289). **Ne pas la fermer à la main** : le run qui ne relève plus aucune paire la ferme."
+            echo ""
+            echo "Dernier run : ${URL_RUN}"
+            echo ""
+            cat alerte-votes-sans-dossier.md
+            echo ""
+            echo "<!-- signature: ${SIGNATURE} -->"
+          } > corps-issue-votes.md
+          TITRE="Votes sans dossier : ${NB} paire(s) de textes à relire"
+          if [[ -z "$NUMERO" ]]; then
+            gh label create "$ETIQUETTE" --repo "$DEPOT" --color FBCA04 \
+              --description "Un vote sans dossier ressemble à un autre texte : doublon possible" --force
+            gh issue create --repo "$DEPOT" --label "$ETIQUETTE" --title "$TITRE" --body-file corps-issue-votes.md
+          else
+            AVANT="$(gh issue view "$NUMERO" --repo "$DEPOT" --json body --jq .body | grep -o 'signature: [0-9a-f]*' || true)"
+            gh issue edit "$NUMERO" --repo "$DEPOT" --title "$TITRE" --body-file corps-issue-votes.md
+            if [[ "$AVANT" != "signature: ${SIGNATURE}" ]]; then
+              gh issue comment "$NUMERO" --repo "$DEPOT" \
+                --body "La liste a changé au run ${URL_RUN} : ${NB} paire(s) à relire. Le détail est dans le corps de l'issue, réécrit par ce run."
+            fi
+          fi
+          echo "::warning::VOTES_SANS_DOSSIER — ${NB} paire(s) de textes à relire (doublon possible sur les fiches). Issue de suivi tenue à jour sur ${DEPOT}."
 
       # ──────────────────────────────────────────────────────────────────
       # L'ISSUE DE SUIVI DES FICHES HORS SCHÉMA (#1223).

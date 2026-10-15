@@ -201,7 +201,12 @@ const apport = (pop, origine, entrees, predicat, dateDe) => {
   };
 };
 
-export function construireCouverture({ repoRoot, slugsPublies = null }) {
+/* `ligneesPubliees` : les fiches de groupe que le site publie, une par lignée
+ * (#836), telles que `sync-data` les a retenues. Le repère de tête les compte
+ * elles, et non les fichiers de `pivot_data/groupes/` — un par groupe ET par
+ * législature, que l'interface ne publie pas tels quels : `/sources` annonçait
+ * 31 groupes quand l'accueil en montrait 15 (relevé le 09/10/2026). */
+export function construireCouverture({ repoRoot, slugsPublies = null, ligneesPubliees = null }) {
   const profilesDir = path.join(repoRoot, 'pivot_data', 'profiles');
   const groupesDir = path.join(repoRoot, 'pivot_data', 'groupes');
   const gouvernementsDir = path.join(repoRoot, 'pivot_data', 'gouvernements');
@@ -646,7 +651,11 @@ export function construireCouverture({ repoRoot, slugsPublies = null }) {
     accueil: accueil(hierarchie, bornes, candidats),
     institutions: institutions(candidats),
     couvertureFiches: couvertureFiches(candidats, bornes),
-    reperes: reperes({ candidats, groupes, gouvernements }),
+    reperes: reperes({
+      candidats,
+      fichesDeGroupe: ligneesPubliees ?? lignees(path.join(repoRoot, 'pivot_data', 'lignees')),
+      gouvernements,
+    }),
   };
 }
 
@@ -909,13 +918,19 @@ function couvertureFiches(candidats, bornes) {
   };
 }
 
+/* Sans la liste de `sync-data` (tests, appel direct) : les fiches de lignée du
+ * pivot. */
+function lignees(dossier) {
+  return existsSync(dossier) ? readdirSync(dossier).filter((f) => f.endsWith('.json')) : [];
+}
+
 /* LES CHIFFRES DE TÊTE. Mesurés, jamais écrits dans le JSX : un repère recopié
  * à la main est un repère qui aura vieilli au run suivant. */
-function reperes({ candidats, groupes, gouvernements }) {
+function reperes({ candidats, fichesDeGroupe, gouvernements }) {
   return {
-    fichesPubliees: candidats.length + groupes.length + gouvernements.length,
+    fichesPubliees: candidats.length + fichesDeGroupe.length + gouvernements.length,
     candidats: candidats.length,
-    groupes: groupes.length,
+    groupes: fichesDeGroupe.length,
     gouvernements: gouvernements.length,
   };
 }

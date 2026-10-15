@@ -1434,6 +1434,31 @@ export const LIBELLE_ROLE_TEXTE = {
   'co-rapporteur': 'Co-rapporteur',
 };
 
+/* CE QUE DEMANDE UNE RÉSOLUTION (#1276). La mention ci-dessus ne pouvait pas
+ * trancher entre un avis de l'Assemblée et une demande d'enquête ; la collecte
+ * lit désormais le type dans le document déposé (`type_resolution`, jamais le
+ * titre). Quand il est connu, il REMPLACE la mention générique, à la même
+ * place — variante A, arbitrée le 15/10/2026 sur la fiche de Mélenchon. Aucun
+ * compte ne change : une demande de commission d'enquête n'est pas montrée à
+ * part (arbitré le même jour). Un type que la source ne donne pas garde la
+ * mention générique, sans valeur par défaut (§2 règle 5). */
+export const LIBELLE_TYPE_RESOLUTION = {
+  article_34_1: 'Résolution exprimant un avis de l’Assemblée',
+  travaux_institutions_europeennes: 'Résolution sur un texte européen',
+  creation_commission_d_enquete: 'Demande de commission d’enquête',
+  modification_reglement_an: 'Modification du Règlement de l’Assemblée',
+  mise_en_accusation_president: 'Proposition de destitution du Président',
+  suspension_de_poursuites: 'Demande de suspension de poursuites',
+  propositions_d_actes_communautaires: 'Résolution sur un projet d’acte européen',
+};
+
+export function libelleRoleTexte(texte) {
+  return LIBELLE_TYPE_RESOLUTION[texte?.type_resolution]
+    || LIBELLE_ROLE_TEXTE[texte?.role]
+    || texte?.role
+    || null;
+}
+
 /*
  * Un projet de loi est un texte du GOUVERNEMENT, porté comme ministre — pas une
  * proposition déposée comme parlementaire.
@@ -1539,7 +1564,7 @@ export function textesPortes(
     publies: publies
       .map((t) => ({
         titre: t.titre,
-        role: LIBELLE_ROLE_TEXTE[t.role] || t.role || 'Rôle non publié',
+        role: libelleRoleTexte(t) || 'Rôle non publié',
         // La CLÉ brute à côté du libellé : composer une phrase sur le libellé
         // la casserait au premier changement de mot (`LIBELLE_ROLE_TEXTE`).
         roleCle: t.role ?? null,
@@ -1798,7 +1823,9 @@ function cascadeDesTextes(publies, commissionDuDossier) {
       // un sort par défaut serait une invention (§2 règle 5).
       sortCle: t.sort ?? null,
       sortMotif: t.sort_non_resolu?.motif ?? null,
-      role: LIBELLE_ROLE_TEXTE[t.role] || t.role || null,
+      role: libelleRoleTexte(t),
+      // Le type d'une résolution, seul, pour la bulle des carrés (#1276).
+      typeResolution: LIBELLE_TYPE_RESOLUTION[t.type_resolution] ?? null,
       url: t.source_url ?? null,
       an: t.date_max ? String(t.date_max).slice(0, 4) : null,
       /* L'INSTITUTION VOYAGE AVEC LE TEXTE, jusque dans la liste ouverte au
@@ -2876,9 +2903,10 @@ export function grandsChiffres({
   ]
     .filter(Boolean)
     .join(' · ');
-  const celluleTextes = (lot, objet, detail) =>
+  // L'objet s'accorde au nombre : « 1 projets de loi » s'affichait (09/10/2026).
+  const celluleTextes = (lot, singulier, pluriels, detail) =>
     lot.length
-      ? cellule({ nombre: lot.length, objet, detail: detail || null })
+      ? cellule({ nombre: lot.length, objet: pluriel(lot.length, singulier, pluriels), detail: detail || null })
       : null;
   /* LES TEXTES PORTÉS AU PARLEMENT EUROPÉEN (#901). `textes.publies` ne porte
    * que la liste française depuis que les textes européens ont leur propre
@@ -2900,9 +2928,9 @@ export function grandsChiffres({
     cle: 'textes',
     titre: 'Textes portés',
     cellules: {
-      [pisteFrancaise]: celluleTextes(propositions, 'propositions de loi', detailTextes),
+      [pisteFrancaise]: celluleTextes(propositions, 'proposition de loi', 'propositions de loi', detailTextes),
       [INSTITUTION_PE]: celluleTextesEuropeens,
-      [COLONNE_GOUVERNEMENT]: celluleTextes(projets, 'projets de loi', null),
+      [COLONNE_GOUVERNEMENT]: celluleTextes(projets, 'projet de loi', 'projets de loi', null),
     },
   });
 
@@ -2932,7 +2960,7 @@ export function grandsChiffres({
     // « 2 968 et 25 » au même corps se lisaient comme une fraction.
     return cellule({
       nombre: totalAuteur,
-      objet: 'amendements',
+      objet: pluriel(totalAuteur, 'amendement', 'amendements'),
       quantifieur: d?.distincts != null
         ? { avant: 'sur', nombre: d.distincts, texte: pluriel(d.distincts, dossier, dossiers) }
         : null,

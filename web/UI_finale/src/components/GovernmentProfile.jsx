@@ -27,6 +27,7 @@ import { ProposDuMembre, usePaquetExtraits } from './ExtraitsDuDebat';
 import { extraitsDuDebat, paquetDe } from '../utils/extraits';
 import { motsDuFiltre } from '../utils/filtreIntitule';
 import { SUJET_NON_PUBLIE } from '../utils/sujetIntervention.js';
+import { useEcranEtroit, useLargeur } from '../hooks/useLargeur';
 import '../styles/shell.css';
 import './CarresTextes.css';
 import './GovernmentProfile.css';
@@ -194,55 +195,72 @@ function VerifiedIcon() {
  * remonte pas avant 2007 : l'Assemblée ne publie rien de plus ancien, et la
  * frise ne montre donc pas tous les gouvernements de la Ve République. */
 function FriseDesGouvernements({ chronologie, courantId }) {
+  const [ref, largeur] = useLargeur();
+  const etroit = useEcranEtroit();
   const aujourdhui = new Date().toISOString().slice(0, 10);
   const tries = [...chronologie].filter((g) => g.debut).sort((a, b) => a.debut.localeCompare(b.debut));
   if (!tries.length) return null;
 
+  /* AU TÉLÉPHONE, LA FRISE SE REDESSINE À SA LARGEUR (#867, forme A du
+   * 15/10/2026) : une unité pour un pixel, au lieu de mille unités réduites au
+   * tiers. Une année sur quatre, et les dates du gouvernement de la fiche sous
+   * son nom — à cette taille, sa barre ne se date plus en comptant. */
+  const aLaLargeur = etroit && largeur > 0;
   const debut = Date.parse(tries[0].debut);
   const fin = Date.parse(aujourdhui);
   const etendue = Math.max(fin - debut, 1);
-  const L = 1000;
+  const L = aLaLargeur ? largeur : 1000;
   const GAUCHE = 2;
   const LARGEUR = L - 4;
-  const HAUT = 26;
-  const BANDE = 34;
+  const HAUT = aLaLargeur ? 32 : 26;
+  const BANDE = aLaLargeur ? 24 : 34;
+  const H = HAUT + BANDE + 18 + (aLaLargeur ? 4 : 14);
   const x = (iso) => GAUCHE + ((Date.parse(iso) - debut) / etendue) * LARGEUR;
 
   const annees = [];
-  for (let a = new Date(tries[0].debut).getUTCFullYear() + 1; a <= new Date(aujourdhui).getUTCFullYear(); a += 2) {
+  const pas = aLaLargeur ? 4 : 2;
+  for (let a = new Date(tries[0].debut).getUTCFullYear() + 1; a <= new Date(aujourdhui).getUTCFullYear(); a += pas) {
     annees.push(a);
   }
+  const bord = aLaLargeur ? 70 : 60;
 
   return (
-    <svg className="gvp-frise" viewBox={`0 0 ${L} 92`} role="img"
-      aria-label={`Les ${tries.length} gouvernements publiés depuis ${tries[0].debut.slice(0, 4)}, celui de cette fiche mis en évidence`}>
-      {tries.map((g) => {
-        const x0 = x(g.debut);
-        const x1 = x(g.fin || aujourdhui);
-        const courant = g.id === courantId;
-        const milieu = (x0 + x1) / 2;
-        const ancre = milieu < 60 ? 'start' : (milieu > L - 60 ? 'end' : 'middle');
-        return (
-          <g key={g.id}>
-            <rect x={x0} y={HAUT} width={Math.max(x1 - x0 - 1, 1.2)} height={BANDE} rx="2"
-              fill={courant ? 'var(--gouv)' : 'var(--border-strong)'}>
-              <title>
-                {`${g.title} — ${jour(g.debut)}${g.fin ? ` → ${jour(g.fin)}` : ' → en fonction'}`}
-              </title>
-            </rect>
-            {courant && (
-              <text x={ancre === 'start' ? x0 : (ancre === 'end' ? x1 : milieu)} y={HAUT - 9}
-                textAnchor={ancre} className="gvp-frise-nom">
-                {g.title.replace(/^Gouvernement\s+/, '')}
-              </text>
-            )}
-          </g>
-        );
-      })}
-      {annees.map((a) => (
-        <text key={a} x={x(`${a}-01-01`)} y={HAUT + BANDE + 18} textAnchor="middle" className="gvp-frise-annee">{a}</text>
-      ))}
-    </svg>
+    <div ref={ref}>
+      <svg className="gvp-frise" viewBox={`0 0 ${L} ${H}`} role="img"
+        aria-label={`Les ${tries.length} gouvernements publiés depuis ${tries[0].debut.slice(0, 4)}, celui de cette fiche mis en évidence`}>
+        {tries.map((g) => {
+          const x0 = x(g.debut);
+          const x1 = x(g.fin || aujourdhui);
+          const courant = g.id === courantId;
+          const milieu = (x0 + x1) / 2;
+          const ancre = milieu < bord ? 'start' : (milieu > L - bord ? 'end' : 'middle');
+          const xt = ancre === 'start' ? x0 : (ancre === 'end' ? x1 : milieu);
+          return (
+            <g key={g.id}>
+              <rect x={x0} y={HAUT} width={Math.max(x1 - x0 - 1, 1.2)} height={BANDE} rx="2"
+                fill={courant ? 'var(--gouv)' : 'var(--border-strong)'}>
+                <title>
+                  {`${g.title} — ${jour(g.debut)}${g.fin ? ` → ${jour(g.fin)}` : ' → en fonction'}`}
+                </title>
+              </rect>
+              {courant && (
+                <text x={xt} y={aLaLargeur ? 12 : HAUT - 9} textAnchor={ancre} className="gvp-frise-nom">
+                  {g.title.replace(/^Gouvernement\s+/, '')}
+                </text>
+              )}
+              {courant && aLaLargeur && (
+                <text x={xt} y={HAUT - 7} textAnchor={ancre} className="gvp-frise-annee">
+                  {`${moisEtAnnee(g.debut)} → ${g.fin ? moisEtAnnee(g.fin) : 'en fonction'}`}
+                </text>
+              )}
+            </g>
+          );
+        })}
+        {annees.map((a) => (
+          <text key={a} x={x(`${a}-01-01`)} y={HAUT + BANDE + 18} textAnchor="middle" className="gvp-frise-annee">{a}</text>
+        ))}
+      </svg>
+    </div>
   );
 }
 
