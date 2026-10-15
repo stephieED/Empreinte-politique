@@ -5,7 +5,8 @@ import EnTeteSite from '../components/EnTeteSite';
 import FriseCouverture from '../components/FriseCouverture';
 import PiedDeSite from '../components/PiedDeSite';
 import { useAsyncData } from '../hooks/useAsyncData';
-import { loadCouverture } from '../data';
+import { loadCandidatsSuivis, loadCouverture } from '../data';
+import { dateEnClair, lignesCandidats } from '../utils/candidatsSuivis';
 import '../styles/shell.css';
 import '../components/StaticPage.css';
 import './CoveragePage.css';
@@ -75,6 +76,8 @@ export default function CoveragePage() {
                 <SchemaSources />
               </section>
 
+              <CandidatsSuivis />
+
               <section className="static-card cv-card" id="frise">
                 <h2>Ce que le dépôt porte, et depuis quand</h2>
                 {/* La légende de la frise dit ce que chaque encre veut dire : ce
@@ -142,6 +145,89 @@ function MandatsHorsCouverture({ fiches }) {
         </div>
       </dl>
     </div>
+  );
+}
+
+/* LES CANDIDATS SUIVIS (#1298, forme A retenue le 15/10/2026) : un seul
+ * tableau, candidatures retirées comprises, chacune avec toutes ses sources.
+ * Chargé à part de la couverture : une liste illisible ne retire pas le reste
+ * de la page, et l'inverse non plus. */
+function CandidatsSuivis() {
+  const { data, error } = useAsyncData(loadCandidatsSuivis, []);
+  const { hash } = useLocation();
+
+  /* L'accueil renvoie ici (`/sources#candidats`). La section se charge à part
+   * de la couverture : le saut de la page peut passer avant qu'elle existe. */
+  useEffect(() => {
+    if (data && hash === '#candidats') document.getElementById('candidats')?.scrollIntoView();
+  }, [data, hash]);
+  if (error) {
+    return (
+      <section className="static-card cv-card" id="candidats">
+        <h2>Les candidats suivis</h2>
+        <p className="cv-etat">La liste des candidats n'a pas pu être chargée.</p>
+      </section>
+    );
+  }
+  if (!data) return null;
+  const lignes = lignesCandidats(data.candidats, data.fichesPubliees);
+  const verification = dateEnClair(data.verification);
+  return (
+    <section className="static-card cv-card" id="candidats">
+      <h2>Les candidats suivis</h2>
+      <p className="cv-sous">
+        Le site publie une fiche pour chaque personne qui a déclaré sa candidature à
+        l'élection présidentielle de 2027. Cette liste est tenue à la main à partir de la
+        presse, en attendant la liste officielle du Conseil constitutionnel.
+        {verification && <> Dernière vérification : {verification}.</>}
+      </p>
+      <div className="cv-tableau">
+        <table className="cv-grille cv-candidats">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Statut</th>
+              <th>Déclaration</th>
+              <th>Sources</th>
+            </tr>
+          </thead>
+          <tbody>
+            {lignes.map((l) => (
+              <tr key={l.nom}>
+                <td className="cv-cand-nom">
+                  {l.fiche ? <Link to={`/candidats/${l.fiche}`}>{l.nom}</Link> : l.nom}
+                </td>
+                <td data-l="Statut" className={l.retiree ? 'cv-aucun' : undefined}>
+                  {l.statut || '—'}
+                </td>
+                <td data-l="Déclaration">
+                  {l.declaration || <span className="cv-aucun">non connue</span>}
+                </td>
+                <td data-l="Sources">
+                  {l.sources.length ? (
+                    l.sources.map((s, i) => (
+                      <span key={s.url}>
+                        {i > 0 && ' · '}
+                        <a
+                          href={s.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title={dateEnClair(s.date) ? `Article du ${dateEnClair(s.date)}` : undefined}
+                        >
+                          {s.media}
+                        </a>
+                      </span>
+                    ))
+                  ) : (
+                    <span className="cv-aucun">—</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 }
 

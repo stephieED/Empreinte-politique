@@ -60,8 +60,11 @@ const DATE_LISTE_OFFICIELLE = '26 mars 2027';
 
 /* LA PROVENANCE DE CETTE LISTE-LÀ, ET D'ELLE SEULE (arbitré le 30/09/2026).
    Les groupes et les gouvernements viennent des sources institutionnelles ; la
-   liste des candidats déclarés est tenue à la main d'après Wikipédia, et elle
-   le dit là où elle s'affiche.
+   liste des candidats déclarés est repérée sur Wikipédia par chaque run, puis
+   croisée avec la presse (relecture du 15/10/2026, #1251, #1297), et elle le
+   dit là où elle s'affiche. La mention disait « issue de Wikipédia » : vrai de la
+   collecte, faux de la liste publiée, dont les sources sont des articles datés. Le lien mène au tableau des candidats et de leurs sources
+   (`/sources#candidats`, #1298).
 
    WIKIPÉDIA, PAS WIKIDATA — et l'erreur est facile, elle a été faite. Wikidata
    ne fournit qu'une propriété, `P4123`, l'identifiant du candidat à l'Assemblée,
@@ -168,10 +171,10 @@ export default function CommencerAExplorer() {
         </ul>
         {/* La mention vit AVEC la liste, pas au-dessus du bloc : au-dessus, elle
             qualifierait les trois portes alors qu'elle ne vaut que pour une.
-            Voir l'en-tête du fichier pour Wikipédia et non Wikidata. */}
+            Voir l'en-tête du fichier pour la presse, et jamais Wikidata. */}
         <p className="explorer-provenance" hidden={ouverte !== 'candidats'}>
-          Liste issue de <Link to="/sources">Wikipédia</Link>, en attendant sa publication
-          au Journal officiel, <strong>au plus tard le {DATE_LISTE_OFFICIELLE}</strong>.
+          Liste repérée sur Wikipédia et croisée avec <Link to="/sources#candidats">la presse</Link>, en
+          attendant sa publication au Journal officiel, <strong>au plus tard le {DATE_LISTE_OFFICIELLE}</strong>.
         </p>
       </div>
     </section>

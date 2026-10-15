@@ -275,11 +275,12 @@ def test_la_porte_des_groupes_garde_le_mot_du_lecteur() -> None:
 
 
 def test_la_liste_des_candidats_dit_d_ou_elle_vient() -> None:
-    """WIKIPÉDIA, ET JAMAIS WIKIDATA (30/09/2026).
+    """LA PRESSE, ET JAMAIS WIKIDATA (30/09/2026, relu le 15/10/2026).
 
     La liste des candidats déclarés est la seule du site qui ne vienne pas d'une
-    source institutionnelle : elle est tenue à la main d'après l'article
-    Wikipédia « Candidatures à l'élection présidentielle française de 2027 ».
+    source institutionnelle : elle est tenue à la main, d'après l'article
+    Wikipédia jusqu'au 15/10/2026, d'après des articles de presse datés depuis
+    la relecture de #1297.
 
     Wikidata ne fournit qu'une propriété — `P4123`, l'identifiant du candidat à
     l'Assemblée —, et elle a été ESSAYÉE pour découvrir les candidatures puis
@@ -291,9 +292,15 @@ def test_la_liste_des_candidats_dit_d_ou_elle_vient() -> None:
     source = (UI / "src" / "components" / "landing" / "CommencerAExplorer.jsx").read_text(encoding="utf-8")
     rendu = _sans_commentaires(source)
     assert "explorer-provenance" in rendu, "la liste des candidats ne dit plus d'où elle vient"
-    assert "Wikipédia" in rendu, "la provenance ne nomme plus sa source"
+    # La relecture du 15/10/2026 (#1297) a remplacé Wikipédia par des articles
+    # de presse datés, mais chaque run repère encore les candidatures sur
+    # Wikipédia : la mention nomme les deux et mène au tableau (#1298).
+    assert "Wikipédia" in rendu and "la presse" in rendu, (
+        "la provenance ne nomme plus ses deux étapes : repérée sur Wikipédia, croisée avec la presse"
+    )
+    assert 'to="/sources#candidats"' in rendu, "la provenance ne mène plus au tableau des candidats"
     assert "Wikidata" not in rendu, (
-        "la liste vient de Wikipédia ; Wikidata ne fournit que l'identifiant AN (#753)"
+        "la liste vient de la presse ; Wikidata ne fournit que l'identifiant AN (#753)"
     )
     # Elle ne vaut que pour la liste des candidats : au-dessus du bloc, elle
     # qualifierait aussi les groupes et les gouvernements, qui sont institutionnels.

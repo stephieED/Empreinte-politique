@@ -62,6 +62,24 @@ export function loadCouverture() {
   return couverturePromise;
 }
 
+/**
+ * La liste des candidats suivis (#1298) : `candidats.json`, copié tel quel par
+ * `sync-data`, et les slugs du manifeste — seule preuve qu'une fiche est
+ * publiée. Pas de mémoïsation : la page Sources est la seule à la lire.
+ */
+export async function loadCandidatsSuivis() {
+  const [brut, manifest] = await Promise.all([
+    fetch('/data/candidats.json').then((r) =>
+      r.ok ? r.json() : Promise.reject(new Error(`candidats.json : HTTP ${r.status}`))),
+    loadManifest(),
+  ]);
+  return {
+    verification: brut?._meta?.derniere_verification || null,
+    candidats: brut?.candidats || [],
+    fichesPubliees: new Set((manifest.candidates || []).map((c) => c.slug)),
+  };
+}
+
 function loadScrutins() {
   if (!scrutinsPromise) {
     scrutinsPromise = fetch('/data/scrutins.json')

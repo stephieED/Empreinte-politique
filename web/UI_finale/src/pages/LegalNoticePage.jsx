@@ -205,8 +205,8 @@ const SECTIONS = [
 
         <h3>Wikipédia et Wikidata</h3>
         <p>
-          Le statut de candidature déclarée peut être recoupé via Wikipédia (fr.wikipedia.org) et Wikidata
-          (query.wikidata.org). Ces deux sources ont des licences <strong>distinctes</strong> : Wikipédia
+          Les candidatures déclarées sont repérées sur Wikipédia (fr.wikipedia.org) et croisées avec la
+          presse ; Wikidata (query.wikidata.org) relie chaque candidat à sa fiche de l'Assemblée. Ces deux sources ont des licences <strong>distinctes</strong> : Wikipédia
           est sous <strong>Creative Commons Attribution — Partage dans les mêmes conditions 4.0 (CC BY-SA 4.0)</strong>{' '}
           (
           <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">

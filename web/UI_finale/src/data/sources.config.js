@@ -22,7 +22,7 @@ export const sourcesConfig = [
     nom: 'Conseil constitutionnel',
     type: 'À venir — data.gouv.fr pour les parrainages, Journal officiel pour la liste',
     contenuCouvert:
-      "Les parrainages validés, puis la liste officielle des candidats. Elle remplacera Wikipédia pour dire qui est candidat. Deux étapes, deux sources : le jeu de données du Conseil constitutionnel sur data.gouv.fr, puis sa décision « PDR » publiée au Journal officiel.",
+      "Les parrainages validés, puis la liste officielle des candidats. Elle remplacera la liste tenue à la main pour dire qui est candidat. Deux étapes, deux sources : le jeu de données du Conseil constitutionnel sur data.gouv.fr, puis sa décision « PDR » publiée au Journal officiel.",
     cadenceMiseAJour:
       "À venir. Article 3 de la loi du 6 novembre 1962 : les parrainages sont publiés au moins deux fois par semaine jusqu'au 12 mars 2027 à 18 h ; la liste des candidats, au plus tard le 26 mars 2027.",
     licence: 'Licence Ouverte 2.0 (Etalab) pour la décision ; other-pd pour les parrainages',

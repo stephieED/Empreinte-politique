@@ -170,3 +170,56 @@
 .cv-hc a:hover {
   text-decoration-color: currentcolor;
 }
+
+/* Les candidats suivis (#1298). Le tableau n'a pas la largeur minimale de la
+   grille des manquants : au téléphone, chaque ligne devient un bloc, nom en
+   tête, et chaque cellule nomme sa colonne. */
+.cv-candidats {
+  min-width: 0;
+}
+
+.cv-cand-nom {
+  font-weight: 700;
+}
+
+.cv-candidats a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
+}
+
+.cv-candidats a:hover {
+  text-decoration-color: currentcolor;
+}
+
+@media (max-width: 640px) {
+  .cv-candidats thead {
+    display: none;
+  }
+
+  .cv-candidats tr {
+    display: block;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cv-candidats tr:last-child {
+    border-bottom: 0;
+  }
+
+  .cv-grille.cv-candidats td {
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+
+  .cv-candidats td[data-l] {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  .cv-candidats td[data-l]::before {
+    content: attr(data-l) " : ";
+  }
+}

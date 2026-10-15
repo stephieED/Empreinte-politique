@@ -176,6 +176,68 @@
       "note": "Le candidat s'appelle « Mira Markovic » dans la liste des déclarés ; le RNE écrit le prénom « Douchka ». Trois sources indépendantes rattachent la même personne à Paris et au Parti animaliste : le fichier des sortants des municipales 2026, la liste des conseillers de Paris 2020-2026 et les signataires du Plant-Based Manifesto (« Mira Douchka Markovic, City Representative (Paris), Parti Animaliste »). La date de naissance ne se recoupe dans aucune autre source. Rattachement décidé par la propriétaire le 07/10/2026.",
       "etabli_par": "relecture_humaine",
       "verifie_le": "2026-10-07"
+    },
+    "antoine-mikolajczak": {
+      "appariement": "aucun_mandat_trouve",
+      "preuve": {
+        "source": "https://www.data.gouv.fr/datasets/repertoire-national-des-elus-1",
+        "fait_verifie": "aucune ligne au nom de Antoine Mikolajczak dans les neuf fichiers locaux du RNE ni dans les sortants des municipales 2020-2026, interrogés par nom le 2026-10-15"
+      },
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-10-15",
+      "note": "Tête de la liste Équinoxe dans le 5e arrondissement de Paris en mars 2026, non élu (franceinfo, au 14/10/2026) : une candidature n'est pas un mandat."
+    },
+    "clara-egger": {
+      "appariement": "aucun_mandat_trouve",
+      "preuve": {
+        "source": "https://www.data.gouv.fr/datasets/repertoire-national-des-elus-1",
+        "fait_verifie": "aucune ligne au nom de Clara Egger dans les neuf fichiers locaux du RNE ni dans les sortants des municipales 2020-2026, interrogés par nom le 2026-10-15"
+      },
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-10-15"
+    },
+    "gilles-platret": {
+      "appariement": "confirme",
+      "rne": {
+        "nom": "PLATRET",
+        "prenom": "Gilles",
+        "date_naissance": "1973-04-19"
+      },
+      "preuve": {
+        "commune": "Chalon-sur-Saône",
+        "source": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+        "fait_verifie": "« le maire divers droite de Chalon-sur-Saône (Saône-et-Loire), élu en 2014 » ; le RNE porte un seul Gilles Platret, maire de Chalon-sur-Saône et conseiller régional de Bourgogne-Franche-Comté"
+      },
+      "note": "Pas d'article Wikipédia : la preuve est un portrait de presse (franceinfo, au 14/10/2026). La date de naissance n'a pas servi à apparier.",
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-10-15"
+    },
+    "jean-francois-legendre": {
+      "appariement": "aucun_mandat_trouve",
+      "preuve": {
+        "source": "https://www.data.gouv.fr/datasets/repertoire-national-des-elus-1",
+        "fait_verifie": "aucune ligne au nom de Jean-François Legendre dans les neuf fichiers locaux du RNE ni dans les sortants des municipales 2020-2026, interrogés par nom le 2026-10-15"
+      },
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-10-15"
+    },
+    "juan-branco": {
+      "appariement": "aucun_mandat_trouve",
+      "preuve": {
+        "source": "https://www.data.gouv.fr/datasets/repertoire-national-des-elus-1",
+        "fait_verifie": "aucune ligne au nom de Juan Branco dans les neuf fichiers locaux du RNE ni dans les sortants des municipales 2020-2026, interrogés par nom le 2026-10-15"
+      },
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-10-15"
+    },
+    "manolo-mlekuz": {
+      "appariement": "aucun_mandat_trouve",
+      "preuve": {
+        "source": "https://www.data.gouv.fr/datasets/repertoire-national-des-elus-1",
+        "fait_verifie": "aucune ligne au nom de Manolo Mlekuz dans les neuf fichiers locaux du RNE ni dans les sortants des municipales 2020-2026, interrogés par nom le 2026-10-15"
+      },
+      "etabli_par": "relecture_humaine",
+      "verifie_le": "2026-10-15"
     }
   }
 }

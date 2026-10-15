@@ -166,6 +166,14 @@ Même format d'entrée, même pipeline de collecte et de normalisation. Un même
 rétrograde **jamais** un profil `candidat_declare` vers une provenance de
 roster, la source éditoriale prime.
 
+Une entrée de `raw_data/candidats.json` porte, depuis #1298 (15/10/2026),
+`sources` à côté de `source` : chaque article qui atteste la candidature (ou le
+retrait, pour un `decline`), `{url, media, date}`, `source` en tête. La règle de
+remplissage est dans `_meta.regle_sources` ; l'interface la copie telle quelle
+(`sync-data.mjs`) et la publie sur `/sources`. Une entrée ajoutée par
+`fetch_candidats_declares.py` n'a que `source` jusqu'à sa relecture.
+`tests/test_sources_candidats_1298.py` tient la forme.
+
 `meta.provenance` est un vocabulaire **fermé** de trois valeurs
 (`schema_pivot.KNOWN_PROVENANCES`), une par population de `pivot_data/profiles/`,
 que `src/population_profils.py` nomme et ventile — tout compte de profils

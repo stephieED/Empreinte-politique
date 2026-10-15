@@ -206,6 +206,35 @@ les charger, ni à les faire grossir. -->
   requires *both* sources to be silent, and any disagreement writes nothing, names the
   slug, and lets §5b block.
   → `docs/decisions/boucle-perimetre-candidats-757.md`
+- **The loop reads the person's Wikipedia article in `source`, and nowhere else.**
+  `identifiants_wikidata.resoudre` takes the title from a `…/wiki/<title>` URL; a press
+  article or a section URL resolves nothing, and the entry stays `slug: null` with
+  `CANDIDATS_SANS_SLUG` (`identifiant_indetermine`) at every run. Paid on 15/10/2026: four
+  candidates added by hand with a press URL in `source` (#1251) — three of them with a
+  Wikidata item — got no sheet. Press articles go into `sources`, never into `source`
+  when the person has an article.
+- **A declared candidate the loop leaves without slug is resolved by hand, in five
+  steps (#1298).** This is the human queue `CANDIDATS_SANS_SLUG` names; a declared
+  candidate gets a sheet even without any mandate (Labib, Mathieu).
+  1. **AMO30, read whole** (the `AMO30_…_historique.json.zip` archive, not a search):
+     the actor's `uid`, or no actor of that name — a homonym is named and set aside.
+  2. **`raw_data/correspondance_acteurs_an.json`**, `origine: "relue"`: the actor, or
+     `ecart: "hors_an"` whose `motif` says the archive was read whole, on which date,
+     and that the negative fact covers neither the Senate nor the European Parliament.
+     An existing entry for the slug is kept.
+  3. **`raw_data/candidats.json`**: the slug, which is frozen from then on (#460/#470),
+     and a note saying when and why it was set.
+  4. **`config/correspondance_elus_rne.json`**, for a candidate whose corpus carries no
+     birth date: `confirme` (one line, a commune, a primary or press source), `ecarte`
+     (a homonym) or `aucun_mandat_trouve` — query the nine local files and the 2020-2026
+     outgoing councillors with `rne_opendata.mandats_locaux`. An absent candidate means
+     « not reviewed », never « no mandate ».
+  5. **`config/mandats_anterieurs.json`**, next rule — its absence publishes `non_relu`
+     and blocks nothing.
+
+  Steps 2 and 3 are run data: written **on the public repository**, by one data commit
+  shown to the owner first, never during a run. Steps 4 and 5 are configuration: a PR on
+  the private repository. The next run collects the slug and publishes the sheet.
 - **A new declared candidate's pre-2002 career is reviewed by hand — the loop does not
   do it (#860).** `config/mandats_anterieurs.json` is a reviewed table, not a
   collection: nothing updates it when `rafraichir-candidats` adds someone, and the

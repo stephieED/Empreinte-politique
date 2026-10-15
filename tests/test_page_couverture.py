@@ -160,10 +160,11 @@ CHIFFRE_ECRIT = re.compile(r"(?<![\w#-])\d{3,}(?![\w%])")
 @pytest.mark.parametrize("fichier", ["CoveragePage.jsx", "FriseCouverture.jsx"])
 def test_aucun_effectif_n_est_ecrit_dans_le_jsx(fichier: str) -> None:
     """Les seuls nombres tolérés sont des repères de mise en page (années de
-    graduation, seuils), jamais un effectif du corpus."""
+    graduation, seuils) et l'année de l'élection que nomme le texte des
+    candidats suivis (#1298), jamais un effectif du corpus."""
     chemin = PAGE if fichier == "CoveragePage.jsx" else FRISE
     source = _sans_commentaires(chemin.read_text(encoding="utf-8"))
-    autorises = {"2000", "2005", "2010", "2015", "2020", "2025", "100", "640", "108", "262"}
+    autorises = {"2000", "2005", "2010", "2015", "2020", "2025", "100", "640", "108", "262", "2027"}
     trouves = {m for m in CHIFFRE_ECRIT.findall(source) if m not in autorises}
     assert not trouves, (
         f"{fichier} porte des nombres écrits à la main : {sorted(trouves)} — "
