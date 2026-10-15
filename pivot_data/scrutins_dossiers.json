@@ -1,6 +1,6 @@
 {
   "schema_version": "scrutins-dossiers-v1",
-  "genere_le": "2026-10-12T06:33:48+0000",
+  "genere_le": "2026-10-15T17:42:44+0000",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "scrutins": {
     "an:15:4352": "DLR5L15N42350",
@@ -850,7 +850,243 @@
     "an:14:1332": "DLR5L14N35236",
     "an:17:8609": "DLR5L17N54844",
     "an:17:8611": "DLR5L17N54847",
-    "an:17:8610": "DLR5L17N54841"
+    "an:17:8610": "DLR5L17N54841",
+    "an:14:1042": "DLR5L14N33612",
+    "an:14:1211": "DLR5L14N34487",
+    "an:14:1238": "DLR5L14N34683",
+    "an:14:1260": "DLR5L14N33752",
+    "an:14:1265": "DLR5L14N31477",
+    "an:14:1272": "DLR5L14N34888",
+    "an:14:1290": "DLR5L14N31157",
+    "an:14:1291": "DLR5L14N33834",
+    "an:14:1292": "DLR5L14N34670",
+    "an:14:1327": "DLR5L14N35094",
+    "an:14:20": "DLR5L14N29020",
+    "an:14:485": "DLR5L14N28979",
+    "an:14:561": "DLR5L14N29845",
+    "an:14:74": "DLR5L14N29146",
+    "an:14:895": "DLR5L14N33248",
+    "an:14:970": "DLR5L14N33251",
+    "an:14:997": "DLR5L14N33251",
+    "an:15:1003": "DLR5L15N36621",
+    "an:15:1092": "DLR5L15N36601",
+    "an:15:1110": "DLR5L15N36410",
+    "an:15:1111": "DLR5L15N36622",
+    "an:15:1113": "DLR5L15N36690",
+    "an:15:1116": "DLR5L15N36601",
+    "an:15:1117": "DLR5L15N36410",
+    "an:15:1118": "DLR5L15N36496",
+    "an:15:1156": "DLR5L15N36336",
+    "an:15:1181": "DLR5L15N36336",
+    "an:15:1184": "DLR5L15N36537",
+    "an:15:1215": "DLR5L15N36530",
+    "an:15:1389": "DLR5L15N36985",
+    "an:15:142": "DLR5L15N35962",
+    "an:15:1501": "DLR5L15N36985",
+    "an:15:1507": "DLR5L15N36892",
+    "an:15:1514": "DLR5L15N36927",
+    "an:15:1515": "DLR5L15N36917",
+    "an:15:1516": "DLR5L15N36918",
+    "an:15:1519": "DLR5L15N36892",
+    "an:15:1540": "DLR5L15N36876",
+    "an:15:1549": "DLR5L15N36913",
+    "an:15:1556": "DLR5L15N36910",
+    "an:15:1568": "DLR5L15N36626",
+    "an:15:1571": "DLR5L15N36209",
+    "an:15:1572": "DLR5L15N36973",
+    "an:15:1595": "DLR5L15N36733",
+    "an:15:1596": "DLR5L15N36733",
+    "an:15:1613": "DLR5L15N37103",
+    "an:15:1620": "DLR5L15N36910",
+    "an:15:1639": "DLR5L15N36997",
+    "an:15:1640": "DLR5L15N37090",
+    "an:15:1653": "DLR5L15N37094",
+    "an:15:1661": "DLR5L15N37092",
+    "an:15:1708": "DLR5L15N36626",
+    "an:15:1719": "DLR5L15N37168",
+    "an:15:1762": "DLR5L15N36728",
+    "an:15:1816": "DLR5L15N36916",
+    "an:15:1819": "DLR5L15N37206",
+    "an:15:1826": "DLR5L15N36520",
+    "an:15:1833": "DLR5L15N37309",
+    "an:15:1836": "DLR5L15N37263",
+    "an:15:1839": "DLR5L15N36728",
+    "an:15:1846": "DLR5L15N37352",
+    "an:15:1850": "DLR5L15N36719",
+    "an:15:1851": "DLR5L15N36532",
+    "an:15:1852": "DLR5L15N36917",
+    "an:15:1862": "DLR5L15N37127",
+    "an:15:1889": "DLR5L15N37436",
+    "an:15:1912": "DLR5L15N36915",
+    "an:15:1920": "DLR5L15N36142",
+    "an:15:1965": "DLR5L15N37471",
+    "an:15:1992": "DLR5L15N37206",
+    "an:15:2": "DLR5L15N35829",
+    "an:15:2015": "DLR5L15N37055",
+    "an:15:2024": "DLR5L15N37436",
+    "an:15:2029": "DLR5L15N37309",
+    "an:15:2041": "DLR5L15N36997",
+    "an:15:2042": "DLR5L15N37234",
+    "an:15:2044": "DLR5L15N36990",
+    "an:15:2047": "DLR5L15N37436",
+    "an:15:2058": "DLR5L15N37357",
+    "an:15:2060": "DLR5L15N37127",
+    "an:15:2063": "DLR5L15N37404",
+    "an:15:2065": "DLR5L15N37447",
+    "an:15:2073": "DLR5L15N37352",
+    "an:15:2130": "DLR5L15N37597",
+    "an:15:2308": "DLR5L15N37029",
+    "an:15:2329": "DLR5L15N37659",
+    "an:15:2335": "DLR5L15N37855",
+    "an:15:2336": "DLR5L15N37698",
+    "an:15:2337": "DLR5L15N37831",
+    "an:15:2342": "DLR5L15N37328",
+    "an:15:2348": "DLR5L15N37702",
+    "an:15:2351": "DLR5L15N37884",
+    "an:15:2352": "DLR5L15N37621",
+    "an:15:2387": "DLR5L15N37615",
+    "an:15:2407": "DLR5L15N37615",
+    "an:15:2408": "DLR5L15N37659",
+    "an:15:2417": "DLR5L15N37641",
+    "an:15:2419": "DLR5L15N37804",
+    "an:15:2420": "DLR5L15N37641",
+    "an:15:2427": "DLR5L15N38334",
+    "an:15:2428": "DLR5L15N37846",
+    "an:15:2432": "DLR5L15N36876",
+    "an:15:2437": "DLR5L15N37007",
+    "an:15:2445": "DLR5L15N38380",
+    "an:15:2446": "DLR5L15N37091",
+    "an:15:2447": "DLR5L15N38385",
+    "an:15:2454": "DLR5L15N38414",
+    "an:15:2455": "DLR5L15N37904",
+    "an:15:2459": "DLR5L15N38412",
+    "an:15:246": "DLR5L15N36107",
+    "an:15:2732": "DLR5L15N38564",
+    "an:15:2738": "DLR5L15N39427",
+    "an:15:2815": "DLR5L15N36876",
+    "an:15:2943": "DLR5L15N40129",
+    "an:15:3061": "DLR5L15N38690",
+    "an:15:3076": "DLR5L15N40450",
+    "an:15:3124": "DLR5L15N38769",
+    "an:15:3191": "DLR5L15N38769",
+    "an:15:321": "DLR5L15N36047",
+    "an:15:3269": "DLR5L15N40633",
+    "an:15:3270": "DLR5L15N39924",
+    "an:15:3343": "DLR5L15N41126",
+    "an:15:338": "DLR5L15N35967",
+    "an:15:341": "DLR5L15N36071",
+    "an:15:345": "DLR5L15N36131",
+    "an:15:3489": "DLR5L15N41447",
+    "an:15:3569": "DLR5L15N38412",
+    "an:15:3761": "DLR5L15N42326",
+    "an:15:3786": "DLR5L15N41647",
+    "an:15:386": "DLR5L15N35986",
+    "an:15:3917": "DLR5L15N42325",
+    "an:15:3943": "DLR5L15N43005",
+    "an:15:3949": "DLR5L15N43005",
+    "an:15:3956": "DLR5L15N43326",
+    "an:15:3969": "DLR5L15N43025",
+    "an:15:3972": "DLR5L15N42194",
+    "an:15:3977": "DLR5L15N39648",
+    "an:15:3979": "DLR5L15N42044",
+    "an:15:402": "DLR5L15N36143",
+    "an:15:403": "DLR5L15N35846",
+    "an:15:407": "DLR5L15N36254",
+    "an:15:410": "DLR5L14N35235",
+    "an:15:4152": "DLR5L15N39995",
+    "an:15:4154": "DLR5L15N42236",
+    "an:15:4243": "DLR5L15N39648",
+    "an:15:4244": "DLR5L15N42024",
+    "an:15:4245": "DLR5L15N43509",
+    "an:15:4246": "DLR5L15N41647",
+    "an:15:4298": "DLR5L15N44107",
+    "an:15:4350": "DLR5L15N42841",
+    "an:15:4351": "DLR5L15N44585",
+    "an:15:4354": "DLR5L15N40483",
+    "an:15:4382": "DLR5L15N42412",
+    "an:15:4383": "DLR5L15N39990",
+    "an:15:4384": "DLR5L15N43599",
+    "an:15:4385": "DLR5L15N42986",
+    "an:15:4386": "DLR5L15N44108",
+    "an:15:4399": "DLR5L15N41449",
+    "an:15:578": "DLR5L15N36410",
+    "an:15:579": "DLR5L15N36254",
+    "an:15:619": "DLR5L15N36496",
+    "an:15:622": "DLR5L15N36532",
+    "an:15:950": "DLR5L15N36388",
+    "an:16:1098": "DLR5L16N46734",
+    "an:16:1255": "DLR5L16N46753",
+    "an:16:16": "DLR5L16N45929",
+    "an:16:1797": "DLR5L16N47622",
+    "an:16:180": "DLR5L16N45943",
+    "an:16:184": "DLR5L16N45973",
+    "an:16:186": "DLR5L16N45942",
+    "an:16:187": "DLR5L16N45929",
+    "an:16:188": "DLR5L15N44752",
+    "an:16:191": "DLR5L16N45943",
+    "an:16:225": "DLR5L16N46116",
+    "an:16:2255": "DLR5L16N47037",
+    "an:16:2257": "DLR5L16N46880",
+    "an:16:2282": "DLR5L16N47616",
+    "an:16:232": "DLR5L16N46187",
+    "an:16:233": "DLR5L16N46185",
+    "an:16:236": "DLR5L16N46266",
+    "an:16:2721": "DLR5L16N47917",
+    "an:16:2943": "DLR5L16N48839",
+    "an:16:2983": "DLR5L16N47637",
+    "an:16:3010": "DLR5L16N48839",
+    "an:16:3134": "DLR5L16N47629",
+    "an:16:3213": "DLR5L16N47118",
+    "an:16:3214": "DLR5L16N47755",
+    "an:16:3288": "DLR5L16N47797",
+    "an:16:3407": "DLR5L16N49017",
+    "an:16:3411": "DLR5L16N49029",
+    "an:16:3508": "DLR5L16N49364",
+    "an:16:3512": "DLR5L16N49299",
+    "an:16:361": "DLR5L16N46346",
+    "an:16:3657": "DLR5L16N48422",
+    "an:16:3660": "DLR5L16N48348",
+    "an:16:3668": "DLR5L16N47884",
+    "an:16:3669": "DLR5L16N48908",
+    "an:16:3716": "DLR5L16N47629",
+    "an:16:3894": "DLR5L16N49023",
+    "an:16:4052": "DLR5L16N49623",
+    "an:16:557": "DLR5L16N46617",
+    "an:16:623": "DLR5L16N46269",
+    "an:16:654": "DLR5L16N46472",
+    "an:16:671": "DLR5L16N46269",
+    "an:17:1194": "DLR5L17N50169",
+    "an:17:1195": "DLR5L17N51078",
+    "an:17:1202": "DLR5L17N51349",
+    "an:17:1306": "DLR5L17N51485",
+    "an:17:2214": "DLR5L17N51973",
+    "an:17:2262": "DLR5L17N51115",
+    "an:17:2272": "DLR5L17N51979",
+    "an:17:2900": "DLR5L17N52002",
+    "an:17:2935": "DLR5L17N52040",
+    "an:17:2957": "DLR5L17N50819",
+    "an:17:2958": "DLR5L17N51429",
+    "an:17:3936": "DLR5L17N53135",
+    "an:17:5192": "DLR5L17N53187",
+    "an:17:5254": "DLR5L17N52744",
+    "an:17:5266": "DLR5L17N53276",
+    "an:17:5435": "DLR5L17N53171",
+    "an:17:6346": "DLR5L17N52635",
+    "an:17:6736": "DLR5L17N54083",
+    "an:17:685": "DLR5L17N50476",
+    "an:17:7454": "DLR5L17N54218",
+    "an:17:788": "DLR5L16N49176",
+    "an:17:852": "DLR5L16N49455",
+    "an:15:998": "DLR5L15N36488",
+    "an:15:999": "DLR5L15N36468",
+    "an:15:1214": "DLR5L15N36488",
+    "an:15:1431": "DLR5L15N36488",
+    "an:15:1432": "DLR5L15N36468",
+    "an:15:1570": "DLR5L15N36627",
+    "an:15:1724": "DLR5L15N36915",
+    "an:15:2040": "DLR5L15N36915",
+    "an:16:2137": "DLR5L16N46695",
+    "an:17:2954": "DLR5L17N50692"
   },
   "dossiers": {
     "DLR5L15N42350": {
@@ -3500,6 +3736,684 @@
     "DLR5L17N54841": {
       "statut": "rejete",
       "sort_49_3": false
+    },
+    "DLR5L14N33612": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L14N34487": {
+      "statut": "rejete",
+      "sort_49_3": false
+    },
+    "DLR5L14N34683": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L14N33752": {
+      "statut": "promulgue",
+      "sort_49_3": false
+    },
+    "DLR5L14N34888": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L14N31157": {
+      "statut": "rejete",
+      "sort_49_3": false
+    },
+    "DLR5L14N33834": {
+      "statut": "rejete",
+      "sort_49_3": false
+    },
+    "DLR5L14N34670": {
+      "statut": "rejete",
+      "sort_49_3": false
+    },
+    "DLR5L14N29020": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L14N28979": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L14N29845": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L14N29146": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N36621": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36410": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36622": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N36690": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36496": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N36985": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N35962": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36927": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36917": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36918": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36876": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N36913": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36910": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36209": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36973": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N37103": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36997": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N37090": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N37094": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N37092": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N37168": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36916": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N37206": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N36520": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N37309": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N37263": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N37352": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N36719": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36532": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N37127": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N37436": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36915": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36142": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N37471": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N35829": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36990": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N37404": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N37447": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N37597": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N37659": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N37855": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N37884": {
+      "statut": "rejete",
+      "sort_49_3": false
+    },
+    "DLR5L15N37621": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N37641": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N37804": {
+      "statut": "promulgue",
+      "sort_49_3": false
+    },
+    "DLR5L15N38334": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N38380": {
+      "statut": "rejete",
+      "sort_49_3": false
+    },
+    "DLR5L15N37091": {
+      "statut": "promulgue",
+      "sort_49_3": false
+    },
+    "DLR5L15N37904": {
+      "statut": "promulgue",
+      "sort_49_3": false
+    },
+    "DLR5L15N38412": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N38564": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N38769": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36047": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N35967": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36071": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36131": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N41447": {
+      "statut": "promulgue",
+      "sort_49_3": false
+    },
+    "DLR5L15N41647": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N43005": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N43326": {
+      "statut": "promulgue",
+      "sort_49_3": false
+    },
+    "DLR5L15N43025": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L15N35846": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36254": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L14N35235": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N43509": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N44107": {
+      "statut": "rejete",
+      "sort_49_3": false
+    },
+    "DLR5L15N40483": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36388": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L16N47622": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L16N45943": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L16N45973": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N44752": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L16N46116": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L16N46187": {
+      "statut": "promulgue",
+      "sort_49_3": false
+    },
+    "DLR5L16N46185": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L16N48839": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L16N47118": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L16N47797": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L16N49017": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L16N46346": {
+      "statut": "adopte_49_3",
+      "sort_49_3": true
+    },
+    "DLR5L16N48348": {
+      "statut": "promulgue",
+      "sort_49_3": false
+    },
+    "DLR5L16N49623": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L16N46269": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L16N46472": {
+      "statut": "promulgue",
+      "sort_49_3": false
+    },
+    "DLR5L17N51485": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L17N51973": {
+      "statut": "promulgue",
+      "sort_49_3": false
+    },
+    "DLR5L17N51115": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L17N51979": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L17N52002": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L17N50819": {
+      "statut": "adopte_cmp",
+      "sort_49_3": false
+    },
+    "DLR5L17N51429": {
+      "statut": "promulgue",
+      "sort_49_3": false
+    },
+    "DLR5L17N52744": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L17N53276": {
+      "statut": "navette_en_cours",
+      "sort_49_3": false
+    },
+    "DLR5L17N53171": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L17N50476": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L17N54218": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36488": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L15N36468": {
+      "statut": "adopte",
+      "sort_49_3": false
     }
+  },
+  "provenance": {
+    "an:14:1042": "deduit_date_et_titre",
+    "an:14:1211": "deduit_date_et_titre",
+    "an:14:1238": "deduit_date_et_titre",
+    "an:14:1260": "deduit_date_et_titre",
+    "an:14:1265": "deduit_date_et_titre",
+    "an:14:1272": "deduit_date_et_titre",
+    "an:14:1290": "deduit_date_et_titre",
+    "an:14:1291": "deduit_date_et_titre",
+    "an:14:1292": "deduit_date_et_titre",
+    "an:14:1327": "deduit_date_et_titre",
+    "an:14:20": "deduit_date_et_titre",
+    "an:14:485": "deduit_date_et_titre",
+    "an:14:561": "deduit_date_et_titre",
+    "an:14:74": "deduit_date_et_titre",
+    "an:14:895": "deduit_date_et_titre",
+    "an:14:970": "deduit_date_et_titre",
+    "an:14:997": "deduit_date_et_titre",
+    "an:15:1003": "deduit_date_et_titre",
+    "an:15:1092": "deduit_date_et_titre",
+    "an:15:1110": "deduit_date_et_titre",
+    "an:15:1111": "deduit_date_et_titre",
+    "an:15:1113": "deduit_date_et_titre",
+    "an:15:1116": "deduit_date_et_titre",
+    "an:15:1117": "deduit_date_et_titre",
+    "an:15:1118": "deduit_date_et_titre",
+    "an:15:1156": "deduit_date_et_titre",
+    "an:15:1181": "deduit_date_et_titre",
+    "an:15:1184": "deduit_date_et_titre",
+    "an:15:1215": "deduit_date_et_titre",
+    "an:15:1389": "deduit_date_et_titre",
+    "an:15:142": "deduit_date_et_titre",
+    "an:15:1501": "deduit_date_et_titre",
+    "an:15:1507": "deduit_date_et_titre",
+    "an:15:1514": "deduit_date_et_titre",
+    "an:15:1515": "deduit_date_et_titre",
+    "an:15:1516": "deduit_date_et_titre",
+    "an:15:1519": "deduit_date_et_titre",
+    "an:15:1540": "deduit_date_et_titre",
+    "an:15:1549": "deduit_date_et_titre",
+    "an:15:1556": "deduit_date_et_titre",
+    "an:15:1568": "deduit_date_et_titre",
+    "an:15:1571": "deduit_date_et_titre",
+    "an:15:1572": "deduit_date_et_titre",
+    "an:15:1595": "deduit_date_et_titre",
+    "an:15:1596": "deduit_date_et_titre",
+    "an:15:1613": "deduit_date_et_titre",
+    "an:15:1620": "deduit_date_et_titre",
+    "an:15:1639": "deduit_date_et_titre",
+    "an:15:1640": "deduit_date_et_titre",
+    "an:15:1653": "deduit_date_et_titre",
+    "an:15:1661": "deduit_date_et_titre",
+    "an:15:1708": "deduit_date_et_titre",
+    "an:15:1719": "deduit_date_et_titre",
+    "an:15:1762": "deduit_date_et_titre",
+    "an:15:1816": "deduit_date_et_titre",
+    "an:15:1819": "deduit_date_et_titre",
+    "an:15:1826": "deduit_date_et_titre",
+    "an:15:1833": "deduit_date_et_titre",
+    "an:15:1836": "deduit_date_et_titre",
+    "an:15:1839": "deduit_date_et_titre",
+    "an:15:1846": "deduit_date_et_titre",
+    "an:15:1850": "deduit_date_et_titre",
+    "an:15:1851": "deduit_date_et_titre",
+    "an:15:1852": "deduit_date_et_titre",
+    "an:15:1862": "deduit_date_et_titre",
+    "an:15:1889": "deduit_date_et_titre",
+    "an:15:1912": "deduit_date_et_titre",
+    "an:15:1920": "deduit_date_et_titre",
+    "an:15:1965": "deduit_date_et_titre",
+    "an:15:1992": "deduit_date_et_titre",
+    "an:15:2": "deduit_date_et_titre",
+    "an:15:2015": "deduit_date_et_titre",
+    "an:15:2024": "deduit_date_et_titre",
+    "an:15:2029": "deduit_date_et_titre",
+    "an:15:2041": "deduit_date_et_titre",
+    "an:15:2042": "deduit_date_et_titre",
+    "an:15:2044": "deduit_date_et_titre",
+    "an:15:2047": "deduit_date_et_titre",
+    "an:15:2058": "deduit_date_et_titre",
+    "an:15:2060": "deduit_date_et_titre",
+    "an:15:2063": "deduit_date_et_titre",
+    "an:15:2065": "deduit_date_et_titre",
+    "an:15:2073": "deduit_date_et_titre",
+    "an:15:2130": "deduit_date_et_titre",
+    "an:15:2308": "deduit_date_et_titre",
+    "an:15:2329": "deduit_date_et_titre",
+    "an:15:2335": "deduit_date_et_titre",
+    "an:15:2336": "deduit_date_et_titre",
+    "an:15:2337": "deduit_date_et_titre",
+    "an:15:2342": "deduit_date_et_titre",
+    "an:15:2348": "deduit_date_et_titre",
+    "an:15:2351": "deduit_date_et_titre",
+    "an:15:2352": "deduit_date_et_titre",
+    "an:15:2387": "deduit_date_et_titre",
+    "an:15:2407": "deduit_date_et_titre",
+    "an:15:2408": "deduit_date_et_titre",
+    "an:15:2417": "deduit_date_et_titre",
+    "an:15:2419": "deduit_date_et_titre",
+    "an:15:2420": "deduit_date_et_titre",
+    "an:15:2427": "deduit_date_et_titre",
+    "an:15:2428": "deduit_date_et_titre",
+    "an:15:2432": "deduit_date_et_titre",
+    "an:15:2437": "deduit_date_et_titre",
+    "an:15:2445": "deduit_date_et_titre",
+    "an:15:2446": "deduit_date_et_titre",
+    "an:15:2447": "deduit_date_et_titre",
+    "an:15:2454": "deduit_date_et_titre",
+    "an:15:2455": "deduit_date_et_titre",
+    "an:15:2459": "deduit_date_et_titre",
+    "an:15:246": "deduit_date_et_titre",
+    "an:15:2732": "deduit_date_et_titre",
+    "an:15:2738": "deduit_date_et_titre",
+    "an:15:2815": "deduit_date_et_titre",
+    "an:15:2943": "deduit_date_et_titre",
+    "an:15:3061": "deduit_date_et_titre",
+    "an:15:3076": "deduit_date_et_titre",
+    "an:15:3124": "deduit_date_et_titre",
+    "an:15:3191": "deduit_date_et_titre",
+    "an:15:321": "deduit_date_et_titre",
+    "an:15:3269": "deduit_date_et_titre",
+    "an:15:3270": "deduit_date_et_titre",
+    "an:15:3343": "deduit_date_et_titre",
+    "an:15:338": "deduit_date_et_titre",
+    "an:15:341": "deduit_date_et_titre",
+    "an:15:345": "deduit_date_et_titre",
+    "an:15:3489": "deduit_date_et_titre",
+    "an:15:3569": "deduit_date_et_titre",
+    "an:15:3761": "deduit_date_et_titre",
+    "an:15:3786": "deduit_date_et_titre",
+    "an:15:386": "deduit_date_et_titre",
+    "an:15:3917": "deduit_date_et_titre",
+    "an:15:3943": "deduit_date_et_titre",
+    "an:15:3949": "deduit_date_et_titre",
+    "an:15:3956": "deduit_date_et_titre",
+    "an:15:3969": "deduit_date_et_titre",
+    "an:15:3972": "deduit_date_et_titre",
+    "an:15:3977": "deduit_date_et_titre",
+    "an:15:3979": "deduit_date_et_titre",
+    "an:15:402": "deduit_date_et_titre",
+    "an:15:403": "deduit_date_et_titre",
+    "an:15:407": "deduit_date_et_titre",
+    "an:15:410": "deduit_date_et_titre",
+    "an:15:4152": "deduit_date_et_titre",
+    "an:15:4154": "deduit_date_et_titre",
+    "an:15:4243": "deduit_date_et_titre",
+    "an:15:4244": "deduit_date_et_titre",
+    "an:15:4245": "deduit_date_et_titre",
+    "an:15:4246": "deduit_date_et_titre",
+    "an:15:4298": "deduit_date_et_titre",
+    "an:15:4350": "deduit_date_et_titre",
+    "an:15:4351": "deduit_date_et_titre",
+    "an:15:4354": "deduit_date_et_titre",
+    "an:15:4382": "deduit_date_et_titre",
+    "an:15:4383": "deduit_date_et_titre",
+    "an:15:4384": "deduit_date_et_titre",
+    "an:15:4385": "deduit_date_et_titre",
+    "an:15:4386": "deduit_date_et_titre",
+    "an:15:4399": "deduit_date_et_titre",
+    "an:15:578": "deduit_date_et_titre",
+    "an:15:579": "deduit_date_et_titre",
+    "an:15:619": "deduit_date_et_titre",
+    "an:15:622": "deduit_date_et_titre",
+    "an:15:950": "deduit_date_et_titre",
+    "an:16:1098": "deduit_date_et_titre",
+    "an:16:1255": "deduit_date_et_titre",
+    "an:16:16": "deduit_date_et_titre",
+    "an:16:1797": "deduit_date_et_titre",
+    "an:16:180": "deduit_date_et_titre",
+    "an:16:184": "deduit_date_et_titre",
+    "an:16:186": "deduit_date_et_titre",
+    "an:16:187": "deduit_date_et_titre",
+    "an:16:188": "deduit_date_et_titre",
+    "an:16:191": "deduit_date_et_titre",
+    "an:16:225": "deduit_date_et_titre",
+    "an:16:2255": "deduit_date_et_titre",
+    "an:16:2257": "deduit_date_et_titre",
+    "an:16:2282": "deduit_date_et_titre",
+    "an:16:232": "deduit_date_et_titre",
+    "an:16:233": "deduit_date_et_titre",
+    "an:16:236": "deduit_date_et_titre",
+    "an:16:2721": "deduit_date_et_titre",
+    "an:16:2943": "deduit_date_et_titre",
+    "an:16:2983": "deduit_date_et_titre",
+    "an:16:3010": "deduit_date_et_titre",
+    "an:16:3134": "deduit_date_et_titre",
+    "an:16:3213": "deduit_date_et_titre",
+    "an:16:3214": "deduit_date_et_titre",
+    "an:16:3288": "deduit_date_et_titre",
+    "an:16:3407": "deduit_date_et_titre",
+    "an:16:3411": "deduit_date_et_titre",
+    "an:16:3508": "deduit_date_et_titre",
+    "an:16:3512": "deduit_date_et_titre",
+    "an:16:361": "deduit_date_et_titre",
+    "an:16:3657": "deduit_date_et_titre",
+    "an:16:3660": "deduit_date_et_titre",
+    "an:16:3668": "deduit_date_et_titre",
+    "an:16:3669": "deduit_date_et_titre",
+    "an:16:3716": "deduit_date_et_titre",
+    "an:16:3894": "deduit_date_et_titre",
+    "an:16:4052": "deduit_date_et_titre",
+    "an:16:557": "deduit_date_et_titre",
+    "an:16:623": "deduit_date_et_titre",
+    "an:16:654": "deduit_date_et_titre",
+    "an:16:671": "deduit_date_et_titre",
+    "an:17:1194": "deduit_date_et_titre",
+    "an:17:1195": "deduit_date_et_titre",
+    "an:17:1202": "deduit_date_et_titre",
+    "an:17:1306": "deduit_date_et_titre",
+    "an:17:2214": "deduit_date_et_titre",
+    "an:17:2262": "deduit_date_et_titre",
+    "an:17:2272": "deduit_date_et_titre",
+    "an:17:2900": "deduit_date_et_titre",
+    "an:17:2935": "deduit_date_et_titre",
+    "an:17:2957": "deduit_date_et_titre",
+    "an:17:2958": "deduit_date_et_titre",
+    "an:17:3936": "deduit_date_et_titre",
+    "an:17:5192": "deduit_date_et_titre",
+    "an:17:5254": "deduit_date_et_titre",
+    "an:17:5266": "deduit_date_et_titre",
+    "an:17:5435": "deduit_date_et_titre",
+    "an:17:6346": "deduit_date_et_titre",
+    "an:17:6736": "deduit_date_et_titre",
+    "an:17:685": "deduit_date_et_titre",
+    "an:17:7454": "deduit_date_et_titre",
+    "an:17:788": "deduit_date_et_titre",
+    "an:17:852": "deduit_date_et_titre",
+    "an:15:998": "table_relue",
+    "an:15:999": "table_relue",
+    "an:15:1214": "table_relue",
+    "an:15:1431": "table_relue",
+    "an:15:1432": "table_relue",
+    "an:15:1570": "table_relue",
+    "an:15:1724": "table_relue",
+    "an:15:2040": "table_relue",
+    "an:16:2137": "table_relue",
+    "an:17:2954": "table_relue"
   }
 }
