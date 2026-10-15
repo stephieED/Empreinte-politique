@@ -858,7 +858,7 @@
     },
     {
       "nom": "Manolo Mlekuz",
-      "slug": null,
+      "slug": "manolo-mlekuz",
       "parti": "Trajectoire",
       "famille_politique": null,
       "statut": "declare",
@@ -886,11 +886,11 @@
           "date": "2026-10-14"
         }
       ],
-      "notes": "Relu le 2026-10-07 (#847) : candidature attestée par la presse — source retenue : CNews, 27/05/2026, faute de source primaire trouvée (ni site, ni communiqué). Date de déclaration non trouvée, laissée vide plutôt que d'emprunter celle d'un article. Famille politique laissée vide : il se dit hors du clivage gauche-droite, et le champ n'est lu par aucune vue. Aucun mandat dans les sources collectées (AMO30, Parlement européen, Répertoire national des élus) : sans slug, rien à collecter."
+      "notes": "Relu le 2026-10-07 (#847) : candidature attestée par la presse — source retenue : CNews, 27/05/2026, faute de source primaire trouvée (ni site, ni communiqué). Date de déclaration non trouvée, laissée vide plutôt que d'emprunter celle d'un article. Famille politique laissée vide : il se dit hors du clivage gauche-droite, et le champ n'est lu par aucune vue. Slug posé à la main le 2026-10-15 (#1298) : AMO30 lu en entier, aucun acteur à ce nom, donc entrée hors_an dans raw_data/correspondance_acteurs_an.json ; mandats locaux relus dans config/correspondance_elus_rne.json. Slug désormais immuable (#460/#470)."
     },
     {
       "nom": "Antoine Mikolajczak",
-      "slug": null,
+      "slug": "antoine-mikolajczak",
       "parti": "Équinoxe",
       "famille_politique": null,
       "statut": "declare",
@@ -918,7 +918,7 @@
           "date": "2026-10-14"
         }
       ],
-      "notes": "Relu le 2026-10-07 (#847) : candidat d'Équinoxe, désigné par un vote des adhérents au jugement majoritaire — source retenue : la page « Présidentielle 2027 » du parti, source primaire. Date de déclaration non publiée par le parti, laissée vide (premier article trouvé : JHM, 12/07/2026). Famille politique laissée vide : le champ n'est lu par aucune vue. Tête de la liste Équinoxe aux élections d'arrondissement de Paris 5e en mars 2026, non élu. Aucun mandat dans les sources collectées : sans slug, rien à collecter. Revu le 2026-10-15 (#1251) : absent de la section des déclarés de Wikipédia, sans section de sortie ; toujours candidat selon franceinfo (au 14/10/2026, étiquette « Candidat » : « Ils ont désigné en avril le jeune homme ») et Public Sénat (14/10/2026). Statut declare maintenu ; date de déclaration : avril 2026, mois de la désignation."
+      "notes": "Relu le 2026-10-07 (#847) : candidat d'Équinoxe, désigné par un vote des adhérents au jugement majoritaire — source retenue : la page « Présidentielle 2027 » du parti, source primaire. Date de déclaration non publiée par le parti, laissée vide (premier article trouvé : JHM, 12/07/2026). Famille politique laissée vide : le champ n'est lu par aucune vue. Tête de la liste Équinoxe aux élections d'arrondissement de Paris 5e en mars 2026, non élu. Revu le 2026-10-15 (#1251) : absent de la section des déclarés de Wikipédia, sans section de sortie ; toujours candidat selon franceinfo (au 14/10/2026, étiquette « Candidat » : « Ils ont désigné en avril le jeune homme ») et Public Sénat (14/10/2026). Statut declare maintenu ; date de déclaration : avril 2026, mois de la désignation. Slug posé à la main le 2026-10-15 (#1298) : AMO30 lu en entier, aucun acteur à ce nom, donc entrée hors_an dans raw_data/correspondance_acteurs_an.json ; mandats locaux relus dans config/correspondance_elus_rne.json. Slug désormais immuable (#460/#470)."
     },
     {
       "nom": "Éric Zemmour",
@@ -993,7 +993,7 @@
     },
     {
       "nom": "Gilles Platret",
-      "slug": null,
+      "slug": "gilles-platret",
       "parti": "Divers droite",
       "famille_politique": null,
       "statut": "declare",
@@ -1016,7 +1016,7 @@
           "date": "2026-10-14"
         }
       ],
-      "notes": "Relu le 2026-10-15 (#1251) : « s'est déclaré candidat lors d'une conférence de presse le 8 octobre » (2026). Source retenue : franceinfo, trombinoscope au 14/10/2026, faute de source primaire consultée. Recoupé avec Le Nouvel Obs (15/10/2026) et Public Sénat (14/10/2026) ; absent de Toute l'Europe, contrairement à ce que cette note disait jusqu'au 2026-10-15 (#1298). Famille politique laissée vide : le champ n'est lu par aucune vue. Toujours sans slug : la chaîne d'identifiants n'a rien pu corroborer, donc pas de shard extract-an ni de fiche publiée (#753, #757). Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json — même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » jusque-là (#860)."
+      "notes": "Relu le 2026-10-15 (#1251) : « s'est déclaré candidat lors d'une conférence de presse le 8 octobre » (2026). Source retenue : franceinfo, trombinoscope au 14/10/2026, faute de source primaire consultée. Recoupé avec Le Nouvel Obs (15/10/2026) et Public Sénat (14/10/2026) ; absent de Toute l'Europe, contrairement à ce que cette note disait jusqu'au 2026-10-15 (#1298). Famille politique laissée vide : le champ n'est lu par aucune vue. Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json — même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » jusque-là (#860). Slug posé à la main le 2026-10-15 (#1298) : AMO30 lu en entier, aucun acteur à ce nom, donc entrée hors_an dans raw_data/correspondance_acteurs_an.json ; mandats locaux relus dans config/correspondance_elus_rne.json. Slug désormais immuable (#460/#470)."
     },
     {
       "nom": "Natacha Polony",
@@ -1047,7 +1047,7 @@
     },
     {
       "nom": "Juan Branco",
-      "slug": null,
+      "slug": "juan-branco",
       "parti": "Les Ruches",
       "famille_politique": null,
       "statut": "declare",
@@ -1070,11 +1070,11 @@
           "date": "2026-10-14"
         }
       ],
-      "notes": "Ajouté à la main le 2026-10-15 (#1251), sur vérification de la propriétaire : absent de notre liste, cité comme candidat par la presse du 14-15/10/2026. Le Nouvel Obs (15/10/2026) : « s'est déclaré candidat à la présidentielle sur Sud Radio le 19 décembre 2025 » ; franceinfo (au 14/10/2026) : « Candidat à la présidentielle depuis décembre 2025 » ; Public Sénat (14/10/2026) le compte parmi les candidats. Slug laissé vide : la chaîne d'identifiants du run (#757) le fabriquera si elle résout l'acteur AN, ou établit qu'il n'y en a pas. Famille politique laissée vide : le champ n'est lu par aucune vue."
+      "notes": "Ajouté à la main le 2026-10-15 (#1251), sur vérification de la propriétaire : absent de notre liste, cité comme candidat par la presse du 14-15/10/2026. Le Nouvel Obs (15/10/2026) : « s'est déclaré candidat à la présidentielle sur Sud Radio le 19 décembre 2025 » ; franceinfo (au 14/10/2026) : « Candidat à la présidentielle depuis décembre 2025 » ; Public Sénat (14/10/2026) le compte parmi les candidats. Famille politique laissée vide : le champ n'est lu par aucune vue. Slug posé à la main le 2026-10-15 (#1298) : AMO30 lu en entier, aucun acteur à ce nom, donc entrée hors_an dans raw_data/correspondance_acteurs_an.json ; mandats locaux relus dans config/correspondance_elus_rne.json. Slug désormais immuable (#460/#470)."
     },
     {
       "nom": "Clara Egger",
-      "slug": null,
+      "slug": "clara-egger",
       "parti": "Solution démocratique",
       "famille_politique": null,
       "statut": "declare",
@@ -1097,11 +1097,11 @@
           "date": "2026-10-14"
         }
       ],
-      "notes": "Ajouté à la main le 2026-10-15 (#1251), sur vérification de la propriétaire : absent de notre liste, cité comme candidat par la presse du 14-15/10/2026. Le Nouvel Obs (15/10/2026) : candidature présentée le 20 avril 2026 au nom de Solution démocratique ; franceinfo (au 14/10/2026) : « se déclare à nouveau candidate en 2026 » ; Public Sénat (14/10/2026) la compte parmi les candidats. Slug laissé vide : la chaîne d'identifiants du run (#757) le fabriquera si elle résout l'acteur AN, ou établit qu'il n'y en a pas. Famille politique laissée vide : le champ n'est lu par aucune vue."
+      "notes": "Ajouté à la main le 2026-10-15 (#1251), sur vérification de la propriétaire : absent de notre liste, cité comme candidat par la presse du 14-15/10/2026. Le Nouvel Obs (15/10/2026) : candidature présentée le 20 avril 2026 au nom de Solution démocratique ; franceinfo (au 14/10/2026) : « se déclare à nouveau candidate en 2026 » ; Public Sénat (14/10/2026) la compte parmi les candidats. Famille politique laissée vide : le champ n'est lu par aucune vue. Slug posé à la main le 2026-10-15 (#1298) : AMO30 lu en entier, aucun acteur à ce nom, donc entrée hors_an dans raw_data/correspondance_acteurs_an.json ; mandats locaux relus dans config/correspondance_elus_rne.json. Slug désormais immuable (#460/#470)."
     },
     {
       "nom": "Jean Lassalle",
-      "slug": null,
+      "slug": "jean-lassalle",
       "parti": "Résistons",
       "famille_politique": null,
       "statut": "declare",
@@ -1119,11 +1119,11 @@
           "date": "2026-10-14"
         }
       ],
-      "notes": "Ajouté à la main le 2026-10-15 (#1251), sur vérification de la propriétaire : absent de notre liste, cité comme candidat par la presse du 14-15/10/2026. franceinfo (au 14/10/2026) l'étiquette « Candidat » ; Public Sénat (14/10/2026) le cite parmi les candidats. Date de déclaration non trouvée, laissée vide. Député des Pyrénées-Atlantiques « pendant vingt ans » selon franceinfo : une fois le slug posé, sa fiche portera ses mandats AN. Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json (#860). Slug laissé vide : la chaîne d'identifiants du run (#757) le fabriquera si elle résout l'acteur AN, ou établit qu'il n'y en a pas. Famille politique laissée vide : le champ n'est lu par aucune vue."
+      "notes": "Ajouté à la main le 2026-10-15 (#1251), sur vérification de la propriétaire : absent de notre liste, cité comme candidat par la presse du 14-15/10/2026. franceinfo (au 14/10/2026) l'étiquette « Candidat » ; Public Sénat (14/10/2026) le cite parmi les candidats. Date de déclaration non trouvée, laissée vide. Député des Pyrénées-Atlantiques « pendant vingt ans » selon franceinfo : une fois le slug posé, sa fiche portera ses mandats AN. Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json (#860). Famille politique laissée vide : le champ n'est lu par aucune vue. Slug posé à la main le 2026-10-15 (#1298) : acteur AN PA1838 (député de la XIIe à la XVe législature), déjà dans raw_data/correspondance_acteurs_an.json ; la date de naissance du corpus rattache ses mandats locaux sans table relue."
     },
     {
       "nom": "Jean-François Legendre",
-      "slug": null,
+      "slug": "jean-francois-legendre",
       "parti": "A nous maintenant",
       "famille_politique": null,
       "statut": "declare",
@@ -1141,7 +1141,7 @@
           "date": "2026-10-14"
         }
       ],
-      "notes": "Ajouté à la main le 2026-10-15 (#1251), sur vérification de la propriétaire : absent de notre liste, cité comme candidat par la presse du 14-15/10/2026. franceinfo (au 14/10/2026) l'étiquette « Candidat » ; Public Sénat (14/10/2026) le cite parmi les candidats. Date de déclaration non trouvée, laissée vide. Slug laissé vide : la chaîne d'identifiants du run (#757) le fabriquera si elle résout l'acteur AN, ou établit qu'il n'y en a pas. Famille politique laissée vide : le champ n'est lu par aucune vue."
+      "notes": "Ajouté à la main le 2026-10-15 (#1251), sur vérification de la propriétaire : absent de notre liste, cité comme candidat par la presse du 14-15/10/2026. franceinfo (au 14/10/2026) l'étiquette « Candidat » ; Public Sénat (14/10/2026) le cite parmi les candidats. Date de déclaration non trouvée, laissée vide. Famille politique laissée vide : le champ n'est lu par aucune vue. Slug posé à la main le 2026-10-15 (#1298) : AMO30 lu en entier, aucun acteur à ce nom, donc entrée hors_an dans raw_data/correspondance_acteurs_an.json ; mandats locaux relus dans config/correspondance_elus_rne.json. Slug désormais immuable (#460/#470)."
     }
   ]
 }
