@@ -7,11 +7,15 @@
       "decline",
       "officiel"
     ],
-    "derniere_verification": "2026-10-14",
+    "derniere_verification": "2026-10-15",
     "sources_de_veille": [
       "https://lcp.fr/actualites/presidentielle-2027-la-liste-des-candidats-deja-en-lice-et-des-pretendants-436373",
       "https://www.france24.com/fr/france/20260524-france-presidentielle-2027-qui-sont-les-candidats-officiellement-declares",
-      "https://fr.wikipedia.org/wiki/%C3%89lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027"
+      "https://fr.wikipedia.org/wiki/%C3%89lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027",
+      "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
+      "https://www.publicsenat.fr/actualites/politique/election-presidentielle-2027-qui-sont-les-candidats-declares-ou-presque"
     ],
     "avertissement": "Statuts et alliances très mouvants à ce stade (plus d'un an avant le scrutin). Vérifier chaque entrée avant usage public.",
     "regle_slug": "slug = identifiant du profil, et donc nom de son fichier (pivot_data/profiles/<slug>.pivot.json) — jamais un identifiant de source (#487, #539). Il vient de slugify(nom) et il est FABRIQUÉ UNE SEULE FOIS, à la première publication : une fois écrit ici il est immuable, jamais re-dérivé, parce que renommer un fichier publié est une suppression que audit_diff_profils bloque (#460/#470). En cas d'homonymie, suffixe numérique attribué au second (alexandra-martin / alexandra-martin-1), jamais réattribué ni recalculé. Il valait null pour cinq candidats jusqu'à #539 — l'ancienne règle le liait à la présence sur nosdeputes.fr/nossenateurs.fr, plateformes hors pipeline depuis #529, et ce null les rendait invisibles du matrix extract-an comme du manifeste de l'interface.",
@@ -46,27 +50,27 @@
       "statut": "declare",
       "date_declaration": null,
       "source": "https://www.france24.com/fr/france/20260524-france-presidentielle-2027-qui-sont-les-candidats-officiellement-declares",
-      "notes": null
+      "notes": ""
     },
     {
       "nom": "Jérôme Guedj",
       "slug": "jerome-guedj",
       "parti": "Parti Socialiste (PS)",
       "famille_politique": "gauche",
-      "statut": "declare",
+      "statut": "decline",
       "date_declaration": "2026-02",
-      "source": "https://election-presidentielle-francaise-2027.fr/les-candidats-declares-pour-lelection-de-2027/",
-      "notes": "Vise la primaire de la gauche (prévue automne 2026)."
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Le Nouvel Obs (15/10/2026) le range parmi ceux qui « ont déjà renoncé ou été écartés » avec la primaire socialiste ; franceinfo (trombinoscope au 14/10/2026) l'étiquette « Retiré ». Détail : renoncé ou écarté dans le cadre de la primaire. Statut passé de declare à decline le 2026-10-15, à la main, sur vérification de la propriétaire (#1251). Entrée conservée : son slug est publié."
     },
     {
       "nom": "Ségolène Royal",
       "slug": "segolene-royal",
       "parti": "Parti Socialiste (PS)",
       "famille_politique": "gauche",
-      "statut": "declare",
+      "statut": "decline",
       "date_declaration": "2026-07-10",
-      "source": "https://www.france24.com/fr/france/20260524-france-presidentielle-2027-qui-sont-les-candidats-officiellement-declares",
-      "notes": "Candidate à la primaire socialiste, pas encore à l'élection elle-même."
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Le Nouvel Obs (15/10/2026) la range parmi ceux qui « ont déjà renoncé ou été écartés » avec la primaire socialiste ; franceinfo (trombinoscope au 14/10/2026) l'étiquette « Retirée ». Détail : renoncé ou écartée dans le cadre de la primaire. Statut passé de declare à decline le 2026-10-15, à la main, sur vérification de la propriétaire (#1251). Entrée conservée : son slug est publié."
     },
     {
       "nom": "Édouard Philippe",
@@ -154,9 +158,9 @@
       "parti": "Union populaire républicaine",
       "famille_politique": null,
       "statut": "declare",
-      "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Fran%C3%A7ois_Asselineau",
-      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+      "date_declaration": "2023-08-31",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Relu le 2026-10-15 (#1251) : déclaré dans un entretien au Dauphiné libéré le 31/08/2023. Source retenue : Le Nouvel Obs, 15/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue."
     },
     {
       "nom": "Delphine Batho",
@@ -164,9 +168,9 @@
       "parti": "Génération écologie",
       "famille_politique": null,
       "statut": "declare",
-      "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Delphine_Batho",
-      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+      "date_declaration": "2025-11-25",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Relu le 2026-10-15 (#1251) : candidature annoncée dans Le Nouvel Obs le 25/11/2025. Source retenue : Le Nouvel Obs, 15/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue."
     },
     {
       "nom": "Karim Bouamrane",
@@ -174,9 +178,9 @@
       "parti": "Parti socialiste",
       "famille_politique": null,
       "statut": "declare",
-      "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Karim_Bouamrane",
-      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+      "date_declaration": "2026-06-09",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Relu le 2026-10-15 (#1251) : candidature annoncée sur France Inter le 09/06 (2026) ; franceinfo : « en juin 2026 ». Source retenue : Le Nouvel Obs, 15/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue."
     },
     {
       "nom": "Bernard Cazeneuve",
@@ -184,9 +188,9 @@
       "parti": "La Convention",
       "famille_politique": null,
       "statut": "declare",
-      "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Bernard_Cazeneuve",
-      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+      "date_declaration": "2026-07-16",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Relu le 2026-10-15 (#1251) : lettre aux Français révélée le 16/07 (2026) ; au Parisien : « C'est par un contrat qui me lie à eux que je présente ma candidature. » Toute l'Europe le compte parmi les déclarés ; Public Sénat (14/10/2026) le dit encore « pressentie ». Source retenue : Le Nouvel Obs, 15/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue."
     },
     {
       "nom": "Nicolas Dupont-Aignan",
@@ -194,9 +198,9 @@
       "parti": "Debout la France",
       "famille_politique": null,
       "statut": "declare",
-      "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Nicolas_Dupont-Aignan",
-      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+      "date_declaration": "2025-03-08",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Relu le 2026-10-15 (#1251) : candidature annoncée en réunion publique à Yerres le 08/03/2025. Source retenue : Le Nouvel Obs, 15/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue."
     },
     {
       "nom": "Sylvain Durif",
@@ -205,8 +209,8 @@
       "famille_politique": null,
       "statut": "declare",
       "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Sylvain_Durif",
-      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+      "source": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "notes": "Relu le 2026-10-15 (#1251) : « annonce fin août sa candidature à la présidentielle dans une vidéo », année non dite : date laissée vide. Source retenue : franceinfo, trombinoscope au 14/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue."
     },
     {
       "nom": "Anasse Kazib",
@@ -214,9 +218,9 @@
       "parti": "Révolution permanente",
       "famille_politique": null,
       "statut": "declare",
-      "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Anasse_Kazib",
-      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+      "date_declaration": "2026-06-01",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Relu le 2026-10-15 (#1251) : intention d'être candidat pour Révolution permanente annoncée le 01/06 (2026) ; franceinfo le classe « Candidat ». Source retenue : Le Nouvel Obs, 15/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue."
     },
     {
       "nom": "Selma Labib",
@@ -235,8 +239,8 @@
       "famille_politique": null,
       "statut": "declare",
       "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Francis_Lalanne",
-      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Relu le 2026-10-15 (#1251) : candidature annoncée par un communiqué aux rédactions, non daté par l'article : date laissée vide. Source retenue : Le Nouvel Obs, 15/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue."
     },
     {
       "nom": "Benoît Mathieu",
@@ -254,9 +258,9 @@
       "parti": "Les Patriotes",
       "famille_politique": null,
       "statut": "declare",
-      "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Florian_Philippot",
-      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+      "date_declaration": "2026-05-09",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Relu le 2026-10-15 (#1251) : candidature annoncée sur France 2 le 09/05/2026. Source retenue : Le Nouvel Obs, 15/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue."
     },
     {
       "nom": "Fabien Roussel",
@@ -264,9 +268,9 @@
       "parti": "Parti communiste français",
       "famille_politique": null,
       "statut": "declare",
-      "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Fabien_Roussel",
-      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+      "date_declaration": "2026-09-06",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Relu le 2026-10-15 (#1251) : candidature annoncée sur TF1 le dimanche 6 septembre (2026). Source retenue : Le Nouvel Obs, 15/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue."
     },
     {
       "nom": "Lydie Massard",
@@ -284,9 +288,9 @@
       "parti": "Debout !",
       "famille_politique": null,
       "statut": "declare",
-      "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Fran%C3%A7ois_Ruffin",
-      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré dans le cadre d'une primaire). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+      "date_declaration": "2025-04-01",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Relu le 2026-10-15 (#1251) : candidature annoncée en meeting à Montreuil le 01/04/2025. Source retenue : Le Nouvel Obs, 15/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue."
     },
     {
       "nom": "Philippe Brun",
@@ -303,10 +307,10 @@
       "slug": "olivier-faure",
       "parti": "Parti socialiste",
       "famille_politique": null,
-      "statut": "declare",
+      "statut": "decline",
       "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Olivier_Faure",
-      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré dans le cadre d'une primaire). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Le Nouvel Obs (15/10/2026) le range parmi ceux qui « ont déjà renoncé ou été écartés » avec la primaire socialiste ; franceinfo (trombinoscope au 14/10/2026) l'étiquette « Retiré ». Détail : écarté à la primaire sociale-démocrate, remportée par Raphaël Glucksmann. Statut passé de declare à decline le 2026-10-15, à la main, sur vérification de la propriétaire (#1251). Entrée conservée : son slug est publié."
     },
     {
       "nom": "Raphaël Glucksmann",
@@ -314,19 +318,19 @@
       "parti": "Place publique",
       "famille_politique": null,
       "statut": "declare",
-      "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Rapha%C3%ABl_Glucksmann",
-      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré dans le cadre d'une primaire). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+      "date_declaration": "2026-08-23",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Relu le 2026-10-15 (#1251) : candidature annoncée au 20-Heures de TF1 le dimanche 23 août (2026), via la primaire, qu'il a remportée. Source retenue : Le Nouvel Obs, 15/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue."
     },
     {
       "nom": "Emmanuel Maurel",
       "slug": "emmanuel-maurel",
       "parti": "Gauche républicaine et socialiste",
       "famille_politique": null,
-      "statut": "declare",
+      "statut": "decline",
       "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Emmanuel_Maurel",
-      "notes": "Ajouté le 2026-09-07 par src/fetch_candidats_declares.py (déclaré dans le cadre d'une primaire). À relire avant collecte : slug, famille politique, date et source primaire de la déclaration. Sans slug, ce candidat n'a pas de shard extract-an et n'est pas publié (#753)."
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Le Nouvel Obs (15/10/2026) le range parmi ceux qui « ont déjà renoncé ou été écartés » avec la primaire socialiste ; franceinfo (trombinoscope au 14/10/2026) l'étiquette « Retiré ». Détail : écarté à la primaire sociale-démocrate, remportée par Raphaël Glucksmann. Statut passé de declare à decline le 2026-10-15, à la main, sur vérification de la propriétaire (#1251). Entrée conservée : son slug est publié."
     },
     {
       "nom": "Fabien Verdier",
@@ -354,9 +358,9 @@
       "parti": "Équinoxe",
       "famille_politique": null,
       "statut": "declare",
-      "date_declaration": null,
+      "date_declaration": "2026-04",
       "source": "https://parti-equinoxe.fr/presidentielle-2027/",
-      "notes": "Relu le 2026-10-07 (#847) : candidat d'Équinoxe, désigné par un vote des adhérents au jugement majoritaire — source retenue : la page « Présidentielle 2027 » du parti, source primaire. Date de déclaration non publiée par le parti, laissée vide (premier article trouvé : JHM, 12/07/2026). Famille politique laissée vide : le champ n'est lu par aucune vue. Tête de la liste Équinoxe aux élections d'arrondissement de Paris 5e en mars 2026, non élu. Aucun mandat dans les sources collectées : sans slug, rien à collecter."
+      "notes": "Relu le 2026-10-07 (#847) : candidat d'Équinoxe, désigné par un vote des adhérents au jugement majoritaire — source retenue : la page « Présidentielle 2027 » du parti, source primaire. Date de déclaration non publiée par le parti, laissée vide (premier article trouvé : JHM, 12/07/2026). Famille politique laissée vide : le champ n'est lu par aucune vue. Tête de la liste Équinoxe aux élections d'arrondissement de Paris 5e en mars 2026, non élu. Aucun mandat dans les sources collectées : sans slug, rien à collecter. Revu le 2026-10-15 (#1251) : absent de la section des déclarés de Wikipédia, sans section de sortie ; toujours candidat selon franceinfo (au 14/10/2026, étiquette « Candidat » : « Ils ont désigné en avril le jeune homme ») et Public Sénat (14/10/2026). Statut declare maintenu ; date de déclaration : avril 2026, mois de la désignation."
     },
     {
       "nom": "Éric Zemmour",
@@ -364,9 +368,9 @@
       "parti": "Reconquête",
       "famille_politique": null,
       "statut": "declare",
-      "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/%C3%89ric_Zemmour",
-      "notes": "Ajouté le 2026-09-18 par src/fetch_candidats_declares.py (déclaré). Slug fabriqué depuis le nom ; l'acteur AN est résolu par identifiant externe et corroboré hors ligne (#757). Famille politique, date et source primaire de la déclaration restent à compléter. Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans raw_data/mandats_anterieurs.json — même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » jusque-là (#860)."
+      "date_declaration": "2026-09-17",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Relu le 2026-10-15 (#1251) : déclaration en direct sur BFMTV le 17/09 au soir (2026) ; Toute l'Europe précise qu'une déclaration formelle est attendue à l'automne. Source retenue : Le Nouvel Obs, 15/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue. Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json — même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » jusque-là (#860)."
     },
     {
       "nom": "Olivier Becht",
@@ -374,9 +378,9 @@
       "parti": "Renaissance",
       "famille_politique": null,
       "statut": "declare",
-      "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Olivier_Becht",
-      "notes": "Ajouté le 2026-09-24 par src/fetch_candidats_declares.py (déclaré). Slug fabriqué depuis le nom ; l'acteur AN est résolu par identifiant externe et corroboré hors ligne (#757). Famille politique, date et source primaire de la déclaration restent à compléter. Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json — même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » jusque-là (#860)."
+      "date_declaration": "2026-09-24",
+      "source": "https://www.touteleurope.eu/vie-politique-des-etats-membres/presidentielle-2027-qui-sont-les-candidats-deja-declares/",
+      "notes": "Relu le 2026-10-15 (#1251) : candidature annoncée le jeudi 24 septembre (2026), comme candidat de « l'extrême centre ». Source retenue : Toute l'Europe, mis à jour le 14/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue. Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json — même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » jusque-là (#860)."
     },
     {
       "nom": "Mira Markovic",
@@ -386,7 +390,7 @@
       "statut": "declare",
       "date_declaration": "2026-10-02",
       "source": "https://www.cnews.fr/france/2026-10-02/presidentielle-2027-si-nous-ne-sommes-pas-la-personne-ne-parle-des-animaux",
-      "notes": "Relu le 2026-10-07 : candidate du Parti animaliste, dont elle est cofondatrice et coprésidente, présentée par le parti le 02/10/2026 — date rapportée par plusieurs titres (CNews, Le Monde, Contexte, Agra) ; source retenue : CNews, 02/10/2026, faute de communiqué trouvé sur le site du parti. Famille politique laissée vide : le champ n'est lu par aucune vue. Absente de l'archive des acteurs de l'Assemblée et des députés européens français. Une conseillère de Paris sortante en 2026, « Douchka MARKOVIC », née en 1978, figure au fichier des sortants des municipales ; la liste Wikipédia des conseillers de Paris 2020-2026 range une « Douchka Markovic » au Parti animaliste (18e arrondissement). Rattachée à ce mandat par décision de la propriétaire le 2026-10-07 (config/correspondance_elus_rne.json) ; slug posé à ce moment-là et désormais immuable."
+      "notes": "Relu le 2026-10-07 : candidate du Parti animaliste, dont elle est cofondatrice et coprésidente, présentée par le parti le 02/10/2026 — date rapportée par plusieurs titres (CNews, Le Monde, Contexte, Agra) ; source retenue : CNews, 02/10/2026, faute de communiqué trouvé sur le site du parti. Famille politique laissée vide : le champ n'est lu par aucune vue. Absente de l'archive des acteurs de l'Assemblée et des députés européens français. Une conseillère de Paris sortante en 2026, « Douchka MARKOVIC », née en 1978, figure au fichier des sortants des municipales ; la liste Wikipédia des conseillers de Paris 2020-2026 range une « Douchka Markovic » au Parti animaliste (18e arrondissement). Rattachée à ce mandat par décision de la propriétaire le 2026-10-07 (config/correspondance_elus_rne.json) ; slug posé à ce moment-là et désormais immuable. Revu le 2026-10-15 (#1251) : absente de la section des déclarés de Wikipédia, sans section de sortie ; toujours candidate selon Public Sénat (14/10/2026 : « Mira Markovic (Parti animaliste) »), absente du trombinoscope franceinfo. Statut declare maintenu."
     },
     {
       "nom": "Gilles Platret",
@@ -394,9 +398,9 @@
       "parti": "Divers droite",
       "famille_politique": null,
       "statut": "declare",
-      "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Candidatures_%C3%A0_l%27%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027#Candidats_d%C3%A9clar%C3%A9s",
-      "notes": "Ajouté le 2026-10-12 par src/fetch_candidats_declares.py (déclaré). Sans slug : la chaîne d'identifiants n'a rien pu corroborer, donc ce candidat n'a pas de shard extract-an et n'est pas publié. À relire — slug, famille politique, date et source primaire (#753, #757). Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json — même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » jusque-là (#860)."
+      "date_declaration": "2026-10-08",
+      "source": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "notes": "Relu le 2026-10-15 (#1251) : « s'est déclaré candidat lors d'une conférence de presse le 8 octobre » (2026). Source retenue : franceinfo, trombinoscope au 14/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue. Toujours sans slug : la chaîne d'identifiants n'a rien pu corroborer, donc pas de shard extract-an ni de fiche publiée (#753, #757). Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json — même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » jusque-là (#860)."
     },
     {
       "nom": "Natacha Polony",
@@ -404,9 +408,49 @@
       "parti": "Sans étiquette",
       "famille_politique": null,
       "statut": "declare",
+      "date_declaration": "2026-10-14",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Relu le 2026-10-15 (#1251) : candidature déclarée sur France Inter le 14/10/2026 ; Public Sénat le confirme. Source retenue : Le Nouvel Obs, 15/10/2026, faute de source primaire consultée. Recoupé avec franceinfo (trombinoscope au 14/10/2026) et Toute l'Europe (mis à jour le 14/10/2026). Famille politique laissée vide : le champ n'est lu par aucune vue. Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json — même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » jusque-là (#860)."
+    },
+    {
+      "nom": "Juan Branco",
+      "slug": null,
+      "parti": "Les Ruches",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": "2025-12-19",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Ajouté à la main le 2026-10-15 (#1251), sur vérification de la propriétaire : absent de notre liste, cité comme candidat par la presse du 14-15/10/2026. Le Nouvel Obs (15/10/2026) : « s'est déclaré candidat à la présidentielle sur Sud Radio le 19 décembre 2025 » ; franceinfo (au 14/10/2026) : « Candidat à la présidentielle depuis décembre 2025 » ; Public Sénat (14/10/2026) le compte parmi les candidats. Slug laissé vide : la chaîne d'identifiants du run (#757) le fabriquera si elle résout l'acteur AN, ou établit qu'il n'y en a pas. Famille politique laissée vide : le champ n'est lu par aucune vue."
+    },
+    {
+      "nom": "Clara Egger",
+      "slug": null,
+      "parti": "Solution démocratique",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": "2026-04-20",
+      "source": "https://www.nouvelobs.com/politique/20261015.OBS119225/presidentielle-2027-quels-sont-les-31-candidats-actuellement-declares.html",
+      "notes": "Ajouté à la main le 2026-10-15 (#1251), sur vérification de la propriétaire : absent de notre liste, cité comme candidat par la presse du 14-15/10/2026. Le Nouvel Obs (15/10/2026) : candidature présentée le 20 avril 2026 au nom de Solution démocratique ; franceinfo (au 14/10/2026) : « se déclare à nouveau candidate en 2026 » ; Public Sénat (14/10/2026) la compte parmi les candidats. Slug laissé vide : la chaîne d'identifiants du run (#757) le fabriquera si elle résout l'acteur AN, ou établit qu'il n'y en a pas. Famille politique laissée vide : le champ n'est lu par aucune vue."
+    },
+    {
+      "nom": "Jean Lassalle",
+      "slug": null,
+      "parti": "Résistons",
+      "famille_politique": null,
+      "statut": "declare",
       "date_declaration": null,
-      "source": "https://fr.wikipedia.org/wiki/Natacha_Polony",
-      "notes": "Ajouté le 2026-10-14 par src/fetch_candidats_declares.py (déclaré). Slug fabriqué depuis le nom ; l'acteur AN est résolu par identifiant externe et corroboré hors ligne (#757). Famille politique, date et source primaire de la déclaration restent à compléter. Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json — même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » jusque-là (#860)."
+      "source": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "notes": "Ajouté à la main le 2026-10-15 (#1251), sur vérification de la propriétaire : absent de notre liste, cité comme candidat par la presse du 14-15/10/2026. franceinfo (au 14/10/2026) l'étiquette « Candidat » ; Public Sénat (14/10/2026) le cite parmi les candidats. Date de déclaration non trouvée, laissée vide. Député des Pyrénées-Atlantiques « pendant vingt ans » selon franceinfo : une fois le slug posé, sa fiche portera ses mandats AN. Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json (#860). Slug laissé vide : la chaîne d'identifiants du run (#757) le fabriquera si elle résout l'acteur AN, ou établit qu'il n'y en a pas. Famille politique laissée vide : le champ n'est lu par aucune vue."
+    },
+    {
+      "nom": "Jean-François Legendre",
+      "slug": null,
+      "parti": "A nous maintenant",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "notes": "Ajouté à la main le 2026-10-15 (#1251), sur vérification de la propriétaire : absent de notre liste, cité comme candidat par la presse du 14-15/10/2026. franceinfo (au 14/10/2026) l'étiquette « Candidat » ; Public Sénat (14/10/2026) le cite parmi les candidats. Date de déclaration non trouvée, laissée vide. Slug laissé vide : la chaîne d'identifiants du run (#757) le fabriquera si elle résout l'acteur AN, ou établit qu'il n'y en a pas. Famille politique laissée vide : le champ n'est lu par aucune vue."
     }
   ]
 }
