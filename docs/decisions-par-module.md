@@ -304,6 +304,10 @@ Le mentionnent sans le gouverner : [`amendements-zero-pas-de-hard-fail`](decisio
 
 Le mentionnent sans le gouverner : [`budget-collecte-interventions`](decisions/budget-collecte-interventions.md).
 
+## `src/budgets_gouvernements.py`
+
+Le mentionnent sans le gouverner : [`budgets-par-gouvernement-1053`](decisions/budgets-par-gouvernement-1053.md), [`section-budgets-fiche-gouvernement-1053`](decisions/section-budgets-fiche-gouvernement-1053.md).
+
 ## `src/build_amendements_index.py`
 
 4 décision(s) le gouvernent ; le module en cite 0.
@@ -1507,7 +1511,7 @@ Le mentionnent sans le gouverner : [`archive-dossiers-xiv-1019`](decisions/archi
 | --- | --- |
 | [Les textes promulgués sont une population du Parlement, pas d'un gouvernement (2026-09-23)](decisions/textes-promulgues-population-du-parlement.md) | `chambre_premiere_lecture` |
 
-Le mentionnent sans le gouverner : [`actes-sur-la-fiche-de-gouvernement-1029`](decisions/actes-sur-la-fiche-de-gouvernement-1029.md), [`dila-et-amo30-en-jobs-1129`](decisions/dila-et-amo30-en-jobs-1129.md), [`finances-etat-collecte-1053`](decisions/finances-etat-collecte-1053.md), [`liens-des-actes-vers-les-lois`](decisions/liens-des-actes-vers-les-lois.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
+Le mentionnent sans le gouverner : [`actes-sur-la-fiche-de-gouvernement-1029`](decisions/actes-sur-la-fiche-de-gouvernement-1029.md), [`budgets-par-gouvernement-1053`](decisions/budgets-par-gouvernement-1053.md), [`dila-et-amo30-en-jobs-1129`](decisions/dila-et-amo30-en-jobs-1129.md), [`finances-etat-collecte-1053`](decisions/finances-etat-collecte-1053.md), [`liens-des-actes-vers-les-lois`](decisions/liens-des-actes-vers-les-lois.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
 
 ## `src/textes_vises_figes.py`
 

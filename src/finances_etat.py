@@ -226,11 +226,28 @@ class _Cumul:
     def __init__(self) -> None:
         self.cp: dict[str, float] = defaultdict(float)
         self.ministere: dict[str, tuple[Optional[str], Optional[str]]] = {}
+        self.mission: dict[str, str] = {}
+        #: Le nom du programme, là où la source l'écrit (« Charge de la dette et
+        #: trésorerie de l'État - 117 »). `None` quand deux lignes du même
+        #: programme le disent différemment : on n'en choisit pas un.
+        self.libelle_programme: dict[str, Optional[str]] = {}
 
-    def ajouter(self, programme: Any, montant: Any, code: Any = None, libelle: Any = None) -> None:
+    def ajouter(self, programme: Any, montant: Any, code: Any = None, libelle: Any = None,
+                mission: Any = None, libelle_programme: Any = None) -> None:
         prog = code_nu(programme)
         if not prog:
             return
+        nom_prog = _libelle(libelle_programme)
+        if nom_prog:
+            deja_p = self.libelle_programme.setdefault(prog, nom_prog)
+            if deja_p is not None and deja_p != nom_prog:
+                self.libelle_programme[prog] = None
+        nom = _libelle(mission)
+        if nom:
+            deja_m = self.mission.setdefault(prog, nom)
+            if deja_m != nom:
+                raise FinancesIndisponibles(
+                    f"programme {prog} rattaché à deux missions : {deja_m} et {nom}")
         valeur = nombre(montant)
         self.cp[prog] += valeur or 0.0
         if code is not None or libelle is not None:
@@ -248,8 +265,17 @@ class _Cumul:
             code, lib = (ministeres or self.ministere).get(prog, (None, None))
             if lib is None and code and libelles:
                 lib = libelles.get(code)
-            sortie.append({"programme": prog, "ministere_code": code, "ministere": lib,
-                           "cp": round(self.cp[prog], 2)})
+            ligne = {"programme": prog, "ministere_code": code, "ministere": lib,
+                     "cp": round(self.cp[prog], 2)}
+            # La mission n'est portée que par les fichiers d'exécution de 2023
+            # à 2025 : la clé n'existe que là où la source la donne.
+            if prog in self.mission:
+                ligne["mission"] = self.mission[prog]
+            # Même règle pour le nom du programme : la clé n'existe que là où la
+            # source l'écrit, et elle vaut `null` si elle l'écrit de deux façons.
+            if prog in self.libelle_programme:
+                ligne["libelle_programme"] = self.libelle_programme[prog]
+            sortie.append(ligne)
         return sortie
 
 
@@ -406,8 +432,11 @@ def lire_etat_cp(texte: str, ministeres: dict[str, tuple[Optional[str], Optional
         m = re.search(r"-\s*(\d{3})\s*$", ligne.get("Programme") or "")
         if not m:
             raise FinancesIndisponibles(f"programme sans code : {ligne.get('Programme')!r}")
-        vote.ajouter(m.group(1), ligne.get("LFI"))
-        realise.ajouter(m.group(1), ligne.get("Depenses_constatees"))
+        nom = (ligne.get("Programme") or "")[:m.start()]
+        vote.ajouter(m.group(1), ligne.get("LFI"), mission=ligne.get("Mission"),
+                     libelle_programme=nom)
+        realise.ajouter(m.group(1), ligne.get("Depenses_constatees"), mission=ligne.get("Mission"),
+                        libelle_programme=nom)
     return vote.lignes(ministeres=ministeres), realise.lignes(ministeres=ministeres)
 
 
@@ -647,6 +676,14 @@ def est_fige(bloc: Optional[dict[str, Any]], an: int, aujourd_hui: date) -> bool
     """
     if not bloc or an >= aujourd_hui.year - 1:
         return False
+    # Un exercice lu avant que la mission ne soit gardée (13/10/2026), ou le
+    # nom du programme (14/10/2026), se relit une fois : son fichier les porte,
+    # le bloc publié ne les a pas.
+    if "etat" in LECTEURS.get(an, {}):
+        programmes = (bloc.get("realise") or {}).get("programmes") or []
+        if programmes and not all(any(cle in p for p in programmes)
+                                  for cle in ("mission", "libelle_programme")):
+            return False
     for cote in ("vote", "realise"):
         if bloc.get(cote) is None and (bloc.get(cote + "_non_resolu") or {}).get("a_retenter", True):
             return False

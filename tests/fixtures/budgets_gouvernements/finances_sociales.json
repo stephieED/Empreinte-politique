@@ -1,0 +1,454 @@
+{
+"protection_sociale": {
+"champs": {
+"administrations_de_securite_sociale": {
+"statuts": {
+"2023": "SD",
+"2024": "PROV"
+},
+"lignes": [
+{
+"libelle": "TOTAL DES EMPLOIS HORS TRANSFERTS",
+"valeurs": {
+"2023": 690363.14,
+"2024": 726996.33
+}
+},
+{
+"libelle": "Prestations sociales en espèces",
+"valeurs": {
+"2023": 410669.97,
+"2024": 677424.09
+}
+},
+{
+"libelle": "Prestations sociales en nature",
+"valeurs": {
+"2023": 232489.99,
+"2024": null
+}
+},
+{
+"libelle": "Frais non financiers",
+"valeurs": {
+"2023": 22388.07,
+"2024": 22448.6
+}
+},
+{
+"libelle": "Frais financiers (depuis 1981)",
+"valeurs": {
+"2023": 4716.52,
+"2024": 6111.84
+}
+},
+{
+"libelle": "Autres emplois (depuis 1981)",
+"valeurs": {
+"2023": 13924.49,
+"2024": 14659.5
+}
+},
+{
+"libelle": "Emplois du compte de capital (depuis 2006)",
+"valeurs": {
+"2023": 6174.1,
+"2024": 6352.3
+}
+},
+{
+"libelle": "Ajustement comptable",
+"valeurs": {
+"2023": -427.42,
+"2024": null
+}
+},
+{
+"libelle": "TOTAL DES RESSOURCES HORS TRANSFERTS",
+"valeurs": {
+"2023": 722838.32,
+"2024": 750602.75
+}
+},
+{
+"libelle": "Cotisations sociales d'employeurs",
+"valeurs": {
+"2023": 280242.62,
+"2024": 423068.0
+}
+},
+{
+"libelle": "Cotisations sociales de salariés",
+"valeurs": {
+"2023": 93445.81,
+"2024": null
+}
+},
+{
+"libelle": "Autres cotisations sociales",
+"valeurs": {
+"2023": 31778.04,
+"2024": null
+}
+},
+{
+"libelle": "Cotisations sociales imputées",
+"valeurs": {
+"2023": 1329.0,
+"2024": 1379.0
+}
+},
+{
+"libelle": "Impôts et taxes affectés",
+"valeurs": {
+"2023": 283814.0,
+"2024": 293546.0
+}
+},
+{
+"libelle": "Contributions publiques",
+"valeurs": {
+"2023": 19074.17,
+"2024": 18582.13
+}
+},
+{
+"libelle": "Produits financiers (depuis 1981)",
+"valeurs": {
+"2023": 4499.42,
+"2024": 6191.25
+}
+},
+{
+"libelle": "Autres recettes (depuis 1981)",
+"valeurs": {
+"2023": 13072.48,
+"2024": 12900.25
+}
+},
+{
+"libelle": "Recettes du compte de capital (depuis 2006)",
+"valeurs": {
+"2023": -4417.22,
+"2024": -5063.88
+}
+}
+]
+}
+}
+},
+"prestations_par_regime": {
+"annees": {
+"2023": [
+{
+"niveau": 0,
+"secteur_code": "S1",
+"secteur": "Total tous régimes",
+"regime": "Total tous régimes",
+"montant": 889478.93
+},
+{
+"niveau": 1,
+"secteur_code": "S11_S12A",
+"secteur": "Autres sociétés financières et non financières",
+"regime": "Total S11_S12A",
+"montant": 20274.14
+},
+{
+"niveau": 2,
+"secteur_code": "S11_S12A",
+"secteur": "Autres sociétés financières et non financières",
+"regime": "Autres regimes privés",
+"montant": 20274.14
+},
+{
+"niveau": 1,
+"secteur_code": "S12_FP",
+"secteur": "Fonds de pension",
+"regime": "Total S12_FP",
+"montant": 3408.65
+},
+{
+"niveau": 2,
+"secteur_code": "S12_FP",
+"secteur": "Fonds de pension",
+"regime": "Organismes de retraite professionnelle supplémentaire - contrats collectifs",
+"montant": 3199.18
+},
+{
+"niveau": 2,
+"secteur_code": "S12_FP",
+"secteur": "Fonds de pension",
+"regime": "Régime additionnel de la fonction publique",
+"montant": 209.47
+},
+{
+"niveau": 1,
+"secteur_code": "S12_OA",
+"secteur": "Organismes d'assurance",
+"regime": "Total S12_OA",
+"montant": 33723.75
+},
+{
+"niveau": 2,
+"secteur_code": "S12_OA",
+"secteur": "Organismes d'assurance",
+"regime": "Entreprises d'assurance - contrats collectifs",
+"montant": 15308.74
+},
+{
+"niveau": 2,
+"secteur_code": "S12_OA",
+"secteur": "Organismes d'assurance",
+"regime": "Institutions de prévoyance - contrats collectifs",
+"montant": 11887.19
+},
+{
+"niveau": 2,
+"secteur_code": "S12_OA",
+"secteur": "Organismes d'assurance",
+"regime": "Mutuelles - contrats collectifs",
+"montant": 6527.82
+},
+{
+"niveau": 1,
+"secteur_code": "S13111",
+"secteur": "Etat",
+"regime": "Total S13111",
+"montant": 118750.77
+},
+{
+"niveau": 2,
+"secteur_code": "S13111",
+"secteur": "Etat",
+"regime": "Régime d'intervention sociale de l'État",
+"montant": 52552.94
+},
+{
+"niveau": 2,
+"secteur_code": "S13111",
+"secteur": "Etat",
+"regime": "Régime des crédits d'impôts de l'État",
+"montant": 2792.1
+},
+{
+"niveau": 2,
+"secteur_code": "S13111",
+"secteur": "Etat",
+"regime": "Régimes pour les agents de l'Etat (y compris ex-L)",
+"montant": 63405.73
+},
+{
+"niveau": 1,
+"secteur_code": "S13112",
+"secteur": "ODAC",
+"regime": "Total S13112",
+"montant": 1633.7
+},
+{
+"niveau": 2,
+"secteur_code": "S13112",
+"secteur": "ODAC",
+"regime": "ODAC",
+"montant": 1633.7
+},
+{
+"niveau": 1,
+"secteur_code": "S1313",
+"secteur": "Administrations publiques locales",
+"regime": "Total S1313",
+"montant": 36536.16
+},
+{
+"niveau": 2,
+"secteur_code": "S1313",
+"secteur": "Administrations publiques locales",
+"regime": "Régime d'intervention sociale des communes",
+"montant": 7342.83
+},
+{
+"niveau": 2,
+"secteur_code": "S1313",
+"secteur": "Administrations publiques locales",
+"regime": "Régime d'intervention sociale des départements",
+"montant": 26224.63
+},
+{
+"niveau": 2,
+"secteur_code": "S1313",
+"secteur": "Administrations publiques locales",
+"regime": "Régime d'intervention sociale des régions",
+"montant": 2077.7
+},
+{
+"niveau": 2,
+"secteur_code": "S1313",
+"secteur": "Administrations publiques locales",
+"regime": "Régime des prestations extra-légales d'employeurs versées aux agents des collectivités locales",
+"montant": 891.0
+},
+{
+"niveau": 1,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "Total S13141",
+"montant": 549011.67
+},
+{
+"niveau": 2,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "Association générale des institutions de retraite des cadres et association des régimes de retraite complémentaire des salariés",
+"montant": 92650.0
+},
+{
+"niveau": 2,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "Autres fonds spéciaux",
+"montant": 524.0
+},
+{
+"niveau": 2,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "Autres organismes du régime général",
+"montant": 563.0
+},
+{
+"niveau": 2,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "Autres régimes complémentaires de salariés",
+"montant": 942.1
+},
+{
+"niveau": 2,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "Autres régimes non salariés",
+"montant": 3628.99
+},
+{
+"niveau": 2,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "Autres régimes spéciaux",
+"montant": 41419.84
+},
+{
+"niveau": 2,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "CNAVPL base complementaire",
+"montant": 8519.0
+},
+{
+"niveau": 2,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "Caisse nationale de solidarité pour l'autonomie",
+"montant": 16955.0
+},
+{
+"niveau": 2,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "Caisse nationale des allocations familiales",
+"montant": 35006.05
+},
+{
+"niveau": 2,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "Caisse nationale d’assurance maladie",
+"montant": 132761.83
+},
+{
+"niveau": 2,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "Caisse nationale d’assurance vieillesse",
+"montant": 151825.8
+},
+{
+"niveau": 2,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "Complémentaire santé solidaire",
+"montant": 2469.0
+},
+{
+"niveau": 2,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "Exploitants agricoles",
+"montant": 14237.94
+},
+{
+"niveau": 2,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "Institution de retraite complémentaire des agents non titulaires de l’État et des collectivités publiques",
+"montant": 3989.99
+},
+{
+"niveau": 2,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "Régime des salariés agricoles",
+"montant": 8481.07
+},
+{
+"niveau": 2,
+"secteur_code": "S13141",
+"secteur": "Régime général de la Sécurité sociale",
+"regime": "UNEDIC et autres régimes",
+"montant": 35038.06
+},
+{
+"niveau": 1,
+"secteur_code": "S13142",
+"secteur": "Autres organismes dépendants des assurances sociales",
+"regime": "Total S13142",
+"montant": 94148.29
+},
+{
+"niveau": 2,
+"secteur_code": "S13142",
+"secteur": "Autres organismes dépendants des assurances sociales",
+"regime": "Autres ODASS",
+"montant": 1094.0
+},
+{
+"niveau": 2,
+"secteur_code": "S13142",
+"secteur": "Autres organismes dépendants des assurances sociales",
+"regime": "Pôle emploi",
+"montant": 2042.0
+},
+{
+"niveau": 2,
+"secteur_code": "S13142",
+"secteur": "Autres organismes dépendants des assurances sociales",
+"regime": "Régime d'intervention sociale des hôpitaux publics",
+"montant": 91012.29
+},
+{
+"niveau": 1,
+"secteur_code": "S15",
+"secteur": "ISBLSM",
+"regime": "Total S15",
+"montant": 31991.8
+},
+{
+"niveau": 2,
+"secteur_code": "S15",
+"secteur": "ISBLSM",
+"regime": "Régime d'intervention sociale des institutions sans but lucratif au service des ménages",
+"montant": 31991.8
+}
+]
+}
+}
+}

@@ -1380,6 +1380,15 @@ et publie `pivot_data/textes_promulgues.json` : un enregistrement par dossier
 promulgué, avec sa date, son numéro de loi, sa nature, sa commission au fond et
 sa chambre de première lecture. Aucun appel réseau si les archives sont en cache.
 
+L'étape suivante, `src/budgets_gouvernements.py`, compose
+`pivot_data/budgets_gouvernements.json` (#1053) : pour chaque gouvernement, les
+budgets dont la loi de finances a été promulguée sous lui, avec les recettes, les
+dépenses et le solde de l'État, et ce que les caisses de sécurité sociale
+reçoivent et versent. Elle lit les deux fichiers du job `extract-finances-etat`,
+la liste des gouvernements et la table des textes promulgués — **d'où sa place,
+juste après elle**. Aucun appel réseau ; `continue-on-error`.
+→ `docs/decisions/budgets-par-gouvernement-1053.md`.
+
 **L'ordre compte** : la commission donne la matière de chaque ligne, et une
 matière absente reste `null` — jamais rattrapée depuis l'intitulé. Additif : un
 run sans archive lisible conserve le fichier publié (§3a).

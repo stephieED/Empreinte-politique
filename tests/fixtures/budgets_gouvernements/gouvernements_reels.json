@@ -1,0 +1,40 @@
+{
+ "gouvernements": [
+  {
+   "gouvernement_id": "gouvernement:BORNE",
+   "nom": "Gouvernement Borne",
+   "libelle_an": "BORNE",
+   "organe_ref": "PO791579",
+   "periode": {
+    "debut": "2022-05-17",
+    "fin": "2024-01-09"
+   },
+   "membres_recenses": 55,
+   "fichier": "gouvernement-BORNE.json"
+  },
+  {
+   "gouvernement_id": "gouvernement:ATTAL",
+   "nom": "Gouvernement Attal",
+   "libelle_an": "ATTAL",
+   "organe_ref": "PO833673",
+   "periode": {
+    "debut": "2024-01-10",
+    "fin": "2024-09-05"
+   },
+   "membres_recenses": 35,
+   "fichier": "gouvernement-ATTAL.json"
+  },
+  {
+   "gouvernement_id": "gouvernement:LECORNU_II",
+   "nom": "Gouvernement Lecornu II",
+   "libelle_an": "LECORNU II",
+   "organe_ref": "PO873634",
+   "periode": {
+    "debut": "2025-10-11",
+    "fin": null
+   },
+   "membres_recenses": 39,
+   "fichier": "gouvernement-LECORNU_II.json"
+  }
+ ]
+}

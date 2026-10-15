@@ -126,7 +126,7 @@ svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
     <span><i class="puce" style="background:var(--ph1)"></i>arrive dans Préparer</span>
     <span><i class="puce" style="background:var(--neutre)"></i>entre jobs amont</span>
   </div>
-  <p class="note">Relevé le 12/10/2026 dans <code>.github/workflows/generate-data.yml</code> (après #1053, qui ajoute <code>extract-finances-etat</code> : 17 jobs, 58 étapes dans <code>merge-and-pivot</code>). Les durées sont dans la figure suivante. L'ordre des nœuds et leurs positions sont calculés pour limiter les croisements.</p>
+  <p class="note">Relevé le 13/10/2026 dans <code>.github/workflows/generate-data.yml</code> (après #1053, qui ajoute <code>extract-finances-etat</code> puis l'étape des budgets par gouvernement : 17 jobs, 59 étapes dans <code>merge-and-pivot</code>). Les durées sont dans la figure suivante. L'ordre des nœuds et leurs positions sont calculés pour limiter les croisements.</p>
 </section>
 
 
@@ -450,7 +450,7 @@ svg.actif .bus.on,svg.actif .chaine.on{opacity:1}
     {id:"p2", c:5, t:"2 Recevoir", s:"15 étapes · 12 artifacts"},
     {id:"p3", c:5, t:"3 Fusionner", s:"1 étape · merge_profile"},
     {id:"p4", c:5, t:"4 Passer au pivot", s:"5 étapes · 2 passes"},
-    {id:"p5", c:5, t:"5 Indexer", s:"7 étapes · AN, UE"},
+    {id:"p5", c:5, t:"5 Indexer", s:"8 étapes · AN, UE, budgets"},
     {id:"p6", c:5, t:"6 Recomposer", s:"5 étapes · agrégats"},
     {id:"p7", c:5, t:"7 Contrôler", s:"9 étapes · 5 gardes"},
     {id:"p8", c:5, t:"8 Publier", s:"5 étapes · commit, push"}

@@ -4052,6 +4052,21 @@ jobs:
         run: |
           python3 src/textes_promulgues.py
 
+      # Les budgets que chaque gouvernement a fait voter (#1053).
+      #   entrée   : src/budgets_gouvernements.py
+      #   consomme : raw_data/finances_etat.json et raw_data/finances_sociales.json
+      #              (artifact `finances-etat`, ou les fichiers du run précédent),
+      #              raw_data/gouvernements_reels.json, et la table des textes
+      #              promulgués construite juste au-dessus
+      #   produit  : pivot_data/budgets_gouvernements.json
+      #
+      # APRÈS les textes promulgués : c'est la date de la loi de finances qui
+      # rattache une année à un gouvernement. Aucun appel réseau. Non bloquant :
+      # une collecte absente laisse le fichier publié en place.
+      - name: Composer les budgets votés sous chaque gouvernement
+        continue-on-error: true
+        run: python3 src/budgets_gouvernements.py
+
       - name: Construire le rattachement des scrutins aux dossiers
         continue-on-error: true
         run: python3 src/build_scrutins_dossiers.py
@@ -4889,6 +4904,11 @@ jobs:
           # rien écrire si les archives sont illisibles.
           if [ -f pivot_data/textes_promulgues.json ]; then
             git add pivot_data/textes_promulgues.json
+          fi
+          # Budgets votés sous chaque gouvernement (#1053) : même garde, son
+          # étape est `continue-on-error`.
+          if [ -f pivot_data/budgets_gouvernements.json ]; then
+            git add pivot_data/budgets_gouvernements.json
           fi
           # Actes réglementaires (#1029 voie 1) : même garde, le step qui les
           # met à jour est `continue-on-error`. Le répertoire existe dans le

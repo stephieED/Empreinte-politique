@@ -329,6 +329,16 @@ python3 src/textes_promulgues.py
 python3 src/textes_promulgues.py --no-merge
 ```
 
+```bash
+# Les budgets votés sous chaque gouvernement, à partir des fichiers déjà collectés.
+python3 src/budgets_gouvernements.py
+# Écrire ailleurs, ou lire les fichiers d'un autre répertoire.
+python3 src/budgets_gouvernements.py --sortie /tmp/budgets.json --racine /tmp/essai
+```
+
+Produit : `pivot_data/budgets_gouvernements.json`. Une ligne est imprimée par
+gouvernement qui a fait voter au moins un budget. Aucun appel réseau.
+
 Produit : `pivot_data/textes_promulgues.json` — un enregistrement par dossier
 promulgué des archives de l'Assemblée (1 015 au 23/09/2026, de 2012 à 2026), avec
 sa date de promulgation, son numéro de loi, son intitulé, sa nature (projet,

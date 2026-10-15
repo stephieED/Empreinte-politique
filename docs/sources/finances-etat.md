@@ -85,6 +85,29 @@ l'écrit de quatre façons : `MIN01`, `01`, `1`, `1.0`.
 - **Le « budget vert » porte une colonne d'exécution 2022 qui ne comble pas le
   trou** : 40 des 48 missions, sans « Remboursements et dégrèvements » (130,6 Md€
   votés), avec une ligne sans mission de −53,1 Md€.
+- **Les fichiers d'exécution de 2023 à 2025 portent la mission**, et eux seuls :
+  33 missions par exercice, une par programme (zéro programme sous deux missions,
+  mesuré le 13/10/2026). Le découpage change d'un budget au suivant : « Travail et
+  emploi » devient « Travail, emploi et administration des ministères sociaux » en
+  2025 ; la même année, le programme 124 de la mission « Solidarité, insertion et
+  égalité des chances » disparaît et un programme 155 apparaît sous la mission
+  renommée. Aucune mission n'est
+  publiée par mois : un changement de gouvernement en cours d'année n'y laisse
+  aucune coupure.
+- **Le nom du programme est dans la même colonne que son numéro** : « Charge de
+  la dette et trésorerie de l'État (crédits évaluatifs) - 117 ». La collecte
+  garde ce qui précède « - 117 » sous `libelle_programme`, et le met à `null` si
+  deux lignes du même programme l'écrivent différemment. Relu hors dépôt le
+  14/10/2026 sur 2023, 2024 et 2025 : 129, 128 et 127 programmes hors
+  « Remboursements et dégrèvements », aucun sans nom.
+- **Les deux fichiers du budget ne donnent le même total de dépenses qu'avec une
+  ligne de plus.** Le jeu mensuel compte dans ses « dépenses nettes du budget
+  général » les remboursements et dégrèvements d'impôts **locaux**, qui ne sont
+  dans aucune mission hors « Remboursements et dégrèvements ». Mesuré le
+  13/10/2026 sur 2023, 2024 et 2025 : dépenses nettes = somme des missions hors
+  « Remboursements et dégrèvements » + cette ligne, à moins de 1 M€ (5,1 Md€ en
+  2023, 5,0 en 2024, 4,5 en 2025). L'écart signalé « inexpliqué » le 12/10 est
+  celui-là.
 - **Une page de présentation n'est pas le jeu.** Des jeux affichent zéro
   enregistrement à l'API et tout leur contenu en pièces jointes.
 
