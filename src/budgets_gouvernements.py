@@ -24,8 +24,8 @@ ne sont pas lues ici.
 Les montants sont **ceux réellement encaissés et dépensés**, tels que la source
 les donne ; aucun montant voté n'est repris (arbitré le 13/10/2026). Une partie
 que la source ne donne pas pour une année est `null`, à côté de son
-`*_non_resolu` (§2 règle 5) — les missions avant 2023, les caisses avant 2020 ou
-après la dernière année publiée.
+`*_non_resolu` (§2 règle 5) — les missions de 2021 et 2022 ou d'un exercice non
+clos, les caisses avant 2020 ou après la dernière année publiée.
 
 Usage :
 
@@ -67,6 +67,8 @@ COMPTES_A_PART = ("Solde des comptes spéciaux", "Solde des Budgets annexes")
 SOLDE = "Solde budgétaire"
 #: Comptés dans les dépenses nettes du budget général, mais dans aucune des
 #: missions gardées : c'est ce qui sépare les deux fichiers (5,1 Md€ en 2023).
+#: De 2015 à 2020, ils n'y sont pas : les dépenses nettes valent la somme des
+#: missions hors remboursements et dégrèvements, à 23 € près (#1302).
 DEGREVEMENTS_LOCAUX = "Remboursements et dégrèvements d'impôts locaux"
 MISSION_ECARTEE = "Remboursements et dégrèvements"
 
@@ -116,10 +118,15 @@ def budget_de_l_etat(finances: dict[str, Any], an: str) -> Optional[dict[str, An
         "comptes_a_part": sum(valeur(nom) for nom in COMPTES_A_PART),
         "solde": valeur(SOLDE),
     }
-    programmes = (((finances.get("exercices") or {}).get(an) or {}).get("realise") or {}).get("programmes")
-    if bloc["exercice_complet"] and programmes and all("mission" in p for p in programmes):
+    exercice = (finances.get("exercices") or {}).get(an)
+    programmes = ((exercice or {}).get("realise") or {}).get("programmes")
+    # Un programme sans mission n'empêche la répartition que s'il dépense : en
+    # 2015, dix-neuf programmes à 0 € manquent au fichier par mission (#1302).
+    if bloc["exercice_complet"] and programmes and all("mission" in p for p in programmes if p["cp"]):
         par_mission: dict[str, list[dict[str, Any]]] = {}
         for p in programmes:
+            if "mission" not in p:
+                continue
             par_mission.setdefault(p["mission"], []).append(
                 {"programme": p["programme"], "libelle": p.get("libelle_programme"),
                  "montant": p["cp"]})
@@ -135,10 +142,21 @@ def budget_de_l_etat(finances: dict[str, Any], an: str) -> Optional[dict[str, An
         bloc["degrevements_d_impots_locaux"] = valeur(DEGREVEMENTS_LOCAUX)
     else:
         bloc["missions"] = None
-        bloc["missions_non_resolu"] = {
-            "raison": "la source ne publie les dépenses par mission, en données, que pour "
-                      "les exercices clos de 2023 à 2025"}
+        bloc["missions_non_resolu"] = {"raison": _raison_sans_missions(bloc, exercice)}
     return bloc
+
+
+def _raison_sans_missions(bloc: dict[str, Any], exercice: Optional[dict[str, Any]]) -> str:
+    """Pourquoi un exercice n'a pas de répartition par mission — la vraie raison,
+    qui n'est pas la même avant 2015, en 2021-2022 et pour l'année en cours."""
+    if not bloc["exercice_complet"]:
+        return "l'exercice n'est pas clos"
+    if exercice is None:
+        return "les dépenses par programme ne sont collectées qu'à partir de 2015"
+    if not (exercice.get("realise") or {}).get("programmes"):
+        return (exercice.get("realise_non_resolu") or {}).get(
+            "raison", "les dépenses par programme ne sont pas publiées pour cet exercice")
+    return "un programme qui dépense n'a pas de mission dans la source"
 
 
 def securite_sociale(sociales: dict[str, Any], an: str) -> Optional[dict[str, Any]]:

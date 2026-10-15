@@ -334,3 +334,91 @@ def test_chaque_exercice_du_plan_declare_ses_deux_cotes():
         assert set(cotes) in ({"vote", "realise"}, {"etat"}), f"exercice {an}"
         for source in cotes.values():
             assert "raison" in source or source["fichier"].startswith("https://"), f"exercice {an}"
+
+
+# ── #1302 : la mission de 2015 à 2020 ───────────────────────────────────────
+
+def test_le_fichier_par_mission_de_2015_donne_la_mission_et_le_nom_du_programme():
+    """`PLR2015-Exec-Msn_CP-BG.csv`, jumeau du fichier par ministère : quatre
+    lignes de titre, puis une ligne par action."""
+    missions, noms = fe.lire_missions_csv(texte("missions2015.csv"))
+
+    assert missions == {"105": "Action extérieure de l'État", "151": "Action extérieure de l'État"}
+    assert noms["151"] == "Français à l'étranger et affaires consulaires"
+
+
+def test_le_fichier_par_mission_de_2017_a_une_autre_forme():
+    """2017 : pas de lignes de titre, une ligne par catégorie, un en-tête coupé
+    par un saut de ligne entre guillemets."""
+    missions, noms = fe.lire_missions_csv(texte("missions2017.csv"))
+
+    assert missions == {"105": "Action extérieure de l'État", "151": "Action extérieure de l'État"}
+    assert noms["105"] == "Action de la France en Europe et dans le monde"
+
+
+def test_un_programme_absent_du_fichier_par_mission_n_en_recoit_pas():
+    """En 2015, dix-neuf programmes à 0 € n'y sont pas (le 401, par exemple) :
+    la clé manque, aucune mission n'est empruntée."""
+    lignes = [{"programme": "105", "cp": 1.0}, {"programme": "401", "cp": 0.0}]
+
+    fe._ajouter_missions(lignes, *fe.lire_missions_csv(texte("missions2015.csv")))
+
+    assert lignes[0]["mission"] == "Action extérieure de l'État"
+    assert "mission" not in lignes[1] and "libelle_programme" not in lignes[1]
+
+
+def test_realise_2018_garde_la_mission_que_l_export_porte():
+    lignes = fe.lire_realise_2018(texte("exec2018.json"))
+
+    assert all("mission" in l and l["libelle_programme"] for l in lignes)
+
+
+def test_realise_xls_prend_la_mission_du_budget_general_dans_la_nomenclature(monkeypatch):
+    """Lignes de `PLR2019-Nomenclature.xls` : le code « ZC » existe aussi pour
+    un compte de concours financiers, seule la ligne `BG` est lue."""
+    credits = [
+        ["exercice", "loi", "typeBudget", "ministere", "mission", "programme", "action",
+         "sous_action", "categorie", "titre", "AE EXEC", "CP EXEC"],
+        ["2019", "PLR", "BG", "01", "AA", "105", "105-01", "", 22.0, "2", 15101806.0, 15101806.0],
+    ]
+    nomenclature = [
+        ["Type ligne ", "Type Budget", "code", "Mission", "Ministere", "Libelle"],
+        ["MIN", "", 1.0, "", "", "Europe et affaires étrangères"],
+        ["MSN", "CCF", "ZC", "", "", "Avances aux collectivités territoriales"],
+        ["MSN", "BG", "AA", "", "", "Action extérieure de l'État"],
+        ["PGM", "BG", 105.0, "AA", "01", "Action de la France en Europe et dans le monde"],
+    ]
+    monkeypatch.setattr(fe, "_feuille", lambda contenu: credits if contenu == b"c" else nomenclature)
+
+    lignes = fe.lire_realise_xls(b"c", fe.lire_nomenclature_xls(b"n"),
+                                 *fe.lire_nomenclature_missions_xls(b"n"))
+
+    assert lignes[0]["mission"] == "Action extérieure de l'État"
+    assert lignes[0]["libelle_programme"] == "Action de la France en Europe et dans le monde"
+
+
+def test_le_consomme_de_2015_lit_les_deux_fichiers(monkeypatch):
+    monkeypatch.setattr(fe, "PLANCHER_PROGRAMMES", 1)
+    source = {"fichier": URL_REALISE, "lire": "realise_2015",
+              "missions": "https://exemple.invalid/missions2015.csv"}
+    fichiers = {URL_REALISE: (FIXTURES / "exec2015.csv").read_bytes(),
+                source["missions"]: (FIXTURES / "missions2015.csv").read_bytes()}
+
+    bloc = fe.lire_cote(source, fichiers.__getitem__, "consommé 2015")
+
+    assert programme(bloc["programmes"], "151")["cp"] == 202564985.0, "les montants ne bougent pas"
+    assert programme(bloc["programmes"], "151")["mission"] == "Action extérieure de l'État"
+    assert bloc["source_urls"] == [URL_REALISE, source["missions"]]
+
+
+@pytest.mark.parametrize("an", [2015, 2018, 2020])
+def test_un_exercice_publie_sans_mission_se_relit_une_fois(an):
+    """Les exercices 2015-2020 étaient figés avant #1302 : sans cette règle, la
+    mission n'arriverait jamais au corpus."""
+    sans = {"vote": {"programmes": []}, "realise": {"programmes": [{"programme": "105", "cp": 1.0}]}}
+    avec = {"vote": {"programmes": []},
+            "realise": {"programmes": [{"programme": "105", "cp": 1.0, "mission": "M",
+                                        "libelle_programme": "P"}]}}
+
+    assert fe.est_fige(sans, an, date(2026, 10, 15)) is False
+    assert fe.est_fige(avec, an, date(2026, 10, 15)) is True

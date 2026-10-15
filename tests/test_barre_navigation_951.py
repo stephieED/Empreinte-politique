@@ -224,7 +224,8 @@ def test_l_accueil_est_le_hero_puis_l_entree_en_deux_temps() -> None:
     """
     accueil = _sans_commentaires(ACCUEIL.read_text(encoding="utf-8"))
     corps = accueil[accueil.index("<main"):accueil.index("</main>")]
-    assert re.findall(r"<([A-Z][A-Za-z]+) />", corps) == ["Hero", "CommencerAExplorer"]
+    # Les analyses thématiques ferment la page, au-dessus du pied (15/10/2026).
+    assert re.findall(r"<([A-Z][A-Za-z]+) />", corps) == ["Hero", "CommencerAExplorer", "AnalysesThematiques"]
     hero = _sans_commentaires((UI / "src" / "components" / "landing" / "Hero.jsx").read_text(encoding="utf-8"))
     assert "landing-cta" not in hero and "Voir un profil" not in hero
     liste = (UI / "src" / "components" / "landing" / "CommencerAExplorer.jsx").read_text(encoding="utf-8")

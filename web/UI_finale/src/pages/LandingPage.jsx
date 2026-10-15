@@ -2,6 +2,7 @@ import EnTeteSite from '../components/EnTeteSite';
 import PiedDeSite from '../components/PiedDeSite';
 import Hero from '../components/landing/Hero';
 import CommencerAExplorer from '../components/landing/CommencerAExplorer';
+import AnalysesThematiques from '../components/landing/AnalysesThematiques';
 import '../styles/shell.css';
 import '../components/landing/landing.css';
 
@@ -27,6 +28,7 @@ export default function LandingPage() {
         <main className="landing-main">
           <Hero />
           <CommencerAExplorer />
+          <AnalysesThematiques />
         </main>
         <PiedDeSite />
       </div>

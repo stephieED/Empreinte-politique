@@ -177,3 +177,21 @@ def test_le_nom_du_programme_va_de_la_collecte_a_la_mission():
     (action_exterieure,) = [m for m in etat["missions"] if m["mission"] == "Action extérieure de l'État"]
     assert {p["programme"]: p["libelle"] for p in action_exterieure["programmes"]}["105"] == (
         "Action de la France en Europe et dans le monde")
+
+
+def test_un_programme_a_zero_sans_mission_n_empeche_pas_la_repartition():
+    """#1302 : en 2015, dix-neuf programmes à 0 € manquent au fichier par
+    mission. Ils n'ajoutent rien ; un programme qui dépense, lui, bloque."""
+    finances = charge("finances_etat.json")
+    programmes = finances["exercices"]["2024"]["realise"]["programmes"]
+    for p in programmes:
+        p["mission"] = "Mission"
+    programmes.append({"programme": "401", "cp": 0.0})
+
+    assert bg.budget_de_l_etat(finances, "2024")["missions"] is not None
+
+    programmes[-1]["cp"] = 1.0
+    etat = bg.budget_de_l_etat(finances, "2024")
+    assert etat["missions"] is None
+    assert etat["missions_non_resolu"]["raison"] == (
+        "un programme qui dépense n'a pas de mission dans la source")

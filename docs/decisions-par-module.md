@@ -310,7 +310,7 @@ Le mentionnent sans le gouverner : [`budget-collecte-interventions`](decisions/b
 
 ## `src/budgets_gouvernements.py`
 
-Le mentionnent sans le gouverner : [`budgets-par-gouvernement-1053`](decisions/budgets-par-gouvernement-1053.md), [`section-budgets-fiche-gouvernement-1053`](decisions/section-budgets-fiche-gouvernement-1053.md).
+Le mentionnent sans le gouverner : [`budgets-par-gouvernement-1053`](decisions/budgets-par-gouvernement-1053.md), [`missions-2015-2020-1302`](decisions/missions-2015-2020-1302.md), [`section-budgets-fiche-gouvernement-1053`](decisions/section-budgets-fiche-gouvernement-1053.md).
 
 ## `src/build_amendements_index.py`
 
@@ -657,7 +657,7 @@ Le mentionnent sans le gouverner : [`lectures-du-depot-dans-les-tests-791`](deci
 
 ## `src/finances_etat.py`
 
-Le mentionnent sans le gouverner : [`finances-etat-collecte-1053`](decisions/finances-etat-collecte-1053.md).
+Le mentionnent sans le gouverner : [`finances-etat-collecte-1053`](decisions/finances-etat-collecte-1053.md), [`missions-2015-2020-1302`](decisions/missions-2015-2020-1302.md).
 
 ## `src/finances_sociales.py`
 

@@ -19,9 +19,10 @@ Deux familles, qui ne se recouvrent pas :
   les montants des lois de finances. **Aucun ministère** ;
 - **les crédits de paiement du budget général, programme par programme, avec
   leur ministère** — un fichier par exercice et par côté (voté, consommé), de
-  2015 à 2025. La maille publiée plus loin est le ministère (arbitré le
-  12/10/2026) ; le programme est gardé ici parce que c'est par lui que le
-  consommé de 2023 à 2025 retrouve son ministère.
+  2015 à 2025. Le programme est gardé ici parce que c'est par lui que le
+  consommé de 2023 à 2025 retrouve son ministère, et celui de 2015 à 2017 sa
+  mission ; le consommé porte la **mission** partout où la source la publie,
+  2015-2020 et 2023-2025 (#1302).
 
 ## La borne, et pourquoi elle est à 2015
 
@@ -103,7 +104,7 @@ URL_FICHE = "https://data.economie.gouv.fr/explore/dataset/{jeu}/"
 #: datée qui ne bouge pas.
 URL_ARCHIVE = ("https://static.data.gouv.fr/resources/plr-{an}-projet-de-loi-de-"
                "reglement-pour-lannee-{an}-donnees-de-lexecution-budgetaire/"
-               "{horodatage}/PLR{an}-Exec-Min_CP-BG.csv")
+               "{horodatage}/PLR{an}-Exec-{maille}_CP-BG.csv")
 
 JEU_MENSUEL = "situations-mensuelles-budgetaires-series-longues"
 PIECES_MENSUELLES = ("series_longues_smb_dgfip_2013_2023_csv",
@@ -267,8 +268,9 @@ class _Cumul:
                 lib = libelles.get(code)
             ligne = {"programme": prog, "ministere_code": code, "ministere": lib,
                      "cp": round(self.cp[prog], 2)}
-            # La mission n'est portée que par les fichiers d'exécution de 2023
-            # à 2025 : la clé n'existe que là où la source la donne.
+            # La clé n'existe que là où la source donne la mission : un
+            # programme absent du fichier par mission (2015 : dix-neuf, tous à
+            # 0 €) n'en reçoit pas d'emprunt.
             if prog in self.mission:
                 ligne["mission"] = self.mission[prog]
             # Même règle pour le nom du programme : la clé n'existe que là où la
@@ -369,8 +371,46 @@ def lire_realise_2018(texte: str) -> list[dict[str, Any]]:
         if _est_bg(ligne.get("type_de_budget")):
             cumul.ajouter(ligne.get("code_programme"), ligne.get("exec_cp_t2_hors_t2_2018_rap_2018"),
                           ligne.get("code_ministere_au_1er_janvier_2018"),
-                          ligne.get("ministere_au_1er_janvier_2018"))
+                          ligne.get("ministere_au_1er_janvier_2018"),
+                          mission=ligne.get("mission"), libelle_programme=ligne.get("programme"))
     return cumul.lignes()
+
+
+def lire_missions_csv(texte: str) -> tuple[dict[str, str], dict[str, Optional[str]]]:
+    """`PLR2015-Exec-Msn_CP-BG.csv`, et ses jumeaux de 2016 et 2017 (#1302).
+
+    Le fichier par ministère, qui porte les montants, n'a pas de mission ; son
+    jumeau par mission, dans le même jeu, en a une par programme. Rend
+    `({programme: mission}, {programme: nom du programme})` — les montants
+    restent ceux du fichier par ministère, mesuré identiques au million près
+    sur les trois années le 15/10/2026.
+
+    Deux formes : 2015 et 2016 ouvrent sur quatre lignes de titre avant
+    « Mission;Programme;Libellé programme… », 2017 a une ligne par catégorie
+    sous « Code Mission;Mission;Code Programme;Programme… ».
+    """
+    cumul = _Cumul()
+    if texte.lstrip().startswith("GESTION"):
+        for ligne in _lignes_csv(texte, "Mission"):
+            cumul.ajouter(ligne.get("Programme"), 0, mission=ligne.get("Mission"),
+                          libelle_programme=ligne.get(_colonne(ligne, "libellé programme")))
+    else:
+        for ligne in _lignes_csv(texte):
+            if _est_bg(ligne.get(_colonne(ligne, "type de budget"))):
+                cumul.ajouter(ligne.get("Code Programme"), 0, mission=ligne.get("Mission"),
+                              libelle_programme=ligne.get("Programme"))
+    return dict(cumul.mission), dict(cumul.libelle_programme)
+
+
+def _ajouter_missions(lignes: list[dict[str, Any]], missions: dict[str, str],
+                      noms: dict[str, Optional[str]]) -> list[dict[str, Any]]:
+    """Pose la mission et le nom de chaque programme que le second fichier connaît."""
+    for ligne in lignes:
+        if ligne["programme"] in missions:
+            ligne["mission"] = missions[ligne["programme"]]
+        if ligne["programme"] in noms:
+            ligne["libelle_programme"] = noms[ligne["programme"]]
+    return lignes
 
 
 def _feuille(contenu: bytes) -> list[list[Any]]:
@@ -388,16 +428,44 @@ def lire_nomenclature_xls(contenu: bytes) -> dict[str, str]:
             if str(l[0]).strip() == "MIN" and code_nu(l[2])}
 
 
-def lire_realise_xls(contenu: bytes, libelles: dict[str, str]) -> list[dict[str, Any]]:
-    """`PLR2019-Credits_Destination_Nature.xls`, et le même en 2020."""
+def lire_nomenclature_missions_xls(contenu: bytes) -> tuple[dict[str, str], dict[str, str]]:
+    """La même nomenclature, pour le budget général : `({code de mission: libellé},
+    {programme: nom})`, depuis ses lignes `MSN` et `PGM` (#1302).
+
+    Le code de mission (« AA ») n'est unique qu'à l'intérieur d'un type de
+    budget : seules les lignes `BG` sont lues.
+    """
+    missions, noms = {}, {}
+    for l in _feuille(contenu)[1:]:
+        if str(l[1]).strip() != "BG":
+            continue
+        if str(l[0]).strip() == "MSN" and str(l[2]).strip():
+            missions[str(l[2]).strip()] = _libelle(l[5])
+        elif str(l[0]).strip() == "PGM" and code_nu(l[2]):
+            noms[code_nu(l[2])] = _libelle(l[5])
+    return missions, noms
+
+
+def lire_realise_xls(contenu: bytes, libelles: dict[str, str],
+                     missions: Optional[dict[str, str]] = None,
+                     noms: Optional[dict[str, str]] = None) -> list[dict[str, Any]]:
+    """`PLR2019-Credits_Destination_Nature.xls`, et le même en 2020.
+
+    La mission n'y est qu'un code (« AA ») ; son libellé, comme celui du
+    programme, vient de la nomenclature. Un code qu'elle ne connaît pas laisse
+    le programme sans mission plutôt que d'en inventer une.
+    """
     lignes = _feuille(contenu)
     entete = [str(c).strip() for c in lignes[0]]
-    i_bud, i_min, i_pgm, i_cp = (entete.index(n) for n in
-                                 ("typeBudget", "ministere", "programme", "CP EXEC"))
+    i_bud, i_min, i_msn, i_pgm, i_cp = (entete.index(n) for n in
+                                        ("typeBudget", "ministere", "mission", "programme",
+                                         "CP EXEC"))
     cumul = _Cumul()
     for ligne in lignes[1:]:
         if _est_bg(ligne[i_bud]):
-            cumul.ajouter(ligne[i_pgm], ligne[i_cp], ligne[i_min])
+            cumul.ajouter(ligne[i_pgm], ligne[i_cp], ligne[i_min],
+                          mission=(missions or {}).get(str(ligne[i_msn]).strip()),
+                          libelle_programme=(noms or {}).get(code_nu(ligne[i_pgm])))
     return cumul.lignes(libelles)
 
 
@@ -446,8 +514,12 @@ def _piece(jeu: str, piece: str) -> str:
     return URL_PIECE.format(jeu=jeu, piece=piece)
 
 
-def _archive(an: int, horodatage: str) -> str:
-    return URL_ARCHIVE.format(an=an, horodatage=horodatage)
+def _archive(an: int, horodatage: str, maille: str = "Min") -> str:
+    """Un fichier d'exécution de 2015 à 2017 : `Min` par ministère, `Msn` par mission.
+
+    Les deux sont dans le même jeu data.gouv.fr, chacun à son horodatage.
+    """
+    return URL_ARCHIVE.format(an=an, horodatage=horodatage, maille=maille)
 
 
 _LFI = "loi-de-finances-initiale-pour-{an}-lfi-{an}"
@@ -456,24 +528,29 @@ _PLRG = ("projet-de-loi-relatif-aux-resultats-de-la-gestion-et-portant-approbati
          "des-comptes-de-lannee-plrg-{an}")
 
 #: Exercice → côté → ce qu'il faut lire. `fichier` porte les montants,
-#: `nomenclature` ce qui donne le ministère quand le fichier ne le porte pas.
+#: `nomenclature` ce qui donne le ministère quand le fichier ne le porte pas,
+#: `missions` le fichier qui donne la mission de chaque programme quand le
+#: premier ne la porte pas (2015-2017, #1302).
 #: Une `raison` à la place déclare l'absence. **Ajouter un exercice, c'est
 #: ajouter une entrée ici** — et un test sur une ligne copiée de son fichier.
 LECTEURS: dict[int, dict[str, dict[str, Any]]] = {
     2015: {
         "vote": {"raison": "la loi de finances 2015 par ministère n'est pas publiée en "
                            "données : seul le projet l'est"},
-        "realise": {"fichier": _archive(2015, "20160606-181537"), "lire": "realise_2015"},
+        "realise": {"fichier": _archive(2015, "20160606-181537"), "lire": "realise_2015",
+                    "missions": _archive(2015, "20160606-180939", "Msn")},
     },
     2016: {
         "vote": {"fichier": _piece(_LFI.format(an=2016), "lfi2016_t2_ht2_bg_ministere_csv"),
                  "lire": "vote_2016"},
-        "realise": {"fichier": _archive(2016, "20170706-113850"), "lire": "realise_2015"},
+        "realise": {"fichier": _archive(2016, "20170706-113850"), "lire": "realise_2015",
+                    "missions": _archive(2016, "20170706-114130", "Msn")},
     },
     2017: {
         "vote": {"fichier": _piece(_LFI.format(an=2017), "lfi2017_t2_ht2_bg_ministere_csv"),
                  "lire": "vote_2016"},
-        "realise": {"fichier": _archive(2017, "20180601-181647"), "lire": "realise_2017"},
+        "realise": {"fichier": _archive(2017, "20180601-181647"), "lire": "realise_2017",
+                    "missions": _archive(2017, "20180601-180618", "Msn")},
     },
     2018: {
         "vote": {"fichier": _piece(_LFI.format(an=2018),
@@ -544,7 +621,8 @@ def _verifier(lignes: list[dict[str, Any]], quoi: str) -> list[dict[str, Any]]:
 
 
 def _bloc(source: dict[str, Any], lignes: list[dict[str, Any]]) -> dict[str, Any]:
-    urls = [source["fichier"]] + ([source["nomenclature"]] if source.get("nomenclature") else [])
+    urls = [source["fichier"]] + [source[cle] for cle in ("nomenclature", "missions")
+                                  if source.get(cle)]
     return {"source_urls": urls, "programmes": lignes}
 
 
@@ -553,12 +631,16 @@ def lire_cote(source: dict[str, Any], appel: Callable[[str], bytes], quoi: str) 
     contenu = appel(source["fichier"])
     lire = source["lire"]
     if lire == "realise_xls":
-        lignes = lire_realise_xls(contenu, lire_nomenclature_xls(appel(source["nomenclature"])))
+        nomenclature = appel(source["nomenclature"])
+        lignes = lire_realise_xls(contenu, lire_nomenclature_xls(nomenclature),
+                                  *lire_nomenclature_missions_xls(nomenclature))
     elif lire == "vote_2020":
         lignes = lire_vote_2020(decoder(contenu),
                                 lire_nomenclature_2020(decoder(appel(source["nomenclature"]))))
     else:
         lignes = globals()["lire_" + lire](decoder(contenu))
+    if source.get("missions"):
+        lignes = _ajouter_missions(lignes, *lire_missions_csv(decoder(appel(source["missions"]))))
     return _bloc(source, _verifier(lignes, quoi))
 
 
@@ -667,6 +749,17 @@ def charger(chemin: Path = CHEMIN_PAR_DEFAUT) -> dict[str, Any]:
     return publie if isinstance(publie, dict) else {}
 
 
+#: Les lecteurs dont le fichier porte lui-même la mission (#1302).
+LECTEURS_AVEC_MISSION = frozenset({"realise_2018", "realise_xls"})
+
+
+def _porte_la_mission(plan: dict[str, Any]) -> bool:
+    """Le consommé de cet exercice sort-il avec la mission de chaque programme ?"""
+    realise = plan.get("realise") or {}
+    return ("etat" in plan or bool(realise.get("missions"))
+            or realise.get("lire") in LECTEURS_AVEC_MISSION)
+
+
 def est_fige(bloc: Optional[dict[str, Any]], an: int, aujourd_hui: date) -> bool:
     """Un exercice dont rien ne peut plus bouger ne se relit pas.
 
@@ -676,10 +769,11 @@ def est_fige(bloc: Optional[dict[str, Any]], an: int, aujourd_hui: date) -> bool
     """
     if not bloc or an >= aujourd_hui.year - 1:
         return False
-    # Un exercice lu avant que la mission ne soit gardée (13/10/2026), ou le
-    # nom du programme (14/10/2026), se relit une fois : son fichier les porte,
-    # le bloc publié ne les a pas.
-    if "etat" in LECTEURS.get(an, {}):
+    # Un exercice lu avant que la mission ne soit gardée (13/10/2026 pour
+    # 2023-2025, 15/10/2026 pour 2015-2020, #1302), ou le nom du programme
+    # (14/10/2026), se relit une fois : son fichier les porte, le bloc publié ne
+    # les a pas.
+    if _porte_la_mission(LECTEURS.get(an, {})):
         programmes = (bloc.get("realise") or {}).get("programmes") or []
         if programmes and not all(any(cle in p for p in programmes)
                                   for cle in ("mission", "libelle_programme")):

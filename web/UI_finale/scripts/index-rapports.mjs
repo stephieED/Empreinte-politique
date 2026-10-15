@@ -18,7 +18,7 @@
  * développement comme en production, et sa version committée se relit dans la
  * revue. `tests/test_rapports_publies.py` refuse une version périmée.
  */
-import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SITE, STYLE_CHROME, appliquerLeChrome, bandeau, piedDeSite } from './chrome-instantane.mjs';
@@ -27,6 +27,10 @@ const ici = path.dirname(fileURLToPath(import.meta.url));
 const racine = path.resolve(ici, '..');
 export const DOSSIER = path.join(racine, 'public', 'rapports');
 export const INDEX = path.join(racine, 'public', 'rapports.html');
+/* La liste que lit le carrousel de l'accueil : les mêmes champs que l'index,
+ * plus la vignette. Écrite à côté de l'index, et pour la même raison : un
+ * article ajouté sans régénérer serait absent de l'accueil. */
+export const LISTE = path.join(racine, 'public', 'rapports.json');
 
 const MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
 const enClair = (iso) => `${Number(iso.slice(8, 10))} ${MOIS[Number(iso.slice(5, 7)) - 1]} ${iso.slice(0, 4)}`;
@@ -46,8 +50,22 @@ export function instantanes(dossier = DOSSIER) {
       if (!description) throw new Error(`${fichier} n'a pas de <meta name="description">.`);
       const periode = lire(source, /<meta name="article:periode" content="(.*?)">/s);
       const type = lire(source, /<meta name="article:type" content="(.*?)">/s);
-      return { fichier, titre, description, periode, type, date: fichier.slice(0, 10) };
+      /* LA VIGNETTE EST LIVRÉE AVEC L'ARTICLE (15/10/2026) : une image du
+       * même nom, `.vignette.jpg`, choisie à la publication — la figure la plus
+       * parlante de l'article. Absente, le carrousel de l'accueil montre
+       * l'article sans image ; `tests/test_rapports_publies.py` refuse qu'elle
+       * manque. */
+      const vignette = fichier.replace(/\.html$/, '.vignette.jpg');
+      return {
+        fichier, titre, description, periode, type, date: fichier.slice(0, 10),
+        vignette: existsSync(path.join(dossier, vignette)) ? vignette : null,
+      };
     });
+}
+
+/** Ce que lit l'accueil (`public/rapports.json`), du plus récent au plus ancien. */
+export function listeAccueil(articles) {
+  return `${JSON.stringify(articles.map(({ fichier, titre, description, date, vignette }) => ({ fichier, titre, description, date, vignette })), null, 1)}\n`;
 }
 
 const echappe = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -158,6 +176,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const touches = rafraichirLeChrome();
   const liste = instantanes();
   writeFileSync(INDEX, page(liste));
-  console.log(`index-rapports : ${liste.length} article(s) → public/rapports.html`);
+  writeFileSync(LISTE, listeAccueil(liste));
+  console.log(`index-rapports : ${liste.length} article(s) → public/rapports.html, public/rapports.json`);
   if (touches.length) console.log(`chrome rafraîchi : ${touches.join(', ')}`);
 }

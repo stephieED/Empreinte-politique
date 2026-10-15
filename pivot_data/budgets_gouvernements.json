@@ -1,6 +1,6 @@
 {
   "schema_version": "budgets-gouvernements-v1",
-  "genere_le": "2026-10-15T06:52:59Z",
+  "genere_le": "2026-10-15T22:30:19Z",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.economie.gouv.fr ; Licence Ouverte / Open Licence (Etalab) — data.drees.solidarites-sante.gouv.fr, data.unedic.org",
   "unites": {
     "budget_de_l_etat": "euros",
@@ -73,7 +73,7 @@
             "solde": -74867970256.23,
             "missions": null,
             "missions_non_resolu": {
-              "raison": "la source ne publie les dépenses par mission, en données, que pour les exercices clos de 2023 à 2025"
+              "raison": "les dépenses par programme ne sont collectées qu'à partir de 2015"
             }
           },
           "securite_sociale": null,
@@ -133,7 +133,7 @@
             "solde": -85555043923.8501,
             "missions": null,
             "missions_non_resolu": {
-              "raison": "la source ne publie les dépenses par mission, en données, que pour les exercices clos de 2023 à 2025"
+              "raison": "les dépenses par programme ne sont collectées qu'à partir de 2015"
             }
           },
           "securite_sociale": null,
@@ -198,10 +198,779 @@
             ],
             "comptes_a_part": 1624350899.40999,
             "solde": -70524213950.7301,
-            "missions": null,
-            "missions_non_resolu": {
-              "raison": "la source ne publie les dépenses par mission, en données, que pour les exercices clos de 2023 à 2025"
-            }
+            "missions": [
+              {
+                "mission": "Action extérieure de l'État",
+                "montant": 2949446078.0,
+                "programmes": [
+                  {
+                    "programme": "105",
+                    "libelle": "Action de la France en Europe et dans le monde",
+                    "montant": 1846947186.0
+                  },
+                  {
+                    "programme": "151",
+                    "libelle": "Français à l'étranger et affaires consulaires",
+                    "montant": 344232084.0
+                  },
+                  {
+                    "programme": "185",
+                    "libelle": "Diplomatie culturelle et d'influence",
+                    "montant": 730363630.0
+                  },
+                  {
+                    "programme": "341",
+                    "libelle": "Conférence 'Paris Climat 2015'",
+                    "montant": 27903178.0
+                  }
+                ]
+              },
+              {
+                "mission": "Administration générale et territoriale de l'État",
+                "montant": 2788685869.0,
+                "programmes": [
+                  {
+                    "programme": "216",
+                    "libelle": "Conduite et pilotage des politiques de l'intérieur",
+                    "montant": 768632335.0
+                  },
+                  {
+                    "programme": "232",
+                    "libelle": "Vie politique, cultuelle et associative",
+                    "montant": 267761981.0
+                  },
+                  {
+                    "programme": "307",
+                    "libelle": "Administration territoriale",
+                    "montant": 1752291553.0
+                  }
+                ]
+              },
+              {
+                "mission": "Agriculture, alimentation, forêt et affaires rurales",
+                "montant": 3995883563.0,
+                "programmes": [
+                  {
+                    "programme": "149",
+                    "libelle": "Forêt",
+                    "montant": 252610538.0
+                  },
+                  {
+                    "programme": "154",
+                    "libelle": "Économie et développement durable de l'agriculture et des territoires",
+                    "montant": 2516704727.0
+                  },
+                  {
+                    "programme": "206",
+                    "libelle": "Sécurité et qualité sanitaires de l'alimentation",
+                    "montant": 506167705.0
+                  },
+                  {
+                    "programme": "215",
+                    "libelle": "Conduite et pilotage des politiques de l'agriculture",
+                    "montant": 720400593.0
+                  }
+                ]
+              },
+              {
+                "mission": "Aide publique au développement",
+                "montant": 2655171783.0,
+                "programmes": [
+                  {
+                    "programme": "110",
+                    "libelle": "Aide économique et financière au développement",
+                    "montant": 988996375.0
+                  },
+                  {
+                    "programme": "209",
+                    "libelle": "Solidarité à l'égard des pays en développement",
+                    "montant": 1666175408.0
+                  }
+                ]
+              },
+              {
+                "mission": "Anciens combattants, mémoire et liens avec la nation",
+                "montant": 2719701752.0,
+                "programmes": [
+                  {
+                    "programme": "158",
+                    "libelle": "Indemnisation des victimes des persécutions antisémites et des actes de barbarie pendant la seconde guerre mondiale",
+                    "montant": 154849162.0
+                  },
+                  {
+                    "programme": "167",
+                    "libelle": "Liens entre la Nation et son armée",
+                    "montant": 41551093.0
+                  },
+                  {
+                    "programme": "169",
+                    "libelle": "Reconnaissance et réparation en faveur du monde combattant",
+                    "montant": 2523301497.0
+                  }
+                ]
+              },
+              {
+                "mission": "Conseil et contrôle de l'État",
+                "montant": 622928559.0,
+                "programmes": [
+                  {
+                    "programme": "126",
+                    "libelle": "Conseil économique, social et environnemental",
+                    "montant": 39704312.0
+                  },
+                  {
+                    "programme": "164",
+                    "libelle": "Cour des comptes et autres juridictions financières",
+                    "montant": 210137234.0
+                  },
+                  {
+                    "programme": "165",
+                    "libelle": "Conseil d'État et autres juridictions administratives",
+                    "montant": 372867208.0
+                  },
+                  {
+                    "programme": "340",
+                    "libelle": "Haut Conseil des finances publiques",
+                    "montant": 219805.0
+                  }
+                ]
+              },
+              {
+                "mission": "Crédits non répartis",
+                "montant": 0.0,
+                "programmes": [
+                  {
+                    "programme": "551",
+                    "libelle": "Provision relative aux rémunérations publiques",
+                    "montant": 0.0
+                  },
+                  {
+                    "programme": "552",
+                    "libelle": "Dépenses accidentelles et imprévisibles",
+                    "montant": 0.0
+                  }
+                ]
+              },
+              {
+                "mission": "Culture",
+                "montant": 2601280920.0,
+                "programmes": [
+                  {
+                    "programme": "131",
+                    "libelle": "Création",
+                    "montant": 740844006.0
+                  },
+                  {
+                    "programme": "175",
+                    "libelle": "Patrimoines",
+                    "montant": 768924508.0
+                  },
+                  {
+                    "programme": "224",
+                    "libelle": "Transmission des savoirs et démocratisation de la culture",
+                    "montant": 1091512406.0
+                  }
+                ]
+              },
+              {
+                "mission": "Direction de l'action du Gouvernement",
+                "montant": 1140509106.0,
+                "programmes": [
+                  {
+                    "programme": "129",
+                    "libelle": "Coordination du travail gouvernemental",
+                    "montant": 522260341.0
+                  },
+                  {
+                    "programme": "308",
+                    "libelle": "Protection des droits et libertés",
+                    "montant": 92796508.0
+                  },
+                  {
+                    "programme": "333",
+                    "libelle": "Moyens mutualisés des administrations déconcentrées",
+                    "montant": 525452257.0
+                  }
+                ]
+              },
+              {
+                "mission": "Défense",
+                "montant": 40982932336.0,
+                "programmes": [
+                  {
+                    "programme": "144",
+                    "libelle": "Environnement et prospective de la politique de défense",
+                    "montant": 1344837138.0
+                  },
+                  {
+                    "programme": "146",
+                    "libelle": "Équipement des forces",
+                    "montant": 10210095269.0
+                  },
+                  {
+                    "programme": "178",
+                    "libelle": "Préparation et emploi des forces",
+                    "montant": 8052323503.0
+                  },
+                  {
+                    "programme": "212",
+                    "libelle": "Soutien de la politique de la défense",
+                    "montant": 21375676426.0
+                  }
+                ]
+              },
+              {
+                "mission": "Engagements financiers de l'État",
+                "montant": 42725079083.0,
+                "programmes": [
+                  {
+                    "programme": "114",
+                    "libelle": "Appels en garantie de l'État (crédits évaluatifs)",
+                    "montant": 145500572.0
+                  },
+                  {
+                    "programme": "117",
+                    "libelle": "Charge de la dette et trésorerie de l'État (crédits évaluatifs)",
+                    "montant": 42136369662.0
+                  },
+                  {
+                    "programme": "145",
+                    "libelle": "Épargne",
+                    "montant": 253503350.0
+                  },
+                  {
+                    "programme": "168",
+                    "libelle": "Majoration de rentes",
+                    "montant": 159852499.0
+                  },
+                  {
+                    "programme": "336",
+                    "libelle": "Dotation en capital du Mécanisme européen de stabilité",
+                    "montant": 0.0
+                  },
+                  {
+                    "programme": "338",
+                    "libelle": "Augmentation de capital de la Banque européenne d'investissement",
+                    "montant": 0.0
+                  },
+                  {
+                    "programme": "344",
+                    "libelle": "Fonds de soutien relatif aux prêts et contrats financiers structurés à risque",
+                    "montant": 29853000.0
+                  }
+                ]
+              },
+              {
+                "mission": "Enseignement scolaire",
+                "montant": 66395296543.0,
+                "programmes": [
+                  {
+                    "programme": "139",
+                    "libelle": "Enseignement privé du premier et du second degrés",
+                    "montant": 7166026152.0
+                  },
+                  {
+                    "programme": "140",
+                    "libelle": "Enseignement scolaire public du premier degré",
+                    "montant": 19874904744.0
+                  },
+                  {
+                    "programme": "141",
+                    "libelle": "Enseignement scolaire public du second degré",
+                    "montant": 30912881788.0
+                  },
+                  {
+                    "programme": "143",
+                    "libelle": "Enseignement technique agricole",
+                    "montant": 1357703873.0
+                  },
+                  {
+                    "programme": "214",
+                    "libelle": "Soutien de la politique de l'éducation nationale",
+                    "montant": 2273161105.0
+                  },
+                  {
+                    "programme": "230",
+                    "libelle": "Vie de l'élève",
+                    "montant": 4810618881.0
+                  }
+                ]
+              },
+              {
+                "mission": "Gestion des finances publiques et des ressources humaines",
+                "montant": 11111781651.0,
+                "programmes": [
+                  {
+                    "programme": "148",
+                    "libelle": "Fonction publique",
+                    "montant": 193434160.0
+                  },
+                  {
+                    "programme": "156",
+                    "libelle": "Gestion fiscale et financière de l'État et du secteur public local",
+                    "montant": 8149611881.0
+                  },
+                  {
+                    "programme": "218",
+                    "libelle": "Conduite et pilotage des politiques économiques et financières",
+                    "montant": 1051345125.0
+                  },
+                  {
+                    "programme": "302",
+                    "libelle": "Facilitation et sécurisation des échanges",
+                    "montant": 1573495429.0
+                  },
+                  {
+                    "programme": "309",
+                    "libelle": "Entretien des bâtiments de l'État",
+                    "montant": 143895056.0
+                  }
+                ]
+              },
+              {
+                "mission": "Immigration, asile et intégration",
+                "montant": 677516782.0,
+                "programmes": [
+                  {
+                    "programme": "104",
+                    "libelle": "Intégration et accès à la nationalité française",
+                    "montant": 59624234.0
+                  },
+                  {
+                    "programme": "303",
+                    "libelle": "Immigration et asile",
+                    "montant": 617892548.0
+                  }
+                ]
+              },
+              {
+                "mission": "Justice",
+                "montant": 7849598821.0,
+                "programmes": [
+                  {
+                    "programme": "101",
+                    "libelle": "Accès au droit et à la justice",
+                    "montant": 338726018.0
+                  },
+                  {
+                    "programme": "107",
+                    "libelle": "Administration pénitentiaire",
+                    "montant": 3322216031.0
+                  },
+                  {
+                    "programme": "166",
+                    "libelle": "Justice judiciaire",
+                    "montant": 3089386558.0
+                  },
+                  {
+                    "programme": "182",
+                    "libelle": "Protection judiciaire de la jeunesse",
+                    "montant": 774917106.0
+                  },
+                  {
+                    "programme": "310",
+                    "libelle": "Conduite et pilotage de la politique de la justice",
+                    "montant": 320450069.0
+                  },
+                  {
+                    "programme": "335",
+                    "libelle": "Conseil supérieur de la magistrature",
+                    "montant": 3903039.0
+                  }
+                ]
+              },
+              {
+                "mission": "Médias, livre et industries culturelles",
+                "montant": 697476371.0,
+                "programmes": [
+                  {
+                    "programme": "180",
+                    "libelle": "Presse",
+                    "montant": 249325865.0
+                  },
+                  {
+                    "programme": "313",
+                    "libelle": "Contribution à l'audiovisuel et à la diversité radiophonique",
+                    "montant": 189538944.0
+                  },
+                  {
+                    "programme": "334",
+                    "libelle": "Livre et industries culturelles",
+                    "montant": 258611562.0
+                  }
+                ]
+              },
+              {
+                "mission": "Outre-mer",
+                "montant": 1992417566.0,
+                "programmes": [
+                  {
+                    "programme": "123",
+                    "libelle": "Conditions de vie outre-mer",
+                    "montant": 619572056.0
+                  },
+                  {
+                    "programme": "138",
+                    "libelle": "Emploi outre-mer",
+                    "montant": 1372845510.0
+                  }
+                ]
+              },
+              {
+                "mission": "Politique des territoires",
+                "montant": 698815869.0,
+                "programmes": [
+                  {
+                    "programme": "112",
+                    "libelle": "Impulsion et coordination de la politique d'aménagement du territoire",
+                    "montant": 249440286.0
+                  },
+                  {
+                    "programme": "147",
+                    "libelle": "Politique de la ville",
+                    "montant": 409337335.0
+                  },
+                  {
+                    "programme": "162",
+                    "libelle": "Interventions territoriales de l'État",
+                    "montant": 40038248.0
+                  }
+                ]
+              },
+              {
+                "mission": "Pouvoirs publics",
+                "montant": 988015262.0,
+                "programmes": [
+                  {
+                    "programme": "501",
+                    "libelle": "Présidence de la République",
+                    "montant": 100000000.0
+                  },
+                  {
+                    "programme": "511",
+                    "libelle": "Assemblée nationale",
+                    "montant": 517890000.0
+                  },
+                  {
+                    "programme": "521",
+                    "libelle": "Sénat",
+                    "montant": 323584600.0
+                  },
+                  {
+                    "programme": "531",
+                    "libelle": "Conseil constitutionnel",
+                    "montant": 10190000.0
+                  },
+                  {
+                    "programme": "533",
+                    "libelle": "Cour de justice de la République",
+                    "montant": 861500.0
+                  },
+                  {
+                    "programme": "541",
+                    "libelle": "La Chaîne parlementaire",
+                    "montant": 35489162.0
+                  }
+                ]
+              },
+              {
+                "mission": "Recherche et enseignement supérieur",
+                "montant": 26006080878.0,
+                "programmes": [
+                  {
+                    "programme": "142",
+                    "libelle": "Enseignement supérieur et recherche agricoles",
+                    "montant": 320676953.0
+                  },
+                  {
+                    "programme": "150",
+                    "libelle": "Formations supérieures et recherche universitaire",
+                    "montant": 12743744699.0
+                  },
+                  {
+                    "programme": "172",
+                    "libelle": "Recherches scientifiques et technologiques pluridisciplinaires",
+                    "montant": 6222837082.0
+                  },
+                  {
+                    "programme": "186",
+                    "libelle": "Recherche culturelle et culture scientifique",
+                    "montant": 112363311.0
+                  },
+                  {
+                    "programme": "190",
+                    "libelle": "Recherche dans les domaines de l'énergie, du développement et de la mobilité durables",
+                    "montant": 1589058982.0
+                  },
+                  {
+                    "programme": "191",
+                    "libelle": "Recherche duale (civile et militaire)",
+                    "montant": 183735104.0
+                  },
+                  {
+                    "programme": "192",
+                    "libelle": "Recherche et enseignement supérieur en matière économique et industrielle",
+                    "montant": 923333907.0
+                  },
+                  {
+                    "programme": "193",
+                    "libelle": "Recherche spatiale",
+                    "montant": 1354301948.0
+                  },
+                  {
+                    "programme": "231",
+                    "libelle": "Vie étudiante",
+                    "montant": 2556028892.0
+                  }
+                ]
+              },
+              {
+                "mission": "Relations avec les collectivités territoriales",
+                "montant": 2747563771.0,
+                "programmes": [
+                  {
+                    "programme": "119",
+                    "libelle": "Concours financiers aux collectivités territoriales et à leurs groupements",
+                    "montant": 2451572060.0
+                  },
+                  {
+                    "programme": "122",
+                    "libelle": "Concours spécifiques et administration",
+                    "montant": 295991711.0
+                  }
+                ]
+              },
+              {
+                "mission": "Régimes sociaux et de retraite",
+                "montant": 6451562218.0,
+                "programmes": [
+                  {
+                    "programme": "195",
+                    "libelle": "Régimes de retraite des mines, de la SEITA et divers",
+                    "montant": 1509793281.0
+                  },
+                  {
+                    "programme": "197",
+                    "libelle": "Régimes de retraite et de sécurité sociale des marins",
+                    "montant": 852952581.0
+                  },
+                  {
+                    "programme": "198",
+                    "libelle": "Régimes sociaux et de retraite des transports terrestres",
+                    "montant": 4088816356.0
+                  }
+                ]
+              },
+              {
+                "mission": "Santé",
+                "montant": 1251525965.0,
+                "programmes": [
+                  {
+                    "programme": "183",
+                    "libelle": "Protection maladie",
+                    "montant": 773909427.0
+                  },
+                  {
+                    "programme": "204",
+                    "libelle": "Prévention, sécurité sanitaire et offre de soins",
+                    "montant": 477616538.0
+                  }
+                ]
+              },
+              {
+                "mission": "Solidarité, insertion et égalité des chances",
+                "montant": 16274877883.0,
+                "programmes": [
+                  {
+                    "programme": "124",
+                    "libelle": "Conduite et soutien des politiques sanitaires, sociales, du sport, de la jeunesse et de la vie associative",
+                    "montant": 1493223641.0
+                  },
+                  {
+                    "programme": "137",
+                    "libelle": "Égalité entre les femmes et les hommes",
+                    "montant": 23391193.0
+                  },
+                  {
+                    "programme": "157",
+                    "libelle": "Handicap et dépendance",
+                    "montant": 11911627460.0
+                  },
+                  {
+                    "programme": "304",
+                    "libelle": "Inclusion sociale, protection des personnes et économie sociale et solidaire",
+                    "montant": 2846635589.0
+                  }
+                ]
+              },
+              {
+                "mission": "Sport, jeunesse et vie associative",
+                "montant": 504192068.0,
+                "programmes": [
+                  {
+                    "programme": "163",
+                    "libelle": "Jeunesse et vie associative",
+                    "montant": 265438202.0
+                  },
+                  {
+                    "programme": "219",
+                    "libelle": "Sport",
+                    "montant": 238753866.0
+                  }
+                ]
+              },
+              {
+                "mission": "Sécurités",
+                "montant": 18313124644.0,
+                "programmes": [
+                  {
+                    "programme": "152",
+                    "libelle": "Gendarmerie nationale",
+                    "montant": 8147322792.0
+                  },
+                  {
+                    "programme": "161",
+                    "libelle": "Sécurité civile",
+                    "montant": 423629597.0
+                  },
+                  {
+                    "programme": "176",
+                    "libelle": "Police nationale",
+                    "montant": 9702566353.0
+                  },
+                  {
+                    "programme": "207",
+                    "libelle": "Sécurité et éducation routières",
+                    "montant": 39605902.0
+                  }
+                ]
+              },
+              {
+                "mission": "Travail et emploi",
+                "montant": 12105295236.0,
+                "programmes": [
+                  {
+                    "programme": "102",
+                    "libelle": "Accès et retour à l'emploi",
+                    "montant": 8480419174.0
+                  },
+                  {
+                    "programme": "103",
+                    "libelle": "Accompagnement des mutations économiques et développement de l'emploi",
+                    "montant": 2812954474.0
+                  },
+                  {
+                    "programme": "111",
+                    "libelle": "Amélioration de la qualité de l'emploi et des relations du travail",
+                    "montant": 71475657.0
+                  },
+                  {
+                    "programme": "155",
+                    "libelle": "Conception, gestion et évaluation des politiques de l'emploi et du travail",
+                    "montant": 740445931.0
+                  }
+                ]
+              },
+              {
+                "mission": "Écologie, développement et mobilité durables",
+                "montant": 9672248790.0,
+                "programmes": [
+                  {
+                    "programme": "113",
+                    "libelle": "Paysages, eau et biodiversité",
+                    "montant": 256549461.0
+                  },
+                  {
+                    "programme": "159",
+                    "libelle": "Information géographique et cartographique",
+                    "montant": 93276704.0
+                  },
+                  {
+                    "programme": "170",
+                    "libelle": "Météorologie",
+                    "montant": 195552761.0
+                  },
+                  {
+                    "programme": "174",
+                    "libelle": "Énergie, climat et après-mines",
+                    "montant": 747712421.0
+                  },
+                  {
+                    "programme": "181",
+                    "libelle": "Prévention des risques",
+                    "montant": 66095947.0
+                  },
+                  {
+                    "programme": "203",
+                    "libelle": "Infrastructures et services de transports",
+                    "montant": 4810612241.0
+                  },
+                  {
+                    "programme": "205",
+                    "libelle": "Sécurité et affaires maritimes, pêche et aquaculture",
+                    "montant": 174616535.0
+                  },
+                  {
+                    "programme": "217",
+                    "libelle": "Conduite et pilotage des politiques de l'écologie, du développement et de la mobilité durables",
+                    "montant": 3327832720.0
+                  }
+                ]
+              },
+              {
+                "mission": "Économie",
+                "montant": 1852099443.0,
+                "programmes": [
+                  {
+                    "programme": "134",
+                    "libelle": "Développement des entreprises et du tourisme",
+                    "montant": 946770355.0
+                  },
+                  {
+                    "programme": "220",
+                    "libelle": "Statistiques et études économiques",
+                    "montant": 451221903.0
+                  },
+                  {
+                    "programme": "305",
+                    "libelle": "Stratégie économique et fiscale",
+                    "montant": 454107185.0
+                  },
+                  {
+                    "programme": "343",
+                    "libelle": "Plan 'France Très haut débit'",
+                    "montant": 0.0
+                  }
+                ]
+              },
+              {
+                "mission": "Égalité des territoires et logement",
+                "montant": 12803424384.0,
+                "programmes": [
+                  {
+                    "programme": "109",
+                    "libelle": "Aide à l'accès au logement",
+                    "montant": 10754317721.0
+                  },
+                  {
+                    "programme": "135",
+                    "libelle": "Urbanisme, territoires et amélioration de l'habitat",
+                    "montant": 457831740.0
+                  },
+                  {
+                    "programme": "177",
+                    "libelle": "Prévention de l'exclusion et insertion des personnes vulnérables",
+                    "montant": 1591274923.0
+                  },
+                  {
+                    "programme": "337",
+                    "libelle": "Conduite et pilotage des politiques du logement et de l’égalité des territoires",
+                    "montant": 0.0
+                  }
+                ]
+              }
+            ],
+            "degrevements_d_impots_locaux": 11676259770.13
           },
           "securite_sociale": null,
           "securite_sociale_non_resolu": {
@@ -258,10 +1027,758 @@
             ],
             "comptes_a_part": 6795407143.16998,
             "solde": -69055882208.79,
-            "missions": null,
-            "missions_non_resolu": {
-              "raison": "la source ne publie les dépenses par mission, en données, que pour les exercices clos de 2023 à 2025"
-            }
+            "missions": [
+              {
+                "mission": "Action extérieure de l'État",
+                "montant": 3258730603.0,
+                "programmes": [
+                  {
+                    "programme": "105",
+                    "libelle": "Action de la France en Europe et dans le monde",
+                    "montant": 2053856082.0
+                  },
+                  {
+                    "programme": "151",
+                    "libelle": "Français à l'étranger et affaires consulaires",
+                    "montant": 345947152.0
+                  },
+                  {
+                    "programme": "185",
+                    "libelle": "Diplomatie culturelle et d'influence",
+                    "montant": 715283651.0
+                  },
+                  {
+                    "programme": "341",
+                    "libelle": "Conférence 'Paris Climat 2015'",
+                    "montant": 143643718.0
+                  }
+                ]
+              },
+              {
+                "mission": "Administration générale et territoriale de l'État",
+                "montant": 2699566208.0,
+                "programmes": [
+                  {
+                    "programme": "216",
+                    "libelle": "Conduite et pilotage des politiques de l'intérieur",
+                    "montant": 797212522.0
+                  },
+                  {
+                    "programme": "232",
+                    "libelle": "Vie politique, cultuelle et associative",
+                    "montant": 232817476.0
+                  },
+                  {
+                    "programme": "307",
+                    "libelle": "Administration territoriale",
+                    "montant": 1669536210.0
+                  }
+                ]
+              },
+              {
+                "mission": "Agriculture, alimentation, forêt et affaires rurales",
+                "montant": 3157414916.0,
+                "programmes": [
+                  {
+                    "programme": "149",
+                    "libelle": "Forêt",
+                    "montant": 244947368.0
+                  },
+                  {
+                    "programme": "154",
+                    "libelle": "Économie et développement durable de l'agriculture et des territoires",
+                    "montant": 1678737208.0
+                  },
+                  {
+                    "programme": "206",
+                    "libelle": "Sécurité et qualité sanitaires de l'alimentation",
+                    "montant": 551020040.0
+                  },
+                  {
+                    "programme": "215",
+                    "libelle": "Conduite et pilotage des politiques de l'agriculture",
+                    "montant": 682710300.0
+                  }
+                ]
+              },
+              {
+                "mission": "Aide publique au développement",
+                "montant": 4853957339.0,
+                "programmes": [
+                  {
+                    "programme": "110",
+                    "libelle": "Aide économique et financière au développement",
+                    "montant": 890984765.0
+                  },
+                  {
+                    "programme": "209",
+                    "libelle": "Solidarité à l'égard des pays en développement",
+                    "montant": 1554973718.0
+                  },
+                  {
+                    "programme": "346",
+                    "libelle": "Renforcement des fonds propres de l’Agence française de développement",
+                    "montant": 2407998856.0
+                  }
+                ]
+              },
+              {
+                "mission": "Anciens combattants, mémoire et liens avec la nation",
+                "montant": 2590074964.0,
+                "programmes": [
+                  {
+                    "programme": "158",
+                    "libelle": "Indemnisation des victimes des persécutions antisémites et des actes de barbarie pendant la seconde guerre mondiale",
+                    "montant": 95381766.0
+                  },
+                  {
+                    "programme": "167",
+                    "libelle": "Liens entre la Nation et son armée",
+                    "montant": 37852669.0
+                  },
+                  {
+                    "programme": "169",
+                    "libelle": "Reconnaissance et réparation en faveur du monde combattant",
+                    "montant": 2456840529.0
+                  }
+                ]
+              },
+              {
+                "mission": "Conseil et contrôle de l'État",
+                "montant": 624151167.0,
+                "programmes": [
+                  {
+                    "programme": "126",
+                    "libelle": "Conseil économique, social et environnemental",
+                    "montant": 40507079.0
+                  },
+                  {
+                    "programme": "164",
+                    "libelle": "Cour des comptes et autres juridictions financières",
+                    "montant": 205647710.0
+                  },
+                  {
+                    "programme": "165",
+                    "libelle": "Conseil d'État et autres juridictions administratives",
+                    "montant": 377631081.0
+                  },
+                  {
+                    "programme": "340",
+                    "libelle": "Haut Conseil des finances publiques",
+                    "montant": 365297.0
+                  }
+                ]
+              },
+              {
+                "mission": "Culture",
+                "montant": 2740617622.0,
+                "programmes": [
+                  {
+                    "programme": "131",
+                    "libelle": "Création",
+                    "montant": 748554433.0
+                  },
+                  {
+                    "programme": "175",
+                    "libelle": "Patrimoines",
+                    "montant": 858780342.0
+                  },
+                  {
+                    "programme": "224",
+                    "libelle": "Transmission des savoirs et démocratisation de la culture",
+                    "montant": 1133282847.0
+                  }
+                ]
+              },
+              {
+                "mission": "Direction de l'action du Gouvernement",
+                "montant": 1255331952.0,
+                "programmes": [
+                  {
+                    "programme": "129",
+                    "libelle": "Coordination du travail gouvernemental",
+                    "montant": 578726709.0
+                  },
+                  {
+                    "programme": "308",
+                    "libelle": "Protection des droits et libertés",
+                    "montant": 96347126.0
+                  },
+                  {
+                    "programme": "333",
+                    "libelle": "Moyens mutualisés des administrations déconcentrées",
+                    "montant": 580258117.0
+                  }
+                ]
+              },
+              {
+                "mission": "Défense",
+                "montant": 41147492928.0,
+                "programmes": [
+                  {
+                    "programme": "144",
+                    "libelle": "Environnement et prospective de la politique de défense",
+                    "montant": 1324044177.0
+                  },
+                  {
+                    "programme": "146",
+                    "libelle": "Équipement des forces",
+                    "montant": 9833941790.0
+                  },
+                  {
+                    "programme": "178",
+                    "libelle": "Préparation et emploi des forces",
+                    "montant": 8323479557.0
+                  },
+                  {
+                    "programme": "212",
+                    "libelle": "Soutien de la politique de la défense",
+                    "montant": 21666027404.0
+                  }
+                ]
+              },
+              {
+                "mission": "Engagements financiers de l'État",
+                "montant": 41921551841.0,
+                "programmes": [
+                  {
+                    "programme": "114",
+                    "libelle": "Appels en garantie de l'État (crédits évaluatifs)",
+                    "montant": 121577891.0
+                  },
+                  {
+                    "programme": "117",
+                    "libelle": "Charge de la dette et trésorerie de l'État (crédits évaluatifs)",
+                    "montant": 41447017110.0
+                  },
+                  {
+                    "programme": "145",
+                    "libelle": "Épargne",
+                    "montant": 123130060.0
+                  },
+                  {
+                    "programme": "168",
+                    "libelle": "Majoration de rentes",
+                    "montant": 32104874.0
+                  },
+                  {
+                    "programme": "344",
+                    "libelle": "Fonds de soutien relatif aux prêts et contrats financiers structurés à risque",
+                    "montant": 197721906.0
+                  }
+                ]
+              },
+              {
+                "mission": "Enseignement scolaire",
+                "montant": 67728544019.0,
+                "programmes": [
+                  {
+                    "programme": "139",
+                    "libelle": "Enseignement privé du premier et du second degrés",
+                    "montant": 7255403137.0
+                  },
+                  {
+                    "programme": "140",
+                    "libelle": "Enseignement scolaire public du premier degré",
+                    "montant": 20443412185.0
+                  },
+                  {
+                    "programme": "141",
+                    "libelle": "Enseignement scolaire public du second degré",
+                    "montant": 31466213619.0
+                  },
+                  {
+                    "programme": "143",
+                    "libelle": "Enseignement technique agricole",
+                    "montant": 1370264296.0
+                  },
+                  {
+                    "programme": "214",
+                    "libelle": "Soutien de la politique de l'éducation nationale",
+                    "montant": 2287679138.0
+                  },
+                  {
+                    "programme": "230",
+                    "libelle": "Vie de l'élève",
+                    "montant": 4905571644.0
+                  }
+                ]
+              },
+              {
+                "mission": "Gestion des finances publiques et des ressources humaines",
+                "montant": 10848317368.0,
+                "programmes": [
+                  {
+                    "programme": "148",
+                    "libelle": "Fonction publique",
+                    "montant": 190711474.0
+                  },
+                  {
+                    "programme": "156",
+                    "libelle": "Gestion fiscale et financière de l'État et du secteur public local",
+                    "montant": 7995956285.0
+                  },
+                  {
+                    "programme": "218",
+                    "libelle": "Conduite et pilotage des politiques économiques et financières",
+                    "montant": 987773235.0
+                  },
+                  {
+                    "programme": "302",
+                    "libelle": "Facilitation et sécurisation des échanges",
+                    "montant": 1545746145.0
+                  },
+                  {
+                    "programme": "309",
+                    "libelle": "Entretien des bâtiments de l'État",
+                    "montant": 128130229.0
+                  }
+                ]
+              },
+              {
+                "mission": "Immigration, asile et intégration",
+                "montant": 1000376003.0,
+                "programmes": [
+                  {
+                    "programme": "104",
+                    "libelle": "Intégration et accès à la nationalité française",
+                    "montant": 87472743.0
+                  },
+                  {
+                    "programme": "303",
+                    "libelle": "Immigration et asile",
+                    "montant": 912903260.0
+                  }
+                ]
+              },
+              {
+                "mission": "Justice",
+                "montant": 8042486662.0,
+                "programmes": [
+                  {
+                    "programme": "101",
+                    "libelle": "Accès au droit et à la justice",
+                    "montant": 338963452.0
+                  },
+                  {
+                    "programme": "107",
+                    "libelle": "Administration pénitentiaire",
+                    "montant": 3340928268.0
+                  },
+                  {
+                    "programme": "166",
+                    "libelle": "Justice judiciaire",
+                    "montant": 3225108603.0
+                  },
+                  {
+                    "programme": "182",
+                    "libelle": "Protection judiciaire de la jeunesse",
+                    "montant": 798182097.0
+                  },
+                  {
+                    "programme": "310",
+                    "libelle": "Conduite et pilotage de la politique de la justice",
+                    "montant": 334915416.0
+                  },
+                  {
+                    "programme": "335",
+                    "libelle": "Conseil supérieur de la magistrature",
+                    "montant": 4388826.0
+                  }
+                ]
+              },
+              {
+                "mission": "Médias, livre et industries culturelles",
+                "montant": 525639110.0,
+                "programmes": [
+                  {
+                    "programme": "180",
+                    "libelle": "Presse",
+                    "montant": 231032801.0
+                  },
+                  {
+                    "programme": "313",
+                    "libelle": "Contribution à l'audiovisuel et à la diversité radiophonique",
+                    "montant": 29119224.0
+                  },
+                  {
+                    "programme": "334",
+                    "libelle": "Livre et industries culturelles",
+                    "montant": 265487085.0
+                  }
+                ]
+              },
+              {
+                "mission": "Outre-mer",
+                "montant": 1901126270.0,
+                "programmes": [
+                  {
+                    "programme": "123",
+                    "libelle": "Conditions de vie outre-mer",
+                    "montant": 653437794.0
+                  },
+                  {
+                    "programme": "138",
+                    "libelle": "Emploi outre-mer",
+                    "montant": 1247688476.0
+                  }
+                ]
+              },
+              {
+                "mission": "Politique des territoires",
+                "montant": 650026606.0,
+                "programmes": [
+                  {
+                    "programme": "112",
+                    "libelle": "Impulsion et coordination de la politique d'aménagement du territoire",
+                    "montant": 222985284.0
+                  },
+                  {
+                    "programme": "147",
+                    "libelle": "Politique de la ville",
+                    "montant": 390696409.0
+                  },
+                  {
+                    "programme": "162",
+                    "libelle": "Interventions territoriales de l'État",
+                    "montant": 36344913.0
+                  }
+                ]
+              },
+              {
+                "mission": "Pouvoirs publics",
+                "montant": 987745724.0,
+                "programmes": [
+                  {
+                    "programme": "501",
+                    "libelle": "Présidence de la République",
+                    "montant": 100000000.0
+                  },
+                  {
+                    "programme": "511",
+                    "libelle": "Assemblée nationale",
+                    "montant": 517890000.0
+                  },
+                  {
+                    "programme": "521",
+                    "libelle": "Sénat",
+                    "montant": 323584600.0
+                  },
+                  {
+                    "programme": "531",
+                    "libelle": "Conseil constitutionnel",
+                    "montant": 9920462.0
+                  },
+                  {
+                    "programme": "533",
+                    "libelle": "Cour de justice de la République",
+                    "montant": 861500.0
+                  },
+                  {
+                    "programme": "541",
+                    "libelle": "La Chaîne parlementaire",
+                    "montant": 35489162.0
+                  }
+                ]
+              },
+              {
+                "mission": "Recherche et enseignement supérieur",
+                "montant": 26076654916.0,
+                "programmes": [
+                  {
+                    "programme": "142",
+                    "libelle": "Enseignement supérieur et recherche agricoles",
+                    "montant": 323962741.0
+                  },
+                  {
+                    "programme": "150",
+                    "libelle": "Formations supérieures et recherche universitaire",
+                    "montant": 12807461012.0
+                  },
+                  {
+                    "programme": "172",
+                    "libelle": "Recherches scientifiques et technologiques pluridisciplinaires",
+                    "montant": 6175960612.0
+                  },
+                  {
+                    "programme": "186",
+                    "libelle": "Recherche culturelle et culture scientifique",
+                    "montant": 117970114.0
+                  },
+                  {
+                    "programme": "190",
+                    "libelle": "Recherche dans les domaines de l'énergie, du développement et de la mobilité durables",
+                    "montant": 1665318406.0
+                  },
+                  {
+                    "programme": "191",
+                    "libelle": "Recherche duale (civile et militaire)",
+                    "montant": 166665873.0
+                  },
+                  {
+                    "programme": "192",
+                    "libelle": "Recherche et enseignement supérieur en matière économique et industrielle",
+                    "montant": 909407747.0
+                  },
+                  {
+                    "programme": "193",
+                    "libelle": "Recherche spatiale",
+                    "montant": 1363016903.0
+                  },
+                  {
+                    "programme": "231",
+                    "libelle": "Vie étudiante",
+                    "montant": 2546891508.0
+                  }
+                ]
+              },
+              {
+                "mission": "Relations avec les collectivités territoriales",
+                "montant": 2813735271.0,
+                "programmes": [
+                  {
+                    "programme": "119",
+                    "libelle": "Concours financiers aux collectivités territoriales et à leurs groupements",
+                    "montant": 2491913496.0
+                  },
+                  {
+                    "programme": "122",
+                    "libelle": "Concours spécifiques et administration",
+                    "montant": 321821775.0
+                  }
+                ]
+              },
+              {
+                "mission": "Régimes sociaux et de retraite",
+                "montant": 6320354974.0,
+                "programmes": [
+                  {
+                    "programme": "195",
+                    "libelle": "Régimes de retraite des mines, de la SEITA et divers",
+                    "montant": 1429440000.0
+                  },
+                  {
+                    "programme": "197",
+                    "libelle": "Régimes de retraite et de sécurité sociale des marins",
+                    "montant": 824838307.0
+                  },
+                  {
+                    "programme": "198",
+                    "libelle": "Régimes sociaux et de retraite des transports terrestres",
+                    "montant": 4066076667.0
+                  }
+                ]
+              },
+              {
+                "mission": "Santé",
+                "montant": 1314490722.0,
+                "programmes": [
+                  {
+                    "programme": "183",
+                    "libelle": "Protection maladie",
+                    "montant": 837749713.0
+                  },
+                  {
+                    "programme": "204",
+                    "libelle": "Prévention, sécurité sanitaire et offre de soins",
+                    "montant": 476741009.0
+                  }
+                ]
+              },
+              {
+                "mission": "Solidarité, insertion et égalité des chances",
+                "montant": 19076488552.0,
+                "programmes": [
+                  {
+                    "programme": "124",
+                    "libelle": "Conduite et soutien des politiques sanitaires, sociales, du sport, de la jeunesse et de la vie associative",
+                    "montant": 1477825591.0
+                  },
+                  {
+                    "programme": "137",
+                    "libelle": "Égalité entre les femmes et les hommes",
+                    "montant": 22677974.0
+                  },
+                  {
+                    "programme": "157",
+                    "libelle": "Handicap et dépendance",
+                    "montant": 12115877720.0
+                  },
+                  {
+                    "programme": "304",
+                    "libelle": "Inclusion sociale et protection des personnes",
+                    "montant": 5460107267.0
+                  }
+                ]
+              },
+              {
+                "mission": "Sport, jeunesse et vie associative",
+                "montant": 665746831.0,
+                "programmes": [
+                  {
+                    "programme": "163",
+                    "libelle": "Jeunesse et vie associative",
+                    "montant": 433560141.0
+                  },
+                  {
+                    "programme": "219",
+                    "libelle": "Sport",
+                    "montant": 232186690.0
+                  }
+                ]
+              },
+              {
+                "mission": "Sécurités",
+                "montant": 18752153802.0,
+                "programmes": [
+                  {
+                    "programme": "152",
+                    "libelle": "Gendarmerie nationale",
+                    "montant": 8308259367.0
+                  },
+                  {
+                    "programme": "161",
+                    "libelle": "Sécurité civile",
+                    "montant": 454205392.0
+                  },
+                  {
+                    "programme": "176",
+                    "libelle": "Police nationale",
+                    "montant": 9957776497.0
+                  },
+                  {
+                    "programme": "207",
+                    "libelle": "Sécurité et éducation routières",
+                    "montant": 31912546.0
+                  }
+                ]
+              },
+              {
+                "mission": "Travail et emploi",
+                "montant": 13025833395.0,
+                "programmes": [
+                  {
+                    "programme": "102",
+                    "libelle": "Accès et retour à l'emploi",
+                    "montant": 8332285246.0
+                  },
+                  {
+                    "programme": "103",
+                    "libelle": "Accompagnement des mutations économiques et développement de l'emploi",
+                    "montant": 3892062735.0
+                  },
+                  {
+                    "programme": "111",
+                    "libelle": "Amélioration de la qualité de l'emploi et des relations du travail",
+                    "montant": 84573593.0
+                  },
+                  {
+                    "programme": "155",
+                    "libelle": "Conception, gestion et évaluation des politiques de l'emploi et du travail",
+                    "montant": 716911821.0
+                  }
+                ]
+              },
+              {
+                "mission": "Écologie, développement et mobilité durables",
+                "montant": 10736342567.0,
+                "programmes": [
+                  {
+                    "programme": "113",
+                    "libelle": "Paysages, eau et biodiversité",
+                    "montant": 242741738.0
+                  },
+                  {
+                    "programme": "159",
+                    "libelle": "Information géographique et cartographique",
+                    "montant": 92331019.0
+                  },
+                  {
+                    "programme": "170",
+                    "libelle": "Météorologie",
+                    "montant": 190236590.0
+                  },
+                  {
+                    "programme": "174",
+                    "libelle": "Énergie, climat et après-mines",
+                    "montant": 464211565.0
+                  },
+                  {
+                    "programme": "181",
+                    "libelle": "Prévention des risques",
+                    "montant": -32432350.0
+                  },
+                  {
+                    "programme": "203",
+                    "libelle": "Infrastructures et services de transports",
+                    "montant": 4406483489.0
+                  },
+                  {
+                    "programme": "205",
+                    "libelle": "Sécurité et affaires maritimes, pêche et aquaculture",
+                    "montant": 158191639.0
+                  },
+                  {
+                    "programme": "217",
+                    "libelle": "Conduite et pilotage des politiques de l'écologie, du développement et de la mobilité durables",
+                    "montant": 3259107430.0
+                  },
+                  {
+                    "programme": "345",
+                    "libelle": "Service public de l'énergie",
+                    "montant": 1955471447.0
+                  }
+                ]
+              },
+              {
+                "mission": "Économie",
+                "montant": 1710011469.0,
+                "programmes": [
+                  {
+                    "programme": "134",
+                    "libelle": "Développement des entreprises et du tourisme",
+                    "montant": 861165579.0
+                  },
+                  {
+                    "programme": "220",
+                    "libelle": "Statistiques et études économiques",
+                    "montant": 439955868.0
+                  },
+                  {
+                    "programme": "305",
+                    "libelle": "Stratégie économique et fiscale",
+                    "montant": 421890022.0
+                  },
+                  {
+                    "programme": "343",
+                    "libelle": "Plan 'France Très haut débit'",
+                    "montant": -13000000.0
+                  }
+                ]
+              },
+              {
+                "mission": "Égalité des territoires et logement",
+                "montant": 17936416169.0,
+                "programmes": [
+                  {
+                    "programme": "109",
+                    "libelle": "Aide à l'accès au logement",
+                    "montant": 15356992570.0
+                  },
+                  {
+                    "programme": "135",
+                    "libelle": "Urbanisme, territoires et amélioration de l'habitat",
+                    "montant": 828227315.0
+                  },
+                  {
+                    "programme": "177",
+                    "libelle": "Hébergement, parcours vers le logement et insertion des personnes vulnérables",
+                    "montant": 1751196284.0
+                  }
+                ]
+              }
+            ],
+            "degrevements_d_impots_locaux": 12707915637.03
           },
           "securite_sociale": null,
           "securite_sociale_non_resolu": {
@@ -322,10 +1839,754 @@
             ],
             "comptes_a_part": 5680128302.76,
             "solde": -67667726184.5901,
-            "missions": null,
-            "missions_non_resolu": {
-              "raison": "la source ne publie les dépenses par mission, en données, que pour les exercices clos de 2023 à 2025"
-            }
+            "missions": [
+              {
+                "mission": "Action extérieure de l'État",
+                "montant": 2836976323.0,
+                "programmes": [
+                  {
+                    "programme": "105",
+                    "libelle": "Action de la France en Europe et dans le monde",
+                    "montant": 1788947207.0
+                  },
+                  {
+                    "programme": "151",
+                    "libelle": "Français à l'étranger et affaires consulaires",
+                    "montant": 371615345.0
+                  },
+                  {
+                    "programme": "185",
+                    "libelle": "Diplomatie culturelle et d'influence",
+                    "montant": 676413771.0
+                  }
+                ]
+              },
+              {
+                "mission": "Administration générale et territoriale de l'État",
+                "montant": 3019622993.0,
+                "programmes": [
+                  {
+                    "programme": "216",
+                    "libelle": "Conduite et pilotage des politiques de l'intérieur",
+                    "montant": 943503091.0
+                  },
+                  {
+                    "programme": "232",
+                    "libelle": "Vie politique, cultuelle et associative",
+                    "montant": 370844092.0
+                  },
+                  {
+                    "programme": "307",
+                    "libelle": "Administration territoriale",
+                    "montant": 1705275810.0
+                  }
+                ]
+              },
+              {
+                "mission": "Agriculture, alimentation, forêt et affaires rurales",
+                "montant": 4636382686.0,
+                "programmes": [
+                  {
+                    "programme": "149",
+                    "libelle": "Économie et développement durable des entreprises agricoles, agroalimentaires et forestières",
+                    "montant": 3357742318.0
+                  },
+                  {
+                    "programme": "206",
+                    "libelle": "Sécurité et qualité sanitaires de l'alimentation",
+                    "montant": 625500491.0
+                  },
+                  {
+                    "programme": "215",
+                    "libelle": "Conduite et pilotage des politiques de l'agriculture",
+                    "montant": 653139877.0
+                  }
+                ]
+              },
+              {
+                "mission": "Aide publique au développement",
+                "montant": 2492161701.0,
+                "programmes": [
+                  {
+                    "programme": "110",
+                    "libelle": "Aide économique et financière au développement",
+                    "montant": 931989405.0
+                  },
+                  {
+                    "programme": "209",
+                    "libelle": "Solidarité à l'égard des pays en développement",
+                    "montant": 1560172296.0
+                  }
+                ]
+              },
+              {
+                "mission": "Anciens combattants, mémoire et liens avec la nation",
+                "montant": 2503371651.0,
+                "programmes": [
+                  {
+                    "programme": "158",
+                    "libelle": "Indemnisation des victimes des persécutions antisémites et des actes de barbarie pendant la seconde guerre mondiale",
+                    "montant": 94015367.0
+                  },
+                  {
+                    "programme": "167",
+                    "libelle": "Liens entre la Nation et son armée",
+                    "montant": 35041672.0
+                  },
+                  {
+                    "programme": "169",
+                    "libelle": "Reconnaissance et réparation en faveur du monde combattant",
+                    "montant": 2374314612.0
+                  }
+                ]
+              },
+              {
+                "mission": "Conseil et contrôle de l'État",
+                "montant": 644741617.0,
+                "programmes": [
+                  {
+                    "programme": "126",
+                    "libelle": "Conseil économique, social et environnemental",
+                    "montant": 41216329.0
+                  },
+                  {
+                    "programme": "164",
+                    "libelle": "Cour des comptes et autres juridictions financières",
+                    "montant": 215115802.0
+                  },
+                  {
+                    "programme": "165",
+                    "libelle": "Conseil d'État et autres juridictions administratives",
+                    "montant": 388047331.0
+                  },
+                  {
+                    "programme": "340",
+                    "libelle": "Haut Conseil des finances publiques",
+                    "montant": 362155.0
+                  }
+                ]
+              },
+              {
+                "mission": "Culture",
+                "montant": 2849107705.0,
+                "programmes": [
+                  {
+                    "programme": "131",
+                    "libelle": "Création",
+                    "montant": 784206195.0
+                  },
+                  {
+                    "programme": "175",
+                    "libelle": "Patrimoines",
+                    "montant": 877701096.0
+                  },
+                  {
+                    "programme": "224",
+                    "libelle": "Transmission des savoirs et démocratisation de la culture",
+                    "montant": 1187200414.0
+                  }
+                ]
+              },
+              {
+                "mission": "Direction de l'action du Gouvernement",
+                "montant": 1365442294.0,
+                "programmes": [
+                  {
+                    "programme": "129",
+                    "libelle": "Coordination du travail gouvernemental",
+                    "montant": 619386383.0
+                  },
+                  {
+                    "programme": "308",
+                    "libelle": "Protection des droits et libertés",
+                    "montant": 90148777.0
+                  },
+                  {
+                    "programme": "333",
+                    "libelle": "Moyens mutualisés des administrations déconcentrées",
+                    "montant": 655907134.0
+                  }
+                ]
+              },
+              {
+                "mission": "Défense",
+                "montant": 42258036415.0,
+                "programmes": [
+                  {
+                    "programme": "144",
+                    "libelle": "Environnement et prospective de la politique de défense",
+                    "montant": 1370203609.0
+                  },
+                  {
+                    "programme": "146",
+                    "libelle": "Équipement des forces",
+                    "montant": 10004533324.0
+                  },
+                  {
+                    "programme": "178",
+                    "libelle": "Préparation et emploi des forces",
+                    "montant": 8537256182.0
+                  },
+                  {
+                    "programme": "212",
+                    "libelle": "Soutien de la politique de la défense",
+                    "montant": 22346043300.0
+                  }
+                ]
+              },
+              {
+                "mission": "Engagements financiers de l'État",
+                "montant": 42350840942.0,
+                "programmes": [
+                  {
+                    "programme": "114",
+                    "libelle": "Appels en garantie de l'État (crédits évaluatifs)",
+                    "montant": 34983900.0
+                  },
+                  {
+                    "programme": "117",
+                    "libelle": "Charge de la dette et trésorerie de l'État (crédits évaluatifs)",
+                    "montant": 41697188407.0
+                  },
+                  {
+                    "programme": "145",
+                    "libelle": "Épargne",
+                    "montant": 97049687.0
+                  },
+                  {
+                    "programme": "168",
+                    "libelle": "Majoration de rentes",
+                    "montant": 260902407.0
+                  },
+                  {
+                    "programme": "336",
+                    "libelle": "Dotation du Mécanisme européen de stabilité",
+                    "montant": 86712706.0
+                  },
+                  {
+                    "programme": "344",
+                    "libelle": "Fonds de soutien relatif aux prêts et contrats financiers structurés à risque",
+                    "montant": 174003835.0
+                  }
+                ]
+              },
+              {
+                "mission": "Enseignement scolaire",
+                "montant": 70328781832.0,
+                "programmes": [
+                  {
+                    "programme": "139",
+                    "libelle": "Enseignement privé du premier et du second degrés",
+                    "montant": 7477150312.0
+                  },
+                  {
+                    "programme": "140",
+                    "libelle": "Enseignement scolaire public du premier degré",
+                    "montant": 21573752725.0
+                  },
+                  {
+                    "programme": "141",
+                    "libelle": "Enseignement scolaire public du second degré",
+                    "montant": 32436317503.0
+                  },
+                  {
+                    "programme": "143",
+                    "libelle": "Enseignement technique agricole",
+                    "montant": 1396395266.0
+                  },
+                  {
+                    "programme": "214",
+                    "libelle": "Soutien de la politique de l'éducation nationale",
+                    "montant": 2277606530.0
+                  },
+                  {
+                    "programme": "230",
+                    "libelle": "Vie de l'élève",
+                    "montant": 5167559496.0
+                  }
+                ]
+              },
+              {
+                "mission": "Gestion des finances publiques et des ressources humaines",
+                "montant": 10943102287.0,
+                "programmes": [
+                  {
+                    "programme": "148",
+                    "libelle": "Fonction publique",
+                    "montant": 194016188.0
+                  },
+                  {
+                    "programme": "156",
+                    "libelle": "Gestion fiscale et financière de l'État et du secteur public local",
+                    "montant": 8056922059.0
+                  },
+                  {
+                    "programme": "218",
+                    "libelle": "Conduite et pilotage des politiques économiques et financières",
+                    "montant": 1176762320.0
+                  },
+                  {
+                    "programme": "302",
+                    "libelle": "Facilitation et sécurisation des échanges",
+                    "montant": 1515401720.0
+                  }
+                ]
+              },
+              {
+                "mission": "Immigration, asile et intégration",
+                "montant": 1460768191.0,
+                "programmes": [
+                  {
+                    "programme": "104",
+                    "libelle": "Intégration et accès à la nationalité française",
+                    "montant": 188553783.0
+                  },
+                  {
+                    "programme": "303",
+                    "libelle": "Immigration et asile",
+                    "montant": 1272214408.0
+                  }
+                ]
+              },
+              {
+                "mission": "Investissements d'avenir",
+                "montant": 0.0,
+                "programmes": [
+                  {
+                    "programme": "421",
+                    "libelle": "Soutien des progrès de l'enseignement et de la recherche",
+                    "montant": 0.0
+                  },
+                  {
+                    "programme": "422",
+                    "libelle": "Valorisation de la recherche",
+                    "montant": 0.0
+                  },
+                  {
+                    "programme": "423",
+                    "libelle": "Accélération de la modernisation des entreprises",
+                    "montant": 0.0
+                  }
+                ]
+              },
+              {
+                "mission": "Justice",
+                "montant": 8375271408.0,
+                "programmes": [
+                  {
+                    "programme": "101",
+                    "libelle": "Accès au droit et à la justice",
+                    "montant": 379306104.0
+                  },
+                  {
+                    "programme": "107",
+                    "libelle": "Administration pénitentiaire",
+                    "montant": 3531963729.0
+                  },
+                  {
+                    "programme": "166",
+                    "libelle": "Justice judiciaire",
+                    "montant": 3291911419.0
+                  },
+                  {
+                    "programme": "182",
+                    "libelle": "Protection judiciaire de la jeunesse",
+                    "montant": 812938692.0
+                  },
+                  {
+                    "programme": "310",
+                    "libelle": "Conduite et pilotage de la politique de la justice",
+                    "montant": 354984425.0
+                  },
+                  {
+                    "programme": "335",
+                    "libelle": "Conseil supérieur de la magistrature",
+                    "montant": 4167039.0
+                  }
+                ]
+              },
+              {
+                "mission": "Médias, livre et industries culturelles",
+                "montant": 548684101.0,
+                "programmes": [
+                  {
+                    "programme": "180",
+                    "libelle": "Presse et médias",
+                    "montant": 274554298.0
+                  },
+                  {
+                    "programme": "334",
+                    "libelle": "Livre et industries culturelles",
+                    "montant": 274129803.0
+                  }
+                ]
+              },
+              {
+                "mission": "Outre-mer",
+                "montant": 2029752307.0,
+                "programmes": [
+                  {
+                    "programme": "123",
+                    "libelle": "Conditions de vie outre-mer",
+                    "montant": 732576638.0
+                  },
+                  {
+                    "programme": "138",
+                    "libelle": "Emploi outre-mer",
+                    "montant": 1297175669.0
+                  }
+                ]
+              },
+              {
+                "mission": "Politique des territoires",
+                "montant": 630677441.0,
+                "programmes": [
+                  {
+                    "programme": "112",
+                    "libelle": "Impulsion et coordination de la politique d'aménagement du territoire",
+                    "montant": 214947784.0
+                  },
+                  {
+                    "programme": "147",
+                    "libelle": "Politique de la ville",
+                    "montant": 368606248.0
+                  },
+                  {
+                    "programme": "162",
+                    "libelle": "Interventions territoriales de l'État",
+                    "montant": 47123409.0
+                  }
+                ]
+              },
+              {
+                "mission": "Pouvoirs publics",
+                "montant": 990920236.0,
+                "programmes": [
+                  {
+                    "programme": "501",
+                    "libelle": "Présidence de la République",
+                    "montant": 100000000.0
+                  },
+                  {
+                    "programme": "511",
+                    "libelle": "Assemblée nationale",
+                    "montant": 517890000.0
+                  },
+                  {
+                    "programme": "521",
+                    "libelle": "Sénat",
+                    "montant": 323584600.0
+                  },
+                  {
+                    "programme": "531",
+                    "libelle": "Conseil constitutionnel",
+                    "montant": 13696974.0
+                  },
+                  {
+                    "programme": "533",
+                    "libelle": "Cour de justice de la République",
+                    "montant": 861500.0
+                  },
+                  {
+                    "programme": "541",
+                    "libelle": "La Chaîne parlementaire",
+                    "montant": 34887162.0
+                  }
+                ]
+              },
+              {
+                "mission": "Recherche et enseignement supérieur",
+                "montant": 27201653312.0,
+                "programmes": [
+                  {
+                    "programme": "142",
+                    "libelle": "Enseignement supérieur et recherche agricoles",
+                    "montant": 329682050.0
+                  },
+                  {
+                    "programme": "150",
+                    "libelle": "Formations supérieures et recherche universitaire",
+                    "montant": 13133578971.0
+                  },
+                  {
+                    "programme": "172",
+                    "libelle": "Recherches scientifiques et technologiques pluridisciplinaires",
+                    "montant": 6596289958.0
+                  },
+                  {
+                    "programme": "186",
+                    "libelle": "Recherche culturelle et culture scientifique",
+                    "montant": 113381109.0
+                  },
+                  {
+                    "programme": "190",
+                    "libelle": "Recherche dans les domaines de l'énergie, du développement et de la mobilité durables",
+                    "montant": 1902515822.0
+                  },
+                  {
+                    "programme": "191",
+                    "libelle": "Recherche duale (civile et militaire)",
+                    "montant": 166701387.0
+                  },
+                  {
+                    "programme": "192",
+                    "libelle": "Recherche et enseignement supérieur en matière économique et industrielle",
+                    "montant": 862337162.0
+                  },
+                  {
+                    "programme": "193",
+                    "libelle": "Recherche spatiale",
+                    "montant": 1453437999.0
+                  },
+                  {
+                    "programme": "231",
+                    "libelle": "Vie étudiante",
+                    "montant": 2643728854.0
+                  }
+                ]
+              },
+              {
+                "mission": "Relations avec les collectivités territoriales",
+                "montant": 3389019268.0,
+                "programmes": [
+                  {
+                    "programme": "119",
+                    "libelle": "Concours financiers aux collectivités territoriales et à leurs groupements",
+                    "montant": 2930036491.0
+                  },
+                  {
+                    "programme": "122",
+                    "libelle": "Concours spécifiques et administration",
+                    "montant": 458982777.0
+                  }
+                ]
+              },
+              {
+                "mission": "Régimes sociaux et de retraite",
+                "montant": 6329530527.0,
+                "programmes": [
+                  {
+                    "programme": "195",
+                    "libelle": "Régimes de retraite des mines, de la SEITA et divers",
+                    "montant": 1426594241.0
+                  },
+                  {
+                    "programme": "197",
+                    "libelle": "Régimes de retraite et de sécurité sociale des marins",
+                    "montant": 828077126.0
+                  },
+                  {
+                    "programme": "198",
+                    "libelle": "Régimes sociaux et de retraite des transports terrestres",
+                    "montant": 4074859160.0
+                  }
+                ]
+              },
+              {
+                "mission": "Santé",
+                "montant": 1248580270.0,
+                "programmes": [
+                  {
+                    "programme": "183",
+                    "libelle": "Protection maladie",
+                    "montant": 811703010.0
+                  },
+                  {
+                    "programme": "204",
+                    "libelle": "Prévention, sécurité sanitaire et offre de soins",
+                    "montant": 436877260.0
+                  }
+                ]
+              },
+              {
+                "mission": "Solidarité, insertion et égalité des chances",
+                "montant": 19019251331.0,
+                "programmes": [
+                  {
+                    "programme": "124",
+                    "libelle": "Conduite et soutien des politiques sanitaires, sociales, du sport, de la jeunesse et de la vie associative",
+                    "montant": 1470334197.0
+                  },
+                  {
+                    "programme": "137",
+                    "libelle": "Égalité entre les femmes et les hommes",
+                    "montant": 22294320.0
+                  },
+                  {
+                    "programme": "157",
+                    "libelle": "Handicap et dépendance",
+                    "montant": 10980270002.0
+                  },
+                  {
+                    "programme": "304",
+                    "libelle": "Inclusion sociale et protection des personnes",
+                    "montant": 6546352812.0
+                  }
+                ]
+              },
+              {
+                "mission": "Sport, jeunesse et vie associative",
+                "montant": 783633462.0,
+                "programmes": [
+                  {
+                    "programme": "163",
+                    "libelle": "Jeunesse et vie associative",
+                    "montant": 540177011.0
+                  },
+                  {
+                    "programme": "219",
+                    "libelle": "Sport",
+                    "montant": 243456451.0
+                  }
+                ]
+              },
+              {
+                "mission": "Sécurités",
+                "montant": 19507840760.0,
+                "programmes": [
+                  {
+                    "programme": "152",
+                    "libelle": "Gendarmerie nationale",
+                    "montant": 8653631568.0
+                  },
+                  {
+                    "programme": "161",
+                    "libelle": "Sécurité civile",
+                    "montant": 507675860.0
+                  },
+                  {
+                    "programme": "176",
+                    "libelle": "Police nationale",
+                    "montant": 10311200495.0
+                  },
+                  {
+                    "programme": "207",
+                    "libelle": "Sécurité et éducation routières",
+                    "montant": 35332837.0
+                  }
+                ]
+              },
+              {
+                "mission": "Travail et emploi",
+                "montant": 15579630000.0,
+                "programmes": [
+                  {
+                    "programme": "102",
+                    "libelle": "Accès et retour à l'emploi",
+                    "montant": 7688300774.0
+                  },
+                  {
+                    "programme": "103",
+                    "libelle": "Accompagnement des mutations économiques et développement de l'emploi",
+                    "montant": 7120206139.0
+                  },
+                  {
+                    "programme": "111",
+                    "libelle": "Amélioration de la qualité de l'emploi et des relations du travail",
+                    "montant": 84372809.0
+                  },
+                  {
+                    "programme": "155",
+                    "libelle": "Conception, gestion et évaluation des politiques de l'emploi et du travail",
+                    "montant": 686750278.0
+                  }
+                ]
+              },
+              {
+                "mission": "Écologie, développement et mobilité durables",
+                "montant": 11896057576.0,
+                "programmes": [
+                  {
+                    "programme": "113",
+                    "libelle": "Paysages, eau et biodiversité",
+                    "montant": 266042058.0
+                  },
+                  {
+                    "programme": "159",
+                    "libelle": "Expertise, information géographique et météorologie",
+                    "montant": 479777859.0
+                  },
+                  {
+                    "programme": "174",
+                    "libelle": "Énergie, climat et après-mines",
+                    "montant": 635706605.0
+                  },
+                  {
+                    "programme": "181",
+                    "libelle": "Prévention des risques",
+                    "montant": 146771499.0
+                  },
+                  {
+                    "programme": "203",
+                    "libelle": "Infrastructures et services de transports",
+                    "montant": 4632768196.0
+                  },
+                  {
+                    "programme": "205",
+                    "libelle": "Sécurité et affaires maritimes, pêche et aquaculture",
+                    "montant": 168305636.0
+                  },
+                  {
+                    "programme": "217",
+                    "libelle": "Conduite et pilotage des politiques de l'écologie, du développement et de la mobilité durables",
+                    "montant": 3022826085.0
+                  },
+                  {
+                    "programme": "345",
+                    "libelle": "Service public de l'énergie",
+                    "montant": 2543859638.0
+                  }
+                ]
+              },
+              {
+                "mission": "Économie",
+                "montant": 3465480913.0,
+                "programmes": [
+                  {
+                    "programme": "134",
+                    "libelle": "Développement des entreprises et du tourisme",
+                    "montant": 2574830387.0
+                  },
+                  {
+                    "programme": "220",
+                    "libelle": "Statistiques et études économiques",
+                    "montant": 448191351.0
+                  },
+                  {
+                    "programme": "305",
+                    "libelle": "Stratégie économique et fiscale",
+                    "montant": 434359132.0
+                  },
+                  {
+                    "programme": "343",
+                    "libelle": "Plan 'France Très haut débit'",
+                    "montant": 8100043.0
+                  }
+                ]
+              },
+              {
+                "mission": "Égalité des territoires et logement",
+                "montant": 18089330845.0,
+                "programmes": [
+                  {
+                    "programme": "109",
+                    "libelle": "Aide à l'accès au logement",
+                    "montant": 15514959660.0
+                  },
+                  {
+                    "programme": "135",
+                    "libelle": "Urbanisme, territoires et amélioration de l'habitat",
+                    "montant": 611331530.0
+                  },
+                  {
+                    "programme": "177",
+                    "libelle": "Hébergement, parcours vers le logement et insertion des personnes vulnérables",
+                    "montant": 1963039655.0
+                  }
+                ]
+              }
+            ],
+            "degrevements_d_impots_locaux": 12664293633.0
           },
           "securite_sociale": null,
           "securite_sociale_non_resolu": {
@@ -389,10 +2650,805 @@
             ],
             "comptes_a_part": 904178693.51,
             "solde": -76001599014.97,
-            "missions": null,
-            "missions_non_resolu": {
-              "raison": "la source ne publie les dépenses par mission, en données, que pour les exercices clos de 2023 à 2025"
-            }
+            "missions": [
+              {
+                "mission": "Action et transformation publiques",
+                "montant": 1844468.0,
+                "programmes": [
+                  {
+                    "programme": "348",
+                    "libelle": "Rénovation des cités administratives et autres sites domaniaux multi-occupants",
+                    "montant": 1844468.0
+                  },
+                  {
+                    "programme": "349",
+                    "libelle": "Fonds pour la transformation de l'action publique",
+                    "montant": 0.0
+                  }
+                ]
+              },
+              {
+                "mission": "Action extérieure de l'État",
+                "montant": 2963387271.0,
+                "programmes": [
+                  {
+                    "programme": "105",
+                    "libelle": "Action de la France en Europe et dans le monde",
+                    "montant": 1880055527.0
+                  },
+                  {
+                    "programme": "151",
+                    "libelle": "Français à l'étranger et affaires consulaires",
+                    "montant": 363395392.0
+                  },
+                  {
+                    "programme": "185",
+                    "libelle": "Diplomatie culturelle et d'influence",
+                    "montant": 719861283.0
+                  },
+                  {
+                    "programme": "347",
+                    "libelle": "Présidence française du G7",
+                    "montant": 75069.0
+                  }
+                ]
+              },
+              {
+                "mission": "Administration générale et territoriale de l'État",
+                "montant": 2821617458.0,
+                "programmes": [
+                  {
+                    "programme": "216",
+                    "libelle": "Conduite et pilotage des politiques de l'intérieur",
+                    "montant": 927330800.0
+                  },
+                  {
+                    "programme": "232",
+                    "libelle": "Vie politique, cultuelle et associative",
+                    "montant": 175507215.0
+                  },
+                  {
+                    "programme": "307",
+                    "libelle": "Administration territoriale",
+                    "montant": 1718779443.0
+                  }
+                ]
+              },
+              {
+                "mission": "Agriculture, alimentation, forêt et affaires rurales",
+                "montant": 3442254534.0,
+                "programmes": [
+                  {
+                    "programme": "149",
+                    "libelle": "Compétitivité et durabilité de l'agriculture, de l'agroalimentaire, de la forêt, de la pêche et de l'aquaculture",
+                    "montant": 2244009531.0
+                  },
+                  {
+                    "programme": "206",
+                    "libelle": "Sécurité et qualité sanitaires de l'alimentation",
+                    "montant": 552423738.0
+                  },
+                  {
+                    "programme": "215",
+                    "libelle": "Conduite et pilotage des politiques de l'agriculture",
+                    "montant": 645821265.0
+                  }
+                ]
+              },
+              {
+                "mission": "Aide publique au développement",
+                "montant": 2632804605.0,
+                "programmes": [
+                  {
+                    "programme": "110",
+                    "libelle": "Aide économique et financière au développement",
+                    "montant": 929189063.0
+                  },
+                  {
+                    "programme": "209",
+                    "libelle": "Solidarité à l'égard des pays en développement",
+                    "montant": 1703615542.0
+                  }
+                ]
+              },
+              {
+                "mission": "Anciens combattants, mémoire et liens avec la nation",
+                "montant": 2432817081.0,
+                "programmes": [
+                  {
+                    "programme": "158",
+                    "libelle": "Indemnisation des victimes des persécutions antisémites et des actes de barbarie pendant la seconde guerre mondiale",
+                    "montant": 95899426.0
+                  },
+                  {
+                    "programme": "167",
+                    "libelle": "Liens entre la Nation et son armée",
+                    "montant": 40355064.0
+                  },
+                  {
+                    "programme": "169",
+                    "libelle": "Reconnaissance et réparation en faveur du monde combattant",
+                    "montant": 2296562591.0
+                  }
+                ]
+              },
+              {
+                "mission": "Cohésion des territoires",
+                "montant": 17825968726.0,
+                "programmes": [
+                  {
+                    "programme": "109",
+                    "libelle": "Aide à l'accès au logement",
+                    "montant": 14346216500.0
+                  },
+                  {
+                    "programme": "112",
+                    "libelle": "Impulsion et coordination de la politique d'aménagement du territoire",
+                    "montant": 240410516.0
+                  },
+                  {
+                    "programme": "135",
+                    "libelle": "Urbanisme, territoires et amélioration de l'habitat",
+                    "montant": 684955061.0
+                  },
+                  {
+                    "programme": "147",
+                    "libelle": "Politique de la ville",
+                    "montant": 399197643.0
+                  },
+                  {
+                    "programme": "162",
+                    "libelle": "Interventions territoriales de l'État",
+                    "montant": 55716413.0
+                  },
+                  {
+                    "programme": "177",
+                    "libelle": "Hébergement, parcours vers le logement et insertion des personnes vulnérables",
+                    "montant": 2099472593.0
+                  }
+                ]
+              },
+              {
+                "mission": "Conseil et contrôle de l'État",
+                "montant": 665041282.0,
+                "programmes": [
+                  {
+                    "programme": "126",
+                    "libelle": "Conseil économique, social et environnemental",
+                    "montant": 42456459.0
+                  },
+                  {
+                    "programme": "164",
+                    "libelle": "Cour des comptes et autres juridictions financières",
+                    "montant": 218021002.0
+                  },
+                  {
+                    "programme": "165",
+                    "libelle": "Conseil d'État et autres juridictions administratives",
+                    "montant": 404231820.0
+                  },
+                  {
+                    "programme": "340",
+                    "libelle": "Haut Conseil des finances publiques",
+                    "montant": 332001.0
+                  }
+                ]
+              },
+              {
+                "mission": "Crédits non répartis",
+                "montant": 0.0,
+                "programmes": [
+                  {
+                    "programme": "551",
+                    "libelle": "Provision relative aux rémunérations publiques",
+                    "montant": 0.0
+                  },
+                  {
+                    "programme": "552",
+                    "libelle": "Dépenses accidentelles et imprévisibles",
+                    "montant": 0.0
+                  }
+                ]
+              },
+              {
+                "mission": "Culture",
+                "montant": 2912996782.0,
+                "programmes": [
+                  {
+                    "programme": "131",
+                    "libelle": "Création",
+                    "montant": 795783728.0
+                  },
+                  {
+                    "programme": "175",
+                    "libelle": "Patrimoines",
+                    "montant": 898248285.0
+                  },
+                  {
+                    "programme": "224",
+                    "libelle": "Transmission des savoirs et démocratisation de la culture",
+                    "montant": 1218964769.0
+                  }
+                ]
+              },
+              {
+                "mission": "Direction de l'action du Gouvernement",
+                "montant": 1386333292.0,
+                "programmes": [
+                  {
+                    "programme": "129",
+                    "libelle": "Coordination du travail gouvernemental",
+                    "montant": 635356025.0
+                  },
+                  {
+                    "programme": "308",
+                    "libelle": "Protection des droits et libertés",
+                    "montant": 92798035.0
+                  },
+                  {
+                    "programme": "333",
+                    "libelle": "Moyens mutualisés des administrations déconcentrées",
+                    "montant": 658179232.0
+                  }
+                ]
+              },
+              {
+                "mission": "Défense",
+                "montant": 43286557874.0,
+                "programmes": [
+                  {
+                    "programme": "144",
+                    "libelle": "Environnement et prospective de la politique de défense",
+                    "montant": 1394974330.0
+                  },
+                  {
+                    "programme": "146",
+                    "libelle": "Équipement des forces",
+                    "montant": 10009685339.0
+                  },
+                  {
+                    "programme": "178",
+                    "libelle": "Préparation et emploi des forces",
+                    "montant": 8962768820.0
+                  },
+                  {
+                    "programme": "212",
+                    "libelle": "Soutien de la politique de la défense",
+                    "montant": 22919129385.0
+                  }
+                ]
+              },
+              {
+                "mission": "Engagements financiers de l'État",
+                "montant": 42119295394.0,
+                "programmes": [
+                  {
+                    "programme": "114",
+                    "libelle": "Appels en garantie de l'État (crédits évaluatifs)",
+                    "montant": 44631401.0
+                  },
+                  {
+                    "programme": "117",
+                    "libelle": "Charge de la dette et trésorerie de l'État (crédits évaluatifs)",
+                    "montant": 41541283309.0
+                  },
+                  {
+                    "programme": "145",
+                    "libelle": "Épargne",
+                    "montant": 101003453.0
+                  },
+                  {
+                    "programme": "168",
+                    "libelle": "Majoration de rentes",
+                    "montant": 142478769.0
+                  },
+                  {
+                    "programme": "336",
+                    "libelle": "Dotation en capital du Mécanisme européen de stabilité",
+                    "montant": 100000000.0
+                  },
+                  {
+                    "programme": "338",
+                    "libelle": "Augmentation de capital de la Banque européenne d'investissement",
+                    "montant": 0.0
+                  },
+                  {
+                    "programme": "344",
+                    "libelle": "Fonds de soutien relatif aux prêts et contrats financiers structurés à risque",
+                    "montant": 189898462.0
+                  }
+                ]
+              },
+              {
+                "mission": "Enseignement scolaire",
+                "montant": 71661103532.0,
+                "programmes": [
+                  {
+                    "programme": "139",
+                    "libelle": "Enseignement privé du premier et du second degrés",
+                    "montant": 7564521048.0
+                  },
+                  {
+                    "programme": "140",
+                    "libelle": "Enseignement scolaire public du premier degré",
+                    "montant": 22000915126.0
+                  },
+                  {
+                    "programme": "141",
+                    "libelle": "Enseignement scolaire public du second degré",
+                    "montant": 32916816428.0
+                  },
+                  {
+                    "programme": "143",
+                    "libelle": "Enseignement technique agricole",
+                    "montant": 1429680898.0
+                  },
+                  {
+                    "programme": "214",
+                    "libelle": "Soutien de la politique de l'éducation nationale",
+                    "montant": 2331142225.0
+                  },
+                  {
+                    "programme": "230",
+                    "libelle": "Vie de l'élève",
+                    "montant": 5418027807.0
+                  }
+                ]
+              },
+              {
+                "mission": "Gestion des finances publiques et des ressources humaines",
+                "montant": 10761923262.0,
+                "programmes": [
+                  {
+                    "programme": "148",
+                    "libelle": "Fonction publique",
+                    "montant": 201622080.0
+                  },
+                  {
+                    "programme": "156",
+                    "libelle": "Gestion fiscale et financière de l'État et du secteur public local",
+                    "montant": 8020128964.0
+                  },
+                  {
+                    "programme": "218",
+                    "libelle": "Conduite et pilotage des politiques économiques et financières",
+                    "montant": 1009387182.0
+                  },
+                  {
+                    "programme": "302",
+                    "libelle": "Facilitation et sécurisation des échanges",
+                    "montant": 1530785036.0
+                  }
+                ]
+              },
+              {
+                "mission": "Immigration, asile et intégration",
+                "montant": 1554919647.0,
+                "programmes": [
+                  {
+                    "programme": "104",
+                    "libelle": "Intégration et accès à la nationalité française",
+                    "montant": 303043735.0
+                  },
+                  {
+                    "programme": "303",
+                    "libelle": "Immigration et asile",
+                    "montant": 1251875912.0
+                  }
+                ]
+              },
+              {
+                "mission": "Investissements d'avenir",
+                "montant": 1113000000.0,
+                "programmes": [
+                  {
+                    "programme": "421",
+                    "libelle": "Soutien des progrès de l'enseignement et de la recherche",
+                    "montant": 142500000.0
+                  },
+                  {
+                    "programme": "422",
+                    "libelle": "Valorisation de la recherche",
+                    "montant": 227000000.0
+                  },
+                  {
+                    "programme": "423",
+                    "libelle": "Accélération de la modernisation des entreprises",
+                    "montant": 743500000.0
+                  }
+                ]
+              },
+              {
+                "mission": "Justice",
+                "montant": 8605886101.0,
+                "programmes": [
+                  {
+                    "programme": "101",
+                    "libelle": "Accès au droit et à la justice",
+                    "montant": 430139025.0
+                  },
+                  {
+                    "programme": "107",
+                    "libelle": "Administration pénitentiaire",
+                    "montant": 3497633915.0
+                  },
+                  {
+                    "programme": "166",
+                    "libelle": "Justice judiciaire",
+                    "montant": 3432466114.0
+                  },
+                  {
+                    "programme": "182",
+                    "libelle": "Protection judiciaire de la jeunesse",
+                    "montant": 824856816.0
+                  },
+                  {
+                    "programme": "310",
+                    "libelle": "Conduite et pilotage de la politique de la justice",
+                    "montant": 416689736.0
+                  },
+                  {
+                    "programme": "335",
+                    "libelle": "Conseil supérieur de la magistrature",
+                    "montant": 4100495.0
+                  }
+                ]
+              },
+              {
+                "mission": "Médias, livre et industries culturelles",
+                "montant": 547398275.0,
+                "programmes": [
+                  {
+                    "programme": "180",
+                    "libelle": "Presse et médias",
+                    "montant": 279597573.0
+                  },
+                  {
+                    "programme": "334",
+                    "libelle": "Livre et industries culturelles",
+                    "montant": 267800702.0
+                  }
+                ]
+              },
+              {
+                "mission": "Outre-mer",
+                "montant": 2113521145.0,
+                "programmes": [
+                  {
+                    "programme": "123",
+                    "libelle": "Conditions de vie outre-mer",
+                    "montant": 683528548.0
+                  },
+                  {
+                    "programme": "138",
+                    "libelle": "Emploi outre-mer",
+                    "montant": 1429992597.0
+                  }
+                ]
+              },
+              {
+                "mission": "Pouvoirs publics",
+                "montant": 991742491.0,
+                "programmes": [
+                  {
+                    "programme": "501",
+                    "libelle": "Présidence de la République",
+                    "montant": 103000000.0
+                  },
+                  {
+                    "programme": "511",
+                    "libelle": "Assemblée nationale",
+                    "montant": 517890000.0
+                  },
+                  {
+                    "programme": "521",
+                    "libelle": "Sénat",
+                    "montant": 323584600.0
+                  },
+                  {
+                    "programme": "531",
+                    "libelle": "Conseil constitutionnel",
+                    "montant": 11719229.0
+                  },
+                  {
+                    "programme": "532",
+                    "libelle": "Haute Cour",
+                    "montant": 0.0
+                  },
+                  {
+                    "programme": "533",
+                    "libelle": "Cour de justice de la République",
+                    "montant": 861500.0
+                  },
+                  {
+                    "programme": "541",
+                    "libelle": "La Chaîne parlementaire",
+                    "montant": 34687162.0
+                  },
+                  {
+                    "programme": "542",
+                    "libelle": "Indemnités des représentants français au Parlement européen",
+                    "montant": 0.0
+                  }
+                ]
+              },
+              {
+                "mission": "Recherche et enseignement supérieur",
+                "montant": 27578629028.0,
+                "programmes": [
+                  {
+                    "programme": "142",
+                    "libelle": "Enseignement supérieur et recherche agricoles",
+                    "montant": 339852268.0
+                  },
+                  {
+                    "programme": "150",
+                    "libelle": "Formations supérieures et recherche universitaire",
+                    "montant": 13404384948.0
+                  },
+                  {
+                    "programme": "172",
+                    "libelle": "Recherches scientifiques et technologiques pluridisciplinaires",
+                    "montant": 6696858581.0
+                  },
+                  {
+                    "programme": "186",
+                    "libelle": "Recherche culturelle et culture scientifique",
+                    "montant": 110889356.0
+                  },
+                  {
+                    "programme": "190",
+                    "libelle": "Recherche dans les domaines de l'énergie, du développement et de la mobilité durables",
+                    "montant": 1717515930.0
+                  },
+                  {
+                    "programme": "191",
+                    "libelle": "Recherche duale (civile et militaire)",
+                    "montant": 174680656.0
+                  },
+                  {
+                    "programme": "192",
+                    "libelle": "Recherche et enseignement supérieur en matière économique et industrielle",
+                    "montant": 886208611.0
+                  },
+                  {
+                    "programme": "193",
+                    "libelle": "Recherche spatiale",
+                    "montant": 1597664579.0
+                  },
+                  {
+                    "programme": "231",
+                    "libelle": "Vie étudiante",
+                    "montant": 2650574099.0
+                  }
+                ]
+              },
+              {
+                "mission": "Relations avec les collectivités territoriales",
+                "montant": 3571858638.0,
+                "programmes": [
+                  {
+                    "programme": "119",
+                    "libelle": "Concours financiers aux collectivités territoriales et à leurs groupements",
+                    "montant": 3304833373.0
+                  },
+                  {
+                    "programme": "122",
+                    "libelle": "Concours spécifiques et administration",
+                    "montant": 267025265.0
+                  }
+                ]
+              },
+              {
+                "mission": "Régimes sociaux et de retraite",
+                "montant": 6447953082.0,
+                "programmes": [
+                  {
+                    "programme": "195",
+                    "libelle": "Régimes de retraite des mines, de la SEITA et divers",
+                    "montant": 1376813975.0
+                  },
+                  {
+                    "programme": "197",
+                    "libelle": "Régimes de retraite et de sécurité sociale des marins",
+                    "montant": 824315764.0
+                  },
+                  {
+                    "programme": "198",
+                    "libelle": "Régimes sociaux et de retraite des transports terrestres",
+                    "montant": 4246823343.0
+                  }
+                ]
+              },
+              {
+                "mission": "Santé",
+                "montant": 1337776879.0,
+                "programmes": [
+                  {
+                    "programme": "183",
+                    "libelle": "Protection maladie",
+                    "montant": 911055806.0
+                  },
+                  {
+                    "programme": "204",
+                    "libelle": "Prévention, sécurité sanitaire et offre de soins",
+                    "montant": 426721073.0
+                  }
+                ]
+              },
+              {
+                "mission": "Solidarité, insertion et égalité des chances",
+                "montant": 19846628540.0,
+                "programmes": [
+                  {
+                    "programme": "124",
+                    "libelle": "Conduite et soutien des politiques sanitaires, sociales, du sport, de la jeunesse et de la vie associative",
+                    "montant": 1499188462.0
+                  },
+                  {
+                    "programme": "137",
+                    "libelle": "Égalité entre les femmes et les hommes",
+                    "montant": 29076722.0
+                  },
+                  {
+                    "programme": "157",
+                    "libelle": "Handicap et dépendance",
+                    "montant": 11332552032.0
+                  },
+                  {
+                    "programme": "304",
+                    "libelle": "Inclusion sociale et protection des personnes",
+                    "montant": 6985811324.0
+                  }
+                ]
+              },
+              {
+                "mission": "Sport, jeunesse et vie associative",
+                "montant": 935993352.0,
+                "programmes": [
+                  {
+                    "programme": "163",
+                    "libelle": "Jeunesse et vie associative",
+                    "montant": 560245459.0
+                  },
+                  {
+                    "programme": "219",
+                    "libelle": "Sport",
+                    "montant": 327747893.0
+                  },
+                  {
+                    "programme": "350",
+                    "libelle": "Jeux olympiques et paralympiques 2024",
+                    "montant": 48000000.0
+                  }
+                ]
+              },
+              {
+                "mission": "Sécurités",
+                "montant": 19884464275.0,
+                "programmes": [
+                  {
+                    "programme": "152",
+                    "libelle": "Gendarmerie nationale",
+                    "montant": 8734983505.0
+                  },
+                  {
+                    "programme": "161",
+                    "libelle": "Sécurité civile",
+                    "montant": 515098458.0
+                  },
+                  {
+                    "programme": "176",
+                    "libelle": "Police nationale",
+                    "montant": 10595745414.0
+                  },
+                  {
+                    "programme": "207",
+                    "libelle": "Sécurité et éducation routières",
+                    "montant": 38636898.0
+                  }
+                ]
+              },
+              {
+                "mission": "Travail et emploi",
+                "montant": 14948736490.0,
+                "programmes": [
+                  {
+                    "programme": "102",
+                    "libelle": "Accès et retour à l'emploi",
+                    "montant": 7476738013.0
+                  },
+                  {
+                    "programme": "103",
+                    "libelle": "Accompagnement des mutations économiques et développement de l'emploi",
+                    "montant": 6724355016.0
+                  },
+                  {
+                    "programme": "111",
+                    "libelle": "Amélioration de la qualité de l'emploi et des relations du travail",
+                    "montant": 71576663.0
+                  },
+                  {
+                    "programme": "155",
+                    "libelle": "Conception, gestion et évaluation des politiques de l'emploi et du travail",
+                    "montant": 676066798.0
+                  }
+                ]
+              },
+              {
+                "mission": "Écologie, développement et mobilité durables",
+                "montant": 13517423795.0,
+                "programmes": [
+                  {
+                    "programme": "113",
+                    "libelle": "Paysages, eau et biodiversité",
+                    "montant": 150834333.0
+                  },
+                  {
+                    "programme": "159",
+                    "libelle": "Expertise, information géographique et météorologie",
+                    "montant": 507415551.0
+                  },
+                  {
+                    "programme": "174",
+                    "libelle": "Énergie, climat et après-mines",
+                    "montant": 502587475.0
+                  },
+                  {
+                    "programme": "181",
+                    "libelle": "Prévention des risques",
+                    "montant": 792862576.0
+                  },
+                  {
+                    "programme": "203",
+                    "libelle": "Infrastructures et services de transports",
+                    "montant": 5399084900.0
+                  },
+                  {
+                    "programme": "205",
+                    "libelle": "Affaires maritimes",
+                    "montant": 162789971.0
+                  },
+                  {
+                    "programme": "217",
+                    "libelle": "Conduite et pilotage des politiques de l'écologie, du développement et de la mobilité durables",
+                    "montant": 3025173915.0
+                  },
+                  {
+                    "programme": "345",
+                    "libelle": "Service public de l'énergie",
+                    "montant": 2976675074.0
+                  }
+                ]
+              },
+              {
+                "mission": "Économie",
+                "montant": 1812103292.0,
+                "programmes": [
+                  {
+                    "programme": "134",
+                    "libelle": "Développement des entreprises et régulations",
+                    "montant": 950740048.0
+                  },
+                  {
+                    "programme": "220",
+                    "libelle": "Statistiques et études économiques",
+                    "montant": 449172279.0
+                  },
+                  {
+                    "programme": "305",
+                    "libelle": "Stratégie économique et fiscale",
+                    "montant": 423090965.0
+                  },
+                  {
+                    "programme": "343",
+                    "libelle": "Plan 'France Très haut débit'",
+                    "montant": -10900000.0
+                  }
+                ]
+              }
+            ],
+            "degrevements_d_impots_locaux": 15705551525.85
           },
           "securite_sociale": null,
           "securite_sociale_non_resolu": {
@@ -449,10 +3505,774 @@
             ],
             "comptes_a_part": 4225864861.0100102,
             "solde": -92685941144.57,
-            "missions": null,
-            "missions_non_resolu": {
-              "raison": "la source ne publie les dépenses par mission, en données, que pour les exercices clos de 2023 à 2025"
-            }
+            "missions": [
+              {
+                "mission": "Action et transformation publiques",
+                "montant": 55462315.79,
+                "programmes": [
+                  {
+                    "programme": "348",
+                    "libelle": "Rénovation des cités administratives et autres sites domaniaux multi-occupants",
+                    "montant": 11894026.54
+                  },
+                  {
+                    "programme": "349",
+                    "libelle": "Fonds pour la transformation de l'action publique",
+                    "montant": 37596882.94
+                  },
+                  {
+                    "programme": "352",
+                    "libelle": "Fonds pour l'accélération du financement des start-up d'État",
+                    "montant": 5971406.31
+                  }
+                ]
+              },
+              {
+                "mission": "Action extérieure de l'État",
+                "montant": 2819258713.35,
+                "programmes": [
+                  {
+                    "programme": "105",
+                    "libelle": "Action de la France en Europe et dans le monde",
+                    "montant": 1750037652.42
+                  },
+                  {
+                    "programme": "151",
+                    "libelle": "Français à l'étranger et affaires consulaires",
+                    "montant": 362865387.59
+                  },
+                  {
+                    "programme": "185",
+                    "libelle": "Diplomatie culturelle et d'influence",
+                    "montant": 689745535.95
+                  },
+                  {
+                    "programme": "347",
+                    "libelle": "Présidence française du G7",
+                    "montant": 16610137.39
+                  }
+                ]
+              },
+              {
+                "mission": "Administration générale et territoriale de l'État",
+                "montant": 2825666622.47,
+                "programmes": [
+                  {
+                    "programme": "216",
+                    "libelle": "Conduite et pilotage des politiques de l'intérieur",
+                    "montant": 938991914.16
+                  },
+                  {
+                    "programme": "232",
+                    "libelle": "Vie politique, cultuelle et associative",
+                    "montant": 187347189.11
+                  },
+                  {
+                    "programme": "307",
+                    "libelle": "Administration territoriale",
+                    "montant": 1699327519.2
+                  }
+                ]
+              },
+              {
+                "mission": "Agriculture, alimentation, forêt et affaires rurales",
+                "montant": 2943861216.4,
+                "programmes": [
+                  {
+                    "programme": "149",
+                    "libelle": "Compétitivité et durabilité de l'agriculture, de l'agroalimentaire, de la forêt, de la pêche et de l'aquaculture",
+                    "montant": 1767747317.08
+                  },
+                  {
+                    "programme": "206",
+                    "libelle": "Sécurité et qualité sanitaires de l'alimentation",
+                    "montant": 550645562.68
+                  },
+                  {
+                    "programme": "215",
+                    "libelle": "Conduite et pilotage des politiques de l'agriculture",
+                    "montant": 625468336.64
+                  }
+                ]
+              },
+              {
+                "mission": "Aide publique au développement",
+                "montant": 2992358389.54,
+                "programmes": [
+                  {
+                    "programme": "110",
+                    "libelle": "Aide économique et financière au développement",
+                    "montant": 994043800.14
+                  },
+                  {
+                    "programme": "209",
+                    "libelle": "Solidarité à l'égard des pays en développement",
+                    "montant": 1998314589.4
+                  }
+                ]
+              },
+              {
+                "mission": "Anciens combattants, mémoire et liens avec la nation",
+                "montant": 2299498697.23,
+                "programmes": [
+                  {
+                    "programme": "158",
+                    "libelle": "Indemnisation des victimes des persécutions antisémites et des actes de barbarie pendant la seconde guerre mondiale",
+                    "montant": 104169135.37
+                  },
+                  {
+                    "programme": "167",
+                    "libelle": "Liens entre la Nation et son armée",
+                    "montant": 34110934.85
+                  },
+                  {
+                    "programme": "169",
+                    "libelle": "Reconnaissance et réparation en faveur du monde combattant",
+                    "montant": 2161218627.01
+                  }
+                ]
+              },
+              {
+                "mission": "Cohésion des territoires",
+                "montant": 17579965505.51,
+                "programmes": [
+                  {
+                    "programme": "109",
+                    "libelle": "Aide à l'accès au logement",
+                    "montant": 14069539002.0
+                  },
+                  {
+                    "programme": "112",
+                    "libelle": "Impulsion et coordination de la politique d'aménagement du territoire",
+                    "montant": 229283371.23
+                  },
+                  {
+                    "programme": "135",
+                    "libelle": "Urbanisme, territoires et amélioration de l'habitat",
+                    "montant": 644653571.02
+                  },
+                  {
+                    "programme": "147",
+                    "libelle": "Politique de la ville",
+                    "montant": 473347917.52
+                  },
+                  {
+                    "programme": "162",
+                    "libelle": "Interventions territoriales de l'État",
+                    "montant": 47417215.42
+                  },
+                  {
+                    "programme": "177",
+                    "libelle": "Hébergement, parcours vers le logement et insertion des personnes vulnérables",
+                    "montant": 2115724428.32
+                  }
+                ]
+              },
+              {
+                "mission": "Conseil et contrôle de l'État",
+                "montant": 685604579.38,
+                "programmes": [
+                  {
+                    "programme": "126",
+                    "libelle": "Conseil économique, social et environnemental",
+                    "montant": 46820794.91
+                  },
+                  {
+                    "programme": "164",
+                    "libelle": "Cour des comptes et autres juridictions financières",
+                    "montant": 220703108.76
+                  },
+                  {
+                    "programme": "165",
+                    "libelle": "Conseil d'État et autres juridictions administratives",
+                    "montant": 417731569.08
+                  },
+                  {
+                    "programme": "340",
+                    "libelle": "Haut Conseil des finances publiques",
+                    "montant": 349106.63
+                  }
+                ]
+              },
+              {
+                "mission": "Culture",
+                "montant": 2947265639.92,
+                "programmes": [
+                  {
+                    "programme": "131",
+                    "libelle": "Création",
+                    "montant": 779464323.53
+                  },
+                  {
+                    "programme": "175",
+                    "libelle": "Patrimoines",
+                    "montant": 946761165.88
+                  },
+                  {
+                    "programme": "224",
+                    "libelle": "Transmission des savoirs et démocratisation de la culture",
+                    "montant": 1221040150.51
+                  }
+                ]
+              },
+              {
+                "mission": "Direction de l'action du Gouvernement",
+                "montant": 1242949554.03,
+                "programmes": [
+                  {
+                    "programme": "129",
+                    "libelle": "Coordination du travail gouvernemental",
+                    "montant": 612147484.32
+                  },
+                  {
+                    "programme": "308",
+                    "libelle": "Protection des droits et libertés",
+                    "montant": 94442998.65
+                  },
+                  {
+                    "programme": "333",
+                    "libelle": "Moyens mutualisés des administrations déconcentrées",
+                    "montant": 536359071.06
+                  }
+                ]
+              },
+              {
+                "mission": "Défense",
+                "montant": 44865956306.81,
+                "programmes": [
+                  {
+                    "programme": "144",
+                    "libelle": "Environnement et prospective de la politique de défense",
+                    "montant": 1459066096.26
+                  },
+                  {
+                    "programme": "146",
+                    "libelle": "Équipement des forces",
+                    "montant": 10826908081.85
+                  },
+                  {
+                    "programme": "178",
+                    "libelle": "Préparation et emploi des forces",
+                    "montant": 9427197759.98
+                  },
+                  {
+                    "programme": "212",
+                    "libelle": "Soutien de la politique de la défense",
+                    "montant": 23152784368.72
+                  }
+                ]
+              },
+              {
+                "mission": "Engagements financiers de l'État",
+                "montant": 40585484201.36,
+                "programmes": [
+                  {
+                    "programme": "114",
+                    "libelle": "Appels en garantie de l'État (crédits évaluatifs)",
+                    "montant": 76739054.63
+                  },
+                  {
+                    "programme": "117",
+                    "libelle": "Charge de la dette et trésorerie de l'État (crédits évaluatifs)",
+                    "montant": 40255888459.1
+                  },
+                  {
+                    "programme": "145",
+                    "libelle": "Épargne",
+                    "montant": 72839988.49
+                  },
+                  {
+                    "programme": "336",
+                    "libelle": "Dotation du Mécanisme européen de stabilité",
+                    "montant": 2503504.0
+                  },
+                  {
+                    "programme": "344",
+                    "libelle": "Fonds de soutien relatif aux prêts et contrats financiers structurés à risque",
+                    "montant": 177513195.14
+                  }
+                ]
+              },
+              {
+                "mission": "Enseignement scolaire",
+                "montant": 72715636837.1,
+                "programmes": [
+                  {
+                    "programme": "139",
+                    "libelle": "Enseignement privé du premier et du second degrés",
+                    "montant": 7626733281.41
+                  },
+                  {
+                    "programme": "140",
+                    "libelle": "Enseignement scolaire public du premier degré",
+                    "montant": 22549351830.4
+                  },
+                  {
+                    "programme": "141",
+                    "libelle": "Enseignement scolaire public du second degré",
+                    "montant": 33204037311.55
+                  },
+                  {
+                    "programme": "143",
+                    "libelle": "Enseignement technique agricole",
+                    "montant": 1432649469.44
+                  },
+                  {
+                    "programme": "214",
+                    "libelle": "Soutien de la politique de l'éducation nationale",
+                    "montant": 2263939601.61
+                  },
+                  {
+                    "programme": "230",
+                    "libelle": "Vie de l'élève",
+                    "montant": 5638925342.69
+                  }
+                ]
+              },
+              {
+                "mission": "Gestion des finances publiques et des ressources humaines",
+                "montant": 10324719783.66,
+                "programmes": [
+                  {
+                    "programme": "148",
+                    "libelle": "Fonction publique",
+                    "montant": 198822371.8
+                  },
+                  {
+                    "programme": "156",
+                    "libelle": "Gestion fiscale et financière de l'État et du secteur public local",
+                    "montant": 7678455479.84
+                  },
+                  {
+                    "programme": "218",
+                    "libelle": "Conduite et pilotage des politiques économiques et financières",
+                    "montant": 905703747.46
+                  },
+                  {
+                    "programme": "302",
+                    "libelle": "Facilitation et sécurisation des échanges",
+                    "montant": 1541738184.56
+                  }
+                ]
+              },
+              {
+                "mission": "Immigration, asile et intégration",
+                "montant": 1839402438.86,
+                "programmes": [
+                  {
+                    "programme": "104",
+                    "libelle": "Intégration et accès à la nationalité française",
+                    "montant": 386331641.81
+                  },
+                  {
+                    "programme": "303",
+                    "libelle": "Immigration et asile",
+                    "montant": 1453070797.05
+                  }
+                ]
+              },
+              {
+                "mission": "Investissements d'avenir",
+                "montant": 1019500000.0,
+                "programmes": [
+                  {
+                    "programme": "421",
+                    "libelle": "Soutien des progrès de l'enseignement et de la recherche",
+                    "montant": 212500000.0
+                  },
+                  {
+                    "programme": "422",
+                    "libelle": "Valorisation de la recherche",
+                    "montant": 568300000.0
+                  },
+                  {
+                    "programme": "423",
+                    "libelle": "Accélération de la modernisation des entreprises",
+                    "montant": 238700000.0
+                  }
+                ]
+              },
+              {
+                "mission": "Justice",
+                "montant": 8924856944.17,
+                "programmes": [
+                  {
+                    "programme": "101",
+                    "libelle": "Accès au droit et à la justice",
+                    "montant": 452854918.15
+                  },
+                  {
+                    "programme": "107",
+                    "libelle": "Administration pénitentiaire",
+                    "montant": 3693906405.06
+                  },
+                  {
+                    "programme": "166",
+                    "libelle": "Justice judiciaire",
+                    "montant": 3466620828.62
+                  },
+                  {
+                    "programme": "182",
+                    "libelle": "Protection judiciaire de la jeunesse",
+                    "montant": 848938807.48
+                  },
+                  {
+                    "programme": "310",
+                    "libelle": "Conduite et pilotage de la politique de la justice",
+                    "montant": 458499585.52
+                  },
+                  {
+                    "programme": "335",
+                    "libelle": "Conseil supérieur de la magistrature",
+                    "montant": 4036399.34
+                  }
+                ]
+              },
+              {
+                "mission": "Médias, livre et industries culturelles",
+                "montant": 576617841.7,
+                "programmes": [
+                  {
+                    "programme": "180",
+                    "libelle": "Presse et médias",
+                    "montant": 281577445.46
+                  },
+                  {
+                    "programme": "334",
+                    "libelle": "Livre et industries culturelles",
+                    "montant": 295040396.24
+                  }
+                ]
+              },
+              {
+                "mission": "Outre-mer",
+                "montant": 2406701659.94,
+                "programmes": [
+                  {
+                    "programme": "123",
+                    "libelle": "Conditions de vie outre-mer",
+                    "montant": 707084134.78
+                  },
+                  {
+                    "programme": "138",
+                    "libelle": "Emploi outre-mer",
+                    "montant": 1699617525.16
+                  }
+                ]
+              },
+              {
+                "mission": "Pouvoirs publics",
+                "montant": 991344491.0,
+                "programmes": [
+                  {
+                    "programme": "501",
+                    "libelle": "Présidence de la République",
+                    "montant": 103000000.0
+                  },
+                  {
+                    "programme": "511",
+                    "libelle": "Assemblée nationale",
+                    "montant": 517890000.0
+                  },
+                  {
+                    "programme": "521",
+                    "libelle": "Sénat",
+                    "montant": 323584600.0
+                  },
+                  {
+                    "programme": "531",
+                    "libelle": "Conseil constitutionnel",
+                    "montant": 11719229.0
+                  },
+                  {
+                    "programme": "533",
+                    "libelle": "Cour de justice de la République",
+                    "montant": 861500.0
+                  },
+                  {
+                    "programme": "541",
+                    "libelle": "La Chaîne parlementaire",
+                    "montant": 34289162.0
+                  }
+                ]
+              },
+              {
+                "mission": "Recherche et enseignement supérieur",
+                "montant": 27964038449.38,
+                "programmes": [
+                  {
+                    "programme": "142",
+                    "libelle": "Enseignement supérieur et recherche agricoles",
+                    "montant": 342294836.71
+                  },
+                  {
+                    "programme": "150",
+                    "libelle": "Formations supérieures et recherche universitaire",
+                    "montant": 13517715035.75
+                  },
+                  {
+                    "programme": "172",
+                    "libelle": "Recherches scientifiques et technologiques pluridisciplinaires",
+                    "montant": 6851913590.3
+                  },
+                  {
+                    "programme": "186",
+                    "libelle": "Recherche culturelle et culture scientifique",
+                    "montant": 109208417.27
+                  },
+                  {
+                    "programme": "190",
+                    "libelle": "Recherche dans les domaines de l'énergie, du développement et de la mobilité durables",
+                    "montant": 1707996131.44
+                  },
+                  {
+                    "programme": "191",
+                    "libelle": "Recherche duale (civile et militaire)",
+                    "montant": 121527651.0
+                  },
+                  {
+                    "programme": "192",
+                    "libelle": "Recherche et enseignement supérieur en matière économique et industrielle",
+                    "montant": 836775409.9
+                  },
+                  {
+                    "programme": "193",
+                    "libelle": "Recherche spatiale",
+                    "montant": 1810861818.0
+                  },
+                  {
+                    "programme": "231",
+                    "libelle": "Vie étudiante",
+                    "montant": 2665745559.01
+                  }
+                ]
+              },
+              {
+                "mission": "Relations avec les collectivités territoriales",
+                "montant": 3439608846.4,
+                "programmes": [
+                  {
+                    "programme": "119",
+                    "libelle": "Concours financiers aux collectivités territoriales et à leurs groupements",
+                    "montant": 3205818733.35
+                  },
+                  {
+                    "programme": "122",
+                    "libelle": "Concours spécifiques et administration",
+                    "montant": 233790113.05
+                  }
+                ]
+              },
+              {
+                "mission": "Régimes sociaux et de retraite",
+                "montant": 6186156107.09,
+                "programmes": [
+                  {
+                    "programme": "195",
+                    "libelle": "Régimes de retraite des mines, de la SEITA et divers",
+                    "montant": 1305149953.0
+                  },
+                  {
+                    "programme": "197",
+                    "libelle": "Régimes de retraite et de sécurité sociale des marins",
+                    "montant": 825597600.0
+                  },
+                  {
+                    "programme": "198",
+                    "libelle": "Régimes sociaux et de retraite des transports terrestres",
+                    "montant": 4055408554.09
+                  }
+                ]
+              },
+              {
+                "mission": "Santé",
+                "montant": 1354825422.14,
+                "programmes": [
+                  {
+                    "programme": "183",
+                    "libelle": "Protection maladie",
+                    "montant": 947212266.38
+                  },
+                  {
+                    "programme": "204",
+                    "libelle": "Prévention, sécurité sanitaire et offre de soins",
+                    "montant": 407613155.76
+                  }
+                ]
+              },
+              {
+                "mission": "Solidarité, insertion et égalité des chances",
+                "montant": 24710611977.06,
+                "programmes": [
+                  {
+                    "programme": "124",
+                    "libelle": "Conduite et soutien des politiques sanitaires, sociales, du sport, de la jeunesse et de la vie associative",
+                    "montant": 1446564137.7
+                  },
+                  {
+                    "programme": "137",
+                    "libelle": "Égalité entre les femmes et les hommes",
+                    "montant": 29850082.19
+                  },
+                  {
+                    "programme": "157",
+                    "libelle": "Handicap et dépendance",
+                    "montant": 11994976419.54
+                  },
+                  {
+                    "programme": "304",
+                    "libelle": "Inclusion sociale et protection des personnes",
+                    "montant": 11239221337.63
+                  }
+                ]
+              },
+              {
+                "mission": "Sport, jeunesse et vie associative",
+                "montant": 998251473.92,
+                "programmes": [
+                  {
+                    "programme": "163",
+                    "libelle": "Jeunesse et vie associative",
+                    "montant": 631039312.6
+                  },
+                  {
+                    "programme": "219",
+                    "libelle": "Sport",
+                    "montant": 301962161.32
+                  },
+                  {
+                    "programme": "350",
+                    "libelle": "Jeux olympiques et paralympiques 2024",
+                    "montant": 65250000.0
+                  }
+                ]
+              },
+              {
+                "mission": "Sécurités",
+                "montant": 20469155867.78,
+                "programmes": [
+                  {
+                    "programme": "152",
+                    "libelle": "Gendarmerie nationale",
+                    "montant": 8977381759.99
+                  },
+                  {
+                    "programme": "161",
+                    "libelle": "Sécurité civile",
+                    "montant": 548311708.92
+                  },
+                  {
+                    "programme": "176",
+                    "libelle": "Police nationale",
+                    "montant": 10902962585.53
+                  },
+                  {
+                    "programme": "207",
+                    "libelle": "Sécurité et éducation routières",
+                    "montant": 40499813.34
+                  }
+                ]
+              },
+              {
+                "mission": "Travail et emploi",
+                "montant": 14192771668.0,
+                "programmes": [
+                  {
+                    "programme": "102",
+                    "libelle": "Accès et retour à l'emploi",
+                    "montant": 6408889824.78
+                  },
+                  {
+                    "programme": "103",
+                    "libelle": "Accompagnement des mutations économiques et développement de l'emploi",
+                    "montant": 7031943583.75
+                  },
+                  {
+                    "programme": "111",
+                    "libelle": "Amélioration de la qualité de l'emploi et des relations du travail",
+                    "montant": 74127158.96
+                  },
+                  {
+                    "programme": "155",
+                    "libelle": "Conception, gestion et évaluation des politiques de l'emploi et du travail",
+                    "montant": 677811100.51
+                  }
+                ]
+              },
+              {
+                "mission": "Écologie, développement et mobilité durables",
+                "montant": 14324904694.15,
+                "programmes": [
+                  {
+                    "programme": "113",
+                    "libelle": "Paysages, eau et biodiversité",
+                    "montant": 159389868.91
+                  },
+                  {
+                    "programme": "159",
+                    "libelle": "Expertise, économie sociale et solidaire, information géographique et météorologie",
+                    "montant": 507941789.28
+                  },
+                  {
+                    "programme": "174",
+                    "libelle": "Énergie, climat et après-mines",
+                    "montant": 1227101478.95
+                  },
+                  {
+                    "programme": "181",
+                    "libelle": "Prévention des risques",
+                    "montant": 811544313.08
+                  },
+                  {
+                    "programme": "203",
+                    "libelle": "Infrastructures et services de transports",
+                    "montant": 5221779223.26
+                  },
+                  {
+                    "programme": "205",
+                    "libelle": "Affaires maritimes",
+                    "montant": 157330363.86
+                  },
+                  {
+                    "programme": "217",
+                    "libelle": "Conduite et pilotage des politiques de l'écologie, du développement et de la mobilité durables",
+                    "montant": 2991202842.39
+                  },
+                  {
+                    "programme": "345",
+                    "libelle": "Service public de l'énergie",
+                    "montant": 3248614814.42
+                  }
+                ]
+              },
+              {
+                "mission": "Économie",
+                "montant": 1786139209.75,
+                "programmes": [
+                  {
+                    "programme": "134",
+                    "libelle": "Développement des entreprises et régulations",
+                    "montant": 902333171.8
+                  },
+                  {
+                    "programme": "220",
+                    "libelle": "Statistiques et études économiques",
+                    "montant": 443826185.28
+                  },
+                  {
+                    "programme": "305",
+                    "libelle": "Stratégie économique et fiscale",
+                    "montant": 409979852.67
+                  },
+                  {
+                    "programme": "343",
+                    "libelle": "Plan France Très haut débit",
+                    "montant": 30000000.0
+                  }
+                ]
+              }
+            ],
+            "degrevements_d_impots_locaux": 18887408518.81
           },
           "securite_sociale": null,
           "securite_sociale_non_resolu": {
@@ -509,10 +4329,795 @@
             ],
             "comptes_a_part": -5389626474.28,
             "solde": -178067958769.65,
-            "missions": null,
-            "missions_non_resolu": {
-              "raison": "la source ne publie les dépenses par mission, en données, que pour les exercices clos de 2023 à 2025"
-            }
+            "missions": [
+              {
+                "mission": "Action et transformation publiques",
+                "montant": 113081657.45,
+                "programmes": [
+                  {
+                    "programme": "348",
+                    "libelle": "Rénovation des cités administratives et autres sites domaniaux multi-occupants",
+                    "montant": 34954010.34
+                  },
+                  {
+                    "programme": "349",
+                    "libelle": "Fonds pour la transformation de l'action publique",
+                    "montant": 71908893.38
+                  },
+                  {
+                    "programme": "352",
+                    "libelle": "Fonds pour l'accélération du financement des start-up d'État",
+                    "montant": 6218753.73
+                  }
+                ]
+              },
+              {
+                "mission": "Action extérieure de l'État",
+                "montant": 2940996777.09,
+                "programmes": [
+                  {
+                    "programme": "105",
+                    "libelle": "Action de la France en Europe et dans le monde",
+                    "montant": 1784900757.54
+                  },
+                  {
+                    "programme": "151",
+                    "libelle": "Français à l'étranger et affaires consulaires",
+                    "montant": 398492834.44
+                  },
+                  {
+                    "programme": "185",
+                    "libelle": "Diplomatie culturelle et d'influence",
+                    "montant": 757603185.11
+                  }
+                ]
+              },
+              {
+                "mission": "Administration générale et territoriale de l'État",
+                "montant": 3873492070.68,
+                "programmes": [
+                  {
+                    "programme": "216",
+                    "libelle": "Conduite et pilotage des politiques de l'intérieur",
+                    "montant": 1427150350.18
+                  },
+                  {
+                    "programme": "232",
+                    "libelle": "Vie politique, cultuelle et associative",
+                    "montant": 222121286.71
+                  },
+                  {
+                    "programme": "354",
+                    "libelle": "Administration territoriale de l'État",
+                    "montant": 2224220433.79
+                  }
+                ]
+              },
+              {
+                "mission": "Agriculture, alimentation, forêt et affaires rurales",
+                "montant": 2886383894.48,
+                "programmes": [
+                  {
+                    "programme": "149",
+                    "libelle": "Compétitivité et durabilité de l'agriculture, de l'agroalimentaire, de la forêt, de la pêche et de l'aquaculture",
+                    "montant": 1712110636.25
+                  },
+                  {
+                    "programme": "206",
+                    "libelle": "Sécurité et qualité sanitaires de l'alimentation",
+                    "montant": 555584577.06
+                  },
+                  {
+                    "programme": "215",
+                    "libelle": "Conduite et pilotage des politiques de l'agriculture",
+                    "montant": 618688681.17
+                  }
+                ]
+              },
+              {
+                "mission": "Aide publique au développement",
+                "montant": 3380203170.47,
+                "programmes": [
+                  {
+                    "programme": "110",
+                    "libelle": "Aide économique et financière au développement",
+                    "montant": 1180183770.8
+                  },
+                  {
+                    "programme": "209",
+                    "libelle": "Solidarité à l'égard des pays en développement",
+                    "montant": 2200019399.67
+                  }
+                ]
+              },
+              {
+                "mission": "Anciens combattants, mémoire et liens avec la nation",
+                "montant": 2185806518.06,
+                "programmes": [
+                  {
+                    "programme": "158",
+                    "libelle": "Indemnisation des victimes des persécutions antisémites et des actes de barbarie pendant la seconde guerre mondiale",
+                    "montant": 88327540.16
+                  },
+                  {
+                    "programme": "167",
+                    "libelle": "Liens entre la Nation et son armée",
+                    "montant": 25583683.11
+                  },
+                  {
+                    "programme": "169",
+                    "libelle": "Reconnaissance et réparation en faveur du monde combattant",
+                    "montant": 2071895294.79
+                  }
+                ]
+              },
+              {
+                "mission": "Cohésion des territoires",
+                "montant": 17724679486.75,
+                "programmes": [
+                  {
+                    "programme": "109",
+                    "libelle": "Aide à l'accès au logement",
+                    "montant": 13893480945.05
+                  },
+                  {
+                    "programme": "112",
+                    "libelle": "Impulsion et coordination de la politique d'aménagement du territoire",
+                    "montant": 266602713.37
+                  },
+                  {
+                    "programme": "135",
+                    "libelle": "Urbanisme, territoires et amélioration de l'habitat",
+                    "montant": 510107076.59
+                  },
+                  {
+                    "programme": "147",
+                    "libelle": "Politique de la ville",
+                    "montant": 565074448.73
+                  },
+                  {
+                    "programme": "162",
+                    "libelle": "Interventions territoriales de l'État",
+                    "montant": 55455433.23
+                  },
+                  {
+                    "programme": "177",
+                    "libelle": "Hébergement, parcours vers le logement et insertion des personnes vulnérables",
+                    "montant": 2433958869.78
+                  }
+                ]
+              },
+              {
+                "mission": "Conseil et contrôle de l'État",
+                "montant": 690495378.25,
+                "programmes": [
+                  {
+                    "programme": "126",
+                    "libelle": "Conseil économique, social et environnemental",
+                    "montant": 43517350.08
+                  },
+                  {
+                    "programme": "164",
+                    "libelle": "Cour des comptes et autres juridictions financières",
+                    "montant": 218294050.09
+                  },
+                  {
+                    "programme": "165",
+                    "libelle": "Conseil d'État et autres juridictions administratives",
+                    "montant": 428300847.77
+                  },
+                  {
+                    "programme": "340",
+                    "libelle": "Haut Conseil des finances publiques",
+                    "montant": 383130.31
+                  }
+                ]
+              },
+              {
+                "mission": "Culture",
+                "montant": 3163089584.34,
+                "programmes": [
+                  {
+                    "programme": "131",
+                    "libelle": "Création",
+                    "montant": 899558211.9
+                  },
+                  {
+                    "programme": "175",
+                    "libelle": "Patrimoines",
+                    "montant": 1108552166.47
+                  },
+                  {
+                    "programme": "224",
+                    "libelle": "Transmission des savoirs et démocratisation de la culture",
+                    "montant": 1154979205.97
+                  }
+                ]
+              },
+              {
+                "mission": "Direction de l'action du Gouvernement",
+                "montant": 715651083.99,
+                "programmes": [
+                  {
+                    "programme": "129",
+                    "libelle": "Coordination du travail gouvernemental",
+                    "montant": 619825340.27
+                  },
+                  {
+                    "programme": "308",
+                    "libelle": "Protection des droits et libertés",
+                    "montant": 95825743.72
+                  }
+                ]
+              },
+              {
+                "mission": "Défense",
+                "montant": 46675599530.99,
+                "programmes": [
+                  {
+                    "programme": "144",
+                    "libelle": "Environnement et prospective de la politique de défense",
+                    "montant": 1541407222.97
+                  },
+                  {
+                    "programme": "146",
+                    "libelle": "Équipement des forces",
+                    "montant": 12623359319.14
+                  },
+                  {
+                    "programme": "178",
+                    "libelle": "Préparation et emploi des forces",
+                    "montant": 10540010888.64
+                  },
+                  {
+                    "programme": "212",
+                    "libelle": "Soutien de la politique de la défense",
+                    "montant": 21970822100.24
+                  }
+                ]
+              },
+              {
+                "mission": "Engagements financiers de l'État",
+                "montant": 36230029771.56,
+                "programmes": [
+                  {
+                    "programme": "114",
+                    "libelle": "Appels en garantie de l'État (crédits évaluatifs)",
+                    "montant": 92669068.24
+                  },
+                  {
+                    "programme": "117",
+                    "libelle": "Charge de la dette et trésorerie de l'État (crédits évaluatifs)",
+                    "montant": 35802146548.16
+                  },
+                  {
+                    "programme": "145",
+                    "libelle": "Épargne",
+                    "montant": 57808233.04
+                  },
+                  {
+                    "programme": "336",
+                    "libelle": "Dotation du Mécanisme européen de stabilité",
+                    "montant": 98000000.0
+                  },
+                  {
+                    "programme": "344",
+                    "libelle": "Fonds de soutien relatif aux prêts et contrats financiers structurés à risque",
+                    "montant": 179405922.12
+                  }
+                ]
+              },
+              {
+                "mission": "Enseignement scolaire",
+                "montant": 73968618018.29,
+                "programmes": [
+                  {
+                    "programme": "139",
+                    "libelle": "Enseignement privé du premier et du second degrés",
+                    "montant": 7721620285.3
+                  },
+                  {
+                    "programme": "140",
+                    "libelle": "Enseignement scolaire public du premier degré",
+                    "montant": 23101343747.17
+                  },
+                  {
+                    "programme": "141",
+                    "libelle": "Enseignement scolaire public du second degré",
+                    "montant": 33452161426.26
+                  },
+                  {
+                    "programme": "143",
+                    "libelle": "Enseignement technique agricole",
+                    "montant": 1464230644.64
+                  },
+                  {
+                    "programme": "214",
+                    "libelle": "Soutien de la politique de l'éducation nationale",
+                    "montant": 2188046661.82
+                  },
+                  {
+                    "programme": "230",
+                    "libelle": "Vie de l'élève",
+                    "montant": 6041215253.1
+                  }
+                ]
+              },
+              {
+                "mission": "Gestion des finances publiques et des ressources humaines",
+                "montant": 10226122166.77,
+                "programmes": [
+                  {
+                    "programme": "148",
+                    "libelle": "Fonction publique",
+                    "montant": 198377014.47
+                  },
+                  {
+                    "programme": "156",
+                    "libelle": "Gestion fiscale et financière de l'État et du secteur public local",
+                    "montant": 7576717578.99
+                  },
+                  {
+                    "programme": "218",
+                    "libelle": "Conduite et pilotage des politiques économiques et financières",
+                    "montant": 893728688.31
+                  },
+                  {
+                    "programme": "302",
+                    "libelle": "Facilitation et sécurisation des échanges",
+                    "montant": 1557298885.0
+                  }
+                ]
+              },
+              {
+                "mission": "Immigration, asile et intégration",
+                "montant": 1814359481.63,
+                "programmes": [
+                  {
+                    "programme": "104",
+                    "libelle": "Intégration et accès à la nationalité française",
+                    "montant": 391288556.67
+                  },
+                  {
+                    "programme": "303",
+                    "libelle": "Immigration et asile",
+                    "montant": 1423070924.96
+                  }
+                ]
+              },
+              {
+                "mission": "Investissements d'avenir",
+                "montant": 2027325000.0,
+                "programmes": [
+                  {
+                    "programme": "421",
+                    "libelle": "Soutien des progrès de l'enseignement et de la recherche",
+                    "montant": 302000000.0
+                  },
+                  {
+                    "programme": "422",
+                    "libelle": "Valorisation de la recherche",
+                    "montant": 620325000.0
+                  },
+                  {
+                    "programme": "423",
+                    "libelle": "Accélération de la modernisation des entreprises",
+                    "montant": 1105000000.0
+                  }
+                ]
+              },
+              {
+                "mission": "Justice",
+                "montant": 9150982815.9,
+                "programmes": [
+                  {
+                    "programme": "101",
+                    "libelle": "Accès au droit et à la justice",
+                    "montant": 465232399.44
+                  },
+                  {
+                    "programme": "107",
+                    "libelle": "Administration pénitentiaire",
+                    "montant": 3863440408.31
+                  },
+                  {
+                    "programme": "166",
+                    "libelle": "Justice judiciaire",
+                    "montant": 3480111527.27
+                  },
+                  {
+                    "programme": "182",
+                    "libelle": "Protection judiciaire de la jeunesse",
+                    "montant": 862282413.05
+                  },
+                  {
+                    "programme": "310",
+                    "libelle": "Conduite et pilotage de la politique de la justice",
+                    "montant": 475701039.2
+                  },
+                  {
+                    "programme": "335",
+                    "libelle": "Conseil supérieur de la magistrature",
+                    "montant": 4215028.63
+                  }
+                ]
+              },
+              {
+                "mission": "Médias, livre et industries culturelles",
+                "montant": 1146460739.52,
+                "programmes": [
+                  {
+                    "programme": "180",
+                    "libelle": "Presse et médias",
+                    "montant": 411402658.22
+                  },
+                  {
+                    "programme": "334",
+                    "libelle": "Livre et industries culturelles",
+                    "montant": 735058081.3
+                  }
+                ]
+              },
+              {
+                "mission": "Outre-mer",
+                "montant": 2331852406.13,
+                "programmes": [
+                  {
+                    "programme": "123",
+                    "libelle": "Conditions de vie outre-mer",
+                    "montant": 603940322.18
+                  },
+                  {
+                    "programme": "138",
+                    "libelle": "Emploi outre-mer",
+                    "montant": 1727912083.95
+                  }
+                ]
+              },
+              {
+                "mission": "Plan d'urgence face à la crise sanitaire",
+                "montant": 41819503578.28,
+                "programmes": [
+                  {
+                    "programme": "356",
+                    "libelle": "Prise en charge du dispositif exceptionnel de chômage partiel à la suite de la crise sanitaire",
+                    "montant": 17806210860.95
+                  },
+                  {
+                    "programme": "357",
+                    "libelle": "Fonds de solidarité pour les entreprises à la suite de la crise sanitaire",
+                    "montant": 11809292717.33
+                  },
+                  {
+                    "programme": "358",
+                    "libelle": "Renforcement exceptionnel des participations financières de l'État dans le cadre de la crise sanitaire",
+                    "montant": 8304000000.0
+                  },
+                  {
+                    "programme": "360",
+                    "libelle": "Compensation à la sécurité sociale des allègements de prélèvements pour les entreprises les plus touchées par la crise sanitaire",
+                    "montant": 3900000000.0
+                  }
+                ]
+              },
+              {
+                "mission": "Pouvoirs publics",
+                "montant": 994455491.0,
+                "programmes": [
+                  {
+                    "programme": "501",
+                    "libelle": "Présidence de la République",
+                    "montant": 105316000.0
+                  },
+                  {
+                    "programme": "511",
+                    "libelle": "Assemblée nationale",
+                    "montant": 517890000.0
+                  },
+                  {
+                    "programme": "521",
+                    "libelle": "Sénat",
+                    "montant": 323584600.0
+                  },
+                  {
+                    "programme": "531",
+                    "libelle": "Conseil constitutionnel",
+                    "montant": 12504229.0
+                  },
+                  {
+                    "programme": "533",
+                    "libelle": "Cour de justice de la République",
+                    "montant": 871500.0
+                  },
+                  {
+                    "programme": "541",
+                    "libelle": "La Chaîne parlementaire",
+                    "montant": 34289162.0
+                  }
+                ]
+              },
+              {
+                "mission": "Recherche et enseignement supérieur",
+                "montant": 28747552971.99,
+                "programmes": [
+                  {
+                    "programme": "142",
+                    "libelle": "Enseignement supérieur et recherche agricoles",
+                    "montant": 345397325.85
+                  },
+                  {
+                    "programme": "150",
+                    "libelle": "Formations supérieures et recherche universitaire",
+                    "montant": 13676211699.08
+                  },
+                  {
+                    "programme": "172",
+                    "libelle": "Recherches scientifiques et technologiques pluridisciplinaires",
+                    "montant": 6903296809.28
+                  },
+                  {
+                    "programme": "186",
+                    "libelle": "Recherche culturelle et culture scientifique",
+                    "montant": 108226910.04
+                  },
+                  {
+                    "programme": "190",
+                    "libelle": "Recherche dans les domaines de l'énergie, du développement et de la mobilité durables",
+                    "montant": 1826958638.16
+                  },
+                  {
+                    "programme": "191",
+                    "libelle": "Recherche duale (civile et militaire)",
+                    "montant": 118511930.0
+                  },
+                  {
+                    "programme": "192",
+                    "libelle": "Recherche et enseignement supérieur en matière économique et industrielle",
+                    "montant": 889639383.66
+                  },
+                  {
+                    "programme": "193",
+                    "libelle": "Recherche spatiale",
+                    "montant": 1874490724.0
+                  },
+                  {
+                    "programme": "231",
+                    "libelle": "Vie étudiante",
+                    "montant": 3004819551.92
+                  }
+                ]
+              },
+              {
+                "mission": "Relations avec les collectivités territoriales",
+                "montant": 3617991550.06,
+                "programmes": [
+                  {
+                    "programme": "119",
+                    "libelle": "Concours financiers aux collectivités territoriales et à leurs groupements",
+                    "montant": 3409545553.81
+                  },
+                  {
+                    "programme": "122",
+                    "libelle": "Concours spécifiques et administration",
+                    "montant": 208445996.25
+                  }
+                ]
+              },
+              {
+                "mission": "Régimes sociaux et de retraite",
+                "montant": 6244346674.07,
+                "programmes": [
+                  {
+                    "programme": "195",
+                    "libelle": "Régimes de retraite des mines, de la SEITA et divers",
+                    "montant": 1199529224.0
+                  },
+                  {
+                    "programme": "197",
+                    "libelle": "Régimes de retraite et de sécurité sociale des marins",
+                    "montant": 823189938.0
+                  },
+                  {
+                    "programme": "198",
+                    "libelle": "Régimes sociaux et de retraite des transports terrestres",
+                    "montant": 4221627512.07
+                  }
+                ]
+              },
+              {
+                "mission": "Santé",
+                "montant": 1724034086.96,
+                "programmes": [
+                  {
+                    "programme": "183",
+                    "libelle": "Protection maladie",
+                    "montant": 936048887.71
+                  },
+                  {
+                    "programme": "204",
+                    "libelle": "Prévention, sécurité sanitaire et offre de soins",
+                    "montant": 787985199.25
+                  }
+                ]
+              },
+              {
+                "mission": "Solidarité, insertion et égalité des chances",
+                "montant": 29019176954.64,
+                "programmes": [
+                  {
+                    "programme": "124",
+                    "libelle": "Conduite et soutien des politiques sanitaires, sociales, du sport, de la jeunesse et de la vie associative",
+                    "montant": 1324688516.63
+                  },
+                  {
+                    "programme": "137",
+                    "libelle": "Égalité entre les femmes et les hommes",
+                    "montant": 36513381.12
+                  },
+                  {
+                    "programme": "157",
+                    "libelle": "Handicap et dépendance",
+                    "montant": 13067188338.06
+                  },
+                  {
+                    "programme": "304",
+                    "libelle": "Inclusion sociale et protection des personnes",
+                    "montant": 14590786718.83
+                  }
+                ]
+              },
+              {
+                "mission": "Sport, jeunesse et vie associative",
+                "montant": 1262059071.56,
+                "programmes": [
+                  {
+                    "programme": "163",
+                    "libelle": "Jeunesse et vie associative",
+                    "montant": 708064322.13
+                  },
+                  {
+                    "programme": "219",
+                    "libelle": "Sport",
+                    "montant": 426263616.43
+                  },
+                  {
+                    "programme": "350",
+                    "libelle": "Jeux olympiques et paralympiques 2024",
+                    "montant": 127731133.0
+                  }
+                ]
+              },
+              {
+                "mission": "Sécurités",
+                "montant": 20612982709.33,
+                "programmes": [
+                  {
+                    "programme": "152",
+                    "libelle": "Gendarmerie nationale",
+                    "montant": 9100338695.62
+                  },
+                  {
+                    "programme": "161",
+                    "libelle": "Sécurité civile",
+                    "montant": 555361564.45
+                  },
+                  {
+                    "programme": "176",
+                    "libelle": "Police nationale",
+                    "montant": 10915889952.46
+                  },
+                  {
+                    "programme": "207",
+                    "libelle": "Sécurité et éducation routières",
+                    "montant": 41392496.8
+                  }
+                ]
+              },
+              {
+                "mission": "Travail et emploi",
+                "montant": 14736041019.12,
+                "programmes": [
+                  {
+                    "programme": "102",
+                    "libelle": "Accès et retour à l'emploi",
+                    "montant": 6313521102.68
+                  },
+                  {
+                    "programme": "103",
+                    "libelle": "Accompagnement des mutations économiques et développement de l'emploi",
+                    "montant": 7662865779.04
+                  },
+                  {
+                    "programme": "111",
+                    "libelle": "Amélioration de la qualité de l'emploi et des relations du travail",
+                    "montant": 82757565.36
+                  },
+                  {
+                    "programme": "155",
+                    "libelle": "Conception, gestion et évaluation des politiques de l'emploi et du travail",
+                    "montant": 676896572.04
+                  }
+                ]
+              },
+              {
+                "mission": "Écologie, développement et mobilité durables",
+                "montant": 16734822841.23,
+                "programmes": [
+                  {
+                    "programme": "113",
+                    "libelle": "Paysages, eau et biodiversité",
+                    "montant": 190549999.85
+                  },
+                  {
+                    "programme": "159",
+                    "libelle": "Expertise, économie sociale et solidaire, information géographique et météorologie",
+                    "montant": 519488006.94
+                  },
+                  {
+                    "programme": "174",
+                    "libelle": "Énergie, climat et après-mines",
+                    "montant": 2828316885.02
+                  },
+                  {
+                    "programme": "181",
+                    "libelle": "Prévention des risques",
+                    "montant": 804658793.82
+                  },
+                  {
+                    "programme": "203",
+                    "libelle": "Infrastructures et services de transports",
+                    "montant": 5909054176.09
+                  },
+                  {
+                    "programme": "205",
+                    "libelle": "Affaires maritimes",
+                    "montant": 159906128.59
+                  },
+                  {
+                    "programme": "217",
+                    "libelle": "Conduite et pilotage des politiques de l'écologie, du développement et de la mobilité durables",
+                    "montant": 2948804077.34
+                  },
+                  {
+                    "programme": "345",
+                    "libelle": "Service public de l'énergie",
+                    "montant": 2974077453.93
+                  },
+                  {
+                    "programme": "355",
+                    "libelle": "Charge de la dette de SNCF Réseau reprise par l'État (crédits évaluatifs)",
+                    "montant": 399967319.65
+                  }
+                ]
+              },
+              {
+                "mission": "Économie",
+                "montant": 2919662472.9,
+                "programmes": [
+                  {
+                    "programme": "134",
+                    "libelle": "Développement des entreprises et régulations",
+                    "montant": 1862893988.17
+                  },
+                  {
+                    "programme": "220",
+                    "libelle": "Statistiques et études économiques",
+                    "montant": 434821496.5
+                  },
+                  {
+                    "programme": "305",
+                    "libelle": "Stratégie économique et fiscale",
+                    "montant": 396946988.23
+                  },
+                  {
+                    "programme": "343",
+                    "libelle": "Plan France Très haut débit",
+                    "montant": 225000000.0
+                  }
+                ]
+              }
+            ],
+            "degrevements_d_impots_locaux": 22928799087.15
           },
           "securite_sociale": {
             "statut": "DEF",
@@ -685,7 +5290,7 @@
             "solde": -170739441421.2,
             "missions": null,
             "missions_non_resolu": {
-              "raison": "la source ne publie les dépenses par mission, en données, que pour les exercices clos de 2023 à 2025"
+              "raison": "le ministère n'a publié l'exécution 2021 par programme qu'en PDF"
             }
           },
           "securite_sociale": {
@@ -863,7 +5468,7 @@
             "solde": -151441437719.72,
             "missions": null,
             "missions_non_resolu": {
-              "raison": "la source ne publie les dépenses par mission, en données, que pour les exercices clos de 2023 à 2025"
+              "raison": "le ministère n'a publié l'exécution 2022 par programme qu'en PDF"
             }
           },
           "securite_sociale": {
@@ -3963,7 +8568,7 @@
             "solde": -159603646599.08,
             "missions": null,
             "missions_non_resolu": {
-              "raison": "la source ne publie les dépenses par mission, en données, que pour les exercices clos de 2023 à 2025"
+              "raison": "l'exercice n'est pas clos"
             }
           },
           "securite_sociale": null,

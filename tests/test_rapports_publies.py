@@ -162,3 +162,45 @@ def test_la_garde_du_nom_laisse_passer_un_titre_de_figure_et_refuse_ce_rapport()
     assert se_nomme.search("Retrouver la confiance et l’équilibre dans les rapports locatifs") is None
     assert se_nomme.search("Ce que ce rapport ne dit pas") is not None
     assert se_nomme.search("ce panorama liste les interventions") is not None
+
+
+# ── Le carrousel de l'accueil (15/10/2026) ──────────────────────────────────
+
+
+@pytest.mark.parametrize("instantane", instantanes(), ids=lambda p: p.name)
+def test_un_article_est_livre_avec_sa_vignette(instantane: Path) -> None:
+    """La vignette est choisie à la publication — la figure la plus parlante
+    de l'article — et livrée à côté de lui : le carrousel ne la fabrique pas."""
+    vignette = instantane.with_name(instantane.name.replace(".html", ".vignette.jpg"))
+    assert vignette.is_file(), (
+        f"{vignette.name} manque : un article se publie avec sa vignette, que montre l'accueil"
+    )
+
+
+def test_la_liste_de_l_accueil_ne_derive_pas_du_dossier() -> None:
+    """`public/rapports.json` est ce que lit le carrousel : un article ajouté
+    sans régénérer serait absent de l'accueil."""
+    if shutil.which("node") is None:
+        pytest.skip("node absent")
+    script = (
+        "const m = await import(%r);\n"
+        "process.stdout.write(m.listeAccueil(m.instantanes()));" % GENERATEUR.as_uri()
+    )
+    res = subprocess.run(["node", "--input-type=module", "-e", script],
+                         capture_output=True, text=True, check=False)
+    assert res.returncode == 0, res.stderr
+    assert res.stdout == (UI / "public" / "rapports.json").read_text(encoding="utf-8"), (
+        "public/rapports.json a dérivé : relancer `node scripts/index-rapports.mjs`"
+    )
+    liste = json.loads(res.stdout)
+    assert [a["date"] for a in liste] == sorted((a["date"] for a in liste), reverse=True), (
+        "le plus récent d'abord, jamais un autre ordre (§2 règle 1)"
+    )
+
+
+def test_l_accueil_montre_les_analyses_au_dessus_du_pied_de_page() -> None:
+    page = (UI / "src" / "pages" / "LandingPage.jsx").read_text(encoding="utf-8")
+    assert page.index("<CommencerAExplorer />") < page.index("<AnalysesThematiques />") < page.index("<PiedDeSite />")
+    carrousel = (UI / "src" / "components" / "landing" / "AnalysesThematiques.jsx").read_text(encoding="utf-8")
+    assert "fetch('/rapports.json')" in carrousel, "la liste vient du dossier, jamais recopiée"
+    assert "prefers-reduced-motion" in carrousel, "aucune rotation pour qui a demandé moins d'animations"

@@ -50,10 +50,10 @@ initiale, le **consommé** des jeux de loi de règlement.
 
 | Exercice | Voté | Consommé |
 | --- | --- | --- |
-| 2015 | **non publié en données** (le projet seul l'est) | CSV cp1252, quatre lignes de titre, sur `static.data.gouv.fr` |
-| 2016, 2017 | CSV cp1252, quatre lignes de titre | idem ; 2017 porte sept colonnes de titres et pas de total |
-| 2018 | CSV cp1252, tous budgets | export JSON, ministère « au 1er janvier 2018 » |
-| 2019 | export JSON | classeur `.xls`, ministère en code seul, libellés dans un second classeur |
+| 2015 | **non publié en données** (le projet seul l'est) | CSV cp1252, quatre lignes de titre, sur `static.data.gouv.fr` ; la mission dans son jumeau `PLR2015-Exec-Msn_CP-BG.csv` |
+| 2016, 2017 | CSV cp1252, quatre lignes de titre | idem, jumeau `Msn` compris ; 2017 porte sept colonnes de titres et pas de total, et son jumeau une ligne par catégorie sans lignes de titre |
+| 2018 | CSV cp1252, tous budgets | export JSON, ministère « au 1er janvier 2018 », colonnes `code_mission` et `mission` |
+| 2019 | export JSON | classeur `.xls`, ministère et mission en code seul, libellés dans un second classeur (lignes `MIN`, `MSN`, `PGM`) |
 | 2020 | CSV, ministère en code seul, libellés dans un fichier de nomenclature | classeur `.xls`, idem 2019 |
 | 2021, 2022 | CSV cp1252 : projet, amendements et loi votée côte à côte | **PDF seulement** |
 | 2023 à 2025 | colonne `LFI` du fichier d'exécution | `Annexe1-Etat_CP-<an>.csv`, UTF-8, virgule décimale, **sans colonne ministère** |
@@ -85,9 +85,16 @@ l'écrit de quatre façons : `MIN01`, `01`, `1`, `1.0`.
 - **Le « budget vert » porte une colonne d'exécution 2022 qui ne comble pas le
   trou** : 40 des 48 missions, sans « Remboursements et dégrèvements » (130,6 Md€
   votés), avec une ligne sans mission de −53,1 Md€.
-- **Les fichiers d'exécution de 2023 à 2025 portent la mission**, et eux seuls :
-  33 missions par exercice, une par programme (zéro programme sous deux missions,
-  mesuré le 13/10/2026). Le découpage change d'un budget au suivant : « Travail et
+- **La mission de chaque programme est publiée de 2015 à 2020 et de 2023 à 2025**,
+  et non « de 2023 à 2025 seulement », comme ce fichier l'a dit du 13 au 15/10/2026
+  (#1302). Dans les fichiers d'exécution de 2023 à 2025 : 33 missions par
+  exercice. De 2015 à 2017, dans le fichier par mission voisin du fichier par
+  ministère ; de 2018 à 2020, dans le fichier déjà lu (le code seul en 2019 et 2020,
+  le libellé dans la nomenclature, dont les codes ne sont uniques que par type de
+  budget : « ZC » est aussi un compte de concours financiers). Une mission par
+  programme partout (zéro programme sous deux missions, mesuré le 13/10/2026 sur
+  2023-2025 et le 15/10/2026 sur 2015-2020). En 2015, **dix-neuf programmes**
+  du fichier par ministère manquent au fichier par mission, tous à 0 €. Le découpage change d'un budget au suivant : « Travail et
   emploi » devient « Travail, emploi et administration des ministères sociaux » en
   2025 ; la même année, le programme 124 de la mission « Solidarité, insertion et
   égalité des chances » disparaît et un programme 155 apparaît sous la mission
@@ -107,7 +114,9 @@ l'écrit de quatre façons : `MIN01`, `01`, `1`, `1.0`.
   13/10/2026 sur 2023, 2024 et 2025 : dépenses nettes = somme des missions hors
   « Remboursements et dégrèvements » + cette ligne, à moins de 1 M€ (5,1 Md€ en
   2023, 5,0 en 2024, 4,5 en 2025). L'écart signalé « inexpliqué » le 12/10 est
-  celui-là.
+  celui-là. **De 2015 à 2020, il n'y a pas d'écart** : les dépenses nettes valent
+  la somme des missions hors « Remboursements et dégrèvements » à 23 € près
+  (mesuré le 15/10/2026) — la ligne des dégrèvements locaux n'y est pas comptée.
 - **Une page de présentation n'est pas le jeu.** Des jeux affichent zéro
   enregistrement à l'API et tout leur contenu en pièces jointes.
 
@@ -116,7 +125,8 @@ l'écrit de quatre façons : `MIN01`, `01`, `1`, `1.0`.
 - Rien à la maille du ministère avant 2010, et des libellés abrégés jusqu'en 2014
   (« AffSoc&Santé », « Enseign sup et rech ») : la collecte commence en 2015.
 - Aucune recette rattachée à un ministère.
-- L'exécution 2021 et 2022 par programme, hors PDF.
+- L'exécution 2021 et 2022 par programme, hors PDF — donc ni ministère ni mission
+  pour ces deux années.
 - Le budget de l'année en cours sur le portail : en octobre 2026, le projet de loi
   de finances 2026 n'est que sur `budget.gouv.fr`, que ce dépôt ne lit pas.
 

@@ -88,6 +88,15 @@ def test_le_titre_d_un_debat_prend_sa_ligne():
     assert "grid-column: 1 / -1" in _regle(gouv, ".gvp-mr .gvp-mr-lib")
     assert "display: none" in _regle(gouv, ".gvp-mr--tete > :first-child"), "l'en-tête était décalé d'une colonne"
     lignee = _blocs_etroits((COMPOSANTS / "LigneeProfile.css").read_text(encoding="utf-8"))
-    assert "white-space: normal" in _regle(lignee, ".lp-mat--debats .lp-mr-lib")
-    assert "display: block" in _regle(lignee, ".lp-mat--debats .lp-mr-rail")
+    assert "white-space: normal" in _regle(lignee, ".lp-mat .lp-mr-lib")
+    assert "display: block" in _regle(lignee, ".lp-mat .lp-mr-rail")
     assert 'className="lp-mat lp-mat--debats"' in (COMPOSANTS / "LigneeProfile.jsx").read_text(encoding="utf-8")
+
+
+def test_les_amendements_par_matiere_gardent_leur_barre():
+    """Forme A : la règle des débats vaut aussi pour le tableau des amendements,
+    dont les barres disparaissaient toutes sous 720 px (13 sur 13 chez LR)."""
+    jsx = (COMPOSANTS / "LigneeProfile.jsx").read_text(encoding="utf-8")
+    assert '<div className="lp-mat">' in jsx, "le tableau des amendements n'est plus un .lp-mat"
+    lignee = _blocs_etroits((COMPOSANTS / "LigneeProfile.css").read_text(encoding="utf-8"))
+    assert ".lp-mat--debats .lp-mr-rail" not in lignee, "la barre ne doit plus être réservée aux débats"

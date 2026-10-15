@@ -1161,6 +1161,13 @@ instant : la commande les lit pour reconstruire l'index `/rapports`, du plus
 récent au plus ancien. Le type n'est jamais deviné : une page qui n'en déclare
 pas n'en affiche pas.
 
+L'article se publie **avec sa vignette** : une image `<même nom>.vignette.jpg`
+dans le même dossier — la figure la plus parlante de l'article, choisie à la
+publication. La commande écrit aussi `public/rapports.json`, la liste que lit le
+carrousel « Analyse thématique » au bas de l'accueil ;
+`tests/test_rapports_publies.py` refuse un article sans vignette et une liste
+qui a dérivé du dossier.
+
 Elle **réécrit aussi le bandeau et le pied du site** dans chaque page du
 dossier, entre leurs marqueurs (`/*chrome:style*/`, `<!--chrome:bandeau-->`,
 `<!--chrome:pied-->`) : une nouvelle page doit les porter, sinon la commande la
