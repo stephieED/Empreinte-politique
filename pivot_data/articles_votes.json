@@ -1,6 +1,6 @@
 {
   "schema_version": "articles-votes-v1",
-  "genere_le": "2026-10-16",
+  "genere_le": "2026-10-17",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — Assemblée nationale",
   "scrutins": {
     "an:15:1002": {
@@ -28388,6 +28388,11 @@
         "DLR5L17N51346",
         "DLR5L17N51563"
       ]
+    },
+    "an:17:8876": {
+      "motif": "texte_a_gabarit_non_lu",
+      "dossier_id": "DLR5L17N54629",
+      "texte_id": "PRJLANR5L17B3210"
     },
     "an:17:892": {
       "motif": "plusieurs_dossiers_en_seance",
