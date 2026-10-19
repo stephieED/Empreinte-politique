@@ -11,6 +11,7 @@ import AboutPage from './pages/AboutPage';
 import CoveragePage from './pages/CoveragePage';
 import FaqPage from './pages/FaqPage';
 import LegalNoticePage from './pages/LegalNoticePage';
+import SoutenirPage from './pages/SoutenirPage';
 import { DEFAULT_CANDIDATE_ID, DEFAULT_GROUP_ID, DEFAULT_GOVERNMENT_ID } from './data';
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
         <Route path="/couverture" element={<RedirectionCouverture />} />
         <Route path="/faq" element={<FaqPage />} />
         <Route path="/mentions-legales" element={<LegalNoticePage />} />
+        <Route path="/nous-soutenir" element={<SoutenirPage />} />
       </Routes>
     </>
   );

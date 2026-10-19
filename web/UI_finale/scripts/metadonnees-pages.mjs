@@ -39,6 +39,9 @@ export const PAGES_FIXES_META = {
   sources: { titre: `Sources — ${MARQUE}` },
   faq: { titre: `Questions fréquentes — ${MARQUE}` },
   'mentions-legales': { titre: `Mentions légales — ${MARQUE}` },
+  /* /nous-soutenir garde la description du site (#1033) : l'aperçu d'un lien
+     partagé vers elle doit dire ce qu'est le site, pas demander un don. */
+  'nous-soutenir': { titre: `Nous soutenir — ${MARQUE}` },
 };
 
 function enumerer(elements) {

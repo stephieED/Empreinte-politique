@@ -532,9 +532,11 @@ ACTEURS_HISTORIQUE_CACHE_DIR = Path(".cache") / "acteurs_historique_an"
 # l'INSEE qu'AMO30 publie et que le pipeline traversait sans rien en garder
 # (#659). `civilite` était déjà écrite dans l'index — c'est en AVAL qu'elle se
 # perdait — mais elle voyage avec eux jusqu'au profil brut. `v5` : chaque période
-# de `mandats_assemblee` porte `lieu_election` (#682).
+# de `mandats_assemblee` porte `lieu_election` (#682). Organes `v3` : chaque
+# organe porte `parent`, l'`organeParent` d'AMO30 (#1311) — un `v2` relu
+# rendrait toutes les missions « sans organe créateur », un faux constat.
 NOM_INDEX_IDENTITE = "index_identite_v5.json"
-NOM_INDEX_ORGANES = "index_organes_v2.json"
+NOM_INDEX_ORGANES = "index_organes_v3.json"
 
 # Questions parlementaires (écrites, au gouvernement, orales sans débat).
 # Même pattern d'URL que scrutins/amendements. Un seul parseur générique suffit
@@ -4703,8 +4705,10 @@ def _build_organe_index() -> dict[str, dict[str, Any]]:
     "sigle" = organe.libelleAbrege (nom court, ex. "Finances"), "nom" =
     organe.libelle (nom complet, ex. "Commission des finances, de l'économie
     générale et du contrôle budgétaire"), "type" = organe.codeType (ex.
-    "COMPER", "GP", "GA", "MISINFO", "GOUVERNEMENT"...). Non-fatal en cas
-    d'échec (retourne {})."""
+    "COMPER", "GP", "GA", "MISINFO", "GOUVERNEMENT"...), "parent" =
+    organe.organeParent (uid de l'organe qui l'a créé, ex. "PO59046" pour une
+    mission d'information de la commission de la défense ; `None` quand la
+    source n'en nomme pas — #1311). Non-fatal en cas d'échec (retourne {})."""
     with _ACTEURS_ORGANES_LOCK:
         index_path = ACTEURS_HISTORIQUE_CACHE_DIR / NOM_INDEX_ORGANES
         memoise = _index_historique_memoise(index_path)
@@ -4745,6 +4749,11 @@ def _build_organe_index() -> dict[str, dict[str, Any]]:
                         "sigle": _champ_identite_an(organe.get("libelleAbrege")),
                         "nom": _champ_identite_an(organe.get("libelle")),
                         "type": _champ_identite_an(organe.get("codeType")),
+                        # #1311 — l'organe créateur, verbatim. Seules les
+                        # missions d'information le publient (voir
+                        # `resoudre_organe_createur`), mais l'index le garde
+                        # pour tous : c'est un fait de l'organe, pas du mandat.
+                        "parent": _champ_identite_an(organe.get("organeParent")),
                     }
         except zipfile.BadZipFile as exc:
             print(f"  [!] Archive de l'historique des acteurs invalide : {exc}")
@@ -4769,6 +4778,43 @@ def fetch_organe(organe_ref: Optional[str]) -> Optional[dict[str, Any]]:
         return None
     index = _build_organe_index()
     return index.get(organe_ref)
+
+
+def resoudre_organe_createur(
+    mission: dict[str, Any],
+) -> tuple[Optional[dict[str, Any]], Optional[dict[str, Any]]]:
+    """Résout l'organe qui a CRÉÉ une mission d'information (#1311).
+
+    `mission` est l'entrée de la mission dans `_build_organe_index` (celle que
+    `fetch_organe` rend). Rend `(organe_createur, organe_createur_non_resolu)`
+    — exactement un des deux est renseigné :
+
+    - `{"organe_ref", "nom", "sigle", "type"}` quand l'`organeParent` de la
+      mission est nommé ET résolu dans le référentiel. `type` est le `codeType`
+      AMO30 verbatim (`COMPER`, `DELEG`…), jamais traduit ;
+    - sinon `None`, avec le motif
+      (`schema_pivot.KNOWN_MOTIFS_ORGANE_CREATEUR_NON_RESOLU`) :
+      `source_sans_organe_createur` — AMO30 ne nomme aucun parent (missions
+      communes `MISINFOCOM`, missions de la Conférence des présidents
+      `MISINFOPRE`) : c'est un fait de la source, rien à réparer ;
+      `organe_createur_introuvable` — un parent est nommé et le référentiel ne
+      le contient pas, ou sans nom (le motif porte l'uid, `organe_ref`).
+
+    Une mission commune n'est jamais attribuée à l'une des commissions qui la
+    composent : la source ne le dit pas (hors périmètre de #1311).
+    """
+    parent_ref = mission.get("parent")
+    if not parent_ref:
+        return None, {"motif": "source_sans_organe_createur"}
+    parent = fetch_organe(parent_ref)
+    if not isinstance(parent, dict) or not (parent.get("nom") or parent.get("sigle")):
+        return None, {"motif": "organe_createur_introuvable", "organe_ref": parent_ref}
+    return {
+        "organe_ref": parent_ref,
+        "nom": parent.get("nom"),
+        "sigle": parent.get("sigle"),
+        "type": parent.get("type"),
+    }, None
 
 
 # Mapping typeOrgane (AN, mandats[].typeOrgane) -> categorie du schema pivot
@@ -4995,6 +5041,14 @@ def _extract_mandats_officiels(acteur_ref: str) -> list[dict[str, Any]]:
             # NosDéputés que rien ne qualifie plus.
             "categorie_source": CATEGORIE_SOURCE_AN,
         })
+        # #1311 — l'organe qui a créé la mission, sur les seules missions
+        # d'information : les autres catégories ne portent pas la clé, même
+        # quand AMO leur donne un parent (hors périmètre de l'issue).
+        if entry["categorie"] == "mission_information":
+            createur, non_resolu = resoudre_organe_createur(organe)
+            mandats[-1]["organe_createur"] = createur
+            if non_resolu is not None:
+                mandats[-1]["organe_createur_non_resolu"] = non_resolu
     return mandats
 
 

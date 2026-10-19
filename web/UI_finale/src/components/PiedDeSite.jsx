@@ -70,6 +70,7 @@ export default function PiedDeSite() {
         <Link to="/sources">Sources</Link>
         <Link to="/methodologie">Méthodologie</Link>
         <Link to="/mentions-legales">Mentions légales</Link>
+        <Link to="/nous-soutenir">Nous soutenir</Link>
       </nav>
 
       <div className="pds-colonne">

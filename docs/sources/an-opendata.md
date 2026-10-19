@@ -310,14 +310,29 @@ name, e.g. "Commission des finances, de l'économie générale et du contrôle
 budgétaire"), `libelleAbrege` (short name, e.g. "Finances"), `libelleAbrev`
 (very short code, e.g. "CION_FIN"), `organeParent` (nullable ref to a parent
 organe). `_build_organe_index` (`candidate_profile.py`) indexes
-`organeRef -> {sigle: libelleAbrege, nom: libelle, type: codeType}` for all
-`codeType` values (no filtering) — a prerequisite for resolving any
+`organeRef -> {sigle: libelleAbrege, nom: libelle, type: codeType, parent:
+organeParent}` for all `codeType` values (no filtering; `parent` since #1311,
+cache file `index_organes_v3.json`) — a prerequisite for resolving any
 `mandats[].organes.organeRef` to a readable name (committees with role,
 friendship groups, extra-parliamentary engagements, political group).
 `_build_organe_positions_index` is a narrower, pre-existing index limited to
 `GP`/`GOUVERNEMENT` for majority/opposition/government qualification (see
 `fetch_positions_hemicycle_officielles`) — the two are independent and do not
 replace each other.
+
+
+**`organeParent` on an information mission names the body that created it
+(#1311, measured 19/10/2026 on the 19/10 archive).** Population: `MISINFO*`
+organes whose `viMoDe.dateDebut` is on or after 22/06/2022 — 196 distinct
+missions, not deputies' mandates. 185 carry a parent, all `MISINFO`, and the
+parent is a standing committee (`COMPER`, 149) or a delegation (`DELEG`, 36).
+The 11 others carry none, and it is a fact of the source, not a gap:
+`MISINFOCOM` (6, missions shared by several committees) and `MISINFOPRE` (5,
+created by the Conférence des présidents). **A shared mission is never
+attributable to one of its committees from this field.** Other `codeType`
+values also carry `organeParent`; only information missions publish it
+(`mandats[].organe_createur`), see
+`docs/decisions/organe-createur-missions-1311.md`.
 
 **`codeType == "GOUVERNEMENT"`: one organe per government, and its members
 include people who were never deputies (#996, measured 17/09/2026 on the

@@ -3419,9 +3419,10 @@ def test_build_organe_index_parses_all_organe_types(tmp_path):
             "sigle": "Finances",
             "nom": "Commission des finances, de l'économie générale et du contrôle budgétaire",
             "type": "COMPER",
+            "parent": None,
         },
-        "PO845401": {"sigle": "RN", "nom": "Rassemblement National", "type": "GP"},
-        "PO393167": {"sigle": "Malaisie", "nom": "France-Malaisie", "type": "GA"},
+        "PO845401": {"sigle": "RN", "nom": "Rassemblement National", "type": "GP", "parent": None},
+        "PO393167": {"sigle": "Malaisie", "nom": "France-Malaisie", "type": "GA", "parent": None},
     }
 
 
@@ -3570,7 +3571,9 @@ def test_fetch_organe_resolves_known_ref_and_returns_none_otherwise(tmp_path):
         patch("candidate_profile.ACTEURS_HISTORIQUE_CACHE_DIR", tmp_path),
         patch("candidate_profile.requests.get", return_value=_FakeActeursHistoriqueStreamResponse(zip_bytes)),
     ):
-        assert fetch_organe("PO59048") == {"sigle": "Finances", "nom": "Commission des finances", "type": "COMPER"}
+        assert fetch_organe("PO59048") == {
+            "sigle": "Finances", "nom": "Commission des finances", "type": "COMPER", "parent": None,
+        }
         assert fetch_organe("PO_INCONNU") is None
         assert fetch_organe(None) is None
         assert fetch_organe("") is None

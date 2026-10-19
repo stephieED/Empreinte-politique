@@ -1062,7 +1062,7 @@ une lecture du libellé. Une entrée dont la période est déjà couverte par un
 **requalifiée**, parce que la retirer effacerait une période réelle.
 
 Simulation par défaut, idempotent, et sans effet si l'index d'organes manque
-(`.cache/acteurs_historique_an/index_organes_v2.json`) : un critère qui ne peut
+(`.cache/acteurs_historique_an/index_organes_v3.json`) : un critère qui ne peut
 pas s'établir ne se devine pas.
 
 ### Les migrations ponctuelles

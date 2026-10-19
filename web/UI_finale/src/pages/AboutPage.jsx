@@ -54,7 +54,7 @@ import './AboutPage.css';
  * pouvoir atteindre le code de la version qu'il utilise. « Open source » est
  * exact depuis que le dépôt porte son fichier `LICENSE` — avant, le dépôt était
  * seulement public, c'est-à-dire visible et tous droits réservés. */
-const DEPOT = 'https://github.com/stephieED/Empreinte-politique';
+export const DEPOT = 'https://github.com/stephieED/Empreinte-politique';
 
 const MANIFESTE = [
   'Empreinte politique rassemble ce que les institutions publient sur les candidats à la présidentielle 2027 — mandats, votes, textes, prises de parole — et le donne à lire tel quel.',
@@ -101,8 +101,9 @@ export default function AboutPage() {
               </p>
               <p>
                 Projet à but non lucratif : aucune affiliation à un parti, à un candidat ou à une
-                organisation ; aucun financement extérieur, aucune publicité. Les coûts sont portés
-                sur fonds propres, et{' '}
+                organisation ; aucun financement hors{' '}
+                <Link to="/nous-soutenir">dons sur le site</Link>, aucune publicité. Les coûts sont
+                portés sur fonds propres, et{' '}
                 <a href={DEPOT} target="_blank" rel="noopener noreferrer">
                   le code est publié en open source, sous licence AGPL-3.0
                 </a>

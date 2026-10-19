@@ -11,7 +11,7 @@ une classification construite par ce dépôt, c'est-à-dire un acte éditorial
 ELLE SE LIT DANS LA SOURCE. Chaque `dossierParlementaire` des archives déjà en
 cache (`.cache/dossiers_an/`) porte un acte `codeActe: "AN1-COM-FOND-SAISIE"`
 (« Renvoi en commission au fond »), dont l'`organeRef` (`PO######`) est résolu
-par le référentiel des organes (`index_organes_v2.json`, #353) en commission
+par le référentiel des organes (`index_organes_v3.json`, #353) en commission
 permanente ou spéciale. Rien n'est inféré : l'uid de l'organe est copié verbatim.
 
 Mesuré le 01/09/2026 sur les trois archives XV/XVI/XVII :

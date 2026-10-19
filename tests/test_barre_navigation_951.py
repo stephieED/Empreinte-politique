@@ -34,12 +34,13 @@ def _sans_commentaires(source: str) -> str:
     return re.sub(r"(?<!:)//[^\n]*", "", source)
 
 
-def test_les_cinq_pages_dans_l_ordre() -> None:
+def test_les_six_pages_dans_l_ordre() -> None:
     """« Articles » (#1029) s'insère avant la FAQ : les articles sont une
-    lecture du corpus, la FAQ reste la dernière entrée."""
+    lecture du corpus. « Nous soutenir » (#1033) ferme la barre : ce n'est pas
+    une page du corpus, et elle ne s'intercale pas entre celles qui le lisent."""
     source = _sans_commentaires(NAV.read_text(encoding="utf-8"))
     libelles = re.findall(r"libelle: '([^']+)'", source)
-    assert libelles == ["Explorateur", "Méthodologie", "Sources", "Articles", "FAQ"]
+    assert libelles == ["Explorateur", "Méthodologie", "Sources", "Articles", "FAQ", "Nous soutenir"]
 
 
 def test_les_instantanes_sont_une_page_statique_pas_une_route() -> None:

@@ -1,0 +1,64 @@
+/* La page /nous-soutenir (#1033). Le bandeau et les cartes sont ceux de
+   /a-propos (AboutPage.css) et des pages statiques (StaticPage.css) : seuls les
+   deux boutons sont propres à la page. */
+
+.soutenir-action {
+  margin: 8px 0 0;
+}
+
+/* Le jaune signal sur l'encre : 16,01:1 (DESIGN_SYSTEM §2). Il marque l'action,
+   et c'est la seule de la page. */
+.soutenir-bouton {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 11px 20px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--dark);
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.soutenir-bouton:hover {
+  text-decoration: underline;
+}
+
+.soutenir-bouton:focus-visible,
+.soutenir-lien:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Le gris du surtitre : 7,1:1 sur l'encre, quand `--muted` n'y passe pas. */
+.apropos-bandeau p.soutenir-sous {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: #a8a4ad;
+}
+
+.soutenir-partage {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.static-card .soutenir-lien {
+  display: inline-flex;
+  padding: 9px 16px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.static-card .soutenir-lien:hover {
+  background: var(--ink);
+  color: #ffffff;
+}
+
+.soutenir-lien:focus-visible {
+  outline-color: var(--ink);
+}

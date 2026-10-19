@@ -252,6 +252,15 @@ Format d'un profil pivot v1 :
             # "91", "num_circo": "6"}. `null` si la source n'en porte pas ;
             # ABSENTE d'un mandat collecté avant ce lot. `identite.num_circo`
             # reste publié à côté, le temps que plus rien ne le lise.
+            # #1311 — "organe_createur" : FACULTATIVE, sur les seuls
+            # `mission_information` collectés à l'Assemblée. L'organe qui a
+            # créé la mission (`organeParent` d'AMO30), résolu :
+            # {"organe_ref": "PO59046", "nom": "Commission de la défense
+            # nationale et des forces armées", "sigle": "Défense", "type":
+            # "COMPER"}. `null` + "organe_createur_non_resolu": {"motif": …}
+            # (KNOWN_MOTIFS_ORGANE_CREATEUR_NON_RESOLU) quand la source n'en
+            # nomme pas ou que le référentiel ne le résout pas. ABSENTE d'un
+            # mandat collecté avant ce lot et jamais recollecté depuis.
         }
     ],
     "votes": [                               # MAPPING seul (#432) : un scrutin est identique
@@ -537,6 +546,22 @@ KNOWN_SOURCE_TYPES: frozenset[str] = frozenset({
 #: Les cinq clés de `mandats[].lieu_election` (#682), recopiées d'AMO30.
 CLES_LIEU_ELECTION: frozenset[str] = frozenset({
     "region", "type_region", "departement", "num_departement", "num_circo",
+})
+
+#: #1311 — les quatre clés de `mandats[].organe_createur` : l'organe qui a créé
+#: une mission d'information (`organeParent` d'AMO30), résolu dans le
+#: référentiel des organes. `type` est le `codeType` verbatim de la source.
+CLES_ORGANE_CREATEUR: frozenset[str] = frozenset({"organe_ref", "nom", "sigle", "type"})
+
+#: #1311 — pourquoi une mission d'information publie `organe_createur: null`.
+#: `source_sans_organe_createur` : AMO30 ne nomme aucun organe créateur
+#: (missions communes à plusieurs commissions, `MISINFOCOM` ; missions de la
+#: Conférence des présidents, `MISINFOPRE`) — un fait de la source, rien à
+#: réparer. `organe_createur_introuvable` : un parent est nommé et le
+#: référentiel ne le résout pas — le motif porte alors son `organe_ref`.
+KNOWN_MOTIFS_ORGANE_CREATEUR_NON_RESOLU: frozenset[str] = frozenset({
+    "source_sans_organe_createur",
+    "organe_createur_introuvable",
 })
 
 KNOWN_CHAMBRES: frozenset[str] = frozenset({"AN", "Senat", "PE", "mairie"})
@@ -2429,6 +2454,49 @@ def make_empty_profil(id_: str, nom: str, provenance: str = "candidat_declare") 
     }
 
 
+def _erreur_organe_createur(m: dict[str, Any]) -> Optional[str]:
+    """#1311 — la forme de `organe_createur` sur un mandat, ou `None`.
+
+    Clé FACULTATIVE (absente d'un mandat collecté avant le lot), portée par les
+    seuls `mission_information`. Présente, elle est soit un organe résolu
+    (`CLES_ORGANE_CREATEUR`, `organe_ref` et un nom ou un sigle renseignés),
+    soit `null` **avec** son motif fermé (§2 règle 5) — jamais les deux, jamais
+    un motif sans la clé.
+    """
+    a_cle = "organe_createur" in m
+    non_resolu = m.get("organe_createur_non_resolu")
+    if not a_cle:
+        if "organe_createur_non_resolu" in m:
+            return "organe_createur_non_resolu est posé sans organe_createur."
+        return None
+    if m.get("categorie") != "mission_information":
+        return (
+            f"organe_createur est porté par un mandat de catégorie "
+            f"{m.get('categorie')!r} : seule une mission d'information le publie."
+        )
+    createur = m["organe_createur"]
+    if createur is None:
+        motif = non_resolu.get("motif") if isinstance(non_resolu, dict) else None
+        if motif not in KNOWN_MOTIFS_ORGANE_CREATEUR_NON_RESOLU:
+            return (
+                "organe_createur est null sans organe_createur_non_resolu.motif "
+                f"dans {sorted(KNOWN_MOTIFS_ORGANE_CREATEUR_NON_RESOLU)} "
+                f"(reçu : {non_resolu!r}) — §2 règle 5."
+            )
+        if motif == "organe_createur_introuvable" and not non_resolu.get("organe_ref"):
+            return "organe_createur_non_resolu « organe_createur_introuvable » doit nommer l'organe_ref cherché."
+        return None
+    if non_resolu is not None:
+        return "organe_createur est résolu et porte pourtant organe_createur_non_resolu."
+    if not isinstance(createur, dict) or set(createur) != CLES_ORGANE_CREATEUR:
+        return f"organe_createur doit porter exactement {sorted(CLES_ORGANE_CREATEUR)} (reçu : {createur!r})."
+    if any(v is not None and (not isinstance(v, str) or not v) for v in createur.values()):
+        return f"organe_createur : chaque valeur est une chaîne non vide ou null (reçu : {createur!r})."
+    if not createur.get("organe_ref") or not (createur.get("nom") or createur.get("sigle")):
+        return f"organe_createur résolu sans organe_ref ou sans nom ni sigle (reçu : {createur!r})."
+    return None
+
+
 def validate_profil(
     profil: dict[str, Any], scrutins_index: Any = None, amendements_index: Any = None
 ) -> list[str]:
@@ -2725,6 +2793,10 @@ def validate_profil(
                         f"{sorted(KNOWN_TYPES_ORGANE_SOURCE)} — ou la clé absente, "
                         "qui dit que la source n'a pas classé l'organe."
                     )
+
+            erreur_organe = _erreur_organe_createur(m)
+            if erreur_organe:
+                errors.append(f"mandats[{i}].{erreur_organe}")
 
     # Depuis #432, `votes[]` est un MAPPING : `type_scrutin`, `type_vote`,
     # `texte_lie_id` et `sort` ont migré vers `pivot_data/scrutins.json` et sont

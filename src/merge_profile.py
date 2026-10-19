@@ -1115,6 +1115,59 @@ def backfill_mandat_organe_source(
     return result
 
 
+def backfill_mandat_organe_createur(
+    merged: list[dict[str, Any]],
+    new_list: Optional[list[dict[str, Any]]],
+    key_fn: Callable[[dict[str, Any]], Key],
+) -> list[dict[str, Any]]:
+    """Reporte `organe_createur` (et son `organe_createur_non_resolu`) d'une
+    mission d'information neuve sur l'entrée déjà publiée (#1311).
+
+    **Huitième occurrence de la famille** (#492, #639, #641, #696, #710, #718,
+    #863) : `_mandat_key` / `_pivot_mandat_key` ne contiennent pas le champ,
+    l'entrée ancienne gagne, et sans ce report aucune des missions déjà
+    publiées ne le recevrait jamais. La clé n'est pas touchée.
+
+    **Monotone sur la clé, pas sur la valeur.** Une entrée sans la clé la
+    reçoit, `null` et motif compris : « la source ne nomme pas d'organe
+    créateur » est un constat, et le reporter est le but. Une entrée qui porte
+    déjà `organe_createur: null` reçoit l'organe résolu si la collecte neuve
+    le résout (le référentiel a fini par le contenir) — le motif part avec la
+    valeur nulle. **Un organe résolu n'est jamais remplacé par `null`** : une
+    collecte qui ne le résout plus ne retire rien de publié, comme
+    `backfill_mandat_fin` ne rouvre jamais un mandat. Une entrée qu'aucune
+    collecte neuve ne couvre reste sans clé — « jamais relue depuis le lot ».
+    """
+    if not new_list:
+        return merged
+
+    neufs: dict[Key, dict[str, Any]] = {}
+    for m in new_list:
+        if isinstance(m, dict) and m.get("categorie") == "mission_information" and "organe_createur" in m:
+            neufs.setdefault(key_fn(m), m)
+    if not neufs:
+        return merged
+
+    result: list[dict[str, Any]] = []
+    for m in merged:
+        if isinstance(m, dict) and m.get("categorie") == "mission_information":
+            neuf = neufs.get(key_fn(m))
+            if neuf is not None and m.get("organe_createur") is None:
+                if neuf.get("organe_createur") is not None:
+                    m = {k: v for k, v in m.items() if k != "organe_createur_non_resolu"}
+                    m["organe_createur"] = neuf["organe_createur"]
+                elif "organe_createur" not in m:
+                    m = {**m, "organe_createur": None}
+                    if neuf.get("organe_createur_non_resolu") is not None:
+                        m["organe_createur_non_resolu"] = neuf["organe_createur_non_resolu"]
+                elif neuf.get("organe_createur_non_resolu") is not None:
+                    # Les deux côtés sont `null` : le motif du jour dit l'état
+                    # du jour (un parent nommé depuis, introuvable encore).
+                    m = {**m, "organe_createur_non_resolu": neuf["organe_createur_non_resolu"]}
+        result.append(m)
+    return result
+
+
 def _prefer_non_empty(new_value: Any, old_value: Any) -> Any:
     """Garde `new_value` si elle est renseignée (non vide/non nulle), sinon
     retombe sur `old_value` (évite qu'un échec transitoire de collecte fasse
@@ -2010,6 +2063,9 @@ def merge_raw_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> dic
         new.get("mandats"),
         _mandat_key,
     )
+    # #1311 — l'organe créateur d'une mission d'information, reporté sur
+    # l'entrée déjà publiée : la clé ne le contient pas, l'ancienne gagne.
+    merged["mandats"] = backfill_mandat_organe_createur(merged["mandats"], new.get("mandats"), _mandat_key)
     # #639 : la qualification (`type_scrutin`/`type_vote`/`demandeur`) est
     # reportée sur les votes déjà collectés. Sans elle, l'entrée ancienne gagne
     # et le profil brut n'acquiert jamais les trois champs — donc
@@ -3112,6 +3168,9 @@ def merge_pivot_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> d
         new.get("mandats"),
         _pivot_mandat_key,
     )
+    # #1311 — l'organe créateur d'une mission d'information, reporté sur
+    # l'entrée déjà publiée : la clé ne le contient pas, l'ancienne gagne.
+    merged["mandats"] = backfill_mandat_organe_createur(merged["mandats"], new.get("mandats"), _pivot_mandat_key)
 
     # --- chambres / chambre : RECALCULÉS, jamais fusionnés (#493) -----------
     #

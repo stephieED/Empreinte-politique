@@ -4,11 +4,15 @@ import './NavigationSite.css';
 
 /* ── La barre des pages du site (#951) ────────────────────────────────────────
  *
- * Cinq liens, dans le style discret retenu le 16/09/2026 : gris, la page
+ * Six liens, dans le style discret retenu le 16/09/2026 : gris, la page
  * courante en encre soulignée de jaune. Le jaune est un TRAIT sous le mot,
  * jamais la couleur du texte — 1,05:1 sur le fond clair (DESIGN_SYSTEM §2).
  *
- * Sous 720 px les cinq liens ne tiennent plus à côté du logo et du tiroir :
+ * « NOUS SOUTENIR » A REJOINT LA BARRE LE 19/10/2026 (#1033), au même style
+ * que les autres : dans le seul pied de page, la propriétaire l'a jugé trop
+ * caché. Pas de bouton jaune — le jaune y marque la page courante.
+ *
+ * Sous 720 px les six liens ne tiennent plus à côté du logo et du tiroir :
  * ils passent dans un menu.
  *
  * « ARTICLES » EST UNE PAGE STATIQUE, PAS UNE ROUTE (#1029) : elle est
@@ -29,6 +33,7 @@ const PAGES = [
   { libelle: 'Sources', vers: '/sources', racines: ['/sources'] },
   { libelle: 'Articles', vers: '/rapports', racines: [], statique: true },
   { libelle: 'FAQ', vers: '/faq', racines: ['/faq'] },
+  { libelle: 'Nous soutenir', vers: '/nous-soutenir', racines: ['/nous-soutenir'] },
 ];
 
 const estCourante = (page, pathname) =>

@@ -344,6 +344,13 @@ def _normalize_mandat(m: dict[str, Any]) -> dict[str, Any]:
     source_categorie = m.get("categorie_source")
     if source_categorie:
         mandat["categorie_source"] = source_categorie
+    # #1311 — l'organe qui a créé une mission d'information. FACULTATIVE,
+    # comme `lieu_election` : recopiée telle que le brut la porte, son motif
+    # avec elle quand elle est `null`, et jamais posée sur une autre catégorie.
+    if mandat["categorie"] == "mission_information" and "organe_createur" in m:
+        mandat["organe_createur"] = m["organe_createur"]
+        if m.get("organe_createur_non_resolu") is not None:
+            mandat["organe_createur_non_resolu"] = m["organe_createur_non_resolu"]
     return mandat
 
 

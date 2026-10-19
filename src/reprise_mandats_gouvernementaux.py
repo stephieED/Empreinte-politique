@@ -71,7 +71,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from json_io import ecrire_profil_json  # noqa: E402
 
 #: L'index d'organes du cache AN, d'où vient le typage.
-DEFAUT_INDEX_ORGANES = Path(".cache") / "acteurs_historique_an" / "index_organes_v2.json"
+DEFAUT_INDEX_ORGANES = Path(".cache") / "acteurs_historique_an" / "index_organes_v3.json"
 DEFAUT_GOUVERNEMENTS = Path("pivot_data") / "gouvernements"
 DEFAUT_PROFILS = Path("raw_data") / "profiles"
 

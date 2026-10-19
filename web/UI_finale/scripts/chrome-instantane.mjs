@@ -44,6 +44,7 @@ export const PAGES = [
   { libelle: 'Sources', vers: '/sources' },
   { libelle: 'Articles', vers: '/rapports' },
   { libelle: 'FAQ', vers: '/faq' },
+  { libelle: 'Nous soutenir', vers: '/nous-soutenir' },
 ];
 
 /** La colonne « Le site » du pied, dans l'ordre de `PiedDeSite.jsx`. */
@@ -52,6 +53,7 @@ export const PIED_PAGES = [
   { libelle: 'Sources', vers: '/sources' },
   { libelle: 'Méthodologie', vers: '/methodologie' },
   { libelle: 'Mentions légales', vers: '/mentions-legales' },
+  { libelle: 'Nous soutenir', vers: '/nous-soutenir' },
 ];
 
 export const CONTACT = 'contact@empreinte-politique.fr';

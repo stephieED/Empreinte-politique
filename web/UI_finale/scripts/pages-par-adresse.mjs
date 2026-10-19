@@ -72,7 +72,7 @@ function echouer(message) {
 /* Les pages fixes de `src/App.jsx`. Recopiées ici faute de pouvoir lire du
  * JSX sous Node : `tests/test_pages_par_adresse_969.py` échoue si une route
  * de l'application manque à cette liste. */
-export const PAGES_FIXES = ['a-propos', 'methodologie', 'sources', 'faq', 'mentions-legales'];
+export const PAGES_FIXES = ['a-propos', 'methodologie', 'sources', 'faq', 'mentions-legales', 'nous-soutenir'];
 
 /* Les redirections de `src/App.jsx`, adresse → adresse d'arrivée. */
 export const REDIRECTIONS_FIXES = {

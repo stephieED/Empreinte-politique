@@ -387,7 +387,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 
 ## `src/candidate_profile.py`
 
-106 décision(s) le gouvernent ; le module en cite 14.
+107 décision(s) le gouvernent ; le module en cite 14.
 
 | Décision | Nomme |
 | --- | --- |
@@ -465,6 +465,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [OOM persistant : lecture per-candidat de l'index amendements, tentative de mémoïsation revertée (2026-08-17)](decisions/oom-lecture-amendements-par-candidat.md) | `AN_AMENDEMENTS_PATH`, `fetch_amendements_officiels` |
 | [OOM lors de la relecture d'un index amendements figé déjà en cache (exécution locale) (2026-08-17)](decisions/oom-reconstruction-amendements-figees.md) | `AN_AMENDEMENTS_LEGISLATURES_FIGEES`, `AN_AMENDEMENTS_PATH`, `_download_and_build_amendement_index`, `amendements_index_deja_figee` |
 | [La moitié de la parole de 2021 n'était pas indexée : un paragraphe sans identifiant d'orateur suit l'attribution de la source (#1177) (2026-10-05)](decisions/orateur-attribue-par-la-source-1177.md) | `SYCERON_VERSION_INDEX` |
+| [Une mission d'information dit quel organe l'a créée (#1311)](decisions/organe-createur-missions-1311.md) | `_build_organe_index`, `_extract_mandats_officiels`, `resoudre_organe_createur` |
 | [`_build_organe_index` : résoudre `organeRef` via `AMO30` (historique) sans filtrage par `codeType` (#353) (2026-08-16)](decisions/organe-index-organeref.md) | `AN_ACTEURS_HISTORIQUE_ZIP_URL`, `_ACTEURS_HISTORIQUE_ZIP_LOCK`, `_build_acteur_positions_hemicycle_index`, `_build_organe_index`, `_build_organe_positions_index`, `_ensure_acteurs_historique_zip_downloaded`, `fetch_positions_hemicycle_officielles` |
 | [Parallèle RAM entre l'exécution locale et les runners GitHub Actions hébergés, diagnostic ajouté (2026-08-17)](decisions/parallele-oom-local-runner-ci.md) | `build_profile`, `fetch_amendements_officiels` |
 | [Une prise de parole dont le libellé nomme une autre personne n'est pas attribuée (#1177) (2026-10-07)](decisions/parole-d-une-autre-personne-1177.md) | `SYCERON_VERSION_INDEX`, `_normaliser_orateur_id_syceron`, `libelle_designe_une_autre_personne` |
@@ -538,7 +539,7 @@ Le mentionnent sans le gouverner : [`absences-publiees-comme-faits-556-558-560`]
 
 ## `src/commissions_dossiers_an.py`
 
-Le mentionnent sans le gouverner : [`archive-dossiers-xiv-1019`](decisions/archive-dossiers-xiv-1019.md), [`rattachement-scrutin-dossier-758`](decisions/rattachement-scrutin-dossier-758.md), [`vivier-de-points-et-empreinte-de-commission-328`](decisions/vivier-de-points-et-empreinte-de-commission-328.md).
+Le mentionnent sans le gouverner : [`archive-dossiers-xiv-1019`](decisions/archive-dossiers-xiv-1019.md), [`organe-createur-missions-1311`](decisions/organe-createur-missions-1311.md), [`rattachement-scrutin-dossier-758`](decisions/rattachement-scrutin-dossier-758.md), [`vivier-de-points-et-empreinte-de-commission-328`](decisions/vivier-de-points-et-empreinte-de-commission-328.md).
 
 ## `src/correspondance_acteurs_an.py`
 
@@ -1012,7 +1013,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 
 ## `src/merge_profile.py`
 
-84 décision(s) le gouvernent ; le module en cite 5.
+85 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1064,6 +1065,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [Un profil publie tous ses mandats de député, et le compteur devient un témoin de couverture (#640) (2026-08-31)](decisions/mandats-electifs-liste-complete-640.md) | `_pivot_mandat_key` |
 | [Le référentiel type l'organe, il n'y a rien à interpréter (#730) (2026-09-04)](decisions/mandats-gouvernementaux-en-commission-730.md) | `merge_pivot_profile` |
 | [`merge-and-pivot` : garde-fou #390 hors `main`, entrées de configuration, budget de temps mur, permissions (#413) (2026-08-18)](decisions/merge-and-pivot-budget-permissions-413.md) | `merge_pivot_profile` |
+| [Une mission d'information dit quel organe l'a créée (#1311)](decisions/organe-createur-missions-1311.md) | `_mandat_key`, `_pivot_mandat_key`, `backfill_mandat_organe_createur` |
 | [`overwrite_profiles` : écraser les profils sans purger le cache (2026-08-19)](decisions/overwrite-profiles-sans-purge-cache.md) | `merge_lists_by_key` |
 | [Un paragraphe de compte rendu republié sous un autre rang n'est publié qu'une fois (2026-10-08)](decisions/paragraphe-syceron-publie-une-fois.md) | `dedoublonner_paragraphes_syceron`, `merge_pivot_profile`, `merge_raw_profile` |
 | [Le `label` d'un mandat `MINISTERE` ne dit pas si c'est un maroquin (#474) (2026-08-20)](decisions/parlementaire-en-mission-nest-pas-ministre.md) | `preserve_stable_freshness_timestamps` |
@@ -1140,7 +1142,7 @@ Le mentionnent sans le gouverner : [`avertissements-europeens-reecrits-1161`](de
 
 ## `src/normalize_profil.py`
 
-11 décision(s) le gouvernent ; le module en cite 4.
+12 décision(s) le gouvernent ; le module en cite 4.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1151,6 +1153,7 @@ Le mentionnent sans le gouverner : [`avertissements-europeens-reecrits-1161`](de
 | [La qualité de l'orateur survit à la forme réduite : `fonction` pour les membres de groupe et de gouvernement (#1200) (2026-10-04)](decisions/fonction-sur-la-forme-reduite-1200.md) | `_normalize_intervention` |
 | [L'intitulé de séance de la XVe était jeté à la normalisation : une entrée Syceron se reconnaît à ce que le parseur a écrit (#1189) (2026-10-04)](decisions/intitule-de-seance-xve-1189.md) | `_normalize_intervention`, `_vient_de_syceron` |
 | [Normaliser les amendements : le coût n'est pas l'amendement, c'est sa liste de cosignataires (#431) (2026-08-19)](decisions/normalisation-amendements.md) | `_normalize_amendement` |
+| [Une mission d'information dit quel organe l'a créée (#1311)](decisions/organe-createur-missions-1311.md) | `_normalize_mandat` |
 | [Un code de nomenclature n'est pas une profession, et « sans activité professionnelle » n'en est pas une (#641) (2026-08-31)](decisions/profession-code-nomenclature-641.md) | `_profession_publiable`, `_uri_hatvp_publiable` |
 | [La qualification d'un scrutin et la clé de son dossier étaient lues puis jetées (#639, rangs 1 et 2)](decisions/qualification-scrutins-et-cle-dossier-639.md) | `_normalize_texte_porte` |
 | [Restaurer 789 interventions sans revenir sur le reste du schéma (#460) (2026-08-19)](decisions/restauration-interventions.md) | `_normalize_intervention` |
@@ -1290,7 +1293,7 @@ Le mentionnent sans le gouverner : [`rattachement-deduit-votes-sans-dossier-1289
 
 ## `src/reprise_mandats_gouvernementaux.py`
 
-Le mentionnent sans le gouverner : [`purge-doublons-herites-729`](decisions/purge-doublons-herites-729.md).
+Le mentionnent sans le gouverner : [`organe-createur-missions-1311`](decisions/organe-createur-missions-1311.md), [`purge-doublons-herites-729`](decisions/purge-doublons-herites-729.md).
 
 ## `src/retrait_heritage_senat.py`
 
@@ -1355,7 +1358,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 
 ## `src/schema_pivot.py`
 
-66 décision(s) le gouvernent ; le module en cite 5.
+67 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1394,6 +1397,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 | [Les mandats antérieurs à la couverture de l'Assemblée entrent par une table relue (#860)](decisions/mandats-anterieurs-couverture-860.md) | `KNOWN_INSTITUTIONS_ANTERIEURES`, `validate_profil` |
 | [Normaliser les amendements : le coût n'est pas l'amendement, c'est sa liste de cosignataires (#431) (2026-08-19)](decisions/normalisation-amendements.md) | `validate_amendements_index`, `validate_profil` |
 | [Normaliser les votes : une liste partagée, un mapping, et deux invariants devenus des jointures (#432) (2026-08-19)](decisions/normalisation-votes.md) | `validate_profil`, `validate_scrutins_index` |
+| [Une mission d'information dit quel organe l'a créée (#1311)](decisions/organe-createur-missions-1311.md) | `KNOWN_MOTIFS_ORGANE_CREATEUR_NON_RESOLU`, `validate_profil` |
 | [Une baisse de tags agrégés bloque sur sa cause, lue dans les profils](decisions/perte-de-tags-agreges-bloque-sur-sa-cause.md) | `cle_tag_thematique` |
 | [Une baisse de tags thématiques bloque sur sa cause, pas sur son compte](decisions/perte-de-tags-bloque-sur-sa-cause.md) | `deriver_tags_thematiques`, `porte_un_tag_thematique` |
 | [`genere_le`/`synchro_le` des pivots ne doivent avancer que si le contenu change réellement (#343) (2026-08-16)](decisions/pivot-freshness-timestamps-stables.md) | `make_empty_profil` |
