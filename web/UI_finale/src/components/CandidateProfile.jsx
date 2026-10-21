@@ -13,6 +13,7 @@
  * lot 1 a supprimée.
  */
 import '../styles/shell.css';
+import PartagerFiche from './PartagerFiche';
 import './CandidateProfile.css';
 import { BadgeSource, ListeVide } from './Lecture';
 import InfoBulle, { BulleDePastille } from './InfoBulle';
@@ -2017,6 +2018,9 @@ export default function CandidateProfile({ candidate, mot = '' }) {
         />
       </Section>
       )}
+
+      {/* Le partage, après la dernière section (#1033, forme D). */}
+      <PartagerFiche />
 
       {/* La licence SEULE. La phrase de refus qui l'accompagnait était la
           troisième occurrence de « aucun score, aucun classement » sur la même

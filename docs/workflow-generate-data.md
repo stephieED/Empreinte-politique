@@ -970,6 +970,26 @@ index chacun. Deux jobs qui partagent une clé partagent aussi le `path:` exact,
 la version de l'entrée en étant un hash. Verrouillé par `tests/test_ci_cache_producteur_ecrivain.py`.
 Voir `docs/decisions/cache-mode-interventions-505.md`.
 
+**Les archives AMO30 figées des XVe et XVIe législatures (#1317) voyagent dans
+la clé AN, sans changer son `path:`.** Elles donnent la place de chaque député
+dans l'hémicycle de sa législature, que l'archive courante réécrit. Elles vivent
+sous `.cache/acteurs_historique_an/figees/<législature>/` (l'archive et son
+`index_places_hemicycle_v1.json`) — dans le répertoire déjà capturé, donc **le
+workflow n'est pas touché**. La péremption hebdomadaire (#555,
+`src/cache_an_fraicheur.py`) supprime tout `acteurs_historique_an` **sauf
+`figees/`** : l'Assemblée ne republie plus ces archives. Elles s'invalident par
+`cold_start` (aucun cache restauré) ou en renommant
+`SOUS_REPERTOIRE_AMO30_FIGEES` ; leur index se reconstruit quand
+`NOM_INDEX_PLACES_HEMICYCLE` change. Coût réseau : deux téléchargements de
+10,1 et 11,9 Mo (9 s et 13 s depuis un poste le 21/10/2026, deux essais du
+second coupés à 1,6 et 2,9 Mo avant), chacun borné à
+`BUDGET_ARCHIVE_AMO30_FIGEE_SECONDES` (120 s) avec deux reprises (#1202), et
+tenté **une fois par process** : un échec publie `archive_indisponible` sur les
+mandats concernés, jamais une absence de place. Un job qui ne restaure que la
+clé — `extract-roster-groupes` — télécharge les deux archives dans chaque shard
+tant que l'entrée restaurée a été écrite avant le lot ; `extract-an`, qui
+l'écrit, les y fait entrer à sa prochaine sauvegarde (une clé par jour).
+
 ## 4. Les artifacts
 
 **Un artifact = la contribution d'un seul job** (#450). Un job d'extraction

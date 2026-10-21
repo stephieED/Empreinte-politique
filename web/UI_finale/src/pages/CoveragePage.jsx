@@ -4,6 +4,7 @@ import SchemaSources from '../components/SchemaSources';
 import EnTeteSite from '../components/EnTeteSite';
 import FriseCouverture from '../components/FriseCouverture';
 import PiedDeSite from '../components/PiedDeSite';
+import SommaireSections from '../components/SommaireSections';
 import { useAsyncData } from '../hooks/useAsyncData';
 import { loadCandidatsSuivis, loadCouverture } from '../data';
 import { dateEnClair, lignesCandidats } from '../utils/candidatsSuivis';
@@ -52,6 +53,8 @@ export default function CoveragePage() {
             <p>Commun à toutes les fiches — candidats, gouvernements, groupes parlementaires.</p>
           </div>
 
+          <SommaireSections libelle="Sections de cette page" />
+
           {loading && <p className="cv-etat">Chargement…</p>}
           {error && (
             <p className="cv-etat">
@@ -71,14 +74,14 @@ export default function CoveragePage() {
                   viennent les données, avant depuis quand. Le schéma dit ce que
                   chaque source apporte, et chaque nœud porte sa licence et sa
                   cadence : les cartes repliées n'y sont plus. */}
-              <section className="static-card cv-card" id="sources">
+              <section className="static-card static-card--figure cv-card" id="sources" data-section="Les sources">
                 <h2>Les sources</h2>
                 <SchemaSources />
               </section>
 
               <CandidatsSuivis />
 
-              <section className="static-card cv-card" id="frise">
+              <section className="static-card static-card--figure cv-card" id="frise" data-section="Ce que le dépôt porte, et depuis quand">
                 <h2>Ce que le dépôt porte, et depuis quand</h2>
                 {/* La légende de la frise dit ce que chaque encre veut dire : ce
                     paragraphe le répétait (règle de forme 3). */}
@@ -91,7 +94,7 @@ export default function CoveragePage() {
                 <MandatsHorsCouverture fiches={data.accueil?.horsCouverture?.anterieurs} />
               </section>
 
-              <section className="static-card cv-card" id="manquants">
+              <section className="static-card static-card--figure cv-card" id="manquants" data-section="Ce qui manque, et sur quelles fiches">
                 <h2>Ce qui manque, et sur quelles fiches</h2>
                 <p className="cv-sous">
                   Le dénominateur n'est pas le nombre de fiches : une fiche sans mandat à
@@ -163,7 +166,7 @@ function CandidatsSuivis() {
   }, [data, hash]);
   if (error) {
     return (
-      <section className="static-card cv-card" id="candidats">
+      <section className="static-card static-card--figure cv-card" id="candidats" data-section="Les candidats suivis">
         <h2>Les candidats suivis</h2>
         <p className="cv-etat">La liste des candidats n'a pas pu être chargée.</p>
       </section>
@@ -173,7 +176,7 @@ function CandidatsSuivis() {
   const lignes = lignesCandidats(data.candidats, data.fichesPubliees);
   const verification = dateEnClair(data.verification);
   return (
-    <section className="static-card cv-card" id="candidats">
+    <section className="static-card static-card--figure cv-card" id="candidats" data-section="Les candidats suivis">
       <h2>Les candidats suivis</h2>
       <p className="cv-sous">
         Le site publie une fiche pour chaque personne qui a déclaré sa candidature à

@@ -1168,6 +1168,66 @@ def backfill_mandat_organe_createur(
     return result
 
 
+def backfill_mandat_place_hemicycle(
+    merged: list[dict[str, Any]],
+    new_list: Optional[list[dict[str, Any]]],
+    key_fn: Callable[[dict[str, Any]], Key],
+) -> list[dict[str, Any]]:
+    """Reporte `place_hemicycle` (et son `place_hemicycle_non_resolu`) d'un
+    mandat de député neuf sur l'entrée déjà publiée (#1317).
+
+    Neuvième occurrence de la famille (#492, #639, #641, #696, #710, #718,
+    #863, #1311) : `_mandat_key` / `_pivot_mandat_key` ne contiennent pas le
+    champ, l'entrée ancienne gagne, et sans ce report aucun des mandats déjà
+    publiés ne le recevrait jamais. La clé n'est pas touchée.
+
+    **Une place résolue n'est jamais remise à `null`** — une collecte qui ne la
+    lit plus (archive indisponible) ne retire rien de publié. Une place résolue
+    est remplacée par une place neuve dont l'état est au moins aussi récent
+    (`etat_au`) : en XVIIe, le siège change en cours de législature et la
+    dernière lecture fait foi ; sur une archive figée, la valeur est identique.
+    Une entrée sans la clé la reçoit, `null` et motif compris. Entre deux
+    `null`, le motif du jour remplace l'ancien — sauf `archive_indisponible`,
+    qui dit l'état du run et n'efface jamais un motif lu dans l'archive. Une
+    entrée qu'aucune collecte neuve ne couvre reste sans clé.
+    """
+    if not new_list:
+        return merged
+
+    neufs: dict[Key, dict[str, Any]] = {}
+    for m in new_list:
+        if isinstance(m, dict) and m.get("categorie") == "mandat_electif" and "place_hemicycle" in m:
+            neufs.setdefault(key_fn(m), m)
+    if not neufs:
+        return merged
+
+    result: list[dict[str, Any]] = []
+    for m in merged:
+        neuf = neufs.get(key_fn(m)) if isinstance(m, dict) and m.get("categorie") == "mandat_electif" else None
+        if neuf is not None:
+            place_neuve = neuf.get("place_hemicycle")
+            motif_neuf = neuf.get("place_hemicycle_non_resolu")
+            place_publiee = m.get("place_hemicycle")
+            if place_neuve is not None:
+                if place_publiee is None or str(place_neuve.get("etat_au") or "") >= str(
+                    place_publiee.get("etat_au") or ""
+                ):
+                    m = {k: v for k, v in m.items() if k != "place_hemicycle_non_resolu"}
+                    m["place_hemicycle"] = place_neuve
+            elif "place_hemicycle" not in m:
+                m = {**m, "place_hemicycle": None}
+                if motif_neuf is not None:
+                    m["place_hemicycle_non_resolu"] = motif_neuf
+            elif place_publiee is None and motif_neuf is not None:
+                motif_publie = m.get("place_hemicycle_non_resolu") or {}
+                if motif_neuf.get("motif") != "archive_indisponible" or (
+                    motif_publie.get("motif") in (None, "archive_indisponible")
+                ):
+                    m = {**m, "place_hemicycle_non_resolu": motif_neuf}
+        result.append(m)
+    return result
+
+
 def _prefer_non_empty(new_value: Any, old_value: Any) -> Any:
     """Garde `new_value` si elle est renseignée (non vide/non nulle), sinon
     retombe sur `old_value` (évite qu'un échec transitoire de collecte fasse
@@ -2066,6 +2126,9 @@ def merge_raw_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> dic
     # #1311 — l'organe créateur d'une mission d'information, reporté sur
     # l'entrée déjà publiée : la clé ne le contient pas, l'ancienne gagne.
     merged["mandats"] = backfill_mandat_organe_createur(merged["mandats"], new.get("mandats"), _mandat_key)
+    # #1317 — la place dans l'hémicycle d'un mandat de député, reportée sur
+    # l'entrée déjà publiée : la clé ne la contient pas, l'ancienne gagne.
+    merged["mandats"] = backfill_mandat_place_hemicycle(merged["mandats"], new.get("mandats"), _mandat_key)
     # #639 : la qualification (`type_scrutin`/`type_vote`/`demandeur`) est
     # reportée sur les votes déjà collectés. Sans elle, l'entrée ancienne gagne
     # et le profil brut n'acquiert jamais les trois champs — donc
@@ -3171,6 +3234,9 @@ def merge_pivot_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> d
     # #1311 — l'organe créateur d'une mission d'information, reporté sur
     # l'entrée déjà publiée : la clé ne le contient pas, l'ancienne gagne.
     merged["mandats"] = backfill_mandat_organe_createur(merged["mandats"], new.get("mandats"), _pivot_mandat_key)
+    # #1317 — la place dans l'hémicycle d'un mandat de député, reportée sur
+    # l'entrée déjà publiée : la clé ne la contient pas, l'ancienne gagne.
+    merged["mandats"] = backfill_mandat_place_hemicycle(merged["mandats"], new.get("mandats"), _pivot_mandat_key)
 
     # --- chambres / chambre : RECALCULÉS, jamais fusionnés (#493) -----------
     #

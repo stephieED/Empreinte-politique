@@ -67,8 +67,8 @@ const SECTIONS = [
      avant le détail fiche par fiche. Leur famille, « Les principes », est
      retenue le 16/09/2026 : « Le concept » légende déjà l'illustration du Hero. */
   { famille: 'Les principes' },
-  { id: 'comment-ca-marche', element: <HowItWorks key="comment" /> },
-  { id: 'ce-que-vous-ne-trouverez-pas', element: <WhatYouWontFind key="refus" /> },
+  { id: 'comment-ca-marche', titre: 'Comment ça marche', element: <HowItWorks key="comment" /> },
+  { id: 'ce-que-vous-ne-trouverez-pas', titre: 'Ce que vous ne trouverez pas ici', element: <WhatYouWontFind key="refus" /> },
   { famille: 'Fiche candidat' },
   {
     id: 'fonctions',

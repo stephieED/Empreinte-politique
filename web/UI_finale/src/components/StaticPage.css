@@ -1,13 +1,18 @@
 .static-page {
   width: 100%;
-  max-width: 1600px;
 }
 
+/* La colonne commune (--colonne) ; une ligne de texte courant s'arrête à
+   --mesure, les cartes et les figures prennent toute la colonne. */
 .static-main {
   width: 100%;
-  max-width: 900px;
+  max-width: var(--colonne);
   margin: 0 auto;
   padding: 32px 40px 64px;
+}
+
+.static-main :is(p, li) {
+  max-width: var(--mesure);
 }
 
 .static-banner {
@@ -170,4 +175,63 @@
   font-size: 15px;
   line-height: 1.65;
   color: var(--ink);
+}
+
+/* ── LA FORME E DES PAGES DE TEXTE (arbitrée le 21/10/2026) ───────────────────
+   Le sommaire des fiches à gauche, et dans chaque carte le titre en marge.
+   `main.static-main` : plus fort que `.apropos-main`, qui pose un flex. */
+
+/* Le sommaire, au-delà de 1 440 px comme sur les fiches (SommaireSections.css) :
+   mêmes 204 px, même écart de 24 px. Le bandeau garde toute la colonne. */
+@media (min-width: 1440px) {
+  main.static-main {
+    display: grid;
+    grid-template-columns: 204px minmax(0, 1fr);
+    column-gap: 24px;
+    align-items: start;
+  }
+
+  main.static-main > * {
+    grid-column: 2;
+  }
+
+  main.static-main > :first-child {
+    grid-column: 1 / -1;
+  }
+
+  main.static-main > .som {
+    grid-column: 1;
+    grid-row: 2 / span 20;
+    margin-top: 20px;
+  }
+}
+
+/* Le titre en marge, dès que la carte a la place de deux colonnes. Une carte
+   qui porte une figure (`static-card--figure`, page Sources) garde son titre
+   au-dessus : la figure a besoin de toute la largeur. */
+@media (min-width: 1024px) {
+  .static-card:not(.static-card--figure),
+  .static-bloc > .landing-section {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    column-gap: 48px;
+    align-items: start;
+  }
+
+  .static-card:not(.static-card--figure) > h2,
+  .static-bloc > .landing-section > h2 {
+    grid-column: 1;
+    grid-row: 1 / span 40;
+    margin: 0;
+  }
+
+  .static-card:not(.static-card--figure) > :not(h2),
+  .static-bloc > .landing-section > :not(h2) {
+    grid-column: 2;
+  }
+
+  .static-card:not(.static-card--figure) > :nth-child(2),
+  .static-bloc > .landing-section > :nth-child(2) {
+    margin-top: 0;
+  }
 }

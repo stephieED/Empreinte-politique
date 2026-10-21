@@ -1,10 +1,5 @@
 /* La page de couverture reprend la carcasse des pages statiques (bannière,
-   fil d'Ariane, cartes) et l'élargit : la frise a besoin de largeur, et une
-   colonne de 900 px l'écrasait. */
-.cv-main {
-  max-width: 1180px;
-}
-
+   fil d'Ariane, cartes), et sa largeur : la colonne commune. */
 .cv-card {
   padding-bottom: 24px;
 }

@@ -41,3 +41,32 @@
 .baseline--pied .baseline-puce {
   padding: 0 6px;
 }
+
+/* Les tuiles du bandeau d'À propos (forme C, 21/10/2026) : sur l'encre. */
+.baseline-tuiles {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.baseline-tuile {
+  padding: 18px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ddd9e2;
+}
+
+.baseline-tuile b {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1.05;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+}

@@ -15,6 +15,14 @@
   --border-strong: #e7e4df;
   --card: #ffffff;
 
+  /* LA LARGEUR DES PAGES : une seule, pour toutes (arbitré le 21/10/2026).
+     L'accueil, les pages du site, les fiches, la barre du haut et le pied
+     lisent ces deux valeurs ; aucune page ne fixe la sienne, et
+     tests/test_largeur_commune.py le vérifie. `--colonne` borne la page,
+     `--mesure` borne une ligne de texte courant, qui se lit mal au-delà. */
+  --colonne: 1600px;
+  --mesure: 80ch;
+
   color-scheme: light;
 }
 

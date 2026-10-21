@@ -20,6 +20,7 @@
  * lignes pour Philippe II, quand « remanié 10 fois » suffit).
  */
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import PartagerFiche from './PartagerFiche';
 import { Link } from 'react-router-dom';
 import { Condition, EtiquetteFiltre, useFiltreActif } from './Recherche';
 import { getBudgetsDuGouvernement, getPaquetExtraitsGouvernement, getParolesDuGouvernement, getSujetsComptesDuGouvernement } from '../data';
@@ -1339,6 +1340,8 @@ export default function GovernmentProfile({ government, chronologie = [], mot = 
       <CeQuIlAFaitEntrerEnVigueur government={government} />
       {budgets && <LesBudgetsQuIlAFaitVoter exercices={budgets} />}
       <CeQuOnNaPasPuLire government={government} numero={budgets ? '07' : '06'} />
+      {/* Le partage, après la dernière section (#1033, forme D). */}
+      <PartagerFiche />
     </main>
   );
 }

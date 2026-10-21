@@ -10,7 +10,7 @@
      `explorer-main`, et une marge auto seule l'y ajustait à son contenu — il
      rendait 729 px de large dans une colonne de 1 020. */
   width: 100%;
-  max-width: 1600px;
+  max-width: var(--colonne);
   margin: 0 auto;
   padding: 26px 40px 30px;
   border-top: 1px solid var(--border);

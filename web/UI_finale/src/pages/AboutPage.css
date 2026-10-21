@@ -76,3 +76,53 @@
     border-radius: 18px;
   }
 }
+
+/* ── LE BANDEAU SUR GRAND ÉCRAN (forme C, arbitrée le 21/10/2026) ────────────
+   Le texte garde sa mesure (40em) à gauche ; ce qui n'est pas du texte passe
+   à droite : la devise en tuiles sur À propos, le bouton de don sur Nous
+   soutenir. Sous 1 024 px, tout reste l'un sous l'autre. */
+.apropos-tuiles {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .apropos-bandeau {
+    margin: 0 0 26px;
+    display: grid;
+    grid-template-columns: minmax(0, 40em) minmax(0, 1fr);
+    column-gap: 72px;
+    align-items: start;
+  }
+
+  .apropos-bandeau > * {
+    grid-column: 1;
+  }
+
+  .apropos-bandeau > .apropos-baseline {
+    display: none;
+  }
+
+  .apropos-bandeau > .apropos-tuiles {
+    display: grid;
+    grid-column: 2;
+    grid-row: 1 / span 10;
+    align-self: center;
+    justify-self: end;
+    width: min(100%, 520px);
+  }
+
+  .apropos-bandeau > .soutenir-action {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    align-self: center;
+    justify-self: end;
+    margin: 0;
+  }
+
+  .apropos-bandeau > p.soutenir-sous {
+    grid-column: 2;
+    grid-row: 4;
+    justify-self: end;
+    margin: 0;
+  }
+}

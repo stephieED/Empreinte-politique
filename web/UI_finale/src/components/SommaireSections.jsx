@@ -26,8 +26,12 @@
  * fenêtre fait 1 585 px : quinze pixels sous la barre. C'est une frontière qu'on
  * pose en pensant à des écrans et qui se règle sur des fenêtres.
  *
- * Le sommaire prend 204 px SUR LA MARGE, jamais sur le contenu : celui-ci reste
- * à 1 100 px, seuil franchi ou non.
+ * Le sommaire prend 204 px SUR LA MARGE, jamais sur le contenu.
+ *
+ * LES PAGES DE TEXTE LE PORTENT AUSSI (forme E, arbitrée le 21/10/2026) :
+ * À propos, Méthodologie, Sources, FAQ, Mentions légales, Nous soutenir. Une
+ * entrée marquée `data-section-groupe` est le TITRE D'UN GROUPE de sections —
+ * « Fiche candidat » sur Méthodologie — et s'affiche comme tel.
  */
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -41,7 +45,7 @@ const SEUIL_LECTURE = 144;
  * titre qu'on vient de demander. */
 const AVANCE_ANCRE = 114;
 
-export default function SommaireSections() {
+export default function SommaireSections({ libelle = 'Sections de cette fiche' }) {
   const [sections, setSections] = useState([]);
   const [actif, setActif] = useState(null);
   const { pathname } = useLocation();
@@ -57,7 +61,7 @@ export default function SommaireSections() {
   useEffect(() => {
     const lire = () => {
       const lues = [...document.querySelectorAll('[data-section]')]
-        .map((el) => ({ id: el.id, titre: el.dataset.section }))
+        .map((el) => ({ id: el.id, titre: el.dataset.section, groupe: 'sectionGroupe' in el.dataset }))
         .filter((s) => s.id && s.titre);
       setSections((avant) => (
         avant.length === lues.length && avant.every((s, i) => s.id === lues[i].id)
@@ -94,7 +98,7 @@ export default function SommaireSections() {
    * de 204 px — second défaut trouvé à la première mesure. Vide, il ne se voit
    * pas ; il ne prend que la marge. */
   return (
-    <nav className="som" aria-label="Sections de cette fiche">
+    <nav className="som" aria-label={libelle}>
       {/* Un sommaire d'une seule entrée ne sert à rien : il n'y a nulle part où
           aller, et il occuperait la place d'un titre. */}
       {sections.length > 1 && <p className="som-quoi">Sur cette page</p>}
@@ -102,6 +106,7 @@ export default function SommaireSections() {
         {(sections.length > 1 ? sections : []).map((s) => (
           <li key={s.id}>
             <a
+              className={s.groupe ? 'som-groupe' : undefined}
               href={`#${s.id}`}
               aria-current={actif === s.id ? 'true' : undefined}
               onClick={(e) => {

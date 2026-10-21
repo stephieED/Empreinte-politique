@@ -1,5 +1,6 @@
 import EnTeteSite from '../components/EnTeteSite';
 import PiedDeSite, { CONTACT } from '../components/PiedDeSite';
+import SommaireSections from '../components/SommaireSections';
 import { DEPOT } from './AboutPage';
 import '../styles/shell.css';
 import '../components/StaticPage.css';
@@ -62,8 +63,10 @@ export default function SoutenirPage() {
             <p className="soutenir-sous">Paiement en ligne via Ko-fi, sans création de compte.</p>
           </section>
 
+          <SommaireSections libelle="Sections de cette page" />
+
           <div className="static-sections">
-            <section className="static-card" id="code">
+            <section className="static-card" id="code" data-section="Signaler une erreur, améliorer le code">
               <h2>Signaler une erreur, améliorer le code</h2>
               <p>
                 Une donnée vous semble fausse, ou une méthode discutable : écrivez à{' '}
@@ -79,7 +82,7 @@ export default function SoutenirPage() {
               </p>
             </section>
 
-            <section className="static-card" id="partager">
+            <section className="static-card" id="partager" data-section="Faire connaître le site">
               <h2>Faire connaître le site</h2>
               <p>Le plus simple est de partager le site, ou une fiche, autour de vous.</p>
               <p className="soutenir-partage">

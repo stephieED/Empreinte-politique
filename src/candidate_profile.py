@@ -510,11 +510,50 @@ def _amendements_legislature_failed_this_run(legislature: str) -> bool:
 #   issue #353), a partir des 7126+ organes historiques du meme zip
 #   (json/organe/*.json, tous codeType confondus : commissions, groupes
 #   d'amitie, engagements extra-parlementaires...).
-AN_ACTEURS_HISTORIQUE_ZIP_URL = (
-    f"{AN_OPENDATA_BASE}/17/amo/tous_acteurs_mandats_organes_xi_legislature/"
+AN_AMO30_CHEMIN = (
+    "amo/tous_acteurs_mandats_organes_xi_legislature/"
     "AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip"
 )
+AN_ACTEURS_HISTORIQUE_ZIP_URL = f"{AN_OPENDATA_BASE}/17/{AN_AMO30_CHEMIN}"
 ACTEURS_HISTORIQUE_CACHE_DIR = Path(".cache") / "acteurs_historique_an"
+
+# #1317 — la place dans l'hémicycle se lit dans l'archive DE LA LÉGISLATURE du
+# mandat, jamais dans la courante. `mandature.placeHemicycle` est une valeur par
+# mandat, sans date : la place à la date de l'archive. Et l'archive courante
+# réécrit le passé — mesuré le 21/10/2026 sur les 633 mandats XVIe : 100
+# identiques à l'archive XVIe figée, 323 changés, 202 vidés, 8 remplis depuis.
+# Un mandat clos n'y porte une place que si son titulaire siège en XVIIe, et
+# c'est alors son siège actuel, recopié.
+#
+# Les législatures closes ont une archive figée au même chemin. `etat_au` est
+# l'en-tête `last-modified` que le serveur renvoyait le 21/10/2026 (HEAD sur
+# chaque URL) : ces archives ne sont plus republiées, la date est donc une
+# constante mesurée et non relue à chaque run. `repository/14/…` répond 404 —
+# la XIVe n'a pas d'archive figée, et l'archive XVe ne lui donne une place que
+# sur 120 de ses 691 mandats : on ne l'y emprunte pas.
+LEGISLATURE_ARCHIVE_AMO30_COURANTE = "17"
+ARCHIVES_AMO30_FIGEES: dict[str, dict[str, str]] = {
+    "15": {"source_url": f"{AN_OPENDATA_BASE}/15/{AN_AMO30_CHEMIN}", "etat_au": "2022-06-09"},
+    "16": {"source_url": f"{AN_OPENDATA_BASE}/16/{AN_AMO30_CHEMIN}", "etat_au": "2024-06-28"},
+}
+#: Sous-répertoire de `ACTEURS_HISTORIQUE_CACHE_DIR` qui garde les archives
+#: figées et leur index, un dossier par législature. Il vit DANS le répertoire
+#: déjà capturé par le cache GitHub Actions — le `path:` ne change pas, donc le
+#: workflow non plus — et `cache_an_fraicheur.chemins_perissables` l'épargne :
+#: une archive que l'Assemblée ne republie plus ne vieillit pas.
+SOUS_REPERTOIRE_AMO30_FIGEES = "figees"
+#: Nom de l'archive figée dans son dossier de législature.
+NOM_ARCHIVE_AMO30_FIGEE = "acteurs_historique.zip"
+#: Index des places, un par archive (courante à la racine du cache, figée dans
+#: son dossier). Versionné comme les autres (#556) : à incrémenter dès que ce
+#: qu'il CONTIENT change — il se reconstruit alors depuis l'archive en cache.
+#: Les archives figées elles-mêmes ne se retéléchargent que par `cold_start`
+#: (aucun cache restauré) ou en renommant `SOUS_REPERTOIRE_AMO30_FIGEES`.
+NOM_INDEX_PLACES_HEMICYCLE = "index_places_hemicycle_v1.json"
+#: Budget mur d'un téléchargement d'archive figée (≈ 10-12 Mo chacune), et
+#: reprises d'un transfert coupé (#1202). Le budget couvre les reprises.
+BUDGET_ARCHIVE_AMO30_FIGEE_SECONDES = 120
+REPRISES_ARCHIVE_AMO30_FIGEE = 2
 
 # Noms des index dérivés du zip AMO30, **versionnés** (#556). Le suffixe n'est
 # pas cosmétique : ces index sont mis en cache sur disque ET restaurés d'un run
@@ -635,6 +674,18 @@ _ACTEURS_ORGANES_LOCK = threading.Lock()
 # historique (issue #369 - complete #353 pour peupler profile["mandats"]).
 _ACTEURS_MANDATS_LOCK = threading.Lock()
 
+# #1317 — un verrou pour les archives figées (téléchargement) et un pour les
+# index de places, toutes législatures confondues : deux archives de 10 Mo, une
+# fois par run, ne justifient pas un verrou par législature.
+_ARCHIVES_AMO30_FIGEES_LOCK = threading.Lock()
+_PLACES_HEMICYCLE_LOCK = threading.Lock()
+# Archives figées dont le téléchargement a échoué dans CE process, par chemin
+# (même règle que le mémo des index, #467 : jamais par nom logique). Sans lui,
+# chaque député relancerait un téléchargement de 120 s ; avec lui, le run en
+# tente un et publie `archive_indisponible` pour les autres — jamais un faux
+# constat d'absence (§2 règle 5), jamais rien d'écrit sur disque.
+_ARCHIVES_AMO30_FIGEES_EN_ECHEC: set[str] = set()
+
 # Un seul verrou pour l'index des textes portés (auteur/rapporteur), construit
 # depuis le même fichier bulk que l'index titre (dossiers legislatifs).
 _DOSSIERS_TEXTES_PORTES_LOCK = threading.Lock()
@@ -679,6 +730,7 @@ def _clear_acteurs_historique_index_memo() -> None:
     """Purge le memo — usage test uniquement (cf. fixture autouse)."""
     with _ACTEURS_HISTORIQUE_MEMO_LOCK:
         _ACTEURS_HISTORIQUE_INDEX_MEMO.clear()
+    _ARCHIVES_AMO30_FIGEES_EN_ECHEC.clear()
 
 
 def nb_acteurs_referentiel_charge() -> Optional[int]:
@@ -4587,6 +4639,208 @@ def _ensure_acteurs_historique_zip_downloaded() -> Optional[Path]:
         return zip_path
 
 
+def _repertoire_amo30_figee(legislature: str) -> Path:
+    """Le dossier de cache d'une archive AMO30 figée (#1317), relu à chaque
+    appel : les tests déplacent `ACTEURS_HISTORIQUE_CACHE_DIR`."""
+    return ACTEURS_HISTORIQUE_CACHE_DIR / SOUS_REPERTOIRE_AMO30_FIGEES / legislature
+
+
+def _ensure_archive_amo30_figee(legislature: str) -> Optional[Path]:
+    """Télécharge (si absente du cache disque) l'archive AMO30 figée d'une
+    législature close (`ARCHIVES_AMO30_FIGEES`, #1317) et rend son chemin.
+
+    Même mécanisme que `_ensure_acteurs_historique_zip_downloaded` — fichier
+    `.part` renommé au succès seulement, budget mur `download_with_watchdog` —,
+    avec deux différences voulues : les reprises d'un transfert coupé (#1202),
+    et le mémo d'échec du process (`_ARCHIVES_AMO30_FIGEES_EN_ECHEC`) — un échec
+    coûte UN budget au run, pas un par député. Rend `None` en cas d'échec : à
+    l'appelant de publier `archive_indisponible`, jamais une absence de place.
+    """
+    archive = ARCHIVES_AMO30_FIGEES[legislature]
+    with _ARCHIVES_AMO30_FIGEES_LOCK:
+        zip_path = _repertoire_amo30_figee(legislature) / NOM_ARCHIVE_AMO30_FIGEE
+        if zip_path.is_file():
+            return zip_path
+        if str(zip_path) in _ARCHIVES_AMO30_FIGEES_EN_ECHEC:
+            return None
+        print(f"-> Téléchargement de l'archive AMO30 figée de la {legislature}e législature : {archive['source_url']}")
+        try:
+            zip_path.parent.mkdir(parents=True, exist_ok=True)
+            download_with_watchdog(
+                archive["source_url"], zip_path, headers=HEADERS, timeout=TIMEOUT,
+                hard_timeout_seconds=BUDGET_ARCHIVE_AMO30_FIGEE_SECONDES,
+                reprises=REPRISES_ARCHIVE_AMO30_FIGEE,
+            )
+        except (requests.RequestException, OSError, TimeoutError) as exc:
+            print(f"  [!] Échec du téléchargement de l'archive AMO30 figée ({legislature}e) : {exc}")
+            _ARCHIVES_AMO30_FIGEES_EN_ECHEC.add(str(zip_path))
+            return None
+        return zip_path
+
+
+def _places_par_mandat(zip_path: Path, legislature: str) -> dict[str, dict[str, Optional[str]]]:
+    """`acteurRef -> {dateDebut: placeHemicycle}` pour les mandats
+    `typeOrgane == "ASSEMBLEE"` de `legislature` lus dans une archive AMO30.
+
+    La valeur est `None` quand le mandat est dans l'archive SANS place : c'est
+    ce qui distingue `source_sans_place` (le mandat y est, la place non) de
+    `mandat_absent_de_l_archive` (le mandat n'y est pas). Un siège scindé en
+    segments (même `dateDebut`, #640) prend la première place lue — aucun des
+    trois relevés du 21/10/2026 ne porte deux places sur une même clé.
+    Lève `zipfile.BadZipFile` : à l'appelant de le traiter en archive illisible.
+    """
+    places: dict[str, dict[str, Optional[str]]] = {}
+    with zipfile.ZipFile(zip_path) as zf:
+        for nom in zf.namelist():
+            if not (nom.startswith("json/acteur/") and nom.endswith(".json")):
+                continue
+            try:
+                with zf.open(nom) as f:
+                    data = json.load(f)
+            except (json.JSONDecodeError, KeyError):
+                continue
+            acteur = data.get("acteur") if isinstance(data, dict) else None
+            if not isinstance(acteur, dict):
+                continue
+            uid = acteur.get("uid")
+            acteur_ref = uid.get("#text") if isinstance(uid, dict) else uid
+            if not isinstance(acteur_ref, str) or not acteur_ref:
+                continue
+            mandats = (acteur.get("mandats") or {}).get("mandat")
+            if isinstance(mandats, dict):
+                mandats = [mandats]
+            for mandat in mandats if isinstance(mandats, list) else []:
+                if not isinstance(mandat, dict) or mandat.get("typeOrgane") != "ASSEMBLEE":
+                    continue
+                if str(mandat.get("legislature")) != legislature:
+                    continue
+                debut = _champ_identite_an(mandat.get("dateDebut"))
+                if not debut:
+                    continue
+                place = _champ_identite_an((mandat.get("mandature") or {}).get("placeHemicycle"))
+                par_debut = places.setdefault(acteur_ref, {})
+                if par_debut.get(debut) is None:
+                    par_debut[debut] = place
+    return places
+
+
+def _etat_au_archive_courante(zip_path: Path) -> str:
+    """Date (heure de Paris) à laquelle l'archive courante a été téléchargée :
+    la date de son fichier, que le cache GitHub Actions restaure telle quelle
+    (tar garde les dates). C'est la date de l'état lu (#1317) — l'archive est
+    republiée chaque nuit et ne porte aucune date de valeur."""
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+
+    return datetime.fromtimestamp(zip_path.stat().st_mtime, tz=ZoneInfo("Europe/Paris")).date().isoformat()
+
+
+def _build_index_places_hemicycle(legislature: str) -> Optional[dict[str, Any]]:
+    """L'index des places dans l'hémicycle d'UNE législature, lu dans l'archive
+    de cette législature (#1317) : `{"legislature", "source_url", "etat_au",
+    "places": {acteurRef: {dateDebut: place | None}}}`.
+
+    XVe/XVIe : l'archive figée (`ARCHIVES_AMO30_FIGEES`), son index dans son
+    dossier, durable. XVIIe : l'archive courante déjà téléchargée pour
+    l'identité, son index à la racine du cache — il périme avec elle chaque
+    semaine (#555). Rend `None` quand l'archive n'a pas pu être lue
+    (téléchargement en échec, zip illisible) — rien n'est alors écrit sur
+    disque, et l'appelant publie `archive_indisponible`. Lève `KeyError` sur
+    une législature sans archive : l'appelant la filtre avant.
+    """
+    if legislature == LEGISLATURE_ARCHIVE_AMO30_COURANTE:
+        repertoire = ACTEURS_HISTORIQUE_CACHE_DIR
+        source_url = AN_ACTEURS_HISTORIQUE_ZIP_URL
+    else:
+        repertoire = _repertoire_amo30_figee(legislature)
+        source_url = ARCHIVES_AMO30_FIGEES[legislature]["source_url"]
+    with _PLACES_HEMICYCLE_LOCK:
+        index_path = repertoire / NOM_INDEX_PLACES_HEMICYCLE
+        memoise = _index_historique_memoise(index_path)
+        if memoise is not None:
+            return memoise
+        if index_path.is_file():
+            try:
+                with open(index_path, encoding="utf-8") as f:
+                    return _memoiser_index_historique(index_path, json.load(f))
+            except (json.JSONDecodeError, OSError):
+                pass  # cache corrompu : on reconstruit
+
+        if legislature == LEGISLATURE_ARCHIVE_AMO30_COURANTE:
+            zip_path = _ensure_acteurs_historique_zip_downloaded()
+        else:
+            zip_path = _ensure_archive_amo30_figee(legislature)
+        if zip_path is None:
+            return None
+        try:
+            places = _places_par_mandat(zip_path, legislature)
+            etat_au = (
+                _etat_au_archive_courante(zip_path)
+                if legislature == LEGISLATURE_ARCHIVE_AMO30_COURANTE
+                else ARCHIVES_AMO30_FIGEES[legislature]["etat_au"]
+            )
+        except (zipfile.BadZipFile, OSError) as exc:
+            print(f"  [!] Archive AMO30 illisible ({legislature}e législature) : {exc}")
+            return None
+        index = {"legislature": legislature, "source_url": source_url, "etat_au": etat_au, "places": places}
+        try:
+            index_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(index_path, "w", encoding="utf-8") as f:
+                json.dump(index, f, ensure_ascii=False)
+        except OSError:
+            pass
+        return _memoiser_index_historique(index_path, index)
+
+
+def legislatures_avec_archive_amo30() -> frozenset[str]:
+    """Les législatures dont la place dans l'hémicycle se lit (#1317)."""
+    return frozenset(ARCHIVES_AMO30_FIGEES) | {LEGISLATURE_ARCHIVE_AMO30_COURANTE}
+
+
+def resoudre_place_hemicycle(
+    acteur_ref: Optional[str], legislature: Any, debut: Optional[str],
+) -> tuple[Optional[dict[str, str]], Optional[dict[str, Any]]]:
+    """La place d'un mandat de député dans l'hémicycle, lue dans l'archive de
+    SA législature (#1317). Rend `(place_hemicycle, place_hemicycle_non_resolu)`
+    — exactement un des deux est renseigné :
+
+    - `{"numero", "source_url", "etat_au"}` : `numero` est le
+      `mandature.placeHemicycle` d'AMO30 verbatim (`"081"`, zéros compris),
+      `source_url` l'archive lue, `etat_au` la date de l'état qu'elle décrit ;
+    - sinon `None`, avec le motif (`schema_pivot.KNOWN_MOTIFS_PLACE_HEMICYCLE_NON_RESOLU`) :
+      `legislature_sans_archive_figee` — XIVe et avant : aucune archive de la
+      législature, et la place d'une autre n'est jamais empruntée ;
+      `archive_indisponible` — l'archive n'a pas pu être lue CE run : un fait
+      sur le run, pas sur la source (§2 règle 5) ;
+      `mandat_absent_de_l_archive` — l'archive est lue et ne porte pas ce
+      mandat (un remplaçant entré après sa date, pour la XVe) ;
+      `source_sans_place` — le mandat y est, sans place.
+      Les trois derniers nomment l'archive (`source_url`), les deux qui l'ont
+      lue sa date (`etat_au`).
+
+    **Jamais la place de l'archive courante sur un mandat XVe/XVIe** : c'est
+    le siège actuel de son titulaire, recopié sur ses mandats clos.
+    """
+    leg = str(legislature) if legislature not in (None, "") else None
+    if leg not in legislatures_avec_archive_amo30():
+        return None, {"motif": "legislature_sans_archive_figee", "legislature": leg}
+    index = _build_index_places_hemicycle(leg)
+    source_url = (
+        AN_ACTEURS_HISTORIQUE_ZIP_URL if leg == LEGISLATURE_ARCHIVE_AMO30_COURANTE
+        else ARCHIVES_AMO30_FIGEES[leg]["source_url"]
+    )
+    if index is None:
+        return None, {"motif": "archive_indisponible", "source_url": source_url}
+    lu = {"source_url": index["source_url"], "etat_au": index["etat_au"]}
+    par_debut = (index.get("places") or {}).get(acteur_ref or "")
+    if not isinstance(par_debut, dict) or debut not in par_debut:
+        return None, {"motif": "mandat_absent_de_l_archive", **lu}
+    numero = par_debut[debut]
+    if not numero:
+        return None, {"motif": "source_sans_place", **lu}
+    return {"numero": numero, **lu}, None
+
+
 def _build_acteur_positions_hemicycle_index() -> dict[str, list[dict[str, Any]]]:
     """Construit (et met en cache sur disque) un index acteurRef -> liste de
     périodes datées d'appartenance à un groupe politique qualifié majorité/
@@ -6557,6 +6811,18 @@ def build_profile(
                 **({"lieu_election": periode["lieu_election"]}
                    if "lieu_election" in periode else {}),
             })
+            # #1317 — la place dans l'hémicycle, lue dans l'archive de LA
+            # législature du mandat (jamais la courante sur un mandat clos).
+            # Une période sans législature (repli d'un index d'avant #640, plus
+            # atteignable depuis que le nom de l'index est versionné) ne reçoit
+            # pas la clé : son absence dit « non collectée », pas « sans place ».
+            if periode.get("legislature") is not None:
+                place, place_non_resolu = resoudre_place_hemicycle(
+                    acteur_ref_an, periode.get("legislature"), periode.get("debut"),
+                )
+                mandats_an[-1]["place_hemicycle"] = place
+                if place_non_resolu is not None:
+                    mandats_an[-1]["place_hemicycle_non_resolu"] = place_non_resolu
         profile["mandats"] = mandats_an
 
         if _is_empty_payload(profile["mandats"]):

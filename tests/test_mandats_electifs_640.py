@@ -249,6 +249,9 @@ def _build_profile_sans_reseau(identite_an):
         patch("candidate_profile.fetch_textes_portes_officiels", return_value=[]),
         patch("candidate_profile.fetch_interventions_syceron", return_value=[]),
         patch("candidate_profile.fetch_questions_officielles", return_value=[]),
+        # #1317 — les archives figées ne sont pas dans l'extrait : sans cette
+        # doublure, la place d'un mandat XVe/XVIe sortirait sur le réseau.
+        patch("candidate_profile._ensure_archive_amo30_figee", return_value=None),
     ):
         return build_profile("deputes", "marine-le-pen")
 

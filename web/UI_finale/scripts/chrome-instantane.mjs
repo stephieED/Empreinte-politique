@@ -75,7 +75,7 @@ const FILIGRANE = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000
      valeur (#8b8794), les pages d'instantané nomment ce gris autrement ;
    — le bouton du menu prend `--border-fort`, le `--border-strong` du site. */
 export const STYLE_CHROME = `
-:root { --notice:#e7e4df; }
+:root { --notice:#e7e4df; --colonne:1600px; }
 body {
   background-color: var(--bg);
   background-image: ${FILIGRANE};
@@ -89,7 +89,7 @@ body {
 .construction-banner__link:hover, .construction-banner__link:focus-visible { text-decoration-thickness:2px; }
 @media (max-width:34rem) { .construction-banner { text-align:left; justify-content:flex-start; } }
 
-.entete-site { --entete-hauteur:80px; position:sticky; top:0; z-index:5; height:var(--entete-hauteur); display:flex; align-items:center; gap:16px; padding-right:40px; background:var(--bg); border-bottom:1px solid var(--border); }
+.entete-site { --entete-hauteur:80px; position:sticky; top:0; z-index:5; height:var(--entete-hauteur); display:flex; align-items:center; gap:16px; padding-left:max(0px, calc((100% - var(--colonne)) / 2)); padding-right:max(40px, calc((100% - var(--colonne)) / 2 + 40px)); background:var(--bg); border-bottom:1px solid var(--border); }
 .entete-site-actions { margin-left:auto; display:flex; align-items:center; gap:22px; }
 .brand { display:flex; align-items:center; padding-inline:40px; height:80px; text-decoration:none; transition:opacity 0.15s; flex:none; }
 .brand:hover, .brand:focus-visible { opacity:0.75; }
@@ -124,7 +124,7 @@ body {
   .brand-symbol { display:block; }
 }
 
-.pds { display:grid; line-height:1.4; grid-template-columns:1.4fr 1fr auto; gap:26px 40px; align-items:start; width:100%; max-width:1600px; margin:0 auto; padding:26px 40px 30px; border-top:1px solid var(--border); font-size:13px; color:var(--faible); }
+.pds { display:grid; line-height:1.4; grid-template-columns:1.4fr 1fr auto; gap:26px 40px; align-items:start; width:100%; max-width:var(--colonne); margin:0 auto; padding:26px 40px 30px; border-top:1px solid var(--border); font-size:13px; color:var(--faible); }
 .pds-marque { line-height:1.55; }
 .pds-marque b { display:block; font-size:13px; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink); margin-bottom:6px; }
 .pds-colonne { display:flex; flex-direction:column; align-items:flex-start; gap:7px; }

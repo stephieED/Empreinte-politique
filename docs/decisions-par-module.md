@@ -387,7 +387,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 
 ## `src/candidate_profile.py`
 
-107 décision(s) le gouvernent ; le module en cite 14.
+108 décision(s) le gouvernent ; le module en cite 14.
 
 | Décision | Nomme |
 | --- | --- |
@@ -469,6 +469,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [`_build_organe_index` : résoudre `organeRef` via `AMO30` (historique) sans filtrage par `codeType` (#353) (2026-08-16)](decisions/organe-index-organeref.md) | `AN_ACTEURS_HISTORIQUE_ZIP_URL`, `_ACTEURS_HISTORIQUE_ZIP_LOCK`, `_build_acteur_positions_hemicycle_index`, `_build_organe_index`, `_build_organe_positions_index`, `_ensure_acteurs_historique_zip_downloaded`, `fetch_positions_hemicycle_officielles` |
 | [Parallèle RAM entre l'exécution locale et les runners GitHub Actions hébergés, diagnostic ajouté (2026-08-17)](decisions/parallele-oom-local-runner-ci.md) | `build_profile`, `fetch_amendements_officiels` |
 | [Une prise de parole dont le libellé nomme une autre personne n'est pas attribuée (#1177) (2026-10-07)](decisions/parole-d-une-autre-personne-1177.md) | `SYCERON_VERSION_INDEX`, `_normaliser_orateur_id_syceron`, `libelle_designe_une_autre_personne` |
+| [La place d'un député dans l'hémicycle se lit dans l'archive de sa législature (#1317)](decisions/place-hemicycle-par-legislature-1317.md) | `ARCHIVES_AMO30_FIGEES`, `NOM_INDEX_PLACES_HEMICYCLE`, `SOUS_REPERTOIRE_AMO30_FIGEES`, `_build_acteur_identite_index`, `_build_index_places_hemicycle`, `_ensure_archive_amo30_figee`, `build_profile`, `resoudre_place_hemicycle` |
 | [Les archives figées se demandent en plage sans borne, la législature en cours garde ses segments (#1123) (2026-09-24)](decisions/plage-sans-borne-archives-figees-1123.md) | `AMENDEMENTS_DOWNLOAD_CHUNK_BYTES`, `AMENDEMENTS_DOWNLOAD_CHUNK_BYTES_FIGEES`, `_telecharger_flux` |
 | [La preuve d'une entrée de couverture peut citer un champ, une constante ou une issue (#1160) (2026-10-07)](decisions/preuve-de-couverture-reste-technique-1160.md) | `AN_SCRUTINS_LEGISLATURES` |
 | [Un code de nomenclature n'est pas une profession, et « sans activité professionnelle » n'en est pas une (#641) (2026-08-31)](decisions/profession-code-nomenclature-641.md) | `_profession_an` |
@@ -711,7 +712,7 @@ Le mentionnent sans le gouverner : [`collecte-interventions-reduite-au-theme-657
 | [Un run de test : même workflow, périmètre réduit, jamais de commit (#792)](decisions/run-de-test-perimetre-reduit-792.md) | `_normaliser_en_pivot` |
 | [Régénérer l'existant : `--refresh-existing`, l'inverse de `--skip-existing` (#445) (2026-08-19)](decisions/telechargement-an-trois-modes-defaillance.md) | `_select_candidats_couverture` |
 
-Le mentionnent sans le gouverner : [`amendements-legislatures-figees`](decisions/amendements-legislatures-figees.md), [`chambres-profil-derivees`](decisions/chambres-profil-derivees.md), [`cle-fusion-interventions-540`](decisions/cle-fusion-interventions-540.md), [`collecte-vs-publie-545`](decisions/collecte-vs-publie-545.md), [`consommateurs-chambres-migres`](decisions/consommateurs-chambres-migres.md), [`id-pivot-sans-prefixe`](decisions/id-pivot-sans-prefixe.md), [`integrite-referentielle-pivot`](decisions/integrite-referentielle-pivot.md), [`libelles-formulaire`](decisions/libelles-formulaire.md), [`licence-lot-6-530`](decisions/licence-lot-6-530.md), [`licences`](decisions/licences.md), [`limit-sample`](decisions/limit-sample.md), [`liste-candidats-declares-753`](decisions/liste-candidats-declares-753.md), [`marquage-tranches-derivees-691`](decisions/marquage-tranches-derivees-691.md), [`mode-extraction-leger-roster`](decisions/mode-extraction-leger-roster.md), [`normalisation-amendements`](decisions/normalisation-amendements.md), [`normalisation-votes`](decisions/normalisation-votes.md), [`oom-reconstruction-amendements-figees`](decisions/oom-reconstruction-amendements-figees.md), [`partition-profils-legislature-580`](decisions/partition-profils-legislature-580.md), [`perimetre-collecte-candidatures-declinees-760`](decisions/perimetre-collecte-candidatures-declinees-760.md), [`pivot-freshness-timestamps-stables`](decisions/pivot-freshness-timestamps-stables.md), [`provenance-pivot`](decisions/provenance-pivot.md), [`publication-scopee-artifacts`](decisions/publication-scopee-artifacts.md), [`reconstruction-tranches-depuis-archive-691`](decisions/reconstruction-tranches-depuis-archive-691.md), [`retry-generate-data-preemption`](decisions/retry-generate-data-preemption.md), [`sparse-checkout-extract-an-674`](decisions/sparse-checkout-extract-an-674.md), [`workers-fige-a-1`](decisions/workers-fige-a-1.md).
+Le mentionnent sans le gouverner : [`amendements-legislatures-figees`](decisions/amendements-legislatures-figees.md), [`chambres-profil-derivees`](decisions/chambres-profil-derivees.md), [`cle-fusion-interventions-540`](decisions/cle-fusion-interventions-540.md), [`collecte-vs-publie-545`](decisions/collecte-vs-publie-545.md), [`consommateurs-chambres-migres`](decisions/consommateurs-chambres-migres.md), [`id-pivot-sans-prefixe`](decisions/id-pivot-sans-prefixe.md), [`integrite-referentielle-pivot`](decisions/integrite-referentielle-pivot.md), [`libelles-formulaire`](decisions/libelles-formulaire.md), [`licence-lot-6-530`](decisions/licence-lot-6-530.md), [`licences`](decisions/licences.md), [`limit-sample`](decisions/limit-sample.md), [`liste-candidats-declares-753`](decisions/liste-candidats-declares-753.md), [`marquage-tranches-derivees-691`](decisions/marquage-tranches-derivees-691.md), [`mode-extraction-leger-roster`](decisions/mode-extraction-leger-roster.md), [`normalisation-amendements`](decisions/normalisation-amendements.md), [`normalisation-votes`](decisions/normalisation-votes.md), [`oom-reconstruction-amendements-figees`](decisions/oom-reconstruction-amendements-figees.md), [`partition-profils-legislature-580`](decisions/partition-profils-legislature-580.md), [`perimetre-collecte-candidatures-declinees-760`](decisions/perimetre-collecte-candidatures-declinees-760.md), [`pivot-freshness-timestamps-stables`](decisions/pivot-freshness-timestamps-stables.md), [`place-hemicycle-par-legislature-1317`](decisions/place-hemicycle-par-legislature-1317.md), [`provenance-pivot`](decisions/provenance-pivot.md), [`publication-scopee-artifacts`](decisions/publication-scopee-artifacts.md), [`reconstruction-tranches-depuis-archive-691`](decisions/reconstruction-tranches-depuis-archive-691.md), [`retry-generate-data-preemption`](decisions/retry-generate-data-preemption.md), [`sparse-checkout-extract-an-674`](decisions/sparse-checkout-extract-an-674.md), [`workers-fige-a-1`](decisions/workers-fige-a-1.md).
 
 ## `src/generate_gouvernement_profiles.py`
 
@@ -976,7 +977,7 @@ Le mentionnent sans le gouverner : [`profils-json-compact`](decisions/profils-js
 | [Le nettoyage fait, la clause ODbL ne tiendrait plus que par un marqueur, sur 475 profils (#839, lot C) (2026-09-12)](decisions/residus-source-retiree-839.md) | `licences_du_profil` |
 | [Un marqueur de provenance sans donnée derrière lui n'est plus une traçabilité, c'est une inexactitude (#890) (2026-09-13)](decisions/retrait-marqueur-regards-citoyens-deputes-890.md) | `appliquer_licence_donnees`, `licences_du_profil` |
 
-Le mentionnent sans le gouverner : [`contact-et-comptes-publics-328`](decisions/contact-et-comptes-publics-328.md), [`licence-du-code-agpl-1032`](decisions/licence-du-code-agpl-1032.md), [`licences`](decisions/licences.md), [`nettoyage-sediment-839`](decisions/nettoyage-sediment-839.md), [`pages-statiques-methodologie-mentions-legales`](decisions/pages-statiques-methodologie-mentions-legales.md), [`regles-par-domaine-737`](decisions/regles-par-domaine-737.md).
+Le mentionnent sans le gouverner : [`contact-et-comptes-publics-328`](decisions/contact-et-comptes-publics-328.md), [`licence-du-code-agpl-1032`](decisions/licence-du-code-agpl-1032.md), [`licences`](decisions/licences.md), [`nettoyage-sediment-839`](decisions/nettoyage-sediment-839.md), [`pages-statiques-methodologie-mentions-legales`](decisions/pages-statiques-methodologie-mentions-legales.md), [`partage-des-fiches-1033`](decisions/partage-des-fiches-1033.md), [`regles-par-domaine-737`](decisions/regles-par-domaine-737.md).
 
 ## `src/lignee_profile.py`
 
@@ -1013,7 +1014,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 
 ## `src/merge_profile.py`
 
-85 décision(s) le gouvernent ; le module en cite 5.
+86 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1072,6 +1073,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [Le seuil de blob sort du critère de sortie, et les profils bruts se partitionnent par législature (#580) (2026-08-29)](decisions/partition-profils-legislature-580.md) | `merge_raw_dirs` |
 | [Un champ d'identité publié ne meurt plus sans un run à perte déclarée (#601) (2026-08-30)](decisions/permanence-champs-identite-601.md) | `fusionner_identite` |
 | [`genere_le`/`synchro_le` des pivots ne doivent avancer que si le contenu change réellement (#343) (2026-08-16)](decisions/pivot-freshness-timestamps-stables.md) | `_pivot_content_fingerprint`, `merge_pivot_profile`, `preserve_stable_freshness_timestamps` |
+| [La place d'un député dans l'hémicycle se lit dans l'archive de sa législature (#1317)](decisions/place-hemicycle-par-legislature-1317.md) | `_mandat_key`, `_pivot_mandat_key`, `backfill_mandat_place_hemicycle` |
 | [Un fichier de progression dans un répertoire de données (#518, troisième incident) (2026-08-24)](decisions/point-de-sauvegarde-dans-les-profils-518.md) | `merge_raw_dirs` |
 | [Profils écrits en JSON compact, groupes et gouvernements indentés (#433) (2026-08-18)](decisions/profils-json-compact.md) | `_pivot_content_fingerprint`, `preserve_stable_freshness_timestamps` |
 | [Quelle source a rempli quel champ, et quand — un bloc à côté d'`identite` (#603) (2026-08-30)](decisions/provenance-par-champ-603.md) | `_accorder_hatvp`, `_composer_identite`, `_merge_pivot_sources`, `fusionner_identite` |
@@ -1142,7 +1144,7 @@ Le mentionnent sans le gouverner : [`avertissements-europeens-reecrits-1161`](de
 
 ## `src/normalize_profil.py`
 
-12 décision(s) le gouvernent ; le module en cite 4.
+13 décision(s) le gouvernent ; le module en cite 4.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1154,6 +1156,7 @@ Le mentionnent sans le gouverner : [`avertissements-europeens-reecrits-1161`](de
 | [L'intitulé de séance de la XVe était jeté à la normalisation : une entrée Syceron se reconnaît à ce que le parseur a écrit (#1189) (2026-10-04)](decisions/intitule-de-seance-xve-1189.md) | `_normalize_intervention`, `_vient_de_syceron` |
 | [Normaliser les amendements : le coût n'est pas l'amendement, c'est sa liste de cosignataires (#431) (2026-08-19)](decisions/normalisation-amendements.md) | `_normalize_amendement` |
 | [Une mission d'information dit quel organe l'a créée (#1311)](decisions/organe-createur-missions-1311.md) | `_normalize_mandat` |
+| [La place d'un député dans l'hémicycle se lit dans l'archive de sa législature (#1317)](decisions/place-hemicycle-par-legislature-1317.md) | `_normalize_mandat` |
 | [Un code de nomenclature n'est pas une profession, et « sans activité professionnelle » n'en est pas une (#641) (2026-08-31)](decisions/profession-code-nomenclature-641.md) | `_profession_publiable`, `_uri_hatvp_publiable` |
 | [La qualification d'un scrutin et la clé de son dossier étaient lues puis jetées (#639, rangs 1 et 2)](decisions/qualification-scrutins-et-cle-dossier-639.md) | `_normalize_texte_porte` |
 | [Restaurer 789 interventions sans revenir sur le reste du schéma (#460) (2026-08-19)](decisions/restauration-interventions.md) | `_normalize_intervention` |
@@ -1358,7 +1361,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 
 ## `src/schema_pivot.py`
 
-67 décision(s) le gouvernent ; le module en cite 5.
+68 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1401,6 +1404,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 | [Une baisse de tags agrégés bloque sur sa cause, lue dans les profils](decisions/perte-de-tags-agreges-bloque-sur-sa-cause.md) | `cle_tag_thematique` |
 | [Une baisse de tags thématiques bloque sur sa cause, pas sur son compte](decisions/perte-de-tags-bloque-sur-sa-cause.md) | `deriver_tags_thematiques`, `porte_un_tag_thematique` |
 | [`genere_le`/`synchro_le` des pivots ne doivent avancer que si le contenu change réellement (#343) (2026-08-16)](decisions/pivot-freshness-timestamps-stables.md) | `make_empty_profil` |
+| [La place d'un député dans l'hémicycle se lit dans l'archive de sa législature (#1317)](decisions/place-hemicycle-par-legislature-1317.md) | `KNOWN_MOTIFS_PLACE_HEMICYCLE_NON_RESOLU`, `validate_profil` |
 | [Les deux populations de `pivot_data/profiles/` sont portées par les outils, pas par une consigne (#630, 2026-08-30)](decisions/populations-profils-portees-par-les-outils-630.md) | `KNOWN_PROVENANCES` |
 | [La position politique d'un groupe est celle que l'Assemblée déclare, lue dans une table committée (#686) (2026-09-01)](decisions/position-politique-groupes-686.md) | `POSITION_POLITIQUE_AN_VERS_PIVOT` |
 | [Quelle source a rempli quel champ, et quand — un bloc à côté d'`identite` (#603) (2026-08-30)](decisions/provenance-par-champ-603.md) | `BLOCS_PROVENANCE_CHAMPS`, `valider_provenance_champs` |

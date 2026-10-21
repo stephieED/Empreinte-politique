@@ -336,6 +336,14 @@ def _normalize_mandat(m: dict[str, Any]) -> dict[str, Any]:
         # relevé de la source, ou `null` si la source n'a pas de lieu.
         if "lieu_election" in m:
             mandat["lieu_election"] = m["lieu_election"]
+        # #1317 — la place dans l'hémicycle, lue dans l'archive de la
+        # législature du mandat. FACULTATIVE, sur les seuls mandats de député :
+        # recopiée telle que le brut la porte, son motif avec elle quand elle
+        # est `null`.
+        if mandat["chambre"] == "AN" and "place_hemicycle" in m:
+            mandat["place_hemicycle"] = m["place_hemicycle"]
+            if m.get("place_hemicycle_non_resolu") is not None:
+                mandat["place_hemicycle_non_resolu"] = m["place_hemicycle_non_resolu"]
     # #718 — `categorie_source` est une clé FACULTATIVE, et son absence est un
     # sens : « personne n'a établi cette catégorie ». La publier à `null` sur
     # les entrées héritées dirait la même chose sous la forme d'un constat, ce

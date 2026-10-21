@@ -125,9 +125,13 @@
 /* LE SOMMAIRE PREND SUR LA MARGE, JAMAIS SUR LE CONTENU. La colonne de gauche
    n'existe qu'au-delà de 1 440 px ; en dessous, la grille n'a qu'une colonne et
    le contenu garde exactement la largeur qu'il avait. */
+/* Le sommaire et la fiche forment la colonne commune (--colonne), centrée. */
 .explorer-corps {
   flex: 1;
   min-width: 0;
+  width: 100%;
+  max-width: var(--colonne);
+  margin-inline: auto;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
 }

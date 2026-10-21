@@ -148,6 +148,13 @@ les charger, ni à les faire grossir. -->
   `cold_start`, a purged cache, or a schema change invalidating the entry version — three
   things that are *decided*, not awaited, and the same day that would measure #1123 and
   reopen #1125.
+- **A frozen archive lives under the cache path it already shares, and the weekly purge
+  spares it (#1317).** The XVe and XVIe AMO30 archives sit in
+  `.cache/acteurs_historique_an/figees/<legislature>/`: the `path:` does not move, so the
+  workflow does not either, and `cache_an_fraicheur.chemins_perissables` deletes
+  everything in `acteurs_historique_an` **except** `figees/`. A frozen archive that fails
+  to download is tried once per process and published `archive_indisponible` — never an
+  absence. → `docs/decisions/place-hemicycle-par-legislature-1317.md`
   → `docs/decisions/aucune-semaine-ne-force-la-reconstruction-1127.md`
 - **A test reading the developer's `.cache/` passes for the wrong reason, and CI never
   sees it (#721).** The eleven cache constants are `Path(".cache") / …` — **relative to

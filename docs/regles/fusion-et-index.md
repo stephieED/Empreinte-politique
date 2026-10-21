@@ -146,7 +146,7 @@ les charger, ni à les faire grossir. -->
   → `docs/decisions/nettoyage-sediment-839.md`
 - **A field added to the schema never reaches an already-collected entry on its own —
   and the fix is a named backfill, never a looser merge (#492, #639, #641, #696, #710,
-  #718, #980, #1311).** On a list, "old entry wins" and the key does not contain the new field, so the
+  #718, #980, #1311, #1317).** On a list, "old entry wins" and the key does not contain the new field, so the
   regenerated entry is discarded every run. On a scalar, "never regress to `null`"
   restores the very value the publication filter refuses — so **a publication filter runs
   on the COMPOSED block, after the merge, never on what the normaliser produced**. A
@@ -160,7 +160,8 @@ les charger, ni à les faire grossir. -->
   `docs/decisions/creneau-de-seance-nest-pas-un-sujet-710.md`,
   `docs/decisions/categorie-source-des-mandats-718.md`,
   `docs/decisions/sujet-europeen-sans-boutons-a-la-fusion-980.md`,
-  `docs/decisions/organe-createur-missions-1311.md`
+  `docs/decisions/organe-createur-missions-1311.md`,
+  `docs/decisions/place-hemicycle-par-legislature-1317.md`
 - **A merge key written `a or b` changes identity the day `a` fills in (#668).** #540 was
   a *sticky* key absorbing distinct entries; this is its mirror — the same dossier keyed
   on the fallback before the run and on `source_url` after, published twice (940 entries

@@ -9,7 +9,10 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  padding-right: 40px;
+  /* Le fond va d'un bord à l'autre ; le logo et les liens s'alignent sur les
+     bords de la colonne commune (--colonne). Sous sa largeur, rien ne change. */
+  padding-left: max(0px, calc((100% - var(--colonne)) / 2));
+  padding-right: max(40px, calc((100% - var(--colonne)) / 2 + 40px));
   /* OPAQUE : la page défile dessous (#324, vérifié en capture). */
   background: var(--bg);
   border-bottom: 1px solid var(--border);

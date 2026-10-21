@@ -41,6 +41,7 @@ import { ListeCascade } from './CascadeTextes';
 import { CarresTextes } from './CarresTextes';
 import { MATIERE_NON_ETABLIE, textesPortes } from '../utils/profilCandidat';
 import { teinteCommission } from '../utils/commissions';
+import PartagerFiche from './PartagerFiche';
 
 const MOIS = [
   'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
@@ -1559,6 +1560,8 @@ export default function LigneeProfile({ lignee, mot = '' }) {
         )}
       </Filtre.Provider>
       <CeQuOnNaPasPuLire lignee={lignee} />
+      {/* Le partage, après la dernière section (#1033, forme D). */}
+      <PartagerFiche />
 
       <footer className="lp-pied">
         <span>

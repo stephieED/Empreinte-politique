@@ -30,7 +30,7 @@ pixel près ce qu'il faisait avant.
 
 | `public/brand/` | Vient de |
 |---|---|
-| `empreinte-lockup-light.svg` | `logotype-transparent-on-light.svg`, viewBox resserrée |
+| `empreinte-lockup-light.svg` | `logotype-transparent-on-light.svg`, viewBox resserrée, **lettres converties en tracés** |
 | `empreinte-symbol-light.svg` | `favicon.svg`, viewBox resserrée |
 | `empreinte-favicon-16-light.png` · `-32-` | `export/favicon-16.png` · `favicon-on-light-32.png` |
 | `empreinte-app-icon-192-light.png` · `-512-` | `export/avatar-dark-1000.png`, redimensionné |
@@ -67,3 +67,24 @@ la carte partagée de son sens.
 
 Chaque SVG porte un manifeste **C2PA** d'environ 8 Ko en métadonnée — l'essentiel
 du poids du fichier. Il est conservé : c'est la traçabilité du dessin.
+
+## Les lettres du lockup sont des tracés (21/10/2026)
+
+Les SVG du pack écrivent « Empreinte politique » en `<text>` Manrope — d'où
+la consigne d'`export.sh` : Manrope doit être installée. C'est sans
+conséquence pour un export PNG, mais **faux pour un SVG servi par `<img>`** :
+une image ne voit pas les polices de la page. Le logo du site s'affichait donc
+dans la police installée chez le visiteur — Arial presque partout — et, chez
+qui a installé Manrope, dans un rendu système assez large pour couper le « e »
+final (constaté sous Windows).
+
+`public/brand/empreinte-lockup-light.svg` porte donc les **tracés** des
+lettres : Manrope 4.504 (Google Fonts, OFL), graisses 700 et 500, mises en forme
+par HarfBuzz avec le crénage et le `letter-spacing` du pack (−3 et +1).
+Superposés au rendu du navigateur avec la police chargée, ils diffèrent sur
+0,85 % des pixels, tous en bordure d'anticrénelage. La boîte du dessin mesure
+905 × 214 : la `viewBox` resserrée reste la bonne.
+
+**Les sources de ce dossier gardent leur `<text>`** : elles ne sont pas
+servies. Si le lockup est redérivé, ses lettres doivent l'être aussi —
+`tests/test_logo_en_traces.py` refuse un SVG publié qui contient du texte.

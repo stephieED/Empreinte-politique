@@ -75,7 +75,13 @@ endroit sans que rien ne le dise.
 
 `.cache/acteurs_historique_an` périme **en entier** : le référentiel des acteurs
 n'a pas de structure par législature, l'AN le republie en continu, et c'est de
-lui que viennent identité, mandats et positions dans l'hémicycle.
+lui que viennent identité, mandats et positions dans l'hémicycle. **Sauf
+`figees/`** (#1317) : les archives AMO30 des XVe et XVIe législatures, qui
+donnent la place de chaque député dans l'hémicycle de sa législature, ne sont
+plus republiées. Leur index se reconstruit quand son nom change
+(`NOM_INDEX_PLACES_HEMICYCLE`, à incrémenter dès que son contenu change) ; les
+archives elles-mêmes ne se retéléchargent que par `cold_start` (aucun cache
+restauré) ou en renommant `SOUS_REPERTOIRE_AMO30_FIGEES`.
 """
 
 from __future__ import annotations
@@ -181,7 +187,16 @@ def chemins_perissables(
 
     trouves: list[Path] = []
     if acteurs.is_dir():
-        trouves.append(acteurs)
+        # #1317 — les archives AMO30 figées (XVe, XVIe) et leur index vivent
+        # dans `figees/`, sous le même `path:` de cache : l'Assemblée ne les
+        # republie plus, elles ne vieillissent pas. Tout le reste du
+        # répertoire périme comme avant ; sans `figees/`, c'est le répertoire
+        # entier, exactement l'état d'avant.
+        figees_acteurs = acteurs / _cp.SOUS_REPERTOIRE_AMO30_FIGEES
+        if figees_acteurs.is_dir():
+            trouves.extend(e for e in acteurs.iterdir() if e != figees_acteurs)
+        else:
+            trouves.append(acteurs)
     for base in par_legislature:
         if not base.is_dir():
             continue

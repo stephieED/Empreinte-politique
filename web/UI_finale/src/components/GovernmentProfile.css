@@ -10,9 +10,8 @@
   --texte-2: #6e6a78;
   --gris-absence: #c4c0b9;
 
-  width: min(1100px, 100%);
-  margin: 0 auto;
-  padding: 28px 24px 72px;
+  width: 100%;
+  padding: 28px 40px 72px;
 }
 
 .gvp-breadcrumb {

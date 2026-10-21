@@ -98,6 +98,9 @@ SITES_PYTHON: dict[tuple[str, str], str] = {
     ("schema_pivot.py", "deriver_chambres"): MANDAT,
     ("schema_pivot.py", "appliquer_chambres"): FABRIQUE,
     ("schema_pivot.py", "validate_profil"): FABRIQUE,
+    # #1317 — la place dans l'hémicycle n'est portée que par un mandat de
+    # député : le validateur lit la chambre DU MANDAT.
+    ("schema_pivot.py", "_erreur_place_hemicycle"): MANDAT,
     ("schema_pivot.py", "make_empty_profil"): FABRIQUE,
     ("schema_pivot.py", "lire_chambres"): REPLI_DE_LECTURE,
     # -- Les producteurs du repli, à la construction du pivot ---------------

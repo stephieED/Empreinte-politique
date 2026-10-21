@@ -15,6 +15,14 @@ import './Brand.css';
 // sur la boîte réelle du dessin, plus 2 % de respiration — ratio 3,75, contre
 // 3,77 pour le lockup précédent, donc la mise en page de l'en-tête ne bouge pas.
 // Le dessin, lui, n'est pas touché.
+//
+// LES LETTRES SONT DES TRACÉS, PAS DU TEXTE (21/10/2026). Le pack livrait
+// « Empreinte politique » en `<text>` Manrope. Or un SVG servi par `<img>` ne
+// voit pas les polices de la page : il prenait la police INSTALLÉE chez le
+// visiteur — Arial presque partout, donc pas la charte, et Manrope rendue par le
+// système chez qui l'a installée, assez large pour couper le « e » final
+// (constaté sous Windows). Les lettres sont donc converties en tracés Manrope
+// 4.504, crénage et espacement compris ; la `viewBox` n'a pas bougé.
 export default function Brand() {
   return (
     <Link to="/" className="brand" aria-label="Empreinte politique — retour à l'accueil">

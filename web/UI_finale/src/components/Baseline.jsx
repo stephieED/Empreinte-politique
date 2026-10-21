@@ -27,7 +27,29 @@ import './Baseline.css';
  * fin de ligne, et le pied de page passe sur deux lignes sous 900 px. */
 export const BASELINE = ['100\u00a0% automatisé', '100\u00a0% sourcé', '0 score', '0 filtre'];
 
-export default function Baseline({ className = '' }) {
+/* LES TUILES (bandeau d'À propos, forme C arbitrée le 21/10/2026) : la même
+ * devise, le chiffre en grand et son mot dessous. Le chiffre est ce qui précède
+ * le dernier mot : « 100 % » / « automatisé », « 0 » / « score ». */
+const enTuile = (mention) => {
+  const i = mention.lastIndexOf(' ');
+  return { chiffre: mention.slice(0, i), mot: mention.slice(i + 1) };
+};
+
+export default function Baseline({ className = '', tuiles = false }) {
+  if (tuiles) {
+    return (
+      <ul className={`baseline-tuiles${className ? ` ${className}` : ''}`}>
+        {BASELINE.map((mention) => {
+          const { chiffre, mot } = enTuile(mention);
+          return (
+            <li className="baseline-tuile" key={mention}>
+              <b>{chiffre}</b> {mot}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
   return (
     <p className={`baseline${className ? ` ${className}` : ''}`}>
       {BASELINE.map((mention, i) => (

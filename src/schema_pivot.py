@@ -261,6 +261,16 @@ Format d'un profil pivot v1 :
             # (KNOWN_MOTIFS_ORGANE_CREATEUR_NON_RESOLU) quand la source n'en
             # nomme pas ou que le référentiel ne le résout pas. ABSENTE d'un
             # mandat collecté avant ce lot et jamais recollecté depuis.
+            # #1317 — "place_hemicycle" : FACULTATIVE, sur les seuls
+            # `mandat_electif` de chambre `AN`. Le numéro de siège lu dans
+            # l'archive AMO30 DE LA LÉGISLATURE du mandat (figée pour XVe/XVIe,
+            # courante pour XVIIe) : {"numero": "381", "source_url": <archive
+            # lue>, "etat_au": "2024-06-28"}. `numero` est le
+            # `mandature.placeHemicycle` verbatim. `null` +
+            # "place_hemicycle_non_resolu": {"motif": …}
+            # (KNOWN_MOTIFS_PLACE_HEMICYCLE_NON_RESOLU). ABSENTE d'un mandat
+            # collecté avant ce lot et jamais recollecté depuis. À ne pas
+            # confondre avec `position_dans_hemicycle` (majorité/opposition).
         }
     ],
     "votes": [                               # MAPPING seul (#432) : un scrutin est identique
@@ -562,6 +572,30 @@ CLES_ORGANE_CREATEUR: frozenset[str] = frozenset({"organe_ref", "nom", "sigle", 
 KNOWN_MOTIFS_ORGANE_CREATEUR_NON_RESOLU: frozenset[str] = frozenset({
     "source_sans_organe_createur",
     "organe_createur_introuvable",
+})
+
+#: #1317 — les trois clés de `mandats[].place_hemicycle` : le numéro de siège
+#: tel qu'AMO30 l'écrit, l'archive qui l'a rendu, et la date de l'état lu.
+CLES_PLACE_HEMICYCLE: frozenset[str] = frozenset({"numero", "source_url", "etat_au"})
+
+#: #1317 — pourquoi un mandat de député publie `place_hemicycle: null`.
+#: `legislature_sans_archive_figee` : la législature n'a pas d'archive à elle
+#: (XIVe et avant, `repository/14/…` répond 404) — la place d'une autre archive
+#: n'est jamais empruntée. `archive_indisponible` : l'archive de la législature
+#: n'a pas pu être lue pendant le run — un fait sur le run, jamais un constat
+#: d'absence (§2 règle 5). `mandat_absent_de_l_archive` : l'archive est lue et
+#: ne porte pas ce mandat. `source_sans_place` : le mandat y est, sans place.
+KNOWN_MOTIFS_PLACE_HEMICYCLE_NON_RESOLU: frozenset[str] = frozenset({
+    "legislature_sans_archive_figee",
+    "archive_indisponible",
+    "mandat_absent_de_l_archive",
+    "source_sans_place",
+})
+
+#: Les motifs qui disent ce que l'archive porte : ils nomment l'archive lue
+#: (`source_url`) et la date de son état (`etat_au`).
+MOTIFS_PLACE_HEMICYCLE_ARCHIVE_LUE: frozenset[str] = frozenset({
+    "mandat_absent_de_l_archive", "source_sans_place",
 })
 
 KNOWN_CHAMBRES: frozenset[str] = frozenset({"AN", "Senat", "PE", "mairie"})
@@ -2497,6 +2531,54 @@ def _erreur_organe_createur(m: dict[str, Any]) -> Optional[str]:
     return None
 
 
+_DATE_ISO = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def _erreur_place_hemicycle(m: dict[str, Any]) -> Optional[str]:
+    """#1317 — la forme de `place_hemicycle` sur un mandat, ou `None`.
+
+    Clé FACULTATIVE (absente d'un mandat collecté avant le lot), portée par les
+    seuls `mandat_electif` de chambre `AN`. Présente, elle est soit une place
+    (`CLES_PLACE_HEMICYCLE`, trois chaînes non vides, `etat_au` en date ISO,
+    `source_url` en https), soit `null` **avec** son motif fermé (§2 règle 5)
+    — jamais les deux, jamais un motif sans la clé.
+    """
+    a_cle = "place_hemicycle" in m
+    non_resolu = m.get("place_hemicycle_non_resolu")
+    if not a_cle:
+        if "place_hemicycle_non_resolu" in m:
+            return "place_hemicycle_non_resolu est posé sans place_hemicycle."
+        return None
+    if m.get("categorie") != "mandat_electif" or m.get("chambre") != "AN":
+        return (
+            "place_hemicycle est porté par un mandat qui n'est pas un mandat de député "
+            f"(categorie {m.get('categorie')!r}, chambre {m.get('chambre')!r})."
+        )
+    place = m["place_hemicycle"]
+    if place is None:
+        motif = non_resolu.get("motif") if isinstance(non_resolu, dict) else None
+        if motif not in KNOWN_MOTIFS_PLACE_HEMICYCLE_NON_RESOLU:
+            return (
+                "place_hemicycle est null sans place_hemicycle_non_resolu.motif "
+                f"dans {sorted(KNOWN_MOTIFS_PLACE_HEMICYCLE_NON_RESOLU)} "
+                f"(reçu : {non_resolu!r}) — §2 règle 5."
+            )
+        if motif in MOTIFS_PLACE_HEMICYCLE_ARCHIVE_LUE and not (
+            non_resolu.get("source_url") and non_resolu.get("etat_au")
+        ):
+            return f"place_hemicycle_non_resolu « {motif} » doit nommer l'archive lue (source_url, etat_au)."
+        return None
+    if non_resolu is not None:
+        return "place_hemicycle est résolue et porte pourtant place_hemicycle_non_resolu."
+    if not isinstance(place, dict) or set(place) != CLES_PLACE_HEMICYCLE:
+        return f"place_hemicycle doit porter exactement {sorted(CLES_PLACE_HEMICYCLE)} (reçu : {place!r})."
+    if any(not isinstance(v, str) or not v for v in place.values()):
+        return f"place_hemicycle : chaque valeur est une chaîne non vide (reçu : {place!r})."
+    if not place["source_url"].startswith("https://") or not _DATE_ISO.match(place["etat_au"]):
+        return f"place_hemicycle : source_url en https et etat_au en AAAA-MM-JJ (reçu : {place!r})."
+    return None
+
+
 def validate_profil(
     profil: dict[str, Any], scrutins_index: Any = None, amendements_index: Any = None
 ) -> list[str]:
@@ -2797,6 +2879,9 @@ def validate_profil(
             erreur_organe = _erreur_organe_createur(m)
             if erreur_organe:
                 errors.append(f"mandats[{i}].{erreur_organe}")
+            erreur_place = _erreur_place_hemicycle(m)
+            if erreur_place:
+                errors.append(f"mandats[{i}].{erreur_place}")
 
     # Depuis #432, `votes[]` est un MAPPING : `type_scrutin`, `type_vote`,
     # `texte_lie_id` et `sort` ont migré vers `pivot_data/scrutins.json` et sont

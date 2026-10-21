@@ -334,6 +334,33 @@ values also carry `organeParent`; only information missions publish it
 (`mandats[].organe_createur`), see
 `docs/decisions/organe-createur-missions-1311.md`.
 
+**`mandature.placeHemicycle` is the seat AT THE ARCHIVE'S DATE, and the current
+archive rewrites the past (#1317, measured 21/10/2026).** One value per
+`typeOrgane == "ASSEMBLEE"` mandate, with no date. On the current
+`repository/17/…/AMO30_…historique.json.zip`, a closed legislature's mandate
+carries a seat only when its holder sits in the XVIIe — and it is their
+**current** seat, copied. Against the frozen XVIe archive, over the 633 XVIe
+mandates: 100 identical, **323 changed, 202 emptied**, 8 filled since. Florent
+Boudié (`PA606507`): `251` on his XIVe, XVe and XVIe mandates in the current
+archive, `448` (XVe archive) and `354` (XVIe archive) in fact. Closed
+legislatures have a frozen archive at the same path with their number:
+
+| Legislature | Archive | `last-modified` (HEAD, 21/10/2026) | Mandates with a seat | Distinct seats |
+| --- | --- | --- | --- | --- |
+| XVIIe | `repository/17/…` (current, republished nightly) | 21/10/2026 | 596 / 683 | 574 |
+| XVIe | `repository/16/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip` (11,9 Mo) | 28/06/2024 | 591 / 633 | 577 |
+| XVe | `repository/15/…` (same name, 10,1 Mo) | 09/06/2022 | 579 / 675 | 567 |
+| XIVe | `repository/14/…` → **404** | — | the XVe archive gives 120 / 691 | — |
+
+Population: the legislature's deputy mandates (elected and substitutes), all
+AMO30 actors, each counted in its own legislature's archive (the XVIIe one on
+the 19/10/2026 download). The frozen XVe archive predates the end of the
+legislature (21/06/2022): 13 XVe mandate records of the current archive are
+absent from it — 9 are further segments of a seat it does carry, 4 are seats
+it does not carry at all (`mandat_absent_de_l_archive`). Read by `resoudre_place_hemicycle`
+(`mandats[].place_hemicycle`), see
+`docs/decisions/place-hemicycle-par-legislature-1317.md`.
+
 **`codeType == "GOUVERNEMENT"`: one organe per government, and its members
 include people who were never deputies (#996, measured 17/09/2026 on the
 17/08 archive).** 17 such organes, from `libelleAbrege` `FILLON 1`

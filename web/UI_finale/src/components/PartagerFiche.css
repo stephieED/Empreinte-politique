@@ -1,0 +1,112 @@
+/* La pastille « Partager cette fiche » (#1033), forme E. Voir l'en-tête de
+   PartagerFiche.jsx. Contour d'encre, fond blanc, l'encre au survol, comme les
+   liens de partage de /nous-soutenir. Pas de jaune — il marque la sélection.
+
+   Elle flotte en bas à droite de l'écran. `z-index: 4` : au-dessus de la fiche,
+   SOUS la rangée collée du haut (5) et le tiroir « Explorer » qu'elle ouvre. */
+
+.partage {
+  position: fixed;
+  right: max(20px, env(safe-area-inset-right, 0px));
+  bottom: max(20px, env(safe-area-inset-bottom, 0px));
+  z-index: 4;
+}
+
+.partage-bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: 0 6px 18px rgba(20, 15, 40, 0.18);
+  cursor: pointer;
+}
+
+.partage-bouton svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* La pastille ne cache pas la fin de la page : le pied du site garde, sous lui,
+   la place de la pastille. */
+body:has(.partage) .pds {
+  padding-bottom: 88px;
+}
+
+.partage-bouton:hover,
+.partage-bouton[aria-expanded='true'] {
+  background: var(--ink);
+  color: #ffffff;
+}
+
+.partage-bouton:focus-visible,
+.partage-menu a:focus-visible,
+.partage-menu button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.partage-menu {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  z-index: 20;
+  display: grid;
+  min-width: 200px;
+  padding: 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: 0 8px 24px rgba(20, 15, 40, 0.12);
+}
+
+.partage-menu a,
+.partage-menu button {
+  display: block;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.partage-menu a:hover,
+.partage-menu button:hover {
+  background: var(--bg);
+}
+
+/* « Lien copié », au-dessus de la pastille. */
+.partage-message {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  width: max-content;
+  max-width: calc(100vw - 40px);
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 12.5px;
+  overflow-wrap: anywhere;
+}
+
+.partage-message:empty {
+  display: none;
+}
+
+@media print {
+  .partage {
+    display: none;
+  }
+}

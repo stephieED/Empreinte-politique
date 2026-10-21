@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import EnTeteSite from '../components/EnTeteSite';
 import PiedDeSite, { CONTACT, LINKEDIN, X_COMPTE } from '../components/PiedDeSite';
+import SommaireSections from '../components/SommaireSections';
 import Baseline from '../components/Baseline';
 import '../styles/shell.css';
 import '../components/StaticPage.css';
@@ -76,10 +77,16 @@ export default function AboutPage() {
               <p key={phrase}>{phrase}</p>
             ))}
             <Baseline className="baseline--bandeau apropos-baseline" />
+            {/* Au-delà de 1 024 px, la devise passe à droite en tuiles (forme C,
+                21/10/2026) ; en deçà, la ligne ci-dessus. Une seule des deux
+                s'affiche, l'autre est retirée de la page (`display: none`). */}
+            <Baseline tuiles className="apropos-tuiles" />
           </section>
 
+          <SommaireSections libelle="Sections de cette page" />
+
           <div className="static-sections">
-            <section className="static-card" id="qui">
+            <section className="static-card" id="qui" data-section="Qui édite ce site">
               <h2>Qui édite ce site</h2>
               {/* « Qui édite ce site », et non « Qui sommes-nous » : un « nous »
                   pour une personne seule est la première chose qu'un lecteur
@@ -133,7 +140,7 @@ export default function AboutPage() {
               </p>
             </section>
 
-            <section className="static-card" id="comment">
+            <section className="static-card" id="comment" data-section="Comment les fiches sont faites">
               <h2>Comment les fiches sont faites</h2>
               <p>
                 Le détail, liste par liste et figure par figure, est sur la page{' '}
