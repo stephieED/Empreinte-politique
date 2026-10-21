@@ -517,6 +517,69 @@ Le retrait a son propre `codeActe` dédié, sans `statutConclusion` associé :
 `AN1-RTRINI` (53 occurrences, ex. `DLR5L17N51314`) / `ANLUNI-RTRINI`
 (29 occurrences, ex. `DLR5L17N52157`).
 
+### Les décisions de séance d'une loi promulguée : qui l'a adoptée en dernier (mesuré le 21/10/2026, #1320)
+
+Population : les **1 017** dossiers portant un `PROM-PUB` dans les quatre archives
+(XIVe monolithique, XV figée 09/06/2022, `repository/16` figée 28/06/2024, XVIIe
+courante), dédoublonnés par uid comme le fait `iter_dossiers_bruts`.
+
+**Les codes d'actes de décision.** Une décision de séance est un `codeActe` en
+`-DEC`. Assemblée : `AN1-DEBATS-DEC` (1 014), `AN2-…` (86), `AN3-…` (3),
+`ANNLEC-DEBATS-DEC` (134), `ANLDEF-DEBATS-DEC` (130), `CMP-DEBATS-AN-DEC` (293).
+Sénat : `SN1-…` (1 015), `SN2-…` (88), `SN3-…` (3), `SNNLEC-…` (135),
+`CMP-DEBATS-SN-DEC` (294). Hors des deux : `CMP-DEC` (434, accord ou désaccord
+de la commission mixte, `TCCMP01` / désaccord), `CMP-DEBATS-DEC` (3, **sans
+chambre** dans le code ; l'`organeRef` dit PO78718 — le Sénat — sur deux d'entre
+eux), `CG22-DEBATS-DEC` (1, le Congrès). Chaque décision porte `dateActe` (au
+**jour** : `T00:00:00`, aucune heure), `statutConclusion.{fam_code, libelle}`, et
+`voteRefs` quand un scrutin public a eu lieu.
+
+**`voteRefs` a trois formes** : `null`, `{"voteRef": "VTANR5L14V291"}`, et une
+liste de deux uid sur neuf premières lectures de lois de finances (première
+partie et ensemble). **Un `voteRef` peut ne pas être un scrutin de l'Assemblée** :
+`VTSNR5L17V844`, un scrutin du Sénat, sur la lecture des conclusions de CMP de
+`DLR5L16N49726` par l'Assemblée.
+
+**Le 49.3.** `fam_code TSORTF06`, « considéré comme adopté par l'Assemblée
+nationale en application de l'article 49, alinéa 3 de la Constitution », **jamais**
+avec `voteRefs` (25 décisions sur 25). `TSORTF24` est le rejet (motion adoptée,
+1 décision, `DLR5L17N50588`). Côté Sénat, `TSORTF23` (2 décisions, XIVe) : « modifié
+par le Sénat, considéré comme adopté par l'Assemblée… » — une décision **du Sénat**.
+La date de la décision 49.3 n'est pas celle de l'engagement. Relue sur les 25 :
+elle égale la date d'un acte `…MOTION-VOTE` antérieur de la même lecture dans
+**15** cas ; dans les 10 autres, le dossier porte la motion sans son vote, ou aucune
+motion (XIVe, `DLR5L14N34783` en nouvelle lecture et lecture définitive : la date
+est alors celle de la fin du délai de 24 h). Sur les **6 lois de la XVIe** dont la
+dernière adoption est un 49.3, 3 coïncident avec le vote de la dernière motion
+(`DLR5L16N46347` 02/12/2022, `DLR5L16N45988` 17/12/2022, `DLR5L16N46346`
+15/11/2023) ; pour les 3 autres (`DLR5L16N48397` et `DLR5L16N48683` en lecture
+définitive, `DLR5L16N47066` en lecture de CMP, 20/03/2023) le dossier ne porte pas
+le vote de la motion et la coïncidence n'est pas vérifiable ici. Le code des votes de motion n'est pas régulier :
+`AN1-MOTION-VOTE`, `AN1-DEBATS-MOTION-VOTE` et un `MOTION-VOTE` **sans lecture**
+(`DLR5L16N48683`, `DLR5L16N46346`) coexistent, et `DLR5L16N45988` porte un vote de
+motion daté du 04/12/2022 dans la première lecture close le 04/11 (vraisemblablement
+le 04/11 : non vérifié).
+
+**Quatre lacunes de la source, mesurées.**
+
+- **La procédure d'examen simplifiée (art. 103 RAN) n'est nommée nulle part** : le
+  dossier ne distingue ni elle, ni la main levée, ni l'assis et levé. « Sans
+  `voteRefs` » veut dire « sans scrutin public », rien de plus. Peut-être dans
+  l'ordre du jour (`vp/reunions/Agenda`) ou le compte rendu : non vérifié.
+- **La lecture des conclusions de CMP par l'Assemblée manque** sur 4 lois dont la
+  CMP s'est accordée avant la promulgation (`DLR5L16N46695`, `DLR5L16N46655`,
+  `DLR5L16N47722`, `DLR5L16N49107`). Sur `DLR5L16N46655`, elle est vraisemblablement
+  l'acte codé `CMP-DEBATS-SN-DEC` du 04/02/2025, qui porte un scrutin et une
+  réunion de l'Assemblée : non vérifié.
+- **Un `CMP-DEC` d'accord daté après la promulgation** (`DLR5L15N37357`, 27/02/2020
+  pour une loi du 07/08/2019) : il ne concerne pas cette loi.
+- **11 décisions du Sénat sans statut** (`TSORTFnull`), datées : elles disent que le
+  Sénat a statué, pas comment.
+
+Les deux chambres lisent souvent les conclusions de CMP **le même jour** (43 lois où
+la dernière décision du Sénat tombe le jour de la dernière adoption de l'Assemblée,
+hors lecture définitive) : la date au jour ne dit pas laquelle a statué en dernier.
+
 ### Ce qu'une proposition de résolution demande : `classification.sousType` (mesuré le 12/10/2026, #1276)
 
 Le **dossier** d'une résolution ne dit pas ce qu'elle demande. Son titre est

@@ -1411,7 +1411,9 @@ Une étape, **après** la table des commissions saisies au fond et avant les ind
 européens. `src/textes_promulgues.py` lit les archives de dossiers déjà en cache
 et publie `pivot_data/textes_promulgues.json` : un enregistrement par dossier
 promulgué, avec sa date, son numéro de loi, sa nature, sa commission au fond et
-sa chambre de première lecture. Aucun appel réseau si les archives sont en cache.
+sa chambre de première lecture, et depuis #1320 sa dernière adoption par
+l'Assemblée (date, mode, scrutins) et si le Sénat a statué après. Aucun appel
+réseau si les archives sont en cache ; l'étape et ses entrées ne changent pas.
 
 L'étape suivante, `src/budgets_gouvernements.py`, compose
 `pivot_data/budgets_gouvernements.json` (#1053) : pour chaque gouvernement, les

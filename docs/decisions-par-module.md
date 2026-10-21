@@ -49,6 +49,7 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/avertissements.py` | 2 |
 | `src/fetch_candidats_declares.py` | 2 |
 | `src/mandats_anterieurs.py` | 2 |
+| `src/textes_promulgues.py` | 2 |
 | `src/titres_europeens.py` | 2 |
 | `src/audit_filiation_lignees.py` | 1 |
 | `src/cache_an_fraicheur.py` | 1 |
@@ -68,7 +69,6 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/scrutins_europeens.py` | 1 |
 | `src/scrutins_legislature.py` | 1 |
 | `src/senat_mandats.py` | 1 |
-| `src/textes_promulgues.py` | 1 |
 | `src/textes_vises_figes.py` | 1 |
 | `src/verifier_transport_artifacts.py` | 1 |
 
@@ -821,10 +821,11 @@ Le mentionnent sans le gouverner : [`gouvernement-ci-integration`](decisions/gou
 
 ## `src/gouvernement_textes.py`
 
-19 décision(s) le gouvernent ; le module en cite 6.
+20 décision(s) le gouvernent ; le module en cite 6.
 
 | Décision | Nomme |
 | --- | --- |
+| [Une loi se date par sa dernière adoption à l'Assemblée (#1320, 2026-10-21)](decisions/adoption-an-lois-promulguees-1320.md) | `_FAM_CODE_STATUT_MAP` |
 | [La XIVe législature n'était pas inexploitable, elle était monolithique (#1019) (2026-09-18)](decisions/archive-dossiers-xiv-1019.md) | `_COLLECTIONS_MONOLITHE`, `_entrees_monolithiques`, `_uid_depuis_nom`, `parse_dossier_gouvernemental` |
 | [Dossiers législatifs : ingestion multi-archives, origine par document déposé, statut `promulgue` (#400) (2026-08-18)](decisions/dossiers-multi-archives-origine-document.md) | `iter_dossiers_bruts` |
 | [Un texte renvoyé en commission n'est pas un texte examiné (#997) (2026-09-18)](decisions/examen-en-commission-997.md) | `_CODES_NUS_DATES`, `_determine_statut`, `est_acte_au_dela_du_depot`, `est_examen_en_commission` |
@@ -1522,10 +1523,11 @@ Le mentionnent sans le gouverner : [`archive-dossiers-xiv-1019`](decisions/archi
 
 ## `src/textes_promulgues.py`
 
-1 décision(s) le gouvernent ; le module en cite 0.
+2 décision(s) le gouvernent ; le module en cite 0.
 
 | Décision | Nomme |
 | --- | --- |
+| [Une loi se date par sa dernière adoption à l'Assemblée (#1320, 2026-10-21)](decisions/adoption-an-lois-promulguees-1320.md) | `chambre_premiere_lecture` |
 | [Les textes promulgués sont une population du Parlement, pas d'un gouvernement (2026-09-23)](decisions/textes-promulgues-population-du-parlement.md) | `chambre_premiere_lecture` |
 
 Le mentionnent sans le gouverner : [`actes-sur-la-fiche-de-gouvernement-1029`](decisions/actes-sur-la-fiche-de-gouvernement-1029.md), [`budgets-par-gouvernement-1053`](decisions/budgets-par-gouvernement-1053.md), [`dila-et-amo30-en-jobs-1129`](decisions/dila-et-amo30-en-jobs-1129.md), [`finances-etat-collecte-1053`](decisions/finances-etat-collecte-1053.md), [`liens-des-actes-vers-les-lois`](decisions/liens-des-actes-vers-les-lois.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).

@@ -35,6 +35,34 @@ l'Assemblée. C'est donc le dépôt le **plus ancien** qui dit l'origine, et deu
 dates égales ou absentes rendent `null` plutôt qu'un choix arbitraire
 (§2 règle 5). Mesuré sur les 607 : 242 dossiers de première lecture au Sénat.
 
+LA DERNIÈRE ADOPTION PAR L'ASSEMBLÉE (#1320). Une loi se rattache à la
+législature où l'Assemblée l'a adoptée — ni l'ouverture du dossier ni la
+promulgation ne la disent. Chaque entrée publie donc `derniere_adoption_an` :
+le dernier acte de décision de l'Assemblée (`AN1-DEBATS-DEC`, `AN2-…`,
+`ANNLEC-…`, `ANLDEF-…`, `CMP-DEBATS-AN-DEC`) dont `statutConclusion.fam_code`
+est une adoption, avec sa date, son uid et son `mode` (`KNOWN_MODES_ADOPTION_AN`).
+Le mode se lit sur l'acte lui-même, jamais ailleurs :
+
+- `considere_adopte_49_3` — `fam_code` TSORTF06, « considéré comme adopté […]
+  article 49, alinéa 3 ». Un fait de procédure, **jamais un vote** (§2 règle 4) :
+  aucune référence de scrutin n'est publiée, même si la source en posait une ;
+- `scrutin_public` — l'acte porte `voteRefs` : les scrutins, en clé du corpus
+  (`an:<législature>:<numéro>`, celle de `pivot_data/scrutins.json`) ;
+- `sans_scrutin_public` — ni l'un ni l'autre. **Jamais « à main levée »** : le
+  dossier ne distingue pas la main levée, l'assis et levé et la procédure
+  d'examen simplifiée, et aucun de ses champs ne les nomme.
+
+À côté, `senat_statue_apres` : le Sénat a-t-il rendu une décision datée
+**strictement après** cette adoption, et `date_derniere_decision_senat`. Les
+dates de la source sont au jour (`T00:00:00`) : une décision du Sénat le même
+jour ne dit pas qui a statué en dernier, et l'indicateur reste alors `null`
+(`decisions_le_meme_jour`) — sauf en lecture définitive, que la Constitution
+place après la nouvelle lecture du Sénat (art. 45, al. 4). Même règle que la
+chambre de première lecture : deux dates égales ne départagent rien.
+
+Une absence est `null` avec son `*_non_resolu` et un motif fermé (§2 règle 5) :
+`KNOWN_MOTIFS_ADOPTION_AN_NON_RESOLUE`, `KNOWN_MOTIFS_SENAT_APRES_NON_RESOLU`.
+
 ADDITIF, JAMAIS DESTRUCTEUR. Même règle que `build_commissions_dossiers.py` : un
 run sans archives lisibles rend une table vide, et le fichier publié est
 conservé (AGENTS.md §3a). `--no-merge` force la reconstruction complète.
@@ -55,10 +83,13 @@ from typing import Any, Iterator, Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from gouvernement_textes import ensure_dossiers_zips_downloaded, iter_dossiers_bruts  # noqa: E402
+from gouvernement_textes import (  # noqa: E402
+    _source_url, ensure_dossiers_zips_downloaded, iter_dossiers_bruts,
+)
 from json_io import dumps_indente, ecrire_index_json  # noqa: E402
 import lois_jorf  # noqa: E402
 from licences import LICENCE_AN  # noqa: E402
+from scrutins_dossiers_an import cle_depuis_uid  # noqa: E402
 
 SCHEMA_VERSION = "textes-promulgues-v1"
 
@@ -71,6 +102,196 @@ CODE_PROMULGATION = "PROM-PUB"
 #: Les deux dépôts de première lecture, et la chambre qu'ils désignent. Les
 #: valeurs sont celles de `schema_pivot.KNOWN_CHAMBRES`.
 CHAMBRE_PAR_DEPOT = {"AN1-DEPOT": "assemblee_nationale", "SN1-DEPOT": "senat"}
+
+# ── La dernière adoption par l'Assemblée (#1320) ──────────────────────────────
+
+#: Comment l'Assemblée a adopté le texte la dernière fois, lu sur l'acte de
+#: décision. Fermé, comme les `KNOWN_*` du schéma pivot (`AGENTS.md` §4) : une
+#: valeur s'y ajoute délibérément, jamais par effet de bord.
+MODE_SCRUTIN_PUBLIC = "scrutin_public"
+MODE_SANS_SCRUTIN_PUBLIC = "sans_scrutin_public"
+MODE_49_3 = "considere_adopte_49_3"
+KNOWN_MODES_ADOPTION_AN: frozenset[str] = frozenset({
+    MODE_SCRUTIN_PUBLIC, MODE_SANS_SCRUTIN_PUBLIC, MODE_49_3,
+})
+
+#: Pourquoi `derniere_adoption_an` est `null`. `sans_adoption_an` : aucun acte
+#: de décision de l'Assemblée au statut d'adoption. `fam_code_inconnu` : une
+#: décision de l'Assemblée postérieure à la dernière adoption reconnue porte un
+#: statut que la table ne connaît pas — l'adoption retenue ne serait peut-être
+#: pas la dernière. `decision_non_datee` : une décision de l'Assemblée n'a pas
+#: de date, l'ordre n'est donc pas établi.
+#: `lecture_cmp_an_absente` : une CMP a conclu à un **accord** après la
+#: dernière adoption trouvée, et avant la promulgation, sans que le dossier
+#: porte la lecture de ses conclusions par l'Assemblée. Un texte de CMP ne
+#: devient loi qu'adopté par les deux chambres (art. 45, al. 3) : l'adoption
+#: retenue n'est donc pas la dernière, et la publier rattacherait la loi à la
+#: mauvaise législature. Mesuré le 21/10/2026 : 4 lois sur 1 017, dont 3
+#: dossiers ouverts en XVIe et conclus en XVIIe.
+KNOWN_MOTIFS_ADOPTION_AN_NON_RESOLUE: frozenset[str] = frozenset({
+    "sans_adoption_an", "fam_code_inconnu", "decision_non_datee",
+    "lecture_cmp_an_absente",
+})
+
+#: L'acte d'une commission mixte paritaire et son statut d'accord.
+CODE_DECISION_CMP = "CMP-DEC"
+FAM_CODE_ACCORD_CMP = "TCCMP01"
+
+#: Pourquoi `senat_statue_apres` est `null`. `adoption_an_non_resolue` : rien à
+#: quoi comparer. `sans_decision_senat` : le dossier ne porte aucune décision du
+#: Sénat datée (`date_derniere_decision_senat` est alors `null` aussi) — un
+#: Sénat qui écarte le texte par une motion ne laisse qu'un vote de motion, pas
+#: une décision, et ce n'est pas à nous de la reconstruire.
+#: `decisions_le_meme_jour` : le Sénat a statué le jour de la dernière adoption
+#: de l'Assemblée, et la source date au jour.
+#: Pourquoi `derniere_adoption_an.mode` est `null` alors que l'adoption est
+#: datée. `scrutin_non_reconnu` : l'acte porte un `voteRefs` qui n'est pas un
+#: scrutin de l'Assemblée (mesuré : `VTSNR5L17V844`, un scrutin du Sénat, sur
+#: la lecture des conclusions de CMP de DLR5L16N49726). Ni « scrutin public »,
+#: puisque la référence ne désigne aucun scrutin publié, ni « sans scrutin
+#: public », puisque la source en cite un : la référence est recopiée telle quelle.
+KNOWN_MOTIFS_MODE_NON_RESOLU: frozenset[str] = frozenset({"scrutin_non_reconnu"})
+
+KNOWN_MOTIFS_SENAT_APRES_NON_RESOLU: frozenset[str] = frozenset({
+    "adoption_an_non_resolue", "sans_decision_senat", "decisions_le_meme_jour",
+})
+
+#: Les `statutConclusion.fam_code` d'une décision de séance qui adoptent le
+#: texte, au sens de `gouvernement_textes._FAM_CODE_STATUT_MAP` : « adopté »,
+#: « avec modifications », « sans modification », « définitivement », « modifié »
+#: (l'Assemblée adopte le texte du Sénat en le modifiant), 49.3, termes
+#: identiques, conclusions de CMP. « Considéré comme REJETÉ » (TSORTF24) n'y est
+#: pas : c'est une motion de censure adoptée.
+FAM_CODES_ADOPTION: frozenset[str] = frozenset({
+    "TSORTF01", "TSORTF02", "TSORTF03", "TSORTF04", "TSORTF05", "TSORTF06",
+    "TSORTF14", "TSORTF18",
+})
+FAM_CODE_49_3 = "TSORTF06"
+#: Ceux qui disent le contraire d'une adoption — rejet, rejet définitif,
+#: considéré comme rejeté. Tout autre `fam_code`, y compris la sentinelle
+#: `TSORTFnull` et un statut absent, est inconnu : une décision sans statut
+#: pourrait être une adoption, et la taire ferait retenir la précédente.
+FAM_CODES_NON_ADOPTION: frozenset[str] = frozenset({"TSORTF07", "TSORTF13", "TSORTF24"})
+
+#: Les décisions de séance d'une chambre : un code `…-DEC` qui commence par sa
+#: chambre, ou la lecture des conclusions de CMP qui la nomme. `CMP-DEC` (accord
+#: ou désaccord de la commission mixte) n'est pas une décision de séance ;
+#: `CMP-DEBATS-DEC` ne nomme pas de chambre et `CG22-…` est le Congrès : aucun
+#: n'est rangé d'un côté.
+PREFIXE_LECTURE_DEFINITIVE = "ANLDEF-"
+
+
+def chambre_de_decision(code_acte: Any) -> Optional[str]:
+    """`"AN"`, `"SN"` ou `None` : la chambre d'un acte de décision de séance."""
+    if not isinstance(code_acte, str) or not code_acte.endswith("-DEC"):
+        return None
+    if code_acte == "CMP-DEBATS-AN-DEC" or (code_acte.startswith("AN")):
+        return "AN"
+    if code_acte == "CMP-DEBATS-SN-DEC" or code_acte.startswith("SN"):
+        return "SN"
+    return None
+
+
+def _vote_refs(acte: dict[str, Any]) -> list[str]:
+    """Les uid de scrutin d'un acte : `voteRefs` est `null`, `{"voteRef": uid}`
+    ou `{"voteRef": [uid, …]}` (neuf décisions de première lecture de lois de
+    finances en portent deux : la première partie et l'ensemble)."""
+    refs = acte.get("voteRefs")
+    if isinstance(refs, dict):
+        refs = refs.get("voteRef")
+    if isinstance(refs, str):
+        return [refs]
+    if isinstance(refs, list):
+        return [r for r in refs if isinstance(r, str) and r]
+    return []
+
+
+def _fam_code(acte: dict[str, Any]) -> Optional[str]:
+    statut = acte.get("statutConclusion")
+    return statut.get("fam_code") if isinstance(statut, dict) else None
+
+
+def derniere_adoption_an(dossier: dict[str, Any]) -> tuple[Optional[dict[str, Any]], Optional[str]]:
+    """`(adoption, None)` ou `(None, motif)` — la dernière adoption de l'Assemblée.
+
+    « Dernière » se lit sur la date, et à date égale sur l'ordre du dossier, qui
+    est chronologique (aucun cas mesuré sur les quatre archives).
+    """
+    decisions = [
+        (rang, acte) for rang, acte in enumerate(iter_actes(dossier.get("actesLegislatifs")))
+        if chambre_de_decision(acte.get("codeActe")) == "AN"
+    ]
+    if any(not _jour(acte.get("dateActe")) for _rang, acte in decisions):
+        return None, "decision_non_datee"
+    adoptions = [(_jour(a.get("dateActe")), rang, a) for rang, a in decisions
+                 if _fam_code(a) in FAM_CODES_ADOPTION]
+    if not adoptions:
+        return None, "sans_adoption_an"
+    jour, _rang, acte = max(adoptions, key=lambda x: (x[0], x[1]))
+    if any(_fam_code(a) not in FAM_CODES_ADOPTION | FAM_CODES_NON_ADOPTION
+           and _jour(a.get("dateActe")) >= jour for _r, a in decisions):
+        return None, "fam_code_inconnu"
+    prom = promulgation(dossier)
+    borne = _jour(((prom or {}).get("infoJO") or {}).get("dateJO")) or _jour((prom or {}).get("dateActe"))
+    for cmp in iter_actes(dossier.get("actesLegislatifs")):
+        jour_cmp = _jour(cmp.get("dateActe"))
+        if (cmp.get("codeActe") == CODE_DECISION_CMP and _fam_code(cmp) == FAM_CODE_ACCORD_CMP
+                and jour_cmp and jour_cmp > jour and (borne is None or jour_cmp <= borne)):
+            # Borné par la promulgation : un accord daté après elle (1 cas
+            # mesuré, DLR5L15N37357) ne concerne pas cette loi.
+            return None, "lecture_cmp_an_absente"
+
+    statut = acte.get("statutConclusion") or {}
+    mode_non_resolu = None
+    if statut.get("fam_code") == FAM_CODE_49_3:
+        # §2 règle 4 : un fait de procédure. Aucune référence de scrutin, même
+        # si la source en posait une — la motion de censure est un autre objet.
+        mode, scrutins = MODE_49_3, None
+    else:
+        refs = _vote_refs(acte)
+        cles = [cle_depuis_uid(r) for r in refs]
+        if refs and not all(cles):
+            mode, scrutins = None, None
+            mode_non_resolu = {"motif": "scrutin_non_reconnu", "vote_refs": refs}
+        elif cles:
+            mode, scrutins = MODE_SCRUTIN_PUBLIC, cles
+        else:
+            mode, scrutins = MODE_SANS_SCRUTIN_PUBLIC, None
+    return {
+        "date": jour,
+        "mode": mode,
+        "mode_non_resolu": mode_non_resolu,
+        "scrutin_ids": scrutins,
+        "acte_uid": acte.get("uid"),
+        "code_acte": acte.get("codeActe"),
+        "libelle_statut": statut.get("libelle"),
+    }, None
+
+
+def senat_apres(dossier: dict[str, Any], adoption: Optional[dict[str, Any]]
+                ) -> tuple[Optional[bool], Optional[str], Optional[str]]:
+    """`(senat_statue_apres, date_derniere_decision_senat, motif)`.
+
+    Toute décision de séance du Sénat compte, rejet compris : la question est
+    « qui a statué en dernier », pas « qui a adopté ».
+    """
+    jours = sorted(
+        j for j in (
+            _jour(a.get("dateActe")) for a in iter_actes(dossier.get("actesLegislatifs"))
+            if chambre_de_decision(a.get("codeActe")) == "SN"
+        ) if j
+    )
+    derniere = jours[-1] if jours else None
+    if adoption is None:
+        return None, derniere, "adoption_an_non_resolue"
+    if derniere is None:
+        return None, None, "sans_decision_senat"
+    if derniere > adoption["date"]:
+        return True, derniere, None
+    if derniere == adoption["date"] and not str(adoption.get("code_acte") or "").startswith(
+            PREFIXE_LECTURE_DEFINITIVE):
+        return None, derniere, "decisions_le_meme_jour"
+    return False, derniere, None
 
 
 def iter_actes(noeud: Any) -> Iterator[dict[str, Any]]:
@@ -136,6 +357,8 @@ def entree(dossier: dict[str, Any], commission: Optional[dict[str, Any]],
     jorftext = lois_jorf.resoudre(lois or {}, acte.get("codeLoi"))
     titre_dossier = dossier.get("titreDossier") or {}
     procedure = dossier.get("procedureParlementaire") or {}
+    adoption, motif_adoption = derniere_adoption_an(dossier)
+    apres, date_senat, motif_senat = senat_apres(dossier, adoption)
     return {
         "date_promulgation": _jour(info_jo.get("dateJO")) or _jour(acte.get("dateActe")),
         "numero_loi": acte.get("codeLoi"),
@@ -151,6 +374,15 @@ def entree(dossier: dict[str, Any], commission: Optional[dict[str, Any]],
         # liste quand la source a publié la loi deux fois (rectificatif).
         "jorftext": (jorftext[0] if jorftext else None),
         "jorftext_autres": (jorftext[1:] or None),
+        # Le dossier sur le site de l'Assemblée : la page où se relisent la
+        # promulgation, les décisions de chaque lecture et leurs scrutins.
+        "source_url": _source_url(dossier.get("legislature"), titre_dossier.get("titreChemin")),
+        # #1320 — voir le docstring du module. Exactement un des deux est non nul.
+        "derniere_adoption_an": adoption,
+        "derniere_adoption_an_non_resolue": {"motif": motif_adoption} if motif_adoption else None,
+        "senat_statue_apres": apres,
+        "senat_statue_apres_non_resolu": {"motif": motif_senat} if motif_senat else None,
+        "date_derniere_decision_senat": date_senat,
     }
 
 

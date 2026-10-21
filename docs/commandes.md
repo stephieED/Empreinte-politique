@@ -350,8 +350,9 @@ gouvernement qui a fait voter au moins un budget. Aucun appel réseau.
 Produit : `pivot_data/textes_promulgues.json` — un enregistrement par dossier
 promulgué des archives de l'Assemblée (1 015 au 23/09/2026, de 2012 à 2026), avec
 sa date de promulgation, son numéro de loi, son intitulé, sa nature (projet,
-proposition, ratification de traité…), sa commission saisie au fond et sa chambre
-de première lecture.
+proposition, ratification de traité…), sa commission saisie au fond, sa chambre
+de première lecture, et depuis #1320 sa dernière adoption par l'Assemblée et si
+le Sénat a statué après.
 
 À lancer **après** `build_commissions_dossiers.py` : c'est de lui que vient la
 matière de chaque ligne. Sans lui, les lignes sont publiées avec `commission:
