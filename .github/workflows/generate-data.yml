@@ -4067,6 +4067,37 @@ jobs:
         continue-on-error: true
         run: python3 src/budgets_gouvernements.py
 
+      # Les dossiers de l'Assemblée, un fichier par législature (#1314).
+      #   entrée   : src/dossiers_an.py
+      #   consomme : les archives de dossiers déjà en cache, l'archive AMO30
+      #              courante (les auteurs), pivot_data/scrutins.json (les votes
+      #              solennels)
+      #   produit  : pivot_data/dossiers_an/<législature>.json
+      #
+      # Ce que la fiche d'une législature lit et qu'aucun autre fichier ne porte :
+      # titre, auteurs, dépôt, sort, étape à l'Assemblée par législature. Rien n'y
+      # est recopié de commissions_dossiers.json ni de textes_promulgues.json.
+      # Non bloquant, et additif : un run sans archive lisible garde les fichiers.
+      - name: Construire les dossiers de l'Assemblée par législature
+        continue-on-error: true
+        run: python3 src/dossiers_an.py
+
+      # Les législatures (#1314).
+      #   entrée   : src/legislatures_an.py
+      #   consomme : l'archive AMO30 courante et les archives figées XVe/XVIe
+      #              (#1317), pivot_data/actes_reglementaires/ (le décret de
+      #              dissolution)
+      #   produit  : pivot_data/legislatures.json
+      #
+      # APRÈS l'artifact des actes du Journal officiel, téléchargé en tête de job :
+      # c'est là que se lit une dissolution. Les archives figées ne sont pas dans
+      # un cache de ce job : elles se téléchargent ici (≈ 22 Mo, budget de
+      # `_ensure_archive_amo30_figee`). Non bloquant : sans elles, les groupes
+      # sont publiés sans siège, avec le motif.
+      - name: Construire les législatures
+        continue-on-error: true
+        run: python3 src/legislatures_an.py
+
       # La cascade de #1289 : le lien que l'Assemblée publie, puis la déduction
       # par la date et le titre (`src/rattachement_deduit.py`), puis, pour ce
       # qui reste, la table relue à la main (config/) — marquées dans
@@ -4924,6 +4955,14 @@ jobs:
           # rien écrire si les archives sont illisibles.
           if [ -f pivot_data/textes_promulgues.json ]; then
             git add pivot_data/textes_promulgues.json
+          fi
+          # Dossiers de l'Assemblée et législatures (#1314) : même garde, leurs
+          # étapes sont `continue-on-error`.
+          if [ -d pivot_data/dossiers_an ]; then
+            git add pivot_data/dossiers_an
+          fi
+          if [ -f pivot_data/legislatures.json ]; then
+            git add pivot_data/legislatures.json
           fi
           # Budgets votés sous chaque gouvernement (#1053) : même garde, son
           # étape est `continue-on-error`.
