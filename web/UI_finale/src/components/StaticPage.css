@@ -2,17 +2,14 @@
   width: 100%;
 }
 
-/* La colonne commune (--colonne) ; une ligne de texte courant s'arrête à
-   --mesure, les cartes et les figures prennent toute la colonne. */
+/* La colonne commune (--colonne). Le texte, les cartes et les figures prennent
+   toute la colonne, comme sur l'accueil et les fiches : la borne de 80
+   caractères est retirée le 22/10/2026 (`texte-des-pages-sur-toute-la-carte`). */
 .static-main {
   width: 100%;
   max-width: var(--colonne);
   margin: 0 auto;
   padding: 32px 40px 64px;
-}
-
-.static-main :is(p, li) {
-  max-width: var(--mesure);
 }
 
 .static-banner {
@@ -164,7 +161,6 @@
 /* L'introduction d'une page statique (#951), sous la bannière. */
 .static-intro {
   margin: 20px 2px 0;
-  max-width: 72ch;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -234,4 +230,41 @@
   .static-bloc > .landing-section > :nth-child(2) {
     margin-top: 0;
   }
+}
+
+/* Un tableau dans une carte de méthode (#1328) : même grille que /sources
+   (`.cv-grille`), défilant dans sa propre boîte sur un téléphone. */
+.static-tableau {
+  overflow-x: auto;
+  margin: 4px 0 14px;
+}
+
+.static-tableau table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.static-tableau th {
+  text-align: left;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  padding: 0 14px 9px 0;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.static-tableau td {
+  padding: 12px 14px 12px 0;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.static-tableau tr:last-child td {
+  border-bottom: 0;
+  font-weight: 600;
 }

@@ -123,7 +123,8 @@ from profil_brut import (
     charger_profil_brut,
     ecrire_profil_brut,
 )
-from licences import LICENCE_AN
+from licences import appliquer_licence_donnees, composer_licence_donnees
+from rne_opendata import DATASET_RNE
 from merge_profile import (
     merge_pivot_profile,
     merge_raw_profile,
@@ -1104,10 +1105,11 @@ def build_minimal_profile(nom: str, effective_slug: str, candidat: dict[str, Any
         "interventions": [],
         "meta": {
             "genere_le": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
-            # Licence Ouverte depuis #530 : ce repli décrit un candidat sans
-            # mandat français connu — il ne porte aucune donnée, et surtout
-            # aucune donnée de Regards Citoyens.
-            "licence_donnees": LICENCE_AN,
+            # #1310 — un candidat sans mandat français connu ne porte AUCUNE
+            # donnée collectée : aucune licence à revendiquer. Il annonçait
+            # celle de l'Assemblée, qui ne lui a rien fourni. Composée, jamais
+            # écrite en dur (#909) : sans `sources[]`, la composition est vide.
+            "licence_donnees": composer_licence_donnees({}),
             "warnings": [
             avertissement(
                 f"{WARNING_AUCUN_MANDAT_FR} (slug absent du référentiel Assemblée "
@@ -2310,6 +2312,19 @@ def main() -> None:
         print(f"    absent (fallback) : {len(parltrack_status.get('absent', []))}")
 
 
+#: L'entrée `sources[]` des mandats locaux (#1310) : le jeu de données du
+#: Répertoire national des élus. Le fichier des sortants des municipales 2026,
+#: sur le même portail et sous la même licence, est nommé par chaque mandat
+#: (`mandats[].source_url`) ; `sources[]` ne garde qu'une entrée par type.
+URL_SOURCE_RNE = f"https://www.data.gouv.fr/datasets/{DATASET_RNE}"
+
+
+def source_rne(synchro_le: Optional[str] = None, url: Optional[str] = None) -> dict[str, Any]:
+    """L'entrée `sources[]` des mandats locaux (#1310). `url` est celle que le
+    bloc brut déclare (`mandats_locaux.source`), à défaut le jeu du RNE."""
+    return {"type": "rne", "url": url or URL_SOURCE_RNE, "synchro_le": synchro_le}
+
+
 def _verser_mandats_locaux(
     profile: dict, pivot_profile: Optional[dict]
 ) -> None:
@@ -2325,6 +2340,12 @@ def _verser_mandats_locaux(
     mandats = bloc_local.get("mandats") or []
     if mandats:
         pivot_profile.setdefault("mandats", []).extend(mandats)
+        # #1310 — les mandats publiés déclarent leur source, comme ceux du
+        # Sénat : sans cette entrée, `licence_donnees` taisait le Répertoire
+        # national des élus sur les 18 fiches qui en portent.
+        pivot_profile.setdefault("sources", []).append(
+            source_rne(bloc_local.get("synchro_le"), bloc_local.get("source")))
+        appliquer_licence_donnees(pivot_profile)
     # Publié MÊME sans mandat : ce que le bloc porte d'abord est son
     # `appariement`. « Relu, aucun mandat » et « personne n'a regardé » sont
     # deux faits différents, et aucun des deux ne se lit dans une liste vide.

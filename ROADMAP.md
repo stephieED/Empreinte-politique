@@ -78,12 +78,14 @@ décision ne l'avait posé comme un choix éditorial ; il existait en fait, sans
 | --- | --- | --- |
 | Scrutins | 14 · 15 · 16 · 17 | 03/07/2012 |
 | Amendements | 14 · 15 · 16 (figés) · 17 | idem |
-| Dossiers législatifs | **15** · 16 · 17 | 2017 |
+| Dossiers législatifs | 14 · 15 · 16 · 17 | 2012 (XIVe depuis #1019) |
 | Interventions (Syceron) | **15** · 16 · 17 | 2017 |
 
-**Rien avant la XIVe, et la XIVe est partielle** — des votes et des amendements,
-mais ni dossiers ni interventions. Une fiche de groupe construite sur la XIVe
-serait un squelette, et sur la XIIIe elle n'aurait aucune matière.
+**Rien avant la XIVe, et la XIVe est partielle** — des votes, des amendements et,
+depuis #1019 (18/09/2026), les dossiers législatifs, mais pas d'interventions :
+Syceron commence à la XVe. Sur la XIIIe, une fiche de groupe n'aurait aucune
+matière. Les fiches de groupe de la XIVe sont ouvertes par #1328 (arbitré le
+22/10/2026), sans prises de parole.
 
 **Ce que ça interdit concrètement**, mesuré sur les mandats de groupe des 13
 candidats déclarés : parmi les 9 groupes qu'ils ont touchés, quatre sont hors

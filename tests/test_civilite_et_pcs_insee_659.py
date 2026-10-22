@@ -254,6 +254,8 @@ def _build_profile_sans_reseau(identite_an, acteur_ref):
         # #1317 — les archives figées ne sont pas dans l'extrait : sans cette
         # doublure, la place d'un mandat XVe/XVIe sortirait sur le réseau.
         patch("candidate_profile._ensure_archive_amo30_figee", return_value=None),
+        # #1326 — idem pour le fichier des places de la XIVe, sur le site.
+        patch("candidate_profile._ensure_fichier_places_site_an", return_value=None),
     ):
         return build_profile("deputes", "laurence-dumont")
 

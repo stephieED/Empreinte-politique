@@ -170,7 +170,9 @@ def test_une_legislature_neuve_relie_chaque_groupe_a_sa_lignee():
     nouveau, journal = groupes_amo30.mettre_a_jour_table(_depart(_index(XVII)), index, jour=JOUR)
     ajouts = {a["groupe_id"]: a for a in journal["groupes_ajoutes"]}
     assert ajouts["AN:EPR:18"]["lignee_id"] == "AN:LIGNEE:REN"
-    assert ajouts["AN:EPR:18"]["succede_a"] == [{"groupe_id": "AN:EPR:17", "communs": 70, "base": 70}]
+    assert ajouts["AN:EPR:18"]["succede_a"] == [
+        {"groupe_id": "AN:EPR:17", "communs": 70, "reelus": 70, "anciens": 70},
+    ]
     assert ajouts["AN:DR:18"]["lignee_id"] == "AN:LIGNEE:LR"
     assert ajouts["AN:AUTRE:18"]["lignee_id"] == "AN:LIGNEE:AUTRE"
     assert [l["lignee_id"] for l in journal["lignees_ajoutees"]] == ["AN:LIGNEE:AUTRE"]

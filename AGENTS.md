@@ -203,6 +203,7 @@ Full rationale: `web/old/v3/methodologie.html` — do not duplicate prose here.
 | Parltrack (JSON dumps) | Yes | ODbL v1.0 | **Share-alike** if republished as downloadable dataset |
 | European Parliament (data.europarl.europa.eu) | Yes — **every request goes to the open-data portal**; `www.europarl.europa.eu` is only linked, never fetched (#983) | CC BY 4.0 (Bureau decision of 16/12/2024, EUR-Lex C/2025/341, art. 4) | Attribution only |
 | NosDeputes.fr / NosSenateurs.fr | **No** since #528/#529 — and **no published field derives from it any more** since #976 and #718 (measured 17/09/2026 — #976 missed 331 mandate entries that carried no source name): not cited on the site | ODbL v1.0 | None while nothing derives from it — attribution and share-alike return with the first field that does |
+| XIVe seats file (`www.assemblee-nationale.fr/14/tribun/xml/place.txt`) | **Yes since #1326 — XIVe seat numbers only**, state of 20/06/2017 (inferred, not declared by the file). No open-data dataset carries them | Website terms (« Info site »): free, unaltered reproduction, author, source and link; no commercial use | **Facts only** (seat number) with the file's URL in `source_url`; no `sources[]` entry, `licence_donnees` unchanged |
 | Sycomore (www2.assemblee-nationale.fr/sycomore) | **No — cited**: one row per deputy mandate older than AMO30's 19/06/2002 bound, hand-checked, in `config/mandats_anterieurs.json` (#860) | © Assemblée nationale, all rights reserved | **Facts only** (office, dates) with a link to the page; nothing reproduced |
 | Journal officiel (`echanges.dila.gouv.fr`, DILA) | **Yes since #1029 — regulatory acts only**: decrees, orders (`arrêtés`) and ordinances published since 2007. The source leaves the signatory unpublished, so an act attaches to a government by its publication date and to a ministry by its organe — **never to a person** | Licence Ouverte 2.0 (Etalab) | Attribution only — **no share-alike** |
 | Journal officiel (Légifrance) | **No — cited**: one decree per government office older than the corpus, same table (#860) | Licence Ouverte 2.0 (Etalab) | Attribution only |
@@ -355,8 +356,12 @@ unmerged work, pushing to a public repo: those are hers.
 
 **Show before implementing anything a human will read on screen** — input
 labels, published copy, page text. She has asked for this explicitly, and it is
-the one case where reviewing draft wording is wanted. Render it as it will
-appear (`scripts/rendu_formulaire.py` for workflow inputs), not as source.
+the one case where reviewing draft wording is wanted. Agree on the wording
+with her before writing it into the code, so the code is not edited again for
+every adjustment. A plain sentence is proposed in the conversation. Render it
+in place (mockup, local page, `scripts/rendu_formulaire.py`) only when where it
+appears changes how it reads — a note on a figure, a tooltip, a legend, a form
+label.
 **Text published on the site is written for the general reader, with no
 repository vocabulary** — and that rule stops at the site: docs, code, issues
 and replies keep their exact terms. → `docs/regles/textes-publies.md`

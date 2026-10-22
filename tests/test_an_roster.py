@@ -194,6 +194,11 @@ APPELANTS_ATTENDUS = {
     # ne dérive aucun roster et ne collecte personne.
     # → docs/decisions/liste-des-deputes-non-inscrits-1265.md
     "non_inscrits_amo30.py",
+    # #1314 : l'ordre des groupes dans l'hémicycle, par législature, lit l'index
+    # GP pour savoir qui siégeait dans quel groupe au jour de référence. Elle ne
+    # dérive aucun roster et ne collecte personne.
+    # → docs/decisions/legislatures-et-dossiers-par-objet-1314.md
+    "legislatures_an.py",
     # `group_profile.py` n'y est PLUS depuis #529. Il lisait le drapeau pour
     # choisir entre deux rédactions du `meta.warnings` de fraîcheur — celle
     # d'AMO30 et celle de NosDéputés. Le repli retiré, il n'y a plus qu'une

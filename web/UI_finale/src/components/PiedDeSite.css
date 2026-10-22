@@ -48,7 +48,7 @@
   font-weight: 800;
   letter-spacing: 0.11em;
   text-transform: uppercase;
-  color: #b6b1bd;
+  color: var(--muted);
   margin-bottom: 2px;
 }
 

@@ -105,8 +105,14 @@ Ces couleurs vivaient en constantes JS **dupliquées** dans `CandidateProfile.js
 | Texte principal, nuit | `#F7F6F4` | `#14151A` | 16.88:1 | PASS |
 | Signal sur fond sombre | `#DFFF00` | `#14151A` | 16.01:1 | PASS |
 | Signal sur fond clair | `#DFFF00` | `#F7F6F4` | **1.05:1** | **FAIL** |
+| Texte secondaire `--muted`, jour | `#5F5B66` | `#F7F6F4` | 6.12:1 | PASS |
+| Texte secondaire `--muted`, sur carte | `#5F5B66` | `#FFFFFF` | 6.61:1 | PASS |
+| Ancien `--muted`, retiré | `#8B8794` | `#F7F6F4` | **3.25:1** | **FAIL** |
+| Titres gris retirés (pied de page, en-têtes) | `#B6B1BD` | `#F7F6F4` | **1.94:1** | **FAIL** |
 
 C'est la justification chiffrée de la règle « accent jamais en texte sur fond clair » (§1, §5) — pas une convention arbitraire.
+
+**Le gris clair n'est jamais une couleur de texte sur un fond clair** (arbitré le 22/10/2026 : « ce gris très clair ne doit plus être utilisé en couleur de police sur un fond clair (blanc, gris, etc.) »). `--muted` passe de `#8B8794` à `#5F5B66`, et les titres en `#B6B1BD` lisent `--muted`. Le gris reste permis **en remplissage** — la case « abstention », un trait, une barre —, jamais pour écrire. Tenu par `tests/test_gris_lisible.py`.
 
 ---
 
@@ -320,7 +326,7 @@ satisfaire les sept et violer §2 — c'est §2 qui tranche.
 - **Une seule vraie rupture, sur la marque** : sous 480px, le lockup complet cède la place au symbole seul — la largeur ne suffit plus à garder « POLITIQUE » lisible. *Vérifié* : `Brand.css` `@media (max-width: 480px)`.
 - **Grilles de cartes** : `auto-fit`/`minmax()` plutôt que des colonnes fixes — le nombre de colonnes se déduit de la largeur réelle, jamais fixé par point de rupture. *Vérifié* : `.kpi-grid`, `.votes-grid`, `.shelf-items`, `.gp-kpi-grid`, etc.
 - **40px** : gouttière horizontale constante de la page — navigation, contenu, bandeau de marque partagent la même marge, jamais une marge indépendante. *Vérifié*.
-- **Une seule largeur de page, `--colonne` (1 600 px), pour toutes les pages** (arbitré le 21/10/2026) : l'accueil, les pages du site, les trois fiches et les articles forment une même colonne centrée ; la barre du haut et le pied s'alignent sur ses bords, leur fond allant d'un bord à l'autre. Le texte courant s'arrête à `--mesure` (80 caractères), les cartes et les figures prennent toute la colonne. **Une nouvelle page ne fixe jamais sa largeur** : elle passe par un des trois cadres (`landing-main`, `StaticPage`/`static-main`, `ExplorerLayout`). *Vérifié* : `src/index.css`, tenu par `tests/test_largeur_commune.py`.
+- **Une seule largeur de page, `--colonne` (1 600 px), pour toutes les pages** (arbitré le 21/10/2026) : l'accueil, les pages du site, les trois fiches et les articles forment une même colonne centrée ; la barre du haut et le pied s'alignent sur ses bords, leur fond allant d'un bord à l'autre. Le texte, les cartes et les figures prennent toute la colonne : la borne de 80 caractères du texte courant des pages de texte est retirée le 22/10/2026, pour que ces pages aient la largeur de contenu de l'accueil et des fiches (`docs/decisions/texte-des-pages-sur-toute-la-carte.md`). **Une nouvelle page ne fixe jamais sa largeur** : elle passe par un des trois cadres (`landing-main`, `StaticPage`/`static-main`, `ExplorerLayout`). *Vérifié* : `src/index.css`, tenu par `tests/test_largeur_commune.py`.
 - **Les pages de texte** (arbitré le 21/10/2026) : le sommaire des fiches à gauche (204 px, au-delà de 1 440 px), et dans chaque carte le titre en marge (240 px, au-delà de 1 024 px), le texte à sa droite ; une carte à figure (`static-card--figure`) garde son titre au-dessus. *Vérifié* : `StaticPage.css`, tenu par `tests/test_pages_de_texte.py`.
 - **Le bandeau noir d'À propos et de Nous soutenir** (arbitré le 21/10/2026) : le texte garde 40em ; au-delà de 1 024 px, la devise passe à droite en quatre tuiles (`Baseline tuiles`), et le bouton de don à droite sur Nous soutenir. *Vérifié* : `AboutPage.css`.
 

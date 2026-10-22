@@ -854,7 +854,7 @@ button.lp-point {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #b6b1bd;
+  color: var(--muted);
   padding-bottom: 2px;
 }
 

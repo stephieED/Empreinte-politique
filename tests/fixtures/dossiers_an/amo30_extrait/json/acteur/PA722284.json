@@ -1,0 +1,238 @@
+{
+ "acteur": {
+  "uid": {
+   "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+   "@xsi:type": "IdActeur_type",
+   "#text": "PA722284"
+  },
+  "etatCivil": {
+   "ident": {
+    "civ": "M.",
+    "prenom": "Bruno",
+    "nom": "Fuchs",
+    "alpha": "Fuchs",
+    "trigramme": "BFU"
+   }
+  },
+  "mandats": {
+   "mandat": [
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM845712",
+     "acteurRef": "PA722284",
+     "legislature": "17",
+     "typeOrgane": "GP",
+     "dateDebut": "2024-07-19",
+     "datePublication": "2024-07-19",
+     "dateFin": null,
+     "preseance": "20",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Membre",
+      "libQualite": "Membre du",
+      "libQualiteSex": "Membre du"
+     },
+     "organes": {
+      "organeRef": "PO845454"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM775019",
+     "acteurRef": "PA722284",
+     "legislature": "15",
+     "typeOrgane": "GP",
+     "dateDebut": "2020-09-29",
+     "datePublication": "2020-09-29",
+     "dateFin": "2022-06-21",
+     "preseance": "20",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Membre",
+      "libQualite": "Membre du",
+      "libQualiteSex": "Membre du"
+     },
+     "organes": {
+      "organeRef": "PO774834"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM800965",
+     "acteurRef": "PA722284",
+     "legislature": "16",
+     "typeOrgane": "GP",
+     "dateDebut": "2022-06-29",
+     "datePublication": "2022-06-29",
+     "dateFin": "2024-06-09",
+     "preseance": "20",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Membre",
+      "libQualite": "Membre du",
+      "libQualiteSex": "Membre du"
+     },
+     "organes": {
+      "organeRef": "PO800484"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM797239",
+     "acteurRef": "PA722284",
+     "legislature": "16",
+     "typeOrgane": "GP",
+     "dateDebut": "2022-06-22",
+     "datePublication": null,
+     "dateFin": "2022-06-28",
+     "preseance": "28",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Député non-inscrit",
+      "libQualite": "Député non-inscrit",
+      "libQualiteSex": "Député non-inscrit"
+     },
+     "organes": {
+      "organeRef": "PO793087"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM774889",
+     "acteurRef": "PA722284",
+     "legislature": "15",
+     "typeOrgane": "GP",
+     "dateDebut": "2020-09-24",
+     "datePublication": "2020-09-24",
+     "dateFin": "2020-09-28",
+     "preseance": "24",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Membre apparenté",
+      "libQualite": "Apparenté au",
+      "libQualiteSex": "Apparenté au"
+     },
+     "organes": {
+      "organeRef": "PO774834"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM724805",
+     "acteurRef": "PA722284",
+     "legislature": "15",
+     "typeOrgane": "GP",
+     "dateDebut": "2017-06-21",
+     "datePublication": null,
+     "dateFin": "2017-06-26",
+     "preseance": "28",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Député non-inscrit",
+      "libQualite": "Député non-inscrit",
+      "libQualiteSex": "Député non-inscrit"
+     },
+     "organes": {
+      "organeRef": "PO723569"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM731441",
+     "acteurRef": "PA722284",
+     "legislature": "15",
+     "typeOrgane": "GP",
+     "dateDebut": "2017-06-27",
+     "datePublication": "2017-06-28",
+     "dateFin": "2020-09-23",
+     "preseance": "24",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Membre apparenté",
+      "libQualite": "Apparenté au",
+      "libQualiteSex": "Apparenté au"
+     },
+     "organes": {
+      "organeRef": "PO730970"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM843222",
+     "acteurRef": "PA722284",
+     "legislature": "17",
+     "typeOrgane": "GP",
+     "dateDebut": "2024-07-08",
+     "datePublication": null,
+     "dateFin": "2024-07-18",
+     "preseance": "28",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Député non-inscrit",
+      "libQualite": "Député non-inscrit",
+      "libQualiteSex": "Député non-inscrit"
+     },
+     "organes": {
+      "organeRef": "PO840056"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatParlementaire_type",
+     "uid": "PM797238",
+     "acteurRef": "PA722284",
+     "legislature": "16",
+     "typeOrgane": "ASSEMBLEE",
+     "dateDebut": "2022-06-19",
+     "datePublication": null,
+     "dateFin": "2024-06-09",
+     "preseance": "50",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "membre",
+      "libQualite": "membre",
+      "libQualiteSex": "membre"
+     },
+     "organes": {
+      "organeRef": "PO791932"
+     },
+     "suppleants": {
+      "suppleant": {
+       "dateDebut": "2022-06-19",
+       "dateFin": "2024-06-09",
+       "suppleantRef": "PA794998"
+      }
+     },
+     "chambre": null,
+     "election": {
+      "lieu": {
+       "region": "Grand Est",
+       "regionType": "Métropolitain",
+       "departement": "Haut-Rhin",
+       "numDepartement": "68",
+       "numCirco": "6"
+      },
+      "causeMandat": "élections générales",
+      "refCirconscription": "PO792222"
+     },
+     "mandature": {
+      "datePriseFonction": "2022-06-22",
+      "causeFin": "Fin de législature",
+      "premiereElection": "1",
+      "placeHemicycle": "362",
+      "mandatRemplaceRef": null
+     },
+     "collaborateurs": null
+    }
+   ]
+  }
+ }
+}

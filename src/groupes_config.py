@@ -332,7 +332,8 @@ CLE_SUCCESSION = "succede_a"
 CLE_HISTORIQUE_ORGANES = "historique_organes_an"
 
 #: Clé portant, dans une entrée de la table **du run**, la mesure de chacun de
-#: ses liens `succede_a` (#1168) : `[{groupe_id, communs, base}]`, écrite par
+#: ses liens `succede_a` (#1168) : `[{groupe_id, communs, reelus, anciens}]`
+#: depuis #1328 (`[{groupe_id, communs, base}]` avant), écrite par
 #: `groupes_amo30.mesurer_liens` sur l'archive AMO30. Absente de la table écrite
 #: à la main — personne ne la tient à jour à la main. C'est elle, et elle seule,
 #: qui fait publier un lien comme `comparaison_des_membres`.
@@ -510,18 +511,28 @@ def _valider_successions(
         # l'entrée, et en entiers : c'est elle qui fait publier un lien comme
         # « établi par comparaison des membres ».
         for mesure in entree.get(CLE_MESURES_SUCCESSION) or []:
-            if (
-                not isinstance(mesure, dict)
-                or mesure.get("groupe_id") not in cibles
-                or not isinstance(mesure.get("communs"), int)
-                or not isinstance(mesure.get("base"), int)
-                or not 0 <= mesure["communs"] <= mesure["base"]
-            ):
+            if not _mesure_bien_formee(mesure, cibles):
                 raise CorrespondanceSiglesInvalide(
                     f"{libelle} : '{CLE_MESURES_SUCCESSION}' porte {mesure!r} — "
                     "chaque mesure nomme un lien de `succede_a` et compte en "
-                    "entiers, `0 <= communs <= base`."
+                    "entiers : `0 <= communs <= min(reelus, anciens)` (#1328), "
+                    "ou `0 <= communs <= base` (table écrite avant #1328)."
                 )
+
+
+def _mesure_bien_formee(mesure: Any, cibles: Any) -> bool:
+    """Une mesure de lien a l'une des deux formes de `mesure_soutient_le_lien`."""
+    if not isinstance(mesure, dict) or mesure.get("groupe_id") not in (cibles or []):
+        return False
+    communs = mesure.get("communs")
+    if not isinstance(communs, int) or communs < 0:
+        return False
+    if "reelus" in mesure or "anciens" in mesure:
+        reelus, anciens = mesure.get("reelus"), mesure.get("anciens")
+        return (isinstance(reelus, int) and isinstance(anciens, int)
+                and communs <= min(reelus, anciens))
+    base = mesure.get("base")
+    return isinstance(base, int) and communs <= base
 
 
 def _valider_historique_organes(entree: dict[str, Any], libelle: str) -> None:
@@ -796,15 +807,89 @@ def succession_publiee(
     return blocs
 
 
-def mesure_soutient_le_lien(mesure: Optional[dict[str, Any]]) -> bool:
-    """La mesure d'un lien passe-t-elle la règle : la moitié du plus petit des deux ?
+# ── La règle de filiation entre deux législatures (#1328) ────────────────────
+#
+# Arbitrée le 22/10/2026 (#1328, option F) : pour un groupe de la législature L
+# et un groupe de L+1,
+#
+#   - **destination** = communs / réélus du groupe de L (ceux de ses membres qui
+#     siègent dans un groupe de L+1) ;
+#   - **origine** = communs / anciens du groupe de L+1 (ceux de ses membres qui
+#     siégeaient dans un groupe de L) ;
+#   - le lien existe si leur moyenne harmonique atteint 60 % ET si au moins
+#     cinq personnes sont communes.
+#
+# La moyenne harmonique de c/r et c/a vaut exactement 2c / (r + a) : la règle se
+# compare donc en entiers, `10 c >= 3 (r + a)`, sans arrondi flottant.
+#
+# POURQUOI PLUS « LA MOITIÉ DU PLUS PETIT DES DEUX ». Elle rapportait les
+# communs à tout l'effectif, départs compris. En 2017, 76 % des élus étaient
+# nouveaux : `LES-REP` (XIVe) → `LR` (XVe) faisait 56 sur 120, sous la moitié,
+# alors que 86 % des réélus de `LES-REP` sont allés à `LR` et que 100 % des
+# anciens de `LR` en venaient. Ne compter que ceux qui pouvaient passer annule
+# le renouvellement des deux côtés. Mesuré sur les XVe → XVIIe : les 16 liens
+# publiés sont tous entre 86 et 100 %, le plus haut couple écarté à 57 %.
+# → `docs/decisions/filiation-par-les-reelus-1328.md`
+#
+# La règle de la moitié reste celle du RENOMMAGE dans une législature
+# (`audit_filiation_lignees.atteint_le_seuil`) : deux organes contigus n'ont pas
+# de renouvellement à neutraliser.
+SEUIL_FILIATION_NUMERATEUR = 3
+SEUIL_FILIATION_DENOMINATEUR = 5
+#: Le plancher de personnes communes : en dessous, un lien tient à trop peu de
+#: gens pour dire la suite d'un groupe (`EDS` → `ECOLO`, 3 personnes à 86 %).
+PLANCHER_COMMUNS_FILIATION = 5
 
-    `False` sans mesure, ou sur une base nulle : un lien qu'on n'a pas pu
-    mesurer ne se publie pas comme mesuré (§2 règle 5).
+
+def filiation_atteinte(communs: Any, reelus: Any, anciens: Any) -> Optional[bool]:
+    """Le couple passe-t-il la règle de #1328 ? `None` quand il ne se mesure pas.
+
+    Un côté sans réélu ou sans ancien n'est pas « 0 % » : personne ne pouvait
+    passer, et la question ne se pose pas (§2 règle 5).
+    """
+    if not all(isinstance(v, int) for v in (communs, reelus, anciens)):
+        return None
+    if reelus <= 0 or anciens <= 0:
+        return None
+    score = (
+        2 * communs * SEUIL_FILIATION_DENOMINATEUR
+        >= SEUIL_FILIATION_NUMERATEUR * (reelus + anciens)
+    )
+    return score and communs >= PLANCHER_COMMUNS_FILIATION
+
+
+def mesure_de_filiation(
+    avant: set[str], apres: set[str], legislature_suivante: set[str], legislature_precedente: set[str],
+) -> dict[str, int]:
+    """`{communs, reelus, anciens}` d'un couple de groupes.
+
+    `legislature_suivante` : toutes les personnes qui siègent dans un groupe de
+    la législature d'arrivée ; `legislature_precedente` : dans un groupe de celle
+    de départ. Les non-inscrits n'y sont pas — ils ne sont pas un groupe.
+    """
+    return {
+        "communs": len(avant & apres),
+        "reelus": len(avant & legislature_suivante),
+        "anciens": len(apres & legislature_precedente),
+    }
+
+
+def mesure_soutient_le_lien(mesure: Optional[dict[str, Any]]) -> bool:
+    """La mesure d'un lien passe-t-elle la règle de filiation ?
+
+    Deux formes, parce que la table du run publiée avant #1328 porte encore
+    l'ancienne jusqu'à ce qu'un run la réécrive : `{communs, reelus, anciens}`
+    (règle de #1328) et `{communs, base}` (la moitié du plus petit des deux, la
+    règle sous laquelle elle a été écrite). `False` sans mesure ou sur une
+    mesure impossible : un lien qu'on n'a pas pu mesurer ne se publie pas comme
+    mesuré (§2 règle 5).
     """
     if not isinstance(mesure, dict):
         return False
-    communs, base = mesure.get("communs"), mesure.get("base")
+    communs = mesure.get("communs")
+    if "reelus" in mesure or "anciens" in mesure:
+        return bool(filiation_atteinte(communs, mesure.get("reelus"), mesure.get("anciens")))
+    base = mesure.get("base")
     if not (isinstance(communs, int) and isinstance(base, int)) or base <= 0:
         return False
     return 2 * communs >= base

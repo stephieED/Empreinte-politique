@@ -366,13 +366,76 @@ const SECTIONS = [
     heading: 'Une fiche par groupe, sur toute son histoire',
     body: (
       <>
+        {/* LA FILIATION SE MESURE DES DEUX CÔTÉS (#1328, arbitré le 22/10/2026).
+            Texte et tableau écrits avec la propriétaire. « Combinées » et non
+            « moyenne » : le calcul (`groupes_config.filiation_atteinte`) est une
+            moyenne harmonique, et une moyenne ordinaire donnerait 65 % au lieu
+            de 47 % pour le Rassemblement-UMP, donc un lien que le site ne fait
+            pas. Les chiffres des deux exemples viennent de
+            `audit_filiation_lignees.py`, archive AMO30 du 19/10/2026.
+            → `docs/decisions/filiation-par-les-reelus-1328.md` */}
         <p>
-          L'Assemblée ouvre et ferme des groupes à chaque législature ; elle ne dit pas lequel
-          succède à lequel. La fiche réunit les <strong>groupes successifs</strong> d'une même
-          formation — « Nouvelle Gauche », puis « Socialistes et apparentés » sous trois
-          législatures. Pour relier deux groupes d'une législature à la suivante, Empreinte
-          politique <strong>compare leurs membres</strong> : un groupe prend la suite d'un autre
-          quand plus de la moitié des députés du plus petit des deux se retrouvent dans l'autre.
+          L'Assemblée nationale remet les compteurs à zéro à chaque nouvelle législature : les
+          anciens groupes sont fermés et de nouveaux sont créés, sans lien officiel de succession.
+        </p>
+        <p>
+          Pour reconstituer leur fil conducteur, nous regardons la continuité de leurs membres :
+        </p>
+        <div className="static-tableau">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Critère</th>
+                <th scope="col">Métrique</th>
+                <th scope="col">Résultat</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Les réélus de l'ancien groupe sont-ils restés ensemble ?</td>
+                <td>Part des réélus de l'ancien groupe passés dans le nouveau</td>
+                <td>Si l'ancien groupe s'est dispersé, cette part est faible</td>
+              </tr>
+              <tr>
+                <td>
+                  Les députés du nouveau groupe qui étaient déjà députés sous la précédente
+                  législature étaient-ils déjà dans un même groupe ?
+                </td>
+                <td>Part de ces députés venus de l'ancien groupe</td>
+                <td>
+                  Si le nouveau groupe est constitué de députés qui étaient dispersés, cette part
+                  est faible
+                </td>
+              </tr>
+              <tr>
+                <td>Combinaison des deux</td>
+                <td>
+                  Les 2 parts combinées ≥&nbsp;60&nbsp;% <strong>et</strong> au moins 5 députés communs
+                </td>
+                <td>
+                  Le nouveau groupe est essentiellement constitué de l'ancien et l'ancien ne s'est
+                  pas dispersé
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Le groupe socialiste et la Nouvelle Gauche, en 2017 : sur 55 socialistes réélus, 28
+          seulement ont rejoint la Nouvelle Gauche, et 26 sont partis à La République en marche
+          (première part : 51&nbsp;%). Mais les 28 anciens députés de la Nouvelle Gauche venaient tous
+          du groupe socialiste (seconde part : 100&nbsp;%). Combinées, les deux parts font 67&nbsp;% : la
+          Nouvelle Gauche prend la suite du groupe socialiste.
+        </p>
+        <p>
+          Le Rassemblement-UMP et Les Républicains, en 2017 : les 17 députés du Rassemblement-UMP
+          sont tous allés chez LR (première part : 100&nbsp;%), mais LR comptait 56 anciens députés,
+          dont 39 venus d'ailleurs, essentiellement de l'UMP (seconde part : 30&nbsp;%). Combinées, les
+          deux parts font 47&nbsp;% : LR ne prend pas la suite du Rassemblement-UMP.
+        </p>
+        <p>
+          Ce principe permet de relier automatiquement des groupes dont le nom a changé au fil des
+          ans, comme l'évolution du groupe Socialiste depuis 2012.
         </p>
         <p>
           Le graphique en tête de fiche trace le nombre de membres jour par jour, depuis les dates

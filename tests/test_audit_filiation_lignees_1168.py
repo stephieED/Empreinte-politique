@@ -97,11 +97,13 @@ def test_la_base_est_le_plus_petit_des_deux():
 
 
 def test_un_lien_declare_que_la_composition_ne_soutient_pas_est_un_ecart():
-    index = _index({"PO1": ("A", "15", 0, 20), "PO2": ("A", "16", 15, 35)})
+    """Quatre personnes passent : sous le plancher de #1328, quoi qu'en dise le score."""
+    index = _index({"PO1": ("A", "15", 0, 20), "PO2": ("A", "16", 16, 36)})
     entrees = [_entree("A", "15", ["A"]), _entree("A", "16", ["A"], ["AN:A:15"])]
     rapport = audit.auditer_filiation(index, entrees)
     lien, = rapport["liens_non_retrouves"]
-    assert (lien["communs"], lien["base"]) == (5, 20)
+    assert (lien["communs"], lien["reelus"], lien["anciens"]) == (4, 4, 4)
+    assert lien["regle"] == "filiation"
     assert lien["sigle_publie_identique"] is True
     assert rapport["ecarts"] == 1
 
@@ -109,7 +111,7 @@ def test_un_lien_declare_que_la_composition_ne_soutient_pas_est_un_ecart():
 def test_le_sigle_identique_passe_devant_sans_exempter():
     """Deux liens ratés : celui que personne ne rouvrirait est listé le premier."""
     index = _index({
-        "PO1": ("A", "15", 0, 20), "PO2": ("B", "16", 15, 35),
+        "PO1": ("A", "15", 0, 20), "PO2": ("B", "16", 16, 36),
         "PO3": ("C", "15", 100, 120), "PO4": ("C", "16", 119, 139),
     })
     entrees = [
@@ -130,9 +132,10 @@ def test_un_couple_au_dessus_du_seuil_et_non_declare_est_un_ecart():
 
 
 def test_tous_les_couples_qui_passent_sont_retenus_pas_seulement_le_meilleur():
-    """Une fusion : deux groupes de départ se retrouvent dans le même groupe d'arrivée."""
+    """Une fusion : deux groupes de départ se retrouvent dans le même groupe
+    d'arrivée, chacun pour moitié — 2×15/(15+30) = 67 % des deux côtés (#1328)."""
     index = _index({
-        "PO1": ("A", "15", 0, 20), "PO2": ("B", "15", 20, 30), "PO3": ("C", "16", 0, 30),
+        "PO1": ("A", "15", 0, 15), "PO2": ("B", "15", 15, 30), "PO3": ("C", "16", 0, 30),
     })
     entrees = [
         _entree("A", "15", ["A"]), _entree("B", "15", ["B"]), _entree("C", "16", ["C"]),
@@ -229,11 +232,11 @@ def test_la_table_committee_et_la_composition_disent_la_meme_chose(rapport_reel)
     assert rapport_reel["candidats_non_declares"] == []
 
 
-def test_les_liens_partant_de_la_xve_sont_non_mesurables_sur_l_archive_reduite(rapport_reel):
-    """L'archive réduite ne porte aucun mandat de la XVe : dit, jamais lu comme 0 %."""
+def test_les_liens_partant_des_xive_et_xve_sont_non_mesurables_sur_l_archive_reduite(rapport_reel):
+    """L'archive réduite ne porte aucun mandat des XIVe et XVe : dit, jamais lu comme 0 %."""
     non_mesurables = rapport_reel["non_mesurables"]
     assert non_mesurables
-    assert all(l["depart"].endswith(":15") for l in non_mesurables)
+    assert all(l["depart"].endswith((":14", ":15")) for l in non_mesurables)
 
 
 def test_aucun_taux_sans_son_decompte(rapport_reel):
@@ -256,7 +259,7 @@ def test_la_commande_rend_0_quand_rien_ne_diverge(capsys):
 def test_la_commande_rend_un_json_relisible(capsys):
     assert audit.main(["--archive", str(ARCHIVE), "--config", str(CONFIG), "--json"]) == 0
     rapport = json.loads(capsys.readouterr().out)
-    assert rapport["seuil"] == "1/2"
+    assert rapport["seuil"] == "filiation : 3/5, au moins 5 communs ; renommage : 1/2"
 
 
 def test_une_archive_nommee_n_ecrit_pas_dans_le_cache(tmp_path, monkeypatch):

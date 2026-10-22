@@ -164,13 +164,16 @@ def test_une_lignee_est_ce_que_les_filiations_relient():
     })
     derivation = groupes_amo30.deriver(index)
     assert derivation["lignees"] == [["PO1", "PO2", "PO3"], ["PO4"]]
-    assert [(l["depart"], l["arrivee"], l["communs"], l["base"]) for l in derivation["filiations"]] == [
-        ("PO1", "PO2", 20, 20), ("PO2", "PO3", 15, 20),
+    # #1328 : communs, réélus du départ, anciens de l'arrivée.
+    assert [(l["depart"], l["arrivee"], l["communs"], l["reelus"], l["anciens"])
+            for l in derivation["filiations"]] == [
+        ("PO1", "PO2", 20, 20, 20), ("PO2", "PO3", 15, 15, 15),
     ]
 
 
 def test_la_filiation_se_mesure_sur_le_groupe_renomme_entier():
-    """`NG` puis `SOC` : pris séparément, `NG` raterait le lien vers la législature suivante."""
+    """`NG` puis `SOC` : le lien part du groupe, ses deux organes réunis — un
+    seul lien, jamais un par organe."""
     index = _index({
         "PO1": ("NG", "15", "2017-06-27", "2018-09-11", 0, 30),
         "PO2": ("SOC", "15", "2018-09-12", "2022-06-21", 2, 36),
@@ -179,16 +182,53 @@ def test_la_filiation_se_mesure_sur_le_groupe_renomme_entier():
     derivation = groupes_amo30.deriver(index)
     assert derivation["lignees"] == [["PO1", "PO3"]]
     lien, = derivation["filiations"]
-    assert (lien["communs"], lien["base"]) == (16, 30)
+    assert (lien["communs"], lien["reelus"], lien["anciens"]) == (16, 16, 16)
 
 
 def test_une_fusion_relie_deux_groupes_a_la_meme_lignee():
+    """Deux groupes de 15 qui n'en font qu'un de 30 : chacun en apporte la
+    moitié, 2×15/(15+30) = 67 % — les deux liens passent."""
+    index = _index({
+        "PO1": ("A", "15", "2017-06-27", "2022-06-21", 0, 15),
+        "PO2": ("B", "15", "2017-06-27", "2022-06-21", 15, 30),
+        "PO3": ("C", "16", "2022-06-28", None, 0, 30),
+    })
+    assert groupes_amo30.deriver(index)["lignees"] == [["PO1", "PO2", "PO3"]]
+
+
+def test_un_apport_minoritaire_ne_fait_pas_une_filiation():
+    """#1328 : la règle mesure aussi d'où vient le successeur. Un groupe de 10
+    qui rejoint un groupe de 20 n'en est qu'un tiers — 2×10/(10+30) = 50 %, sous
+    les 60 %. `SER` → `LAREM` (2017) est ce cas : 26 socialistes partis, une
+    scission, pas une continuation."""
     index = _index({
         "PO1": ("A", "15", "2017-06-27", "2022-06-21", 0, 20),
         "PO2": ("B", "15", "2017-06-27", "2022-06-21", 20, 30),
         "PO3": ("C", "16", "2022-06-28", None, 0, 30),
     })
-    assert groupes_amo30.deriver(index)["lignees"] == [["PO1", "PO2", "PO3"]]
+    assert groupes_amo30.deriver(index)["lignees"] == [["PO1", "PO3"], ["PO2"]]
+
+
+def test_le_plancher_ecarte_un_lien_de_quatre_personnes():
+    """#1328 : quatre personnes passées d'un groupe à l'autre font 100 % des
+    deux côtés, mais ne disent pas la suite d'un groupe."""
+    index = _index({
+        "PO1": ("A", "15", "2017-06-27", "2022-06-21", 0, 4),
+        "PO2": ("A", "16", "2022-06-28", None, 0, 20),
+    })
+    assert groupes_amo30.deriver(index)["filiations"] == []
+
+
+def test_le_renouvellement_ne_penalise_plus_la_filiation():
+    """Le cas de 2017 (#1328) : un groupe de 40 dont 30 quittent l'Assemblée, et
+    les 10 réélus forment un groupe de 30 avec 20 nouveaux. La moitié du plus
+    petit des deux (10 sur 30) l'écartait ; 100 % des réélus, 100 % des anciens."""
+    index = _index({
+        "PO1": ("A", "15", "2017-06-27", "2022-06-21", 0, 40),
+        "PO2": ("A", "16", "2022-06-28", None, 30, 60),
+    })
+    lien, = groupes_amo30.deriver(index)["filiations"]
+    assert (lien["communs"], lien["reelus"], lien["anciens"]) == (10, 10, 10)
 
 
 def test_un_groupe_sans_membre_connu_n_entre_dans_aucun_lien():
@@ -229,9 +269,13 @@ def test_les_champs_ecrits_a_la_main_sont_ceux_que_la_source_donne(comparaison):
     assert comparaison["renommages_ambigus"] == []
 
 
-def test_les_entrees_de_la_xve_sont_laissees_de_cote_et_comptees(comparaison):
-    xve = sum(1 for e in charger_correspondance_sigles(CONFIG) if e["legislature"] == "15")
-    assert xve and comparaison["entrees_hors_legislatures"] == xve
+def test_les_entrees_des_xive_et_xve_sont_laissees_de_cote_et_comptees(comparaison):
+    """L'archive réduite ne porte que les XVIe et XVIIe : les entrées des XIVe
+    (#1328) et XVe sont hors de la comparaison, et comptées."""
+    anterieures = sum(
+        1 for e in charger_correspondance_sigles(CONFIG) if e["legislature"] in ("14", "15")
+    )
+    assert anterieures and comparaison["entrees_hors_legislatures"] == anterieures
 
 
 # ---------------------------------------------------------------------------

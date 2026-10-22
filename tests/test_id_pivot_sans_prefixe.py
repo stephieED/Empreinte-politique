@@ -47,11 +47,13 @@ def _brut(chambre: str = "deputes") -> dict:
     (`"deputes"` / `"senateurs"`), pas la chambre pivot : c'est exactement le
     champ dont le préfixe dérivait.
     """
-    domaine = "nosdeputes" if chambre == "deputes" else "nossenateurs"
     return {
         "slug": "marie-martin",
         "chambre": chambre,
-        "source": f"https://www.{domaine}.fr/marie-martin",
+        # #1310 — l'URL qu'écrit la collecte depuis #529 (relevée sur
+        # `raw_data/profiles/gabriel-attal.json`). Une URL NosDéputés n'est plus
+        # typée `assemblee_nationale` : elle ne pointe pas vers l'Assemblée.
+        "source": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA123456",
         "identite": {
             "nom_complet": "Marie Martin",
             "groupe_sigle": "SOC",

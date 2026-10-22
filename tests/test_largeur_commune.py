@@ -5,8 +5,9 @@ faite : l'accueil 1 600 px collé à gauche, les pages du site 900 ou 1 180 px,
 les fiches 1 100 px, à gauche ou centrées selon la fiche. Sur un grand écran,
 le lecteur voyait six mises en page.
 
-La largeur vit désormais dans deux jetons de `src/index.css` : `--colonne`
-(la page) et `--mesure` (une ligne de texte courant). Ce que ces garde-fous
+La largeur vit désormais dans un jeton de `src/index.css` : `--colonne`
+(la page) ; `--mesure` (80 caractères de texte courant) est retiré le
+22/10/2026 : le texte des pages de texte occupe toute sa carte. Ce que ces garde-fous
 protègent, pour les pages d'aujourd'hui et celles qui viendront :
 
 1. **Aucune feuille de style ne fixe une largeur de page à elle** — ni
@@ -54,10 +55,9 @@ def regle(css: str, selecteur: str) -> str:
     return m.group(1)
 
 
-def test_la_largeur_vit_dans_deux_jetons() -> None:
+def test_la_largeur_vit_dans_un_jeton() -> None:
     css = (SRC / "index.css").read_text(encoding="utf-8")
     assert jeton("--colonne", css) == "1600px"
-    assert jeton("--mesure", css) == "80ch"
 
 
 def test_aucune_page_ne_fixe_sa_largeur() -> None:
@@ -84,8 +84,17 @@ def test_les_trois_cadres_lisent_la_colonne() -> None:
     for fichier, selecteur in attendus.items():
         corps = regle((SRC / fichier).read_text(encoding="utf-8"), selecteur)
         assert "var(--colonne)" in corps, f"{selecteur} ({fichier}) ne lit plus --colonne"
-    texte = regle((SRC / "components/StaticPage.css").read_text(encoding="utf-8"), ".static-main :is(p, li)")
-    assert "var(--mesure)" in texte
+
+
+def test_le_texte_des_pages_de_texte_occupe_sa_carte() -> None:
+    """Arbitré le 22/10/2026 : le texte des pages de texte n'est plus borné à 80
+    caractères, il prend la largeur de sa carte comme sur l'accueil et les
+    fiches. Une borne en `ch` revenue dans ces feuilles ferait réapparaître la
+    marge droite que la propriétaire a relevée sur /methodologie."""
+    for fichier in ("components/StaticPage.css", "pages/CoveragePage.css"):
+        css = sans_commentaires((SRC / fichier).read_text(encoding="utf-8"))
+        assert not re.search(r"max-width\s*:\s*[\d.]+ch", css), f"{fichier} borne encore le texte en caractères"
+    assert "--mesure" not in sans_commentaires((SRC / "index.css").read_text(encoding="utf-8"))
 
 
 def test_toute_page_routee_passe_par_un_cadre() -> None:

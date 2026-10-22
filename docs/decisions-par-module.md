@@ -45,13 +45,12 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/budget_collecte.py` | 3 |
 | `src/json_io.py` | 3 |
 | `src/purge_mandats_dupliques.py` | 3 |
+| `src/textes_promulgues.py` | 3 |
 | `src/audit_gouvernement_dataset.py` | 2 |
 | `src/avertissements.py` | 2 |
 | `src/fetch_candidats_declares.py` | 2 |
 | `src/mandats_anterieurs.py` | 2 |
-| `src/textes_promulgues.py` | 2 |
 | `src/titres_europeens.py` | 2 |
-| `src/audit_filiation_lignees.py` | 1 |
 | `src/cache_an_fraicheur.py` | 1 |
 | `src/candidate_profile_ue.py` | 1 |
 | `src/collecte_mandats_locaux.py` | 1 |
@@ -85,7 +84,7 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | [Un acte publie les lois qu'il applique et celles qu'il cite, et ces liens se corrigent après coup (2026-09-23)](decisions/liens-des-actes-vers-les-lois.md) | `corriger_les_liens` |
 | [La rubrique du Journal officiel se lit dans le conteneur, et ne se devine pas dans les titres (#1134) (2026-09-25)](decisions/rubrique-du-journal-officiel-1134.md) | `MOIS_RELUS`, `rubriques_du_conteneur` |
 
-Le mentionnent sans le gouverner : [`actes-reglementaires-du-journal-officiel-1029`](decisions/actes-reglementaires-du-journal-officiel-1029.md), [`etalement-disque-index-de-mots-1121`](decisions/etalement-disque-index-de-mots-1121.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
+Le mentionnent sans le gouverner : [`actes-reglementaires-du-journal-officiel-1029`](decisions/actes-reglementaires-du-journal-officiel-1029.md), [`etalement-disque-index-de-mots-1121`](decisions/etalement-disque-index-de-mots-1121.md), [`legislatures-et-dossiers-par-objet-1314`](decisions/legislatures-et-dossiers-par-objet-1314.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
 
 ## `src/alerte_votes_sans_dossier.py`
 
@@ -120,7 +119,7 @@ Le mentionnent sans le gouverner : [`fiche-de-lignee-836`](decisions/fiche-de-li
 
 ## `src/an_roster.py`
 
-15 décision(s) le gouvernent ; le module en cite 3.
+16 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -129,6 +128,7 @@ Le mentionnent sans le gouverner : [`fiche-de-lignee-836`](decisions/fiche-de-li
 | [`debut_dans_groupe` se lit sur le mandat de groupe, plus sur le premier mandat électif (#653) (2026-08-31)](decisions/dates-appartenance-groupe-653.md) | `deriver_membres_organes`, `organes_du_groupe` |
 | [L'effectif d'un groupe dans le temps : `min_historique` et `max_historique` portent leur date (#702) — 01/09/2026](decisions/effectif-du-groupe-dans-le-temps-702.md) | `_fusionner_periodes` |
 | [Une entrée dérivée gèle un slug fabriqué, elle ne prouve plus rien (#715) (2026-09-02)](decisions/entree-derivee-correspondance-715.md) | `resoudre_slugs` |
+| [Les fiches de groupe s'ouvrent à la XIVe : sept groupes, quatre rattachés à leur lignée (#1328, 2026-10-22)](decisions/fiches-de-groupe-xive-1328.md) | `resoudre_slugs` |
 | [Les lignées MoDem, Horizons et LIOT, et un tri qui plantait sur un seul député (#815)](decisions/lignees-modem-horizons-liot-815.md) | `deriver_roster_groupe`, `fusionner_intervalles` |
 | [Les députés non inscrits sont publiés comme une liste, pas comme un groupe (#1265)](decisions/liste-des-deputes-non-inscrits-1265.md) | `SIGLE_NON_INSCRIT`, `date_constitution_groupes`, `est_mandat_de_transit` |
 | [L'appartenance publiée cesse d'être une enveloppe (#809)](decisions/periodes-appartenance-809.md) | `_fusionner_periodes` |
@@ -181,11 +181,12 @@ Le mentionnent sans le gouverner : [`amendements-par-appartenance-1175`](decisio
 
 ## `src/audit_filiation_lignees.py`
 
-1 décision(s) le gouvernent ; le module en cite 0.
+2 décision(s) le gouvernent ; le module en cite 1.
 
 | Décision | Nomme |
 | --- | --- |
 | [Un audit propose les filiations de groupe, et la table reste écrite à la main (#1168)](decisions/audit-de-filiation-des-lignees-1168.md) | `SEUIL_DENOMINATEUR`, `SEUIL_NUMERATEUR`, `auditer_filiation`, `rapport_filiation` |
+| [Deux groupes se suivent quand les réélus de l'un font l'autre : la filiation se mesure sur ceux qui pouvaient passer (#1328, 2026-10-22)](decisions/filiation-par-les-reelus-1328.md) | `atteint_le_seuil`, `mesurer_couple` |
 
 ## `src/audit_gouvernement_dataset.py`
 
@@ -387,7 +388,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 
 ## `src/candidate_profile.py`
 
-108 décision(s) le gouvernent ; le module en cite 14.
+109 décision(s) le gouvernent ; le module en cite 14.
 
 | Décision | Nomme |
 | --- | --- |
@@ -470,6 +471,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [Parallèle RAM entre l'exécution locale et les runners GitHub Actions hébergés, diagnostic ajouté (2026-08-17)](decisions/parallele-oom-local-runner-ci.md) | `build_profile`, `fetch_amendements_officiels` |
 | [Une prise de parole dont le libellé nomme une autre personne n'est pas attribuée (#1177) (2026-10-07)](decisions/parole-d-une-autre-personne-1177.md) | `SYCERON_VERSION_INDEX`, `_normaliser_orateur_id_syceron`, `libelle_designe_une_autre_personne` |
 | [La place d'un député dans l'hémicycle se lit dans l'archive de sa législature (#1317)](decisions/place-hemicycle-par-legislature-1317.md) | `ARCHIVES_AMO30_FIGEES`, `NOM_INDEX_PLACES_HEMICYCLE`, `SOUS_REPERTOIRE_AMO30_FIGEES`, `_build_acteur_identite_index`, `_build_index_places_hemicycle`, `_ensure_archive_amo30_figee`, `build_profile`, `resoudre_place_hemicycle` |
+| [Les places de la XIVe se lisent dans le fichier du site de l'Assemblée, à l'état du 20/06/2017 (#1326)](decisions/places-xive-fichier-du-site-1326.md) | `FICHIERS_PLACES_SITE_AN`, `_places_par_mandat_site_an`, `_telecharger_source_figee`, `legislatures_avec_places_hemicycle` |
 | [Les archives figées se demandent en plage sans borne, la législature en cours garde ses segments (#1123) (2026-09-24)](decisions/plage-sans-borne-archives-figees-1123.md) | `AMENDEMENTS_DOWNLOAD_CHUNK_BYTES`, `AMENDEMENTS_DOWNLOAD_CHUNK_BYTES_FIGEES`, `_telecharger_flux` |
 | [La preuve d'une entrée de couverture peut citer un champ, une constante ou une issue (#1160) (2026-10-07)](decisions/preuve-de-couverture-reste-technique-1160.md) | `AN_SCRUTINS_LEGISLATURES` |
 | [Un code de nomenclature n'est pas une profession, et « sans activité professionnelle » n'en est pas une (#641) (2026-08-31)](decisions/profession-code-nomenclature-641.md) | `_profession_an` |
@@ -602,6 +604,10 @@ Le mentionnent sans le gouverner : [`couverture-remplacee-par-liste-602`](decisi
 
 Le mentionnent sans le gouverner : [`dila-et-amo30-en-jobs-1129`](decisions/dila-et-amo30-en-jobs-1129.md), [`domaines-eurovoc-familles-oeil-901`](decisions/domaines-eurovoc-familles-oeil-901.md), [`index-reecrits-seulement-si-le-contenu-change-1075`](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md), [`matieres-eurovoc-documents-901`](decisions/matieres-eurovoc-documents-901.md).
 
+## `src/dossiers_an.py`
+
+Le mentionnent sans le gouverner : [`archive-dossiers-xiv-1019`](decisions/archive-dossiers-xiv-1019.md), [`budget-collecte-interventions`](decisions/budget-collecte-interventions.md), [`cache-cle-amendements-separee`](decisions/cache-cle-amendements-separee.md), [`cle-index-textes-portes-997`](decisions/cle-index-textes-portes-997.md), [`concurrence-shards-extraction-412`](decisions/concurrence-shards-extraction-412.md), [`dossier-des-amendements-639`](decisions/dossier-des-amendements-639.md), [`dossiers-legislatifs-sous-le-formulaire-817`](decisions/dossiers-legislatifs-sous-le-formulaire-817.md), [`fraicheur-dossiers-762`](decisions/fraicheur-dossiers-762.md), [`gouvernement-ci-integration`](decisions/gouvernement-ci-integration.md), [`gouvernement-textes-non-ecrasement`](decisions/gouvernement-textes-non-ecrasement.md), [`legislatures-et-dossiers-par-objet-1314`](decisions/legislatures-et-dossiers-par-objet-1314.md), [`rattachement-scrutin-dossier-758`](decisions/rattachement-scrutin-dossier-758.md).
+
 ## `src/dossiers_europeens.py`
 
 7 décision(s) le gouvernent ; le module en cite 3.
@@ -678,7 +684,7 @@ Le mentionnent sans le gouverner : [`collecte-interventions-reduite-au-theme-657
 
 ## `src/generate_all_profiles.py`
 
-29 décision(s) le gouvernent ; le module en cite 3.
+30 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -710,6 +716,7 @@ Le mentionnent sans le gouverner : [`collecte-interventions-reduite-au-theme-657
 | [Le Sénat sort du périmètre, et le job qui concluait vert sans rien produire est retiré (#528, lot 3 de l'épic « une seule source AN ») (2026-08-26)](decisions/retrait-senat-528.md) | `SOURCE_VALUES` |
 | [Un seul roster par run, une reprise sur ce qui est retentable, et des échecs qu'on peut lire (#518) (2026-08-24)](decisions/roster-unique-par-run-518.md) | `_annoter_github` |
 | [Un run de test : même workflow, périmètre réduit, jamais de commit (#792)](decisions/run-de-test-perimetre-reduit-792.md) | `_normaliser_en_pivot` |
+| [L'attestation d'une candidature n'est pas une source de données, et les mandats locaux déclarent la leur (#1310, 2026-10-22)](decisions/source-de-la-candidature-et-mandats-locaux-1310.md) | `_verser_mandats_locaux`, `build_minimal_profile` |
 | [Régénérer l'existant : `--refresh-existing`, l'inverse de `--skip-existing` (#445) (2026-08-19)](decisions/telechargement-an-trois-modes-defaillance.md) | `_select_candidats_couverture` |
 
 Le mentionnent sans le gouverner : [`amendements-legislatures-figees`](decisions/amendements-legislatures-figees.md), [`chambres-profil-derivees`](decisions/chambres-profil-derivees.md), [`cle-fusion-interventions-540`](decisions/cle-fusion-interventions-540.md), [`collecte-vs-publie-545`](decisions/collecte-vs-publie-545.md), [`consommateurs-chambres-migres`](decisions/consommateurs-chambres-migres.md), [`id-pivot-sans-prefixe`](decisions/id-pivot-sans-prefixe.md), [`integrite-referentielle-pivot`](decisions/integrite-referentielle-pivot.md), [`libelles-formulaire`](decisions/libelles-formulaire.md), [`licence-lot-6-530`](decisions/licence-lot-6-530.md), [`licences`](decisions/licences.md), [`limit-sample`](decisions/limit-sample.md), [`liste-candidats-declares-753`](decisions/liste-candidats-declares-753.md), [`marquage-tranches-derivees-691`](decisions/marquage-tranches-derivees-691.md), [`mode-extraction-leger-roster`](decisions/mode-extraction-leger-roster.md), [`normalisation-amendements`](decisions/normalisation-amendements.md), [`normalisation-votes`](decisions/normalisation-votes.md), [`oom-reconstruction-amendements-figees`](decisions/oom-reconstruction-amendements-figees.md), [`partition-profils-legislature-580`](decisions/partition-profils-legislature-580.md), [`perimetre-collecte-candidatures-declinees-760`](decisions/perimetre-collecte-candidatures-declinees-760.md), [`pivot-freshness-timestamps-stables`](decisions/pivot-freshness-timestamps-stables.md), [`place-hemicycle-par-legislature-1317`](decisions/place-hemicycle-par-legislature-1317.md), [`provenance-pivot`](decisions/provenance-pivot.md), [`publication-scopee-artifacts`](decisions/publication-scopee-artifacts.md), [`reconstruction-tranches-depuis-archive-691`](decisions/reconstruction-tranches-depuis-archive-691.md), [`retry-generate-data-preemption`](decisions/retry-generate-data-preemption.md), [`sparse-checkout-extract-an-674`](decisions/sparse-checkout-extract-an-674.md), [`workers-fige-a-1`](decisions/workers-fige-a-1.md).
@@ -917,11 +924,13 @@ Le mentionnent sans le gouverner : [`cloisonnement-branche-roster-524`](decision
 
 ## `src/groupes_amo30.py`
 
-4 décision(s) le gouvernent ; le module en cite 3.
+6 décision(s) le gouvernent ; le module en cite 4.
 
 | Décision | Nomme |
 | --- | --- |
 | [Les groupes ajoutés par le run : depuis 2017, sous le dernier nom de l'Assemblée et son sigle tel quel (#1168)](decisions/borne-noms-et-sigles-des-groupes-ajoutes-1168.md) | `mettre_a_jour_table`, `suivre_le_dernier_nom` |
+| [Les fiches de groupe s'ouvrent à la XIVe : sept groupes, quatre rattachés à leur lignée (#1328, 2026-10-22)](decisions/fiches-de-groupe-xive-1328.md) | `mettre_a_jour_table` |
+| [Deux groupes se suivent quand les réélus de l'un font l'autre : la filiation se mesure sur ceux qui pouvaient passer (#1328, 2026-10-22)](decisions/filiation-par-les-reelus-1328.md) | `deriver_filiations`, `mesurer_liens` |
 | [Un lien entre groupes se publie « établi par comparaison des membres », et seulement s'il est mesuré (#1168, lot 3)](decisions/lien-etabli-par-comparaison-1168.md) | `mesurer_liens` |
 | [La table des groupes du run : composée à chaque run, dans `raw_data/` (#1168, lot 2c)](decisions/table-des-groupes-du-run-1168.md) | `composer_table`, `mettre_a_jour_table` |
 | [La table des groupes se met à jour depuis AMO30, sans réécrire ce qui est nommé (#1168, lot 2a)](decisions/table-des-groupes-mise-a-jour-depuis-amo30-1168.md) | `mettre_a_jour_table` |
@@ -930,7 +939,7 @@ Le mentionnent sans le gouverner : [`derivation-des-groupes-depuis-amo30-1168`](
 
 ## `src/groupes_config.py`
 
-10 décision(s) le gouvernent ; le module en cite 3.
+11 décision(s) le gouvernent ; le module en cite 4.
 
 | Décision | Nomme |
 | --- | --- |
@@ -940,6 +949,7 @@ Le mentionnent sans le gouverner : [`derivation-des-groupes-depuis-amo30-1168`](
 | [Corriger là où un champ est jeté ne suffit pas : il faut trouver tous les endroits où l'objet est fabriqué (#901) (2026-09-14)](decisions/deux-fabriques-textes-portes-europeens-901.md) | `resume_suspension` |
 | [Suspendre l'extraction des deux groupes Sénat, sans les retirer de la config (#516) (2026-08-24)](decisions/extraction-groupe-suspendue-516.md) | `anomalies_suspension` |
 | [Les 5 groupes de la XVIIe entrent dans `groupes[]`, et leur succession est déclarée comme une relecture (#700) (2026-09-01)](decisions/fiches-groupe-17e-legislature-700.md) | `CorrespondanceSiglesInvalide`, `_valider_successions`, `charger_correspondance_sigles`, `libelle_groupe` |
+| [Deux groupes se suivent quand les réélus de l'un font l'autre : la filiation se mesure sur ceux qui pouvaient passer (#1328, 2026-10-22)](decisions/filiation-par-les-reelus-1328.md) | `filiation_atteinte`, `mesure_de_filiation` |
 | [Un lien entre groupes se publie « établi par comparaison des membres », et seulement s'il est mesuré (#1168, lot 3)](decisions/lien-etabli-par-comparaison-1168.md) | `succession_publiee` |
 | [`NG` et `SOC` de la XVe sont un seul groupe, et une fiche se retire par son nom (#1168, lot 2b)](decisions/ng-et-soc-un-seul-groupe-1168.md) | `charger_fiches_retirees` |
 | [La position politique d'un groupe est celle que l'Assemblée déclare, lue dans une table committée (#686) (2026-09-01)](decisions/position-politique-groupes-686.md) | `CHEMIN_CONFIG_GROUPES`, `CLE_CORRESPONDANCE_SIGLES`, `CorrespondanceSiglesInvalide`, `charger_correspondance_sigles`, `entree_correspondance`, `position_politique_publiee` |
@@ -967,7 +977,7 @@ Le mentionnent sans le gouverner : [`profils-json-compact`](decisions/profils-js
 
 ## `src/licences.py`
 
-6 décision(s) le gouvernent ; le module en cite 3.
+7 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -977,6 +987,7 @@ Le mentionnent sans le gouverner : [`profils-json-compact`](decisions/profils-js
 | [Le Parlement européen n'a qu'une licence dans ce dépôt : CC BY 4.0 (#983) (2026-09-16)](decisions/licence-parlement-europeen-cc-by-983.md) | `LICENCE_EUROPARL` |
 | [Le nettoyage fait, la clause ODbL ne tiendrait plus que par un marqueur, sur 475 profils (#839, lot C) (2026-09-12)](decisions/residus-source-retiree-839.md) | `licences_du_profil` |
 | [Un marqueur de provenance sans donnée derrière lui n'est plus une traçabilité, c'est une inexactitude (#890) (2026-09-13)](decisions/retrait-marqueur-regards-citoyens-deputes-890.md) | `appliquer_licence_donnees`, `licences_du_profil` |
+| [L'attestation d'une candidature n'est pas une source de données, et les mandats locaux déclarent la leur (#1310, 2026-10-22)](decisions/source-de-la-candidature-et-mandats-locaux-1310.md) | `LICENCE_RNE`, `est_url_assemblee` |
 
 Le mentionnent sans le gouverner : [`contact-et-comptes-publics-328`](decisions/contact-et-comptes-publics-328.md), [`licence-du-code-agpl-1032`](decisions/licence-du-code-agpl-1032.md), [`licences`](decisions/licences.md), [`nettoyage-sediment-839`](decisions/nettoyage-sediment-839.md), [`pages-statiques-methodologie-mentions-legales`](decisions/pages-statiques-methodologie-mentions-legales.md), [`partage-des-fiches-1033`](decisions/partage-des-fiches-1033.md), [`regles-par-domaine-737`](decisions/regles-par-domaine-737.md).
 
@@ -1015,7 +1026,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 
 ## `src/merge_profile.py`
 
-86 décision(s) le gouvernent ; le module en cite 5.
+88 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1075,6 +1086,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [Un champ d'identité publié ne meurt plus sans un run à perte déclarée (#601) (2026-08-30)](decisions/permanence-champs-identite-601.md) | `fusionner_identite` |
 | [`genere_le`/`synchro_le` des pivots ne doivent avancer que si le contenu change réellement (#343) (2026-08-16)](decisions/pivot-freshness-timestamps-stables.md) | `_pivot_content_fingerprint`, `merge_pivot_profile`, `preserve_stable_freshness_timestamps` |
 | [La place d'un député dans l'hémicycle se lit dans l'archive de sa législature (#1317)](decisions/place-hemicycle-par-legislature-1317.md) | `_mandat_key`, `_pivot_mandat_key`, `backfill_mandat_place_hemicycle` |
+| [Les places de la XIVe se lisent dans le fichier du site de l'Assemblée, à l'état du 20/06/2017 (#1326)](decisions/places-xive-fichier-du-site-1326.md) | `backfill_mandat_place_hemicycle` |
 | [Un fichier de progression dans un répertoire de données (#518, troisième incident) (2026-08-24)](decisions/point-de-sauvegarde-dans-les-profils-518.md) | `merge_raw_dirs` |
 | [Profils écrits en JSON compact, groupes et gouvernements indentés (#433) (2026-08-18)](decisions/profils-json-compact.md) | `_pivot_content_fingerprint`, `preserve_stable_freshness_timestamps` |
 | [Quelle source a rempli quel champ, et quand — un bloc à côté d'`identite` (#603) (2026-08-30)](decisions/provenance-par-champ-603.md) | `_accorder_hatvp`, `_composer_identite`, `_merge_pivot_sources`, `fusionner_identite` |
@@ -1096,6 +1108,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [La présidence de séance se distingue d'une prise de parole, et le corpus déjà écrit le reçoit (#1169) (2026-10-02)](decisions/role-de-seance-distingue-1169.md) | `reporter_faits_de_source`, `reporter_id_syceron` |
 | [Le groupe européen dit son sigle et ce que la source en dit, sans changer de catégorie (#863) (2026-09-12)](decisions/sigle-groupe-europeen-863.md) | `_mandat_key`, `backfill_mandat_organe_source` |
 | [Un texte porté dit ce qu'il est devenu, et son sort ne se déduit jamais de son stade (#743) (2026-09-06)](decisions/sort-des-textes-portes-743.md) | `_dossier_key`, `merge_dossier_records`, `merge_lists_by_key` |
+| [L'attestation d'une candidature n'est pas une source de données, et les mandats locaux déclarent la leur (#1310, 2026-10-22)](decisions/source-de-la-candidature-et-mandats-locaux-1310.md) | `_merge_pivot_sources`, `est_source_mal_typee` |
 | [Le sujet nettoyé d'une question européenne n'atteignait pas l'entrée déjà publiée (#980) (2026-09-16)](decisions/sujet-europeen-sans-boutons-a-la-fusion-980.md) | `backfill_sujet_europeen`, `backfill_sujet_seance`, `merge_dossier_records`, `merge_lists_by_key`, `merge_pivot_profile` |
 | [`synchro_sources` publie la dernière récupération réussie, et pas son origine (#600) (2026-08-30)](decisions/synchro-sources-derniere-recuperation-600.md) | `merge_raw_profile` |
 | [Régénérer l'existant : `--refresh-existing`, l'inverse de `--skip-existing` (#445) (2026-08-19)](decisions/telechargement-an-trois-modes-defaillance.md) | `merge_raw_dirs` |
@@ -1145,7 +1158,7 @@ Le mentionnent sans le gouverner : [`avertissements-europeens-reecrits-1161`](de
 
 ## `src/normalize_profil.py`
 
-13 décision(s) le gouvernent ; le module en cite 4.
+14 décision(s) le gouvernent ; le module en cite 4.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1162,6 +1175,7 @@ Le mentionnent sans le gouverner : [`avertissements-europeens-reecrits-1161`](de
 | [La qualification d'un scrutin et la clé de son dossier étaient lues puis jetées (#639, rangs 1 et 2)](decisions/qualification-scrutins-et-cle-dossier-639.md) | `_normalize_texte_porte` |
 | [Restaurer 789 interventions sans revenir sur le reste du schéma (#460) (2026-08-19)](decisions/restauration-interventions.md) | `_normalize_intervention` |
 | [Un marqueur de provenance sans donnée derrière lui n'est plus une traçabilité, c'est une inexactitude (#890) (2026-09-13)](decisions/retrait-marqueur-regards-citoyens-deputes-890.md) | `_SOURCE_TYPE_PROFIL_FR` |
+| [L'attestation d'une candidature n'est pas une source de données, et les mandats locaux déclarent la leur (#1310, 2026-10-22)](decisions/source-de-la-candidature-et-mandats-locaux-1310.md) | `_SOURCE_TYPE_PROFIL_FR` |
 
 Le mentionnent sans le gouverner : [`civilite-et-pcs-insee-659`](decisions/civilite-et-pcs-insee-659.md), [`collecte-interventions-reduite-au-theme-657`](decisions/collecte-interventions-reduite-au-theme-657.md), [`collecte-vs-publie-545`](decisions/collecte-vs-publie-545.md), [`corroboration-chambres-publiees-486`](decisions/corroboration-chambres-publiees-486.md), [`creneau-de-seance-nest-pas-un-sujet-710`](decisions/creneau-de-seance-nest-pas-un-sujet-710.md), [`identite-profils-539`](decisions/identite-profils-539.md), [`licence-lot-6-530`](decisions/licence-lot-6-530.md), [`provenance-par-champ-603`](decisions/provenance-par-champ-603.md), [`purge-textes-portes-roster-747`](decisions/purge-textes-portes-roster-747.md), [`qualification-perdue-a-la-fusion-639`](decisions/qualification-perdue-a-la-fusion-639.md), [`qualification-textes-portes-689`](decisions/qualification-textes-portes-689.md), [`retrait-nosdeputes-529`](decisions/retrait-nosdeputes-529.md).
 
@@ -1362,7 +1376,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 
 ## `src/schema_pivot.py`
 
-68 décision(s) le gouvernent ; le module en cite 5.
+69 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1424,6 +1438,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 | [Le groupe européen dit son sigle et ce que la source en dit, sans changer de catégorie (#863) (2026-09-12)](decisions/sigle-groupe-europeen-863.md) | `KNOWN_TYPES_ORGANE_SOURCE` |
 | [Le sort d'un texte entre dans la fiche, à côté de son stade et jamais à sa place (#743 dans #328), 07/09/2026](decisions/sort-des-textes-dans-la-fiche-328.md) | `KNOWN_MOTIFS_SORT_NON_RESOLU`, `KNOWN_SORTS_TEXTE_PORTE` |
 | [Un texte porté dit ce qu'il est devenu, et son sort ne se déduit jamais de son stade (#743) (2026-09-06)](decisions/sort-des-textes-portes-743.md) | `KNOWN_SORTS_TEXTE_PORTE`, `KNOWN_STADES_PROCEDURAUX` |
+| [L'attestation d'une candidature n'est pas une source de données, et les mandats locaux déclarent la leur (#1310, 2026-10-22)](decisions/source-de-la-candidature-et-mandats-locaux-1310.md) | `KNOWN_SOURCE_TYPES` |
 | [Le stade d'un dossier européen se publie dans sa propre nomenclature, jamais traduit en stade français (#901) (2026-09-13)](decisions/stade-procedural-europeen-901.md) | `KNOWN_STADES_PROCEDURAUX` |
 | [L'européen entre dans les listes que la fiche a déjà (#683, lot 2)](decisions/stockage-europeen-dans-les-listes-existantes-683.md) | `COLLECTE_SANS_VERBATIM_SOURCE` |
 | [La fiche de groupe regroupe ses sujets de parole avec la clé de l'agrégat (#1177) (2026-10-08)](decisions/sujets-regroupes-fiche-de-groupe-1177.md) | `cle_tag_thematique` |
@@ -1523,11 +1538,12 @@ Le mentionnent sans le gouverner : [`archive-dossiers-xiv-1019`](decisions/archi
 
 ## `src/textes_promulgues.py`
 
-2 décision(s) le gouvernent ; le module en cite 0.
+3 décision(s) le gouvernent ; le module en cite 0.
 
 | Décision | Nomme |
 | --- | --- |
 | [Une loi se date par sa dernière adoption à l'Assemblée (#1320, 2026-10-21)](decisions/adoption-an-lois-promulguees-1320.md) | `chambre_premiere_lecture` |
+| [La fiche d'une législature lit des fichiers par objet, jamais un fichier par législature (#1314, 2026-10-22)](decisions/legislatures-et-dossiers-par-objet-1314.md) | `derniere_adoption_an` |
 | [Les textes promulgués sont une population du Parlement, pas d'un gouvernement (2026-09-23)](decisions/textes-promulgues-population-du-parlement.md) | `chambre_premiere_lecture` |
 
 Le mentionnent sans le gouverner : [`actes-sur-la-fiche-de-gouvernement-1029`](decisions/actes-sur-la-fiche-de-gouvernement-1029.md), [`budgets-par-gouvernement-1053`](decisions/budgets-par-gouvernement-1053.md), [`dila-et-amo30-en-jobs-1129`](decisions/dila-et-amo30-en-jobs-1129.md), [`finances-etat-collecte-1053`](decisions/finances-etat-collecte-1053.md), [`liens-des-actes-vers-les-lois`](decisions/liens-des-actes-vers-les-lois.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).

@@ -159,7 +159,7 @@ def test_chaque_source_du_schema_ouvre_sa_page() -> None:
     bloc = schema[schema.index("export const SOURCES_SCHEMA") : schema.index("export const DONNEES_SCHEMA")]
     ids = re.findall(r"\{ id: '([a-z]+)',", bloc)
     urls = re.findall(r"url: '(https://[^']+)'", bloc)
-    assert len(urls) == len(ids) == 11
+    assert len(urls) == len(ids) == 12
     composant = (UI / "src" / "components" / "SchemaSources.jsx").read_text(encoding="utf-8")
     assert 'target="_blank"' in composant and 'rel="noopener noreferrer"' in composant
 

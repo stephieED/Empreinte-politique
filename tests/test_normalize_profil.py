@@ -25,7 +25,7 @@ def _raw_depute(extra: dict = None) -> dict:
     base = {
         "slug": "jean-dupont",
         "chambre": "deputes",
-        "source": "https://www.nosdeputes.fr/jean-dupont",
+        "source": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA123456",  # #1310 : l'URL de la collecte depuis #529
         "identite": {
             "nom_complet": "Jean Dupont",
             "groupe_sigle": "RE",

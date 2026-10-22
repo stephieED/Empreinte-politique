@@ -1,0 +1,46 @@
+{
+ "acteur": {
+  "uid": {
+   "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+   "@xsi:type": "IdActeur_type",
+   "#text": "PA773441"
+  },
+  "etatCivil": {
+   "ident": {
+    "civ": "M.",
+    "prenom": "Jean",
+    "nom": "Castex",
+    "alpha": "Castex",
+    "trigramme": {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:nil": "true"
+    }
+   }
+  },
+  "mandats": {
+   "mandat": [
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM773491",
+     "acteurRef": "PA773441",
+     "legislature": null,
+     "typeOrgane": "MINISTERE",
+     "dateDebut": "2020-07-07",
+     "datePublication": "2020-07-07",
+     "dateFin": "2022-05-16",
+     "preseance": "1",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Premier ministre",
+      "libQualite": "Premier ministre",
+      "libQualiteSex": "Premier ministre"
+     },
+     "organes": {
+      "organeRef": "PO773372"
+     }
+    }
+   ]
+  }
+ }
+}

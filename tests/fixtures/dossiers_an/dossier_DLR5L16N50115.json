@@ -1,0 +1,431 @@
+{
+ "dossierParlementaire": {
+  "@xmlns": "http://schemas.assemblee-nationale.fr/referentiel",
+  "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+  "@xsi:type": "DossierLegislatif_Type",
+  "uid": "DLR5L16N50115",
+  "legislature": "16",
+  "titreDossier": {
+   "titre": "Projet de loi autorisant la ratification de la convention n°155  sur la sécurité et la santé des travailleurs, 1981",
+   "titreChemin": "DLR5L16N50115",
+   "senatChemin": "http://www.senat.fr/dossier-legislatif/pjl23-688.html"
+  },
+  "procedureParlementaire": {
+   "code": "6",
+   "libelle": "Projet de ratification des traités et conventions"
+  },
+  "initiateur": {
+   "acteurs": {
+    "acteur": {
+     "acteurRef": "PA722190",
+     "mandatRef": "PM833697"
+    }
+   }
+  },
+  "actesLegislatifs": {
+   "acteLegislatif": [
+    {
+     "@xsi:type": "Etape_Type",
+     "uid": "L17-SN1-50115",
+     "codeActe": "SN1",
+     "libelleActe": {
+      "nomCanonique": "1ère lecture (1ère assemblée saisie)",
+      "libelleCourt": "1ère lecture"
+     },
+     "organeRef": "PO78718",
+     "dateActe": null,
+     "actesLegislatifs": {
+      "acteLegislatif": [
+       {
+        "@xsi:type": "DepotInitiative_Type",
+        "uid": "L17-VD220135DI",
+        "codeActe": "SN1-DEPOT",
+        "libelleActe": {
+         "nomCanonique": "1er dépôt d'une initiative.",
+         "libelleCourt": "1er dépôt d'une initiative."
+        },
+        "organeRef": "PO78718",
+        "dateActe": "2024-06-12T00:00:00.000+02:00",
+        "actesLegislatifs": null,
+        "texteAssocie": "PRJLSNR5S419B0688"
+       },
+       {
+        "@xsi:type": "ProcedureAccelere_Type",
+        "uid": "L16-VD220137",
+        "codeActe": "SN1-PROCACC",
+        "libelleActe": {
+         "nomCanonique": "Le gouvernement déclare l'urgence / engage la procédure accélérée",
+         "libelleCourt": "Le gouvernement déclare l'urgence / engage la procédure accélérée"
+        },
+        "organeRef": "PO833673",
+        "dateActe": "2024-06-12T00:00:00.000+02:00",
+        "actesLegislatifs": null
+       },
+       {
+        "@xsi:type": "Etape_Type",
+        "uid": "L17-SN1-COM-50115",
+        "codeActe": "SN1-COM",
+        "libelleActe": {
+         "nomCanonique": "Travaux des commissions",
+         "libelleCourt": "Travaux des commissions"
+        },
+        "organeRef": "PO78718",
+        "dateActe": null,
+        "actesLegislatifs": {
+         "acteLegislatif": {
+          "@xsi:type": "Etape_Type",
+          "uid": "L17-VD220136CF",
+          "codeActe": "SN1-COM-FOND",
+          "libelleActe": {
+           "nomCanonique": "Travaux de la commission saisie au fond",
+           "libelleCourt": "Travaux de la commission saisie au fond"
+          },
+          "organeRef": "PO211491",
+          "dateActe": null,
+          "actesLegislatifs": {
+           "acteLegislatif": [
+            {
+             "@xsi:type": "SaisieComFond_Type",
+             "uid": "L17-VD220136CFS",
+             "codeActe": "SN1-COM-FOND-SAISIE",
+             "libelleActe": {
+              "nomCanonique": "Renvoi en commission au fond",
+              "libelleCourt": "Renvoi en commission au fond"
+             },
+             "organeRef": "PO211491",
+             "dateActe": "2024-06-12T00:00:00.000+02:00",
+             "actesLegislatifs": null
+            },
+            {
+             "@xsi:type": "NominRapporteurs_Type",
+             "uid": "L17-VD223465",
+             "codeActe": "SN1-COM-FOND-NOMIN",
+             "libelleActe": {
+              "nomCanonique": "Nomination de rapporteur",
+              "libelleCourt": "Nomination de rapporteur"
+             },
+             "organeRef": "PO211491",
+             "dateActe": null,
+             "actesLegislatifs": null,
+             "rapporteurs": {
+              "rapporteur": {
+               "acteurRef": "PA227094",
+               "typeRapporteur": "rapporteur"
+              }
+             },
+             "reunion": null
+            },
+            {
+             "@xsi:type": "DepotRapport_Type",
+             "uid": "L17-VD223466",
+             "codeActe": "SN1-COM-FOND-RAPPORT",
+             "libelleActe": {
+              "nomCanonique": "Dépôt de rapport",
+              "libelleCourt": "Dépôt de rapport"
+             },
+             "organeRef": "PO211491",
+             "dateActe": "2025-01-29T00:00:00.000+01:00",
+             "actesLegislatifs": null,
+             "texteAssocie": "RAPPSNR5S459B0286",
+             "texteAdopte": "PRJLSNR5S459BTC0287"
+            }
+           ]
+          }
+         }
+        }
+       },
+       {
+        "@xsi:type": "Etape_Type",
+        "uid": "L17-SN1-DEBATS-50115",
+        "codeActe": "SN1-DEBATS",
+        "libelleActe": {
+         "nomCanonique": "Discussion en séance publique",
+         "libelleCourt": "Discussion en séance publique"
+        },
+        "organeRef": "PO78718",
+        "dateActe": null,
+        "actesLegislatifs": {
+         "acteLegislatif": {
+          "@xsi:type": "Decision_Type",
+          "uid": "L17-VD223875DEC",
+          "codeActe": "SN1-DEBATS-DEC",
+          "libelleActe": {
+           "nomCanonique": "Décision",
+           "libelleCourt": "Décision"
+          },
+          "organeRef": "PO78718",
+          "dateActe": "2025-02-13T00:00:00.000+01:00",
+          "actesLegislatifs": null,
+          "statutConclusion": {
+           "fam_code": "TSORTF01",
+           "libelle": "adopté"
+          },
+          "reunionRef": null,
+          "voteRefs": null,
+          "textesAssocies": {
+           "texteAssocie": {
+            "typeTexte": "BTA",
+            "refTexteAssocie": "PRJLSNR5S459BTA0055"
+           }
+          }
+         }
+        }
+       }
+      ]
+     }
+    },
+    {
+     "@xsi:type": "Etape_Type",
+     "uid": "L17-AN1-50115",
+     "codeActe": "AN1",
+     "libelleActe": {
+      "nomCanonique": "1ère lecture (2ème assemblée saisie)",
+      "libelleCourt": "1ère lecture"
+     },
+     "organeRef": "PO838901",
+     "dateActe": null,
+     "actesLegislatifs": {
+      "acteLegislatif": [
+       {
+        "@xsi:type": "DepotInitiativeNavette_Type",
+        "uid": "L17-VD223886DIN",
+        "codeActe": "AN1-DEPOT",
+        "libelleActe": {
+         "nomCanonique": "Dépôt d'une initiative en navette",
+         "libelleCourt": "Dépôt d'une initiative en navette"
+        },
+        "organeRef": "PO838901",
+        "dateActe": "2025-02-14T00:00:00.000+01:00",
+        "actesLegislatifs": null,
+        "texteAssocie": "PRJLANR5L17B0969",
+        "provenance": "PO78718",
+        "depotInitialLectureDefinitiveRef": null
+       },
+       {
+        "@xsi:type": "DepotAccordInternational_Type",
+        "uid": "L17-VD223886ACIN",
+        "codeActe": "AN1-ACIN",
+        "libelleActe": {
+         "nomCanonique": "Accord international",
+         "libelleCourt": "Accord international"
+        },
+        "organeRef": "PO838901",
+        "dateActe": "2025-02-14T00:00:00.000+01:00",
+        "actesLegislatifs": null,
+        "texteAssocie": "ACINANR5L17B0969"
+       },
+       {
+        "@xsi:type": "Etape_Type",
+        "uid": "L17-AN1-COM-50115",
+        "codeActe": "AN1-COM",
+        "libelleActe": {
+         "nomCanonique": "Travaux des commissions",
+         "libelleCourt": "Travaux des commissions"
+        },
+        "organeRef": "PO838901",
+        "dateActe": null,
+        "actesLegislatifs": {
+         "acteLegislatif": {
+          "@xsi:type": "Etape_Type",
+          "uid": "L17-VD223887CF",
+          "codeActe": "AN1-COM-FOND",
+          "libelleActe": {
+           "nomCanonique": "Travaux de la commission saisie au fond",
+           "libelleCourt": "Travaux de la commission saisie au fond"
+          },
+          "organeRef": "PO59047",
+          "dateActe": null,
+          "actesLegislatifs": {
+           "acteLegislatif": [
+            {
+             "@xsi:type": "SaisieComFond_Type",
+             "uid": "L17-VD223887CFS",
+             "codeActe": "AN1-COM-FOND-SAISIE",
+             "libelleActe": {
+              "nomCanonique": "Renvoi en commission au fond",
+              "libelleCourt": "Renvoi en commission au fond"
+             },
+             "organeRef": "PO59047",
+             "dateActe": "2025-02-14T00:00:00.000+01:00",
+             "actesLegislatifs": null
+            },
+            {
+             "@xsi:type": "NominRapporteurs_Type",
+             "uid": "L17-VD224900",
+             "codeActe": "AN1-COM-FOND-NOMIN",
+             "libelleActe": {
+              "nomCanonique": "Nomination de rapporteur",
+              "libelleCourt": "Nomination de rapporteur"
+             },
+             "organeRef": "PO59047",
+             "dateActe": "2024-09-17T00:00:00.000+02:00",
+             "actesLegislatifs": null,
+             "rapporteurs": {
+              "rapporteur": {
+               "acteurRef": "PA841023",
+               "typeRapporteur": "rapporteur"
+              }
+             },
+             "reunion": null
+            },
+            {
+             "@xsi:type": "DiscussionCommission_Type",
+             "uid": "L17-VD224841R35502",
+             "codeActe": "AN1-COM-FOND-REUNION",
+             "libelleActe": {
+              "nomCanonique": "Réunion de commission",
+              "libelleCourt": "Réunion de commission"
+             },
+             "organeRef": "PO59047",
+             "dateActe": "2024-09-17T16:30:00.000+02:00",
+             "actesLegislatifs": null,
+             "reunionRef": "RUANR5L17S2024IDC453327",
+             "odjRef": "RUANR5L17S2024IDC453327PT35502"
+            },
+            {
+             "@xsi:type": "DiscussionCommission_Type",
+             "uid": "L17-VD224841R35457",
+             "codeActe": "AN1-COM-FOND-REUNION",
+             "libelleActe": {
+              "nomCanonique": "Réunion de commission",
+              "libelleCourt": "Réunion de commission"
+             },
+             "organeRef": "PO59047",
+             "dateActe": "2025-04-30T11:15:00.000+02:00",
+             "actesLegislatifs": null,
+             "reunionRef": "RUANR5L17S2025IDC455575",
+             "odjRef": "RUANR5L17S2025IDC455575PT35457"
+            },
+            {
+             "@xsi:type": "DiscussionCommission_Type",
+             "uid": "L17-VD224841R36219",
+             "codeActe": "AN1-COM-FOND-REUNION",
+             "libelleActe": {
+              "nomCanonique": "Réunion de commission",
+              "libelleCourt": "Réunion de commission"
+             },
+             "organeRef": "PO59047",
+             "dateActe": "2025-10-15T15:15:00.000+02:00",
+             "actesLegislatifs": null,
+             "reunionRef": "RUANR5L17S2026IDC457751",
+             "odjRef": "RUANR5L17S2026IDC457751PT36219"
+            },
+            {
+             "@xsi:type": "DepotRapport_Type",
+             "uid": "L17-VD225490",
+             "codeActe": "AN1-COM-FOND-RAPPORT",
+             "libelleActe": {
+              "nomCanonique": "Dépôt de rapport",
+              "libelleCourt": "Dépôt de rapport"
+             },
+             "organeRef": "PO59047",
+             "dateActe": "2025-04-30T00:00:00.000+02:00",
+             "actesLegislatifs": null,
+             "texteAssocie": "RAPPANR5L17B1355",
+             "texteAdopte": null
+            }
+           ]
+          }
+         }
+        }
+       },
+       {
+        "@xsi:type": "Etape_Type",
+        "uid": "L17-AN1-DEBATS-50115",
+        "codeActe": "AN1-DEBATS",
+        "libelleActe": {
+         "nomCanonique": "Discussion en séance publique",
+         "libelleCourt": "Discussion en séance publique"
+        },
+        "organeRef": "PO838901",
+        "dateActe": null,
+        "actesLegislatifs": {
+         "acteLegislatif": [
+          {
+           "@xsi:type": "DiscussionSeancePublique_Type",
+           "uid": "L17-VD228030S50894",
+           "codeActe": "AN1-DEBATS-SEANCE",
+           "libelleActe": {
+            "nomCanonique": "Discussion en séance publique",
+            "libelleCourt": "Discussion en séance publique"
+           },
+           "organeRef": "PO838901",
+           "dateActe": "2025-10-15T00:00:00.000+02:00",
+           "actesLegislatifs": null,
+           "reunionRef": "RUANR5L17S2026IDS29820",
+           "odjRef": "RUANR5L17S2026IDS29820PT50894"
+          },
+          {
+           "@xsi:type": "Decision_Type",
+           "uid": "L17-VD228182DEC",
+           "codeActe": "AN1-DEBATS-DEC",
+           "libelleActe": {
+            "nomCanonique": "Décision",
+            "libelleCourt": "Décision"
+           },
+           "organeRef": "PO838901",
+           "dateActe": "2025-10-15T00:00:00.000+02:00",
+           "actesLegislatifs": null,
+           "statutConclusion": {
+            "fam_code": "TSORTF01",
+            "libelle": "adopté"
+           },
+           "reunionRef": "RUANR5L17S2026IDS29820",
+           "voteRefs": {
+            "voteRef": "VTANR5L17V3057"
+           },
+           "textesAssocies": {
+            "texteAssocie": {
+             "typeTexte": "BTA",
+             "refTexteAssocie": "PRJLANR5L17BTA0173"
+            }
+           }
+          }
+         ]
+        }
+       }
+      ]
+     }
+    },
+    {
+     "@xsi:type": "Etape_Type",
+     "uid": "L17-PROM-50115",
+     "codeActe": "PROM",
+     "libelleActe": {
+      "nomCanonique": "Promulgation de la loi",
+      "libelleCourt": "Promulgation de la loi"
+     },
+     "organeRef": "PO717136",
+     "dateActe": null,
+     "actesLegislatifs": {
+      "acteLegislatif": {
+       "@xsi:type": "Promulgation_Type",
+       "uid": "L17-VD228342PL",
+       "codeActe": "PROM-PUB",
+       "libelleActe": {
+        "nomCanonique": "Promulgation d'une loi",
+        "libelleCourt": "Promulgation d'une loi"
+       },
+       "organeRef": "PO717136",
+       "dateActe": "2025-10-22T00:00:00.000+02:00",
+       "actesLegislatifs": null,
+       "texteLoiRef": "PRJLANR5L17BTA0173",
+       "infoJO": {
+        "typeJO": "JO_LOI_DECRET",
+        "dateJO": "2025-10-23+02:00",
+        "pageJO": null,
+        "numJO": "250",
+        "urlLegifrance": "http://www.legifrance.gouv.fr/WAspad/UnTexteDeJorf?numjo=EAEJ2410092L",
+        "referenceNOR": "EAEJ2410092L"
+       },
+       "urlEcheancierLoi": null,
+       "codeLoi": "2025-983",
+       "titreLoi": "autorisant la ratification de la convention n° 155 sur la sécurité et la santé des travailleurs, 1981"
+      }
+     }
+    }
+   ]
+  },
+  "fusionDossier": null
+ }
+}

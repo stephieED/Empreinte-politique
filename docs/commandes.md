@@ -359,6 +359,29 @@ matière de chaque ligne. Sans lui, les lignes sont publiées avec `commission:
 null`, jamais avec une matière devinée.
 → `docs/decisions/textes-promulgues-population-du-parlement.md`.
 
+### Les dossiers de l'Assemblée et les législatures (#1314)
+
+```bash
+# Un fichier par législature, une ligne par dossier.
+python3 src/dossiers_an.py
+python3 src/dossiers_an.py --out /tmp/dossiers_an --no-merge
+# Bornes, mode de fin, terme prévu et groupes de chaque législature.
+python3 src/legislatures_an.py
+python3 src/legislatures_an.py --out /tmp/legislatures.json --actes pivot_data/actes_reglementaires
+```
+
+Produit : `pivot_data/dossiers_an/<législature>.json` (titre, auteurs, dépôt,
+sort, étape à l'Assemblée par législature, scrutins, 49.3) et
+`pivot_data/legislatures.json`. Le premier imprime le nombre de dossiers, ceux
+sans titre et les auteurs sans qualité, puis le nombre de lignes de chaque
+fichier ; le second une ligne par législature (bornes, mode de fin, groupes).
+`dossiers_an.py` lit `pivot_data/scrutins.json` (`--scrutins`) pour reconnaître
+un vote solennel ; `legislatures_an.py` lit les actes du Journal officiel
+(`--actes`) pour y trouver un décret de dissolution. Les deux téléchargent
+l'archive AMO30 si elle manque au cache, le second aussi les archives figées XVe
+et XVIe.
+→ `docs/decisions/legislatures-et-dossiers-par-objet-1314.md`.
+
 ### Les finances de l'État (#1053)
 
 ```bash
@@ -748,10 +771,14 @@ python3 src/groupes_amo30.py --mettre-a-jour \
 ```
 
 Dérive de l'archive AMO30, **sans lire la table écrite à la main**, les groupes
-de l'Assemblée depuis la XVe : organes renommés réunis en un groupe, groupes
-reliés d'une législature à la suivante, lignées. La règle est la même aux deux
-étages — les personnes communes, sur l'effectif du plus petit des deux, à partir
-de la moitié. **N'écrit rien**, et aucun job ne le lit encore.
+de l'Assemblée depuis la XIVe (#1328) : organes renommés réunis en un groupe,
+groupes reliés d'une législature à la suivante, lignées. Deux règles. Le
+**renommage**, dans une législature : les personnes communes, sur l'effectif du
+plus petit des deux, à partir de la moitié. La **filiation**, d'une législature à
+la suivante (#1328) : la moyenne harmonique de la part des réélus du premier
+groupe passés au second et de la part des anciens du second venus du premier,
+au moins 60 %, et au moins 5 personnes communes. **N'écrit rien** sans
+`--mettre-a-jour --out`.
 
 `--comparer` rapporte la dérivation à `config/groupes_reels.json`, du plus gros au
 plus fin : lignées, groupes, liens, puis champ par champ (organes, noms
@@ -773,7 +800,7 @@ Ce qui est déjà nommé — sigle publié, identifiants, liens — n'est jamais
 | `[à fusionner]` | deux entrées de la table sont un seul groupe renommé pour la règle |
 
 | `[repris]` | groupes qu'un run précédent avait ajoutés, repris tels quels de `--precedent` |
-| `[non soutenu]` | un lien écrit à la main sous la moitié du plus petit des deux groupes : il reste publié, comme `relecture_humaine`, **sortie 1** |
+| `[non soutenu]` | un lien écrit à la main que la règle de filiation ne soutient pas (communs, réélus et anciens imprimés) : il reste publié, comme `relecture_humaine`, **sortie 1** |
 | `[CONFLIT]` | la table écrite contredit une adresse déjà publiée : **rien n'est écrit**, sortie 1 |
 
 → `docs/decisions/table-des-groupes-mise-a-jour-depuis-amo30-1168.md`.

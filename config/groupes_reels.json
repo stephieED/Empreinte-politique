@@ -640,7 +640,10 @@
         "verifie_le": "2026-10-02",
         "ecart_motif": "Groupe réuni par #1168 (arbitrage du 2026-10-02 : la même règle pour tous les groupes). Deux organes successifs dans la même législature, relus dans l'index AMO30 des groupes politiques le 2026-10-02 : PO730946 (`NG`, « Nouvelle Gauche », 2017-06-27 → 2018-09-11) puis PO758835 (`SOC`, « Socialistes et apparentés », 2018-09-12 → 2022-06-21). L'AN ferme un organe et rouvre le suivant le lendemain, avec 30 personnes communes sur 33 : un renommage, le motif `SOC`/`SOC-A` et `MODEM`/`DEM`. Jusqu'ici la table en faisait deux groupes reliés par `succede_a`, et publiait une fiche `groupe-AN-NG-15.json` ; elle est retirée (`fiches_retirees`). 39 acteurs distincts sur les deux organes ; 39 ont une entrée dans raw_data/correspondance_acteurs_an.json. `effectif_publie` reste null jusqu'à la parution de la fiche réunie.",
         "membres_avec_slug": 39,
-        "ecart_membres": []
+        "ecart_membres": [],
+        "succede_a": [
+          "AN:SRC:14"
+        ]
       },
       {
         "groupe_sigle": "EDS",
@@ -718,7 +721,10 @@
         "verifie_le": "2026-09-08",
         "ecart_motif": "Publication configurée par #777 : organe PO730940 relu dans l'index AMO30 des groupes politiques le 2026-09-08 — sigle `GDR` (libelleAbrev), 2017-06-27 → 2022-06-21. La fiche paraît au prochain run. 2 des 18 membres ont un slug dans raw_data/correspondance_acteurs_an.json ; les autres n'en ont pas, et build_roster_candidats_detaille laisse tomber un membre sans slug — ils sont hors de la fiche et nommés par l'annotation ROSTER_SANS_SLUG (#527). `effectif_publie` reste null jusqu'à la parution.",
         "membres_avec_slug": 2,
-        "ecart_membres": []
+        "ecart_membres": [],
+        "succede_a": [
+          "AN:GDR:14"
+        ]
       },
       {
         "groupe_sigle": "LAREM",
@@ -796,7 +802,10 @@
         "verifie_le": "2026-09-10",
         "membres_avec_slug": 53,
         "ecart_membres": [],
-        "ecart_motif": "Publication configurée par #815, pour fermer une lignée entre la XVe et la XVIIe. L'organe PO730934 est relu dans l'index AMO30 des groupes politiques le 2026-09-10 : sigle `LR` (libelleAbrev), « Les Républicains », 2017-06-27 → 2022-06-21. 126 mandats pour 120 acteurs distincts, et 120 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur cet organe. 53 des 120 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 67 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+        "ecart_motif": "Publication configurée par #815, pour fermer une lignée entre la XVe et la XVIIe. L'organe PO730934 est relu dans l'index AMO30 des groupes politiques le 2026-09-10 : sigle `LR` (libelleAbrev), « Les Républicains », 2017-06-27 → 2022-06-21. 126 mandats pour 120 acteurs distincts, et 120 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur cet organe. 53 des 120 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 67 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution.",
+        "succede_a": [
+          "AN:UMP:14"
+        ]
       },
       {
         "groupe_sigle": "GDR",
@@ -1348,7 +1357,10 @@
         "verifie_le": "2026-10-02",
         "membres_avec_slug": 28,
         "ecart_membres": [],
-        "ecart_motif": "Publication configurée par #1168 : la XVe législature comptait trois groupes sans fiche, trouvés par l'audit de filiation. Cinq organes successifs dans la même législature, relus dans l'index AMO30 des groupes politiques le 2026-10-02 (archive publiée le 2026-10-02) : PO730952 (`LC`, « Les Constructifs : républicains, UDI, indépendants », 2017-06-27 → 2017-11-28) puis PO744425 (`UDI-AGIR`, « UDI, Agir et Indépendants », 2017-11-29 → 2019-06-10) puis PO765636 (`UDI-I`, « UDI et Indépendants », 2019-06-11 → 2019-09-27) puis PO767217 (`UDI-A-I`, « UDI, Agir et Indépendants », 2019-09-28 → 2020-05-25) puis PO771889 (`UDI_I`, « UDI et Indépendants », 2020-05-26 → 2022-06-21). Même motif que `SOC`/`SOC-A` et `MODEM`/`DEM` : l'AN ferme un organe et rouvre le suivant le lendemain, et c'est l'UNION qui rend le groupe. Recouvrement mesuré d'un organe au suivant : 35 sur 35, 28 sur 28, 28 sur 28, 27 sur 28. Les organes ne s'accordent pas sur la position politique — `Opposition` quatre fois, `Minoritaire` pour `UDI-A-I` —, d'où `divergente`. 171 mandats pour 43 acteurs distincts, et 43 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur ces organes. 28 des 43 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 15 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+        "ecart_motif": "Publication configurée par #1168 : la XVe législature comptait trois groupes sans fiche, trouvés par l'audit de filiation. Cinq organes successifs dans la même législature, relus dans l'index AMO30 des groupes politiques le 2026-10-02 (archive publiée le 2026-10-02) : PO730952 (`LC`, « Les Constructifs : républicains, UDI, indépendants », 2017-06-27 → 2017-11-28) puis PO744425 (`UDI-AGIR`, « UDI, Agir et Indépendants », 2017-11-29 → 2019-06-10) puis PO765636 (`UDI-I`, « UDI et Indépendants », 2019-06-11 → 2019-09-27) puis PO767217 (`UDI-A-I`, « UDI, Agir et Indépendants », 2019-09-28 → 2020-05-25) puis PO771889 (`UDI_I`, « UDI et Indépendants », 2020-05-26 → 2022-06-21). Même motif que `SOC`/`SOC-A` et `MODEM`/`DEM` : l'AN ferme un organe et rouvre le suivant le lendemain, et c'est l'UNION qui rend le groupe. Recouvrement mesuré d'un organe au suivant : 35 sur 35, 28 sur 28, 28 sur 28, 27 sur 28. Les organes ne s'accordent pas sur la position politique — `Opposition` quatre fois, `Minoritaire` pour `UDI-A-I` —, d'où `divergente`. 171 mandats pour 43 acteurs distincts, et 43 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur ces organes. 28 des 43 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 15 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution.",
+        "succede_a": [
+          "AN:UDI:14"
+        ]
       },
       {
         "groupe_sigle": "LT",
@@ -1427,6 +1439,302 @@
         "membres_avec_slug": 19,
         "ecart_membres": [],
         "ecart_motif": "Publication configurée par #1168 : la XVe législature comptait trois groupes sans fiche, trouvés par l'audit de filiation. Un organe dans la même législature, relu dans l'index AMO30 des groupes politiques le 2026-10-02 (archive publiée le 2026-10-02) : PO771923 (`AGIR-E`, « Agir ensemble », 2020-05-27 → 2022-06-21). 24 mandats pour 23 acteurs distincts, et 23 après filtrage des mandats de transit (an_roster.est_mandat_de_transit) : aucun transit sur cet organe. 19 des 23 ont déjà une entrée dans raw_data/correspondance_acteurs_an.json ; les 4 autres reçoivent un slug fabriqué au roster (#527, #708 §3) puis leur entrée dérivée à la passe hors ligne (#715). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "SRC",
+        "groupe_id": "AN:SRC:14",
+        "legislature": "14",
+        "fichier": "groupe-AN-SRC-14.json",
+        "sigles_an": [
+          "SRC",
+          "SER"
+        ],
+        "organes_an": [
+          "PO656002",
+          "PO713077"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO656002",
+            "sigle_an": "SRC",
+            "nom": "Socialiste, républicain et citoyen",
+            "debut": "2012-06-26",
+            "fin": "2016-05-24"
+          },
+          {
+            "organe_an": "PO713077",
+            "sigle_an": "SER",
+            "nom": "Socialiste, écologiste et républicain",
+            "debut": "2016-05-25",
+            "fin": "2017-06-20"
+          }
+        ],
+        "position_politique_an": {
+          "position": "majorite",
+          "verifie_le": "2026-10-22",
+          "organes": [
+            {
+              "organe_an": "PO656002",
+              "sigle_an": "SRC",
+              "valeur_source": "Majoritaire",
+              "position": "majorite"
+            },
+            {
+              "organe_an": "PO713077",
+              "sigle_an": "SER",
+              "valeur_source": "Majoritaire",
+              "position": "majorite"
+            }
+          ]
+        },
+        "effectif_amo30": 350,
+        "effectif_publie": null,
+        "verifie_le": "2026-10-22",
+        "ecart_membres": [],
+        "ecart_motif": "Publication configurée par #1328 (arbitrages du 2026-10-22) : la XIVe entre dans les fiches de groupe. Organe(s) PO656002, PO713077 relu(s) dans l'index AMO30 des groupes politiques le 2026-10-22 — sigle(s) `SRC`, `SER` (libelleAbrev), le premier à l'entrée, « Socialiste, écologiste et républicain », 2012-06-26 → 2017-06-20. Rattaché à la lignée AN:LIGNEE:SOC par la règle de filiation de #1328 : 28 personnes communes avec AN:SOC:15, sur 55 réélus et 28 anciens (score 67%, seuil 60 %, plancher 5). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "UMP",
+        "groupe_id": "AN:UMP:14",
+        "legislature": "14",
+        "fichier": "groupe-AN-UMP-14.json",
+        "sigles_an": [
+          "UMP",
+          "LES-REP"
+        ],
+        "organes_an": [
+          "PO656006",
+          "PO707869"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO656006",
+            "sigle_an": "UMP",
+            "nom": "Union pour un Mouvement Populaire",
+            "debut": "2012-06-26",
+            "fin": "2015-06-01"
+          },
+          {
+            "organe_an": "PO707869",
+            "sigle_an": "LES-REP",
+            "nom": "Les Républicains",
+            "debut": "2015-06-02",
+            "fin": "2017-06-20"
+          }
+        ],
+        "position_politique_an": {
+          "position": "opposition",
+          "verifie_le": "2026-10-22",
+          "organes": [
+            {
+              "organe_an": "PO656006",
+              "sigle_an": "UMP",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            },
+            {
+              "organe_an": "PO707869",
+              "sigle_an": "LES-REP",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 210,
+        "effectif_publie": null,
+        "verifie_le": "2026-10-22",
+        "ecart_membres": [],
+        "ecart_motif": "Publication configurée par #1328 (arbitrages du 2026-10-22) : la XIVe entre dans les fiches de groupe. Organe(s) PO656006, PO707869 relu(s) dans l'index AMO30 des groupes politiques le 2026-10-22 — sigle(s) `UMP`, `LES-REP` (libelleAbrev), le premier à l'entrée, « Les Républicains », 2012-06-26 → 2017-06-20. Rattaché à la lignée AN:LIGNEE:LR par la règle de filiation de #1328 : 56 personnes communes avec AN:LR:15, sur 65 réélus et 56 anciens (score 93%, seuil 60 %, plancher 5). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "UDI",
+        "groupe_id": "AN:UDI:14",
+        "legislature": "14",
+        "fichier": "groupe-AN-UDI-14.json",
+        "sigles_an": [
+          "UDI"
+        ],
+        "organes_an": [
+          "PO656010"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO656010",
+            "sigle_an": "UDI",
+            "nom": "Union des démocrates et indépendants",
+            "debut": "2012-06-26",
+            "fin": "2017-06-20"
+          }
+        ],
+        "position_politique_an": {
+          "position": "opposition",
+          "verifie_le": "2026-10-22",
+          "organes": [
+            {
+              "organe_an": "PO656010",
+              "sigle_an": "UDI",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 35,
+        "effectif_publie": null,
+        "verifie_le": "2026-10-22",
+        "ecart_membres": [],
+        "ecart_motif": "Publication configurée par #1328 (arbitrages du 2026-10-22) : la XIVe entre dans les fiches de groupe. Organe(s) PO656010 relu(s) dans l'index AMO30 des groupes politiques le 2026-10-22 — sigle(s) `UDI` (libelleAbrev), le premier à l'entrée, « Union des démocrates et indépendants », 2012-06-26 → 2017-06-20. Rattaché à la lignée AN:LIGNEE:UDI par la règle de filiation de #1328 : 14 personnes communes avec AN:UDI:15, sur 15 réélus et 23 anciens (score 74%, seuil 60 %, plancher 5). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "ECOLO",
+        "groupe_id": "AN:ECOLO:14",
+        "legislature": "14",
+        "fichier": "groupe-AN-ECOLO-14.json",
+        "sigles_an": [
+          "ECOLO"
+        ],
+        "organes_an": [
+          "PO656014"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO656014",
+            "sigle_an": "ECOLO",
+            "nom": "Écologiste",
+            "debut": "2012-06-26",
+            "fin": "2016-05-19"
+          }
+        ],
+        "position_politique_an": {
+          "position": "minoritaire",
+          "verifie_le": "2026-10-22",
+          "organes": [
+            {
+              "organe_an": "PO656014",
+              "sigle_an": "ECOLO",
+              "valeur_source": "Minoritaire",
+              "position": "minoritaire"
+            }
+          ]
+        },
+        "effectif_amo30": 18,
+        "effectif_publie": null,
+        "verifie_le": "2026-10-22",
+        "ecart_membres": [],
+        "ecart_motif": "Publication configurée par #1328 (arbitrages du 2026-10-22) : la XIVe entre dans les fiches de groupe. Organe(s) PO656014 relu(s) dans l'index AMO30 des groupes politiques le 2026-10-22 — sigle(s) `ECOLO` (libelleAbrev), le premier à l'entrée, « Écologiste », 2012-06-26 → 2016-05-19. Aucun groupe de la XVe ne passe la règle de filiation de #1328 : la fiche ouvre sa propre lignée. `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "GDR",
+        "groupe_id": "AN:GDR:14",
+        "legislature": "14",
+        "fichier": "groupe-AN-GDR-14.json",
+        "sigles_an": [
+          "GDR"
+        ],
+        "organes_an": [
+          "PO656018"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO656018",
+            "sigle_an": "GDR",
+            "nom": "Gauche démocrate et républicaine",
+            "debut": "2012-06-26",
+            "fin": "2017-06-20"
+          }
+        ],
+        "position_politique_an": {
+          "position": "minoritaire",
+          "verifie_le": "2026-10-22",
+          "organes": [
+            {
+              "organe_an": "PO656018",
+              "sigle_an": "GDR",
+              "valeur_source": "Minoritaire",
+              "position": "minoritaire"
+            }
+          ]
+        },
+        "effectif_amo30": 15,
+        "effectif_publie": null,
+        "verifie_le": "2026-10-22",
+        "ecart_membres": [],
+        "ecart_motif": "Publication configurée par #1328 (arbitrages du 2026-10-22) : la XIVe entre dans les fiches de groupe. Organe(s) PO656018 relu(s) dans l'index AMO30 des groupes politiques le 2026-10-22 — sigle(s) `GDR` (libelleAbrev), le premier à l'entrée, « Gauche démocrate et républicaine », 2012-06-26 → 2017-06-20. Rattaché à la lignée AN:LIGNEE:GDR par la règle de filiation de #1328 : 6 personnes communes avec AN:GDR:15, sur 6 réélus et 6 anciens (score 100%, seuil 60 %, plancher 5). `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "RRDP",
+        "groupe_id": "AN:RRDP:14",
+        "legislature": "14",
+        "fichier": "groupe-AN-RRDP-14.json",
+        "sigles_an": [
+          "RRDP"
+        ],
+        "organes_an": [
+          "PO656022"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO656022",
+            "sigle_an": "RRDP",
+            "nom": "Radical, républicain, démocrate et progressiste",
+            "debut": "2012-06-26",
+            "fin": "2017-06-20"
+          }
+        ],
+        "position_politique_an": {
+          "position": "minoritaire",
+          "verifie_le": "2026-10-22",
+          "organes": [
+            {
+              "organe_an": "PO656022",
+              "sigle_an": "RRDP",
+              "valeur_source": "Minoritaire",
+              "position": "minoritaire"
+            }
+          ]
+        },
+        "effectif_amo30": 21,
+        "effectif_publie": null,
+        "verifie_le": "2026-10-22",
+        "ecart_membres": [],
+        "ecart_motif": "Publication configurée par #1328 (arbitrages du 2026-10-22) : la XIVe entre dans les fiches de groupe. Organe(s) PO656022 relu(s) dans l'index AMO30 des groupes politiques le 2026-10-22 — sigle(s) `RRDP` (libelleAbrev), le premier à l'entrée, « Radical, républicain, démocrate et progressiste », 2012-06-26 → 2017-06-20. Aucun groupe de la XVe ne passe la règle de filiation de #1328 : la fiche ouvre sa propre lignée. `effectif_publie` reste null jusqu'à la parution."
+      },
+      {
+        "groupe_sigle": "R-UMP",
+        "groupe_id": "AN:R-UMP:14",
+        "legislature": "14",
+        "fichier": "groupe-AN-R-UMP-14.json",
+        "sigles_an": [
+          "R-UMP"
+        ],
+        "organes_an": [
+          "PO684957"
+        ],
+        "historique_organes_an": [
+          {
+            "organe_an": "PO684957",
+            "sigle_an": "R-UMP",
+            "nom": "Rassemblement - Union pour un Mouvement Populaire",
+            "debut": "2012-11-27",
+            "fin": "2013-01-15"
+          }
+        ],
+        "position_politique_an": {
+          "position": "opposition",
+          "verifie_le": "2026-10-22",
+          "organes": [
+            {
+              "organe_an": "PO684957",
+              "sigle_an": "R-UMP",
+              "valeur_source": "Opposition",
+              "position": "opposition"
+            }
+          ]
+        },
+        "effectif_amo30": 73,
+        "effectif_publie": null,
+        "verifie_le": "2026-10-22",
+        "ecart_membres": [],
+        "ecart_motif": "Publication configurée par #1328 (arbitrages du 2026-10-22) : la XIVe entre dans les fiches de groupe. Organe(s) PO684957 relu(s) dans l'index AMO30 des groupes politiques le 2026-10-22 — sigle(s) `R-UMP` (libelleAbrev), le premier à l'entrée, « Rassemblement - Union pour un Mouvement Populaire », 2012-11-27 → 2013-01-15. Aucun groupe de la XVe ne passe la règle de filiation de #1328 : la fiche ouvre sa propre lignée. `effectif_publie` reste null jusqu'à la parution."
       }
     ]
   },
@@ -1740,6 +2048,76 @@
       "chambre": "AN",
       "legislature": "15",
       "fichier": "groupe-AN-AGIR-15.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:SRC:14",
+      "lignee_id": "AN:LIGNEE:SOC",
+      "groupe_sigle": "SRC",
+      "groupe_nom": "Socialiste, écologiste et républicain",
+      "chambre": "AN",
+      "legislature": "14",
+      "fichier": "groupe-AN-SRC-14.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:UMP:14",
+      "lignee_id": "AN:LIGNEE:LR",
+      "groupe_sigle": "UMP",
+      "groupe_nom": "Les Républicains",
+      "chambre": "AN",
+      "legislature": "14",
+      "fichier": "groupe-AN-UMP-14.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:UDI:14",
+      "lignee_id": "AN:LIGNEE:UDI",
+      "groupe_sigle": "UDI",
+      "groupe_nom": "Union des démocrates et indépendants",
+      "chambre": "AN",
+      "legislature": "14",
+      "fichier": "groupe-AN-UDI-14.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:ECOLO:14",
+      "lignee_id": "AN:LIGNEE:ECOLO-14",
+      "groupe_sigle": "ECOLO",
+      "groupe_nom": "Écologiste",
+      "chambre": "AN",
+      "legislature": "14",
+      "fichier": "groupe-AN-ECOLO-14.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:GDR:14",
+      "lignee_id": "AN:LIGNEE:GDR",
+      "groupe_sigle": "GDR",
+      "groupe_nom": "Gauche démocrate et républicaine",
+      "chambre": "AN",
+      "legislature": "14",
+      "fichier": "groupe-AN-GDR-14.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:RRDP:14",
+      "lignee_id": "AN:LIGNEE:RRDP",
+      "groupe_sigle": "RRDP",
+      "groupe_nom": "Radical, républicain, démocrate et progressiste",
+      "chambre": "AN",
+      "legislature": "14",
+      "fichier": "groupe-AN-RRDP-14.json"
+    },
+    {
+      "roster_chambre": "deputes",
+      "groupe_id": "AN:R-UMP:14",
+      "lignee_id": "AN:LIGNEE:R-UMP",
+      "groupe_sigle": "R-UMP",
+      "groupe_nom": "Rassemblement - Union pour un Mouvement Populaire",
+      "chambre": "AN",
+      "legislature": "14",
+      "fichier": "groupe-AN-R-UMP-14.json"
     }
   ],
   "lignees": [
@@ -1847,6 +2225,27 @@
       "chambre": "AN",
       "fichier": "lignee-AN-AGIR.json",
       "verifie_le": "2026-10-02"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:ECOLO-14",
+      "lignee_nom": "Écologiste",
+      "chambre": "AN",
+      "fichier": "lignee-AN-ECOLO-14.json",
+      "verifie_le": "2026-10-22"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:RRDP",
+      "lignee_nom": "Radical, républicain, démocrate et progressiste",
+      "chambre": "AN",
+      "fichier": "lignee-AN-RRDP.json",
+      "verifie_le": "2026-10-22"
+    },
+    {
+      "lignee_id": "AN:LIGNEE:R-UMP",
+      "lignee_nom": "Rassemblement - Union pour un Mouvement Populaire",
+      "chambre": "AN",
+      "fichier": "lignee-AN-R-UMP.json",
+      "verifie_le": "2026-10-22"
     }
   ],
   "fiches_retirees": [

@@ -1,0 +1,192 @@
+{
+ "acteur": {
+  "uid": {
+   "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+   "@xsi:type": "IdActeur_type",
+   "#text": "PA429891"
+  },
+  "etatCivil": {
+   "ident": {
+    "civ": "Mme",
+    "prenom": "Esther",
+    "nom": "Benbassa",
+    "alpha": "Benbassa_esther_11033f",
+    "trigramme": {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:nil": "true"
+    }
+   }
+  },
+  "mandats": {
+   "mandat": [
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM476921",
+     "acteurRef": "PA429891",
+     "legislature": null,
+     "typeOrgane": "GROUPESENAT",
+     "dateDebut": "2012-01-11",
+     "datePublication": null,
+     "dateFin": "2017-06-29",
+     "preseance": "4",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Membre",
+      "libQualite": "Membre",
+      "libQualiteSex": "Membre du"
+     },
+     "organes": {
+      "organeRef": "PO476897"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM732477",
+     "acteurRef": "PA429891",
+     "legislature": null,
+     "typeOrgane": "GROUPESENAT",
+     "dateDebut": "2017-06-30",
+     "datePublication": null,
+     "dateFin": "2017-10-02",
+     "preseance": "4",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Membre",
+      "libQualite": "Membre",
+      "libQualiteSex": "Membre du"
+     },
+     "organes": {
+      "organeRef": "PO77708"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM785752",
+     "acteurRef": "PA429891",
+     "legislature": null,
+     "typeOrgane": "GROUPESENAT",
+     "dateDebut": "2021-09-15",
+     "datePublication": null,
+     "dateFin": "2023-10-01",
+     "preseance": "4",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Membre",
+      "libQualite": "Membre",
+      "libQualiteSex": "Membre du"
+     },
+     "organes": {
+      "organeRef": "PO77708"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM777788",
+     "acteurRef": "PA429891",
+     "legislature": null,
+     "typeOrgane": "GROUPESENAT",
+     "dateDebut": "2020-10-05",
+     "datePublication": null,
+     "dateFin": "2021-09-14",
+     "preseance": "4",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Membre",
+      "libQualite": "Membre",
+      "libQualiteSex": "Membre du"
+     },
+     "organes": {
+      "organeRef": "PO776990"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM741540",
+     "acteurRef": "PA429891",
+     "legislature": null,
+     "typeOrgane": "GROUPESENAT",
+     "dateDebut": "2017-10-03",
+     "datePublication": null,
+     "dateFin": "2020-10-04",
+     "preseance": "8",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Membre rattaché",
+      "libQualite": "Membre rattaché",
+      "libQualiteSex": "Rattachée au"
+     },
+     "organes": {
+      "organeRef": "PO77707"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM430549",
+     "acteurRef": "PA429891",
+     "legislature": null,
+     "typeOrgane": "GROUPESENAT",
+     "dateDebut": "2011-10-01",
+     "datePublication": null,
+     "dateFin": "2012-01-10",
+     "preseance": "8",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Membre rattaché",
+      "libQualite": "Membre rattaché",
+      "libQualiteSex": "Rattachée au"
+     },
+     "organes": {
+      "organeRef": "PO77710"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatParlementaire_type",
+     "uid": "PM736329",
+     "acteurRef": "PA429891",
+     "legislature": null,
+     "typeOrgane": "SENAT",
+     "dateDebut": "2017-10-02",
+     "datePublication": null,
+     "dateFin": "2023-10-01",
+     "preseance": "20",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Sénateur",
+      "libQualite": "SENATEUR",
+      "libQualiteSex": "Sénateur 5ème République"
+     },
+     "organes": {
+      "organeRef": "PO78718"
+     },
+     "suppleants": null,
+     "chambre": null,
+     "election": {
+      "lieu": {
+       "region": null,
+       "regionType": null,
+       "departement": null,
+       "numDepartement": "75",
+       "numCirco": null
+      },
+      "causeMandat": null
+     },
+     "mandature": {
+      "datePriseFonction": null,
+      "causeFin": null,
+      "premiereElection": "0",
+      "placeHemicycle": null,
+      "mandatRemplaceRef": null
+     },
+     "collaborateurs": null
+    }
+   ]
+  }
+ }
+}

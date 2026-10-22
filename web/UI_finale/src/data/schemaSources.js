@@ -45,8 +45,16 @@ export const SOURCES_SCHEMA = [
     url: 'https://fr.wikipedia.org/wiki/Candidatures_%C3%A0_l%27%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027' },
   { id: 'wd', nom: 'Wikidata', teinte: 'candidat', statut: 'collectee', config: 'wikidata',
     url: 'https://www.wikidata.org/wiki/Property:P4123' },
-  { id: 'an', nom: 'Assemblée nationale', teinte: 'an', statut: 'collectee', config: 'assemblee-nationale-opendata',
+  { id: 'an', nom: 'Assemblée Nationale - Data', teinte: 'an', statut: 'collectee', config: 'assemblee-nationale-opendata',
     url: 'https://data.assemblee-nationale.fr/' },
+  // LES PLACES DE LA XIVe (#1326) : un fichier du site de l'Assemblée, lu à
+  // chaque run depuis une archive figée. Il ne nourrit que le siège du mandat
+  // de député, d'où son seul trait vers « Identité, mandats de député ».
+  // `url` : l'accueil du site de la XIVe, jamais le fichier. Nommée et placée
+  // sous « Assemblée Nationale - Data » le 22/10/2026 : deux cases de
+  // l'Assemblée, le portail ouvert et l'archive du site, l'une sous l'autre.
+  { id: 'plx', nom: 'Assemblée Nationale - Archive', teinte: 'an', statut: 'collectee', config: 'places-hemicycle-xive',
+    url: 'https://www.assemblee-nationale.fr/14/' },
   { id: 'sen', nom: 'Sénat', teinte: 'senat', statut: 'collectee', config: 'senat-opendata',
     url: 'https://data.senat.fr/' },
   { id: 'syc', nom: 'Sycomore', teinte: 'an', statut: 'citee', config: 'sycomore',
@@ -68,7 +76,7 @@ export const SOURCES_SCHEMA = [
 export const DONNEES_SCHEMA = [
   { id: 'candidats', nom: 'La liste des candidats déclarés', de: ['cc', 'wp'] },
   { id: 'identifiant', nom: 'Leur identifiant à l’Assemblée', de: ['wd'] },
-  { id: 'deputes', nom: 'Identité, mandats de député', de: ['an'] },
+  { id: 'deputes', nom: 'Identité, mandats de député', de: ['an', 'plx'] },
   { id: 'activite', nom: 'Votes, amendements, textes, paroles', de: ['an'] },
   { id: 'gouvernement', nom: 'Fonctions gouvernementales', de: ['an', 'jo'], citees: ['jo'] },
   { id: 'senat', nom: 'Mandats au Sénat', de: ['sen'] },

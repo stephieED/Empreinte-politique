@@ -559,6 +559,14 @@ découpage en 8 tranches arbitre entre la borne de perte sur préemption et les
 frais fixes de `actions/checkout`, pas le temps de calcul
 ([shardage en 8 tranches](decisions/shardage-extract-roster-groupes.md)).
 
+**Depuis #1328 (22/10/2026), la composition couvre la XIVe** : sept groupes de
+plus, 638 membres dont 410 sans profil — le roster du 22/10/2026 compte 1 657
+entrées de groupe et 143 de gouvernement. Estimé : environ + 30 % de temps par
+shard (9 à 11 min le 21/10, sous `timeout-minutes: 60`), ≈ + 1,0 Go de profils
+bruts et ≈ + 80 Mo de profils pivot, aucune intervention (Syceron commence à la
+XVe). Chiffre exact au premier run.
+→ `docs/decisions/fiches-de-groupe-xive-1328.md`
+
 **Ce job a de la profondeur** — rollout, régénération de l'existant, les six
 combinaisons des deux axes du formulaire, les trois codes de sortie du roster :
 → [`extract-roster-groupes.md`](./extract-roster-groupes.md)
@@ -989,6 +997,15 @@ mandats concernés, jamais une absence de place. Un job qui ne restaure que la
 clé — `extract-roster-groupes` — télécharge les deux archives dans chaque shard
 tant que l'entrée restaurée a été écrite avant le lot ; `extract-an`, qui
 l'écrit, les y fait entrer à sa prochaine sauvegarde (une clé par jour).
+
+**Le fichier des places de la XIVe (#1326) suit le même chemin.**
+`https://www.assemblee-nationale.fr/14/tribun/xml/place.txt` (76 Ko) est rangé
+sous `figees/14/` avec son index, borné à
+`BUDGET_FICHIER_PLACES_SITE_AN_SECONDES` (30 s) et tenté une fois par process.
+Ce n'est pas une archive du portail open data : un runner que le site
+refuserait publierait `archive_indisponible` sur les mandats XIVe, jamais une
+place fausse. Workflow inchangé.
+→ `docs/decisions/places-xive-fichier-du-site-1326.md`
 
 ## 4. Les artifacts
 
@@ -1433,6 +1450,32 @@ qu'un membre a initiés : 1 promulgué sur la fenêtre de LECORNU_II) ni l'union
 `textes_portes` des profils (13 sur la même fenêtre, soit « ce que nos rosters
 portent ») ne disent ce que le Parlement a promulgué.
 → `docs/decisions/textes-promulgues-population-du-parlement.md`
+
+### Les dossiers de l'Assemblée et les législatures, dans `merge-and-pivot` (#1314)
+
+Deux étapes, **après** les budgets, toutes deux `continue-on-error` et
+additives : un run qui ne lit pas ses sources garde les fichiers publiés.
+
+- `src/dossiers_an.py` lit les archives de dossiers déjà en cache, l'archive
+  AMO30 courante (les auteurs, leur qualité, leur groupe au jour du dépôt) et
+  `pivot_data/scrutins.json` (les votes solennels), et publie
+  `pivot_data/dossiers_an/<législature>.json`. L'archive AMO30 est déjà dans le
+  job, téléchargée pour la table des commissions. ~11 s sur un poste.
+- `src/legislatures_an.py` lit l'archive AMO30 courante (les organes
+  `ASSEMBLEE`, les groupes et leurs membres via `an_roster.charger_index_gp`),
+  les archives figées XVe et XVIe et le fichier des places XIVe du site de
+  l'Assemblée (les sièges, #1317, #1326) et
+  `pivot_data/actes_reglementaires/` (le décret de dissolution, d'où sa place
+  après l'artifact `actes-jo`), et publie `pivot_data/legislatures.json`.
+  **Les archives figées ne sont pas dans un cache de ce job** : elles s'y
+  téléchargent (10,1 et 11,9 Mo), chacune bornée à
+  `BUDGET_ARCHIVE_AMO30_FIGEE_SECONDES` avec ses reprises. Un échec publie les
+  groupes sans siège, motif `archive_indisponible`. ~9 s une fois les archives
+  sur disque.
+
+Le commit du run ajoute `pivot_data/dossiers_an` et `pivot_data/legislatures.json`
+s'ils existent, comme les autres tables de cette famille.
+→ `docs/decisions/legislatures-et-dossiers-par-objet-1314.md`
 
 ### Les actes réglementaires du Journal officiel, dans `merge-and-pivot` (#1029 voie 1)
 

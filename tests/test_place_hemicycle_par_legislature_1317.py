@@ -17,7 +17,7 @@ Les fixtures sont COPIÉES, jamais écrites à la main :
   | `PA606507` Florent Boudié | XVIIe 2024-07-07 | sans place | — | `source_sans_place` |
   | | XVIe 2022-06-19 | `251` | `354` | **le piège** : jamais 251 |
   | | XVe 2017-06-18 | `251` | `448` | idem |
-  | | XIVe 2012-06-20 | `251` | aucune archive (404) | `legislature_sans_archive_figee` |
+  | | XIVe 2012-06-20 | `251` | aucune archive (404) ; `467` dans le fichier du site (#1326) | jamais 251 |
   | `PA721912` Damien Derelle | XVe 2017-06-18 | sans place | absent | `mandat_absent_de_l_archive` |
 
 - `tests/fixtures/florent_boudie_mandats_1317.json` : le bloc `mandats` du
@@ -25,6 +25,10 @@ Les fixtures sont COPIÉES, jamais écrites à la main :
   (`a9c3e10b9d`), verbatim — ses quatre mandats de député ont été publiés
   **sans** le champ, et c'est la transition vers un run qui le collecte que ce
   fichier teste.
+
+- `tests/fixtures/places_site_an_xive_1326/place_14.txt` : trois entrées
+  verbatim du fichier des places de la XIVe du site de l'Assemblée (#1326),
+  dont `s467` pour `PA606507` — voir `tests/test_places_hemicycle_xive_1326.py`.
 
 Aucun test ne lit `raw_data/` ni `pivot_data/`, aucun ne sort sur le réseau.
 """
@@ -63,6 +67,8 @@ CORPUS = FIXTURES / "florent_boudie_mandats_1317.json"
 
 URL_16 = cp.ARCHIVES_AMO30_FIGEES["16"]["source_url"]
 URL_15 = cp.ARCHIVES_AMO30_FIGEES["15"]["source_url"]
+URL_14 = cp.FICHIERS_PLACES_SITE_AN["14"]["source_url"]
+PLACE_14 = FIXTURES / "places_site_an_xive_1326" / "place_14.txt"
 #: La date que porte le fichier de l'archive courante dans le cache : celle de
 #: son téléchargement, qu'`etat_au` doit rendre (heure de Paris).
 TELECHARGEE_LE = "2026-10-19"
@@ -71,7 +77,7 @@ TELECHARGEE_LE = "2026-10-19"
 def _servir_figees(url, dest_path, **kwargs):
     """Doublure de `download_with_watchdog` : rend l'extrait de l'archive que
     l'URL désigne, et rien d'autre."""
-    source = {URL_16: ARCHIVES / "figee_16.zip", URL_15: ARCHIVES / "figee_15.zip"}[url]
+    source = {URL_16: ARCHIVES / "figee_16.zip", URL_15: ARCHIVES / "figee_15.zip", URL_14: PLACE_14}[url]
     shutil.copy(source, dest_path)
 
 
@@ -124,10 +130,17 @@ def test_un_mandat_xve_porte_la_place_de_l_archive_xve(cache):
 
 
 def test_la_xive_n_emprunte_la_place_d_aucune_autre_archive(cache):
-    """La courante donne 251 au mandat XIVe ; aucune archive XIVe n'existe."""
+    """La courante donne 251 au mandat XIVe ; aucune archive XIVe n'existe.
+    Depuis #1326, le fichier des places du site de l'Assemblée dit 467."""
     place, non_resolu = cp.resoudre_place_hemicycle("PA606507", "14", "2012-06-20")
+    assert place == {"numero": "467", "source_url": URL_14, "etat_au": "2017-06-20"}
+    assert non_resolu is None
+
+
+def test_avant_la_xive_aucune_source_des_places():
+    place, non_resolu = cp.resoudre_place_hemicycle("PA606507", "13", "2007-06-20")
     assert place is None
-    assert non_resolu == {"motif": "legislature_sans_archive_figee", "legislature": "14"}
+    assert non_resolu == {"motif": "legislature_sans_archive_figee", "legislature": "13"}
 
 
 def test_un_mandat_xviie_sans_place_le_dit_et_nomme_l_archive_lue(cache):
@@ -226,7 +239,7 @@ def test_chaque_mandat_de_depute_du_profil_porte_sa_place(cache):
     assert par_debut["2022-06-19"]["place_hemicycle"]["numero"] == "354"
     assert par_debut["2017-06-18"]["place_hemicycle"]["numero"] == "448"
     assert par_debut["2024-07-07"]["place_hemicycle_non_resolu"]["motif"] == "source_sans_place"
-    assert par_debut["2012-06-20"]["place_hemicycle_non_resolu"]["motif"] == "legislature_sans_archive_figee"
+    assert par_debut["2012-06-20"]["place_hemicycle"]["numero"] == "467"
     assert not any(m.get("place_hemicycle") and m["place_hemicycle"]["numero"] == "251"
                    for m in par_debut.values())
     pivot = [_normalize_mandat(m) for m in profil["mandats"]]
@@ -245,7 +258,7 @@ def test_le_validateur_accepte_les_formes_justes():
     assert _erreur_place_hemicycle(DEPUTE) is None  # collecté avant le lot
     assert _erreur_place_hemicycle({**DEPUTE, "place_hemicycle": PLACE}) is None
     assert _erreur_place_hemicycle({**DEPUTE, "place_hemicycle": None, "place_hemicycle_non_resolu": {
-        "motif": "legislature_sans_archive_figee", "legislature": "14"}}) is None
+        "motif": "legislature_sans_archive_figee", "legislature": "13"}}) is None
     assert _erreur_place_hemicycle({**DEPUTE, "place_hemicycle": None, "place_hemicycle_non_resolu": {
         "motif": "source_sans_place", "source_url": URL_16, "etat_au": "2024-06-28"}}) is None
 
@@ -310,7 +323,8 @@ def test_le_champ_atteint_les_mandats_deja_publies_aux_deux_etages(cache):
         assert par_debut["2022-06-19"]["place_hemicycle"] == PLACE
         assert par_debut["2017-06-18"]["place_hemicycle"]["numero"] == "448"
         assert par_debut["2024-07-07"]["place_hemicycle_non_resolu"]["motif"] == "source_sans_place"
-        assert par_debut["2012-06-20"]["place_hemicycle_non_resolu"]["motif"] == "legislature_sans_archive_figee"
+        assert par_debut["2012-06-20"]["place_hemicycle"] == {
+            "numero": "467", "source_url": URL_14, "etat_au": "2017-06-20"}
     assert all(_erreur_place_hemicycle(m) is None for m in pivot["mandats"])
     assert not any("place_hemicycle" in m for m in pivot["mandats"] if m.get("categorie") != "mandat_electif")
 

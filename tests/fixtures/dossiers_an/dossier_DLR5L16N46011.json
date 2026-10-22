@@ -1,0 +1,70 @@
+{
+ "dossierParlementaire": {
+  "@xmlns": "http://schemas.assemblee-nationale.fr/referentiel",
+  "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+  "@xsi:type": "DossierMissionInformation_Type",
+  "uid": "DLR5L16N46011",
+  "legislature": "16",
+  "titreDossier": {
+   "titre": "mission de suivi de l’application de la loi n° 2021-1357 du 18 octobre 2021 visant à protéger la rémunération des agriculteurs, dite \"EGAlim II\"",
+   "titreChemin": null,
+   "senatChemin": null
+  },
+  "procedureParlementaire": {
+   "code": "10",
+   "libelle": "Mission d'information"
+  },
+  "initiateur": {
+   "organes": {
+    "organe": {
+     "organeRef": {
+      "uid": "PO802421"
+     }
+    }
+   }
+  },
+  "actesLegislatifs": {
+   "acteLegislatif": {
+    "@xsi:type": "Etape_Type",
+    "uid": "L16-AN20-46011",
+    "codeActe": "AN20",
+    "libelleActe": {
+     "nomCanonique": "Travaux"
+    },
+    "organeRef": "PO791932",
+    "dateActe": null,
+    "actesLegislatifs": {
+     "acteLegislatif": {
+      "@xsi:type": "Etape_Type",
+      "uid": "L16-AN20-MISINF-46011",
+      "codeActe": "AN20-MISINF",
+      "libelleActe": {
+       "nomCanonique": "Mission d'information",
+       "libelleCourt": "Mission d'information"
+      },
+      "organeRef": "PO802421",
+      "dateActe": null,
+      "actesLegislatifs": {
+       "acteLegislatif": {
+        "@xsi:type": "CreationOrganeTemporaire_Type",
+        "uid": "L16-VD208597",
+        "codeActe": "AN20-MISINF-CREA",
+        "libelleActe": {
+         "nomCanonique": "Création d'une mission d'information",
+         "libelleCourt": "Création d'une mission d'information"
+        },
+        "organeRef": "PO802421",
+        "dateActe": "2022-07-21T00:00:00.000+02:00",
+        "actesLegislatifs": null,
+        "initiateurs": {
+         "organeRef": "PO802421"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "fusionDossier": null
+ }
+}

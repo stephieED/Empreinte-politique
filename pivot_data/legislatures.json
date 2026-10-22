@@ -1,0 +1,532 @@
+{
+  "schema_version": "legislatures-v1",
+  "genere_le": "2026-10-22T17:58:28+0000",
+  "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
+  "legislatures": {
+    "14": {
+      "numero": 14,
+      "organe_ref": "PO644420",
+      "debut": "2012-06-20",
+      "fin": "2017-06-20",
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+      "mode_fin": "terme",
+      "mode_fin_non_resolu": null,
+      "decret_dissolution": null,
+      "terme_prevu": {
+        "date": "2017-06-20",
+        "regle": "Code électoral, art. LO 121 : les pouvoirs de l'Assemblée nationale expirent le troisième mardi de juin de la cinquième année qui suit son élection.",
+        "source_url": "https://www.legifrance.gouv.fr/codes/id/LEGITEXT000006070239"
+      },
+      "groupes": [
+        {
+          "organe_ref": "PO707869",
+          "sigle": "LES-REP",
+          "libelle_abrege": "Les Républicains",
+          "nom": "Les Républicains",
+          "membres_au_jour": 197,
+          "membres_avec_place": 197,
+          "place_mediane": 116,
+          "place_min": 1,
+          "place_max": 242
+        },
+        {
+          "organe_ref": "PO656010",
+          "sigle": "UDI",
+          "libelle_abrege": "UDI",
+          "nom": "Union des démocrates et indépendants",
+          "membres_au_jour": 27,
+          "membres_avec_place": 27,
+          "place_mediane": 232,
+          "place_min": 191,
+          "place_max": 320
+        },
+        {
+          "organe_ref": "PO656022",
+          "sigle": "RRDP",
+          "libelle_abrege": "RRDP",
+          "nom": "Radical, républicain, démocrate et progressiste",
+          "membres_au_jour": 17,
+          "membres_avec_place": 17,
+          "place_mediane": 285,
+          "place_min": 268,
+          "place_max": 300
+        },
+        {
+          "organe_ref": "PO645633",
+          "sigle": "NI",
+          "libelle_abrege": "NI",
+          "nom": "Non inscrit",
+          "membres_au_jour": 40,
+          "membres_avec_place": 26,
+          "place_mediane": 311.5,
+          "place_min": 66,
+          "place_max": 399
+        },
+        {
+          "organe_ref": "PO713077",
+          "sigle": "SER",
+          "libelle_abrege": "SER",
+          "nom": "Socialiste, écologiste et républicain",
+          "membres_au_jour": 265,
+          "membres_avec_place": 265,
+          "place_mediane": 455,
+          "place_min": 248,
+          "place_max": 649
+        },
+        {
+          "organe_ref": "PO656018",
+          "sigle": "GDR",
+          "libelle_abrege": "GDR",
+          "nom": "Gauche démocrate et républicaine",
+          "membres_au_jour": 15,
+          "membres_avec_place": 15,
+          "place_mediane": 590,
+          "place_min": 583,
+          "place_max": 597
+        }
+      ],
+      "groupes_non_resolus": null,
+      "places_non_resolues": null,
+      "groupes_jour_reference": "2017-06-20",
+      "places_source_url": "https://www.assemblee-nationale.fr/14/tribun/xml/place.txt",
+      "places_etat_au": "2017-06-20"
+    },
+    "15": {
+      "numero": 15,
+      "organe_ref": "PO717460",
+      "debut": "2017-06-21",
+      "fin": "2022-06-21",
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+      "mode_fin": "terme",
+      "mode_fin_non_resolu": null,
+      "decret_dissolution": null,
+      "terme_prevu": {
+        "date": "2022-06-21",
+        "regle": "Code électoral, art. LO 121 : les pouvoirs de l'Assemblée nationale expirent le troisième mardi de juin de la cinquième année qui suit son élection.",
+        "source_url": "https://www.legifrance.gouv.fr/codes/id/LEGITEXT000006070239"
+      },
+      "groupes": [
+        {
+          "organe_ref": "PO730934",
+          "sigle": "LR",
+          "libelle_abrege": "LR",
+          "nom": "Les Républicains",
+          "membres_au_jour": 100,
+          "membres_avec_place": 100,
+          "place_mediane": 70.5,
+          "place_min": 1,
+          "place_max": 151
+        },
+        {
+          "organe_ref": "PO771889",
+          "sigle": "UDI_I",
+          "libelle_abrege": "UDI-I",
+          "nom": "UDI et Indépendants",
+          "membres_au_jour": 19,
+          "membres_avec_place": 19,
+          "place_mediane": 122,
+          "place_min": 103,
+          "place_max": 187
+        },
+        {
+          "organe_ref": "PO771923",
+          "sigle": "AGIR-E",
+          "libelle_abrege": "Agir ens",
+          "nom": "Agir ensemble",
+          "membres_au_jour": 22,
+          "membres_avec_place": 22,
+          "place_mediane": 190.5,
+          "place_min": 141,
+          "place_max": 239
+        },
+        {
+          "organe_ref": "PO774834",
+          "sigle": "DEM",
+          "libelle_abrege": "Dem",
+          "nom": "Mouvement Démocrate (MoDem) et Démocrates apparentés",
+          "membres_au_jour": 54,
+          "membres_avec_place": 54,
+          "place_mediane": 190.5,
+          "place_min": 162,
+          "place_max": 639
+        },
+        {
+          "organe_ref": "PO759900",
+          "sigle": "LT",
+          "libelle_abrege": "LT",
+          "nom": "Libertés et Territoires",
+          "membres_au_jour": 18,
+          "membres_avec_place": 18,
+          "place_mediane": 210.5,
+          "place_min": 195,
+          "place_max": 574
+        },
+        {
+          "organe_ref": "PO723569",
+          "sigle": "NI",
+          "libelle_abrege": "NI",
+          "nom": "Non inscrit",
+          "membres_au_jour": 37,
+          "membres_avec_place": 24,
+          "place_mediane": 276.5,
+          "place_min": 56,
+          "place_max": 650
+        },
+        {
+          "organe_ref": "PO730964",
+          "sigle": "LAREM",
+          "libelle_abrege": "LaREM",
+          "nom": "La République en Marche",
+          "membres_au_jour": 257,
+          "membres_avec_place": 257,
+          "place_mediane": 403,
+          "place_min": 212,
+          "place_max": 633
+        },
+        {
+          "organe_ref": "PO758835",
+          "sigle": "SOC",
+          "libelle_abrege": "SOC",
+          "nom": "Socialistes et apparentés",
+          "membres_au_jour": 28,
+          "membres_avec_place": 28,
+          "place_mediane": 509.5,
+          "place_min": 495,
+          "place_max": 581
+        },
+        {
+          "organe_ref": "PO730940",
+          "sigle": "GDR",
+          "libelle_abrege": "GDR",
+          "nom": "Gauche démocrate et républicaine",
+          "membres_au_jour": 15,
+          "membres_avec_place": 15,
+          "place_mediane": 589,
+          "place_min": 582,
+          "place_max": 596
+        },
+        {
+          "organe_ref": "PO730958",
+          "sigle": "FI",
+          "libelle_abrege": "FI",
+          "nom": "La France insoumise",
+          "membres_au_jour": 17,
+          "membres_avec_place": 17,
+          "place_mediane": 618,
+          "place_min": 601,
+          "place_max": 630
+        }
+      ],
+      "groupes_non_resolus": null,
+      "places_non_resolues": null,
+      "groupes_jour_reference": "2022-06-21",
+      "places_source_url": "https://data.assemblee-nationale.fr/static/openData/repository/15/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+      "places_etat_au": "2022-06-09"
+    },
+    "16": {
+      "numero": 16,
+      "organe_ref": "PO791932",
+      "debut": "2022-06-22",
+      "fin": "2024-06-09",
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+      "mode_fin": "dissolution",
+      "mode_fin_non_resolu": null,
+      "decret_dissolution": {
+        "jorftext": "JORFTEXT000049689651",
+        "titre": "Décret du 9 juin 2024 portant dissolution de l'Assemblée nationale",
+        "date_publication": "2024-06-10",
+        "nor": "PREX2415533D",
+        "source_url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000049689651"
+      },
+      "terme_prevu": {
+        "date": "2027-06-15",
+        "regle": "Code électoral, art. LO 121 : les pouvoirs de l'Assemblée nationale expirent le troisième mardi de juin de la cinquième année qui suit son élection.",
+        "source_url": "https://www.legifrance.gouv.fr/codes/id/LEGITEXT000006070239"
+      },
+      "groupes": [
+        {
+          "organe_ref": "PO800520",
+          "sigle": "RN",
+          "libelle_abrege": "RN",
+          "nom": "Rassemblement National",
+          "membres_au_jour": 88,
+          "membres_avec_place": 88,
+          "place_mediane": 50.5,
+          "place_min": 1,
+          "place_max": 153
+        },
+        {
+          "organe_ref": "PO800508",
+          "sigle": "LR",
+          "libelle_abrege": "LR",
+          "nom": "Les Républicains",
+          "membres_au_jour": 61,
+          "membres_avec_place": 61,
+          "place_mediane": 109,
+          "place_min": 77,
+          "place_max": 235
+        },
+        {
+          "organe_ref": "PO800514",
+          "sigle": "HOR",
+          "libelle_abrege": "HOR",
+          "nom": "Horizons et apparentés",
+          "membres_au_jour": 31,
+          "membres_avec_place": 31,
+          "place_mediane": 200,
+          "place_min": 181,
+          "place_max": 444
+        },
+        {
+          "organe_ref": "PO800532",
+          "sigle": "LIOT",
+          "libelle_abrege": "LIOT",
+          "nom": "Libertés, Indépendants, Outre-mer et Territoires",
+          "membres_au_jour": 22,
+          "membres_avec_place": 22,
+          "place_mediane": 236.5,
+          "place_min": 219,
+          "place_max": 320
+        },
+        {
+          "organe_ref": "PO800484",
+          "sigle": "DEM",
+          "libelle_abrege": "Dem",
+          "nom": "Démocrate (MoDem et Indépendants)",
+          "membres_au_jour": 50,
+          "membres_avec_place": 50,
+          "place_mediane": 253.5,
+          "place_min": 162,
+          "place_max": 323
+        },
+        {
+          "organe_ref": "PO793087",
+          "sigle": "NI",
+          "libelle_abrege": "NI",
+          "nom": "Non inscrit",
+          "membres_au_jour": 7,
+          "membres_avec_place": 7,
+          "place_mediane": 264,
+          "place_min": 154,
+          "place_max": 640
+        },
+        {
+          "organe_ref": "PO800538",
+          "sigle": "RE",
+          "libelle_abrege": "RE",
+          "nom": "Renaissance",
+          "membres_au_jour": 169,
+          "membres_avec_place": 169,
+          "place_mediane": 377,
+          "place_min": 250,
+          "place_max": 488
+        },
+        {
+          "organe_ref": "PO800526",
+          "sigle": "ECOLO",
+          "libelle_abrege": "Ecolo - NUPES",
+          "nom": "Écologiste - NUPES",
+          "membres_au_jour": 21,
+          "membres_avec_place": 21,
+          "place_mediane": 503,
+          "place_min": 491,
+          "place_max": 526
+        },
+        {
+          "organe_ref": "PO830170",
+          "sigle": "SOC-A",
+          "libelle_abrege": "SOC",
+          "nom": "Socialistes et apparentés",
+          "membres_au_jour": 31,
+          "membres_avec_place": 31,
+          "place_mediane": 509,
+          "place_min": 432,
+          "place_max": 553
+        },
+        {
+          "organe_ref": "PO800502",
+          "sigle": "GDR-NUPES",
+          "libelle_abrege": "GDR - NUPES",
+          "nom": "Gauche démocrate et républicaine - NUPES",
+          "membres_au_jour": 22,
+          "membres_avec_place": 22,
+          "place_mediane": 586.5,
+          "place_min": 513,
+          "place_max": 597
+        },
+        {
+          "organe_ref": "PO800490",
+          "sigle": "LFI-NUPES",
+          "libelle_abrege": "LFI - NUPES",
+          "nom": "La France insoumise - Nouvelle Union Populaire écologique et sociale",
+          "membres_au_jour": 75,
+          "membres_avec_place": 75,
+          "place_mediane": 602,
+          "place_min": 519,
+          "place_max": 650
+        }
+      ],
+      "groupes_non_resolus": null,
+      "places_non_resolues": null,
+      "groupes_jour_reference": "2024-06-09",
+      "places_source_url": "https://data.assemblee-nationale.fr/static/openData/repository/16/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+      "places_etat_au": "2024-06-28"
+    },
+    "17": {
+      "numero": 17,
+      "organe_ref": "PO838901",
+      "debut": "2024-07-01",
+      "fin": null,
+      "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+      "mode_fin": null,
+      "mode_fin_non_resolu": {
+        "motif": "en_cours"
+      },
+      "decret_dissolution": null,
+      "terme_prevu": {
+        "date": "2029-06-19",
+        "regle": "Code électoral, art. LO 121 : les pouvoirs de l'Assemblée nationale expirent le troisième mardi de juin de la cinquième année qui suit son élection.",
+        "source_url": "https://www.legifrance.gouv.fr/codes/id/LEGITEXT000006070239"
+      },
+      "groupes": [
+        {
+          "organe_ref": "PO845401",
+          "sigle": "RN",
+          "libelle_abrege": "RN",
+          "nom": "Rassemblement National",
+          "membres_au_jour": 121,
+          "membres_avec_place": 121,
+          "place_mediane": 71,
+          "place_min": 1,
+          "place_max": 156
+        },
+        {
+          "organe_ref": "PO872880",
+          "sigle": "UDDPLR",
+          "libelle_abrege": "UDR",
+          "nom": "Union des droites pour la République",
+          "membres_au_jour": 17,
+          "membres_avec_place": 17,
+          "place_mediane": 99,
+          "place_min": 87,
+          "place_max": 114
+        },
+        {
+          "organe_ref": "PO845425",
+          "sigle": "DR",
+          "libelle_abrege": "DR",
+          "nom": "Droite Républicaine",
+          "membres_au_jour": 47,
+          "membres_avec_place": 47,
+          "place_mediane": 185,
+          "place_min": 162,
+          "place_max": 212
+        },
+        {
+          "organe_ref": "PO845470",
+          "sigle": "HOR",
+          "libelle_abrege": "HOR",
+          "nom": "Horizons & Indépendants",
+          "membres_au_jour": 35,
+          "membres_avec_place": 35,
+          "place_mediane": 233,
+          "place_min": 213,
+          "place_max": 321
+        },
+        {
+          "organe_ref": "PO845407",
+          "sigle": "EPR",
+          "libelle_abrege": "EPR",
+          "nom": "Ensemble pour la République",
+          "membres_au_jour": 90,
+          "membres_avec_place": 90,
+          "place_mediane": 296.5,
+          "place_min": 248,
+          "place_max": 400
+        },
+        {
+          "organe_ref": "PO845454",
+          "sigle": "DEM",
+          "libelle_abrege": "Dem",
+          "nom": "Les Démocrates",
+          "membres_au_jour": 37,
+          "membres_avec_place": 37,
+          "place_mediane": 347,
+          "place_min": 329,
+          "place_max": 373
+        },
+        {
+          "organe_ref": "PO840056",
+          "sigle": "NI",
+          "libelle_abrege": "NI",
+          "nom": "Non inscrit",
+          "membres_au_jour": 11,
+          "membres_avec_place": 11,
+          "place_mediane": 401,
+          "place_min": 111,
+          "place_max": 484
+        },
+        {
+          "organe_ref": "PO845419",
+          "sigle": "SOC",
+          "libelle_abrege": "SOC",
+          "nom": "Socialistes et apparentés",
+          "membres_au_jour": 68,
+          "membres_avec_place": 68,
+          "place_mediane": 444.5,
+          "place_min": 409,
+          "place_max": 569
+        },
+        {
+          "organe_ref": "PO845485",
+          "sigle": "LIOT",
+          "libelle_abrege": "LIOT",
+          "nom": "Libertés, Indépendants, Outre-mer et Territoires",
+          "membres_au_jour": 23,
+          "membres_avec_place": 23,
+          "place_mediane": 464,
+          "place_min": 382,
+          "place_max": 483
+        },
+        {
+          "organe_ref": "PO845439",
+          "sigle": "ECOS",
+          "libelle_abrege": "EcoS",
+          "nom": "Écologiste et Social",
+          "membres_au_jour": 38,
+          "membres_avec_place": 38,
+          "place_mediane": 511.5,
+          "place_min": 491,
+          "place_max": 543
+        },
+        {
+          "organe_ref": "PO845514",
+          "sigle": "GDR",
+          "libelle_abrege": "GDR",
+          "nom": "Gauche Démocrate et Républicaine",
+          "membres_au_jour": 17,
+          "membres_avec_place": 17,
+          "place_mediane": 585,
+          "place_min": 576,
+          "place_max": 593
+        },
+        {
+          "organe_ref": "PO845413",
+          "sigle": "LFI-NFP",
+          "libelle_abrege": "LFI-NFP",
+          "nom": "La France insoumise - Nouveau Front Populaire",
+          "membres_au_jour": 70,
+          "membres_avec_place": 70,
+          "place_mediane": 605.0,
+          "place_min": 518,
+          "place_max": 650
+        }
+      ],
+      "groupes_non_resolus": null,
+      "places_non_resolues": null,
+      "groupes_jour_reference": "2026-10-22",
+      "places_source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+      "places_etat_au": "2026-10-22"
+    }
+  }
+}

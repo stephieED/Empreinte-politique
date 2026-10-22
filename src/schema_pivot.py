@@ -264,7 +264,8 @@ Format d'un profil pivot v1 :
             # #1317 — "place_hemicycle" : FACULTATIVE, sur les seuls
             # `mandat_electif` de chambre `AN`. Le numéro de siège lu dans
             # l'archive AMO30 DE LA LÉGISLATURE du mandat (figée pour XVe/XVIe,
-            # courante pour XVIIe) : {"numero": "381", "source_url": <archive
+            # courante pour XVIIe ; pour la XIVe, le fichier des places du site
+            # de l'Assemblée au 20/06/2017, #1326) : {"numero": "381", "source_url": <archive
             # lue>, "etat_au": "2024-06-28"}. `numero` est le
             # `mandature.placeHemicycle` verbatim. `null` +
             # "place_hemicycle_non_resolu": {"motif": …}
@@ -550,6 +551,10 @@ KNOWN_SOURCE_TYPES: frozenset[str] = frozenset({
     # `nossenateurs`, qui désignait un réutilisateur tiers sous ODbL — la
     # confusion coûterait la clause de partage à l'identique dans le mauvais sens.
     "senat",
+    # #1310 : le Répertoire national des élus et le fichier des sortants des
+    # municipales 2026 (data.gouv.fr, Licence Ouverte 2.0), source des mandats
+    # locaux depuis #922 — qui en étaient publiés sans entrée.
+    "rne",
 })
 
 # Valeurs de chambre reconnues.
@@ -575,13 +580,16 @@ KNOWN_MOTIFS_ORGANE_CREATEUR_NON_RESOLU: frozenset[str] = frozenset({
 })
 
 #: #1317 — les trois clés de `mandats[].place_hemicycle` : le numéro de siège
-#: tel qu'AMO30 l'écrit, l'archive qui l'a rendu, et la date de l'état lu.
+#: tel qu'AMO30 l'écrit (pour la XIVe, tel que le fichier des places du site de
+#: l'Assemblée le numérote, #1326), la source qui l'a rendu, et la date de
+#: l'état lu.
 CLES_PLACE_HEMICYCLE: frozenset[str] = frozenset({"numero", "source_url", "etat_au"})
 
 #: #1317 — pourquoi un mandat de député publie `place_hemicycle: null`.
-#: `legislature_sans_archive_figee` : la législature n'a pas d'archive à elle
-#: (XIVe et avant, `repository/14/…` répond 404) — la place d'une autre archive
-#: n'est jamais empruntée. `archive_indisponible` : l'archive de la législature
+#: `legislature_sans_archive_figee` : aucune source des places de la
+#: législature (XIIIe et avant ; la XIVe se lit depuis #1326 dans le fichier du
+#: site de l'Assemblée) — la place d'une autre archive n'est jamais empruntée.
+#: Le nom du motif reste : il est publié. `archive_indisponible` : la source
 #: n'a pas pu être lue pendant le run — un fait sur le run, jamais un constat
 #: d'absence (§2 règle 5). `mandat_absent_de_l_archive` : l'archive est lue et
 #: ne porte pas ce mandat. `source_sans_place` : le mandat y est, sans place.

@@ -350,7 +350,7 @@ legislatures have a frozen archive at the same path with their number:
 | XVIIe | `repository/17/…` (current, republished nightly) | 21/10/2026 | 596 / 683 | 574 |
 | XVIe | `repository/16/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip` (11,9 Mo) | 28/06/2024 | 591 / 633 | 577 |
 | XVe | `repository/15/…` (same name, 10,1 Mo) | 09/06/2022 | 579 / 675 | 567 |
-| XIVe | `repository/14/…` → **404** | — | the XVe archive gives 120 / 691 | — |
+| XIVe | `repository/14/…` → **404** — the seats are read, since #1326, in the website's `/14/tribun/xml/place.txt`, state of 20/06/2017 (`docs/decisions/places-xive-fichier-du-site-1326.md`) | 07/02/2021 (the website's file) | the XVe archive gives 120 / 691 ; the website's file 547 of the 655 seats | 547 |
 
 Population: the legislature's deputy mandates (elected and substitutes), all
 AMO30 actors, each counted in its own legislature's archive (the XVIIe one on
@@ -360,6 +360,45 @@ absent from it — 9 are further segments of a seat it does carry, 4 are seats
 it does not carry at all (`mandat_absent_de_l_archive`). Read by `resoudre_place_hemicycle`
 (`mandats[].place_hemicycle`), see
 `docs/decisions/place-hemicycle-par-legislature-1317.md`.
+
+**XIVe seats: no open-data dataset carries them; the Assemblée's website still
+serves them (measured 22/10/2026, out of the repo, for #1326/#1328).**
+
+- The XIVe archive exists at **another path**:
+  `repository/14/amo/deputes_senateurs_ministres_legislatures_XIV/AMO20_dep_sen_min_tous_mandats_et_organes_XIV.json.zip`
+  (listed on `data.assemblee-nationale.fr/archives-anterieures/archives-14e/deputes-senateurs-et-ministres`;
+  0,9 Mo, a single JSON file dated 08/03/2018, `last-modified` 21/03/2018). It is
+  **useless for seats**: 154 of its 750 XIVe deputy mandates carry a
+  `placeHemicycle`, for 145 actors, and **all 145 sit in a XVe group** — the
+  export was made in 2018 and wrote their XVe seat (64 equal to the seat of the
+  frozen XVe archive of 09/06/2022, the 81 others differ from it). No deputy who
+  left in 2017 has a seat. The same trap as the current archive, one legislature
+  back.
+- The website's XIVe hemicycle map (`/14/qui/hemicycle/hemi.asp`, drawn by
+  `/commun/2011/js/hemi.js`) read **`/14/tribun/xml/place.txt`**, and the file is
+  **still served**: `https://www.assemblee-nationale.fr/14/tribun/xml/place.txt`
+  (HTTP 200 on 22/10/2026, 75 991 bytes, `last-modified` 07/02/2021; the `www2`
+  host answers 404). A JSON object `{"s<seat>": {"id": "<acteur number without
+  PA>", "civ", "circo", "groupe", "nomLongGroupe", "nom"}}`, plus one key `"s"`
+  without a seat number. **The live version describes the end of the
+  legislature, with `groupe` emptied**: 547 numbered seats, and every one of the
+  547 deputies belongs to a XIVe group on 20/06/2017 in AMO30 (`an_roster` index).
+  Median seat per group at that date: `LES-REP` 116 (197 seats), `UDI` 232 (27),
+  `RRDP` 285 (17), non-inscrits 311,5 (26, ECOLO dissolved in May 2016), `SER`
+  455 (265), `GDR` 590 (15).
+- The Internet Archive also holds 11 captures, 25/10/2012 → 28/09/2015, with the
+  `groupe` filled in — the same order (`LES-REP` 116,5, `UDI` 233,5, `RRDP`
+  286,5, `ECOLO` 289, non-inscrits 322,5, `SRC` 463,5, `GDR` 590 on 28/09/2015).
+  471 of the 532 deputies present in the 2015 capture and the live file kept
+  their seat. A first reading of this source (22/10/2026) said the file no longer
+  existed on the AN servers: wrong, it had not been requested directly.
+- What the live file is **not**: a dataset of the open-data portal under the
+  open-data licence — the website's « Info site » page allows free, unaltered
+  reproduction with author, source and link, and no commercial use (read
+  22/10/2026); and its date of state is inferred (every seated deputy in a
+  group on 20/06/2017), not declared by the file. **Used since #1332 (arbitrated
+  22/10/2026)** for the XIVe seats, `etat_au` `2017-06-20`, the seat going to
+  the mandate open that day: `docs/decisions/places-xive-fichier-du-site-1326.md`.
 
 **`codeType == "GOUVERNEMENT"`: one organe per government, and its members
 include people who were never deputies (#996, measured 17/09/2026 on the
@@ -462,6 +501,38 @@ Implemented path:
   `coSignataire` is an object when there is one, a list otherwise.
 - `merge_profile.py` drops `dossiers_legislatifs`/`textes_portes` entries that
   have no factual `role` during migration/merge.
+
+### Ce que le `mandatRef` d'un auteur dit de lui, et où un acte dit sa législature (mesuré le 22/10/2026, #1314)
+
+Mesuré sur les quatre archives de dossiers (14 377 dossiers dédoublonnés) et
+l'archive AMO30 courante du 19/10/2026.
+
+- **Le `mandatRef` d'un initiateur est le mandat au titre duquel il dépose.**
+  Résolu parmi les mandats de son `acteurRef` dans AMO30, son `typeOrgane` dit
+  sa qualité : `SENAT` 11 874, `ASSEMBLEE` 9 878, `MINISTERE` 2 184,
+  `PRESREP` 12 (projets de loi constitutionnelle), 7 introuvables — sur
+  23 955 références. C'est `MINISTERE`, et non `GOUVERNEMENT`, que porte le
+  mandat d'un ministre cité par un dossier. Les sénateurs sont des acteurs
+  d'AMO30 à part entière, avec leurs mandats de groupe (`GROUPESENAT`).
+- **Le préfixe du texte ne dit pas l'auteur** : `PIONAN` (proposition déposée à
+  l'Assemblée) était faux pour 30 des 218 textes XVIe relus par l'interface.
+- **Les groupes du Sénat n'ont qu'un libellé**, l'actuel : `PO286005` s'appelle
+  « Les Républicains » depuis 2002, et AMO30 ne publie que 11 organes
+  `GROUPESENAT`. `libelleAbrev` y est un code interne (`UMPPO`, `SOCPO`) ;
+  `libelleAbrege` le sigle usuel (`Les Républicains`, `SER`) — l'inverse des
+  groupes de l'Assemblée, où `libelleAbrev` distingue `SOC` de `SOC-A`.
+- **Chaque acte porte sa législature dans son uid** (`L16-VD219799DI`,
+  `L17-SN1-DEBATS-50007`) : 119 431 des 119 444 actes. Un texte du Sénat déposé
+  en XVIe et transmis en XVIIe a ses actes du Sénat en `L16-` puis `L17-` —
+  l'uid suit la législature de l'Assemblée, quelle que soit la chambre.
+- **Les bornes d'une législature sont celles de l'organe `ASSEMBLEE`** de sa
+  législature (`viMoDe.dateDebut`, `dateFin`) : XIVe 2012-06-20 → 2017-06-20,
+  XVe 2017-06-21 → 2022-06-21, XVIe 2022-06-22 → 2024-06-09, XVIIe depuis
+  2024-07-01. Aucun champ ne dit pourquoi elle a fini : la dissolution se lit au
+  Journal officiel (`docs/sources/jorf-dila.md`).
+
+Lu par `src/dossiers_an.py` et `src/legislatures_an.py`.
+→ `docs/decisions/legislatures-et-dossiers-par-objet-1314.md`
 
 ### Spike : origine (gouvernementale vs parlementaire) et statuts (`statutConclusion`/`codeActe`) (2026-08-14)
 

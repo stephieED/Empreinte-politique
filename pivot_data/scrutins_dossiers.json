@@ -1,6 +1,6 @@
 {
   "schema_version": "scrutins-dossiers-v1",
-  "genere_le": "2026-10-19T17:53:43+0000",
+  "genere_le": "2026-10-22T17:58:31+0000",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "scrutins": {
     "an:15:4352": "DLR5L15N42350",
@@ -867,9 +867,11 @@
     "an:14:1292": "DLR5L14N34670",
     "an:14:1327": "DLR5L14N35094",
     "an:14:20": "DLR5L14N29020",
+    "an:14:483": "DLR5L14N29910",
     "an:14:485": "DLR5L14N28979",
     "an:14:561": "DLR5L14N29845",
     "an:14:74": "DLR5L14N29146",
+    "an:14:757": "DLR5L14N30067",
     "an:14:895": "DLR5L14N33248",
     "an:14:970": "DLR5L14N33251",
     "an:14:997": "DLR5L14N33251",
@@ -4201,6 +4203,10 @@
     "DLR5L17N54096": {
       "statut": "adopte",
       "sort_49_3": false
+    },
+    "DLR5L14N29910": {
+      "statut": "adopte",
+      "sort_49_3": false
     }
   },
   "provenance": {
@@ -4215,9 +4221,11 @@
     "an:14:1292": "deduit_date_et_titre",
     "an:14:1327": "deduit_date_et_titre",
     "an:14:20": "deduit_date_et_titre",
+    "an:14:483": "deduit_date_et_titre",
     "an:14:485": "deduit_date_et_titre",
     "an:14:561": "deduit_date_et_titre",
     "an:14:74": "deduit_date_et_titre",
+    "an:14:757": "deduit_date_et_titre",
     "an:14:895": "deduit_date_et_titre",
     "an:14:970": "deduit_date_et_titre",
     "an:14:997": "deduit_date_et_titre",

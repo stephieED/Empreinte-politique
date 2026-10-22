@@ -1602,7 +1602,7 @@
    perd sa teinte. Déclaré après l'attribut `fill`, il gagne. */
 .cp-chute-part--voile { fill: #e9e6e1; }
 .cp-chute-total { fill: #14151a; }
-.cp-chute-axe { font-size: 11px; fill: var(--muted, #8b8794); text-anchor: end; }
+.cp-chute-axe { font-size: 11px; fill: var(--muted, #5f5b66); text-anchor: end; }
 .cp-chute-axe--an { text-anchor: middle; }
 .cp-chute-total-nb { font-size: 11.5px; font-weight: 800; fill: var(--ink, #17141f); text-anchor: middle; }
 .cp-chute-mesure { margin-bottom: 2px; }
@@ -1628,14 +1628,14 @@
 }
 .cp-chute-liste-quoi { font-weight: 800; }
 .cp-chute-raz {
-  border: 1px solid var(--border, #e7e4df); background: none; color: var(--muted, #8b8794);
+  border: 1px solid var(--border, #e7e4df); background: none; color: var(--muted, #5f5b66);
   cursor: pointer; font: inherit; font-size: 11.5px; border-radius: 999px; padding: 2px 10px;
 }
 .cp-chute-raz:hover { color: var(--ink, #17141f); border-color: var(--ink, #17141f); }
 .cp-chute-liste ul { list-style: none; margin: 0; padding: 0; }
 .cp-chute-liste li { padding: 9px 0; border-bottom: 1px solid var(--border-soft, #f0eeeb); }
 .cp-chute-titre { font-weight: 700; font-size: 13px; display: block; }
-.cp-chute-fait { font-size: 12px; color: var(--muted, #8b8794); }
+.cp-chute-fait { font-size: 12px; color: var(--muted, #5f5b66); }
 /* Le vert du fait acquis : c'est la MÊME encre que « adopté » des positions de
    vote, et pour la même raison — un fait de la source, jamais un jugement. */
 .cp-chute-oui { color: #007a45; font-weight: 800; }
@@ -1665,7 +1665,7 @@
 }
 .cp-ter-tirant { fill: none; stroke: var(--border, #e7e4df); stroke-width: 1; }
 .cp-ter-etape {
-  font-size: 11.5px; fill: var(--muted, #8b8794);
+  font-size: 11.5px; fill: var(--muted, #5f5b66);
   font-family: 'Manrope', system-ui, sans-serif;
 }
 .cp-ter-etape--fin { text-anchor: end; }
@@ -1691,14 +1691,14 @@
 }
 .cp-ter-titre a:hover { text-decoration-color: currentcolor; }
 .cp-ter-pastille {
-  font-size: 11.5px; color: var(--muted, #8b8794); text-align: right; white-space: nowrap;
+  font-size: 11.5px; color: var(--muted, #5f5b66); text-align: right; white-space: nowrap;
   display: inline-flex; align-items: center; gap: 6px;
 }
 .cp-ter-pastille::before {
   content: ''; width: 7px; height: 7px; border-radius: 50%;
   background: var(--pastille, #8b8794); flex: none;
 }
-.cp-ter-fait { font-size: 12px; color: var(--muted, #8b8794); grid-column: 1 / -1; }
+.cp-ter-fait { font-size: 12px; color: var(--muted, #5f5b66); grid-column: 1 / -1; }
 
 /* ── Le sort d'un texte porté, et le 49.3 (#743 dans la fiche) ─────────────
  *
@@ -1707,7 +1707,7 @@
  * typographiquement les ferait lire comme un seul.
  */
 .cp-ter-sort {
-  grid-column: 1 / -1; font-size: 12px; color: var(--muted, #8b8794);
+  grid-column: 1 / -1; font-size: 12px; color: var(--muted, #5f5b66);
   display: inline-flex; align-items: center; gap: 6px;
 }
 .cp-ter-sort::before {
@@ -1721,7 +1721,7 @@
 .cp-ter-sort--493 { color: var(--ink, #17141f); font-weight: 700; }
 
 .cp-ter-493 {
-  margin: 10px 0 0; font-size: 12.5px; color: var(--muted, #8b8794);
+  margin: 10px 0 0; font-size: 12.5px; color: var(--muted, #5f5b66);
   display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; max-width: 78ch;
 }
 .cp-ter-493 b { color: var(--ink, #17141f); font-weight: 800; }
@@ -1911,7 +1911,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #b6b1bd;
+  color: var(--muted);
   padding-bottom: 2px;
 }
 .cp-mr-lib {
@@ -1960,7 +1960,7 @@
   font-variant-numeric: tabular-nums;
 }
 .cp-mr-n--textes {
-  color: #b6b1bd;
+  color: var(--muted);
 }
 .cp-mr--nd .cp-mr-lib {
   font-style: italic;

@@ -93,6 +93,13 @@ LICENCE_AN = "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationa
 #: il n'y entre pas.
 LICENCE_SENAT = "Licence Ouverte / Open Licence (Sénat) — data.senat.fr"
 
+#: #1310 — les mandats locaux des candidats déclarés (#922), lus dans le
+#: Répertoire national des élus et le fichier des sortants des municipales 2026,
+#: tous deux sur data.gouv.fr. Ils étaient publiés sans entrée `sources[]`, donc
+#: sans la licence qui leur est due : sur 18 fiches, l'attribution affichée
+#: était celle de l'Assemblée, ou rien.
+LICENCE_RNE = "Licence Ouverte 2.0 (Etalab) — data.gouv.fr (Répertoire national des élus)"
+
 #: #1029 voie 1 — le fonds du Journal officiel publié par la DILA
 #: (`echanges.dila.gouv.fr`, `fr-lo` dans l'API data.gouv). Attribution seule,
 #: sans partage à l'identique. Elle ne figure PAS dans
@@ -146,6 +153,7 @@ LICENCES_SHARE_ALIKE = frozenset({LICENCE_REGARDS_CITOYENS, LICENCE_PARLTRACK})
 LICENCE_PAR_TYPE_SOURCE: dict[str, str] = {
     "assemblee_nationale": LICENCE_AN,
     "senat": LICENCE_SENAT,
+    "rne": LICENCE_RNE,
     "nosdeputes": LICENCE_REGARDS_CITOYENS,
     "nossenateurs": LICENCE_REGARDS_CITOYENS,
     "europarl": LICENCE_EUROPARL,
@@ -159,6 +167,7 @@ LICENCE_PAR_TYPE_SOURCE: dict[str, str] = {
 ORDRE_LICENCES: tuple[str, ...] = (
     LICENCE_AN,
     LICENCE_SENAT,
+    LICENCE_RNE,
     LICENCE_REGARDS_CITOYENS,
     LICENCE_EUROPARL,
     LICENCE_PARLTRACK,
@@ -168,6 +177,25 @@ ORDRE_LICENCES: tuple[str, ...] = (
 #: qui composait déjà « <licence existante> + <licence ParlTrack> » avant ce
 #: lot : le format publié ne change pas, seule sa fabrique est unifiée.
 SEPARATEUR = " + "
+
+#: #1310 — l'hôte d'une source de l'Assemblée nationale (`data.`, `www.`,
+#: `www2.` — les trois servent les fiches d'acteur et l'open data).
+HOTE_ASSEMBLEE = "assemblee-nationale.fr"
+
+
+def est_url_assemblee(url: Any) -> bool:
+    """Vrai si `url` est servie par l'Assemblée nationale.
+
+    Une entrée `sources[]` de type `assemblee_nationale` qui ne l'est pas fait
+    publier une licence fausse : c'est ainsi qu'un article de presse a porté la
+    licence de l'Assemblée sur 20 fiches de candidats déclarés (#1310).
+    """
+    if not isinstance(url, str) or not url:
+        return False
+    from urllib.parse import urlparse  # noqa: PLC0415 — module de constantes
+
+    hote = (urlparse(url).hostname or "").lower()
+    return hote == HOTE_ASSEMBLEE or hote.endswith("." + HOTE_ASSEMBLEE)
 
 #: Fragments d'URL qui trahissent un champ dérivé de Regards Citoyens même
 #: quand `sources[]` ne le dit plus. **Public depuis #839** : l'audit du

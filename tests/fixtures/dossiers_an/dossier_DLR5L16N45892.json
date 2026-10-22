@@ -1,0 +1,102 @@
+{
+ "dossierParlementaire": {
+  "@xmlns": "http://schemas.assemblee-nationale.fr/referentiel",
+  "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+  "@xsi:type": "DossierLegislatif_Type",
+  "uid": "DLR5L16N45892",
+  "legislature": "16",
+  "titreDossier": {
+   "titre": "Proposition de loi relative au consentement sexuel des adultes",
+   "titreChemin": "DLR5L16N45892",
+   "senatChemin": "http://www.senat.fr/dossier-legislatif/ppl21-729.html"
+  },
+  "procedureParlementaire": {
+   "code": "2",
+   "libelle": "Proposition de loi ordinaire"
+  },
+  "initiateur": {
+   "acteurs": {
+    "acteur": {
+     "acteurRef": "PA429891",
+     "mandatRef": "PM736329"
+    }
+   },
+   "organes": {
+    "organe": {
+     "organeRef": {
+      "uid": "PO78718"
+     }
+    }
+   }
+  },
+  "actesLegislatifs": {
+   "acteLegislatif": {
+    "@xsi:type": "Etape_Type",
+    "uid": "L16-SN1-45892",
+    "codeActe": "SN1",
+    "libelleActe": {
+     "nomCanonique": "1ère lecture (1ère assemblée saisie)",
+     "libelleCourt": "1ère lecture"
+    },
+    "organeRef": "PO78718",
+    "dateActe": null,
+    "actesLegislatifs": {
+     "acteLegislatif": [
+      {
+       "@xsi:type": "DepotInitiative_Type",
+       "uid": "L16-VD207991DI",
+       "codeActe": "SN1-DEPOT",
+       "libelleActe": {
+        "nomCanonique": "1er dépôt d'une initiative.",
+        "libelleCourt": "1er dépôt d'une initiative."
+       },
+       "organeRef": "PO78718",
+       "dateActe": "2022-06-22T00:00:00.000+02:00",
+       "actesLegislatifs": null,
+       "texteAssocie": "PIONSNR5S379B0729"
+      },
+      {
+       "@xsi:type": "Etape_Type",
+       "uid": "L16-SN1-COM-45892",
+       "codeActe": "SN1-COM",
+       "libelleActe": {
+        "nomCanonique": "Travaux des commissions",
+        "libelleCourt": "Travaux des commissions"
+       },
+       "organeRef": "PO78718",
+       "dateActe": null,
+       "actesLegislatifs": {
+        "acteLegislatif": {
+         "@xsi:type": "Etape_Type",
+         "uid": "L16-VD207992CF",
+         "codeActe": "SN1-COM-FOND",
+         "libelleActe": {
+          "nomCanonique": "Travaux de la commission saisie au fond",
+          "libelleCourt": "Travaux de la commission saisie au fond"
+         },
+         "organeRef": "PO211495",
+         "dateActe": null,
+         "actesLegislatifs": {
+          "acteLegislatif": {
+           "@xsi:type": "SaisieComFond_Type",
+           "uid": "L16-VD207992CFS",
+           "codeActe": "SN1-COM-FOND-SAISIE",
+           "libelleActe": {
+            "nomCanonique": "Renvoi en commission au fond",
+            "libelleCourt": "Renvoi en commission au fond"
+           },
+           "organeRef": "PO211495",
+           "dateActe": "2022-06-22T00:00:00.000+02:00",
+           "actesLegislatifs": null
+          }
+         }
+        }
+       }
+      }
+     ]
+    }
+   }
+  },
+  "fusionDossier": null
+ }
+}

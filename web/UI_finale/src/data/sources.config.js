@@ -126,6 +126,21 @@ export const sourcesConfig = [
     perimetre: ['AN'],
     couverturePeriode: null,
   },
+  // CITÉE, PAS OUVERTE (#1326). Les places de la XIVe ne sont dans aucun jeu
+  // de données ouvert : elles viennent d'un fichier du site de l'Assemblée,
+  // sous ses conditions (« Info site »), comme Sycomore. AGENTS.md §7.
+  {
+    id: 'places-hemicycle-xive',
+    nom: "Places de l'hémicycle, XIVe législature (Assemblée nationale)",
+    type: "Fichier publié sur le site de l'Assemblée",
+    contenuCouvert:
+      "Le siège de chaque député de la XIVe législature (2012-2017), au 20 juin 2017. Les données en libre accès de l'Assemblée ne le donnent pas pour cette législature.",
+    cadenceMiseAJour: 'Aucune : la XIVe législature est close.',
+    licence: "Conditions du site de l'Assemblée nationale : reproduction gratuite, sans usage commercial",
+    implication: 'Seul le numéro de siège est repris, avec un lien vers le fichier.',
+    perimetre: ['AN'],
+    couverturePeriode: null,
+  },
   {
     id: 'journal-officiel',
     nom: 'Journal officiel (Légifrance)',

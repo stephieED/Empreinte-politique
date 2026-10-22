@@ -243,6 +243,31 @@ const SECTIONS = [
           </a>
         </p>
 
+        {/* LES PLACES DE LA XIVe (#1326), AGENTS.md §7 : une source citée comme
+            Sycomore, hors du portail open data, sous les conditions du site de
+            l'Assemblée (page « Info site », lue le 22/10/2026). Texte écrit
+            selon docs/regles/textes-publies.md : pas de jargon technique, une
+            idée par phrase, l'adresse portée par le lien.
+            → docs/decisions/places-xive-fichier-du-site-1326.md */}
+        <h3>Places de l'hémicycle de la XIVe législature</h3>
+        <p>
+          Pour la XIVe législature (2012-2017), les données en libre accès de l'Assemblée nationale
+          ne donnent pas le siège des député·es. Nous le lisons dans{' '}
+          <a
+            href="https://www.assemblee-nationale.fr/14/tribun/xml/place.txt"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            le fichier qu'utilisait la carte de l'hémicycle
+          </a>{' '}
+          sur le site de l'Assemblée.{' '}
+          <a href="https://www.assemblee-nationale.fr/dyn/info-site" target="_blank" rel="noopener noreferrer">
+            Les conditions de ce site
+          </a>{' '}
+          autorisent une reproduction gratuite et fidèle, avec l'auteur, la source et un lien, mais pas d'usage
+          commercial. Seul le numéro de siège en est repris, avec un lien vers le fichier.
+        </p>
+
         <h3>Implication pour la réutilisation de nos propres données</h3>
         <p>
           Les jeux de données JSON produits et publiés par ce site combinent des contenus sous plusieurs

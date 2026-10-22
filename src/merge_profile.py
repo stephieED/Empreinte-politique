@@ -83,7 +83,7 @@ from candidate_profile import (
     WARNING_PREFIX_QUESTIONS_INDISPONIBLES,
     WARNING_PREFIX_DEFAUT_COLLECTE,
 )
-from licences import appliquer_licence_donnees
+from licences import appliquer_licence_donnees, est_url_assemblee
 from normalize_profil import (
     WARNING_PREFIX_CHAMBRE_MANDAT_NON_RESOLUE,
     WARNING_PREFIX_CHAMBRES_NON_CORROBOREE,
@@ -2670,14 +2670,33 @@ def clean_stale_interventions(
     ]
 
 
+def est_source_mal_typee(item: dict[str, Any]) -> bool:
+    """Vrai pour une entrée `assemblee_nationale` qui ne pointe pas vers
+    l'Assemblée — le retrait nommé de #1310.
+
+    `normalize_profil` a typé `assemblee_nationale` l'article de presse ou la
+    page Wikipédia qui atteste une candidature : 20 des 43 fiches de candidats
+    déclarés publiaient ainsi la licence de l'Assemblée sans en porter une
+    donnée (mesuré le 19/10/2026). Le normaliseur ne l'écrit plus, mais l'union
+    par type ci-dessous garderait l'entrée publiée indéfiniment : un retrait
+    s'écrit (AGENTS.md §7). Il ne vise que ce cas — un type qui prétend une
+    origine que son URL dément —, jamais une entrée sans URL.
+    """
+    return item.get("type") == "assemblee_nationale" and bool(item.get("url")) \
+        and not est_url_assemblee(item.get("url"))
+
+
 def _merge_pivot_sources(old_sources: Optional[list[dict[str, Any]]], new_sources: Optional[list[dict[str, Any]]]) -> list[dict[str, Any]]:
     """Fusionne les blocs `sources[]` par `type` : contrairement aux autres
     listes, on garde ici l'entrée dont la synchro est la plus récente (simple
-    métadonnée de fraîcheur, pas une donnée métier à préserver telle quelle)."""
+    métadonnée de fraîcheur, pas une donnée métier à préserver telle quelle).
+
+    Une entrée mal typée (`est_source_mal_typee`, #1310) n'est gardée d'aucun
+    côté."""
     by_type: dict[Any, dict[str, Any]] = {}
     order: list[Any] = []
     for item in (old_sources or []) + (new_sources or []):
-        if not isinstance(item, dict):
+        if not isinstance(item, dict) or est_source_mal_typee(item):
             continue
         t = item.get("type")
         if t not in by_type:

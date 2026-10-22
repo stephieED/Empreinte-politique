@@ -1,0 +1,211 @@
+{
+ "acteur": {
+  "uid": {
+   "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+   "@xsi:type": "IdActeur_type",
+   "#text": "PA717161"
+  },
+  "etatCivil": {
+   "ident": {
+    "civ": "Mme",
+    "prenom": "Élisabeth",
+    "nom": "Borne",
+    "alpha": "Borne",
+    "trigramme": "ELB"
+   }
+  },
+  "mandats": {
+   "mandat": [
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM800557",
+     "acteurRef": "PA717161",
+     "legislature": "16",
+     "typeOrgane": "GP",
+     "dateDebut": "2022-06-29",
+     "datePublication": "2022-06-29",
+     "dateFin": "2022-07-22",
+     "preseance": "20",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Membre",
+      "libQualite": "Membre du",
+      "libQualiteSex": "Membre du"
+     },
+     "organes": {
+      "organeRef": "PO800538"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM834841",
+     "acteurRef": "PA717161",
+     "legislature": "16",
+     "typeOrgane": "GP",
+     "dateDebut": "2024-02-10",
+     "datePublication": null,
+     "dateFin": "2024-06-09",
+     "preseance": "20",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Membre",
+      "libQualite": "Membre du",
+      "libQualiteSex": "Membre du"
+     },
+     "organes": {
+      "organeRef": "PO800538"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM845460",
+     "acteurRef": "PA717161",
+     "legislature": "17",
+     "typeOrgane": "GP",
+     "dateDebut": "2024-07-19",
+     "datePublication": "2024-07-19",
+     "dateFin": "2025-01-23",
+     "preseance": "20",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Membre",
+      "libQualite": "Membre du",
+      "libQualiteSex": "Membre du"
+     },
+     "organes": {
+      "organeRef": "PO845407"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM875113",
+     "acteurRef": "PA717161",
+     "legislature": "17",
+     "typeOrgane": "GP",
+     "dateDebut": "2025-11-14",
+     "datePublication": "2025-11-14",
+     "dateFin": "2026-09-25",
+     "preseance": "20",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Membre",
+      "libQualite": "Membre du",
+      "libQualiteSex": "Membre du"
+     },
+     "organes": {
+      "organeRef": "PO845407"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM885498",
+     "acteurRef": "PA717161",
+     "legislature": "17",
+     "typeOrgane": "GP",
+     "dateDebut": "2026-09-26",
+     "datePublication": null,
+     "dateFin": null,
+     "preseance": "24",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Membre apparenté",
+      "libQualite": "Apparenté au",
+      "libQualiteSex": "Apparentée au"
+     },
+     "organes": {
+      "organeRef": "PO845407"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM791583",
+     "acteurRef": "PA717161",
+     "legislature": null,
+     "typeOrgane": "MINISTERE",
+     "dateDebut": "2022-05-17",
+     "datePublication": "2022-05-17",
+     "dateFin": "2024-01-09",
+     "preseance": "1",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Premier ministre",
+      "libQualite": "Premier ministre",
+      "libQualiteSex": "Première ministre"
+     },
+     "organes": {
+      "organeRef": "PO791580"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM874999",
+     "acteurRef": "PA717161",
+     "legislature": "17",
+     "typeOrgane": "GP",
+     "dateDebut": "2025-11-13",
+     "datePublication": null,
+     "dateFin": "2025-11-13",
+     "preseance": "28",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Député non-inscrit",
+      "libQualite": "Député non-inscrit",
+      "libQualiteSex": "Députée non-inscrite"
+     },
+     "organes": {
+      "organeRef": "PO840056"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM796312",
+     "acteurRef": "PA717161",
+     "legislature": "16",
+     "typeOrgane": "GP",
+     "dateDebut": "2022-06-22",
+     "datePublication": null,
+     "dateFin": "2022-06-28",
+     "preseance": "28",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Député non-inscrit",
+      "libQualite": "Député non-inscrit",
+      "libQualiteSex": "Députée non-inscrite"
+     },
+     "organes": {
+      "organeRef": "PO793087"
+     }
+    },
+    {
+     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+     "@xsi:type": "MandatSimple_Type",
+     "uid": "PM842397",
+     "acteurRef": "PA717161",
+     "legislature": "17",
+     "typeOrgane": "GP",
+     "dateDebut": "2024-07-08",
+     "datePublication": null,
+     "dateFin": "2024-07-18",
+     "preseance": "28",
+     "nominPrincipale": "1",
+     "infosQualite": {
+      "codeQualite": "Député non-inscrit",
+      "libQualite": "Député non-inscrit",
+      "libQualiteSex": "Députée non-inscrite"
+     },
+     "organes": {
+      "organeRef": "PO840056"
+     }
+    }
+   ]
+  }
+ }
+}

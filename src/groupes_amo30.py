@@ -15,22 +15,25 @@ AMO30 publie chaque groupe comme un organe `codeType == "GP"`, avec ses membres.
 Tout ce que la table porte s'en déduit — sauf ce qui est un **nom** : le sigle
 publié, l'identifiant de lignée. Ce module dérive le reste.
 
-**Ce lot ne change rien à ce qui est publié.** Aucun job ne lit ce module ; la
-table committée reste ce que les fiches lisent. Il dérive, et il compare.
+Deux règles, une par étage
+--------------------------
 
-La même règle, deux fois
-------------------------
-Arbitrée par la propriétaire le 02/10/2026 : les personnes communes, sur
-l'effectif du **plus petit** des deux, à partir de la moitié
-(`audit_filiation_lignees.atteint_le_seuil`).
-
-1. **Dans une législature : le renommage.** Un groupe renommé ferme un organe et
-   en ouvre un autre le lendemain (`SOC` puis `SOC-A`, `MODEM` puis `DEM`). Deux
-   organes sont **le même groupe** quand le second ouvre au plus tard le
-   lendemain de la fermeture du premier (`an_roster._contigus`) et que la règle
+1. **Dans une législature : le renommage.** Arbitré le 02/10/2026 : les
+   personnes communes, sur l'effectif du **plus petit** des deux, à partir de la
+   moitié (`audit_filiation_lignees.atteint_le_seuil`). Un groupe renommé ferme
+   un organe et en ouvre un autre le lendemain (`SOC` puis `SOC-A`, `MODEM` puis
+   `DEM`). Deux organes sont **le même groupe** quand le second ouvre au plus tard
+   le lendemain de la fermeture du premier (`an_roster._contigus`) et que la règle
    passe. Une scission ne passe pas : `UDI-A-I → AGIR-E`, 10 sur 23.
-2. **D'une législature à la suivante : la filiation.** Entre deux groupes — leurs
-   organes réunis —, tous les couples qui passent.
+2. **D'une législature à la suivante : la filiation.** Arbitrée le 22/10/2026
+   (#1328, elle remplace la moitié du plus petit des deux) : la moyenne
+   harmonique de la part des **réélus** du premier groupe passés au second et de
+   la part des **anciens** du second venus du premier, au moins 60 %, et au moins
+   5 personnes communes (`groupes_config.filiation_atteinte`). Entre deux
+   groupes — leurs organes réunis —, tous les couples qui passent. Compter les
+   seuls réélus annule le renouvellement : en 2017, 76 % des élus étaient
+   nouveaux, et `LES-REP` → `LR` faisait 56 sur 120 sous l'ancienne règle,
+   93 % sous celle-ci.
 
 Une **lignée** est ce que ces filiations relient.
 
@@ -39,8 +42,10 @@ Les décisions qui gouvernent ce module
 Les trois qui comptent ; la liste complète et à jour est dans
 `docs/decisions-par-module.md`.
 
-- `docs/decisions/derivation-des-groupes-depuis-amo30-1168.md` — la règle
-  appliquée deux fois, et ce que le calcul retrouve de la table ;
+- `docs/decisions/filiation-par-les-reelus-1328.md` — la règle de filiation,
+  et pourquoi elle ne compte que ceux qui pouvaient passer ;
+- `docs/decisions/derivation-des-groupes-depuis-amo30-1168.md` — la dérivation,
+  et ce que le calcul retrouve de la table ;
 - `docs/decisions/table-des-groupes-du-run-1168.md` — la table du run, sa
   composition, et l'empreinte qui dit si elle est à jour ;
 - `docs/decisions/lien-etabli-par-comparaison-1168.md` — pourquoi chaque lien
@@ -54,8 +59,8 @@ Ce qui n'est pas tranché n'est pas deviné
   et le cas est nommé dans `renommages_ambigus` (`AGENTS.md` §2 règle 5).
 - Un groupe sans membre connu n'entre dans aucune comparaison.
 - Les non-inscrits ne sont pas un groupe.
-- Les législatures antérieures à `PREMIERE_LEGISLATURE` ne sont pas dérivées : la
-  règle n'y a pas été éprouvée.
+- Les législatures antérieures à `PREMIERE_LEGISLATURE` (la XIVe depuis #1328)
+  ne sont pas dérivées : le corpus n'y porte aucun scrutin.
 
 Mettre la table à jour (#1168, lot 2a)
 --------------------------------------
@@ -141,6 +146,8 @@ from groupes_config import (  # noqa: E402
     CorrespondanceSiglesInvalide,
     charger_correspondance_sigles,
     empreinte_table,
+    filiation_atteinte,
+    mesure_de_filiation,
     mesure_soutient_le_lien,
 )
 from schema_groupe import (  # noqa: E402
@@ -149,9 +156,12 @@ from schema_groupe import (  # noqa: E402
 )
 
 #: Première législature dérivée. Une **borne déclarée**, pas une limite de la
-#: source : AMO30 porte les groupes depuis la XIIe, mais la règle n'a été
-#: éprouvée que de la XVe à la XVIIe, et le dépôt ne publie rien avant.
-PREMIERE_LEGISLATURE = 15
+#: source : AMO30 porte les groupes depuis la XIIe. XVe jusqu'à #1328, qui
+#: l'abaisse à la XIVe (arbitré le 22/10/2026) : la règle de filiation y a été
+#: mesurée, et le corpus porte les scrutins, les amendements et, depuis #1019,
+#: les dossiers de la XIVe. Rien n'est dérivé avant : les scrutins commencent
+#: le 03/07/2012.
+PREMIERE_LEGISLATURE = 14
 
 
 def _membres(index: dict[str, Any], organe_ref: str) -> set[str]:
@@ -300,25 +310,43 @@ def deriver_groupes(
     return {"groupes": groupes, "renommages": couples, "renommages_ambigus": ambigus}
 
 
+def membres_par_legislature(groupes: list[dict[str, Any]]) -> dict[str, set[str]]:
+    """`{législature: toutes les personnes qui ont siégé dans un de ses groupes}`.
+
+    Les non-inscrits n'en sont pas : `_organes_derives` les écarte, ils ne sont
+    pas un groupe. C'est la population des réélus et des anciens de #1328.
+    """
+    par_legislature: dict[str, set[str]] = {}
+    for groupe in groupes:
+        par_legislature.setdefault(str(groupe["legislature"]), set()).update(groupe["membres"])
+    return par_legislature
+
+
 def deriver_filiations(groupes: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Les liens d'une législature à la suivante : tous les couples qui passent.
+    """Les liens d'une législature à la suivante : tous les couples qui passent
+    la règle de #1328 (`groupes_config.filiation_atteinte`).
 
     Chaque lien nomme ses deux groupes par leur **premier organe** — le seul
-    identifiant qu'un groupe dérivé possède — et porte son décompte.
+    identifiant qu'un groupe dérivé possède — et porte sa mesure
+    `{communs, reelus, anciens}`. Plusieurs couples peuvent passer pour un même
+    groupe : une fusion ou une scission reste représentable.
     """
+    par_legislature = membres_par_legislature(groupes)
     liens: list[dict[str, Any]] = []
     for depart in groupes:
         for arrivee in groupes:
             if int(arrivee["legislature"]) != int(depart["legislature"]) + 1:
                 continue
-            communs = len(depart["membres"] & arrivee["membres"])
-            base = min(len(depart["membres"]), len(arrivee["membres"]))
-            if atteint_le_seuil(communs, base):
+            mesure = mesure_de_filiation(
+                depart["membres"], arrivee["membres"],
+                par_legislature.get(str(arrivee["legislature"]), set()),
+                par_legislature.get(str(depart["legislature"]), set()),
+            )
+            if filiation_atteinte(**mesure):
                 liens.append({
                     "depart": depart["organes_an"][0],
                     "arrivee": arrivee["organes_an"][0],
-                    "communs": communs,
-                    "base": base,
+                    **mesure,
                 })
     return liens
 
@@ -805,7 +833,8 @@ def mettre_a_jour_table(
             "sigles_an": groupe["sigles_an"],
             "effectif_amo30": groupe["effectif_amo30"],
             "succede_a": [
-                {"groupe_id": p.get("groupe_id"), "communs": l["communs"], "base": l["base"]}
+                {"groupe_id": p.get("groupe_id"), "communs": l["communs"],
+                 "reelus": l["reelus"], "anciens": l["anciens"]}
                 for p, l in predecesseurs
             ],
         })
@@ -1030,13 +1059,16 @@ def mesurer_liens(
     **Modifie `document` en place** — c'est la dernière étape de
     `mettre_a_jour_table`, qui travaille sur sa propre copie.
 
-    Chaque lien reçoit `{groupe_id, communs, base}` sous `succede_a_mesures` :
-    les personnes communes aux deux groupes (organes réunis), sur l'effectif du
-    plus petit. Un lien dont un côté n'a aucun membre dans l'archive n'est pas
-    mesuré — il ne reçoit rien, et se publiera `relecture_humaine`.
+    Chaque lien reçoit `{groupe_id, communs, reelus, anciens}` sous
+    `succede_a_mesures` (#1328) : les personnes communes aux deux groupes
+    (organes réunis), les réélus du prédécesseur (ceux qui siègent dans un groupe
+    de la législature suivante) et les anciens du successeur (ceux qui
+    siégeaient dans un groupe de la précédente). Un lien dont un côté n'a ni
+    réélu ni ancien n'est pas mesuré — il ne reçoit rien, et se publiera
+    `relecture_humaine`.
 
     C'est ce qui rend `etabli_par: comparaison_des_membres` vrai à la lettre :
-    la fiche ne le dit que d'un lien dont la mesure est écrite et passe le seuil.
+    la fiche ne le dit que d'un lien dont la mesure est écrite et passe la règle.
     Tous les liens sont mesurés, y compris ceux écrits à la main — sans quoi
     l'affirmation reposerait sur ce que la table écrite prétend.
     """
@@ -1046,6 +1078,10 @@ def mesurer_liens(
     def membres(entree: dict[str, Any]) -> set[str]:
         return set().union(*(_membres(index, ref) for ref in entree.get("organes_an") or []))
 
+    par_legislature: dict[str, set[str]] = {}
+    for ref, organe in _organes_derives(index, None).items():
+        par_legislature.setdefault(str(organe.get("legislature")), set()).update(_membres(index, ref))
+
     non_soutenus: list[dict[str, Any]] = []
     for entree in entrees:
         mesures = []
@@ -1054,17 +1090,29 @@ def mesurer_liens(
             if precedent is None:
                 continue
             avant, apres = membres(precedent), membres(entree)
-            base = min(len(avant), len(apres))
-            if base == 0:
-                continue
-            mesure = {"groupe_id": cible, "communs": len(avant & apres), "base": base}
+            if str(precedent.get("legislature")) == str(entree.get("legislature")):
+                # Un renommage écrit comme une succession (`NG → SOC`, XVe, avant
+                # #1181) : pas de renouvellement à neutraliser, la règle reste la
+                # moitié du plus petit des deux — celle du renommage.
+                base = min(len(avant), len(apres))
+                if base == 0:
+                    continue
+                mesure = {"groupe_id": cible, "communs": len(avant & apres), "base": base}
+            else:
+                mesure = mesure_de_filiation(
+                    avant, apres,
+                    par_legislature.get(str(entree.get("legislature")), set()),
+                    par_legislature.get(str(precedent.get("legislature")), set()),
+                )
+                if filiation_atteinte(**mesure) is None:
+                    continue
+                mesure = {"groupe_id": cible, **mesure}
             mesures.append(mesure)
             if not mesure_soutient_le_lien(mesure):
                 non_soutenus.append({
                     "groupe_id": entree.get("groupe_id"),
                     "predecesseur": cible,
-                    "communs": mesure["communs"],
-                    "base": base,
+                    **{k: v for k, v in mesure.items() if k != "groupe_id"},
                 })
         if mesures:
             entree[CLE_MESURES_SUCCESSION] = mesures
@@ -1082,13 +1130,21 @@ def table_modifiee(journal: dict[str, list[Any]]) -> bool:
     )
 
 
+def _mesure_lisible(mesure: dict[str, Any]) -> str:
+    """« 56 communs, 65 réélus, 56 anciens » : chaque taux avec ses deux termes (§2 règle 7)."""
+    if "base" in mesure:
+        return f"{mesure['communs']} sur {mesure['base']}"
+    return (f"{mesure['communs']} communs, {mesure['reelus']} réélus, "
+            f"{mesure['anciens']} anciens")
+
+
 def _afficher_journal(journal: dict[str, list[Any]]) -> None:
     if not any(journal.values()):
         print("Rien à mettre à jour : la table porte déjà tout ce que la source dit.")
         return
     for ajout in journal["groupes_ajoutes"]:
         suite = " ; ".join(
-            f"prend la suite de {s['groupe_id']} ({s['communs']} sur {s['base']})"
+            f"prend la suite de {s['groupe_id']} ({_mesure_lisible(s)})"
             for s in ajout["succede_a"]
         ) or "aucun prédécesseur au-dessus du seuil"
         print(
@@ -1119,7 +1175,7 @@ def _afficher_journal(journal: dict[str, list[Any]]) -> None:
     for lien in journal.get("liens_non_soutenus") or []:
         print(
             f"  [non soutenu] {lien['predecesseur']} → {lien['groupe_id']} : "
-            f"{lien['communs']} sur {lien['base']}, sous la moitié — le lien reste "
+            f"{_mesure_lisible(lien)}, sous la règle — le lien reste "
             "publié, comme `relecture_humaine`"
         )
     for cas in journal.get("conflits") or []:

@@ -76,7 +76,7 @@ from avertissements import (
     avertissement,
     deriver_avertissements,
 )
-from licences import appliquer_licence_donnees
+from licences import appliquer_licence_donnees, est_url_assemblee
 from scrutins_index import ScrutinsIndex, cle_scrutin
 from scrutins_legislature import legislature_du_calendrier
 
@@ -772,14 +772,22 @@ def normalize_profil(
     profil["groupe"] = identite.get("groupe_nom") or identite.get("groupe_sigle")
 
     # --- Sources ---
+    # #1310 — UNE ENTRÉE `assemblee_nationale` POINTE VERS L'ASSEMBLÉE, OU N'EST
+    # PAS ÉCRITE. Pour un candidat qui n'a jamais été député, `source` est
+    # l'article de presse — ou la page Wikipédia — qui atteste sa candidature
+    # (`raw_data/candidats.json`). Typé `assemblee_nationale`, il faisait publier
+    # la licence de l'Assemblée sur 20 des 43 fiches de candidats déclarés, dont
+    # aucune ne porte une donnée de l'Assemblée. Cette attestation n'est pas une
+    # source de données : elle est citée sur `/sources#candidats` (#1298), et
+    # Wikipédia ne doit atteindre aucun `sources[]` (AGENTS.md §7).
     source_url = raw_profile.get("source") or _URL_SOURCE_PAR_DEFAUT
-    sources: list[dict[str, Any]] = [
-        {
+    sources: list[dict[str, Any]] = []
+    if est_url_assemblee(source_url):
+        sources.append({
             "type": source_type,
             "url": source_url,
             "synchro_le": synchro_le,
-        }
-    ]
+        })
     votes_source = raw_profile.get("votes_source")
     if votes_source and "assemblee-nationale" in (votes_source or "").lower():
         an_synchro = (meta_raw.get("synchro_sources") or {}).get("assemblee_nationale") or synchro_le

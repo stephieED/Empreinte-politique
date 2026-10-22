@@ -10,18 +10,20 @@
      teinte, qui dit « ceci n'est pas de la donnée ». La valeur est celle de
      `--border-strong`. Contraste avec --ink : 14,3:1 (AAA). */
   --notice: #e7e4df;
-  --muted: #8b8794;
+  /* Le gris du texte secondaire : #8b8794 (3,3:1 sur le fond) était illisible,
+     retiré partout le 22/10/2026. #5f5b66 : 6,1:1 sur le fond, 6,6:1 sur une carte. */
+  --muted: #5f5b66;
   --border: #f0eeeb;
   --border-strong: #e7e4df;
   --card: #ffffff;
 
   /* LA LARGEUR DES PAGES : une seule, pour toutes (arbitré le 21/10/2026).
      L'accueil, les pages du site, les fiches, la barre du haut et le pied
-     lisent ces deux valeurs ; aucune page ne fixe la sienne, et
-     tests/test_largeur_commune.py le vérifie. `--colonne` borne la page,
-     `--mesure` borne une ligne de texte courant, qui se lit mal au-delà. */
+     lisent cette valeur ; aucune page ne fixe la sienne, et
+     tests/test_largeur_commune.py le vérifie. `--colonne` borne la page ;
+     le texte des pages de texte occupe toute sa carte, comme sur l'accueil et
+     les fiches (22/10/2026, `texte-des-pages-sur-toute-la-carte`). */
   --colonne: 1600px;
-  --mesure: 80ch;
 
   color-scheme: light;
 }

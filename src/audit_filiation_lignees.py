@@ -17,14 +17,19 @@ reste la seule chose que les fiches lisent, et `etabli_par` reste vrai.
 
 Le critère
 ----------
-Arbitré par la propriétaire le 02/10/2026 : pour deux groupes de deux
-législatures consécutives, les personnes communes, divisées par l'effectif du
-**plus petit des deux**, et le lien est retenu à partir de la moitié. **Tous**
-les couples qui passent le seuil sont retenus, pas seulement le meilleur.
+Deux règles depuis #1328 (arbitrée le 22/10/2026), selon le couple :
 
-Prendre le plus petit des deux règle à la racine le défaut d'un pourcentage
-quand l'effectif bouge d'une législature à l'autre : quand un groupe s'effondre,
-c'est l'arrivée qui devient la base, et l'arrivée ne contient que des élus.
+- **deux législatures consécutives — la filiation** : la moyenne harmonique de la
+  part des réélus du départ passés à l'arrivée et de la part des anciens de
+  l'arrivée venus du départ, au moins 60 %, et au moins 5 personnes communes
+  (`groupes_config.filiation_atteinte`). Elle remplace la moitié du plus petit
+  des deux, qui ne voyait plus aucune continuité en 2017 (76 % de nouveaux
+  élus). → `docs/decisions/filiation-par-les-reelus-1328.md` ;
+- **une même législature — le renommage** : arbitré le 02/10/2026, les personnes
+  communes divisées par l'effectif du **plus petit des deux**, à partir de la
+  moitié (`atteint_le_seuil`).
+
+**Tous** les couples qui passent sont retenus, pas seulement le meilleur.
 
 Trois précisions que la mesure a imposées
 -----------------------------------------
@@ -80,6 +85,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import an_roster  # noqa: E402
 from groupes_config import (  # noqa: E402
+    PLANCHER_COMMUNS_FILIATION,
+    SEUIL_FILIATION_DENOMINATEUR,
+    SEUIL_FILIATION_NUMERATEUR,
+    filiation_atteinte,
     CHEMIN_CONFIG_GROUPES,
     CLE_SUCCESSION,
     CorrespondanceSiglesInvalide,
@@ -177,13 +186,37 @@ def unites_de_comparaison(
     return unites, sans_entree
 
 
-def mesurer_couple(depart: dict[str, Any], arrivee: dict[str, Any]) -> dict[str, Any]:
-    """Le décompte d'un couple, numérateur et dénominateur toujours ensemble."""
+def membres_par_legislature(unites: list[dict[str, Any]]) -> dict[str, set[str]]:
+    """`{législature: personnes qui siègent dans une de ses unités}` — la
+    population des réélus et des anciens de la règle de #1328."""
+    par_legislature: dict[str, set[str]] = {}
+    for unite in unites:
+        par_legislature.setdefault(unite["legislature"], set()).update(unite["membres"])
+    return par_legislature
+
+
+def mesurer_couple(
+    depart: dict[str, Any],
+    arrivee: dict[str, Any],
+    par_legislature: Optional[dict[str, set[str]]] = None,
+) -> dict[str, Any]:
+    """Le décompte d'un couple, numérateur et dénominateur toujours ensemble.
+
+    Deux règles, selon le couple (#1328) :
+
+    - **deux législatures consécutives** : la filiation, `groupes_config.
+      filiation_atteinte` — communs, réélus du départ, anciens de l'arrivée ;
+    - **une même législature** (un renommage écrit comme une succession) : la
+      moitié du plus petit des deux, `atteint_le_seuil`.
+
+    `base` (le plus petit des deux effectifs) reste publié dans les deux cas :
+    c'est le décompte du renommage, et il se lit à côté de la filiation.
+    """
     effectif_depart = len(depart["membres"])
     effectif_arrivee = len(arrivee["membres"])
     communs = len(depart["membres"] & arrivee["membres"])
     base = min(effectif_depart, effectif_arrivee)
-    return {
+    mesure = {
         "depart": depart["id"],
         "arrivee": arrivee["id"],
         "sigles_an_depart": depart["sigles_an"],
@@ -193,13 +226,35 @@ def mesurer_couple(depart: dict[str, Any], arrivee: dict[str, Any]) -> dict[str,
         "base_prise_sur": "depart" if effectif_depart <= effectif_arrivee else "arrivee",
         "effectif_depart": effectif_depart,
         "effectif_arrivee": effectif_arrivee,
+        "reelus": None,
+        "anciens": None,
+        "regle": "renommage",
         "atteint_le_seuil": atteint_le_seuil(communs, base),
     }
+    consecutives = int(arrivee["legislature"]) == int(depart["legislature"]) + 1
+    if consecutives and par_legislature is not None:
+        reelus = len(depart["membres"] & par_legislature.get(arrivee["legislature"], set()))
+        anciens = len(arrivee["membres"] & par_legislature.get(depart["legislature"], set()))
+        mesure.update({
+            "reelus": reelus,
+            "anciens": anciens,
+            "regle": "filiation",
+            "atteint_le_seuil": filiation_atteinte(communs, reelus, anciens),
+        })
+    return mesure
+
+
+def _score(mesure: dict[str, Any]) -> float:
+    """Le score de la règle qui s'applique au couple, pour trier."""
+    if mesure.get("regle") == "filiation" and mesure.get("reelus") is not None:
+        total = (mesure["reelus"] or 0) + (mesure["anciens"] or 0)
+        return 2 * mesure["communs"] / total if total else 0.0
+    return mesure["communs"] / mesure["base"] if mesure["base"] else 0.0
 
 
 def _plus_proche_du_seuil(mesure: dict[str, Any]) -> tuple[float, str, str]:
-    """Clé de tri : le rapport décroissant, puis les identifiants, pour un ordre stable."""
-    return (-mesure["communs"] / mesure["base"], mesure["depart"], mesure["arrivee"])
+    """Clé de tri : le score décroissant, puis les identifiants, pour un ordre stable."""
+    return (-_score(mesure), mesure["depart"], mesure["arrivee"])
 
 
 def auditer_filiation(
@@ -211,6 +266,7 @@ def auditer_filiation(
     """Compare la table à la composition. Fonction pure : ni disque, ni réseau."""
     unites, sans_entree = unites_de_comparaison(index, entrees)
     par_id = {unite["id"]: unite for unite in unites}
+    par_legislature = membres_par_legislature(unites)
 
     declares: set[tuple[str, str]] = set()
     liens: list[dict[str, Any]] = []
@@ -219,7 +275,7 @@ def auditer_filiation(
         for cible in entree.get(CLE_SUCCESSION) or []:
             depart = par_id[cible]
             declares.add((depart["id"], arrivee["id"]))
-            mesure = mesurer_couple(depart, arrivee)
+            mesure = mesurer_couple(depart, arrivee, par_legislature)
             mesure["meme_legislature"] = depart["legislature"] == arrivee["legislature"]
             mesure["sigle_publie_identique"] = (
                 depart["groupe_sigle"] == arrivee["groupe_sigle"]
@@ -233,7 +289,7 @@ def auditer_filiation(
                 continue
             if (depart["id"], arrivee["id"]) in declares:
                 continue
-            mesure = mesurer_couple(depart, arrivee)
+            mesure = mesurer_couple(depart, arrivee, par_legislature)
             if mesure["atteint_le_seuil"] is not None and mesure["communs"]:
                 non_declares.append(mesure)
     non_declares.sort(key=_plus_proche_du_seuil)
@@ -247,7 +303,9 @@ def auditer_filiation(
     candidats = [m for m in non_declares if m["atteint_le_seuil"]]
 
     return {
-        "seuil": f"{SEUIL_NUMERATEUR}/{SEUIL_DENOMINATEUR}",
+        "seuil": (f"filiation : {SEUIL_FILIATION_NUMERATEUR}/{SEUIL_FILIATION_DENOMINATEUR}, "
+                  f"au moins {PLANCHER_COMMUNS_FILIATION} communs ; renommage : "
+                  f"{SEUIL_NUMERATEUR}/{SEUIL_DENOMINATEUR}"),
         "legislatures": sorted({unite["legislature"] for unite in unites}, key=int),
         "liens_declares": liens,
         "liens_non_retrouves": non_retrouves,
@@ -305,7 +363,12 @@ def _ligne(mesure: dict[str, Any]) -> str:
     """Un couple sur une ligne : le décompte d'abord, le pourcentage ensuite."""
     depart = f"{mesure['depart']} ({'/'.join(mesure['sigles_an_depart'])})"
     arrivee = f"{mesure['arrivee']} ({'/'.join(mesure['sigles_an_arrivee'])})"
-    if not mesure["base"]:
+    if mesure.get("regle") == "filiation" and mesure.get("reelus") is not None:
+        decompte = (
+            f"{mesure['communs']} communs, {mesure['reelus']} réélus, "
+            f"{mesure['anciens']} anciens ({100 * _score(mesure):.0f} %)"
+        )
+    elif not mesure["base"]:
         decompte = "aucun membre connu d'un côté"
     else:
         part = 100 * mesure["communs"] / mesure["base"]
@@ -325,7 +388,7 @@ def _afficher(rapport: dict[str, Any]) -> None:
     retrouves = [lien for lien in mesures if lien["atteint_le_seuil"]]
     print(
         f"Filiation des lignées — législatures {', '.join(rapport['legislatures'])}, "
-        f"seuil : la moitié du plus petit des deux groupes, non-inscrits exclus."
+        f"règle : {rapport['seuil']}, non-inscrits exclus."
     )
     print(
         f"\n{len(liens)} lien(s) déclaré(s) dans la table : "
