@@ -112,7 +112,7 @@ Ces couleurs vivaient en constantes JS **dupliquées** dans `CandidateProfile.js
 
 C'est la justification chiffrée de la règle « accent jamais en texte sur fond clair » (§1, §5) — pas une convention arbitraire.
 
-**Le gris clair n'est jamais une couleur de texte sur un fond clair** (arbitré le 22/10/2026 : « ce gris très clair ne doit plus être utilisé en couleur de police sur un fond clair (blanc, gris, etc.) »). `--muted` passe de `#8B8794` à `#5F5B66`, et les titres en `#B6B1BD` lisent `--muted`. Le gris reste permis **en remplissage** — la case « abstention », un trait, une barre —, jamais pour écrire. Tenu par `tests/test_gris_lisible.py`.
+**Le gris clair n'est jamais une couleur de texte sur un fond clair** (arbitré le 22/10/2026 : « ce gris très clair ne doit plus être utilisé en couleur de police sur un fond clair (blanc, gris, etc.) »). `--muted` passe de `#8B8794` à `#5F5B66`, et les titres en `#B6B1BD` lisent `--muted`. Le gris reste permis **en remplissage** — la case « abstention », un trait, une barre —, jamais pour écrire. Tenu par `tests/test_gris_lisible.py`. En SVG, `fill` colore aussi bien un texte qu'une forme : un remplissage de forme en gris clair se déclare par un commentaire `/* forme : … */` sur sa ligne, sinon la garde le refuse (23/10/2026).
 
 ---
 

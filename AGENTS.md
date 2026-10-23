@@ -365,6 +365,11 @@ label.
 **Text published on the site is written for the general reader, with no
 repository vocabulary** — and that rule stops at the site: docs, code, issues
 and replies keep their exact terms. → `docs/regles/textes-publies.md`
+**The UI and COM sessions apply it to every text they propose for the site.**
+The line below imports the file, so Claude Code loads it at every session start
+— a link alone was not followed (23/10/2026):
+
+@docs/regles/textes-publies.md
 
 **Do not ask her to review your own work.** Sub-issue bodies, commit messages,
 agent instructions, which files to touch, how to name a branch: that is the

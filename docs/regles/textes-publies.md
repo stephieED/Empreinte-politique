@@ -7,6 +7,10 @@ le renvoi « AGENTS.md §3g ». -->
 
 ### 3g. Published site text
 
+**Ces règles s'appliquent particulièrement pour les sessions UI et COM.**
+`AGENTS.md` §11 importe ce fichier : Claude Code le charge au démarrage de
+chaque session, avant tout texte proposé pour le site.
+
 **Ces règles ne valent que pour ce que le lecteur du site voit à l'écran.**
 Rien d'autre n'est concerné, et les appliquer ailleurs serait une erreur.
 
@@ -25,6 +29,15 @@ périphrases rendrait la documentation moins précise.
 **Les règles éditoriales d'`AGENTS.md` §2 passent devant celles-ci.** Elles
 disent ce qui peut être publié ; ce fichier dit comment l'écrire.
 
+- **Le lecteur ne sait rien du projet.** « Un lecteur qui arrive sur la page ne
+  sait probablement rien du projet. Il ne faut pas qu'il soit perdu au premier
+  regard » (22/10/2026, accueil #1329). Chaque texte se relit avec ses yeux à
+  lui, pas avec ceux de qui connaît les fiches.
+- **Avant d'écrire, savoir ce que le lecteur doit comprendre.** Un encadré, une
+  bulle ou une légende dont le but n'est pas dit se réécrit sans fin : sept
+  formes ont été refusées le 08/10/2026 avant que l'intention soit énoncée (« que
+  le lecteur puisse comprendre la représentativité de la Commission »). La
+  question se pose d'abord ; le texte vient ensuite.
 - **Écrire pour quelqu'un qui n'a pas participé au développement.** Aucun mot
   du dépôt dans un texte publié : pivot, run, roster, pipeline, workflow,
   backfill, et de même champ, fusion, agrégat ou collecte quand ils désignent
@@ -48,13 +61,25 @@ disent ce qui peut être publié ; ce fichier dit comment l'écrire.
   moins 60 % des noms de ces deux listes réunies figurent sur les deux ») a été
   jugée illisible ; la version publiée tient en un tableau de trois colonnes et
   deux exemples (#1333).
+- **Du concret, pas de quantificateur flou.** « La plupart », « compte
+  surtout » font lire une formule « fumeuse » ou « alambiquée » (ses mots,
+  22/10/2026, sur l'explication de la filiation des groupes). On dit le chiffre,
+  le seuil, l'exemple.
 - **Reprendre une phrase déjà publiée ne la rend pas lisible.** Sept bulles
   recopiaient la méthodologie mot pour mot ; elles ont été jugées « illisibles
   pour quelqu'un qui n'a pas participé au développement du code »
   (01/10/2026).
 - **Un texte d'aide dit d'abord ce que la section présente, puis ses points
   critiques**, en phrases courtes. Une bulle qui ne décrit qu'un élément de la
-  section ne suffit pas.
+  section ne suffit pas : « Il faut quelque chose qui va expliquer la fonction
+  générale de cette section » (01/10/2026).
+- **« En bref » dit ce que l'objet est, jamais son activité.** La carrière d'une
+  personne, l'effectif des maillons d'une lignée, la composition d'un
+  gouvernement dans le temps ; l'activité vit dans les sections suivantes. Trois
+  formes refusées sur la fiche de gouvernement (#330) avançaient l'activité.
+- **Rien qui redise l'écran.** Une bulle, une note ou un libellé n'ajoute pas ce
+  que la figure montre déjà : le sigle et le nombre d'un groupe écrits sur
+  l'hémicycle ne se répètent pas dans sa bulle.
 - **Une note aide le lecteur à ne pas mal lire la figure.** Elle définit un
   terme affiché, dit ce qu'une marque représente, ou nomme la conclusion à ne
   pas tirer. Elle ne justifie pas ce qu'on a choisi de ne pas faire, et elle
@@ -82,6 +107,11 @@ disent ce qui peut être publié ; ce fichier dit comment l'écrire.
   automatisme : écrire dans le code pour pouvoir montrer une phrase revient au
   défaut que la règle évite. Reformulé le 22/10/2026 : « jamais en source »
   avait fait coder deux textes avant tout accord.
+- **Ses formulations se reprennent mot pour mot.** Quand la propriétaire donne
+  les mots d'un titre ou d'un libellé, on les applique tels quels ; on ne
+  corrige que l'accord ou la ponctuation, en le disant. Une objection de fond
+  se dit en une phrase, à côté de sa version, jamais à la place (« Je ne
+  comprends pas pourquoi tu t'es autant écarté de ma proposition », 09/10/2026).
 
 **Ce que la garde tient, et ce qu'elle ne tient pas.**
 `tests/test_textes_publies.py` refuse six mots sans ambiguïté — pivot, roster,
