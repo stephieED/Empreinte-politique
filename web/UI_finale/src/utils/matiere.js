@@ -3,7 +3,7 @@
  *
  * `DESIGN_SYSTEM.md` §5 écrivait « aucune couleur n'était libre » : le jaune
  * signal est pris par la sélection, l'action et le badge de source, le vert et
- * le rouge par les positions de vote, le bleu et le bronze par les institutions
+ * le rouge par les positions de vote, le bleu et la rouille par les institutions
  * de la frise. C'était vrai du besoin d'alors — MARQUER UNE LIGNE dans une
  * liste, ce que la fiche résout par un filet d'encre sans teinte.
  *
@@ -16,7 +16,7 @@
  * Elle vient de Paul Tol (qualitative « muted »), choisie pour rester
  * distinguable sous les trois formes de daltonisme les plus fréquentes, et
  * elle ne recouvre aucune des teintes déjà attribuées : ni le jaune signal, ni
- * le vert/rouge de vote, ni le bleu/bronze des institutions.
+ * le vert/rouge de vote, ni le bleu/rouille des institutions.
  *
  * LE GRIS N'EST PAS UNE COULEUR DE LA PALETTE. Il est réservé à « matière non
  * établie », qui n'est pas une matière de plus mais une absence de donnée

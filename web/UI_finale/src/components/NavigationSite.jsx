@@ -28,7 +28,7 @@ import './NavigationSite.css';
  * barre porte le même nombre d'entrées avant et après.
  */
 const PAGES = [
-  { libelle: 'Explorateur', vers: '/candidats', racines: ['/candidats', '/groupes', '/gouvernements'] },
+  { libelle: 'Explorateur', vers: '/candidats', racines: ['/candidats', '/groupes', '/gouvernements', '/legislatures'] },
   { libelle: 'Méthodologie', vers: '/methodologie', racines: ['/methodologie'] },
   { libelle: 'Sources', vers: '/sources', racines: ['/sources'] },
   { libelle: 'Articles', vers: '/rapports', racines: [], statique: true },

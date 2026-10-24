@@ -44,8 +44,9 @@ lasting half as a complement to the temporary one.
 the current production interface, wired to real pivot data (`docs/decisions/web-v3-ui.md`). Earlier design
 generations — `v1`-`v7`, including the `v3` editorial reference — are archived under `web/old/`.
 `web/UI_finale` navigation: **Candidats** · **Groupes** (real parliamentary groups) ·
-**Gouvernement** (real governments) — no Partis tab. Three tabs, but **eight published
-pages**: `/a-propos`, `/methodologie`, `/mentions-legales`, `/sources`, `/faq` and `/rapports`
+**Gouvernement** (real governments) · **Législature** (the Assembly's work over one
+legislature, #1314 — listed only once its `pivot_data/legislatures/` file exists) — no
+Partis tab. Four tabs, but **eight published pages**: `/a-propos`, `/methodologie`, `/mentions-legales`, `/sources`, `/faq` and `/rapports`
 live outside the tabs. `/a-propos` says what the site is and who edits it; `/methodologie` says how each
 fiche is made, and the manifesto lives on **one** of the two, never both (#1032).
 `/sources` (formerly `/couverture`, which redirects to it — #951) says which source brings what, and once, for the whole corpus, what every fiche used to repeat — what the

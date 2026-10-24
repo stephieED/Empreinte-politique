@@ -1,5 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { getCandidatesList } from '../../data';
+import { useAsyncData } from '../../hooks/useAsyncData';
 import './landing.css';
+
+/* L'ÉVÉNEMENT EN TÊTE DU CARROUSEL (#1329, arbitré le 22/10/2026) : tant que le
+ * volet des candidats est ouvert, il est la première diapositive, celle que le
+ * lecteur voit en arrivant ; sa tuile sous la carte héro a été retirée. La
+ * vignette dit la borne (« Mai 2027 »), 2027 un cran au-dessus de Mai. Le
+ * nombre de candidats est lu dans le manifeste, jamais écrit ici. */
+const FIN_EVENEMENT = '2027-06-01';
 
 /* ── LES ANALYSES THÉMATIQUES, AU BAS DE L'ACCUEIL (15/10/2026) ──────────────
  *
@@ -27,10 +37,13 @@ function chargerAnalyses() {
 const moinsDAnimations = () =>
   typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-export default function AnalysesThematiques() {
+export default function AnalysesThematiques({ dansHero = false }) {
   const [analyses, setAnalyses] = useState(null);
+  const { data: candidats } = useAsyncData(getCandidatesList, []);
+  const evenement = candidats?.length && new Date().toISOString().slice(0, 10) < FIN_EVENEMENT ? candidats.length : null;
   const [i, setI] = useState(0);
   const pause = useRef(false);
+  const fenRef = useRef(null);
 
   useEffect(() => {
     let vivant = true;
@@ -38,12 +51,60 @@ export default function AnalysesThematiques() {
     return () => { vivant = false; };
   }, []);
 
-  const n = analyses?.length || 0;
+  const diapos = analyses ? [...(evenement ? [{ fichier: 'evenement', evenement: true }] : []), ...analyses] : [];
+  const n = diapos.length;
   useEffect(() => {
     if (n < 2 || moinsDAnimations()) return undefined;
     const t = setInterval(() => { if (!pause.current) setI((k) => (k + 1) % n); }, DELAI);
     return () => clearInterval(t);
   }, [n]);
+
+  /* LA CARTE HÉRO A LA HAUTEUR DE LA DIAPOSITIVE LA PLUS COURTE (23/10/2026) :
+   * elle ne bouge pas au défilement, et ne garde pas de vide sous les plus
+   * courtes. Une diapositive plus haute perd d'abord des lignes de sa
+   * description, puis, s'il le faut, de son titre (« … »), jamais sa première
+   * ligne. Mesuré à la largeur réelle, donc refait quand elle change. */
+  useLayoutEffect(() => {
+    const fen = fenRef.current;
+    if (!dansHero || !fen || !n) return undefined;
+    const lignes = (el) => {
+      const lh = parseFloat(getComputedStyle(el).lineHeight) || parseFloat(getComputedStyle(el).fontSize) * 1.25;
+      return Math.max(1, Math.round(el.offsetHeight / lh));
+    };
+    const couper = (el, k) => {
+      if (!el) return;
+      if (k === null) { el.style.removeProperty('display'); el.style.removeProperty('-webkit-line-clamp'); el.style.removeProperty('-webkit-box-orient'); el.style.removeProperty('overflow'); return; }
+      if (k === 0) { el.style.display = 'none'; return; }
+      el.style.display = '-webkit-box';
+      el.style.webkitBoxOrient = 'vertical';
+      el.style.webkitLineClamp = String(k);
+      el.style.overflow = 'hidden';
+    };
+    const ajuster = () => {
+      const diapos = [...fen.querySelectorAll('.analyses-sl')];
+      fen.style.height = '';
+      fen.classList.add('analyses-fen--mesure');
+      diapos.forEach((d) => { couper(d.querySelector('.analyses-t'), null); couper(d.querySelector('.analyses-desc'), null); });
+      const min = Math.min(...diapos.map((d) => d.offsetHeight));
+      diapos.forEach((d) => {
+        const titre = d.querySelector('.analyses-t'), desc = d.querySelector('.analyses-desc');
+        let nd = desc ? lignes(desc) : 0, nt = lignes(titre);
+        while (d.offsetHeight > min + 1) {
+          if (nd > 0) { nd -= 1; couper(desc, nd); } else if (nt > 1) { nt -= 1; couper(titre, nt); } else break;
+        }
+      });
+      fen.classList.remove('analyses-fen--mesure');
+      fen.style.height = `${min}px`;
+    };
+    ajuster();
+    let largeur = fen.offsetWidth;
+    const ro = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(() => {
+      if (fen.offsetWidth !== largeur) { largeur = fen.offsetWidth; ajuster(); }
+    });
+    ro?.observe(fen);
+    document.fonts?.ready?.then(ajuster);
+    return () => ro?.disconnect();
+  }, [dansHero, n]);
 
   /* Rien à montrer, rien d'affiché : un encart vide dirait qu'il manque
    * quelque chose (§2 règle 5) là où il n'y a simplement pas d'article. */
@@ -54,7 +115,7 @@ export default function AnalysesThematiques() {
 
   return (
     <section
-      className="landing-section analyses"
+      className={`landing-section analyses${dansHero ? ' analyses--hero' : ''}`}
       aria-roledescription="carrousel"
       aria-label="Analyses thématiques"
       onMouseEnter={arreter}
@@ -69,9 +130,9 @@ export default function AnalysesThematiques() {
           <button type="button" className="analyses-b" aria-label="Analyse suivante" onClick={() => voir(i + 1)}>›</button>
         </div>
       )}
-      <div className="analyses-fen">
+      <div className="analyses-fen" ref={fenRef}>
         <div className="analyses-piste" style={{ transform: `translateX(-${i * 100}%)` }}>
-          {analyses.map((a, k) => (
+          {diapos.map((a, k) => (
             <article
               key={a.fichier}
               className="analyses-sl"
@@ -79,6 +140,20 @@ export default function AnalysesThematiques() {
               aria-label={`${k + 1} sur ${n}`}
               aria-hidden={k !== i}
             >
+              {a.evenement ? (
+                <Link className="analyses-lien" to="/candidats" tabIndex={k === i ? 0 : -1}>
+                  <span className="analyses-img analyses-img--evenement" aria-hidden="true">
+                    <small>Mai</small><b>2027</b>
+                  </span>
+                  <span className="analyses-txt">
+                    <span className="analyses-lab">Événement</span>
+                    <span className="analyses-d">Jusqu’en mai 2027</span>
+                    <span className="analyses-t">Focus sur les candidats à la présidentielle</span>
+                    <span className="analyses-desc">{evenement} candidats déclarés : leurs mandats, leurs votes, leurs textes et leurs prises de parole, sourcés.</span>
+                    <span className="analyses-lire">Voir les fiches →</span>
+                  </span>
+                </Link>
+              ) : (
               <a className="analyses-lien" href={`/rapports/${a.fichier}`} tabIndex={k === i ? 0 : -1}>
                 <span className="analyses-img">
                   {a.vignette && <img src={`/rapports/${a.vignette}`} alt="" loading="lazy" />}
@@ -91,18 +166,19 @@ export default function AnalysesThematiques() {
                   <span className="analyses-lire">Lire l’analyse →</span>
                 </span>
               </a>
+              )}
             </article>
           ))}
         </div>
       </div>
       {n > 1 && (
         <div className="analyses-pts">
-          {analyses.map((a, k) => (
+          {diapos.map((a, k) => (
             <button
               key={a.fichier}
               type="button"
               className={`analyses-pt${k === i ? ' on' : ''}`}
-              aria-label={`Analyse ${k + 1}`}
+              aria-label={a.evenement ? 'Événement' : `Analyse ${k + 1}`}
               aria-current={k === i}
               onClick={() => voir(k)}
             />

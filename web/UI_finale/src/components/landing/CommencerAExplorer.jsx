@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getCandidatesList, getGroupsList, getGovernmentsList } from '../../data';
+import { getCandidatesList, getGroupsList, getGovernmentsList, getLegislaturesList } from '../../data';
 import { useAsyncData } from '../../hooks/useAsyncData';
 import '../CandidatesBar.css';
 import '../GroupsBar.css';
@@ -103,11 +103,21 @@ export default function CommencerAExplorer() {
   const { data: candidats } = useAsyncData(getCandidatesList, []);
   const { data: lignees } = useAsyncData(getGroupsList, []);
   const { data: gouvernements } = useAsyncData(getGovernmentsList, []);
+  const { data: legislatures } = useAsyncData(getLegislaturesList, []);
+  /* LA PORTE DES LÉGISLATURES (#1314, demandée le 22/10/2026) n'apparaît que si
+     le manifeste en porte : avant le premier run qui publie leurs fichiers, elle
+     mènerait à une liste vide. Le nombre de colonnes suit le nombre de portes,
+     pour que la carte de l'événement garde leur largeur (01/10/2026). */
+  const avecLegislatures = (legislatures || []).length > 0;
+  /* LES TROIS PORTES DISENT L'ACTIVITÉ (arbitré le 22/10/2026), avec ses mots :
+     « L'activité législative », « … par groupe parlementaire », « L'activité
+     exécutive par gouvernement ». « Groupe parlementaire » garde le mot du
+     lecteur, jamais « lignée » (01/10/2026). */
 
   const compte = (l) => (l ? l.length : null);
 
   return (
-    <section className="landing-section landing-explorer" aria-labelledby="landing-explorer-titre">
+    <section className="landing-section landing-explorer" aria-labelledby="landing-explorer-titre" style={{ '--portes': avecLegislatures ? 3 : 2 }}>
       <h2 className="explorer-titre" id="landing-explorer-titre">Commencer l’exploration</h2>
       {/* LE SEUL TEXTE EXPLICATIF DE L'ACCUEIL, et il est à sa place : il
           n'accompagne pas une figure (règle de forme 2), il dit ce qu'est le
@@ -125,10 +135,14 @@ export default function CommencerAExplorer() {
       </p>
 
       <div className={`portes${ouverte ? ' portes--touche' : ''}`}>
-        <Porte cle="groupes" libelle="Groupes parlementaires" n={compte(lignees)}
+        <Porte cle="groupes" libelle="L’activité législative par groupe parlementaire" n={compte(lignees)}
           ouverte={ouverte === 'groupes'} onOuvrir={setOuverte} />
-        <Porte cle="gouvernements" libelle="Gouvernements" n={compte(gouvernements)}
+        <Porte cle="gouvernements" libelle="L’activité exécutive par gouvernement" n={compte(gouvernements)}
           ouverte={ouverte === 'gouvernements'} onOuvrir={setOuverte} />
+        {avecLegislatures && (
+          <Porte cle="legislatures" libelle="L’activité législative" n={compte(legislatures)}
+            ouverte={ouverte === 'legislatures'} onOuvrir={setOuverte} />
+        )}
       </div>
 
       <ul className="landing-explorer-liste" id="liste-groupes" hidden={ouverte !== 'groupes'}>
@@ -146,6 +160,18 @@ export default function CommencerAExplorer() {
           <li key={g.id}>
             <Link className="gvb-chip" to={`/gouvernements/${g.id}`}>
               <span className="gvb-chip-label">{g.title}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      <ul className="landing-explorer-liste" id="liste-legislatures" hidden={ouverte !== 'legislatures'}>
+        {(legislatures || []).map((l) => (
+          <li key={l.id}>
+            <Link className="gvb-chip" to={`/legislatures/${l.id}`}>
+              {/* LES ANNÉES D'ABORD (22/10/2026) : « XVIe législature » ne se date pas
+                  de tête ; « 2022–2024 » si. La législature en cours dit « depuis ». */}
+              <span className="gvb-chip-label">{`${l.fin ? `${l.debut.slice(0, 4)}–${l.fin.slice(0, 4)}` : `Depuis ${l.debut.slice(0, 4)}`} · ${l.title}`}</span>
             </Link>
           </li>
         ))}

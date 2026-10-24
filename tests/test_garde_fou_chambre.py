@@ -199,12 +199,12 @@ SITES_UI: dict[tuple[str, str], str] = {
     # `amendements-lignees.mjs` n'y retient que les maillons de l'Assemblée —
     # l'index des amendements ne couvre pas le Sénat (#528).
     ("scripts/amendements-lignees.mjs", "groupe"): GROUPE,
-    # La chambre d'une LIGNÉE (`schema_lignee.py`), recopiée au manifeste, à la
-    # projection, et lue par la page pour écrire « Assemblée nationale » ou
-    # « Sénat » dans son sourcil.
+    # La chambre d'une LIGNÉE (`schema_lignee.py`), recopiée au manifeste et à la
+    # projection. La page ne l'écrit plus depuis le 23/10/2026 : la ligne en
+    # capitales au-dessus du nom est retirée de l'en-tête des quatre fiches, et
+    # les 18 lignées publiées sont toutes de l'Assemblée.
     ("scripts/sync-data.mjs", "lignee"): GROUPE,
     ("scripts/vue-lignee.mjs", "lignee"): GROUPE,
-    ("src/components/LigneeProfile.jsx", "lignee"): GROUPE,
     # #969 : le titre d'une fiche de lignée nomme sa chambre, lue sur la projection.
     ("scripts/metadonnees-pages.mjs", "lignee"): GROUPE,
     # #969 : le bloc lisible sans JavaScript nomme la chambre de la lignée.

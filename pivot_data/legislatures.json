@@ -1,6 +1,6 @@
 {
   "schema_version": "legislatures-v1",
-  "genere_le": "2026-10-23T18:01:09+0000",
+  "genere_le": "2026-10-24T18:17:19+0000",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "legislatures": {
     "14": {
@@ -245,48 +245,15 @@
       },
       "groupes": [
         {
-          "organe_ref": "PO800520",
-          "sigle": "RN",
-          "libelle_abrege": "RN",
-          "nom": "Rassemblement National",
-          "membres_au_jour": 88,
-          "membres_avec_place": 88,
-          "place_mediane": 50.5,
-          "place_min": 1,
-          "place_max": 153
-        },
-        {
-          "organe_ref": "PO800508",
-          "sigle": "LR",
-          "libelle_abrege": "LR",
-          "nom": "Les Républicains",
-          "membres_au_jour": 61,
-          "membres_avec_place": 61,
-          "place_mediane": 109,
-          "place_min": 77,
-          "place_max": 235
-        },
-        {
-          "organe_ref": "PO800514",
-          "sigle": "HOR",
-          "libelle_abrege": "HOR",
-          "nom": "Horizons et apparentés",
-          "membres_au_jour": 31,
-          "membres_avec_place": 31,
-          "place_mediane": 200,
-          "place_min": 181,
-          "place_max": 444
-        },
-        {
-          "organe_ref": "PO800532",
-          "sigle": "LIOT",
-          "libelle_abrege": "LIOT",
-          "nom": "Libertés, Indépendants, Outre-mer et Territoires",
-          "membres_au_jour": 22,
-          "membres_avec_place": 22,
-          "place_mediane": 236.5,
-          "place_min": 219,
-          "place_max": 320
+          "organe_ref": "PO793087",
+          "sigle": "NI",
+          "libelle_abrege": "NI",
+          "nom": "Non inscrit",
+          "membres_au_jour": 7,
+          "membres_avec_place": 0,
+          "place_mediane": null,
+          "place_min": null,
+          "place_max": null
         },
         {
           "organe_ref": "PO800484",
@@ -294,65 +261,10 @@
           "libelle_abrege": "Dem",
           "nom": "Démocrate (MoDem et Indépendants)",
           "membres_au_jour": 50,
-          "membres_avec_place": 50,
-          "place_mediane": 253.5,
-          "place_min": 162,
-          "place_max": 323
-        },
-        {
-          "organe_ref": "PO793087",
-          "sigle": "NI",
-          "libelle_abrege": "NI",
-          "nom": "Non inscrit",
-          "membres_au_jour": 7,
-          "membres_avec_place": 7,
-          "place_mediane": 264,
-          "place_min": 154,
-          "place_max": 640
-        },
-        {
-          "organe_ref": "PO800538",
-          "sigle": "RE",
-          "libelle_abrege": "RE",
-          "nom": "Renaissance",
-          "membres_au_jour": 169,
-          "membres_avec_place": 169,
-          "place_mediane": 377,
-          "place_min": 250,
-          "place_max": 488
-        },
-        {
-          "organe_ref": "PO800526",
-          "sigle": "ECOLO",
-          "libelle_abrege": "Ecolo - NUPES",
-          "nom": "Écologiste - NUPES",
-          "membres_au_jour": 21,
-          "membres_avec_place": 21,
-          "place_mediane": 503,
-          "place_min": 491,
-          "place_max": 526
-        },
-        {
-          "organe_ref": "PO830170",
-          "sigle": "SOC-A",
-          "libelle_abrege": "SOC",
-          "nom": "Socialistes et apparentés",
-          "membres_au_jour": 31,
-          "membres_avec_place": 31,
-          "place_mediane": 509,
-          "place_min": 432,
-          "place_max": 553
-        },
-        {
-          "organe_ref": "PO800502",
-          "sigle": "GDR-NUPES",
-          "libelle_abrege": "GDR - NUPES",
-          "nom": "Gauche démocrate et républicaine - NUPES",
-          "membres_au_jour": 22,
-          "membres_avec_place": 22,
-          "place_mediane": 586.5,
-          "place_min": 513,
-          "place_max": 597
+          "membres_avec_place": 0,
+          "place_mediane": null,
+          "place_min": null,
+          "place_max": null
         },
         {
           "organe_ref": "PO800490",
@@ -360,17 +272,107 @@
           "libelle_abrege": "LFI - NUPES",
           "nom": "La France insoumise - Nouvelle Union Populaire écologique et sociale",
           "membres_au_jour": 75,
-          "membres_avec_place": 75,
-          "place_mediane": 602,
-          "place_min": 519,
-          "place_max": 650
+          "membres_avec_place": 0,
+          "place_mediane": null,
+          "place_min": null,
+          "place_max": null
+        },
+        {
+          "organe_ref": "PO800502",
+          "sigle": "GDR-NUPES",
+          "libelle_abrege": "GDR - NUPES",
+          "nom": "Gauche démocrate et républicaine - NUPES",
+          "membres_au_jour": 22,
+          "membres_avec_place": 0,
+          "place_mediane": null,
+          "place_min": null,
+          "place_max": null
+        },
+        {
+          "organe_ref": "PO800508",
+          "sigle": "LR",
+          "libelle_abrege": "LR",
+          "nom": "Les Républicains",
+          "membres_au_jour": 61,
+          "membres_avec_place": 0,
+          "place_mediane": null,
+          "place_min": null,
+          "place_max": null
+        },
+        {
+          "organe_ref": "PO800514",
+          "sigle": "HOR",
+          "libelle_abrege": "HOR",
+          "nom": "Horizons et apparentés",
+          "membres_au_jour": 31,
+          "membres_avec_place": 0,
+          "place_mediane": null,
+          "place_min": null,
+          "place_max": null
+        },
+        {
+          "organe_ref": "PO800520",
+          "sigle": "RN",
+          "libelle_abrege": "RN",
+          "nom": "Rassemblement National",
+          "membres_au_jour": 88,
+          "membres_avec_place": 0,
+          "place_mediane": null,
+          "place_min": null,
+          "place_max": null
+        },
+        {
+          "organe_ref": "PO800526",
+          "sigle": "ECOLO",
+          "libelle_abrege": "Ecolo - NUPES",
+          "nom": "Écologiste - NUPES",
+          "membres_au_jour": 21,
+          "membres_avec_place": 0,
+          "place_mediane": null,
+          "place_min": null,
+          "place_max": null
+        },
+        {
+          "organe_ref": "PO800532",
+          "sigle": "LIOT",
+          "libelle_abrege": "LIOT",
+          "nom": "Libertés, Indépendants, Outre-mer et Territoires",
+          "membres_au_jour": 22,
+          "membres_avec_place": 0,
+          "place_mediane": null,
+          "place_min": null,
+          "place_max": null
+        },
+        {
+          "organe_ref": "PO800538",
+          "sigle": "RE",
+          "libelle_abrege": "RE",
+          "nom": "Renaissance",
+          "membres_au_jour": 169,
+          "membres_avec_place": 0,
+          "place_mediane": null,
+          "place_min": null,
+          "place_max": null
+        },
+        {
+          "organe_ref": "PO830170",
+          "sigle": "SOC-A",
+          "libelle_abrege": "SOC",
+          "nom": "Socialistes et apparentés",
+          "membres_au_jour": 31,
+          "membres_avec_place": 0,
+          "place_mediane": null,
+          "place_min": null,
+          "place_max": null
         }
       ],
       "groupes_non_resolus": null,
-      "places_non_resolues": null,
+      "places_non_resolues": {
+        "motif": "archive_indisponible"
+      },
       "groupes_jour_reference": "2024-06-09",
-      "places_source_url": "https://data.assemblee-nationale.fr/static/openData/repository/16/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
-      "places_etat_au": "2024-06-28"
+      "places_source_url": null,
+      "places_etat_au": null
     },
     "17": {
       "numero": 17,
@@ -524,9 +526,9 @@
       ],
       "groupes_non_resolus": null,
       "places_non_resolues": null,
-      "groupes_jour_reference": "2026-10-23",
+      "groupes_jour_reference": "2026-10-24",
       "places_source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
-      "places_etat_au": "2026-10-23"
+      "places_etat_au": "2026-10-24"
     }
   }
 }

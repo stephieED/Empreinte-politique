@@ -1303,12 +1303,11 @@ export default function GovernmentProfile({ government, chronologie = [], mot = 
         Gouvernement / <strong>{government.title}</strong>
       </div>
 
-      {/* Même en-tête que les fiches candidat et de lignée : un sourcil, le
+      {/* Même en-tête que les fiches candidat et de lignée : le
           nom, puis UNE ligne d'identité — qui l'a dirigé et pendant combien de
           temps. Pas de carte ni de filet de couleur : l'en-tête n'est pas un
           bloc de contenu. */}
       <header className="gvp-entete">
-        <p className="gvp-sourcil">Gouvernement</p>
         <h1>{government.title}</h1>
         <p className="gvp-qui">
           {government.premierMinistre ? (

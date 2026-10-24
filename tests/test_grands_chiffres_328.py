@@ -307,7 +307,7 @@ def test_la_teinte_d_un_banc_est_declaree_une_seule_fois(feuille):
     # §4). La règle que le test protège ne change pas : chaque teinte déclarée
     # une seule fois, et lue par tous.
     teintes = {
-        "--parl": "#803060", "--gouv": "#85510d", "--pe": "#003399",
+        "--parl": "#803060", "--gouv": "#A84B12", "--pe": "#003399",
         "--senat": "#169e9e", "--neutre": "#9a958d",
     }
     for jeton, valeur in teintes.items():

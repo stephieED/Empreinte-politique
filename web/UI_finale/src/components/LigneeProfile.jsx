@@ -1508,7 +1508,6 @@ export default function LigneeProfile({ lignee, mot = '' }) {
   const aujourdhui = lignee.genereLe || new Date().toISOString().slice(0, 10);
   const noms = [];
   for (const m of lignee.maillons) if (!noms.includes(m.nom)) noms.push(m.nom);
-  const chambre = lignee.chambre === 'AN' ? 'Assemblée nationale' : 'Sénat';
   const depuis = lignee.periode.fin && !lignee.maillons[lignee.maillons.length - 1].periode.actif
     ? `du ${jour(lignee.periode.debut)} au ${jour(lignee.periode.fin)}`
     : `depuis le ${jour(lignee.periode.debut)}`;
@@ -1519,9 +1518,9 @@ export default function LigneeProfile({ lignee, mot = '' }) {
         Groupes / <strong>{lignee.nom}</strong>
       </div>
       <header className="lp-entete">
-        <p className="lp-sourcil">Groupe parlementaire · {chambre}</p>
         <h1>{lignee.nom}</h1>
-        <p className="lp-qui">{noms.join(' → ')} · {depuis}</p>
+        {/* Un seul nom, celui du titre : la ligne ne le redit pas. */}
+        <p className="lp-qui">{noms.length > 1 || noms[0] !== lignee.nom ? `${noms.join(' → ')} · ${depuis}` : depuis.charAt(0).toUpperCase() + depuis.slice(1)}</p>
       </header>
 
 

@@ -689,7 +689,7 @@ function Intitule({ label, roles }) {
  *
  * La marque est SANS TEINTE, et ce n'est pas un oubli : aucune couleur n'était
  * libre. Le jaune signal est pris par la sélection, l'action et le badge de
- * source ; le vert et le rouge par les positions de vote ; le bleu et le bronze
+ * source ; le vert et le rouge par les positions de vote ; le bleu et la rouille
  * par les institutions dans la frise. En ajouter une quatrième aurait dilué les
  * trois autres — et l'encre reste lisible en niveaux de gris et sous daltonisme,
  * sans avoir à doubler la marque d'un pictogramme.
@@ -1873,7 +1873,6 @@ export default function CandidateProfile({ candidate, mot = '' }) {
       </div>
 
       <header className="cp-entete">
-        <p className="cp-sourcil">Candidat déclaré · élection présidentielle 2027</p>
         <h1>{c.nom}</h1>
         {/* LA SOURCE TERMINE LA LIGNE QU'ELLE SOURCE. Elle était posée en
             dessous, sur sa propre ligne : le lecteur devait rattacher un badge

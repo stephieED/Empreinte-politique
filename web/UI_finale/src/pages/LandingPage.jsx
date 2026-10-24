@@ -1,8 +1,7 @@
 import EnTeteSite from '../components/EnTeteSite';
 import PiedDeSite from '../components/PiedDeSite';
 import Hero from '../components/landing/Hero';
-import CommencerAExplorer from '../components/landing/CommencerAExplorer';
-import AnalysesThematiques from '../components/landing/AnalysesThematiques';
+import ExplorerTuiles from '../components/landing/ExplorerTuiles';
 import '../styles/shell.css';
 import '../components/landing/landing.css';
 
@@ -26,9 +25,11 @@ export default function LandingPage() {
       <div className="landing-page">
         <EnTeteSite />
         <main className="landing-main">
+          {/* #1329 (22/10/2026) : la carte héro porte le carrousel des analyses,
+              l'événement en tête ; dessous, les deux tuiles qui croisent
+              législatures, gouvernements et groupes. */}
           <Hero />
-          <CommencerAExplorer />
-          <AnalysesThematiques />
+          <ExplorerTuiles />
         </main>
         <PiedDeSite />
       </div>

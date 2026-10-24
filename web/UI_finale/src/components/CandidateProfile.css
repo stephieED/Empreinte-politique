@@ -21,7 +21,7 @@
  * rester unique est une valeur qui n'aurait pas dû être copiée : même leçon
  * que les teintes de stades de `teintes-des-stades-en-bref-328`.
  *
- * Le bleu et le bronze ne décorent pas : ils disent DE QUEL BANC relève ce
+ * Le bleu et la rouille ne décorent pas : ils disent DE QUEL BANC relève ce
  * qu'on lit, et ils sont désormais lus par la frise, par les colonnes
  * appariées et par les blocs de « Les fonctions exercées ».
  */
@@ -61,10 +61,10 @@
   /* Assombri pour porter du texte : la frise écrit dans ses segments, et le
      blanc sur l'ocre d'avant rendait 4,41:1 — sous le seuil AA. À 6,60:1 il
      passe, et les cinq contrôles de palette tiennent (ΔE 10,7 / 15,3). */
-  --gouv: #85510d;
-  --gouv-wash: #f3eee7;
-  --gouv-line: #e0d4c2;
-  --gouv-pale: #ede5db;
+  --gouv: #A84B12;
+  --gouv-wash: #F6EDE7;
+  --gouv-line: #E9D2C4;
+  --gouv-pale: #F2E4DB;
   --pe: #003399;
   --pe-wash: #e6ebf5;
   --pe-line: #bfcce6;
@@ -117,16 +117,12 @@
 }
 
 /* ── En-tête ─────────────────────────────────────────────────────────────── */
+/* L'EN-TÊTE D'UNE FICHE, LE MÊME SUR LES QUATRE (23/10/2026) : le fil d'Ariane,
+   le nom, une ligne d'identité, puis 24 px avant la première section. La ligne
+   en capitales au-dessus du nom est retirée : le fil d'Ariane dit déjà ce qu'est
+   la fiche. */
 .cp-entete {
-  padding-bottom: 8px;
-}
-
-.cp-sourcil {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--muted);
+  margin-bottom: 24px;
 }
 
 .cp-entete h1 {
@@ -148,7 +144,7 @@
   align-items: baseline;
   flex-wrap: wrap;
   gap: 6px 12px;
-  margin: 9px 0 12px;
+  margin: 9px 0 0;
   font-size: 15px;
   color: #6e6a78;
 }
@@ -156,7 +152,7 @@
 /* ── L'essentiel ─────────────────────────────────────────────────────────── */
 /* ── « Les grands chiffres » (#328) ──────────────────────────────────────────
  *
- * Bleu contre bronze. C'est le seul couple qui survive au daltonisme
+ * Bleu contre rouille. C'est le seul couple qui survive au daltonisme
  * rouge-vert, le plus répandu, et ni l'un ni l'autre ne se lit comme positif ou
  * négatif : ce sont deux métiers, pas deux notes. Le vert et le rouge sont pris
  * par les positions de vote (`DESIGN_SYSTEM` §2), le jaune signal est réservé à
@@ -541,8 +537,8 @@
  * `var(--muted)` (#8b8794), soit 1,9:1. « 15 promulgué » était illisible.
  *
  * La FAMILLE de teintes vient de la colonne, pas du stade : à l'Assemblée le
- * bleu, au gouvernement le brun. Seul `promulgue` basculait, et par un
- * sélecteur de frères qui débordait — d'où une barre brune dans la colonne de
+ * bleu, au gouvernement sa teinte. Seul `promulgue` basculait, et par un
+ * sélecteur de frères qui débordait — d'où une barre du gouvernement dans la colonne de
  * l'Assemblée, et une barre à deux familles dans celle du gouvernement.
  *
  * Cinq stades, cinq degrés, et la rampe MONTE : `examine_commission` était plus
@@ -878,13 +874,13 @@
 }
 
 /* LE CHEF DU GOUVERNEMENT EST UN MEMBRE DU GOUVERNEMENT, ET LA TEINTE LE DIT.
-   Un aplat jaune en faisait une institution de plus ; il prend le brun du
+   Un aplat jaune en faisait une institution de plus ; il prend la teinte du
    gouvernement, quadrillé de jaune (arbitré sur maquette le 16/09/2026, maille
    de 9 px, traits de 1,5 px).
 
    Le contour jaune essayé d'abord ne se voyait pas : `--accent` est presque
    aussi clair que le fond blanc, et 2 px de jaune sur un segment de huit mois
-   disparaissaient. Sur le brun, c'est le fond sombre qui donne son contraste au
+   disparaissaient. Sur la teinte du gouvernement, c'est le fond sombre qui donne son contraste au
    jaune. La maille large plutôt que la fine : elle se lit sur un segment court,
    et gêne moins un libellé blanc posé dessus. */
 .cp-fs--chef {
@@ -1413,7 +1409,7 @@
  * La marque de ce qui ressort : un filet d'encre et le lavis des puces. SANS
  * TEINTE, et ce n'est pas un oubli — aucune couleur n'était libre. Le jaune
  * signal est pris par la sélection, l'action et le badge de source ; le vert et
- * le rouge par les positions de vote (DESIGN_SYSTEM §2) ; le bleu et le bronze
+ * le rouge par les positions de vote (DESIGN_SYSTEM §2) ; le bleu et la rouille
  * par les institutions dans la frise. En introduire une quatrième aurait dilué
  * les trois autres, et la charte pose que le jaune n'indique jamais un jugement.
  *
@@ -1533,7 +1529,7 @@
  *
  * Le banc se dit donc par la PASTILLE et par la couleur du titre du bloc. Ce
  * n'est pas un repli : le titre gagne au change, `--muted` valant 3,51:1 sur
- * blanc quand le bleu vaut 8,14:1 et le bronze 4,90:1 — sous le seuil AA avant,
+ * blanc quand le bleu vaut 8,14:1 et la rouille 5,71:1 — sous le seuil AA avant,
  * au-dessus après.
  */
 .cp-fonctions-bloc--parlement {

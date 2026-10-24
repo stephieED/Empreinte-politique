@@ -666,6 +666,88 @@ const SECTIONS = [
       </>
     ),
   },
+  { famille: 'Fiche de législature' },
+  {
+    id: 'leg-bref',
+    heading: 'En bref',
+    body: (
+      <>
+        <p>
+          La fiche couvre une législature de l'Assemblée nationale, entre les dates que l'Assemblée
+          publie pour elle. Ce ne sont pas celles de la première séance : la XIVe commence le
+          20 juin 2012, et sa première séance a lieu le 26.
+        </p>
+        <p>
+          Une législature dure cinq ans, sauf dissolution. La frise court jusqu'au terme prévu par
+          la loi. Quand l'Assemblée a été dissoute, la part qui restait est en pointillé. Pour la
+          législature en cours, la frise s'arrête à aujourd'hui, en jaune.
+        </p>
+        <p>
+          <strong>Les chiffres sont ceux du dernier jour.</strong> La XIVe compte ainsi 561 députés
+          le 20 juin 2017, pour 577 sièges. Une loi est rattachée à la législature qui l'a votée,
+          même si elle est promulguée après.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: 'leg-sieges',
+    heading: 'Qui siégeait',
+    body: (
+      <>
+        <p>
+          Un point est un député. Les groupes vont de la gauche vers la droite de l'hémicycle,
+          d'après les places que l'Assemblée publie ; les non-inscrits ferment la figure.
+        </p>
+        <p>
+          <strong>La position d'un groupe est celle qu'il déclare à l'Assemblée</strong> : majorité,
+          minoritaire ou opposition. Un groupe minoritaire ne s'est pas déclaré d'opposition, sans
+          être le plus nombreux de ceux-là. Quand un groupe n'a rien déclaré, la fiche écrit
+          « Position non publiée ». Pour la législature en cours, aucun groupe n'a de position
+          publiée : deux tons de gris servent seulement à distinguer les groupes voisins.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: 'leg-textes',
+    heading: 'Les textes de la législature',
+    body: (
+      <>
+        <p>
+          Un livre est un texte que l'Assemblée a voté pendant la législature. Il est rangé sur
+          l'étagère de la commission chargée de l'examiner, et dans la colonne de son sort.
+          « Promulgués » : devenus des lois. « Adoptés » : votés par l'Assemblée sans être devenus
+          des lois, comme une résolution ou un texte encore en discussion au Sénat. « Rejetés » :
+          refusés par l'Assemblée.
+        </p>
+        <p>
+          <strong>La couleur dit qui a déposé le texte</strong> : le gouvernement, des députés ou
+          des sénateurs. Un livre épais est passé par un vote solennel. Un livre hachuré a été
+          adopté par l'article 49.3, sans vote : ce n'est pas une position de vote.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: 'leg-commissions',
+    heading: 'Le travail des commissions',
+    body: (
+      <>
+        <p>
+          Une barre compte les textes déposés pendant la législature et confiés à une commission.
+          Elle est découpée selon l'étape la plus avancée de chaque texte : jamais examiné,
+          examiné en commission, débattu en séance, devenu loi.
+        </p>
+        <p>
+          <strong>Un texte jamais examiné n'a pas été rejeté</strong> : il n'a jamais été mis à
+          l'ordre du jour. Le nuage de mots reprend les termes les plus fréquents dans les titres
+          de ces textes, en filtrant le vocabulaire courant (« proposition de loi visant à… »).
+          Cliquer sur un mot montre les textes qui le contiennent.
+        </p>
+      </>
+    ),
+  },
   { famille: 'Ce qui vaut pour toutes les fiches' },
   {
     id: 'couverture',

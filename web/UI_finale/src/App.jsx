@@ -6,6 +6,7 @@ import LandingPage from './pages/LandingPage';
 import CandidateProfilePage from './pages/CandidateProfilePage';
 import GroupProfilePage from './pages/GroupProfilePage';
 import GovernmentProfilePage from './pages/GovernmentProfilePage';
+import LegislatureProfilePage from './pages/LegislatureProfilePage';
 import MethodologyPage from './pages/MethodologyPage';
 import AboutPage from './pages/AboutPage';
 import CoveragePage from './pages/CoveragePage';
@@ -34,6 +35,7 @@ function App() {
           <Route path="groupes/:groupId" element={<GroupProfilePage />} />
           <Route path="gouvernements" element={<Navigate to={`/gouvernements/${DEFAULT_GOVERNMENT_ID}`} replace />} />
           <Route path="gouvernements/:governmentId" element={<GovernmentProfilePage />} />
+          <Route path="legislatures/:legislatureId" element={<LegislatureProfilePage />} />
         </Route>
         {/* Pages statiques hors ExplorerLayout : pas de candidat/groupe sélectionné,
             les bandeaux Groupes/Gouvernements/Candidats n'ont pas de sens ici. */}

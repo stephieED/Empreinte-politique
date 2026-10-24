@@ -199,8 +199,12 @@ def test_la_liste_de_l_accueil_ne_derive_pas_du_dossier() -> None:
 
 
 def test_l_accueil_montre_les_analyses_au_dessus_du_pied_de_page() -> None:
+    # Depuis #1329 (22/10/2026), le carrousel est dans la carte héro, en tête de
+    # l'accueil, et non plus au-dessus du pied de page.
     page = (UI / "src" / "pages" / "LandingPage.jsx").read_text(encoding="utf-8")
-    assert page.index("<CommencerAExplorer />") < page.index("<AnalysesThematiques />") < page.index("<PiedDeSite />")
+    assert page.index("<Hero />") < page.index("<PiedDeSite />")
+    hero = (UI / "src" / "components" / "landing" / "Hero.jsx").read_text(encoding="utf-8")
+    assert "<AnalysesThematiques dansHero />" in hero
     carrousel = (UI / "src" / "components" / "landing" / "AnalysesThematiques.jsx").read_text(encoding="utf-8")
     assert "fetch('/rapports.json')" in carrousel, "la liste vient du dossier, jamais recopiée"
     assert "prefers-reduced-motion" in carrousel, "aucune rotation pour qui a demandé moins d'animations"

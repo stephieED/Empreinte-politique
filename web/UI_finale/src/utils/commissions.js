@@ -33,7 +33,7 @@
  * CELLE-CI A ÉTÉ CHERCHÉE CONTRE LES DEUX CONTRAINTES À LA FOIS (palette A,
  * retenue sur maquette le 02/10/2026) : toutes paires entre elles, ET chaque
  * teinte à 12 ou plus (écart OKLab × 100) de toute couleur déjà prise — le
- * vert et le rouge des votes, le prune de l'Assemblée, le bronze du
+ * vert et le rouge des votes, le prune de l'Assemblée, la rouille du
  * gouvernement, le bleu du Parlement européen, le sarcelle du Sénat, l'ambre
  * des amendements retirés, le mauve des groupes minoritaires. Elle n'a donc
  * plus ni vert ni brun. La mesure et ce qui a été écarté sont dans

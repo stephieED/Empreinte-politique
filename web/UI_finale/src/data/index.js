@@ -708,6 +708,75 @@ export function getPaquetExtraitsMaillon(maillon, paquet) {
   return fetchExtraits(`/data/lignees/${maillon}.extraits.${paquet}.json`);
 }
 
+/* LES LÉGISLATURES (#1314). Le manifeste ne les liste que si le run a écrit
+ * leur fichier : sans lui, la barre du tiroir et la route restent vides. */
+const ROMAINS = { 14: 'XIVe', 15: 'XVe', 16: 'XVIe', 17: 'XVIIe' };
+export const nomDeLegislature = (id) => `${ROMAINS[Number(id)] || `${id}e`} législature`;
+
+export async function getLegislaturesList() {
+  const manifest = await loadManifest();
+  return (manifest.legislatures || []).map((l) => ({
+    id: l.id,
+    title: nomDeLegislature(l.id),
+    court: ROMAINS[Number(l.id)] || l.id,
+    debut: l.debut,
+    fin: l.fin,
+    modeFin: l.mode_fin ?? null,
+    groupeMajoritaire: l.groupe_majoritaire ?? null,
+  }));
+}
+
+/* L'ASSEMBLÉE AUJOURD'HUI, pour l'accueil (#1329) : les groupes de la législature
+ * en cours, de la gauche vers la droite de l'hémicycle (siège médian), avec leur
+ * nombre de députés au jour des données. Le sigle, le nom et le lien sont ceux des
+ * fiches de groupe du site, jointes par l'organe de l'Assemblée ; les
+ * non-inscrits, qui ne forment pas un groupe, ferment la liste sans lien. */
+export async function getAssembleeAujourdhui() {
+  const manifest = await loadManifest();
+  const l = (manifest.legislatures || [])[0];
+  if (!l?.groupes?.length) return null;
+  const duSite = (organe) => (manifest.groupes || []).find((g) => (g.organes || []).includes(organe)) || null;
+  const groupes = l.groupes
+    .map((g) => {
+      const s = duSite(g.organe);
+      const ni = g.sigle === 'NI';
+      return {
+        sigle: s?.sigle || g.sigle,
+        nom: ni ? 'Non-inscrits' : (s?.nom || g.nom),
+        membres: g.membres,
+        place: g.place,
+        lien: !ni && s?.lignee ? `/groupes/${s.lignee}` : null,
+        ni,
+      };
+    })
+    .sort((a, b) => (a.ni - b.ni) || (b.place - a.place));
+  return { id: l.id, court: ROMAINS[Number(l.id)] || l.id, groupes };
+}
+
+/* Une fiche de législature joint quatre fichiers par l'uid du dossier (#1314) :
+ * `legislatures.json` et `dossiers_an/<n>.json` (Backend, un fichier par objet),
+ * `commissions_dossiers.json` (la commission saisie au fond) et
+ * `textes_promulgues.json` (la promulgation). */
+export async function getLegislature(id) {
+  const manifest = await loadManifest();
+  const entry = (manifest.legislatures || []).find((l) => l.id === String(id));
+  if (!entry) return null;
+  const [legislatures, dossiers, commissions, promulgues] = await Promise.all([
+    fetchJson('/data/legislatures.json'),
+    fetchJson(`/data/dossiers_an/${entry.id}.json`),
+    fetchJson('/data/commissions_dossiers.json').catch(() => null),
+    fetchJson('/data/textes_promulgues.json').catch(() => null),
+  ]);
+  const legislature = legislatures?.legislatures?.[entry.id];
+  if (!legislature || !dossiers) return null;
+  return {
+    legislature, dossiers, comptes: entry.comptes || {},
+    commissions: commissions?.commissions || {},
+    promulgues: promulgues?.textes || {},
+    groupesDuSite: (manifest.groupes || []).filter((g) => g.chambre === 'AN' && String(g.legislature) === entry.id),
+  };
+}
+
 export async function getGovernmentProfile(id) {
   const manifest = await loadManifest();
   const entry = (manifest.gouvernements || []).find((g) => g.id === id);

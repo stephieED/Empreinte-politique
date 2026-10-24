@@ -405,6 +405,9 @@ for (const file of groupeFiles) {
     position: groupe.position_politique?.position ?? null,
     debut: groupe.periode?.debut ?? null,
     fin: groupe.periode?.fin ?? null,
+    // #1314 : la fiche de législature joint ses groupes à ceux de
+    // `legislatures.json` par l'organe de l'Assemblée — les sigles diffèrent.
+    organes: (groupe.historique_noms || []).map((h) => h.organe_an).filter(Boolean),
   });
   // Rattache chaque candidat au groupe réel dont il est membre (membre_id ->
   // slug), pour permettre le filtrage "Candidats" par "Groupes" côté UI sans
@@ -825,6 +828,59 @@ for (const file of gouvernementFiles) {
 }
 manifestGouvernements.sort((a, b) => (b.debut || '').localeCompare(a.debut || ''));
 
+// --- fiches de législature (#1314) ---
+// Deux fichiers de Backend, un par objet (arbitré le 22/10/2026) :
+// `legislatures.json` (bornes, fin, terme, groupes dans l'hémicycle) et
+// `dossiers_an/<n>.json` (une ligne par dossier). La fiche les joint, avec
+// `commissions_dossiers.json` et `textes_promulgues.json`, par l'uid du dossier.
+// Une législature n'est listée que si ses deux fichiers existent. Les comptes
+// de scrutins (solennels, motions de censure) se lisent ici dans `scrutins.json`,
+// que la fiche ne télécharge pas (10 Mo).
+const manifestLegislatures = [];
+function groupeMajoritaire(id, l) {
+  const g = manifestGroupes.find((m) => String(m.legislature) === String(id) && m.position === 'majorite');
+  if (!g) return null;
+  const auJour = (l.groupes || []).find((x) => g.organes.includes(x.organe_ref));
+  return auJour?.nom ?? g.nom ?? null;
+}
+const legislaturesPath = path.join(repoRoot, 'pivot_data', 'legislatures.json');
+const dossiersAnDir = path.join(repoRoot, 'pivot_data', 'dossiers_an');
+const promulguesPath = path.join(repoRoot, 'pivot_data', 'textes_promulgues.json');
+if (existsSync(legislaturesPath) && existsSync(dossiersAnDir)) {
+  cpSync(legislaturesPath, path.join(outDir, 'legislatures.json'));
+  mkdirSync(path.join(outDir, 'dossiers_an'), { recursive: true });
+  if (existsSync(promulguesPath)) cpSync(promulguesPath, path.join(outDir, 'textes_promulgues.json'));
+  const scrutinsTous = existsSync(scrutinsPath) ? (JSON.parse(readFileSync(scrutinsPath, 'utf-8')).scrutins || []) : [];
+  const { legislatures } = JSON.parse(readFileSync(legislaturesPath, 'utf-8'));
+  for (const [id, l] of Object.entries(legislatures || {})) {
+    const fichier = path.join(dossiersAnDir, `${id}.json`);
+    if (!existsSync(fichier)) continue;
+    cpSync(fichier, path.join(outDir, 'dossiers_an', `${id}.json`));
+    const siens = scrutinsTous.filter((s) => String(s.legislature) === String(id));
+    manifestLegislatures.push({
+      id: String(id),
+      debut: l.debut ?? null,
+      fin: l.fin ?? null,
+      // L'accueil (#1329) dessine la dissolution sur sa frise et l'hémicycle de
+      // la législature en cours sans charger ses dossiers : le mode de fin et
+      // les groupes rangés par siège médian voyagent dans le manifeste.
+      mode_fin: l.mode_fin ?? null,
+      groupes: (l.groupes || [])
+        .filter((g) => g.place_mediane != null)
+        .map((g) => ({ organe: g.organe_ref, sigle: g.sigle, nom: g.nom, membres: g.membres_au_jour ?? null, place: g.place_mediane })),
+      // La bulle de l'accueil (#1329) nomme le groupe que l'Assemblée DÉCLARE
+      // majoritaire, sous son nom au jour de référence de la législature ; null
+      // quand aucun groupe ne l'est (XVIIe : aucune position publiée).
+      groupe_majoritaire: groupeMajoritaire(id, l),
+      comptes: {
+        scrutins_solennels: siens.filter((s) => s.type_scrutin === 'solennel').length,
+        motions_censure: siens.filter((s) => s.type_vote === 'motion_censure').length,
+      },
+    });
+  }
+}
+manifestLegislatures.sort((a, b) => Number(b.id) - Number(a.id));
+
 console.log(
   `sync-data : ${sujetsEcrits} sujets de parole de gouvernement écrits en `
   + `${((Date.now() - debutParoles) / 1000).toFixed(1)} s ; extraits : ${(octetsExtraitsGouvernements / 1e6).toFixed(1)} Mo.`,
@@ -877,7 +933,7 @@ if (!existsSync(couverturePath) || statSync(couverturePath).mtimeMs < entreesCou
 writeFileSync(
   path.join(outDir, 'manifest.json'),
   JSON.stringify(
-    { candidates: manifestCandidates, groupes: manifestGroupes, lignees: manifestLignees, gouvernements: manifestGouvernements },
+    { candidates: manifestCandidates, groupes: manifestGroupes, lignees: manifestLignees, gouvernements: manifestGouvernements, legislatures: manifestLegislatures },
     null,
     2,
   ),

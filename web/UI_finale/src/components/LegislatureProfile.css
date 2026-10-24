@@ -1,0 +1,111 @@
+/* La fiche d'une législature (#1314). Les rangs, en-têtes et cartes sont ceux
+   de la fiche de gouvernement (`gvp-`) ; ce fichier ne porte que les figures. */
+
+.lgp-legende { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: #3b3940; margin-bottom: 12px; }
+.lgp-legende i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.lgp-legende i.lgp-hach { background: repeating-linear-gradient(45deg, #A84B12 0 3px, #14151A 3px 6px); }
+.lgp-leg-livres { display: inline-flex; align-items: flex-end; gap: 6px; }
+.lgp-mini { display: inline-flex; align-items: flex-end; gap: 1px; border-bottom: 2px solid #3b3940; padding: 0 1px; }
+.lgp-legende .lgp-mini i { position: relative; display: block; width: 5px; height: 16px; margin: 0; border-radius: 1px 1px 0 0; background: #6e6a75; vertical-align: 0; }
+.lgp-legende .lgp-mini i.epais { width: 11px; }
+.lgp-legende .lgp-mini i.epais::after { content: ""; position: absolute; left: 2px; right: 2px; top: 3px; height: 1px; background: rgba(255,255,255,.85); box-shadow: 0 2px 0 rgba(255,255,255,.85); }
+.lgp-fort { font-weight: 700; }
+.lgp-sel { outline: 2px solid var(--ink); outline-offset: -2px; }
+
+/* 01 — la frise : la durée réelle contre le mandat prévu */
+.lgp-frise { display: flex; flex-direction: column; gap: 6px; }
+.lgp-frise-gov { position: relative; height: 38px; }
+.lgp-frise-g { position: absolute; top: 0; height: 100%; border-left: 2px solid var(--ink); padding-left: 8px; font-size: 12px; line-height: 1.3; white-space: nowrap; }
+.lgp-frise-g b { display: block; font-size: 13px; }
+.lgp-frise-barre { position: relative; height: 34px; border: 1.5px dashed #9a958d; border-radius: 4px; }
+.lgp-frise-plein { position: absolute; left: 0; top: 0; bottom: 0; background: #803060; border-radius: 3px 0 0 3px; color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; padding-left: 12px; white-space: nowrap; overflow: hidden; }
+.lgp-frise-coupe { position: absolute; top: -8px; bottom: -8px; width: 3px; background: var(--ink); }
+.lgp-frise-reste { position: absolute; top: 0; bottom: 0; right: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--muted); font-weight: 600; padding: 0 8px; text-align: center; }
+.lgp-frise-ax { position: relative; height: 18px; font-size: 12px; color: var(--muted); }
+.lgp-frise-ax span { position: absolute; transform: translateX(-50%); }
+.lgp-frise-g { background: linear-gradient(var(--card, #fff), var(--card, #fff)) no-repeat 0 0 / 100% 36px; }
+.lgp-frise-g--droite { border-left: 0; border-right: 2px solid var(--ink); padding: 0 8px 0 0; text-align: right; }
+.lgp-frise-coupe--auj { width: 5px; background: var(--accent); }
+.lgp-frise-ax--auj { height: 34px; }
+.lgp-frise-ax .lgp-frise-auj { top: 16px; font-weight: 700; color: var(--ink); }
+.lgp-chiffres { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-top: 18px; }
+.lgp-chiffre { display: flex; flex-direction: column; gap: 2px; border-left: 3px solid #803060; padding-left: 12px; }
+.lgp-chiffre b { font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.lgp-chiffre span { font-size: 12px; color: var(--muted); }
+.lgp-chiffre--proc { border-left: none; padding-left: 15px; background: repeating-linear-gradient(45deg, #A84B12 0 3px, #14151A 3px 6px) left top / 3px 100% no-repeat; }
+
+/* 02 — l'hémicycle */
+.lgp-hemi { width: 100%; max-width: 820px; height: auto; display: block; margin: 0 auto; }
+.lgp-hemi-arc { font: 800 22px Manrope, system-ui, sans-serif; fill: var(--ink); }
+.lgp-hemi-sigle { font: 800 25px Manrope, system-ui, sans-serif; fill: var(--ink); cursor: help; }
+.lgp-hemi-sigle-n { font-size: 22px; font-weight: 700; fill: #3b3940; font-variant-numeric: tabular-nums; }
+.lgp-hemi-total { font: 800 44px Manrope, system-ui, sans-serif; fill: var(--ink); }
+.lgp-hemi-sous { font: 700 24px Manrope, system-ui, sans-serif; fill: #3b3940; }
+
+/* 03 — la bibliothèque : un meuble par sort, une étagère par domaine */
+.lgp-meubles-defile { overflow-x: auto; }
+.lgp-meubles { display: grid; grid-template-columns: 150px repeat(3, minmax(150px, 1fr)); column-gap: 14px; min-width: 620px; }
+.lgp-meuble-tete { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; padding: 8px 10px; background: #3b3940; color: #fff; border-radius: 6px 6px 0 0; display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.lgp-meuble-tete b { font-size: 15px; font-variant-numeric: tabular-nums; }
+.lgp-domaine { font: 700 12.5px Manrope, system-ui, sans-serif; line-height: 1.25; padding: 10px 10px 6px 0; text-align: right; background: none; border: none; color: var(--ink); cursor: pointer; align-self: stretch; display: flex; justify-content: flex-end; align-items: flex-start; }
+.lgp-domaine:hover, .lgp-domaine.lgp-sel { color: #803060; outline: none; }
+.lgp-case { display: flex; flex-wrap: wrap; align-content: flex-end; gap: 2px; row-gap: 6px; padding: 10px 8px 0; border-left: 5px solid #3b3940; border-right: 5px solid #3b3940; border-bottom: 5px solid #3b3940; min-height: 52px; cursor: pointer;
+  /* L'étagère intermédiaire : sous chaque rang de livres, au pied du rang du dessus (21/10). */
+  background: repeating-linear-gradient(to top, transparent 0 57px, rgba(59, 57, 64, .55) 57px 60px) content-box, linear-gradient(#f2efea, #f2efea) padding-box; }
+.lgp-case:hover { background: repeating-linear-gradient(to top, transparent 0 57px, rgba(59, 57, 64, .55) 57px 60px) content-box, linear-gradient(#e9e4dc, #e9e4dc) padding-box; }
+.lgp-livre { position: relative; display: block; width: 11px; height: 54px; border: none; padding: 0; border-radius: 2px 2px 0 0; cursor: pointer; transition: transform .12s ease-out; }
+.lgp-livre::after { content: ""; position: absolute; left: 3px; right: 3px; top: 9px; height: 2px; background: rgba(255, 255, 255, .75); }
+/* Le 49.3 : hachures de la teinte du gouvernement et d'encre, au premier plan — un passage en force, jamais un vote (22/10). */
+.lgp-livre[data-493] { background: repeating-linear-gradient(45deg, #A84B12 0 3px, #14151A 3px 6px); }
+.lgp-pastille-493 { background: repeating-linear-gradient(45deg, #A84B12 0 3px, #14151A 3px 6px); }
+.lgp-livre--epais { width: 22px; margin: 0 1px; box-shadow: inset 0 0 0 1.5px rgba(20, 21, 26, .45); }
+.lgp-livre--epais::after { left: 5px; right: 5px; box-shadow: 0 5px 0 rgba(255, 255, 255, .75); }
+.lgp-livre:hover, .lgp-livre.lgp-sel { transform: translateY(-4px); }
+.lgp-livre:focus-visible { outline: 2px solid #803060; outline-offset: 1px; }
+@media (prefers-reduced-motion: reduce) { .lgp-livre { transition: none; } }
+.lgp-detail-rang { grid-column: 1 / -1; }
+
+/* Le détail sous la rangée : même forme pour un livre, une étagère, un domaine (22/10). */
+.lgp-detail { background: var(--card); border: 1.5px solid var(--ink); border-radius: 10px; margin: 8px 0 12px; padding: 14px 16px; position: relative; display: flex; flex-direction: column; gap: 8px; }
+.lgp-detail h4, .lgp-nuage h4 { margin: 0; font-size: 15px; font-weight: 800; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; padding-right: 30px; }
+.lgp-detail h4 span, .lgp-nuage h4 span { color: var(--muted); font-weight: 600; font-size: 13px; }
+.lgp-detail h5 { margin: 6px 0 0; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.lgp-fermer { position: absolute; top: 8px; right: 10px; border: none; background: none; font: 700 20px/1 Manrope, system-ui, sans-serif; color: var(--ink); cursor: pointer; }
+.lgp-liste { margin: 0; padding: 0; list-style: none; columns: 2 320px; column-gap: 28px; }
+.lgp-liste--un { columns: 1; }
+.lgp-liste li { break-inside: avoid; display: grid; grid-template-columns: 10px 1fr; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--border-strong, #e4e1dc); font-size: 13px; line-height: 1.35; }
+.lgp-liste li > i { width: 9px; height: 9px; border-radius: 50%; margin-top: 4px; }
+.lgp-mention { font-size: 11px; }
+.lgp-qui { display: block; font-size: 11.5px; color: var(--muted); font-weight: 500; margin-top: 2px; }
+.lgp-qui a { color: var(--ink); font-weight: 700; }
+
+/* 04 — une barre par commission, et le nuage qu'elle filtre */
+.lgp-b1-rang { display: grid; grid-template-columns: minmax(150px, 220px) 1fr; gap: 14px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-strong, #e4e1dc); outline: none; }
+.lgp-b1-nom { font: 600 13px Manrope, system-ui, sans-serif; text-align: left; background: none; border: none; padding: 0; color: var(--ink); cursor: pointer; }
+.lgp-b1-nom:hover, .lgp-b1-rang.lgp-sel .lgp-b1-nom { color: #803060; text-decoration: underline; }
+.lgp-b1-barre { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.lgp-b1-barre b { font-size: 13px; font-variant-numeric: tabular-nums; }
+.lgp-b1-in { display: flex; height: 22px; border-radius: 3px; overflow: hidden; min-width: 4px; }
+.lgp-b1-seg { display: flex; align-items: center; justify-content: center; font: 800 11px Manrope, system-ui, sans-serif; border: none; padding: 0; min-width: 0; cursor: pointer; }
+.lgp-b1-seg:hover { filter: brightness(.92); }
+.lgp-nuage { margin-top: 16px; border: 1px solid var(--border-strong, #e4e1dc); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.lgp-tout { margin-left: auto; font: 600 13px Manrope, system-ui, sans-serif; border: 1.5px solid var(--ink); background: var(--card); color: var(--ink); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.lgp-tout:hover { background: var(--ink); color: #fff; }
+.lgp-mots { width: 100%; }
+.lgp-mots svg { width: 100%; height: auto; display: block; }
+.lgp-mot { fill: var(--ink); font-family: Manrope, system-ui, sans-serif; font-weight: 700; cursor: pointer; outline: none; }
+.lgp-mot .lgp-mot-n { fill: var(--muted); font-weight: 500; }
+.lgp-mot:hover, .lgp-mot.lgp-sel { fill: #803060; }
+.lgp-mot:focus-visible { fill: #803060; text-decoration: underline; }
+.lgp-nuage-textes h5 { margin: 4px 0 6px; font-size: 14px; font-weight: 800; }
+.lgp-par-etape { display: flex; flex-direction: column; gap: 14px; max-height: 520px; overflow: auto; }
+.lgp-par-etape h6 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 700; }
+.lgp-liste-courte { margin: 0; padding: 0; list-style: none; columns: 3 280px; column-gap: 28px; }
+.lgp-liste-courte li { break-inside: avoid; padding: 4px 0; border-bottom: 1px solid var(--border-strong, #e4e1dc); font-size: 13px; line-height: 1.35; }
+.lgp-liste-courte a { color: var(--ink); }
+.lgp-liste-courte small { display: block; color: var(--muted); font-size: 11.5px; }
+
+@media (max-width: 520px) {
+  .lgp-b1-rang { grid-template-columns: 1fr; gap: 4px; }
+}
+

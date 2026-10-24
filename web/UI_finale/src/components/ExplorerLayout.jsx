@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import EnTeteSite from './EnTeteSite';
 import GroupsBar from './GroupsBar';
 import GovernmentsBar from './GovernmentsBar';
+import LegislaturesBar from './LegislaturesBar';
 import CandidatesBar from './CandidatesBar';
 import SommaireSections from './SommaireSections';
 import { BarreFiltre } from './Recherche';
@@ -161,6 +162,7 @@ export default function ExplorerLayout() {
                   <CandidatesBar />
                   <GroupsBar />
                   <GovernmentsBar />
+                  <LegislaturesBar />
                 </>
               )}
             </div>

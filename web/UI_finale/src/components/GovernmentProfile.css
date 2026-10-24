@@ -4,9 +4,9 @@
  */
 
 .gvp-main {
-  --gouv: #85510d;
-  --gouv-wash: #f3eee7;
-  --gouv-line: #e0d4c2;
+  --gouv: #A84B12;
+  --gouv-wash: #F6EDE7;
+  --gouv-line: #E9D2C4;
   --texte-2: #6e6a78;
   --gris-absence: #c4c0b9;
 
@@ -20,17 +20,14 @@
   margin-bottom: 12px;
 }
 
-/* Mêmes valeurs que `.cp-entete` / `.cp-sourcil` / `.cp-qui` sur la fiche
-   candidat : une fiche ne s'ouvre pas d'une autre voix que sa voisine. */
-.gvp-entete { padding-bottom: 8px; }
-
-.gvp-sourcil {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
+/* Mêmes valeurs que `.cp-entete` / `.cp-qui` sur la fiche candidat : une fiche
+   ne s'ouvre pas d'une autre voix que sa voisine. */
+/* L'EN-TÊTE D'UNE FICHE, LE MÊME SUR LES QUATRE (23/10/2026) : le fil d'Ariane,
+   le nom, une ligne d'identité, puis 24 px avant la première section. La ligne
+   en capitales au-dessus du nom est retirée : le fil d'Ariane dit déjà ce qu'est
+   la fiche. */
+.gvp-entete { margin-bottom: 24px; }
+.gvp-entete + .gvp-section { margin-top: 0; }
 
 .gvp-entete h1 {
   font-size: 34px;
@@ -45,7 +42,7 @@
   align-items: baseline;
   flex-wrap: wrap;
   gap: 6px 12px;
-  margin: 9px 0 12px;
+  margin: 9px 0 0;
   font-size: 15px;
   color: var(--texte-2);
 }

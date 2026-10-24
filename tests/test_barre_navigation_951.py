@@ -225,8 +225,16 @@ def test_l_accueil_est_le_hero_puis_l_entree_en_deux_temps() -> None:
     """
     accueil = _sans_commentaires(ACCUEIL.read_text(encoding="utf-8"))
     corps = accueil[accueil.index("<main"):accueil.index("</main>")]
-    # Les analyses thématiques ferment la page, au-dessus du pied (15/10/2026).
-    assert re.findall(r"<([A-Z][A-Za-z]+) />", corps) == ["Hero", "CommencerAExplorer", "AnalysesThematiques"]
+    # #1329 (22/10/2026) : la carte héro porte le carrousel des analyses, et les
+    # tuiles (frise des législatures et des gouvernements, Assemblée par groupe)
+    # remplacent les portes ; les portes restent le repli tant qu'aucune
+    # législature n'est publiée.
+    assert re.findall(r"<([A-Z][A-Za-z]+) />", corps) == ["Hero", "ExplorerTuiles"]
+    tuiles = (UI / "src" / "components" / "landing" / "ExplorerTuiles.jsx").read_text(encoding="utf-8")
+    for source in ("getLegislaturesList", "getGovernmentsList", "getAssembleeAujourdhui"):
+        assert source in tuiles, f"{source} n'alimente plus les tuiles de l'accueil"
+    assert "<CommencerAExplorer />" in tuiles, "plus de repli quand aucune législature n'est publiée"
+    assert "Commencer l’exploration</h2>" in tuiles
     hero = _sans_commentaires((UI / "src" / "components" / "landing" / "Hero.jsx").read_text(encoding="utf-8"))
     assert "landing-cta" not in hero and "Voir un profil" not in hero
     liste = (UI / "src" / "components" / "landing" / "CommencerAExplorer.jsx").read_text(encoding="utf-8")
@@ -240,6 +248,10 @@ def test_l_accueil_est_le_hero_puis_l_entree_en_deux_temps() -> None:
     # Le grisé des fiches sans mandat a été retiré le 07/10/2026, ici comme sur la barre.
     assert "cb-chip--sans-mandat" not in liste
     assert 'to={`/groupes/${l.id}`}' in liste and 'to={`/gouvernements/${g.id}`}' in liste
+    # LA PORTE DES LÉGISLATURES (22/10/2026, #1314) : lue dans le manifeste, et
+    # absente tant qu'aucune législature n'y est publiée.
+    assert "getLegislaturesList" in liste and 'to={`/legislatures/${l.id}`}' in liste
+    assert "avecLegislatures &&" in liste
 
 
 def test_le_volet_candidats_porte_sa_borne() -> None:
@@ -272,7 +284,9 @@ def test_la_porte_des_groupes_garde_le_mot_du_lecteur() -> None:
     """
     source = _sans_commentaires(
         (UI / "src" / "components" / "landing" / "CommencerAExplorer.jsx").read_text(encoding="utf-8"))
-    assert 'libelle="Groupes parlementaires"' in source
+    # Le libellé est devenu « L'activité législative par groupe parlementaire »
+    # le 22/10/2026 : il garde « groupe parlementaire », le mot du lecteur.
+    assert 'libelle="L’activité législative par groupe parlementaire"' in source
     assert "ignée" not in source, "le mot du modèle de données a remplacé celui du lecteur"
 
 
