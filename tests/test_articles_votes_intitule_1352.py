@@ -135,3 +135,42 @@ def test_le_scrutin_publie_l_intitule_et_la_partie():
     assert entree["intitule"].startswith("Soutenir le travail")
     assert entree["partie"]["numero"] == "PREMIÈRE PARTIE"
     assert entree["section"]["intitule"] == "Mesures fiscales"
+
+
+# ---------------------------------------------------------------------------
+# Les articles des textes lus (option A, arbitrée le 26/10/2026)
+# ---------------------------------------------------------------------------
+
+def test_tous_les_articles_d_un_texte_a_intitules_sont_publies():
+    lus = {"PRJLANR5L17B3210": _structure(PLF), "PIONANR5L17BTC3190": _structure(ORDINAIRE)}
+    publies = av.articles_des_textes(lus)
+    assert set(publies) == {"PRJLANR5L17B3210"}, "un texte sans intitulé n'est pas repris"
+    plf = publies["PRJLANR5L17B3210"]
+    assert plf["source_url"] == av.URL_TEXTE_HTML.format(uid="PRJLANR5L17B3210")
+    assert list(plf["articles"]) == ["1", "2"], "l'ordre du texte, la désignation normalisée"
+    assert plf["articles"]["2"]["intitule"].startswith("Soutenir le travail")
+    assert plf["articles"]["2"]["section"] == {"numero": "B", "intitule": "Mesures fiscales"}
+    assert "texte" not in plf["articles"]["2"], "le texte de l'article reste propre aux scrutins"
+
+
+def test_la_designation_d_un_amendement_se_joint_apres_normalisation():
+    articles = av.articles_des_textes({"PRJLANR5L17B3210": _structure(PLF)})["PRJLANR5L17B3210"]["articles"]
+    for designation in ("Article 2", "ARTICLE 2", "article 2"):
+        assert av.normaliser_article(designation) in articles
+
+
+def test_construire_publie_les_textes_lus():
+    seance, dossier, texte = "RUANR5L17S2027IDS99999", "DLR5L17N54629", "PRJLANR5L17B3210"
+    index = [{"uid": dossier, "actesLegislatifs": {"acteLegislatif": [{
+        "codeActe": "AN1", "actesLegislatifs": {"acteLegislatif": [
+            {"codeActe": "AN1-DEPOT", "dateActe": "2026-10-01T00:00:00.000+02:00", "texteAssocie": texte},
+            {"codeActe": "AN1-DEBATS-SEANCE", "dateActe": "2026-10-20T00:00:00.000+02:00",
+             "reunionRef": seance}]}}]}}]
+    scrutin = {"scrutin_id": "an:17:8737", "date": "2026-10-20", "seance_ref": seance, "dossier_ref": dossier,
+               "libelle": "l'article 2 du projet de loi de finances pour 2027 (première lecture)."}
+    lecteur = av.LecteurDeTextes(reseau=False)
+    lecteur._memo[texte] = _structure(PLF)
+    resultat = av.construire([scrutin], index, lecteur, agenda={seance: [dossier]}, genere_le="2026-10-26")
+    assert resultat["schema_version"] == "articles-votes-v3"
+    assert set(resultat["textes"]) == {texte}
+    assert resultat["scrutins"]["an:17:8737"]["intitule"].startswith("Soutenir le travail")

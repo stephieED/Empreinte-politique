@@ -34,7 +34,7 @@ date qu'elle porte : un job ajouté ici ne s'y ajoute pas seul.
 | `extract-actes-jo` | `epingler-le-code` | les livraisons quotidiennes de `echanges.dila.gouv.fr` (#1029 voie 1) | artifact `actes-jo` — **seulement les fichiers que le run change**, `pivot_data/actes_reglementaires/<AAAA-MM>.json` des mois relus et `raw_data/lois_jorf.json` |
 | `extract-gouvernements` | `epingler-le-code` | l'archive AMO30, et la table de correspondance des acteurs pour la seconde sortie | artifact `gouvernements-amo30` : `raw_data/gouvernements_reels.json` (6 Ko) ; artifact `non-inscrits-amo30` : `raw_data/non_inscrits.json` (96 Ko, #1265) |
 | `extract-finances-etat` | `epingler-le-code` | le portail des ministères économiques et financiers, `data.economie.gouv.fr`, puis ceux de la Drees et de l'Unédic (#1053) | artifact `finances-etat` : `raw_data/finances_etat.json` et `raw_data/finances_sociales.json`, **aucun cache** |
-| `extract-articles-votes` | `epingler-le-code` | les archives Scrutins, Dossiers législatifs et Agenda des XVe-XVIIe, et le texte HTML de chaque texte discuté (#1264) | artifact `articles-votes` — `pivot_data/articles_votes.json` |
+| `extract-articles-votes` | `epingler-le-code` | les archives Scrutins, Dossiers législatifs et Agenda des XVe-XVIIe, et le texte HTML de chaque texte discuté (#1264) | artifact `articles-votes` — `pivot_data/articles_votes.json` ; artifact `ordre-du-jour` — `pivot_data/ordre_du_jour/<n>.json` (#1354) |
 | `merge-and-pivot` | `extract-an`, `extract-ue-officiel`, `extract-parltrack`, `extract-roster-groupes`, `extract-senat`, `extract-actes-jo`, `extract-gouvernements`, `extract-finances-etat`, `extract-articles-votes` | tous les artifacts ci-dessus, et les **quatre archives de dossiers** (XIV à XVII, deux formats depuis #1019) | le contrôle du transport, la fusion, les deux passes pivot, les fiches de groupe, de lignée et **de gouvernement** (rattachement par `organe_ref`, #996 lot 4), les fiches de gouvernement à partir de la liste que `extract-gouvernements` a collectée, les quatre contrôles, le commit et le push |
 
 Dix jobs ne dépendent que de l'épinglage du code et démarrent ensemble
@@ -609,6 +609,18 @@ cache sans être lues. Le chemin du cache ne change pas, donc le workflow non pl
 **Ce qu'il refuse.** Une archive illisible arrête l'écriture (code 1,
 `ARTICLES_VOTES_SOURCE_INDISPONIBLE`). Le job est `continue-on-error`, et le
 fichier commité du run précédent reste.
+
+**L'ordre du jour des séances (#1354), une étape de plus.**
+`python3 src/ordre_du_jour_an.py --telecharger` relit les archives Agenda que
+l'étape précédente a mises en cache (la 17e se retélécharge, ≈ 8,5 Mo) et écrit
+`pivot_data/ordre_du_jour/<législature>.json`, 6 s en local pour les trois.
+L'étape est en `always()` : elle ne dépend pas des articles votés. Son artifact
+est à part (`ordre-du-jour`), parce qu'un artifact partagé déplace sa racine le
+jour où l'un de ses fichiers manque. Le checkout partiel porte
+`pivot_data/ordre_du_jour` : un fichier dont seule la date de génération changerait
+n'est pas réécrit (#1075). Une archive illisible arrête l'écriture (code 1,
+`ORDRE_DU_JOUR_SOURCE_INDISPONIBLE`) et les fichiers du run précédent restent.
+→ `docs/decisions/ordre-du-jour-des-seances-1354.md`
 
 #### `extract-actes-jo`
 

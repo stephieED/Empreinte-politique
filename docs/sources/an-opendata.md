@@ -931,6 +931,36 @@ lists **every** file discussed in it, including those whose own sitting act does
 not carry the sitting's uid. It is the complete candidate list when a scrutin is
 attached to its text. Organized by meeting, never by `acteurRef`.
 
+**Published since #1354** by `src/ordre_du_jour_an.py`, one file per legislature.
+What the archive holds, measured on 2026-10-26:
+
+| | XVe | XVIe | XVIIe |
+| --- | ---: | ---: | ---: |
+| AN public sittings (`@xsi:type == "seance_type"`, uid `RUAN…`) | 2 164 | 827 | 973 |
+| … `Confirmé` / `Supprimé` / `Annulé` | 1 561 / 597 / 6 | 604 / 223 / 0 | 685 / 288 / 0 |
+| Sitting organe | `PO717460` | `PO791932` | `PO838901` |
+| Days with a confirmed sitting | 736 (27/06/2017 → 23/03/2022) | 288 (28/06/2022 → 07/06/2024) | 313 (18/07/2024 → 17/11/2026, agenda already set included) |
+| Points of confirmed sittings | 4 099 | 1 997 | 2 863 |
+| … carrying a `dossierRef` | 2 265 | 857 | 967 |
+
+Traps:
+
+- **The archive mixes everything**: Senate sittings (`RUSN…`), one Congress sitting
+  (`RUCG…`, XVe and XVIe), committee meetings (`reunionCommission_type`) and
+  parliamentary-initiative meetings. A public sitting of the Assembly is
+  `seance_type` **and** an uid starting with `RUAN`.
+- **Most points carry no file.** « Suite de la discussion » almost never does, and
+  many first « Discussion » points do not either. The file is found by a sibling
+  point of the same archive with the same title (#1354, rule C): XVe 973, XVIe 616,
+  XVIIe 1 032 points of confirmed sittings.
+- **A title can lead to two files**: the « projet de loi de financement de la
+  sécurité sociale pour 2025 » is `DLR5L17N50588` (fell with the December 2024
+  censure) **and** `DLR5L17N51427` (re-filed in 2025).
+- `natureTravauxODJ` is `ODJPR` everywhere except 60 XVIIe points (`ODJAN`), not
+  interpreted. The last confirmed sitting of the XVe archive is on 23/03/2022, three
+  months before the end of the legislature (21/06/2022); whether the Assembly sat
+  after that date is not checked here.
+
 ## Extra-parliamentary bodies (CSV) - low priority
 
 `.../17/amo/oep_csv_opendata/liste_organismes_extra_parlementaires_excel.csv`

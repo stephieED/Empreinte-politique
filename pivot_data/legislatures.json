@@ -1,6 +1,6 @@
 {
   "schema_version": "legislatures-v1",
-  "genere_le": "2026-10-26T19:14:14+0000",
+  "genere_le": "2026-10-26T22:10:49+0000",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "legislatures": {
     "14": {
@@ -107,81 +107,15 @@
       },
       "groupes": [
         {
-          "organe_ref": "PO723569",
-          "sigle": "NI",
-          "libelle_abrege": "NI",
-          "nom": "Non inscrit",
-          "membres_au_jour": 37,
-          "membres_avec_place": 0,
-          "place_mediane": null,
-          "place_min": null,
-          "place_max": null
-        },
-        {
           "organe_ref": "PO730934",
           "sigle": "LR",
           "libelle_abrege": "LR",
           "nom": "Les Républicains",
           "membres_au_jour": 100,
-          "membres_avec_place": 0,
-          "place_mediane": null,
-          "place_min": null,
-          "place_max": null
-        },
-        {
-          "organe_ref": "PO730940",
-          "sigle": "GDR",
-          "libelle_abrege": "GDR",
-          "nom": "Gauche démocrate et républicaine",
-          "membres_au_jour": 15,
-          "membres_avec_place": 0,
-          "place_mediane": null,
-          "place_min": null,
-          "place_max": null
-        },
-        {
-          "organe_ref": "PO730958",
-          "sigle": "FI",
-          "libelle_abrege": "FI",
-          "nom": "La France insoumise",
-          "membres_au_jour": 17,
-          "membres_avec_place": 0,
-          "place_mediane": null,
-          "place_min": null,
-          "place_max": null
-        },
-        {
-          "organe_ref": "PO730964",
-          "sigle": "LAREM",
-          "libelle_abrege": "LaREM",
-          "nom": "La République en Marche",
-          "membres_au_jour": 257,
-          "membres_avec_place": 0,
-          "place_mediane": null,
-          "place_min": null,
-          "place_max": null
-        },
-        {
-          "organe_ref": "PO758835",
-          "sigle": "SOC",
-          "libelle_abrege": "SOC",
-          "nom": "Socialistes et apparentés",
-          "membres_au_jour": 28,
-          "membres_avec_place": 0,
-          "place_mediane": null,
-          "place_min": null,
-          "place_max": null
-        },
-        {
-          "organe_ref": "PO759900",
-          "sigle": "LT",
-          "libelle_abrege": "LT",
-          "nom": "Libertés et Territoires",
-          "membres_au_jour": 18,
-          "membres_avec_place": 0,
-          "place_mediane": null,
-          "place_min": null,
-          "place_max": null
+          "membres_avec_place": 100,
+          "place_mediane": 70.5,
+          "place_min": 1,
+          "place_max": 151
         },
         {
           "organe_ref": "PO771889",
@@ -189,10 +123,10 @@
           "libelle_abrege": "UDI-I",
           "nom": "UDI et Indépendants",
           "membres_au_jour": 19,
-          "membres_avec_place": 0,
-          "place_mediane": null,
-          "place_min": null,
-          "place_max": null
+          "membres_avec_place": 19,
+          "place_mediane": 122,
+          "place_min": 103,
+          "place_max": 187
         },
         {
           "organe_ref": "PO771923",
@@ -200,10 +134,10 @@
           "libelle_abrege": "Agir ens",
           "nom": "Agir ensemble",
           "membres_au_jour": 22,
-          "membres_avec_place": 0,
-          "place_mediane": null,
-          "place_min": null,
-          "place_max": null
+          "membres_avec_place": 22,
+          "place_mediane": 190.5,
+          "place_min": 141,
+          "place_max": 239
         },
         {
           "organe_ref": "PO774834",
@@ -211,19 +145,83 @@
           "libelle_abrege": "Dem",
           "nom": "Mouvement Démocrate (MoDem) et Démocrates apparentés",
           "membres_au_jour": 54,
-          "membres_avec_place": 0,
-          "place_mediane": null,
-          "place_min": null,
-          "place_max": null
+          "membres_avec_place": 54,
+          "place_mediane": 190.5,
+          "place_min": 162,
+          "place_max": 639
+        },
+        {
+          "organe_ref": "PO759900",
+          "sigle": "LT",
+          "libelle_abrege": "LT",
+          "nom": "Libertés et Territoires",
+          "membres_au_jour": 18,
+          "membres_avec_place": 18,
+          "place_mediane": 210.5,
+          "place_min": 195,
+          "place_max": 574
+        },
+        {
+          "organe_ref": "PO723569",
+          "sigle": "NI",
+          "libelle_abrege": "NI",
+          "nom": "Non inscrit",
+          "membres_au_jour": 37,
+          "membres_avec_place": 24,
+          "place_mediane": 276.5,
+          "place_min": 56,
+          "place_max": 650
+        },
+        {
+          "organe_ref": "PO730964",
+          "sigle": "LAREM",
+          "libelle_abrege": "LaREM",
+          "nom": "La République en Marche",
+          "membres_au_jour": 257,
+          "membres_avec_place": 257,
+          "place_mediane": 403,
+          "place_min": 212,
+          "place_max": 633
+        },
+        {
+          "organe_ref": "PO758835",
+          "sigle": "SOC",
+          "libelle_abrege": "SOC",
+          "nom": "Socialistes et apparentés",
+          "membres_au_jour": 28,
+          "membres_avec_place": 28,
+          "place_mediane": 509.5,
+          "place_min": 495,
+          "place_max": 581
+        },
+        {
+          "organe_ref": "PO730940",
+          "sigle": "GDR",
+          "libelle_abrege": "GDR",
+          "nom": "Gauche démocrate et républicaine",
+          "membres_au_jour": 15,
+          "membres_avec_place": 15,
+          "place_mediane": 589,
+          "place_min": 582,
+          "place_max": 596
+        },
+        {
+          "organe_ref": "PO730958",
+          "sigle": "FI",
+          "libelle_abrege": "FI",
+          "nom": "La France insoumise",
+          "membres_au_jour": 17,
+          "membres_avec_place": 17,
+          "place_mediane": 618,
+          "place_min": 601,
+          "place_max": 630
         }
       ],
       "groupes_non_resolus": null,
-      "places_non_resolues": {
-        "motif": "archive_indisponible"
-      },
+      "places_non_resolues": null,
       "groupes_jour_reference": "2022-06-21",
-      "places_source_url": null,
-      "places_etat_au": null
+      "places_source_url": "https://data.assemblee-nationale.fr/static/openData/repository/15/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+      "places_etat_au": "2022-06-09"
     },
     "16": {
       "numero": 16,

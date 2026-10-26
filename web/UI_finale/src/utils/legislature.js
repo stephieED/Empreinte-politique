@@ -99,7 +99,7 @@ function vueDossier(uid, d, id, periode, { acteurs, organes, commissions, promul
 /** La vue que les sections lisent. `sources` est ce que rend `getLegislature`. */
 export function vueLegislature(sources, id, gouvernements = []) {
   if (!sources) return null;
-  const { legislature: l, dossiers: fichier, comptes, commissions, promulgues, groupesDuSite } = sources;
+  const { legislature: l, dossiers: fichier, comptes, commissions, promulgues, groupesDuSite, ordreDuJour = null } = sources;
   const periode = { debut: l.debut ?? null, fin: l.fin ?? null };
   const contexte = { acteurs: fichier.acteurs || {}, organes: fichier.organes || {}, commissions, promulgues };
   const dossiers = Object.entries(fichier.dossiers || {}).map(([uid, d]) => vueDossier(uid, d, String(id), periode, contexte));
@@ -159,6 +159,11 @@ export function vueLegislature(sources, id, gouvernements = []) {
     /* La commission : les dossiers ouverts dans la législature, renvoyés à une
      * commission (la base de la maquette, 1 506 en XVIe). */
     dossiers: dossiers.filter((d) => d.sort || (d.legislature === String(id) && d.commission)),
+    /* L'agenda des séances (#1354) lit le fichier brut, les titres de TOUS les
+     * dossiers de la législature et la commission saisie de chacun. */
+    ordreDuJour,
+    titresDossiers: Object.fromEntries(Object.entries(fichier.dossiers || {}).map(([uid, d]) => [uid, d.titre])),
+    commissionsParDossier: commissions || {},
   };
 }
 

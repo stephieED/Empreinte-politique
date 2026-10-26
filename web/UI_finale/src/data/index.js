@@ -782,11 +782,14 @@ export async function getLegislature(id) {
   const manifest = await loadManifest();
   const entry = (manifest.legislatures || []).find((l) => l.id === String(id));
   if (!entry) return null;
-  const [legislatures, dossiers, commissions, promulgues] = await Promise.all([
+  const [legislatures, dossiers, commissions, promulgues, ordreDuJour] = await Promise.all([
     fetchJson('/data/legislatures.json'),
     fetchJson(`/data/dossiers_an/${entry.id}.json`),
     fetchJson('/data/commissions_dossiers.json').catch(() => null),
     fetchJson('/data/textes_promulgues.json').catch(() => null),
+    // L'ordre du jour des séances (#1354) : absent tant que Backend ne le
+    // publie pas, et pour la XIVe, dont l'Assemblée ne publie pas l'agenda.
+    fetchJson(`/data/ordre_du_jour/${entry.id}.json`).catch(() => null),
   ]);
   const legislature = legislatures?.legislatures?.[entry.id];
   if (!legislature || !dossiers) return null;
@@ -794,6 +797,7 @@ export async function getLegislature(id) {
     legislature, dossiers, comptes: entry.comptes || {},
     commissions: commissions?.commissions || {},
     promulgues: promulgues?.textes || {},
+    ordreDuJour: ordreDuJour?.jours ? ordreDuJour : null,
     groupesDuSite: (manifest.groupes || []).filter((g) => g.chambre === 'AN' && String(g.legislature) === entry.id),
   };
 }

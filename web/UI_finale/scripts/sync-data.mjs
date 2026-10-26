@@ -856,6 +856,14 @@ if (existsSync(legislaturesPath) && existsSync(dossiersAnDir)) {
     const fichier = path.join(dossiersAnDir, `${id}.json`);
     if (!existsSync(fichier)) continue;
     cpSync(fichier, path.join(outDir, 'dossiers_an', `${id}.json`));
+    // L'ordre du jour des séances (#1354), un fichier par législature que
+    // Backend publie : copié tel quel quand il existe. Sans lui, la section
+    // « À l'ordre du jour » ne s'affiche pas ; la XIVe n'en aura pas.
+    const ordreDuJour = path.join(repoRoot, 'pivot_data', 'ordre_du_jour', `${id}.json`);
+    if (existsSync(ordreDuJour)) {
+      mkdirSync(path.join(outDir, 'ordre_du_jour'), { recursive: true });
+      cpSync(ordreDuJour, path.join(outDir, 'ordre_du_jour', `${id}.json`));
+    }
     const siens = scrutinsTous.filter((s) => String(s.legislature) === String(id));
     manifestLegislatures.push({
       id: String(id),

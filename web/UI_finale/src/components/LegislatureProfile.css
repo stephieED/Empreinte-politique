@@ -117,3 +117,63 @@ a:hover .lgp-hemi-sigle--lien, a:focus-visible .lgp-hemi-sigle--lien { fill: #80
   .lgp-b1-rang { grid-template-columns: 1fr; gap: 4px; }
 }
 
+
+/* 04 — l'ordre du jour des séances (#1354), agenda mural */
+.odj-i-sans-texte { background: #fff !important; box-shadow: inset 0 0 0 1.5px var(--ink); }
+.odj-i-non-fixe { background: transparent !important; box-shadow: none; border: 1px dashed #b5b3af; box-sizing: border-box; }
+.odj-annees { display: flex; flex-wrap: wrap; gap: 8px; }
+.odj-annee { font: inherit; font-size: 14px; font-weight: 700; min-height: 36px; padding: 6px 16px; border-radius: 999px; border: 1.5px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; }
+.odj-annee-active { background: var(--ink); color: #fff; }
+.odj-detail { min-height: 96px; padding: 12px 16px; margin-top: 22px; border-radius: 10px; background: var(--bg); }
+.odj-detail-date { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; margin: 0 0 8px; }
+.odj-detail-date b { font-size: 15px; }
+.odj-detail-date span { font-size: 13px; color: var(--muted); }
+.odj-detail-points { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px 22px; }
+.odj-detail-points li { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; font-weight: 600; }
+.odj-detail-points li i { flex: none; width: 12px; height: 12px; margin-top: 3px; border-radius: 3px; }
+.odj-detail-points small { display: block; font-size: 12px; font-weight: 400; color: var(--muted); }
+.odj-mois { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 22px 12px; }
+.odj-m { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.odj-m h4 { margin: 0 0 3px; padding: 0 4px 4px; font-size: 13px; font-weight: 800; border-bottom: 1.5px solid var(--ink); }
+.odj-j { display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 6px; height: 18px; padding: 0 4px; border: 0; border-radius: 3px; background: transparent; font: inherit; color: var(--ink); text-align: left; }
+button.odj-j { cursor: pointer; }
+button.odj-j:hover, button.odj-j:focus-visible { outline: 1.5px solid var(--ink); outline-offset: -1px; }
+.odj-we { background: #efede9; }
+.odj-hors { opacity: .35; }
+.odj-a-venir .odj-barre { opacity: .45; }
+.odj-sel { outline: 2px solid var(--ink); outline-offset: -2px; }
+.odj-num { font-size: 10.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.odj-barre { display: flex; gap: 1px; height: 10px; border-radius: 2px; overflow: hidden; }
+.odj-barre i { display: block; min-width: 2px; }
+.odj-legende { align-items: center; }
+.odj-leg { font: inherit; font-size: 12px; color: #3b3940; background: transparent; border: 0; padding: 3px 4px; margin: -3px -4px; border-radius: 4px; cursor: pointer; text-align: left; }
+.odj-leg:hover, .odj-leg:focus-visible { outline: 1.5px solid var(--ink); outline-offset: 0; }
+.odj-leg[aria-pressed="true"] { font-weight: 700; color: var(--ink); outline: 2px solid var(--ink); }
+.odj-leg-eteinte { opacity: .4; }
+.odj-commandes { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin: 4px 0 16px; }
+/* Le switch : une piste, un curseur qui glisse sur la position enclenchée. */
+.odj-switch { position: relative; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); padding: 3px; border-radius: 999px; background: #e7e4df; }
+.odj-switch-curseur { position: absolute; top: 3px; bottom: 3px; left: 3px; width: calc((100% - 6px) / var(--n)); border-radius: 999px; background: var(--ink); transform: translateX(calc(var(--pos) * 100%)); transition: transform .18s ease; }
+.odj-switch button { position: relative; z-index: 1; font: inherit; font-size: 13px; font-weight: 700; min-height: 32px; padding: 4px 16px; border: 0; border-radius: 999px; background: transparent; color: var(--ink); cursor: pointer; }
+.odj-switch button.odj-switch-on { color: #fff; }
+.odj-switch button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .odj-switch-curseur { transition: none; } }
+/* La vue Semaines : un calendrier mural, semaines numérotées en lignes. */
+.odj-cal { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 22px 18px; }
+.odj-cal-mois h4 { margin: 0 0 6px; padding: 0 2px 4px; font-size: 13px; font-weight: 800; border-bottom: 1.5px solid var(--ink); }
+.odj-cal-grille { display: grid; grid-template-columns: 22px repeat(7, minmax(0, 1fr)); gap: 2px; }
+.odj-cal-tete { font-size: 10px; font-weight: 600; color: var(--muted); text-align: center; padding: 2px 0; border-radius: 3px; }
+.odj-cal-sem { font: inherit; font-size: 10px; color: var(--muted); align-self: stretch; padding: 0; border: 0; border-radius: 3px; background: transparent; cursor: pointer; font-variant-numeric: tabular-nums; }
+.odj-cal-sem:hover, .odj-cal-sem:focus-visible { color: var(--ink); outline: 1.5px solid var(--ink); outline-offset: -1px; }
+.odj-cal-sem[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.odj-c { display: flex; flex-direction: column; justify-content: space-between; gap: 3px; height: 34px; padding: 3px 3px 4px; box-sizing: border-box; border: 0; border-radius: 3px; background: transparent; font: inherit; color: var(--ink); text-align: left; }
+button.odj-c { cursor: pointer; }
+button.odj-c:hover, button.odj-c:focus-visible { outline: 1.5px solid var(--ink); outline-offset: -1px; }
+.odj-c-num { font-size: 11px; font-variant-numeric: tabular-nums; }
+.odj-c .odj-barre { height: 7px; }
+.odj-c.odj-we, .odj-cal-tete.odj-we { background: #efede9; }
+.odj-mois-btn { font: inherit; font-weight: 800; color: var(--ink); padding: 0; border: 0; background: transparent; cursor: pointer; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; }
+.odj-mois-btn:hover, .odj-mois-btn:focus-visible { text-decoration-color: var(--ink); }
+.odj-mois-btn[aria-pressed="true"] { background: var(--accent); padding: 0 4px; margin: 0 -4px; border-radius: 3px; }
+/* Les jours d'une semaine ou d'un mois sélectionné : le jaune de la sélection. */
+.odj-dans-periode, .odj-c.odj-dans-periode, .odj-j.odj-dans-periode { background: rgba(223, 255, 0, .45); }

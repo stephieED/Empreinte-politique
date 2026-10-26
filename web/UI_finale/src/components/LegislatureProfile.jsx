@@ -13,12 +13,17 @@
  *   02 « Qui siégeait »      — l'hémicycle, les groupes dans l'ordre où ils
  *      siégeaient (place publiée par l'Assemblée, #1317), un arc par position
  *      déclarée.
- *   03 « Les textes de la législature » — la bibliothèque : un meuble par sort,
+ *   03 « À l'ordre du jour » (#1354) — l'ordre du jour des séances d'une
+ *      année, en Calendrier (semaines en lignes) ou en Planning (un mois par
+ *      colonne), à la couleur de la commission de chaque texte. Placée après
+ *      « Qui siège » et titrée ainsi par la propriétaire le 26/10/2026 ; forme
+ *      de départ : https://claude.ai/artifact/Jvp4qhqXJjErdnHLbwiCWh.
+ *   04 « Les textes de la législature » — la bibliothèque : un meuble par sort,
  *      une étagère par domaine, un livre par texte ; les textes passés par un
  *      vote solennel sont des livres plus épais, en tête d'étagère.
- *   04 « Le travail des commissions » — une barre par commission, découpée par
+ *   05 « Le travail des commissions » — une barre par commission, découpée par
  *      étape, et un nuage des mots des titres que la barre filtre.
- *   05 « Ce qu'on n'a pas pu lire ».
+ *   06 « Ce qu'on n'a pas pu lire ».
  *
  * Écartés en maquette, à ne pas reproposer : les tailles par nombre
  * d'amendements (« pas comparable d'une loi à l'autre »), la date de la loi
@@ -28,6 +33,8 @@
 import { Fragment, useContext, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { formatNumber } from '../utils/lecture';
+import { motsDuFiltre } from '../utils/filtreIntitule';
+import { dateLongue, vueOrdreDuJour } from '../utils/ordreDuJour';
 import { useEcranEtroit } from '../hooks/useLargeur';
 import {
   ETAPES, ORIGINES, SANS_ORIGINE, SORTS, motsDesTitres,
@@ -85,6 +92,13 @@ const BULLES = {
     phrase: 'Les textes votés par l’Assemblée pendant la législature, selon leur auteur, leur commission et leur sort.',
     note: 'Note : Un texte adopté n’est pas forcément devenu une loi. Une résolution, par exemple, ne le devient jamais.',
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#leg-textes' }],
+  }),
+  /* Validée par la propriétaire le 26/10/2026 (#1354). */
+  ordreDuJour: (enCours) => ({
+    phrase: 'Les sujets discutés en séance publique, jour par jour.',
+    note: enCours
+      ? 'Note : Un jour sans barre n’a pas eu de séance publique. En pointillé, l’ordre du jour n’est pas encore fixé.'
+      : 'Note : Un jour sans barre n’a pas eu de séance publique.',
   }),
   commissions: () => ({
     phrase: 'Les textes confiés à chaque commission pendant la législature, et leur avancée.',
@@ -385,7 +399,7 @@ function QuiSiegeait({ vue }) {
   );
 }
 
-/* ── 03 Les textes de la législature ─────────────────────────────────────── */
+/* ── 04 Les textes de la législature ─────────────────────────────────────── */
 
 function qui(d) {
   const p = d.initiateurs[0];
@@ -450,7 +464,7 @@ function Bibliotheque({ vue, mot = '' }) {
    * section absente se lirait comme un oubli. */
   if (!textes.length && actif) {
     return (
-      <Section id="section-textes" numero="03" titre="Les textes de la législature" bulle={BULLES.textes()}>
+      <Section id="section-textes" numero="04" titre="Les textes de la législature" bulle={BULLES.textes()}>
         <div className="gvp-carte">
           <EtiquetteFiltre mot={mot} />
           <p className="cp-note cp-filtre-vide">Aucun texte<Condition critere="dont l’intitulé contient" mot={mot} />.</p>
@@ -460,7 +474,7 @@ function Bibliotheque({ vue, mot = '' }) {
   }
   if (!textes.length) return null;
   return (
-    <Section id="section-textes" numero="03" titre="Les textes de la législature" bulle={BULLES.textes()}>
+    <Section id="section-textes" numero="04" titre="Les textes de la législature" bulle={BULLES.textes()}>
       <div className="gvp-carte">
         <EtiquetteFiltre mot={mot} />
         <div className="lgp-legende">
@@ -536,7 +550,248 @@ function Bibliotheque({ vue, mot = '' }) {
   );
 }
 
-/* ── 04 Le travail des commissions ───────────────────────────────────────── */
+/* ── 03 À l'ordre du jour (#1354) ──────────────────────────────── */
+
+/* L'AGENDA MURAL (forme B, 26/10/2026) : une année à la fois, un mois par
+ * colonne, une ligne par jour. La barre partage la journée entre les textes
+ * discutés, au poids du nombre de points de l'ordre du jour. Cliquer un jour le
+ * détaille SOUS l'agenda, au clic et non au survol ; aucun intitulé n'est écrit
+ * à côté des barres (« Ce n'est pas lisible », tronqué à une douzaine de
+ * lettres) : le détail les porte en entier. Demandés par la propriétaire le
+ * 26/10/2026. */
+const SANS_TEXTE = 'sans-texte';
+const PALE = '#e7e4df';
+const JOURS_COURTS = ['Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.', 'Dim.'];
+/* « Calendrier / Planning » (26/10/2026) : les deux vues montrent des jours ;
+ * ce qui les distingue est leur forme, et ce sont les mots de ces deux objets. */
+const MAILLES = [
+  { cle: 'calendrier', libelle: 'Calendrier' },
+  { cle: 'planning', libelle: 'Planning' },
+];
+function OrdreDuJour({ vue, mot }) {
+  const depuis = useContext(PeriodeContext);
+  const aujourdhui = new Date().toISOString().slice(0, 10);
+  const agenda = useMemo(() => vueOrdreDuJour(vue.ordreDuJour, {
+    titres: vue.titresDossiers, commissions: vue.commissionsParDossier, periode: vue.periode,
+    aujourdhui, mots: motsDuFiltre(mot), depuis,
+  }), [vue, mot, depuis, aujourdhui]);
+  const [annee, setAnnee] = useState(null);
+  const [choisi, setChoisi] = useState(null);
+  /* LE FILTRE DE LA LÉGENDE (26/10/2026) : comme les barres des commissions,
+   * une seule catégorie à la fois, et la recliquer l'annule. Les autres textes
+   * du jour restent en gris pâle, pour que la part de la journée se lise. */
+  const [famille, setFamille] = useState(null);
+  const basculer = (f) => setFamille((cur) => (cur === f ? null : f));
+  /* LE COMMUTATEUR D'AFFICHAGE (26/10/2026) : un switch à deux positions —
+   * Calendrier, par défaut (semaines numérotées en lignes, jours en colonnes),
+   * et Planning (un mois par colonne, un jour par ligne). Une vue « Mois »
+   * (douze barres cumulées) puis une vue « Législature » (toute la législature,
+   * un mois par ligne) ont été essayées et retirées à sa demande. */
+  const [maille, setMaille] = useState('calendrier');
+  /* UNE SEMAINE OU UN MOIS (26/10/2026) : cliquer le numéro d'une semaine (vue
+   * Calendrier) ou le nom d'un mois (les deux vues) détaille la période ; ses
+   * jours se surlignent. Cliquer un jour revient au détail du jour. */
+  const [periodeChoisie, setPeriodeChoisie] = useState(null);
+  const choisirJour = (d) => { setChoisi(d); setPeriodeChoisie(null); };
+  const choisirPeriode = (type, cle) => setPeriodeChoisie({ type, cle });
+  if (!agenda) return null;
+  const enCours = agenda.enCours;
+  const a = annee ?? agenda.anneeParDefaut;
+  const jourDefaut = agenda.jourParDefaut(a);
+  const mois = maille === 'planning' ? agenda.annee(a) : null;
+  const calendrier = maille === 'calendrier' ? agenda.calendrier(a) : null;
+  /* Le jour détaillé : celui qu'on a cliqué, sinon le dernier jour de séance
+   * passé de l'année affichée. */
+  const sel = choisi && choisi.startsWith(String(a)) ? choisi : jourDefaut;
+  const detail = sel ? agenda.parDate.get(sel) : null;
+  const resume = periodeChoisie ? agenda.detailDePeriode(periodeChoisie.type, periodeChoisie.cle) : null;
+  const dansLaPeriode = (d) => {
+    if (!periodeChoisie) return false;
+    if (periodeChoisie.type === 'mois') return d.startsWith(periodeChoisie.cle);
+    const t0 = Date.parse(`${periodeChoisie.cle}T00:00Z`), t = Date.parse(`${d}T00:00Z`);
+    return t >= t0 && t < t0 + 7 * 86400000;
+  };
+  const marque = (d) => (periodeChoisie ? (dansLaPeriode(d) && 'odj-dans-periode') : (d === sel && 'odj-sel'));
+  const moisCle = (m) => `${a}-${String(m + 1).padStart(2, '0')}`;
+  const enteteMois = (nom, m) => (
+    <h4>
+      <button aria-pressed={periodeChoisie?.type === 'mois' && periodeChoisie.cle === moisCle(m)} className="odj-mois-btn" onClick={() => choisirPeriode('mois', moisCle(m))} type="button">{nom}</button>
+    </h4>
+  );
+  /* Sous un filtre, un jour qui n'a rien de la catégorie reste vide ; un jour
+   * qui en a garde ses autres textes en gris pâle. */
+  const montre = (textes, sansTexte) => !famille
+    || (famille === SANS_TEXTE ? sansTexte : textes.some((s) => s.famille === famille));
+  const barreDe = ({ segments, sansTexte, nonFixe, hors }) => {
+    const vu = montre(segments, sansTexte);
+    return (
+      <span className={`odj-barre${sansTexte && vu ? ' odj-i-sans-texte' : ''}${nonFixe && !hors ? ' odj-i-non-fixe' : ''}`}>
+        {vu && segments.map((s, k) => (
+          <i key={k} style={{ flex: s.n, background: !famille || s.famille === famille ? s.couleur : PALE }} />
+        ))}
+      </span>
+    );
+  };
+  return (
+    <Section id="section-ordre-du-jour" numero="03" titre="À l’ordre du jour" bulle={BULLES.ordreDuJour(enCours)}>
+      <div className="gvp-carte">
+        <EtiquetteFiltre mot={mot} />
+        <div className="lgp-legende odj-legende">
+          {agenda.legende.map((f) => (
+            <button aria-pressed={famille === f.libelle} className={`odj-leg${famille && famille !== f.libelle ? ' odj-leg-eteinte' : ''}`} key={f.libelle} onClick={() => basculer(f.libelle)} type="button">
+              <i style={{ background: f.couleur }} />{f.libelle}
+            </button>
+          ))}
+          {agenda.sansTexte && (
+            <button aria-pressed={famille === SANS_TEXTE} className={`odj-leg${famille && famille !== SANS_TEXTE ? ' odj-leg-eteinte' : ''}`} onClick={() => basculer(SANS_TEXTE)} type="button">
+              <i className="odj-i-sans-texte" />Séance sans texte (questions, débats)
+            </button>
+          )}
+          {enCours && <span><i className="odj-i-non-fixe" />Ordre du jour pas encore fixé</span>}
+          {famille && <button className="lgp-tout" onClick={() => setFamille(null)} type="button">Toutes les catégories ›</button>}
+        </div>
+        <div className="odj-commandes">
+          <div className="odj-annees" role="group" aria-label="Année affichée">
+            {agenda.annees.map((y) => (
+              <button aria-pressed={y === a} className={`odj-annee${y === a ? ' odj-annee-active' : ''}`} key={y} onClick={() => { setAnnee(y); setChoisi(null); setPeriodeChoisie(null); }} type="button">{y}</button>
+            ))}
+          </div>
+          {/* Un switch (« pour moi, un commutateur, c'est un switch », 26/10/2026) :
+              une piste, un curseur qui glisse sur la position enclenchée. */}
+          <div aria-label="Affichage" className="odj-switch" role="radiogroup" style={{ '--pos': MAILLES.findIndex((m) => m.cle === maille), '--n': MAILLES.length }}>
+            <span aria-hidden="true" className="odj-switch-curseur" />
+            {MAILLES.map((m) => (
+              <button aria-checked={maille === m.cle} className={maille === m.cle ? 'odj-switch-on' : ''} key={m.cle} onClick={() => { setMaille(m.cle); if (m.cle === 'planning' && periodeChoisie?.type === 'semaine') setPeriodeChoisie(null); }} role="radio" type="button">{m.libelle}</button>
+            ))}
+          </div>
+        </div>
+        {maille === 'calendrier' && (
+          <div className="odj-cal">
+            {calendrier.map((m, im) => (
+              <div className="odj-cal-mois" key={m.nom}>
+                {enteteMois(m.nom, im)}
+                <div className="odj-cal-grille">
+                  <span className="odj-cal-tete" />
+                  {JOURS_COURTS.map((n, k) => <span className={`odj-cal-tete${k >= 5 ? ' odj-we' : ''}`} key={n}>{n}</span>)}
+                  {m.semaines.map((s) => (
+                    <Fragment key={s.numero}>
+                      <button
+                        aria-label={`Semaine ${s.numero}`}
+                        aria-pressed={periodeChoisie?.type === 'semaine' && periodeChoisie.cle === s.lundi}
+                        className="odj-cal-sem"
+                        onClick={() => choisirPeriode('semaine', s.lundi)}
+                        type="button"
+                      >
+                        {s.numero}
+                      </button>
+                      {s.jours.map((j, k) => {
+                        if (!j) return <span className={`odj-c odj-c-vide${k >= 5 ? ' odj-we' : ''}`} key={k} />;
+                        const textes = j.points.filter((p) => p.texte);
+                        const classes = ['odj-c', k >= 5 && 'odj-we', j.hors && 'odj-hors', j.aVenir && j.points.length && 'odj-a-venir', marque(j.date)].filter(Boolean).join(' ');
+                        const contenu = (
+                          <>
+                            <span className="odj-c-num">{Number(j.num)}</span>
+                            {barreDe({ segments: textes, sansTexte: !textes.length && j.points.length > 0, autres: false, nonFixe: j.nonFixe, hors: j.hors })}
+                          </>
+                        );
+                        return j.points.length && !j.hors ? (
+                          <button
+                            aria-label={`${dateLongue(j.date)} : ${j.points.map((p) => p.titre).join(' · ')}`}
+                            aria-pressed={!periodeChoisie && j.date === sel}
+                            className={classes}
+                            key={j.date}
+                            onClick={() => choisirJour(j.date)}
+                            type="button"
+                          >
+                            {contenu}
+                          </button>
+                        ) : <span className={classes} key={j.date}>{contenu}</span>;
+                      })}
+                    </Fragment>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        {maille === 'planning' && (
+        <div className="odj-mois">
+          {mois.map((m, im) => (
+            <div className="odj-m" key={m.nom}>
+              {enteteMois(m.nom, im)}
+              {m.jours.map((j) => {
+                const textes = j.points.filter((p) => p.texte);
+                const classes = ['odj-j', j.weekend && 'odj-we', j.hors && 'odj-hors', j.aVenir && j.points.length && 'odj-a-venir', marque(j.date)].filter(Boolean).join(' ');
+                const barre = barreDe({
+                  segments: textes, sansTexte: !textes.length && j.points.length > 0,
+                  autres: false, nonFixe: j.nonFixe, hors: j.hors,
+                });
+                const contenu = (
+                  <>
+                    <span className="odj-num">{j.num} {j.initiale}</span>
+                    {barre}
+                  </>
+                );
+                return j.points.length && !j.hors ? (
+                  <button
+                    aria-pressed={!periodeChoisie && j.date === sel}
+                    className={classes}
+                    key={j.date}
+                    onClick={() => choisirJour(j.date)}
+                    aria-label={`${dateLongue(j.date)} : ${j.points.map((p) => p.titre).join(' · ')}`}
+                    type="button"
+                  >
+                    {contenu}
+                  </button>
+                ) : <div className={classes} key={j.date}>{contenu}</div>;
+              })}
+            </div>
+          ))}
+        </div>
+        )}
+        <div aria-live="polite" className="odj-detail">
+          {resume ? (
+            <>
+              <p className="odj-detail-date">
+                <b>{resume.titre}</b>
+                <span>{resume.jours ? `${resume.jours} ${resume.jours > 1 ? 'jours' : 'jour'} de séance${resume.aVenir ? ' · à venir' : ''}` : 'Pas de séance'}</span>
+              </p>
+              {resume.points.length > 0 && (
+                <ul className="odj-detail-points">
+                  {resume.points.map((p, k) => (
+                    <li key={k}>
+                      <i className={p.texte ? '' : 'odj-i-sans-texte'} style={p.texte ? { background: p.couleur } : undefined} />
+                      <span>{p.titre}{p.solennel ? ' (vote solennel)' : ''}<small>{[p.texte ? p.famille : (p.genre !== p.titre ? p.genre : null), `${p.jours} ${p.jours > 1 ? 'jours' : 'jour'}`].filter(Boolean).join(' · ')}</small></span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
+          ) : sel ? (
+            <>
+              <p className="odj-detail-date">
+                <b>{dateLongue(sel)}</b>
+                {detail && <span>{detail.seances} {detail.seances > 1 ? 'séances' : 'séance'}{sel > aujourdhui ? ' · à venir' : ''}</span>}
+              </p>
+              {detail?.points.length ? (
+                <ul className="odj-detail-points">
+                  {detail.points.map((p, k) => (
+                    <li key={k}>
+                      <i className={p.texte ? '' : 'odj-i-sans-texte'} style={p.texte ? { background: p.couleur } : undefined} />
+                      <span>{p.titre}{p.solennel ? ' (vote solennel)' : ''}{(p.texte || p.genre !== p.titre) && <small>{p.texte ? p.famille : p.genre}</small>}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : <p className="cp-note">Aucun point de l’ordre du jour<Condition critere="dont l’intitulé contient" mot={mot} />.</p>}
+            </>
+          ) : <p className="cp-note">Aucune séance cette année<Condition critere="sur un texte dont l’intitulé contient" mot={mot} />.</p>}
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+/* ── 05 Le travail des commissions ───────────────────────────────────────── */
 
 const SEUIL_NUAGE = 10; // arbitré le 22/10 : sous 10 textes, la liste remplace le nuage
 
@@ -581,7 +836,7 @@ function Commissions({ vue, motCherche = '' }) {
   }, [dossiers, transversaux, filtre]);
   if (!dossiers.length && actif) {
     return (
-      <Section id="section-commissions" numero="04" titre="Le travail des commissions" bulle={BULLES.commissions()}>
+      <Section id="section-commissions" numero="05" titre="Le travail des commissions" bulle={BULLES.commissions()}>
         <div className="gvp-carte">
           <EtiquetteFiltre mot={motCherche} />
           <p className="cp-note cp-filtre-vide">Aucun texte renvoyé à une commission<Condition critere="dont l’intitulé contient" mot={motCherche} />.</p>
@@ -606,7 +861,7 @@ function Commissions({ vue, motCherche = '' }) {
   };
   const etapeLib = (k) => ETAPES.find((e) => e.cle === k)?.pluriel;
   return (
-    <Section id="section-commissions" numero="04" titre="Le travail des commissions" bulle={BULLES.commissions()}>
+    <Section id="section-commissions" numero="05" titre="Le travail des commissions" bulle={BULLES.commissions()}>
       <div className="gvp-carte">
         <EtiquetteFiltre mot={motCherche} />
         <div className="lgp-legende">
@@ -659,7 +914,7 @@ function Commissions({ vue, motCherche = '' }) {
   );
 }
 
-/* ── 05 Ce qu'on n'a pas pu lire ─────────────────────────────────────────── */
+/* ── 06 Ce qu’on n’a pas pu lire ─────────────────────────────────────────── */
 
 function CeQuOnNaPasPuLire() {
   const lignes = [
@@ -668,7 +923,7 @@ function CeQuOnNaPasPuLire() {
     ['Les missions d’information', 'Leur rattachement à une commission est en cours de collecte.'],
   ];
   return (
-    <Section id="section-limites" numero="05" titre="Ce qu’on n’a pas pu lire" bulle={BULLES.limites()}>
+    <Section id="section-limites" numero="06" titre="Ce qu’on n’a pas pu lire" bulle={BULLES.limites()}>
       <div className="gvp-carte">
         <dl className="gvp-limites">
           {lignes.map(([quoi, texte]) => (
@@ -708,6 +963,7 @@ export default function LegislatureProfile({ vue, mot = '', enCours = false }) {
       </header>
       {!actif && <EnBref vue={vue} />}
       {!actif && <QuiSiegeait vue={vue} />}
+      <OrdreDuJour mot={mot} vue={vue} />
       <Bibliotheque key={`t-${mot}-${debut}`} mot={mot} vue={vue} />
       <Commissions key={`c-${mot}-${debut}`} motCherche={mot} vue={vue} />
       <CeQuOnNaPasPuLire />

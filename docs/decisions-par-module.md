@@ -38,6 +38,7 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | Module | Décisions qui le gouvernent |
 | --- | ---: |
 | `src/actes_reglementaires.py` | 4 |
+| `src/articles_votes.py` | 4 |
 | `src/build_amendements_index.py` | 4 |
 | `src/perimetre_candidats.py` | 4 |
 | `src/rne_opendata.py` | 4 |
@@ -51,7 +52,6 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/fetch_candidats_declares.py` | 2 |
 | `src/mandats_anterieurs.py` | 2 |
 | `src/titres_europeens.py` | 2 |
-| `src/articles_votes.py` | 1 |
 | `src/cache_an_fraicheur.py` | 1 |
 | `src/candidate_profile_ue.py` | 1 |
 | `src/collecte_mandats_locaux.py` | 1 |
@@ -62,6 +62,7 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/lignee_profile.py` | 1 |
 | `src/normalize_europarl.py` | 1 |
 | `src/normalize_senat.py` | 1 |
+| `src/ordre_du_jour_an.py` | 1 |
 | `src/paroles_d_une_autre_personne.py` | 1 |
 | `src/purge_interventions_heritees.py` | 1 |
 | `src/retrait_heritage_senat.py` | 1 |
@@ -145,11 +146,14 @@ Le mentionnent sans le gouverner : [`derivation-des-groupes-depuis-amo30-1168`](
 
 ## `src/articles_votes.py`
 
-1 décision(s) le gouvernent ; le module en cite 0.
+4 décision(s) le gouvernent ; le module en cite 0.
 
 | Décision | Nomme |
 | --- | --- |
+| [Les articles des textes lus, publiés dans `articles_votes.json` (#1352) (2026-10-26)](decisions/articles-des-textes-dans-articles-votes-1352.md) | `articles_des_textes`, `normaliser_article` |
 | [L'intitulé d'un article voté, et le gabarit des lois de finances (#1352) (2026-10-26)](decisions/intitule-des-articles-votes-1352.md) | `VERSION_STRUCTURE`, `en_tete_d_article`, `structure_loi_de_finances` |
+| [L'ordre du jour des séances publiques, un fichier par législature (#1354) (2026-10-26)](decisions/ordre-du-jour-des-seances-1354.md) | `ordre_du_jour` |
+| [« À l'ordre du jour » : l'agenda des séances sur la fiche de législature, en Calendrier ou en Planning (#1354) (2026-10-26)](decisions/ordre-du-jour-fiche-legislature-1354.md) | `ordre_du_jour` |
 
 Le mentionnent sans le gouverner : [`articles-votes-par-la-seance-1264`](decisions/articles-votes-par-la-seance-1264.md), [`instantane-violences-sexuelles-1261`](decisions/instantane-violences-sexuelles-1261.md).
 
@@ -1193,6 +1197,14 @@ Le mentionnent sans le gouverner : [`civilite-et-pcs-insee-659`](decisions/civil
 | Décision | Nomme |
 | --- | --- |
 | [Un libellé corrigé ne remplace pas l'ancien, il s'ajoute — et le dernier marqueur part enfin (#908, suite de #912) (2026-09-14)](decisions/fusion-additive-et-libelle-corrige-912.md) | `normalize_mandats` |
+
+## `src/ordre_du_jour_an.py`
+
+1 décision(s) le gouvernent ; le module en cite 0.
+
+| Décision | Nomme |
+| --- | --- |
+| [L'ordre du jour des séances publiques, un fichier par législature (#1354) (2026-10-26)](decisions/ordre-du-jour-des-seances-1354.md) | `cle_d_intitule` |
 
 ## `src/parltrack_dumps.py`
 

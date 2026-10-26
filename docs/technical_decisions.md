@@ -20,11 +20,14 @@ La version d'avant la découpe (30/08/2026, 18 404 lignes, 1 054 Ko) est figée 
 
 ---
 
+- `2026-10-26` <a id="articles-des-textes-dans-articles-votes-1352"></a>[Les articles des textes lus, publiés dans `articles_votes.json` (#1352)](decisions/articles-des-textes-dans-articles-votes-1352.md)
 - `2026-10-26` <a id="fil-d-ariane-a-la-place-du-tiroir-1329"></a>[Le fil d'Ariane de chaque fiche remplace le tiroir, « Articles » ouvre un bandeau, et les fiches se relient (#1329)](decisions/fil-d-ariane-a-la-place-du-tiroir-1329.md)
 - `2026-10-26` <a id="index-des-decisions-sans-resume"></a>[L'index des décisions ne recopie plus les résumés, et les deux index se cherchent sans se lire en entier](decisions/index-des-decisions-sans-resume.md)
 - `2026-10-26` <a id="intitule-des-articles-votes-1352"></a>[L'intitulé d'un article voté, et le gabarit des lois de finances (#1352)](decisions/intitule-des-articles-votes-1352.md)
 - `2026-10-26` <a id="libelle-sans-groupe-et-ordre-de-la-barre-1329"></a>[« Sans groupe connu à l'Assemblée », et « Articles » juste après la recherche (#1329)](decisions/libelle-sans-groupe-et-ordre-de-la-barre-1329.md)
 - `2026-10-26` <a id="manifeste-a-propos-repositionne-1329"></a>[Le manifeste de /a-propos ne se dit plus agrégateur : le texte de la propriétaire, écrit pour un lecteur qui ne connaît rien au projet (#1329)](decisions/manifeste-a-propos-repositionne-1329.md)
+- `2026-10-26` <a id="ordre-du-jour-des-seances-1354"></a>[L'ordre du jour des séances publiques, un fichier par législature (#1354)](decisions/ordre-du-jour-des-seances-1354.md)
+- `2026-10-26` <a id="ordre-du-jour-fiche-legislature-1354"></a>[« À l'ordre du jour » : l'agenda des séances sur la fiche de législature, en Calendrier ou en Planning (#1354)](decisions/ordre-du-jour-fiche-legislature-1354.md)
 - `2026-10-26` <a id="pages-sans-js-des-legislatures-1314"></a>[Les fiches de législature ont leur page servie, lisible sans JavaScript (#1314)](decisions/pages-sans-js-des-legislatures-1314.md)
 - `2026-10-26` <a id="periode-sur-la-legislature-en-cours-1329"></a>[Les cases « 6 / 12 derniers mois » sur la seule législature en cours, par date de dépôt (#1329)](decisions/periode-sur-la-legislature-en-cours-1329.md)
 - `2026-10-26` <a id="rattachement-par-periode-fiche-candidat-1329"></a>[La fiche candidat relie chaque rôle à sa législature et à son gouvernement, par la période qu'il recouvre (#1329)](decisions/rattachement-par-periode-fiche-candidat-1329.md)

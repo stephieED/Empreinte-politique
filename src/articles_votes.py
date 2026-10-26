@@ -56,7 +56,8 @@ from typing import Any, Iterable, Iterator, Optional
 from schema_pivot import extrait_de_texte
 
 #: v2 (#1352) : l'intitulé de l'article et la partie, quand le texte les porte.
-SCHEMA_VERSION = "articles-votes-v2"
+#: v3 (#1352) : `textes`, tous les articles des textes lus qui portent des intitulés.
+SCHEMA_VERSION = "articles-votes-v3"
 LICENCE = "Licence Ouverte / Open Licence (Etalab) — Assemblée nationale"
 
 URL_TEXTE_HTML = "https://www.assemblee-nationale.fr/dyn/opendata/{uid}.html"
@@ -643,6 +644,39 @@ class LecteurDeTextes:
         self._memo[uid] = structure
         return structure
 
+    def lus(self) -> dict[str, dict[str, dict[str, Any]]]:
+        """Les structures lues pendant ce run, texte par texte."""
+        return {uid: s for uid, s in self._memo.items() if s}
+
+
+#: Ce que `textes` publie de chaque article : sa place dans le texte et son
+#: intitulé, jamais son texte (l'extrait reste propre aux scrutins).
+CHAMPS_ARTICLE_D_UN_TEXTE = ("intitule", "regroupe", "partie", "titre", "chapitre", "section")
+
+
+def articles_des_textes(lus: dict[str, dict[str, dict[str, Any]]]) -> dict[str, dict[str, Any]]:
+    """`texte → {source_url, articles}` pour chaque texte lu dont au moins un
+    article porte un intitulé (#1352).
+
+    Une figure rangée article par article (les amendements d'un projet de loi de
+    finances, par exemple) a besoin de l'intitulé de TOUS les articles, pas des
+    seuls articles votés par scrutin. Un texte sans aucun intitulé n'apporte
+    rien de plus que ses scrutins : il n'est pas repris. Les articles gardent
+    l'ordre du texte et leur désignation normalisée (`normaliser_article`) : celle
+    d'un amendement (« Article 15 », « ARTICLE 15 ») s'y joint après la même
+    normalisation.
+    """
+    publies: dict[str, dict[str, Any]] = {}
+    for uid in sorted(lus):
+        structure = lus[uid]
+        if not any(fiche.get("intitule") for fiche in structure.values()):
+            continue
+        publies[uid] = {
+            "source_url": URL_TEXTE_HTML.format(uid=uid),
+            "articles": {d: {c: fiche.get(c) for c in CHAMPS_ARTICLE_D_UN_TEXTE} for d, fiche in structure.items()},
+        }
+    return publies
+
 
 def construire(
     scrutins: Iterable[dict[str, Any]],
@@ -664,6 +698,8 @@ def construire(
         "licence_donnees": LICENCE,
         "scrutins": dict(sorted(publies.items())),
         "non_rattaches": dict(sorted(non_rattaches.items())),
+        # #1352 — les articles des textes lus qui portent des intitulés.
+        "textes": articles_des_textes(textes.lus() if hasattr(textes, "lus") else {}),
     }
 
 
