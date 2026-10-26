@@ -3373,6 +3373,10 @@ jobs:
     #              (`dyn/opendata/<uid>.html`)
     #   produit  : pivot_data/articles_votes.json (artifact `articles-votes`)
     #
+    # #1354 — L'ORDRE DU JOUR DES SÉANCES, depuis les mêmes archives Agenda :
+    #   entrée   : src/ordre_du_jour_an.py --telecharger
+    #   produit  : pivot_data/ordre_du_jour/<législature>.json (artifact `ordre-du-jour`)
+    #
     # Job réseau à part, comme les actes du Journal officiel : il ne rallonge pas
     # le chemin critique, et `continue-on-error` — s'il échoue, le fichier commité
     # du run précédent reste. Une archive illisible arrête l'écriture (code 1),
@@ -3395,6 +3399,7 @@ jobs:
             scripts
             src
             pivot_data/articles_votes.json
+            pivot_data/ordre_du_jour
 
       - uses: ./.github/actions/code-du-prive
         with:
@@ -3425,6 +3430,12 @@ jobs:
       - name: Rattacher les scrutins d'article à leur texte (#1264)
         run: python3 src/articles_votes.py --telecharger --out pivot_data/articles_votes.json
 
+      # #1354 — les archives Agenda sont celles que l'étape précédente a mises
+      # en cache ; la 17e se relit. Indépendante des articles votés : `always()`.
+      - name: Publier l'ordre du jour des séances (#1354)
+        if: always()
+        run: python3 src/ordre_du_jour_an.py --telecharger
+
       - name: Sauvegarde des archives closes
         if: ${{ always() && steps.cache_articles_sources.outputs.cache-hit != 'true' && hashFiles('.cache/articles_votes/16/*') != '' }}
         continue-on-error: true
@@ -3448,6 +3459,16 @@ jobs:
         with:
           name: articles-votes
           path: pivot_data/articles_votes.json
+          if-no-files-found: warn
+
+      # Un artifact à part : partagé avec articles_votes.json, sa racine se
+      # déplacerait vers `ordre_du_jour/` le jour où celui-ci manque.
+      - name: Upload artifact ordre du jour
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: ordre-du-jour
+          path: pivot_data/ordre_du_jour
           if-no-files-found: warn
 
   merge-and-pivot:
@@ -3671,6 +3692,14 @@ jobs:
         with:
           name: articles-votes
           path: pivot_data/
+
+      # #1354 — même règle : les fichiers commités du run précédent restent.
+      - name: Download artifact ordre du jour (optionnel)
+        uses: actions/download-artifact@v7
+        continue-on-error: true
+        with:
+          name: ordre-du-jour
+          path: pivot_data/ordre_du_jour/
 
       - name: Download artifact liste des gouvernements (optionnel)
         uses: actions/download-artifact@v7
@@ -4990,6 +5019,10 @@ jobs:
           # construit est `continue-on-error`.
           if [ -f pivot_data/articles_votes.json ]; then
             git add pivot_data/articles_votes.json
+          fi
+          # L'ordre du jour des séances (#1354) : même job, même garde.
+          if [ -d pivot_data/ordre_du_jour ]; then
+            git add pivot_data/ordre_du_jour
           fi
           if git diff --cached --quiet; then
             echo "Aucun changement de données à committer."
