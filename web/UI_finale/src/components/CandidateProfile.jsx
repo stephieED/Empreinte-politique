@@ -17,6 +17,7 @@ import PartagerFiche from './PartagerFiche';
 import './CandidateProfile.css';
 import { BadgeSource, ListeVide } from './Lecture';
 import InfoBulle, { BulleDePastille } from './InfoBulle';
+import FilDAriane from './FilDAriane';
 import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
 import { useEcranEtroit } from '../hooks/useLargeur';
 import { Condition, EtiquetteFiltre, VideDuFiltre, useFiltreActif } from './Recherche';
@@ -609,7 +610,22 @@ function Frise({ parcours }) {
                   l'Assemblée qu'elle n'a rien déclaré sur un siège dont elle ne
                   parle pas (§2 règle 2). */}
               {pisteDuRole(r) === INSTITUTION_PARLEMENT && <Position position={r.position} />}
-              {r.detail && <span className="cp-role-detail"> · {r.detail}</span>}
+              {/* LE GOUVERNEMENT ET LA LÉGISLATURE MÈNENT À LEUR FICHE (#1329),
+                  rattachés par la période que le rôle recouvre le plus longtemps
+                  (`utils/rattachement.js`).
+                  Le gouvernement s'écrit sous le nom de sa fiche, à la place de
+                  l'abréviation de la source. */}
+              {r.gouvernementFiche ? (
+                <span className="cp-role-detail">
+                  {r.libelleMandat ? ` · ${r.libelleMandat}` : ''}
+                  {' · '}<Link to={`/gouvernements/${r.gouvernementFiche.id}`}>{r.gouvernementFiche.nom}</Link>
+                </span>
+              ) : r.detail && <span className="cp-role-detail"> · {r.detail}</span>}
+              {r.legislatureFiche && (
+                <span className="cp-role-detail">
+                  {' · '}<Link to={`/legislatures/${r.legislatureFiche.id}`}>{r.legislatureFiche.nom}</Link>
+                </span>
+              )}
             </span>
           </li>
         ))}
@@ -1869,7 +1885,7 @@ export default function CandidateProfile({ candidate, mot = '' }) {
   return (
     <main className="cp-main">
       <div className="cp-breadcrumb">
-        Candidats / <strong>{c.nom}</strong>
+        <FilDAriane id={c.id} libelle="Candidats" nom={c.nom} periode type="candidats" />
       </div>
 
       <header className="cp-entete">
@@ -2023,10 +2039,16 @@ export default function CandidateProfile({ candidate, mot = '' }) {
 
       {/* La licence SEULE. La phrase de refus qui l'accompagnait était la
           troisième occurrence de « aucun score, aucun classement » sur la même
-          page ; elle vit maintenant dans le pied du site, une fois. */}
-      <footer className="cp-pied">
-        <span>{c.licence}</span>
-      </footer>
+          page ; elle vit maintenant dans le pied du site, une fois.
+          PAS DE LICENCE, PAS DE PIED : depuis #1310, un candidat sans aucun
+          mandat collecté ne porte aucune donnée sous licence, et
+          `meta.licence_donnees` vaut "" (14 fiches le 26/10/2026). Le pied
+          affichait alors son trait au-dessus d'un emplacement vide. */}
+      {c.licence && (
+        <footer className="cp-pied">
+          <span>{c.licence}</span>
+        </footer>
+      )}
     </main>
   );
 }

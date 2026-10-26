@@ -24,7 +24,8 @@ import { Link } from 'react-router-dom';
 import '../styles/shell.css';
 import './LigneeProfile.css';
 import { ProposParOrateur, usePaquetExtraits } from './ExtraitsDuDebat';
-import { getPaquetExtraitsMaillon, getParolesMaillon } from '../data';
+import { getLegislaturesList, getPaquetExtraitsMaillon, getParolesMaillon } from '../data';
+import { useAsyncData } from '../hooks/useAsyncData';
 import { NATURES_DE_PAROLE, debatsSousSelection } from '../utils/paroleDeGroupe';
 import { paquetDe } from '../utils/extraits';
 import { SUJET_NON_PUBLIE } from '../utils/sujetIntervention.js';
@@ -32,6 +33,7 @@ import { motsDuFiltre } from '../utils/filtreIntitule';
 import NavigationPeriodes from './NavigationPeriodes';
 import { useEcranEtroit, useLargeur } from '../hooks/useLargeur';
 import InfoBulle from './InfoBulle';
+import FilDAriane from './FilDAriane';
 import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
 import { ListeVide } from './Lecture';
 import { LAST_READING_LABEL, formatNumber, styleForPosition, pageDuJeuDeDonnees } from '../utils/lecture';
@@ -328,6 +330,10 @@ function Pave({ motif }) {
 
 function Frise({ lignee, aujourdhui }) {
   const [survol, setSurvol] = useState(null);
+  /* Les législatures qui ont leur fiche (#1329) : chaque groupe de la lignée
+   * mène à celle où il a siégé. */
+  const { data: legislatures } = useAsyncData(getLegislaturesList, []);
+  const publiees = new Set((legislatures || []).map((l) => String(l.id)));
   /* AU TÉLÉPHONE, LA COURBE SE REDESSINE À SA LARGEUR (#867, forme A du
    * 15/10/2026) : une unité pour un pixel, au lieu de mille unités réduites au
    * tiers — années, graduations et noms y tombaient à 3 px. Moins haute, et
@@ -481,7 +487,10 @@ function Frise({ lignee, aujourdhui }) {
             <span className="lp-maillon-dates">{periodeDuMaillon(m)}</span>
             <span className="lp-maillon-nom">
               <b>{m.nom}</b>
-              {m.legislature ? ` · ${legislature(m.legislature)} législature` : ''} <Posture posture={m.posture} />
+              {m.legislature && (publiees.has(String(m.legislature))
+                ? <>{' · '}<Link className="lp-lien" to={`/legislatures/${m.legislature}`}>{`${legislature(m.legislature)} législature`}</Link></>
+                : ` · ${legislature(m.legislature)} législature`)}
+              {' '}<Posture posture={m.posture} />
             </span>
             <span className="lp-maillon-effectif">
               {m.effectif != null && m.dateReference ? (
@@ -1515,7 +1524,7 @@ export default function LigneeProfile({ lignee, mot = '' }) {
   return (
     <main className="lp-main">
       <div className="lp-fil">
-        Groupes / <strong>{lignee.nom}</strong>
+        <FilDAriane id={lignee.id} libelle="Groupes" nom={lignee.nom} periode type="groupes" />
       </div>
       <header className="lp-entete">
         <h1>{lignee.nom}</h1>

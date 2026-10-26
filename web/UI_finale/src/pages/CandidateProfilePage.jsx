@@ -12,8 +12,8 @@ export default function CandidateProfilePage() {
   const { data: sources, loading } = useAsyncData(() => chargerSourcesCandidat(candidateId), [candidateId]);
 
   /* LE MOT VIT DANS L'ADRESSE (#979), ET LE CHAMP DANS LE BANDEAU (#1025) :
-   * la page LIT `?mot=finances`, elle ne l'écrit plus — c'est le tiroir de
-   * l'en-tête qui le fait (ExplorerLayout). Un lien partagé, un rechargement
+   * la page LIT `?mot=finances`, elle ne l'écrit plus — c'est le champ du
+   * bandeau qui le fait (ExplorerLayout, #1329). Un lien partagé, un rechargement
    * ou le bouton précédent la ramènent donc au même filtre. */
   const [params] = useSearchParams();
   const mot = params.get('mot') ?? '';

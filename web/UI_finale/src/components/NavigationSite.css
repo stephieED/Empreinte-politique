@@ -116,6 +116,50 @@
   background: var(--accent);
 }
 
+/* « ARTICLES » EST UN BOUTON (#1329) : il ouvre le bandeau des articles. Il
+   garde l'allure d'un lien de la barre ; ouvert, il passe à l'encre, le
+   chevron en jaune — 16:1 sur l'encre, jamais sur fond clair. */
+.nav-site-articles {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.nav-site-lien.nav-site-articles {
+  margin: 0 -9px;
+  padding: 4px 9px;
+  border-radius: 7px;
+}
+
+.nav-site-articles-chevron {
+  transition: transform 120ms ease;
+}
+
+.nav-site-lien.nav-site-articles[aria-expanded='true'] {
+  background: var(--ink);
+  color: #ffffff;
+}
+
+.nav-site-lien.nav-site-articles[aria-expanded='true'] .nav-site-articles-chevron {
+  color: var(--accent);
+  transform: rotate(180deg);
+}
+
+.nav-site-menu-lien.nav-site-articles {
+  justify-content: space-between;
+  text-align: left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-site-articles-chevron {
+    transition: none;
+  }
+}
+
 /* L'outil qui remplace l'onglet courant (#1025) garde la barre pour lui seul
    sous 720 px : les liens passent dans « Menu », l'outil reste à l'écran. */
 .nav-site-outil {

@@ -976,7 +976,7 @@
     }
   ],
   "date_reference": {
-    "date": "2026-10-25",
+    "date": "2026-10-26",
     "origine": "generation"
   },
   "effectif": {
@@ -136478,7 +136478,7 @@
       "nb_membres_porteurs": 56,
       "poids_relatif": 0.7887,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 56,
+        "12_mois": 53,
         "6_mois": 0
       }
     },
@@ -159459,35 +159459,35 @@
     }
   ],
   "amendements_agreges": {
-    "nb_amendements": 17327,
-    "nb_adoptes": 3263,
-    "nb_rejetes": 3731,
-    "nb_irrecevables": 2364,
-    "nb_retires_ou_tombes": 4084,
-    "nb_sort_non_renseigne": 3885,
+    "nb_amendements": 17638,
+    "nb_adoptes": 3473,
+    "nb_rejetes": 4004,
+    "nb_irrecevables": 2543,
+    "nb_retires_ou_tombes": 4356,
+    "nb_sort_non_renseigne": 3262,
     "nb_sort_non_reconnu": 0,
-    "taux_adoption": 0.1883,
+    "taux_adoption": 0.1969,
     "nb_sans_identifiant": 0,
     "par_type_deposant": {
       "commission_rapporteur": {
-        "nb_amendements": 1603,
-        "nb_adoptes": 983,
-        "nb_rejetes": 132,
-        "nb_irrecevables": 25,
-        "nb_retires_ou_tombes": 302,
-        "nb_sort_non_renseigne": 161,
+        "nb_amendements": 1657,
+        "nb_adoptes": 1021,
+        "nb_rejetes": 166,
+        "nb_irrecevables": 32,
+        "nb_retires_ou_tombes": 322,
+        "nb_sort_non_renseigne": 116,
         "nb_sort_non_reconnu": 0,
-        "taux_adoption": 0.6132
+        "taux_adoption": 0.6162
       },
       "depute": {
-        "nb_amendements": 15724,
-        "nb_adoptes": 2280,
-        "nb_rejetes": 3599,
-        "nb_irrecevables": 2339,
-        "nb_retires_ou_tombes": 3782,
-        "nb_sort_non_renseigne": 3724,
+        "nb_amendements": 15981,
+        "nb_adoptes": 2452,
+        "nb_rejetes": 3838,
+        "nb_irrecevables": 2511,
+        "nb_retires_ou_tombes": 4034,
+        "nb_sort_non_renseigne": 3146,
         "nb_sort_non_reconnu": 0,
-        "taux_adoption": 0.145
+        "taux_adoption": 0.1534
       },
       "gouvernement": {
         "nb_amendements": 0,
@@ -159511,13 +159511,13 @@
       }
     },
     "signatures": {
-      "nb_signatures": 387034,
+      "nb_signatures": 392340,
       "par_type_deposant": {
         "commission_rapporteur": {
-          "nb_signatures": 7759
+          "nb_signatures": 7967
         },
         "depute": {
-          "nb_signatures": 379275
+          "nb_signatures": 384373
         },
         "gouvernement": {
           "nb_signatures": 0
@@ -159529,19 +159529,19 @@
     },
     "nb_signatures_hors_periode_ecartees": 441578,
     "nb_signatures_sans_legislature_retenues": 0,
-    "nb_signatures_hors_appartenance_ecartees": 1439,
+    "nb_signatures_hors_appartenance_ecartees": 1440,
     "nb_signatures_sans_date_retenues": 1
   },
   "sources": [
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA1008",
-      "synchro_le": "2026-10-25T18:08:33+0000"
+      "synchro_le": "2026-10-26T18:42:46+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA1567",
-      "synchro_le": "2026-10-25T18:08:41+0000"
+      "synchro_le": "2026-10-26T18:41:51+0000"
     },
     {
       "type": "rne",
@@ -159551,362 +159551,362 @@
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA1654",
-      "synchro_le": "2026-10-25T18:00:16+0000"
+      "synchro_le": "2026-10-26T18:32:20+0000"
     },
     {
       "type": "europarl",
       "url": "https://www.europarl.europa.eu/meps/fr/4285",
-      "synchro_le": "2026-10-25T18:00:18+0000"
+      "synchro_le": "2026-10-26T18:32:23+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA331973",
-      "synchro_le": "2026-10-25T18:00:17+0000"
+      "synchro_le": "2026-10-26T18:32:13+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA333285",
-      "synchro_le": "2026-10-25T18:04:50+0000"
+      "synchro_le": "2026-10-26T18:42:29+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA335054",
-      "synchro_le": "2026-10-25T18:09:15+0000"
+      "synchro_le": "2026-10-26T18:42:35+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA340343",
-      "synchro_le": "2026-10-25T17:59:34+0000"
+      "synchro_le": "2026-10-26T18:31:34+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA341981",
-      "synchro_le": "2026-10-25T18:00:12+0000"
+      "synchro_le": "2026-10-26T18:32:36+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA342196",
-      "synchro_le": "2026-10-25T17:59:35+0000"
+      "synchro_le": "2026-10-26T18:31:25+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA342415",
-      "synchro_le": "2026-10-25T17:59:32+0000"
+      "synchro_le": "2026-10-26T18:31:58+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA606573",
-      "synchro_le": "2026-10-25T18:00:23+0000"
+      "synchro_le": "2026-10-26T18:32:29+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA606793",
-      "synchro_le": "2026-10-25T18:08:57+0000"
+      "synchro_le": "2026-10-26T18:43:17+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA607553",
-      "synchro_le": "2026-10-25T18:08:33+0000"
+      "synchro_le": "2026-10-26T18:42:47+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA608172",
-      "synchro_le": "2026-10-25T18:08:41+0000"
+      "synchro_le": "2026-10-26T18:41:52+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA608264",
-      "synchro_le": "2026-10-25T18:09:11+0000"
+      "synchro_le": "2026-10-26T18:42:23+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA609332",
-      "synchro_le": "2026-10-25T18:09:16+0000"
+      "synchro_le": "2026-10-26T18:42:36+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA642764",
-      "synchro_le": "2026-10-25T17:59:35+0000"
+      "synchro_le": "2026-10-26T18:31:26+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA643143",
-      "synchro_le": "2026-10-25T17:59:32+0000"
+      "synchro_le": "2026-10-26T18:31:59+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA643157",
-      "synchro_le": "2026-10-25T17:59:40+0000"
+      "synchro_le": "2026-10-26T18:31:45+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA643192",
-      "synchro_le": "2026-10-25T18:08:34+0000"
+      "synchro_le": "2026-10-26T18:42:48+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA719930",
-      "synchro_le": "2026-10-25T18:08:42+0000"
+      "synchro_le": "2026-10-26T18:41:53+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA720362",
-      "synchro_le": "2026-10-25T17:59:35+0000"
+      "synchro_le": "2026-10-26T18:31:40+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA720992",
-      "synchro_le": "2026-10-25T18:05:40+0000"
+      "synchro_le": "2026-10-26T18:43:19+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA722150",
-      "synchro_le": "2026-10-25T17:59:29+0000"
+      "synchro_le": "2026-10-26T18:31:29+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA774958",
-      "synchro_le": "2026-10-25T18:04:51+0000"
+      "synchro_le": "2026-10-26T18:42:30+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA774960",
-      "synchro_le": "2026-10-25T18:09:16+0000"
+      "synchro_le": "2026-10-26T18:42:37+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793394",
-      "synchro_le": "2026-10-25T17:59:35+0000"
+      "synchro_le": "2026-10-26T18:31:35+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793624",
-      "synchro_le": "2026-10-25T17:59:36+0000"
+      "synchro_le": "2026-10-26T18:31:26+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793816",
-      "synchro_le": "2026-10-25T17:59:33+0000"
+      "synchro_le": "2026-10-26T18:31:59+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794094",
-      "synchro_le": "2026-10-25T17:59:41+0000"
+      "synchro_le": "2026-10-26T18:31:46+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794270",
-      "synchro_le": "2026-10-25T18:08:34+0000"
+      "synchro_le": "2026-10-26T18:42:49+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794494",
-      "synchro_le": "2026-10-25T18:08:43+0000"
+      "synchro_le": "2026-10-26T18:41:53+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794854",
-      "synchro_le": "2026-10-25T18:04:51+0000"
+      "synchro_le": "2026-10-26T18:42:31+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794910",
-      "synchro_le": "2026-10-25T18:09:42+0000"
+      "synchro_le": "2026-10-26T18:43:07+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795156",
-      "synchro_le": "2026-10-25T18:09:19+0000"
+      "synchro_le": "2026-10-26T18:42:39+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795430",
-      "synchro_le": "2026-10-25T17:59:36+0000"
+      "synchro_le": "2026-10-26T18:31:36+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795762",
-      "synchro_le": "2026-10-25T17:59:37+0000"
+      "synchro_le": "2026-10-26T18:31:27+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA822617",
-      "synchro_le": "2026-10-25T18:00:18+0000"
+      "synchro_le": "2026-10-26T18:32:23+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA826635",
-      "synchro_le": "2026-10-25T18:00:18+0000"
+      "synchro_le": "2026-10-26T18:32:14+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840171",
-      "synchro_le": "2026-10-25T18:00:12+0000"
+      "synchro_le": "2026-10-26T18:32:36+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840175",
-      "synchro_le": "2026-10-25T18:00:23+0000"
+      "synchro_le": "2026-10-26T18:32:30+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840665",
-      "synchro_le": "2026-10-25T18:08:57+0000"
+      "synchro_le": "2026-10-26T18:43:18+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840673",
-      "synchro_le": "2026-10-25T18:09:11+0000"
+      "synchro_le": "2026-10-26T18:42:24+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840765",
-      "synchro_le": "2026-10-25T18:05:41+0000"
+      "synchro_le": "2026-10-26T18:43:19+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840793",
-      "synchro_le": "2026-10-25T18:09:43+0000"
+      "synchro_le": "2026-10-26T18:43:07+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840829",
-      "synchro_le": "2026-10-25T18:00:19+0000"
+      "synchro_le": "2026-10-26T18:32:23+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840903",
-      "synchro_le": "2026-10-25T18:00:18+0000"
+      "synchro_le": "2026-10-26T18:32:14+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840939",
-      "synchro_le": "2026-10-25T18:00:13+0000"
+      "synchro_le": "2026-10-26T18:32:36+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840955",
-      "synchro_le": "2026-10-25T18:00:24+0000"
+      "synchro_le": "2026-10-26T18:32:30+0000"
     },
     {
       "type": "europarl",
       "url": "https://www.europarl.europa.eu/meps/fr/38845",
-      "synchro_le": "2026-10-25T18:00:29+0000"
+      "synchro_le": "2026-10-26T18:32:37+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841091",
-      "synchro_le": "2026-10-25T18:08:58+0000"
+      "synchro_le": "2026-10-26T18:43:18+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841107",
-      "synchro_le": "2026-10-25T18:09:12+0000"
+      "synchro_le": "2026-10-26T18:42:24+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841243",
-      "synchro_le": "2026-10-25T18:05:41+0000"
+      "synchro_le": "2026-10-26T18:43:20+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841295",
-      "synchro_le": "2026-10-25T18:09:43+0000"
+      "synchro_le": "2026-10-26T18:43:08+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841315",
-      "synchro_le": "2026-10-25T18:00:19+0000"
+      "synchro_le": "2026-10-26T18:32:24+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841327",
-      "synchro_le": "2026-10-25T18:00:19+0000"
+      "synchro_le": "2026-10-26T18:32:14+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841367",
-      "synchro_le": "2026-10-25T18:00:13+0000"
+      "synchro_le": "2026-10-26T18:32:37+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841381",
-      "synchro_le": "2026-10-25T18:00:29+0000"
+      "synchro_le": "2026-10-26T18:32:38+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841463",
-      "synchro_le": "2026-10-25T18:09:00+0000"
+      "synchro_le": "2026-10-26T18:43:19+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841471",
-      "synchro_le": "2026-10-25T18:09:12+0000"
+      "synchro_le": "2026-10-26T18:42:25+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841539",
-      "synchro_le": "2026-10-25T18:05:41+0000"
+      "synchro_le": "2026-10-26T18:43:20+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841633",
-      "synchro_le": "2026-10-25T18:09:43+0000"
+      "synchro_le": "2026-10-26T18:43:08+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841665",
-      "synchro_le": "2026-10-25T18:00:20+0000"
+      "synchro_le": "2026-10-26T18:32:24+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841681",
-      "synchro_le": "2026-10-25T18:00:19+0000"
+      "synchro_le": "2026-10-26T18:32:15+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841717",
-      "synchro_le": "2026-10-25T18:00:14+0000"
+      "synchro_le": "2026-10-26T18:32:37+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841813",
-      "synchro_le": "2026-10-25T18:00:30+0000"
+      "synchro_le": "2026-10-26T18:32:39+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841853",
-      "synchro_le": "2026-10-25T18:09:00+0000"
+      "synchro_le": "2026-10-26T18:43:21+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841893",
-      "synchro_le": "2026-10-25T18:09:12+0000"
+      "synchro_le": "2026-10-26T18:42:25+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841919",
-      "synchro_le": "2026-10-25T18:05:42+0000"
+      "synchro_le": "2026-10-26T18:43:20+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA842195",
-      "synchro_le": "2026-10-25T18:09:44+0000"
+      "synchro_le": "2026-10-26T18:43:09+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA842211",
-      "synchro_le": "2026-10-25T18:00:20+0000"
+      "synchro_le": "2026-10-26T18:32:25+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA842263",
-      "synchro_le": "2026-10-25T18:00:19+0000"
+      "synchro_le": "2026-10-26T18:32:15+0000"
     }
   ],
   "meta": {
     "schema_version": "1",
-    "genere_le": "2026-10-25T18:45:07+0000",
+    "genere_le": "2026-10-26T19:16:14+0000",
     "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr + Licence Ouverte 2.0 (Etalab) — data.gouv.fr (Répertoire national des élus) + CC BY 4.0 (Parlement européen, Open Data Portal - data.europarl.europa.eu)",
     "profils_sources": [
       "alain-david",
@@ -159983,12 +159983,12 @@
     ],
     "seuil_quorum": 0.5,
     "warnings": [
-      "date_reference : tous les comptes de cette fiche se rapportent au 2026-10-25, date de génération — au moins une appartenance au groupe est encore ouverte, la législature court. La valeur bougera au prochain run (#653).",
-      "effectif_sur_la_periode : entre 2024-07-19 et 2026-10-25, le groupe a compté au minimum 66 membres (2024-07-19) et au maximum 69 (2025-10-08) — première date à laquelle chaque borne est atteinte. L'effectif est réévalué à chaque entrée et à chaque lendemain de sortie, jamais hors de cette fenêtre. `membres[]` ne porte qu'un intervalle par membre (périodes recollées, #526) : un départ suivi d'un retour n'y apparaît pas, et aucune de ces deux bornes ne le voit (#702).",
+      "date_reference : tous les comptes de cette fiche se rapportent au 2026-10-26, date de génération — au moins une appartenance au groupe est encore ouverte, la législature court. La valeur bougera au prochain run (#653).",
+      "effectif_sur_la_periode : entre 2024-07-19 et 2026-10-26, le groupe a compté au minimum 66 membres (2024-07-19) et au maximum 69 (2025-10-08) — première date à laquelle chaque borne est atteinte. L'effectif est réévalué à chaque entrée et à chaque lendemain de sortie, jamais hors de cette fenêtre. `membres[]` ne porte qu'un intervalle par membre (périodes recollées, #526) : un départ suivi d'un retour n'y apparaît pas, et aucune de ces deux bornes ne le voit (#702).",
       "tags_thematiques_agreges : 140 intervention(s) tenue(s) hors des périodes d'appartenance de leur auteur au groupe n'ont pas nourri l'empreinte thématique — la parole d'un membre parti, ou pas encore arrivé, n'est pas celle du groupe (#1073).",
       "tags_thematiques_agreges : 29539 intervention(s) tenue(s) sous une autre législature que la 17e n'ont pas nourri l'empreinte thématique — elles appartiennent à la carrière de leurs auteurs, pas à l'activité de ce groupe (#825, même règle que les votes depuis #403 et que les amendements depuis #821).",
       "amendements_agreges : 441578 signature(s) portant sur des amendements déposés sous une autre législature que la 17e ont été écartées — ils appartiennent à la carrière de leurs auteurs, pas à l'activité de ce groupe (#821, même règle que les votes depuis #403).",
-      "amendements_agreges : 1439 signature(s) posées un jour où leur auteur n'appartenait pas à ce groupe ont été écartées — avant son entrée, après son départ, ou hors de l'existence du groupe (#1175, même règle que la cohésion et la parole).",
+      "amendements_agreges : 1440 signature(s) posées un jour où leur auteur n'appartenait pas à ce groupe ont été écartées — avant son entrée, après son départ, ou hors de l'existence du groupe (#1175, même règle que la cohésion et la parole).",
       "amendements_agreges : 1 signature(s) sur des amendements sans date de dépôt sont CONSERVÉES — on n'écarte personne sur une date qu'on n'a pas (§2 règle 5).",
       "fraicheur_donnees : composition dérivée du référentiel AMO30 de l'Assemblée nationale (data.assemblee-nationale.fr, Licence Ouverte), et non plus de www.nosdeputes.fr depuis #527. Une législature close y est complète : les mandats terminés en cours de législature y figurent, alors que la dernière composition connue d'un miroir les perd. La fiche reflète donc l'appartenance au groupe telle que l'Assemblée la publie à la date de meta.genere_le ; un membre sans profil publié n'y apparaît pas (voir meta.couverture_roster)."
     ],
@@ -160000,13 +160000,13 @@
   },
   "fenetres_parole": {
     "12_mois": {
-      "debut": "2025-10-25",
-      "fin": "2026-10-25",
+      "debut": "2025-10-26",
+      "fin": "2026-10-26",
       "nb_membres": 71
     },
     "6_mois": {
-      "debut": "2026-04-25",
-      "fin": "2026-10-25",
+      "debut": "2026-04-26",
+      "fin": "2026-10-26",
       "nb_membres": 69
     }
   }

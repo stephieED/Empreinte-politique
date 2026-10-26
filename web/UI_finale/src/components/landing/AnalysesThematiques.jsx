@@ -2,14 +2,15 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getCandidatesList } from '../../data';
 import { useAsyncData } from '../../hooks/useAsyncData';
+import { FIN_EVENEMENT_CANDIDATS as FIN_EVENEMENT, dateEnClair as enClair, getArticles } from '../../data/articles';
 import './landing.css';
 
 /* L'ÉVÉNEMENT EN TÊTE DU CARROUSEL (#1329, arbitré le 22/10/2026) : tant que le
  * volet des candidats est ouvert, il est la première diapositive, celle que le
  * lecteur voit en arrivant ; sa tuile sous la carte héro a été retirée. La
  * vignette dit la borne (« Mai 2027 »), 2027 un cran au-dessus de Mai. Le
- * nombre de candidats est lu dans le manifeste, jamais écrit ici. */
-const FIN_EVENEMENT = '2027-06-01';
+ * nombre de candidats est lu dans le manifeste, jamais écrit ici. La date de
+ * fin est celle du bandeau « Articles », qui ouvre sur la même carte. */
 
 /* ── LES ANALYSES THÉMATIQUES, AU BAS DE L'ACCUEIL (15/10/2026) ──────────────
  *
@@ -27,12 +28,6 @@ const FIN_EVENEMENT = '2027-06-01';
  * pour qui a demandé moins d'animations — les flèches et les points restent.
  */
 const DELAI = 6000;
-const MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
-const enClair = (iso) => `${Number(iso.slice(8, 10)) === 1 ? '1er' : Number(iso.slice(8, 10))} ${MOIS[Number(iso.slice(5, 7)) - 1]} ${iso.slice(0, 4)}`;
-
-function chargerAnalyses() {
-  return fetch('/rapports.json').then((r) => (r.ok ? r.json() : []), () => []);
-}
 
 const moinsDAnimations = () =>
   typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -47,7 +42,7 @@ export default function AnalysesThematiques({ dansHero = false }) {
 
   useEffect(() => {
     let vivant = true;
-    chargerAnalyses().then((l) => vivant && setAnalyses(Array.isArray(l) ? l : []));
+    getArticles().then((l) => vivant && setAnalyses(Array.isArray(l) ? l : []));
     return () => { vivant = false; };
   }, []);
 

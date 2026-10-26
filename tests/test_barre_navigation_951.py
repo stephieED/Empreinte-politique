@@ -40,15 +40,22 @@ def test_les_six_pages_dans_l_ordre() -> None:
     une page du corpus, et elle ne s'intercale pas entre celles qui le lisent."""
     source = _sans_commentaires(NAV.read_text(encoding="utf-8"))
     libelles = re.findall(r"libelle: '([^']+)'", source)
-    assert libelles == ["Explorateur", "Méthodologie", "Sources", "Articles", "FAQ", "Nous soutenir"]
+    assert libelles == ["Explorateur", "Articles", "Méthodologie", "Sources", "FAQ", "Nous soutenir"]
 
 
 def test_les_instantanes_sont_une_page_statique_pas_une_route() -> None:
     """Servie telle quelle par Pages : un `<Link>` ferait démarrer le routeur
-    sur une adresse qu'il ne connaît pas."""
+    sur une adresse qu'il ne connaît pas.
+
+    Depuis #1329, « Articles » ouvre un bandeau (arbitré sur maquette le
+    26/10/2026) ; l'index des articles reste atteint par un `<a href>`, depuis
+    « Tous les articles → » du bandeau."""
     source = _sans_commentaires(NAV.read_text(encoding="utf-8"))
-    assert "statique: true" in source
-    assert re.search(r"<a key=\{page\.libelle\} href=\{page\.vers\}", source)
+    assert "bandeau: true" in source
+    assert "aria-controls=\"bandeau-articles\"" in source
+    bandeau = _sans_commentaires((NAV.parent / "BandeauArticles.jsx").read_text(encoding="utf-8"))
+    assert 'href="/rapports"' in bandeau
+    assert "to=\"/rapports\"" not in bandeau
 
 
 def test_la_page_courante_est_annoncee() -> None:

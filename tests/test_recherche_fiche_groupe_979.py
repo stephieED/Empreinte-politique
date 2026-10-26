@@ -284,7 +284,7 @@ def test_la_page_ne_charge_les_debats_qu_au_premier_mot():
 
 def test_la_barre_est_partagee_par_les_deux_fiches():
     recherche = _lire(RECHERCHE)
-    assert 'placeholder="Rechercher sur cette page"' in recherche
+    assert 'placeholder="Chercher sur cette fiche"' in recherche  # libellé de la maquette #1329
     assert "Contenant <mark>« {mot} »</mark>" in recherche
     for fiche in (CANDIDAT, FICHE):
         assert "from './Recherche'" in _lire(fiche)

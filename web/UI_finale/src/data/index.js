@@ -1,11 +1,12 @@
 import { amendementsQuiPortent } from '../utils/amendementsMots';
-import { INSTITUTION_PARLEMENT, sigleDuSiege } from '../utils/profilCandidat';
+import { INSTITUTION_GOUVERNEMENT, INSTITUTION_PARLEMENT, sigleDuSiege } from '../utils/profilCandidat';
 import { etiquettesThematiques } from '../utils/groupe';
 import { filtrerProfil, motsDuFiltre, periodeCumulee } from '../utils/filtreIntitule';
 import { filtrerProfilParPeriode } from '../utils/filtrePeriode';
 import { porteeCommune } from '../utils/votesParPeriode';
 import { titreDuTexteVote } from '../utils/lecture';
 import { cheminDuPoint } from '../utils/parolesParPeriode';
+import { periodeDuRole } from '../utils/rattachement';
 import {
   buildCandidateView,
   buildGovernmentView,
@@ -15,7 +16,7 @@ import {
 /* Les adresses par défaut vivent dans leur propre module, sans dépendance :
  * `scripts/pages-par-adresse.mjs` les lit au build pour écrire les pages de
  * redirection (#969). */
-export { DEFAULT_CANDIDATE_ID, DEFAULT_GROUP_ID, DEFAULT_GOVERNMENT_ID } from './adressesParDefaut.js';
+export { DEFAULT_GROUP_ID, DEFAULT_GOVERNMENT_ID } from './adressesParDefaut.js';
 
 let manifestPromise = null;
 let scrutinsPromise = null;
@@ -520,6 +521,26 @@ export async function getCandidateProfile(id) {
 
 /* Le sigle de chaque siège, lu sur les fiches de groupe du manifeste quand
  * l'intitulé du mandat porte le nom complet (`sigleDuSiege`). */
+/* LA LÉGISLATURE ET LE GOUVERNEMENT DE CHAQUE RÔLE (#1329) : la période que le
+ * rôle recouvre le plus longtemps (`utils/rattachement.js`), parmi les seules
+ * fiches publiées.
+ * Un siège avant la XIVe n'a pas de fiche, et reste sans lien. */
+function avecRattachements(roles, manifest) {
+  const legislatures = (manifest.legislatures || []).map((l) => ({ ...l, nom: nomDeLegislature(l.id) }));
+  const gouvernements = manifest.gouvernements || [];
+  return roles.map((r) => {
+    if (r.institution === INSTITUTION_PARLEMENT && r.chambre === 'AN') {
+      const l = periodeDuRole(r.debut, r.fin, legislatures);
+      return l ? { ...r, legislatureFiche: { id: l.id, nom: l.nom } } : r;
+    }
+    if (r.institution === INSTITUTION_GOUVERNEMENT) {
+      const g = periodeDuRole(r.debut, r.fin, gouvernements);
+      return g ? { ...r, gouvernementFiche: { id: g.id, nom: g.nom } } : r;
+    }
+    return r;
+  });
+}
+
 function avecSiglesDeSiege(view, manifest) {
   if (!view?.parcours?.roles) return view;
   const parNom = new Map();
@@ -537,9 +558,9 @@ function avecSiglesDeSiege(view, manifest) {
      barre, « The Left » une espace, et aucun ne passe `FORME_DE_SIGLE`, qui
      existe pour ne jamais fabriquer une abréviation, pas pour refuser celles
      que la source écrit. */
-  const roles = view.parcours.roles.map((r) => (r.institution === INSTITUTION_PARLEMENT
+  const roles = avecRattachements(view.parcours.roles.map((r) => (r.institution === INSTITUTION_PARLEMENT
     ? { ...r, sigle: r.sigle ?? sigleDuSiege(r.detail, parNom) }
-    : r));
+    : r)), manifest);
   return { ...view, parcours: { ...view.parcours, roles } };
 }
 
@@ -709,9 +730,9 @@ export function getPaquetExtraitsMaillon(maillon, paquet) {
 }
 
 /* LES LÉGISLATURES (#1314). Le manifeste ne les liste que si le run a écrit
- * leur fichier : sans lui, la barre du tiroir et la route restent vides. */
-const ROMAINS = { 14: 'XIVe', 15: 'XVe', 16: 'XVIe', 17: 'XVIIe' };
-export const nomDeLegislature = (id) => `${ROMAINS[Number(id)] || `${id}e`} législature`;
+ * leur fichier : sans lui, la liste du fil d'Ariane et la route restent vides. */
+import { ROMAINS, nomDeLegislature } from './nomsDesLegislatures.js';
+export { nomDeLegislature };
 
 export async function getLegislaturesList() {
   const manifest = await loadManifest();

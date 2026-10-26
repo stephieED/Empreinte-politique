@@ -1,6 +1,6 @@
 import { useDeferredValue, useMemo } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { getDonneesAu, getGovernmentProfile, getGovernmentsList, getIndexExtraitsGouvernement, getParolesDuGouvernement } from '../data';
+import { getDonneesAu, getGovernmentProfile, getGovernmentsList, getIndexExtraitsGouvernement, getLegislaturesList, getParolesDuGouvernement } from '../data';
 import { PeriodeContext } from '../components/Recherche';
 import { dansLaFenetre, debutDeFenetre, periodeValide } from '../utils/filtrePeriode';
 import { useAsyncData } from '../hooks/useAsyncData';
@@ -14,9 +14,11 @@ export default function GovernmentProfilePage() {
   // « En bref » situe le gouvernement parmi les autres : la chronologie vient
   // du manifest, déjà chargé pour la barre de sélection (#330).
   const { data: chronologie } = useAsyncData(getGovernmentsList, []);
+  // Les législatures vers lesquelles « En bref » renvoie (#1329).
+  const { data: legislatures } = useAsyncData(getLegislaturesList, []);
 
   /* LA RECHERCHE (#979) : le mot vit dans l'adresse, la barre est celle du
-   * tiroir de l'explorateur. La fiche porte déjà tout ce que le filtre lit —
+   * bandeau de l'explorateur (#1329). La fiche porte déjà tout ce que le filtre lit —
    * les intitulés des débats et des textes —, donc rien ne se recharge. */
   const [params] = useSearchParams();
   const motDiffere = useDeferredValue(params.get('mot') ?? '');
@@ -71,6 +73,7 @@ export default function GovernmentProfilePage() {
         debut={debut}
         government={filtre}
         key={government.id}
+        legislatures={legislatures || []}
         mot={motDiffere.trim()}
       />
     </PeriodeContext.Provider>

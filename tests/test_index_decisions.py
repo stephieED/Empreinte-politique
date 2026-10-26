@@ -87,7 +87,9 @@ _NOMMENT_LARCHIVE = {"docs/technical_decisions.md", "tests/test_index_decisions.
 _RENVOI = re.compile(r'(?:docs/)?decisions/([a-z0-9-]+)\.md(?:#([a-z0-9-]+))?')
 _RENVOI_LOCAL = re.compile(r'\]\(([a-z0-9-]+)\.md(?:#([a-z0-9-]+))?\)')
 _ANCRE = re.compile(r'<a id="([^"]+)"></a>')
-_LIGNE_INDEX = re.compile(r'^- `[^`]+` ((?:<a id="[^"]+"></a>)+)\[.+\]\(decisions/([a-z0-9-]+)\.md\) — \S')
+#: La ligne porte la date, les ancres et le titre ; plus le résumé, qui reste dans
+#: la décision (`index-des-decisions-sans-resume`).
+_LIGNE_INDEX = re.compile(r'^- `[^`]+` ((?:<a id="[^"]+"></a>)+)\[.+\]\(decisions/([a-z0-9-]+)\.md\)$')
 
 
 def _fichiers_balayes():
@@ -303,3 +305,19 @@ def test_chaque_decision_porte_de_quoi_produire_sa_ligne():
         except DecisionIncomplete as exc:
             manquantes.append(str(exc))
     assert not manquantes, "\n".join(manquantes)
+
+
+def test_l_index_reste_lisible_d_un_coup():
+    """L'index ne recopie pas les résumés (26/10/2026).
+
+    Recopiés, les 541 résumés faisaient 530 Ko d'index, que les sessions
+    chargeaient en entier : une liste de lecture a rempli 28 % d'un contexte au
+    premier message. Sans eux, 108 Ko. Le seuil laisse grandir le nombre de
+    décisions ; il refuse le retour des résumés dans la ligne.
+    → docs/decisions/index-des-decisions-sans-resume.md
+    """
+    taille = len(_index_genere().encode("utf-8"))
+    assert taille < 300_000, (
+        f"l'index généré pèse {taille} octets : sa ligne recopie-t-elle de nouveau "
+        "le résumé de chaque décision ? Le résumé reste dans la décision."
+    )

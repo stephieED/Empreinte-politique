@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import BandeauArticles from './BandeauArticles';
 import './NavigationSite.css';
 
 /* ── La barre des pages du site (#951) ────────────────────────────────────────
@@ -12,26 +13,26 @@ import './NavigationSite.css';
  * que les autres : dans le seul pied de page, la propriétaire l'a jugé trop
  * caché. Pas de bouton jaune — le jaune y marque la page courante.
  *
- * Sous 720 px les six liens ne tiennent plus à côté du logo et du tiroir :
+ * Sous 720 px les six liens ne tiennent plus à côté du logo et de la loupe :
  * ils passent dans un menu.
  *
- * « ARTICLES » EST UNE PAGE STATIQUE, PAS UNE ROUTE (#1029) : elle est
- * servie telle quelle par GitHub Pages, donc son lien est un `<a href>` et non
- * un `<Link>` — un `<Link>` ferait démarrer le routeur sur une adresse qu'il
- * ne connaît pas. Elle n'est jamais « courante » au sens de la barre : quand
- * on y est, on a quitté l'application.
+ * « ARTICLES » OUVRE UN BANDEAU SOUS CELUI DU SITE (#1329, arbitré sur
+ * maquette le 26/10/2026) : les articles en cartes, et « Tous les articles → »
+ * vers l'index, une page statique servie telle quelle par GitHub Pages (#1029)
+ * — d'où un `<a href>` et jamais un `<Link>`, qui ferait démarrer le routeur
+ * sur une adresse qu'il ne connaît pas. Le bouton n'est jamais « courant ».
  *
- * L'ONGLET DE LA PAGE COURANTE PEUT CÉDER SA PLACE À UN OUTIL (#1025).
- * L'explorateur y pose son tiroir : sur une fiche, « Explorateur » était déjà
- * la page courante, et son clic renvoyait à la fiche par défaut. Le lien reste
- * partout ailleurs, où il sert. C'est un remplacement, jamais un ajout : la
- * barre porte le même nombre d'entrées avant et après.
+ * L'ONGLET « EXPLORATEUR » CÈDE SA PLACE SUR UNE FICHE (#1025, #1329). Il y
+ * était déjà la page courante, et son clic renvoyait à la fiche par défaut.
+ * L'explorateur y pose la recherche quand la fiche filtre, et rien sinon : on
+ * change de fiche par le fil d'Ariane. Le lien reste partout ailleurs.
  */
 const PAGES = [
   { libelle: 'Explorateur', vers: '/candidats', racines: ['/candidats', '/groupes', '/gouvernements', '/legislatures'] },
+  // « Articles » juste après la recherche (demandé le 26/10/2026, #1329).
+  { libelle: 'Articles', vers: '/rapports', racines: [], bandeau: true },
   { libelle: 'Méthodologie', vers: '/methodologie', racines: ['/methodologie'] },
   { libelle: 'Sources', vers: '/sources', racines: ['/sources'] },
-  { libelle: 'Articles', vers: '/rapports', racines: [], statique: true },
   { libelle: 'FAQ', vers: '/faq', racines: ['/faq'] },
   { libelle: 'Nous soutenir', vers: '/nous-soutenir', racines: ['/nous-soutenir'] },
 ];
@@ -42,11 +43,35 @@ const estCourante = (page, pathname) =>
 export default function NavigationSite({ outilExplorateur = null }) {
   const { pathname } = useLocation();
   const [menuOuvert, setMenuOuvert] = useState(false);
+  const [articlesOuverts, setArticlesOuverts] = useState(false);
   const menuRef = useRef(null);
+  // Le bouton qui a ouvert le bandeau : Échap lui rend le focus (#1329).
+  const ouvreurArticles = useRef(null);
 
   useEffect(() => {
     setMenuOuvert(false);
+    setArticlesOuverts(false);
   }, [pathname]);
+
+  /* Le bandeau se referme à Échap et au clic hors de lui — hors du bouton
+     aussi, qui le referme lui-même. */
+  useEffect(() => {
+    if (!articlesOuverts) return undefined;
+    const surClic = (e) => {
+      if (!e.target.closest?.('.bandeau-articles, .nav-site-articles')) setArticlesOuverts(false);
+    };
+    const surTouche = (e) => {
+      if (e.key !== 'Escape') return;
+      setArticlesOuverts(false);
+      ouvreurArticles.current?.focus();
+    };
+    document.addEventListener('mousedown', surClic);
+    document.addEventListener('keydown', surTouche);
+    return () => {
+      document.removeEventListener('mousedown', surClic);
+      document.removeEventListener('keydown', surTouche);
+    };
+  }, [articlesOuverts]);
 
   useEffect(() => {
     if (!menuOuvert) return undefined;
@@ -74,18 +99,37 @@ export default function NavigationSite({ outilExplorateur = null }) {
   const liens = (className) =>
     pages.map((page) => {
       const courante = estCourante(page, pathname);
-      // L'outil prend la place du lien dans la barre ; dans le menu replié, il
-      // n'y a rien à mettre — le bouton est à côté de « Menu », pas dedans.
-      if (outilExplorateur && page.libelle === 'Explorateur' && courante) {
-        return className === 'nav-site-lien'
+      // Sur une fiche, l'outil prend la place du lien dans la barre — ou rien,
+      // si la fiche ne filtre pas. Dans le menu replié, il n'y a rien à mettre :
+      // l'outil est à côté de « Menu », pas dedans.
+      if (page.libelle === 'Explorateur' && courante) {
+        return className === 'nav-site-lien' && outilExplorateur
           ? <span key={page.libelle} className="nav-site-outil">{outilExplorateur}</span>
           : null;
       }
-      if (page.statique) {
+      if (page.bandeau) {
         return (
-          <a key={page.libelle} href={page.vers} className={className}>
+          <button
+            aria-controls="bandeau-articles"
+            aria-expanded={articlesOuverts}
+            className={`${className} nav-site-articles`}
+            key={page.libelle}
+            onClick={(e) => {
+              /* Depuis le menu replié, le bouton disparaît avec le menu : le
+                 focus reviendra au bouton « Menu ». */
+              ouvreurArticles.current = className === 'nav-site-lien'
+                ? e.currentTarget
+                : menuRef.current?.querySelector('.nav-site-menu-bouton');
+              setMenuOuvert(false);
+              setArticlesOuverts((v) => !v);
+            }}
+            type="button"
+          >
             {page.libelle}
-          </a>
+            <svg aria-hidden="true" className="nav-site-articles-chevron" height="7" viewBox="0 0 10 7" width="10">
+              <path d="M1 1.5L5 5.5L9 1.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+            </svg>
+          </button>
         );
       }
       return (
@@ -125,6 +169,7 @@ export default function NavigationSite({ outilExplorateur = null }) {
           {liens('nav-site-menu-lien')}
         </nav>
       </div>
+      <BandeauArticles id="bandeau-articles" ouvert={articlesOuverts} />
     </>
   );
 }

@@ -37,9 +37,12 @@ import {
 } from '../utils/lecture';
 import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
 import InfoBulle from './InfoBulle';
+import FilDAriane from './FilDAriane';
+import ArticlesDeLaPeriode from './ArticlesDeLaPeriode';
 import {
   MATIERE_ABSENTE,
   chargeDuPortefeuille,
+  legislaturesDuGouvernement,
 } from '../utils/gouvernement';
 import ActesDuGouvernement from './ActesDuGouvernement';
 import BudgetsDuGouvernement from './BudgetsDuGouvernement';
@@ -225,9 +228,25 @@ function FriseDesGouvernements({ chronologie, courantId }) {
   }
   const bord = aLaLargeur ? 70 : 60;
 
+  /* LES VOISINS DANS LE TEMPS (#1329) : le précédent et le suivant se nomment
+   * au-dessus de la frise, et chaque autre barre mène à sa fiche. */
+  const rang = tries.findIndex((g) => g.id === courantId);
+  const precedent = rang > 0 ? tries[rang - 1] : null;
+  const suivant = rang >= 0 && rang < tries.length - 1 ? tries[rang + 1] : null;
+  const court = (g) => g.title.replace(/^Gouvernement\s+/, '');
+
   return (
     <div ref={ref}>
-      <svg className="gvp-frise" viewBox={`0 0 ${L} ${H}`} role="img"
+      <div className="gvp-frise-voisins">
+        <span>{precedent && <Link className="gvp-lien" to={`/gouvernements/${precedent.id}`}>{`← ${court(precedent)}`}</Link>}</span>
+        <span className="gvp-frise-voisins-titre">{`Les gouvernements depuis ${tries[0].debut.slice(0, 4)}`}</span>
+        <span>
+          {suivant
+            ? <Link className="gvp-lien" to={`/gouvernements/${suivant.id}`}>{`${court(suivant)} →`}</Link>
+            : rang >= 0 && !tries[rang].fin && <span className="gvp-frise-voisins-titre">en fonction</span>}
+        </span>
+      </div>
+      <svg className="gvp-frise" viewBox={`0 0 ${L} ${H}`} role="group"
         aria-label={`Les ${tries.length} gouvernements publiés depuis ${tries[0].debut.slice(0, 4)}, celui de cette fiche mis en évidence`}>
         {tries.map((g) => {
           const x0 = x(g.debut);
@@ -236,14 +255,18 @@ function FriseDesGouvernements({ chronologie, courantId }) {
           const milieu = (x0 + x1) / 2;
           const ancre = milieu < bord ? 'start' : (milieu > L - bord ? 'end' : 'middle');
           const xt = ancre === 'start' ? x0 : (ancre === 'end' ? x1 : milieu);
+          const barre = (
+            <rect x={x0} y={HAUT} width={Math.max(x1 - x0 - 1, 1.2)} height={BANDE} rx="2"
+              className={courant ? null : 'gvp-frise-barre'}
+              fill={courant ? 'var(--gouv)' : 'var(--border-strong)'}>
+              <title>
+                {`${g.title} — ${jour(g.debut)}${g.fin ? ` → ${jour(g.fin)}` : ' → en fonction'}`}
+              </title>
+            </rect>
+          );
           return (
             <g key={g.id}>
-              <rect x={x0} y={HAUT} width={Math.max(x1 - x0 - 1, 1.2)} height={BANDE} rx="2"
-                fill={courant ? 'var(--gouv)' : 'var(--border-strong)'}>
-                <title>
-                  {`${g.title} — ${jour(g.debut)}${g.fin ? ` → ${jour(g.fin)}` : ' → en fonction'}`}
-                </title>
-              </rect>
+              {courant ? barre : <Link aria-label={g.title} to={`/gouvernements/${g.id}`}>{barre}</Link>}
               {courant && (
                 <text x={xt} y={aLaLargeur ? 12 : HAUT - 9} textAnchor={ancre} className="gvp-frise-nom">
                   {g.title.replace(/^Gouvernement\s+/, '')}
@@ -277,9 +300,10 @@ function Fait({ cle, children, sous }) {
   );
 }
 
-function EnBref({ government, chronologie }) {
+function EnBref({ government, chronologie, legislatures }) {
   const { effectif, remaniements, majorite, chiffres } = government;
   const majoriteDeclaree = majorite.length > 0;
+  const siennes = legislaturesDuGouvernement(legislatures, government.periode);
 
   return (
     <section className="gvp-section" data-section="En bref" id="section-bref">
@@ -299,6 +323,18 @@ function EnBref({ government, chronologie }) {
         )}
 
         <div className="gvp-faits">
+          {/* LA LÉGISLATURE, ET SA FICHE (#1329) : la fiche de gouvernement mène à
+              celle de l'Assemblée qui siégeait pendant qu'il gouvernait. */}
+          {siennes.length > 0 && (
+            <Fait cle={siennes.length > 1 ? 'Législatures' : 'Législature'}>
+              {siennes.map((l, i) => (
+                <span key={l.id}>
+                  {i > 0 && ', puis '}
+                  <Link className="gvp-lien gvp-lien--parl" to={`/legislatures/${l.id}`}>{`${l.title} →`}</Link>
+                </span>
+              ))}
+            </Fait>
+          )}
           <Fait cle="Composition">
             {effectif && (effectif.mini === effectif.maxi
               ? <span className="gvp-nombre">{`${effectif.mini} membre${effectif.mini > 1 ? 's' : ''}`}</span>
@@ -321,7 +357,10 @@ function EnBref({ government, chronologie }) {
             {majoriteDeclaree ? majorite.map((m, i) => (
               <span key={m.legislature}>
                 {i > 0 && ', puis '}
-                <span className={m.declaree ? 'gvp-fort' : 'gvp-nd'}>{m.nom}</span>
+                {/* Le groupe déclaré majoritaire mène à sa fiche (#1329). */}
+                {m.declaree && m.lignee
+                  ? <Link className="gvp-lien" to={`/groupes/${m.lignee}`}>{m.nom}</Link>
+                  : <span className={m.declaree ? 'gvp-fort' : 'gvp-nd'}>{m.nom}</span>}
                 {i > 0 && ` à partir de ${moisEtAnnee(m.debut)}`}
               </span>
             )) : <span className="gvp-nd">non collectée pour cette période</span>}
@@ -1290,7 +1329,7 @@ function CeQuOnNaPasPuLire({ government, numero }) {
 
 /* ── La fiche ────────────────────────────────────────────────────────────── */
 
-export default function GovernmentProfile({ government, chronologie = [], mot = '', debut = null }) {
+export default function GovernmentProfile({ government, chronologie = [], legislatures = [], mot = '', debut = null }) {
   const actif = useFiltreActif(mot);
   const budgets = useBudgets(government.id);
   // « Première ministre » quand la source l'écrit ainsi : le libellé se lit, il
@@ -1300,7 +1339,7 @@ export default function GovernmentProfile({ government, chronologie = [], mot = 
   return (
     <main className="gvp-main">
       <div className="gvp-breadcrumb">
-        Gouvernement / <strong>{government.title}</strong>
+        <FilDAriane id={government.id} libelle="Gouvernement" nom={government.title} periode type="gouvernements" />
       </div>
 
       {/* Même en-tête que les fiches candidat et de lignée : le
@@ -1332,13 +1371,16 @@ export default function GovernmentProfile({ government, chronologie = [], mot = 
         </p>
       </header>
 
-      {!actif && <EnBref chronologie={chronologie} government={government} />}
+      {!actif && <EnBref chronologie={chronologie} government={government} legislatures={legislatures} />}
       {!actif && <QuiLeComposait government={government} />}
       <SurQuoiIlsOntPrisLaParole debut={debut} government={government} key={`paroles-${mot}-${debut}`} mot={mot} />
       <CeQuIlAFaitDeposer government={government} key={`textes-${mot}`} mot={mot} />
       <CeQuIlAFaitEntrerEnVigueur government={government} />
       {budgets && <LesBudgetsQuIlAFaitVoter exercices={budgets} />}
       <CeQuOnNaPasPuLire government={government} numero={budgets ? '07' : '06'} />
+      {/* En fin de fiche (arbitré le 26/10/2026) : un renvoi se lit après la
+          fiche, il ne coupe pas la suite de ses sections. */}
+      {!actif && <ArticlesDeLaPeriode debut={government.periode.debut} fin={government.periode.fin} />}
       {/* Le partage, après la dernière section (#1033, forme D). */}
       <PartagerFiche />
     </main>

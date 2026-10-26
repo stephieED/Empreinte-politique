@@ -7,118 +7,96 @@
 }
 
 /* La rangée collée elle-même vit dans EnTeteSite.css (#951) : l'accueil la
-   porte aussi. Ce fichier ne garde que ce qui est propre à l'explorateur —
-   l'outil qui remplace l'onglet « Explorateur » et le tiroir qu'il ouvre. */
+   porte aussi. Ce fichier ne garde que ce qui est propre à l'explorateur — la
+   recherche qui remplace l'onglet « Explorateur » (#1329). */
 
-/* L'OUTIL, À LA PLACE DE L'ONGLET (#1025). Il est là dès l'arrivée : les listes
-   ne sont plus dans la page, il n'y a donc plus rien à franchir pour le voir. */
-.explorer-outil {
+/* LE CHAMP AU LARGE, LA LOUPE À L'ÉTROIT. Un seul élément dans la barre. */
+.explorer-recherche {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  font: inherit;
-  font-size: 12.5px;
-  font-weight: 700;
+}
+
+.explorer-recherche .cp-filtre {
+  width: 250px;
+  min-height: 38px;
+  margin: 0;
+}
+
+.explorer-recherche .cp-filtre input {
+  padding: 7px 0;
+  font-size: 13px;
+}
+
+.explorer-loupe {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
   border: 1px solid var(--border-strong);
+  border-radius: 999px;
   background: var(--card);
   color: var(--ink);
-  border-radius: 999px;
-  padding: 6px 14px;
+  font: inherit;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
   cursor: pointer;
-  white-space: nowrap;
 }
 
-.explorer-outil:hover {
-  border-color: var(--muted);
-}
-
-.explorer-outil[aria-expanded='true'] {
+.explorer-loupe:hover,
+.explorer-loupe--active {
   border-color: var(--ink);
 }
 
-.explorer-outil:focus-visible {
+.explorer-loupe[aria-expanded='true'] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #ffffff;
+}
+
+.explorer-loupe:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 2px;
 }
 
-.explorer-outil-chevron {
-  transition: transform 120ms ease;
-}
-
-.explorer-outil[aria-expanded='true'] .explorer-outil-chevron {
-  transform: rotate(180deg);
-}
-
-/* Le libellé long dit les deux gestes ; sous 720 px il ne tient pas. */
-.explorer-outil-court {
-  display: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .explorer-outil-chevron {
-    transition: none;
-  }
-}
-
-/* LE TIROIR : un panneau SOUS la rangée, par-dessus la fiche. Il ne prend
-   aucune place dans la page. */
-.explorer-tiroir {
-  position: fixed;
+/* Le champ, sous le bandeau, quand la loupe l'ouvre : par-dessus la fiche, sans
+   prendre de place dans la page. */
+.explorer-loupe-panneau {
+  position: absolute;
   left: 0;
   right: 0;
-  top: var(--entete-hauteur);
-  max-height: calc(100vh - var(--entete-hauteur));
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 14px 40px 16px;
+  top: 100%;
+  padding: 12px 16px 14px;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
   box-shadow: 0 10px 24px rgba(23, 20, 31, 0.1);
 }
 
-/* `display: flex` l'emporte sur le `[hidden]` du navigateur. Sans cette règle,
-   l'attribut est bien posé et le tiroir reste affiché — une mesure qui lisait
-   `element.hidden` l'a déjà déclaré corrigé (#324). */
-.explorer-tiroir[hidden] {
+/* Un `display` posé plus tard l'emporterait sur le `[hidden]` du navigateur
+   (#324). */
+.explorer-loupe-panneau[hidden] {
   display: none;
 }
 
-/* La recherche vient EN TÊTE du tiroir, les listes ensuite : on cherche dans la
-   page où l'on est avant d'en changer. */
-.explorer-tiroir-recherche {
-  display: flex;
-  flex-direction: column;
-}
-
-.explorer-tiroir-titre {
-  margin: 0 0 2px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-/* La barre garde sa forme de la fiche (Recherche.css) ; seules ses marges
-   changent, le tiroir portant déjà son espacement. */
-.explorer-tiroir .cp-filtre {
+.explorer-loupe-panneau .cp-filtre {
   margin: 0;
-  max-width: 560px;
+  max-width: none;
 }
 
-@media (max-width: 720px) {
-  .explorer-outil-long {
+@media (max-width: 1024px) {
+  .explorer-recherche-champ {
     display: none;
   }
 
-  .explorer-outil-court {
-    display: inline;
+  .explorer-loupe {
+    display: inline-flex;
   }
+}
 
-  .explorer-tiroir {
-    padding: 12px 16px 14px;
+@media (min-width: 1025px) {
+  .explorer-loupe-panneau {
+    display: none;
   }
 }
 
@@ -147,31 +125,6 @@
 .explorer-profile-zone {
   flex: 1;
   min-width: 0;
-}
-
-/* LA PÉRIODE (#1074) : deux vraies cases à cocher sous le champ, arbitré sur
-   maquette le 22/09/2026. L'encre de la case cochée reprend celle du texte. */
-.periode {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 18px;
-  margin-top: 10px;
-}
-
-.periode-case {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13.5px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.periode-case input {
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  accent-color: var(--ink);
 }
 
 .cp-filtre-periode {

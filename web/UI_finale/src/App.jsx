@@ -4,6 +4,7 @@ import TitreDeLaPage from './components/TitreDeLaPage';
 import ExplorerLayout from './components/ExplorerLayout';
 import LandingPage from './pages/LandingPage';
 import CandidateProfilePage from './pages/CandidateProfilePage';
+import ChoixDuCandidatPage from './pages/ChoixDuCandidatPage';
 import GroupProfilePage from './pages/GroupProfilePage';
 import GovernmentProfilePage from './pages/GovernmentProfilePage';
 import LegislatureProfilePage from './pages/LegislatureProfilePage';
@@ -13,7 +14,7 @@ import CoveragePage from './pages/CoveragePage';
 import FaqPage from './pages/FaqPage';
 import LegalNoticePage from './pages/LegalNoticePage';
 import SoutenirPage from './pages/SoutenirPage';
-import { DEFAULT_CANDIDATE_ID, DEFAULT_GROUP_ID, DEFAULT_GOVERNMENT_ID } from './data';
+import { DEFAULT_GROUP_ID, DEFAULT_GOVERNMENT_ID } from './data';
 
 function App() {
   return (
@@ -29,7 +30,9 @@ function App() {
             (/candidats/:id, /groupes/:id, /gouvernements/:id), seule la racine "/"
             bascule désormais vers la landing page au lieu de rediriger vers un candidat. */}
         <Route element={<ExplorerLayout />}>
-          <Route path="candidats" element={<Navigate to={`/candidats/${DEFAULT_CANDIDATE_ID}`} replace />} />
+          {/* Pas de fiche par défaut pour les candidats (#1329) : le fil
+              d'Ariane ouvert, et rien d'autre. */}
+          <Route path="candidats" element={<ChoixDuCandidatPage />} />
           <Route path="candidats/:candidateId" element={<CandidateProfilePage />} />
           <Route path="groupes" element={<Navigate to={`/groupes/${DEFAULT_GROUP_ID}`} replace />} />
           <Route path="groupes/:groupId" element={<GroupProfilePage />} />

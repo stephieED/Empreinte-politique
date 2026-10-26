@@ -27,11 +27,18 @@ CE QUI N'EST PAS RATTACHÉ SE DÉCLARE (§2 règle 5), avec son motif : une séa
 où plusieurs dossiers sont discutés et que le scrutin ne départage pas, un
 article absent du texte, un texte sans version HTML (la XIVe n'en a aucune).
 
-LE TEXTE HTML. Ses paragraphes portent des classes de structure : `assnat4Titre*`,
-`assnat5Chapitre*`, `assnat6Section*`, `assnat9ArticleNum`, `assnatLoiTexte`.
-Mesuré le 08/10/2026 sur 32 textes (8 par législature, XIV à XVII) : XIVe 0/8,
-XVe-XVIIe 23/24 balisés, dont 5 seulement portent des titres ou chapitres. Un
-texte publié ne change plus : il est téléchargé une fois et gardé en cache.
+LE TEXTE HTML. Ses paragraphes portent des classes de structure : `assnat2Partie*`,
+`assnat4Titre*`, `assnat5Chapitre*`, `assnat6Section*`, `assnat9ArticleNum`,
+`assnatLoiTexte`. Mesuré le 08/10/2026 sur 32 textes (8 par législature, XIV à
+XVII) : XIVe 0/8, XVe-XVIIe 23/24 balisés, dont 5 seulement portent des titres ou
+chapitres. Un texte publié ne change plus : il est téléchargé une fois et gardé
+en cache.
+
+L'INTITULÉ D'UN ARTICLE (#1352). Un texte ordinaire n'en donne pas : l'objet
+d'un article n'y est que son texte. Les projets de loi de financement de la
+sécurité sociale l'écrivent dans le paragraphe du numéro (« Article 4 Aide aux
+cotisants… ») ; les lois de finances, dans leur propre gabarit, où divisions et
+articles sont des titres HTML (`structure_loi_de_finances`).
 """
 
 from __future__ import annotations
@@ -48,7 +55,8 @@ from typing import Any, Iterable, Iterator, Optional
 
 from schema_pivot import extrait_de_texte
 
-SCHEMA_VERSION = "articles-votes-v1"
+#: v2 (#1352) : l'intitulé de l'article et la partie, quand le texte les porte.
+SCHEMA_VERSION = "articles-votes-v2"
 LICENCE = "Licence Ouverte / Open Licence (Etalab) — Assemblée nationale"
 
 URL_TEXTE_HTML = "https://www.assemblee-nationale.fr/dyn/opendata/{uid}.html"
@@ -57,7 +65,8 @@ URL_TEXTE_HTML = "https://www.assemblee-nationale.fr/dyn/opendata/{uid}.html"
 #: Le répertoire porte la version de la lecture : une lecture corrigée ne relit
 #: jamais une structure écrite par l'ancienne (un cache porte le code qui l'a
 #: écrit). Un texte absent (404) n'est pas mis en cache : il peut paraître.
-VERSION_STRUCTURE = "v1"
+#: v2 (#1352) : intitulé, partie, gabarit des lois de finances, divisions citées.
+VERSION_STRUCTURE = "v2"
 CACHE_TEXTES = Path(".cache") / "textes_an_structure"
 DEFAULT_OUT = Path("pivot_data") / "articles_votes.json"
 
@@ -115,8 +124,8 @@ MOTIF_TEXTE_INCONNU = "texte_discute_non_publie_par_le_dossier"
 MOTIF_TEXTE_SANS_HTML = "texte_sans_version_html"
 MOTIF_ARTICLE_ABSENT = "article_absent_du_texte"
 MOTIF_ARTICLE_ILLISIBLE = "designation_d_article_illisible"
-#: Un HTML publié dont aucun paragraphe ne porte la classe d'article : les lois
-#: de finances ont leur propre gabarit (`assnatFPF*`, `assnatFAR*`), non lu ici.
+#: Un HTML publié dont aucun article ne se lit, ni au gabarit ordinaire ni à
+#: celui des lois de finances (`structure_loi_de_finances`, #1352).
 MOTIF_GABARIT_NON_LU = "texte_a_gabarit_non_lu"
 MOTIFS = frozenset({
     MOTIF_SEANCE_INCONNUE, MOTIF_PLUSIEURS_DOSSIERS, MOTIF_TEXTE_INCONNU,
@@ -187,8 +196,8 @@ def _texte(fragment: str) -> str:
 def _niveau(classe: str) -> Optional[tuple[str, str]]:
     """`(niveau, partie)` d'une classe de structure, ou None."""
     c = classe.lower()
-    for niveau, motif in (("titre", "assnat4titre"), ("chapitre", "assnat5chapitre"),
-                          ("section", "assnat6section")):
+    for niveau, motif in (("partie", "assnat2partie"), ("titre", "assnat4titre"),
+                          ("chapitre", "assnat5chapitre"), ("section", "assnat6section")):
         if c.startswith(motif):
             if "num" in c:
                 return niveau, "numero"
@@ -199,62 +208,169 @@ def _niveau(classe: str) -> Optional[tuple[str, str]]:
     return None
 
 
-def structure_du_texte(page: str) -> dict[str, dict[str, Any]]:
-    """`article normalisé → {titre, chapitre, section, texte}` d'un texte HTML.
+#: Les divisions, de la plus haute à la plus basse : ouvrir l'une efface celles
+#: qui sont en dessous.
+NIVEAUX = ("partie", "titre", "chapitre", "section")
 
-    Les divisions sont lues dans l'ordre du document : un nouveau titre efface
-    chapitre et section, un nouveau chapitre efface la section. Le texte d'un
-    article est la suite de ses paragraphes jusqu'à la division suivante.
+#: Le suffixe latin d'un article inséré (« bis », « quater », « decies »…).
+_LATIN = r"[a-z]*(?:bis|ter|ies)"
+_NUMERO = rf"(?:1\s*er|(?i:premier|liminaire|unique)|\d+)(?:\s+{_LATIN})?(?:\s+[A-Z]{{1,3}})?"
+#: « Article 4 Aide aux cotisants… », « ARTICLE 2 : Soutenir le travail… »,
+#: « Articles 1er à 3 », « Article 4 bis A (nouveau) ». Le numéro s'arrête à un
+#: blanc : « Article 4 Aide » rend « 4 », jamais « 4 A ». Seul le mot « article »
+#: ignore la casse : la lettre d'un article inséré est une capitale isolée, et
+#: « Article 6 Le régime… » ne doit pas rendre l'article « 6 Le ».
+_RX_EN_TETE_ARTICLE = re.compile(
+    rf"^(?i:articles?)\s+(?P<numero>{_NUMERO}(?:\s+à\s+{_NUMERO})?)(?=\s|:|$)(?P<reste>.*)$",
+    re.S)
+
+
+def en_tete_d_article(texte: str) -> tuple[str, Optional[str]]:
+    """`(désignation brute, intitulé)` d'un en-tête d'article.
+
+    Certains textes écrivent l'intitulé dans le paragraphe même du numéro (les
+    projets de loi de financement de la sécurité sociale : « Article 4 Aide aux
+    cotisants… ») : lu en entier, l'en-tête devenait une désignation que
+    l'article voté « 4 » ne retrouvait pas. Une mention de la navette entre
+    parenthèses (« (nouveau) ») n'est pas un intitulé. Un en-tête qui ne se lit
+    pas garde l'ancienne lecture : tout le texte, sans intitulé.
     """
-    courant: dict[str, Optional[dict[str, Optional[str]]]] = {
-        "titre": None, "chapitre": None, "section": None}
-    articles: dict[str, dict[str, Any]] = {}
-    en_cours: list[str] = []
-    corps: list[str] = []
+    m = _RX_EN_TETE_ARTICLE.match(texte.strip())
+    if not m:
+        return normaliser_article(texte), None
+    reste = m.group("reste").strip()
+    reste = re.sub(r"^(?:\([^)]*\)\s*)+", "", reste)
+    reste = re.sub(r"^[\s:–—.-]+", "", reste).strip()
+    return normaliser_article(m.group("numero")), (reste or None)
 
-    def clore() -> None:
-        if en_cours:
-            texte = " ".join(corps).strip() or None
-            for designation in en_cours:
-                articles[designation]["texte"] = texte
-        en_cours.clear()
-        corps.clear()
 
+def _division_citee(texte: str) -> bool:
+    """Une division entre guillemets est du texte d'article : un chapitre que
+    l'article insère dans un code (« « Chapitre V ter »), pas une division du
+    texte lui-même."""
+    return texte.lstrip().startswith(("«", "\""))
+
+
+class _Lecture:
+    """L'état d'une lecture dans l'ordre du document : les divisions ouvertes,
+    les articles en cours et le texte qui s'accumule."""
+
+    def __init__(self) -> None:
+        self.courant: dict[str, Optional[dict[str, Optional[str]]]] = dict.fromkeys(NIVEAUX)
+        self.articles: dict[str, dict[str, Any]] = {}
+        self.en_cours: list[str] = []
+        self.corps: list[str] = []
+
+    def clore(self) -> None:
+        if self.en_cours:
+            texte = " ".join(self.corps).strip() or None
+            for designation in self.en_cours:
+                self.articles[designation]["texte"] = texte
+        self.en_cours.clear()
+        self.corps.clear()
+
+    def ouvrir_article(self, en_tete: str) -> None:
+        self.clore()
+        brut, intitule = en_tete_d_article(en_tete)
+        for designation in _deplier(brut):
+            self.articles[designation] = {
+                "intitule": intitule,
+                **{n: (dict(self.courant[n]) if self.courant[n] else None) for n in NIVEAUX},
+                "regroupe": brut if brut != designation else None,
+            }
+            self.en_cours.append(designation)
+
+    def ouvrir_division(self, nom: str, numero: Optional[str], intitule: Optional[str]) -> None:
+        self.clore()
+        self.courant[nom] = {"numero": numero, "intitule": intitule}
+        for dessous in NIVEAUX[NIVEAUX.index(nom) + 1:]:
+            self.courant[dessous] = None
+
+    def completer_intitule(self, nom: str, texte: str) -> None:
+        self.clore()
+        if self.courant[nom] is None:
+            self.courant[nom] = {"numero": None, "intitule": texte or None}
+        else:
+            precedent = self.courant[nom].get("intitule")
+            self.courant[nom]["intitule"] = f"{precedent} {texte}".strip() if precedent else (texte or None)
+
+
+def structure_du_texte(page: str) -> dict[str, dict[str, Any]]:
+    """`article normalisé → {intitule, partie, titre, chapitre, section, texte}`
+    d'un texte HTML.
+
+    Les divisions sont lues dans l'ordre du document : une division nouvelle
+    efface celles qui sont en dessous d'elle. Le texte d'un article est la suite
+    de ses paragraphes jusqu'à la division suivante. Un texte sans paragraphe
+    d'article est relu au gabarit des lois de finances (`structure_loi_de_finances`).
+    """
+    lecture = _Lecture()
     for classe, fragment in _RX_PARAGRAPHE.findall(page):
         texte = _texte(fragment)
         niveau = _niveau(classe)
+        if niveau is not None and _division_citee(texte):
+            niveau = None
         if niveau is None:
-            if en_cours and texte and classe.lower().startswith("assnat"):
-                corps.append(texte)
+            if lecture.en_cours and texte and classe.lower().startswith("assnat"):
+                lecture.corps.append(texte)
             continue
         nom, partie = niveau
         if nom == "article":
-            clore()
-            brut = normaliser_article(texte)
-            for designation in _deplier(brut):
-                articles[designation] = {
-                    "titre": dict(courant["titre"]) if courant["titre"] else None,
-                    "chapitre": dict(courant["chapitre"]) if courant["chapitre"] else None,
-                    "section": dict(courant["section"]) if courant["section"] else None,
-                    "regroupe": brut if brut != designation else None,
-                }
-                en_cours.append(designation)
-            continue
-        clore()
-        if partie == "numero":
-            courant[nom] = {"numero": texte or None, "intitule": None}
-            if nom == "titre":
-                courant["chapitre"] = courant["section"] = None
-            elif nom == "chapitre":
-                courant["section"] = None
+            lecture.ouvrir_article(texte)
+        elif partie == "numero":
+            lecture.ouvrir_division(nom, texte or None, None)
         else:
-            if courant[nom] is None:
-                courant[nom] = {"numero": None, "intitule": texte or None}
+            lecture.completer_intitule(nom, texte)
+    lecture.clore()
+    return lecture.articles or structure_loi_de_finances(page)
+
+
+# Le gabarit des lois de finances (`assnatFPF*`, `assnatFAR*`) : les divisions
+# et les articles sont des titres HTML, h2 la partie, h3 le titre, h4 et h5 les
+# subdivisions sans nom (« I – Impôts et ressources autorisées », « A – Mesures
+# fiscales »), h6 l'article (« ARTICLE 2 : Soutenir le travail… »). Un h1 ouvre
+# une pièce du document (« États législatifs annexés ») : on n'y est plus dans
+# les articles. Le texte d'un article est fait de ses paragraphes
+# `assnatFPFprojetloiartexte`, jamais de son exposé des motifs.
+_RX_LDF = re.compile(r'<(h[1-6])\b[^>]*>(.*?)</\1>|<p[^>]*class="([^"]+)"[^>]*>(.*?)</p>', re.S)
+_NIVEAUX_LDF = {"h2": "partie", "h3": "titre", "h4": "chapitre", "h5": "section"}
+_CLASSE_TEXTE_LDF = "assnatfpfprojetloiartexte"
+#: « PREMIÈRE PARTIE : CONDITIONS… », « TITRE II: DISPOSITIONS… », « III. – Plafonds… ».
+_RX_DIVISION_LDF = re.compile(r"^(?P<numero>.+?)\s*\.?\s*[:–—-]\s+(?P<intitule>.+)$", re.S)
+
+
+def _division_ldf(texte: str) -> tuple[Optional[str], Optional[str]]:
+    """`(numero, intitule)` d'un titre de division, chacun verbatim ; une
+    division sans numéro (« Agriculture et alimentation ») n'a qu'un intitulé."""
+    m = _RX_DIVISION_LDF.match(texte)
+    if not m:
+        return None, texte or None
+    return m.group("numero").strip(), m.group("intitule").strip()
+
+
+def structure_loi_de_finances(page: str) -> dict[str, dict[str, Any]]:
+    """La structure d'un texte au gabarit des lois de finances, ou `{}` : un
+    texte sans en-tête `ARTICLE` reste un gabarit non lu."""
+    lecture = _Lecture()
+    for balise, titre, classe, fragment in _RX_LDF.findall(page):
+        if balise:
+            texte = _texte(titre)
+            if balise == "h1":
+                lecture.clore()
+                lecture.courant = dict.fromkeys(NIVEAUX)
+            elif balise == "h6":
+                if _RX_EN_TETE_ARTICLE.match(texte):
+                    lecture.ouvrir_article(texte)
+                else:
+                    lecture.clore()
             else:
-                precedent = courant[nom].get("intitule")
-                courant[nom]["intitule"] = f"{precedent} {texte}".strip() if precedent else (texte or None)
-    clore()
-    return articles
+                lecture.ouvrir_division(_NIVEAUX_LDF[balise], *_division_ldf(texte))
+        elif lecture.en_cours and classe.lower() == _CLASSE_TEXTE_LDF:
+            texte = _texte(fragment)
+            if texte:
+                lecture.corps.append(texte)
+    lecture.clore()
+    return lecture.articles
 
 
 def telecharger_texte_html(uid: str) -> Optional[str]:
@@ -483,7 +599,12 @@ def rattacher(
         "texte_id": texte_id,
         "rattachement": rattachement,
         "article": article,
+        # #1352 — l'intitulé que le texte donne à l'article (« Aide aux
+        # cotisants… »), et la partie (lois de finances et de financement de la
+        # sécurité sociale) ; `null` quand le texte n'en écrit pas.
+        "intitule": fiche.get("intitule"),
         "regroupe": fiche.get("regroupe"),
+        "partie": fiche.get("partie"),
         "titre": fiche.get("titre"),
         "chapitre": fiche.get("chapitre"),
         "section": fiche.get("section"),

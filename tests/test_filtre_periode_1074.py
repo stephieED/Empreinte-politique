@@ -57,7 +57,8 @@ WEB = RACINE / "web" / "UI_finale"
 SRC = WEB / "src"
 PERIODE = SRC / "utils" / "filtrePeriode.js"
 RECHERCHE = SRC / "components" / "Recherche.jsx"
-TIROIR = SRC / "components" / "ExplorerLayout.jsx"
+# Les cases ont quitté le tiroir avec #1329 : elles sont au bout du fil d'Ariane.
+TIROIR = SRC / "components" / "FilDAriane.jsx"
 FICHE = SRC / "components" / "CandidateProfile.jsx"
 FICHE_GOUV = SRC / "components" / "GovernmentProfile.jsx"
 CHARGEUR = SRC / "data" / "index.js"
@@ -223,11 +224,19 @@ def test_deux_vraies_cases_exclusives_dans_le_tiroir():
 def test_des_cases_seulement_la_ou_elles_filtrent():
     """Des cases qui ne filtrent rien seraient du mobilier : elles n'existent
     que sur les fiches qui datent ce qu'elles montrent — la fiche de groupe
-    depuis que #1077 lui a donné ses fenêtres de parole."""
+    depuis que #1077 lui a donné ses fenêtres de parole. La fiche de
+    législature n'en porte que pour la législature EN COURS (arbitré le
+    26/10/2026) : une fenêtre comptée depuis la date des données tombe après la
+    fin d'une législature close, et viderait la fiche."""
     tiroir = _lire(TIROIR)
-    datees = re.search(r"const FICHES_DATEES = \[([^\]]*)\]", tiroir).group(1)
-    assert all(f"'/{r}'" in datees for r in ("candidats", "groupes", "gouvernements"))
-    assert "{periodeDisponible && (" in tiroir
+    assert "{periode && <CasesPeriode />}" in tiroir
+    composants = SRC / "components"
+    for fiche in ("CandidateProfile.jsx", "LigneeProfile.jsx", "GovernmentProfile.jsx"):
+        assert re.search(r"<FilDAriane [^>]*\bperiode\b", _lire(composants / fiche)), fiche
+    assert "periode={enCours}" in _lire(composants / "LegislatureProfile.jsx")
+    page = _lire(SRC / "pages" / "LegislatureProfilePage.jsx")
+    assert "!vue?.periode?.fin" in page, "les cases ne valent que pour la législature en cours"
+    assert "dansLaFenetre(d.depot, debut)" in page, "un dossier compte par sa date de dépôt"
 
 
 # ---------------------------------------------------------------------------

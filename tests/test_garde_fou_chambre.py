@@ -233,11 +233,8 @@ SITES_UI: dict[tuple[str, str], str] = {
     # du mandat : c'est la même donnée, transportée d'un cran, jamais le scalaire
     # `chambre` du profil que #493 met en retrait.
     ("src/utils/profilCandidat.js", "role"): MANDAT,
-    # #815 : la barre grise les deux fiches du Sénat — collecte suspendue depuis
-    # le 24/08/2026, Sénat hors périmètre éditorial. La chambre lue est celle du
-    # SCHÉMA DE GROUPE, portée par le manifeste, jamais le scalaire d'un profil
-    # pivot : une pastille de groupe ne connaît aucun profil.
-    ("src/components/GroupsBar.jsx", "group"): GROUPE,
+    # (#815 : la barre des groupes grisait les deux fiches du Sénat ; elle a
+    # disparu avec le tiroir, #1329, et le Sénat est retiré au build, #885.)
     # #329 : une entrée par LIGNÉE DÉCLARÉE, lue au manifeste — le chaînage de
     # `succede_a` refait ici (l'accès `tete`) est parti. La chambre sert à
     # griser les deux lignées du Sénat dans la barre.
@@ -245,6 +242,14 @@ SITES_UI: dict[tuple[str, str], str] = {
     # Les sigles des sièges se lisent sur les fiches de groupe de l'Assemblée
     # du manifeste (`avecSiglesDeSiege`, maquette « En bref » du 11/09/2026).
     ("src/data/index.js", "g"): GROUPE,
+    # #1314 : la page d'une législature servie sans JavaScript nomme ses groupes
+    # par leur fiche de l'Assemblée au manifeste — la chambre d'un groupe, lue
+    # comme `getLegislature` la lit, jamais celle d'un profil.
+    ("scripts/pages-par-adresse.mjs", "g"): GROUPE,
+    # #1329 : un siège de la frise se rattache à sa législature s'il est à
+    # l'Assemblée — la chambre du RÔLE, venue du mandat (`siegesElectifs`),
+    # comme `pisteDuRole` la lit ; jamais le scalaire `chambre` du profil.
+    ("src/data/index.js", "r"): MANDAT,
 }
 
 # Le dernier consommateur du champ profil de l'interface — `chambreLabel(

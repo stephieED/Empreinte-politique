@@ -25,14 +25,18 @@
  * comme figure (« n'apporte rien »), le meuble des textes déposés, les
  * mots-clés calculés sur les couvertures (abandonnés le 21/10).
  */
-import { Fragment, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useContext, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { formatNumber } from '../utils/lecture';
 import { useEcranEtroit } from '../hooks/useLargeur';
 import {
   ETAPES, ORIGINES, SANS_ORIGINE, SORTS, motsDesTitres,
 } from '../utils/legislature';
 import InfoBulle from './InfoBulle';
+import FilDAriane from './FilDAriane';
+import ArticlesDeLaPeriode from './ArticlesDeLaPeriode';
 import NuageDeMots from './NuageDeMots';
+import { Condition, EtiquetteFiltre, PeriodeContext, useFiltreActif } from './Recherche';
 import './GovernmentProfile.css';
 import './LegislatureProfile.css';
 
@@ -177,7 +181,8 @@ function EnBref({ vue }) {
                 const d1 = !g.fin || g.fin > fin ? fin : g.fin;
                 return (
                   <div className={`lgp-frise-g${part(d0) > 80 ? ' lgp-frise-g--droite' : ''}`} key={g.id} style={{ ...(part(d0) > 80 ? { right: `${100 - part(d0)}%` } : { left: `${part(d0)}%` }), top: (rangs[i] || 0) * RANG, height: (nRangs - (rangs[i] || 0)) * RANG - 2, zIndex: 1 + (rangs[i] || 0) }}>
-                    <b>{g.title.replace(/^Gouvernement\s+/, '')}</b>
+                    {/* Le nom mène à la fiche du gouvernement (#1329). */}
+                    <Link className="lgp-frise-lien" to={`/gouvernements/${g.id}`}>{g.title.replace(/^Gouvernement\s+/, '')}</Link>
                     {dureeEnClair(d0, d1).join(' ')}
                   </div>
                 );
@@ -290,7 +295,7 @@ function Hemicycle({ groupes, sieges, neutre = false }) {
     });
     return {
       points: places.map((p, i) => ({ ...p, ...seq[i], r: ((r1 - r0) / (R - 1)) * 0.42 })),
-      sigles: groupes.map((g, gi) => ({ s: g.sigle, nom: g.nom, n: g.effectif, a: angle(gi)?.m })).filter((s) => s.a != null),
+      sigles: groupes.map((g, gi) => ({ s: g.sigle, nom: g.nom, n: g.effectif, lignee: g.lignee, a: angle(gi)?.m })).filter((s) => s.a != null),
       arcs: runs,
       geo: { cx, cy, r1 },
     };
@@ -312,7 +317,7 @@ function Hemicycle({ groupes, sieges, neutre = false }) {
   });
   const arc = (r, a0, a1) => `M${(cx + r * Math.cos(a0)).toFixed(1)},${(cy - r * Math.sin(a0)).toFixed(1)} A${r},${r} 0 0 1 ${(cx + r * Math.cos(a1)).toFixed(1)},${(cy - r * Math.sin(a1)).toFixed(1)}`;
   return (
-    <svg className="lgp-hemi" role="img" aria-label={`Hémicycle : ${total} députés`} viewBox="-250 -90 1500 630">
+    <svg className="lgp-hemi" role="group" aria-label={`Hémicycle : ${total} députés`} viewBox="-250 -90 1500 630">
       {!neutre && arcs.map((u) => {
         const rr = r1 + (etroit ? 30 : 104), m = (u.a0 + u.a1) / 2, cm = Math.cos(m);
         const anc = cm < -0.25 ? 'end' : cm > 0.25 ? 'start' : 'middle';
@@ -332,13 +337,22 @@ function Hemicycle({ groupes, sieges, neutre = false }) {
       ))}
       {/* Le sigle porte son compte de députés, et son nom complet au survol : la
           liste sous la figure, qui les redisait, est retirée (22/10/2026). */}
-      {etiquettes.map((s) => (
-        <text className="lgp-hemi-sigle" key={s.s} style={{ fontSize: T.sigle }} textAnchor="middle" x={s.x} y={s.y}>
-          <title>{`${s.nom} : ${formatNumber(s.n)} député${s.n > 1 ? 's' : ''}`}</title>
-          {s.s}
-          {s.avecN && <tspan className="lgp-hemi-sigle-n" dy={T.dy} style={{ fontSize: T.n }} x={s.x}>{formatNumber(s.n)}</tspan>}
-        </text>
-      ))}
+      {/* LE SIGLE MÈNE À SON GROUPE (#1329) quand le groupe a sa fiche sur le
+          site : la fiche de législature relie ce que les sources publient
+          séparément. Les non-inscrits ne forment pas un groupe, et restent du
+          texte. */}
+      {etiquettes.map((s) => {
+        const etiquette = (
+          <text className={`lgp-hemi-sigle${s.lignee ? ' lgp-hemi-sigle--lien' : ''}`} style={{ fontSize: T.sigle }} textAnchor="middle" x={s.x} y={s.y}>
+            <title>{`${s.nom} : ${formatNumber(s.n)} député${s.n > 1 ? 's' : ''}`}</title>
+            {s.lignee ? <tspan className="lgp-hemi-sigle-nom">{s.s}</tspan> : s.s}
+            {s.avecN && <tspan className="lgp-hemi-sigle-n" dy={T.dy} style={{ fontSize: T.n }} x={s.x}>{formatNumber(s.n)}</tspan>}
+          </text>
+        );
+        return s.lignee
+          ? <Link aria-label={`${s.nom}, ${formatNumber(s.n)} député${s.n > 1 ? 's' : ''}`} key={s.s} to={`/groupes/${s.lignee}`}>{etiquette}</Link>
+          : <Fragment key={s.s}>{etiquette}</Fragment>;
+      })}
       <text className="lgp-hemi-total" style={{ fontSize: T.total }} textAnchor="middle" x="500" y={etroit ? 455 : 470}>{total}</text>
       <text className="lgp-hemi-sous" style={{ fontSize: T.sous }} textAnchor="middle" x="500" y={etroit ? 500 : 504}>députés</text>
     </svg>
@@ -416,7 +430,8 @@ function Detail({ titre, sousTitre, onFermer, children }) {
   );
 }
 
-function Bibliotheque({ vue }) {
+function Bibliotheque({ vue, mot = '' }) {
+  const actif = useFiltreActif(mot);
   const [ouvert, setOuvert] = useState(null);
   const ordreOrigine = ['gouvernement', 'deputes', 'senateurs', null];
   /* LES COMMISSIONS SPÉCIALES TIENNENT UNE SEULE RANGÉE (23/10/2026) : chacune
@@ -431,10 +446,23 @@ function Bibliotheque({ vue }) {
   const cellule = (dom, sort) => textes.filter((d) => d.domaine === dom && d.sort === sort)
     .sort((a, b) => (b.solennel - a.solennel) || ordreOrigine.indexOf(a.origine) - ordreOrigine.indexOf(b.origine));
   const basculer = (cle) => setOuvert((o) => (o?.cle === cle.cle ? null : cle));
+  /* Sous un mot (#1329), la section reste et dit qu'il ne trouve rien : une
+   * section absente se lirait comme un oubli. */
+  if (!textes.length && actif) {
+    return (
+      <Section id="section-textes" numero="03" titre="Les textes de la législature" bulle={BULLES.textes()}>
+        <div className="gvp-carte">
+          <EtiquetteFiltre mot={mot} />
+          <p className="cp-note cp-filtre-vide">Aucun texte<Condition critere="dont l’intitulé contient" mot={mot} />.</p>
+        </div>
+      </Section>
+    );
+  }
   if (!textes.length) return null;
   return (
     <Section id="section-textes" numero="03" titre="Les textes de la législature" bulle={BULLES.textes()}>
       <div className="gvp-carte">
+        <EtiquetteFiltre mot={mot} />
         <div className="lgp-legende">
           {Object.values(ORIGINES).map((o) => <span key={o.libelle}><i style={{ background: o.couleur }} />{o.libelle}</span>)}
           {textes.some((d) => !d.origine) && <span><i style={{ background: SANS_ORIGINE.couleur }} />{SANS_ORIGINE.libelle}</span>}
@@ -535,7 +563,8 @@ function ListeParEtape({ textes }) {
   );
 }
 
-function Commissions({ vue }) {
+function Commissions({ vue, motCherche = '' }) {
+  const actif = useFiltreActif(motCherche);
   const { dossiers, transversaux } = useMemo(() => motsDesTitres(vue.dossiers.filter((d) => d.commission && d.legislature === String(vue.id))), [vue]);
   const [filtre, setFiltre] = useState(null);
   const [mot, setMot] = useState(null);
@@ -550,6 +579,16 @@ function Commissions({ vue }) {
     mots = T.length >= 30 ? mots.filter(([, n]) => n >= 2).slice(0, filtre ? 70 : 90) : mots.slice(0, 70);
     return { T, mots, enListe: T.length < SEUIL_NUAGE || maxMot < 2 };
   }, [dossiers, transversaux, filtre]);
+  if (!dossiers.length && actif) {
+    return (
+      <Section id="section-commissions" numero="04" titre="Le travail des commissions" bulle={BULLES.commissions()}>
+        <div className="gvp-carte">
+          <EtiquetteFiltre mot={motCherche} />
+          <p className="cp-note cp-filtre-vide">Aucun texte renvoyé à une commission<Condition critere="dont l’intitulé contient" mot={motCherche} />.</p>
+        </div>
+      </Section>
+    );
+  }
   if (!dossiers.length) return null;
   const permanentes = [...new Set(dossiers.filter((d) => !d.commissionSpeciale).map((d) => d.commission))].sort((a, b) => a.localeCompare(b, 'fr'));
   const speciales = [...new Set(dossiers.filter((d) => d.commissionSpeciale).map((d) => d.commission))];
@@ -569,6 +608,7 @@ function Commissions({ vue }) {
   return (
     <Section id="section-commissions" numero="04" titre="Le travail des commissions" bulle={BULLES.commissions()}>
       <div className="gvp-carte">
+        <EtiquetteFiltre mot={motCherche} />
         <div className="lgp-legende">
           {ETAPES.map((e) => <span key={e.cle}><i style={{ background: e.couleur }} />{e.libelle}</span>)}
         </div>
@@ -642,11 +682,21 @@ function CeQuOnNaPasPuLire() {
 
 /* ── La fiche ────────────────────────────────────────────────────────────── */
 
-export default function LegislatureProfile({ vue }) {
+/* LA RECHERCHE (#1329, comme sur les trois autres fiches, #979) : la page
+ * réduit les dossiers à ceux dont le titre porte le mot, avant de construire
+ * les sections. « En bref » et « Qui siégeait » ne lisent pas de titre : ils se
+ * retirent tant qu'un mot est tapé ; « Ce qu'on n'a pas pu lire » reste. */
+export default function LegislatureProfile({ vue, mot = '', enCours = false }) {
+  // Un mot OU une période (la législature en cours seulement) : la fiche se
+  // comporte de la même façon.
+  const actif = useFiltreActif(mot);
+  const debut = useContext(PeriodeContext);
   const { periode } = vue;
   return (
     <main className="gvp-main">
-      <div className="gvp-breadcrumb">Législature / <strong>{vue.nom}</strong></div>
+      <div className="gvp-breadcrumb">
+        <FilDAriane id={vue.id} libelle="Législature" nom={vue.nom} periode={enCours} type="legislatures" />
+      </div>
       <header className="gvp-entete">
         <h1>{vue.nom}</h1>
         {periode?.debut && (
@@ -656,11 +706,13 @@ export default function LegislatureProfile({ vue }) {
           </p>
         )}
       </header>
-      <EnBref vue={vue} />
-      <QuiSiegeait vue={vue} />
-      <Bibliotheque vue={vue} />
-      <Commissions vue={vue} />
+      {!actif && <EnBref vue={vue} />}
+      {!actif && <QuiSiegeait vue={vue} />}
+      <Bibliotheque key={`t-${mot}-${debut}`} mot={mot} vue={vue} />
+      <Commissions key={`c-${mot}-${debut}`} motCherche={mot} vue={vue} />
       <CeQuOnNaPasPuLire />
+      {/* En fin de fiche (arbitré le 26/10/2026). */}
+      {!actif && <ArticlesDeLaPeriode debut={periode?.debut} fin={periode?.fin} />}
     </main>
   );
 }

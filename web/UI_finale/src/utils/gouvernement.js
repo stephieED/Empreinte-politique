@@ -224,8 +224,23 @@ export function majoriteDuGouvernement(groupes = [], periode = {}) {
   return [...parLegislature.values()]
     .sort((a, b) => String(a.debut).localeCompare(String(b.debut)))
     .map((g) => (g.position === 'majorite'
-      ? { legislature: g.legislature, debut: g.debut, nom: g.nom, declaree: true }
+      ? { legislature: g.legislature, debut: g.debut, nom: g.nom, lignee: g.lignee ?? null, declaree: true }
       : { legislature: g.legislature, debut: g.debut, nom: 'aucun groupe déclaré majoritaire', declaree: false }));
+}
+
+/**
+ * LES LÉGISLATURES PENDANT LESQUELLES UN GOUVERNEMENT A GOUVERNÉ (#1329) : celles
+ * dont la période croise la sienne, par la règle de la fiche de législature
+ * (`vueLegislature`) — un gouvernement nommé le dernier jour d'une législature
+ * n'y a pas gouverné (Philippe II, 20/06/2017). Du plus ancien au plus récent.
+ *
+ * `legislatures` vient du manifeste : { id, title, debut, fin }.
+ */
+export function legislaturesDuGouvernement(legislatures = [], periode = {}) {
+  if (!periode.debut) return [];
+  return legislatures
+    .filter((l) => l.debut && periode.debut < (l.fin || '9999') && (periode.fin || '9999') >= l.debut)
+    .sort((a, b) => a.debut.localeCompare(b.debut));
 }
 
 /**

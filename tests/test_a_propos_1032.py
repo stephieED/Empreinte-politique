@@ -49,7 +49,9 @@ APP = SRC / "App.jsx"
 PIED = SRC / "components" / "PiedDeSite.jsx"
 ADRESSES = RACINE / "web" / "UI_finale" / "scripts" / "pages-par-adresse.mjs"
 
-PREMIERE_PHRASE = "rassemble ce que les institutions publient"
+# Le premier paragraphe a changé le 26/10/2026 (#1329) : le site ne se dit plus
+# agrégateur. La phrase témoin est celle qui dit ce qu'il apporte.
+PREMIERE_PHRASE = "Empreinte politique les met en images"
 
 
 def sans_commentaires(source: str) -> str:

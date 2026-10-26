@@ -98,7 +98,7 @@ def test_les_redirections_partagent_les_identifiants_par_defaut_de_l_application
 
 def test_les_fiches_viennent_du_manifeste_jamais_d_une_liste_en_dur(script):
     assert "manifest.json" in script
-    for population in ("manifeste.candidates", "manifeste.lignees", "manifeste.gouvernements"):
+    for population in ("manifeste.candidates", "manifeste.lignees", "manifeste.gouvernements", "manifeste.legislatures"):
         assert population in script, f"`{population}` n'est plus lu : ses fiches répondraient 404"
 
 

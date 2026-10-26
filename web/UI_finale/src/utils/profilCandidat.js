@@ -491,6 +491,9 @@ export function rolesDuParcours(mandats) {
       detail: [m.label, gouvernement ? `gouvernement ${gouvernement.nom}` : null]
         .filter(Boolean)
         .join(' · ') || null,
+      // L'intitulé seul, pour la liste datée quand le gouvernement a sa fiche
+      // et s'écrit en lien (#1329).
+      libelleMandat: m.label ?? null,
       debut: m.debut,
       fin: borneFin(m),
       actif: Boolean(m.actif) || !m.fin,

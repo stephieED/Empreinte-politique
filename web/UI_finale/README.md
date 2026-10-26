@@ -87,9 +87,10 @@ src/
 ├── App.jsx                   # Déclaration des routes
 ├── index.css                 # Tokens CSS globaux (palette, typographie)
 ├── components/               # Composants d'affichage — ils ne calculent aucun fait
-│   ├── ExplorerLayout        # Coque de l'explorateur : barres latérales + outlet
+│   ├── ExplorerLayout        # Coque de l'explorateur : bandeau, recherche, sommaire + outlet
 │   ├── Brand · EnTeteSite · NavigationSite · PiedDeSite · SommaireSections · ScrollRow · StaticPage
-│   ├── CandidatesBar · GroupsBar · GovernmentsBar   # les trois onglets
+│   ├── FilDAriane            # Le fil d'Ariane des fiches, seul endroit pour en changer (#1329)
+│   ├── BandeauArticles · ArticlesDeLaPeriode        # « Articles » ouvre un bandeau ; les articles d'une période (#1329)
 │   ├── CandidateProfile      # Fiche candidat
 │   ├── LigneeProfile         # Fiche d'une lignée de groupe (#329)
 │   ├── GovernmentProfile     # Fiche de gouvernement
@@ -106,10 +107,9 @@ src/
 │   ├── LandingPage           # L'accueil, hors explorateur
 │   ├── CandidateProfilePage · GroupProfilePage · GovernmentProfilePage
 │   └── MethodologyPage · CoveragePage · LegalNoticePage
-├── context/
-│   └── GroupFilterContext    # État global : groupe sélectionné (filtre candidats)
 ├── data/
 │   ├── index.js              # API de fetch + défauts de route
+│   ├── articles.js           # Les articles publiés (`public/rapports.json`), lus une fois
 │   └── pivotAdapter.js       # Pivot JSON → objets consommables ; APPELLE utils/,
 │                             #   n'écrit pas de seconde version des règles
 ├── utils/                    # LES RÈGLES DE LECTURE — c'est ici que vivent les faits
@@ -163,18 +163,19 @@ diverge.
 | URL | Composant | Description |
 |---|---|---|
 | `/` | `LandingPage` | L'accueil : ce que le dépôt porte, comment il est fait |
-| `/candidats` | → redirect | Vers le candidat par défaut |
+| `/candidats` | `ChoixDuCandidatPage` | Le fil d'Ariane ouvert sur la liste des candidats, sans fiche par défaut (#1329) |
 | `/candidats/:candidateId` | `CandidateProfilePage` | Fiche candidat |
 | `/groupes` | → redirect | Vers la lignée par défaut |
 | `/groupes/:groupId` | `GroupProfilePage` | Fiche de lignée ; un id de fiche par législature redirige vers sa lignée |
 | `/gouvernements` | → redirect | Vers le gouvernement par défaut |
 | `/gouvernements/:governmentId` | `GovernmentProfilePage` | Fiche de gouvernement |
+| `/legislatures/:legislatureId` | `LegislatureProfilePage` | Fiche de législature (#1314) |
 | `/methodologie` | `MethodologyPage` | La méthode, les règles, ce qui n'est pas publié |
 | `/sources` | `CoveragePage` | Les sources et ce que chacune apporte (#951), puis ce que le dépôt porte et depuis quand, pour tout le corpus (#328). `/couverture` y redirige |
 | `/mentions-legales` | `LegalNoticePage` | Sources, licences, attribution |
 
-Trois onglets dans l'explorateur — **Candidats · Groupes · Gouvernement** —, mais **dix
-routes** : les trois pages statiques vivent hors de la coque.
+Quatre types de fiche — **Candidats · Groupes · Gouvernements · Législatures** —, que le
+fil d'Ariane de chaque fiche ouvre tous (#1329) ; les pages du site vivent hors de la coque.
 
 ---
 

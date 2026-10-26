@@ -34,7 +34,7 @@ export function Condition({ critere, mot }) {
   );
 }
 
-export function BarreFiltre({ saisie, onSaisie }) {
+export function BarreFiltre({ saisie, onSaisie, id = 'cp-filtre-mot' }) {
   return (
     <div className="cp-filtre" role="search">
       <svg aria-hidden="true" height="16" viewBox="0 0 16 16" width="16">
@@ -42,11 +42,11 @@ export function BarreFiltre({ saisie, onSaisie }) {
         <path d="M11 11l3.5 3.5" stroke="currentColor" strokeLinecap="round" strokeWidth="1.6" />
       </svg>
       <input
-        aria-label="Rechercher sur cette page"
+        aria-label="Chercher sur cette fiche"
         autoComplete="off"
-        id="cp-filtre-mot"
+        id={id}
         onChange={(e) => onSaisie(e.target.value)}
-        placeholder="Rechercher sur cette page"
+        placeholder="Chercher sur cette fiche"
         type="search"
         value={saisie}
       />

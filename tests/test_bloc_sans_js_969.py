@@ -158,3 +158,54 @@ def test_le_conteneur_attendu_est_bien_celui_de_index_html():
 def test_le_build_ecrit_les_blocs():
     script = (UI / "scripts" / "pages-par-adresse.mjs").read_text(encoding="utf-8")
     assert "bloc-sans-js.mjs" in script and "avecBloc(" in script
+
+
+# ── La législature (#1314, textes arbitrés le 26/10/2026) ───────────────────
+# Entrée copiée de `pivot_data/legislatures.json` (XVIe) et du manifeste le
+# 26/10/2026, réduite à ce que le bloc lit.
+XVIE = {
+    "debut": "2022-06-22", "fin": "2024-06-09", "mode_fin": "dissolution",
+    "groupes": [
+        {"organe_ref": "PO800520", "sigle": "RN", "nom": "Rassemblement National", "place_mediane": 50.5},
+        {"organe_ref": "PO800484", "sigle": "DEM", "nom": "Démocrate (MoDem et Indépendants)", "place_mediane": 300},
+        {"organe_ref": "PO800538", "sigle": "NI", "nom": "Non inscrit", "place_mediane": 200},
+    ],
+}
+GOUVERNEMENTS = [
+    {"nom": "Gouvernement Borne", "debut": "2022-05-17", "fin": "2024-01-09"},
+    {"nom": "Gouvernement Attal", "debut": "2024-01-10", "fin": "2024-09-05"},
+    {"nom": "Gouvernement Barnier", "debut": "2024-09-05", "fin": "2024-12-13"},
+]
+SITE = [{"organes": ["PO800484"], "nom": "Démocrate (MoDem et Indépendants)"}]
+
+
+def test_la_legislature_dit_ses_bornes_ses_gouvernements_et_ses_groupes():
+    donnees = json.dumps({"l": XVIE, "g": GOUVERNEMENTS, "s": SITE}, ensure_ascii=False)
+    bloc = _node(f"const D = {donnees};\nconsole.log(B.blocLegislature('XVIe législature', D.l, D.g, D.s, '2026-10-26'));")
+    assert "<h1>XVIe législature</h1>" in bloc
+    assert "Assemblée nationale · du 22/06/2022 au 09/06/2024 · close par la dissolution" in bloc
+    assert "Gouvernement Borne — du 17/05/2022 au 09/01/2024" in bloc
+    assert "Gouvernement Barnier" not in bloc, "nommé après la fin : il n'a pas gouverné pendant la XVIe"
+    # Ordre des sièges, de la gauche vers la droite de l'hémicycle ; pas de non-inscrits.
+    assert bloc.index("Démocrate") < bloc.index("Rassemblement National")
+    assert "Non inscrit" not in bloc
+    assert "députés" not in bloc, "un nombre de députés demanderait sa date"
+    assert "les textes de la législature et le travail des commissions" in bloc
+
+
+def test_le_titre_d_une_legislature():
+    meta = UI / "scripts" / "metadonnees-pages.mjs"
+    script = (
+        f"import {{ metaLegislature }} from {json.dumps(meta.as_uri())};\n"
+        "console.log(JSON.stringify([metaLegislature({debut:'2022-06-22', fin:'2024-06-09'}, 'XVIe législature'),"
+        " metaLegislature({debut:'2024-07-01', fin:null}, 'XVIIe législature')]));"
+    )
+    if shutil.which("node") is None:
+        pytest.skip("node absent")
+    res = subprocess.run(["node", "--input-type=module", "-e", script], capture_output=True, text=True, check=False)
+    assert res.returncode == 0, res.stderr
+    titres = [m["titre"] for m in json.loads(res.stdout)]
+    assert titres == [
+        "XVIe législature (2022-2024) — groupes, textes et commissions",
+        "XVIIe législature (depuis 2024) — groupes, textes et commissions",
+    ]

@@ -22,7 +22,7 @@ Ce que chaque décision doit porter
 
     <a id="ancienne-ancre"></a><a id="autre-ancre"></a>   (facultatif)
 
-    > **En bref** — le résumé qui devient la ligne d'index.
+    > **En bref** — le résumé, obligatoire, que l'index ne reprend plus.
 
 - Le **titre** est le `#` de niveau 1.
 - La **date** est la ligne suivante, entre accents graves. `en continu` pour une
@@ -31,9 +31,12 @@ Ce que chaque décision doit porter
   une ancre historique diffère du nom de fichier : des centaines de liens `technical_decisions.md#<ancre>`
   existent hors du dépôt, dans des commentaires d'issues non réécrivables. Une
   ancre ne se renomme ni ne se supprime.
-- Le **résumé** est la citation `> **En bref** — …`, sur une seule ligne. C'est
-  lui qui devient la ligne d'index, et il est lu **aussi** par qui ouvre le
-  fichier : la lecture chronologique du projet a de la valeur en soi.
+- Le **résumé** est la citation `> **En bref** — …`, sur une seule ligne. Il
+  reste obligatoire, et il vit dans le fichier de la décision. **L'index ne le
+  recopie plus depuis le 26/10/2026** : la ligne d'index porte la date, les
+  ancres et le titre. Recopiés, les 541 résumés faisaient 530 Ko d'index, que
+  les sessions chargeaient en entier ; sans eux, 108 Ko
+  (`docs/decisions/index-des-decisions-sans-resume.md`).
 
 Usage
 -----
@@ -132,7 +135,7 @@ def composer(decisions: list[dict[str, object]]) -> str:
     for d in sorted(decisions, key=_cle_de_tri, reverse=True):
         ancres = "".join(f'<a id="{a}"></a>' for a in d["ancres"])
         lignes.append(
-            f"- `{d['date']}` {ancres}[{d['titre']}](decisions/{d['fichier']}) — {d['resume']}"
+            f"- `{d['date']}` {ancres}[{d['titre']}](decisions/{d['fichier']})"
         )
     return "\n".join(lignes) + "\n"
 

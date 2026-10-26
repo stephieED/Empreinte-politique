@@ -105,6 +105,34 @@ export function blocGouvernement(profil, dateDuBuild) {
     + pied(dateDuBuild, 'les textes portés par le gouvernement');
 }
 
+/* UNE LÉGISLATURE (#1314, textes arbitrés le 26/10/2026) : ses bornes et son
+ * mode de fin, les gouvernements qui ont gouverné pendant elle — par la règle de
+ * la fiche (`vueLegislature`) : un gouvernement nommé le dernier jour n'y a pas
+ * gouverné —, et ses groupes dans l'ordre des sièges, sous le nom de leur fiche
+ * quand le site en a une. Ni le nombre de députés, qui demanderait sa date, ni
+ * les non-inscrits, qui ne forment pas un groupe. */
+export function blocLegislature(nom, legislature, gouvernements, groupesDuSite, dateDuBuild) {
+  const { debut, fin } = legislature;
+  const quand = periode({ debut, fin, actif: !fin });
+  const dissolution = legislature.mode_fin === 'dissolution' ? ' · close par la dissolution' : '';
+  const govs = (gouvernements || [])
+    .filter((g) => debut && g.debut && g.debut < (fin || '9999') && (g.fin || '9999') >= debut)
+    .sort((a, b) => a.debut.localeCompare(b.debut))
+    .map((g) => `<li>${ech(g.nom)} — ${periode({ debut: g.debut, fin: g.fin, actif: !g.fin })}</li>`)
+    .join('');
+  const duSite = (organe) => (groupesDuSite || []).find((s) => (s.organes || []).includes(organe));
+  const groupes = (legislature.groupes || [])
+    .filter((g) => g.place_mediane != null && g.sigle !== 'NI')
+    .sort((a, b) => b.place_mediane - a.place_mediane)
+    .map((g) => `<li>${ech(duSite(g.organe_ref)?.nom || g.nom)}</li>`)
+    .join('');
+  return `<h1>${ech(nom)}</h1>`
+    + `<p>Assemblée nationale · ${quand}${dissolution}</p>`
+    + (govs ? `<h2>Gouvernements</h2><ul>${govs}</ul>` : '')
+    + (groupes ? `<h2>Groupes</h2><ul>${groupes}</ul>` : '')
+    + pied(dateDuBuild, 'les textes de la législature et le travail des commissions');
+}
+
 /* Le bloc vit DANS le conteneur de l'application : au démarrage, React le
  * remplace par la page rendue. Hors du conteneur, il resterait affiché deux
  * fois. */

@@ -105,6 +105,12 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* /candidats, la page de choix (#1329) : le menu du fil d'Ariane, ouvert, et
+   rien d'autre. Assez haute pour que le menu ne recouvre pas le pied. */
+.cp-main--choix {
+  min-height: 620px;
+}
+
 .cp-breadcrumb {
   font-size: 13px;
   color: var(--muted);

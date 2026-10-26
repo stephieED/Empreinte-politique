@@ -1,6 +1,6 @@
 {
   "schema_version": "textes-promulgues-v1",
-  "genere_le": "2026-10-21T20:57:27+0000",
+  "genere_le": "2026-10-26T19:13:34+0000",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "textes": {
     "DLR5L14N29639": {
@@ -31241,6 +31241,100 @@
       "senat_statue_apres": false,
       "senat_statue_apres_non_resolu": null,
       "date_derniere_decision_senat": "2025-04-28"
+    },
+    "DLR5L17N53095": {
+      "date_promulgation": "2026-10-20",
+      "numero_loi": "2026-962",
+      "nor": "EAEJ2507056L",
+      "titre": "Projet de loi autorisant l’approbation de la convention d’extradition entre le Gouvernement de la République française et le Gouvernement de la République de Colombie",
+      "nature_procedure": "Projet de ratification des traités et conventions",
+      "commission": {
+        "organe_ref": "PO59047",
+        "sigle": "Affaires étrangères",
+        "nom": "Commission des affaires étrangères",
+        "type": "COMPER"
+      },
+      "chambre_premiere_lecture": "senat",
+      "jorftext": "JORFTEXT000054999122",
+      "jorftext_autres": null,
+      "source_url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N53095",
+      "derniere_adoption_an": {
+        "date": "2026-10-12",
+        "mode": "scrutin_public",
+        "mode_non_resolu": null,
+        "scrutin_ids": [
+          "an:17:8696"
+        ],
+        "acte_uid": "L17-VD234155DEC",
+        "code_acte": "AN1-DEBATS-DEC",
+        "libelle_statut": "adopté sans modification"
+      },
+      "derniere_adoption_an_non_resolue": null,
+      "senat_statue_apres": false,
+      "senat_statue_apres_non_resolu": null,
+      "date_derniere_decision_senat": "2026-02-18"
+    },
+    "DLR5L17N53886": {
+      "date_promulgation": "2026-10-22",
+      "numero_loi": "2026-975",
+      "nor": "SFHX2614236L",
+      "titre": "Proposition de loi visant à assouplir la procédure d'autorisation des établissements et services médico-sociaux à caractère expérimental",
+      "nature_procedure": "Proposition de loi ordinaire",
+      "commission": {
+        "organe_ref": "PO420120",
+        "sigle": "Affaires sociales",
+        "nom": "Commission des affaires sociales",
+        "type": "COMPER"
+      },
+      "chambre_premiere_lecture": "senat",
+      "jorftext": "JORFTEXT000055005805",
+      "jorftext_autres": null,
+      "source_url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N53886",
+      "derniere_adoption_an": {
+        "date": "2026-10-12",
+        "mode": "scrutin_public",
+        "mode_non_resolu": null,
+        "scrutin_ids": [
+          "an:17:8694"
+        ],
+        "acte_uid": "L17-VD234153DEC",
+        "code_acte": "AN1-DEBATS-DEC",
+        "libelle_statut": "adoptée sans modification"
+      },
+      "derniere_adoption_an_non_resolue": null,
+      "senat_statue_apres": false,
+      "senat_statue_apres_non_resolu": null,
+      "date_derniere_decision_senat": "2026-05-28"
+    },
+    "DLR5L17N54379": {
+      "date_promulgation": "2026-10-20",
+      "numero_loi": "2026-963",
+      "nor": "EAEJ2606339L",
+      "titre": "Projet de loi autorisant l’approbation de l’accord multilatéral entre autorités compétentes portant sur l’échange des informations GloBE",
+      "nature_procedure": "Projet de ratification des traités et conventions",
+      "commission": {
+        "organe_ref": "PO59047",
+        "sigle": "Affaires étrangères",
+        "nom": "Commission des affaires étrangères",
+        "type": "COMPER"
+      },
+      "chambre_premiere_lecture": "senat",
+      "jorftext": "JORFTEXT000054999124",
+      "jorftext_autres": null,
+      "source_url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N54379",
+      "derniere_adoption_an": {
+        "date": "2026-10-07",
+        "mode": "sans_scrutin_public",
+        "mode_non_resolu": null,
+        "scrutin_ids": null,
+        "acte_uid": "L17-VD234087DEC",
+        "code_acte": "AN1-DEBATS-DEC",
+        "libelle_statut": "adopté sans modification"
+      },
+      "derniere_adoption_an_non_resolue": null,
+      "senat_statue_apres": false,
+      "senat_statue_apres_non_resolu": null,
+      "date_derniere_decision_senat": "2026-07-09"
     }
   }
 }

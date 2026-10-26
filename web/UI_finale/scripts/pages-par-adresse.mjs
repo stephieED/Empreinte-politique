@@ -21,7 +21,7 @@
  * lignées de groupe, les gouvernements. Une fiche absente du manifeste n'a pas
  * de fichier : elle garde le repli 404, qui est le bon statut pour elle.
  *
- * LES ADRESSES QUI REDIRIGENT (`/candidats`, `/couverture`, une ancienne fiche
+ * LES ADRESSES QUI REDIRIGENT (`/groupes`, `/couverture`, une ancienne fiche
  * de législature `/groupes/AN-SOC-17`…) reçoivent aussi leur fichier, avec une
  * balise `canonical` vers l'adresse d'arrivée : un lien déjà partagé répond
  * 200 et désigne la page à indexer, sans que la même fiche soit indexée deux
@@ -39,18 +39,19 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  DEFAULT_CANDIDATE_ID,
   DEFAULT_GOVERNMENT_ID,
   DEFAULT_GROUP_ID,
 } from '../src/data/adressesParDefaut.js';
+import { nomDeLegislature } from '../src/data/nomsDesLegislatures.js';
 import {
   PAGES_FIXES_META,
   appliquerMeta,
   metaCandidat,
   metaGouvernement,
+  metaLegislature,
   metaLignee,
 } from './metadonnees-pages.mjs';
-import { avecBloc, blocCandidat, blocGouvernement, blocLignee } from './bloc-sans-js.mjs';
+import { avecBloc, blocCandidat, blocGouvernement, blocLegislature, blocLignee } from './bloc-sans-js.mjs';
 import { entreesDeSitemap } from './index-rapports.mjs';
 import { robots, sitemap } from './sitemap-et-robots.mjs';
 import {
@@ -72,11 +73,10 @@ function echouer(message) {
 /* Les pages fixes de `src/App.jsx`. Recopiées ici faute de pouvoir lire du
  * JSX sous Node : `tests/test_pages_par_adresse_969.py` échoue si une route
  * de l'application manque à cette liste. */
-export const PAGES_FIXES = ['a-propos', 'methodologie', 'sources', 'faq', 'mentions-legales', 'nous-soutenir'];
+export const PAGES_FIXES = ['a-propos', 'methodologie', 'sources', 'faq', 'mentions-legales', 'nous-soutenir', 'candidats'];
 
 /* Les redirections de `src/App.jsx`, adresse → adresse d'arrivée. */
 export const REDIRECTIONS_FIXES = {
-  candidats: `candidats/${DEFAULT_CANDIDATE_ID}`,
   groupes: `groupes/${DEFAULT_GROUP_ID}`,
   gouvernements: `gouvernements/${DEFAULT_GOVERNMENT_ID}`,
   couverture: 'sources',
@@ -105,6 +105,9 @@ const pages = {
   candidats: (manifeste.candidates || []).map((c) => adresse('candidats', c.slug, 'manifest.candidates')),
   groupes: (manifeste.lignees || []).map((l) => adresse('groupes', l.id, 'manifest.lignees')),
   gouvernements: (manifeste.gouvernements || []).map((g) => adresse('gouvernements', g.id, 'manifest.gouvernements')),
+  /* Les législatures (#1314) : celles que le manifeste liste, c'est-à-dire
+   * celles dont le run a écrit les deux fichiers. */
+  legislatures: (manifeste.legislatures || []).map((l) => adresse('legislatures', l.id, 'manifest.legislatures')),
 };
 const publiees = new Set(Object.values(pages).flat());
 
@@ -164,6 +167,17 @@ try {
     datesDesDonnees.set(`gouvernements/${g.id}`, profil.meta?.genere_le || null);
     jsonld.set(`gouvernements/${g.id}`, jsonldGouvernement(profil, `https://${domaine}/gouvernements/${g.id}`));
   }
+  /* Les bornes, le mode de fin et les groupes se lisent dans `legislatures.json`,
+   * que la fiche lit aussi ; les gouvernements et les noms de groupe, au manifeste. */
+  if ((manifeste.legislatures || []).length) {
+    const { legislatures } = JSON.parse(readFileSync(join(dist, 'data', 'legislatures.json'), 'utf-8'));
+    for (const l of manifeste.legislatures) {
+      const nom = nomDeLegislature(l.id);
+      const groupesDuSite = (manifeste.groupes || []).filter((g) => g.chambre === 'AN' && String(g.legislature) === String(l.id));
+      metas.set(`legislatures/${l.id}`, metaLegislature(l, nom));
+      blocs.set(`legislatures/${l.id}`, blocLegislature(nom, legislatures[l.id], manifeste.gouvernements, groupesDuSite, dateDuBuild));
+    }
+  }
 } catch (erreur) {
   echouer(`texte d'une page impossible à écrire — ${erreur.message}`);
 }
@@ -206,7 +220,8 @@ writeFileSync(join(dist, 'robots.txt'), robots(domaine));
 console.log(
   `pages-par-adresse : ${publiees.size + 1} pages publiées répondent 200 — l'accueil, `
   + `${pages.fixes.length} pages fixes, ${pages.candidats.length} fiches candidat (candidats du manifeste), `
-  + `${pages.groupes.length} fiches de lignée, ${pages.gouvernements.length} fiches de gouvernement ; `
+  + `${pages.groupes.length} fiches de lignée, ${pages.gouvernements.length} fiches de gouvernement, `
+  + `${pages.legislatures.length} fiches de législature ; `
   + `${Object.keys(redirections).length} adresses de redirection, canonical vers leur arrivée ; `
   + `${blocs.size} fiches portent leurs faits en clair, lisibles sans JavaScript ; `
   + `sitemap.xml en liste ${entrees.length}, instantanés compris, robots.txt le désigne ; `

@@ -207,4 +207,4 @@ def test_la_page_lit_le_mot_et_le_tiroir_porte_le_champ():
     page = _lire(PAGE)
     assert "filtrerGouvernement(government, motDiffere, extraits, periode)" in page
     assert "useDeferredValue(params.get('mot') ?? '')" in page
-    assert "const FICHES_FILTRABLES = ['/candidats', '/groupes', '/gouvernements'];" in _lire(TIROIR)
+    assert "const FICHES_FILTRABLES = ['/candidats', '/groupes', '/gouvernements', '/legislatures'];" in _lire(TIROIR)

@@ -25,7 +25,16 @@ import './AboutPage.css';
  * où le jaune signal passe le contraste (16,01:1, DESIGN_SYSTEM §2).
  *
  * LE TEXTE EST CELUI DE LA PROPRIÉTAIRE, du 18/09/2026, découpé en paragraphes
- * pour la lecture et sans un mot changé. Il ne promet rien de plus que
+ * pour la lecture et sans un mot changé.
+ *
+ * SON PREMIER PARAGRAPHE A CHANGÉ LE 26/10/2026 (#1329). Il disait que le site
+ * « rassemble ce que les institutions publient sur les candidats à la
+ * présidentielle 2027 […] et le donne à lire tel quel » : un discours
+ * d'agrégateur, qui mettait aussi les candidats avant les groupes et les
+ * gouvernements (`coeur-permanent-groupes-et-gouvernements`). Le texte qui le
+ * remplace est celui de la propriétaire, écrit pour un lecteur qui ne connaît
+ * rien au projet ; seuls « Mais » (qui ne s'opposait plus à rien) et l'accord de
+ * « proposées ici donnent » ont été corrigés, avec son accord. Il ne promet rien de plus que
  * `/methodologie` : « relus par une personne » couvre les rapprochements que la
  * fiche signale (#977).
  *
@@ -58,7 +67,7 @@ import './AboutPage.css';
 export const DEPOT = 'https://github.com/stephieED/Empreinte-politique';
 
 const MANIFESTE = [
-  'Empreinte politique rassemble ce que les institutions publient sur les candidats à la présidentielle 2027 — mandats, votes, textes, prises de parole — et le donne à lire tel quel.',
+  'Qui siège aujourd’hui à l’Assemblée ? Quelles lois chaque gouvernement a-t-il fait adopter ? Entre les données brutes et les publications techniques, difficile de s’y retrouver. Empreinte politique les met en images, pour qu’on les comprenne d’un coup d’œil. Les infographies proposées ici donnent une vue d’ensemble sur l’activité parlementaire et gouvernementale (mandats, votes, textes, prises de parole).',
   "Tout est collecté et mis en forme par un programme, à chaque mise à jour : aucun fait n'est écrit ni corrigé à la main. Ce que vous lisez est ce que la source publie, avec le lien pour le vérifier.",
   'Seuls quelques rapprochements sont relus par une personne, et la fiche le dit.',
   "Rien n'est noté, classé ni commenté.",

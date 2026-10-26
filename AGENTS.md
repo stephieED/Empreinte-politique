@@ -12,8 +12,8 @@ wastes a session. Sorted by the question, not by the filename:
 | --- | --- |
 | « What may I never publish? » | **§2 below** — the eight editorial rules. Nothing overrides them |
 | « What rule governs this area? » — merge, CI, pre-commit guards, scope, interventions, quality gate | `docs/regles/`, one file per domain, indexed in §3 |
-| « **What governs this file I am about to change?** » | `docs/decisions-par-module.md` — *this module → these decisions*, generated |
-| « Why was it decided this way? » | `docs/decisions/<anchor>.md`, one file per decision, indexed newest-first by `docs/technical_decisions.md` |
+| « **What governs this file I am about to change?** » | `docs/decisions-par-module.md` — *this module → these decisions*, generated. **Search it, never load it whole** |
+| « Why was it decided this way? » | `docs/decisions/<anchor>.md`, one file per decision, indexed newest-first by `docs/technical_decisions.md` (date and title; the summary stays in the decision). **Search the index, never load it whole** |
 | « What does the data become? » — outputs, schemas, volumetry | `docs/data-architecture.md` |
 | « What does a run do? » — jobs, caches, artifacts, budgets, retry | `docs/workflow-generate-data.md` |
 | « What does this provider publish, and what are its traps? » | `docs/sources/<source>.md` — each states its own status in its header |
@@ -43,10 +43,11 @@ lasting half as a complement to the temporary one.
 `CONTRECHAMP` (`web/`) is the interface design lab. `web/UI_finale` (React 19 + Vite) is
 the current production interface, wired to real pivot data (`docs/decisions/web-v3-ui.md`). Earlier design
 generations — `v1`-`v7`, including the `v3` editorial reference — are archived under `web/old/`.
-`web/UI_finale` navigation: **Candidats** · **Groupes** (real parliamentary groups) ·
-**Gouvernement** (real governments) · **Législature** (the Assembly's work over one
-legislature, #1314 — listed only once its `pivot_data/legislatures/` file exists) — no
-Partis tab. Four tabs, but **eight published pages**: `/a-propos`, `/methodologie`, `/mentions-legales`, `/sources`, `/faq` and `/rapports`
+`web/UI_finale` navigation: four types of fiche — **Candidats** · **Groupes** (real
+parliamentary groups) · **Gouvernement** (real governments) · **Législature** (the
+Assembly's work over one legislature, #1314 — listed only once its `pivot_data/legislatures/`
+file exists) — no Partis. Each fiche's breadcrumb is the one place to change fiche (#1329):
+on a candidate's fiche it lists the candidates only, elsewhere the three other types. Four types, but **eight published pages**: `/a-propos`, `/methodologie`, `/mentions-legales`, `/sources`, `/faq` and `/rapports`
 live outside the tabs. `/a-propos` says what the site is and who edits it; `/methodologie` says how each
 fiche is made, and the manifesto lives on **one** of the two, never both (#1032).
 `/sources` (formerly `/couverture`, which redirects to it — #951) says which source brings what, and once, for the whole corpus, what every fiche used to repeat — what the
@@ -472,7 +473,8 @@ When something does need deciding, five parts, in this order:
   know what governs it. `docs/decisions/table-inversee-decisions-par-module.md`
   holds the criterion and what it misses.
 - `docs/technical_decisions.md`: the generated index of every decision file under
-  `docs/decisions/`, newest first — the chronological read. Frequent entry points:
+  `docs/decisions/`, newest first, one line of date and title — the chronological
+  read; each summary is in its decision. Search it with grep. Frequent entry points:
   `docs/decisions/direction-artistique-empreinte.md` (positioning, naming, targets),
   `docs/decisions/collecte-vide-necrase-jamais.md` (merge), `docs/decisions/licences.md`,
   `docs/decisions/licence-lot-6-530.md`, `docs/decisions/ci-cd.md`,

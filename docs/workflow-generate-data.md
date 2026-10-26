@@ -596,9 +596,15 @@ ressemblance de titre (`regrouper-nest-pas-joindre-639`).
 téléchargées une fois, sous une clé fixe (`public-data-cache-articles-votes-sources-clos-v1`),
 et celles de la XVIIe à chaque run (≈ 46 Mo). Le texte HTML de chaque texte
 (`dyn/opendata/<uid>.html`) est réduit à sa structure : seule celle-ci est mise
-en cache (`.cache/textes_an_structure/v1/`, clé par run restaurée par préfixe).
-Mesuré le 08/10/2026 : 252 textes, 199 Mo en HTML, 25 Mo en structure ; 3 min 36 s
-pour un run dont les textes sont en cache.
+en cache (`.cache/textes_an_structure/<VERSION_STRUCTURE>/`, clé par run
+restaurée par préfixe). Mesuré le 08/10/2026 : 252 textes, 199 Mo en HTML, 25 Mo
+en structure ; 3 min 36 s pour un run dont les textes sont en cache.
+
+**Une lecture corrigée relit tous les textes une fois.** Depuis #1352,
+`VERSION_STRUCTURE` vaut `v2` (l'intitulé de l'article, la partie, le gabarit des
+lois de finances) : le premier run qui l'exécute ne trouve rien sous `v2/` et
+retélécharge tous les textes. Les structures `v1/` restent dans l'entrée de
+cache sans être lues. Le chemin du cache ne change pas, donc le workflow non plus.
 
 **Ce qu'il refuse.** Une archive illisible arrête l'écriture (code 1,
 `ARTICLES_VOTES_SOURCE_INDISPONIBLE`). Le job est `continue-on-error`, et le

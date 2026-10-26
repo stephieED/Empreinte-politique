@@ -40,9 +40,9 @@ export const SITE = 'https://empreinte-politique.fr';
 /** Les pages de la barre, dans l'ordre de `NavigationSite.jsx`. */
 export const PAGES = [
   { libelle: 'Explorateur', vers: '/candidats' },
+  { libelle: 'Articles', vers: '/rapports' },
   { libelle: 'Méthodologie', vers: '/methodologie' },
   { libelle: 'Sources', vers: '/sources' },
-  { libelle: 'Articles', vers: '/rapports' },
   { libelle: 'FAQ', vers: '/faq' },
   { libelle: 'Nous soutenir', vers: '/nous-soutenir' },
 ];

@@ -242,6 +242,10 @@
 
 .gvp-lien:hover { color: var(--gouv); }
 
+/* Un lien vers une législature prend la teinte de l'Assemblée (#1329). */
+.gvp-lien--parl { color: #803060; }
+.gvp-lien--parl:hover { color: var(--ink); }
+
 /* ── 02 · Qui le composait ──────────────────────────────────────────────── */
 
 /* Des colonnes construites en JS, et non une grille : dans une grille, ouvrir
@@ -790,3 +794,38 @@
    de ses projets de loi et de sa barre d'actes. */
 .gvp-pole--teinte { border-left: 6px solid var(--ministere); }
 .gvp-cle-muette { cursor: default; }
+
+/* Les voisins dans le temps, au-dessus de la frise (#1329). */
+.gvp-frise-voisins {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.gvp-frise-voisins > span:last-child {
+  text-align: right;
+}
+
+.gvp-frise-voisins-titre {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Une barre de la frise mène à sa fiche (#1329) : au survol, elle prend l'encre. */
+.gvp-frise a:hover .gvp-frise-barre,
+.gvp-frise a:focus-visible .gvp-frise-barre {
+  fill: var(--ink);
+}
+
+@media (max-width: 720px) {
+  .gvp-frise-voisins {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .gvp-frise-voisins > .gvp-frise-voisins-titre {
+    display: none;
+  }
+}

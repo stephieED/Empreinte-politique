@@ -206,5 +206,9 @@ def test_l_accueil_montre_les_analyses_au_dessus_du_pied_de_page() -> None:
     hero = (UI / "src" / "components" / "landing" / "Hero.jsx").read_text(encoding="utf-8")
     assert "<AnalysesThematiques dansHero />" in hero
     carrousel = (UI / "src" / "components" / "landing" / "AnalysesThematiques.jsx").read_text(encoding="utf-8")
-    assert "fetch('/rapports.json')" in carrousel, "la liste vient du dossier, jamais recopiée"
+    # Depuis #1329, la liste est lue à un seul endroit pour ses trois lecteurs —
+    # le carrousel, le bandeau « Articles », les fiches.
+    lecteur = (UI / "src" / "data" / "articles.js").read_text(encoding="utf-8")
+    assert "fetch('/rapports.json')" in lecteur, "la liste vient du dossier, jamais recopiée"
+    assert "getArticles" in carrousel
     assert "prefers-reduced-motion" in carrousel, "aucune rotation pour qui a demandé moins d'animations"

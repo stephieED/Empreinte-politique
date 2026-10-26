@@ -3,7 +3,8 @@
    liens de partage de /nous-soutenir. Pas de jaune — il marque la sélection.
 
    Elle flotte en bas à droite de l'écran. `z-index: 4` : au-dessus de la fiche,
-   SOUS la rangée collée du haut (5) et le tiroir « Explorer » qu'elle ouvre. */
+   SOUS la rangée collée du haut (5) et ce qu'elle ouvre — le bandeau des
+   articles, le panneau de la loupe. */
 
 .partage {
   position: fixed;

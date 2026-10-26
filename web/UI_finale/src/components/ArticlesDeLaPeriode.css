@@ -1,0 +1,66 @@
+/* « Articles sur cette période » (#1329). Une carte blanche, comme celles des
+   sections, sans numéro : ce n'est pas une section de la fiche, c'est un renvoi. */
+.adp {
+  margin-top: 36px;
+  padding: 18px 24px;
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+}
+
+.adp-titre {
+  margin: 0 0 12px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.adp-liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.adp-article {
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.adp-article:hover {
+  border-color: var(--muted);
+  text-decoration: none;
+}
+
+.adp-article:hover .adp-t {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.adp-article:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.adp-date {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.adp-t {
+  font-size: 14px;
+  line-height: 1.3;
+}

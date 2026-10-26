@@ -11,7 +11,8 @@ import './EnTeteSite.css';
  * stable (voir ExplorerLayout.jsx). Elle se lit dans `--entete-hauteur`, que les
  * enfants — le panneau des listes — reprennent pour se poser dessous.
  *
- * `children` s'ajoute après les liens : l'explorateur y met son tiroir.
+ * `children` s'ajoute après les liens : l'explorateur y met le panneau de sa
+ * loupe (#1329).
  * `navProps` passe à la barre des pages : l'explorateur y pose l'outil qui
  * remplace l'onglet courant (#1025).
  */

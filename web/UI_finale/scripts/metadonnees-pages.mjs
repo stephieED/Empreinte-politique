@@ -42,6 +42,9 @@ export const PAGES_FIXES_META = {
   /* /nous-soutenir garde la description du site (#1033) : l'aperçu d'un lien
      partagé vers elle doit dire ce qu'est le site, pas demander un don. */
   'nous-soutenir': { titre: `Nous soutenir — ${MARQUE}` },
+  /* /candidats, la page de choix (#1329) : le titre de la carte « Mai 2027 »
+     qui y mène, mot pour mot. */
+  candidats: { titre: `Focus sur les candidats à la présidentielle — ${MARQUE}` },
 };
 
 function enumerer(elements) {
@@ -109,6 +112,20 @@ export function metaGouvernement(entree) {
   else if (debut && fin) quand = debut === fin ? debut : `${debut}-${fin}`;
   return {
     titre: `${entree.nom}${quand ? ` (${quand})` : ''} — membres et textes`,
+    description: SOURCE,
+  };
+}
+
+/* Une législature (#1314) : « XVIe législature (2022-2024) — groupes, textes et
+ * commissions », arbitré le 26/10/2026. `nom` vient de `nomDeLegislature`. */
+export function metaLegislature(entree, nom) {
+  const debut = annee(entree.debut);
+  const fin = annee(entree.fin);
+  let quand = null;
+  if (debut && !entree.fin) quand = `depuis ${debut}`;
+  else if (debut && fin) quand = debut === fin ? debut : `${debut}-${fin}`;
+  return {
+    titre: `${nom}${quand ? ` (${quand})` : ''} — groupes, textes et commissions`,
     description: SOURCE,
   };
 }

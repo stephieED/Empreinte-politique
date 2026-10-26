@@ -37,7 +37,9 @@ import pytest
 RACINE = Path(__file__).resolve().parent.parent
 UI = RACINE / "web" / "UI_finale"
 SYNC = UI / "scripts" / "sync-data.mjs"
-BARRE = UI / "src" / "components" / "CandidatesBar.jsx"
+# Depuis #1329, la liste des candidats ne vit plus dans une barre du tiroir mais
+# dans le menu du fil d'Ariane de chaque fiche : c'est lui qui la lit.
+BARRE = UI / "src" / "components" / "FilDAriane.jsx"
 FEUILLE = UI / "src" / "components" / "CandidatesBar.css"
 CHARGEUR = UI / "src" / "data" / "index.js"
 ACCUEIL_LISTE = UI / "src" / "components" / "landing" / "CommencerAExplorer.jsx"

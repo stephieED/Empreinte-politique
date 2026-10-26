@@ -51,6 +51,7 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/fetch_candidats_declares.py` | 2 |
 | `src/mandats_anterieurs.py` | 2 |
 | `src/titres_europeens.py` | 2 |
+| `src/articles_votes.py` | 1 |
 | `src/cache_an_fraicheur.py` | 1 |
 | `src/candidate_profile_ue.py` | 1 |
 | `src/collecte_mandats_locaux.py` | 1 |
@@ -143,6 +144,12 @@ Le mentionnent sans le gouverner : [`fiche-de-lignee-836`](decisions/fiche-de-li
 Le mentionnent sans le gouverner : [`derivation-des-groupes-depuis-amo30-1168`](decisions/derivation-des-groupes-depuis-amo30-1168.md), [`periodes-jetees-par-le-filtre-809`](decisions/periodes-jetees-par-le-filtre-809.md).
 
 ## `src/articles_votes.py`
+
+1 décision(s) le gouvernent ; le module en cite 0.
+
+| Décision | Nomme |
+| --- | --- |
+| [L'intitulé d'un article voté, et le gabarit des lois de finances (#1352) (2026-10-26)](decisions/intitule-des-articles-votes-1352.md) | `VERSION_STRUCTURE`, `en_tete_d_article`, `structure_loi_de_finances` |
 
 Le mentionnent sans le gouverner : [`articles-votes-par-la-seance-1264`](decisions/articles-votes-par-la-seance-1264.md), [`instantane-violences-sexuelles-1261`](decisions/instantane-violences-sexuelles-1261.md).
 

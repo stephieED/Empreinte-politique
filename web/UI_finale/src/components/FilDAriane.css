@@ -1,0 +1,268 @@
+/* Le fil d'Ariane des fiches, qui sert à en changer (#1329). Voir l'en-tête de
+   FilDAriane.jsx. Il reprend le corps de l'ancien fil (13 px, gris lisible),
+   ses deux maillons devenus des boutons. */
+
+.fil-rangee {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+}
+
+.fil {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.fil-bouton {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border: 0;
+  border-radius: 7px;
+  background: #efece7;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.fil-bouton--courant {
+  font-weight: 800;
+}
+
+.fil-bouton:hover,
+.fil-bouton[aria-expanded='true'] {
+  background: #e3ded6;
+}
+
+.fil-bouton:focus-visible,
+.fil-type:focus-visible,
+.fil-objet:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.fil-chevron {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.fil-sep {
+  color: var(--muted);
+}
+
+/* Le menu : deux colonnes, les types puis les fiches du type choisi. */
+.fil-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 6;
+  display: flex;
+  background: var(--card);
+  border: 1px solid #e3ddd4;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(23, 20, 31, 0.16), 0 1px 3px rgba(23, 20, 31, 0.08);
+  overflow: hidden;
+}
+
+/* `display: flex` l'emporte sur le `[hidden]` du navigateur (#324). */
+.fil-menu[hidden] {
+  display: none;
+}
+
+.fil-types,
+.fil-liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.fil-types {
+  width: 170px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fil-type {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fil-type span {
+  visibility: hidden;
+}
+
+.fil-type:hover {
+  background: var(--bg);
+}
+
+.fil-type[aria-pressed='true'] {
+  background: #f3efe8;
+  font-weight: 800;
+}
+
+.fil-type[aria-pressed='true'] span {
+  visibility: visible;
+}
+
+.fil-objets {
+  width: 290px;
+  max-height: min(60vh, 460px);
+  overflow-y: auto;
+  padding: 6px;
+  border-left: 1px solid #eee9e2;
+}
+
+.fil-recherche {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 2px 2px 6px;
+  padding: 7px 9px;
+  border: 1px solid #e3ddd4;
+  border-radius: 7px;
+  color: var(--muted);
+}
+
+.fil-recherche:focus-within {
+  border-color: var(--ink);
+}
+
+.fil-recherche input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+}
+
+.fil-recherche input::placeholder {
+  color: var(--muted);
+}
+
+/* L'affichage par groupe : le nom du groupe, puis ses candidats en retrait. */
+.fil-bloc + .fil-bloc {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid #eee9e2;
+}
+
+.fil-bloc-titre {
+  display: block;
+  padding: 6px 8px 2px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.fil-bloc .fil-objet {
+  padding-left: 16px;
+}
+
+.fil-objet {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 8px;
+  border-radius: 6px;
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.fil-objet:hover {
+  background: var(--bg);
+  text-decoration: none;
+}
+
+.fil-objet small {
+  flex: none;
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 500;
+}
+
+.fil-objet--courant {
+  background: #f3efe8;
+  font-weight: 800;
+}
+
+/* LA PÉRIODE (#1074) : deux vraies cases à cocher, exclusives, arbitrées sur
+   maquette le 22/09/2026. Au bout du fil depuis #1329. */
+.periode {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+}
+
+.periode-case {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.periode-case input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--ink);
+}
+
+/* Au téléphone, le menu prend la largeur de l'écran ; les types passent en
+   rangée au-dessus de la liste. */
+@media (max-width: 720px) {
+  .fil {
+    flex-wrap: wrap;
+  }
+
+  .fil-menu {
+    width: calc(100vw - 36px);
+    flex-direction: column;
+  }
+
+  .fil-types {
+    width: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #eee9e2;
+  }
+
+  .fil-type {
+    width: auto;
+  }
+
+  .fil-type span {
+    display: none;
+  }
+
+  .fil-objets {
+    width: auto;
+    border-left: 0;
+  }
+}

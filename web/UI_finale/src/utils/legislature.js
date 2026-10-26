@@ -130,6 +130,9 @@ export function vueLegislature(sources, id, gouvernements = []) {
       const sigle = s?.sigle && (court(s.sigle, g.sigle) || court(g.sigle, s.sigle)) ? s.sigle : g.sigle;
       return {
         sigle, nom: s?.nom || g.nom, effectif: g.membres_au_jour,
+        // La lignée du groupe sur le site, où mène son sigle (#1329) ; aucune
+        // pour les non-inscrits ni pour un groupe sans fiche.
+        lignee: s?.lignee ?? null,
         position: s?.position ?? (g.sigle === 'NI' ? 'non_inscrit' : null), place_mediane: g.place_mediane,
       };
     })

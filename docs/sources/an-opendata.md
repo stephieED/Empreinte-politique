@@ -93,12 +93,31 @@ scrutin to its file, and neither was read before #1264:
 
 The text of an article: `https://www.assemblee-nationale.fr/dyn/opendata/<uid>.html`,
 next to the JSON notice (`dyn/opendata/<uid>.json`). Its paragraphs carry
-structure classes: `assnat4Titre*`, `assnat5Chapitre*`, `assnat6Section*`,
-`assnat9ArticleNum`, `assnatLoiTexte`. Measured on 32 texts (8 per legislature,
-14 to 17): **none on 14** (404), 23 of 24 marked up on 15-17, only 5 with titles or
-chapters. Finance bills use another template (`assnatFPF*`, `assnatFAR*`), not
-read yet. The article number may carry a shuttle mention (« 4 (nouveau) »), and a
-committee text may group articles (« Articles 1er à 3 »). The Word and PDF
+structure classes: `assnat2Partie*`, `assnat4Titre*`, `assnat5Chapitre*`,
+`assnat6Section*`, `assnat9ArticleNum`, `assnatLoiTexte`. Measured on 32 texts (8
+per legislature, 14 to 17): **none on 14** (404), 23 of 24 marked up on 15-17, only
+5 with titles or chapters. The article number may carry a shuttle mention
+(« 4 (nouveau) »), and a committee text may group articles (« Articles 1er à 3 »).
+
+Three traps, read since #1352 (measured 26/10/2026 on the PLF and PLFSS 2027,
+`PRJLANR5L17B3210` and `B3211`):
+
+- **A social security financing bill writes the article's heading in the number
+  paragraph**: `assnat9ArticleNum` reads « Article 4 Aide aux cotisants affectés
+  par les incendies… ». Read whole, it is no designation a ballot « l'article 4 »
+  can find. An ordinary text has no article heading at all: its article is only
+  its text.
+- **A division quoted inside an article is not a division of the text.** An
+  article that inserts a chapter into a code writes it with the same class
+  (`assnat5ChapitreNum` « « Chapitre V ter »), opening quote included.
+- **Finance bills use their own template** (`assnatFPF*`, `assnatFAR*`): no
+  `assnat9ArticleNum` at all. Divisions and articles are HTML headings — `h2` the
+  part (« PREMIÈRE PARTIE : CONDITIONS GÉNÉRALES… »), `h3` the title, `h4` and `h5`
+  unnamed subdivisions (« I – Impôts et ressources autorisées », « B – Mesures
+  fiscales »), `h6` the article (« ARTICLE 2 : Soutenir le travail… »). The article
+  text is in `assnatFPFprojetloiartexte` paragraphs, followed by its own
+  « Exposé des motifs ». An `h1` opens another piece of the document (« États
+  législatifs annexés »), whose `h6` are states, not articles. The Word and PDF
 versions live on `docparl.assemblee-nationale.fr`, which did not resolve from the
 work machine on 2026-10-08.
 
