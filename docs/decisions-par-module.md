@@ -38,9 +38,7 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | Module | Décisions qui le gouvernent |
 | --- | ---: |
 | `src/actes_reglementaires.py` | 4 |
-| `src/articles_votes.py` | 4 |
 | `src/build_amendements_index.py` | 4 |
-| `src/perimetre_candidats.py` | 4 |
 | `src/rne_opendata.py` | 4 |
 | `src/audit_pipeline.py` | 3 |
 | `src/budget_collecte.py` | 3 |
@@ -146,7 +144,7 @@ Le mentionnent sans le gouverner : [`derivation-des-groupes-depuis-amo30-1168`](
 
 ## `src/articles_votes.py`
 
-4 décision(s) le gouvernent ; le module en cite 0.
+5 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -154,6 +152,7 @@ Le mentionnent sans le gouverner : [`derivation-des-groupes-depuis-amo30-1168`](
 | [L'intitulé d'un article voté, et le gabarit des lois de finances (#1352) (2026-10-26)](decisions/intitule-des-articles-votes-1352.md) | `VERSION_STRUCTURE`, `en_tete_d_article`, `structure_loi_de_finances` |
 | [L'ordre du jour des séances publiques, un fichier par législature (#1354) (2026-10-26)](decisions/ordre-du-jour-des-seances-1354.md) | `ordre_du_jour` |
 | [« À l'ordre du jour » : l'agenda des séances sur la fiche de législature, en Calendrier ou en Planning (#1354) (2026-10-26)](decisions/ordre-du-jour-fiche-legislature-1354.md) | `ordre_du_jour` |
+| [Sous `textes`, les seuls textes cités par un scrutin : le fichier variait d'un run à l'autre (#1352) (2026-10-27)](decisions/textes-cites-par-un-scrutin-1352.md) | `articles_des_textes` |
 
 Le mentionnent sans le gouverner : [`articles-votes-par-la-seance-1264`](decisions/articles-votes-par-la-seance-1264.md), [`instantane-violences-sexuelles-1261`](decisions/instantane-violences-sexuelles-1261.md).
 
@@ -695,7 +694,7 @@ Le mentionnent sans le gouverner : [`collecte-interventions-reduite-au-theme-657
 
 ## `src/generate_all_profiles.py`
 
-30 décision(s) le gouvernent ; le module en cite 3.
+31 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -722,6 +721,7 @@ Le mentionnent sans le gouverner : [`collecte-interventions-reduite-au-theme-657
 | [Un fichier de progression dans un répertoire de données (#518, troisième incident) (2026-08-24)](decisions/point-de-sauvegarde-dans-les-profils-518.md) | `DEFAULT_CHECKPOINT_PATH`, `_save_checkpoint` |
 | [Les membres de gouvernement deviennent une population, et leur collecte part (#996, lot 3) (2026-09-18)](decisions/provenance-roster-gouvernement-996.md) | `build_profile_any_chambre`, `process_candidat` |
 | [Le `texte_vise` fautif se reprend depuis l'archive figée, pas par une fusion plus permissive (#696, 01/09/2026)](decisions/report-texte-vise-source-696.md) | `_rafraichir_index_amendements` |
+| [Un retrait écrit dans la fusion n'atteint pas une fiche gelée (#1310) (2026-10-23)](decisions/retrait-et-fiches-gelees-1310.md) | `source_rne` |
 | [Retrait de `fetch_activity_synthesis` (#356) (2026-08-16)](decisions/retrait-fetch-activity-synthesis.md) | `build_minimal_profile` |
 | [NosDéputés sort du pipeline (#529, lot 5 de l'épic « une seule source AN ») (2026-08-27)](decisions/retrait-nosdeputes-529.md) | `process_candidat` |
 | [Le Sénat sort du périmètre, et le job qui concluait vert sans rien produire est retiré (#528, lot 3 de l'épic « une seule source AN ») (2026-08-26)](decisions/retrait-senat-528.md) | `SOURCE_VALUES` |
@@ -988,7 +988,7 @@ Le mentionnent sans le gouverner : [`profils-json-compact`](decisions/profils-js
 
 ## `src/licences.py`
 
-7 décision(s) le gouvernent ; le module en cite 3.
+8 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -997,6 +997,7 @@ Le mentionnent sans le gouverner : [`profils-json-compact`](decisions/profils-js
 | [Le versant AN passe en Licence Ouverte, et `meta.licence_donnees` devient un champ dérivé (#530, lot 6 de l'épic « une seule source AN ») (2026-08-27)](decisions/licence-lot-6-530.md) | `appliquer_licence_donnees` |
 | [Le Parlement européen n'a qu'une licence dans ce dépôt : CC BY 4.0 (#983) (2026-09-16)](decisions/licence-parlement-europeen-cc-by-983.md) | `LICENCE_EUROPARL` |
 | [Le nettoyage fait, la clause ODbL ne tiendrait plus que par un marqueur, sur 475 profils (#839, lot C) (2026-09-12)](decisions/residus-source-retiree-839.md) | `licences_du_profil` |
+| [Un retrait écrit dans la fusion n'atteint pas une fiche gelée (#1310) (2026-10-23)](decisions/retrait-et-fiches-gelees-1310.md) | `appliquer_licence_donnees` |
 | [Un marqueur de provenance sans donnée derrière lui n'est plus une traçabilité, c'est une inexactitude (#890) (2026-09-13)](decisions/retrait-marqueur-regards-citoyens-deputes-890.md) | `appliquer_licence_donnees`, `licences_du_profil` |
 | [L'attestation d'une candidature n'est pas une source de données, et les mandats locaux déclarent la leur (#1310, 2026-10-22)](decisions/source-de-la-candidature-et-mandats-locaux-1310.md) | `LICENCE_RNE`, `est_url_assemblee` |
 
@@ -1037,7 +1038,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 
 ## `src/merge_profile.py`
 
-88 décision(s) le gouvernent ; le module en cite 5.
+89 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1111,6 +1112,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [Une somme de longueurs suppose que chaque entrée collectée est distincte, et le portail européen le dément (#888) (2026-09-13)](decisions/reduction-nommee-collecte-vs-publie-888.md) | `_repli_texte_key` |
 | [Le `texte_vise` fautif se reprend depuis l'archive figée, pas par une fusion plus permissive (#696, 01/09/2026)](decisions/report-texte-vise-source-696.md) | `backfill_dossier_nature` |
 | [Résilience de `generate-data.yml` face aux `shutdown signal` runner : continue-on-error généralisé, watchdog réseau, retry générique sur `_get_payload`, retry `retry-generate-data.yml` non-régressif, et appels NosDéputés morts pour les députés (dossiers, votes) (2026-08-16)](decisions/resilience-generate-data-shutdown-signal.md) | `merge_raw_dirs` |
+| [Un retrait écrit dans la fusion n'atteint pas une fiche gelée (#1310) (2026-10-23)](decisions/retrait-et-fiches-gelees-1310.md) | `est_source_mal_typee` |
 | [Retrait de `fetch_activity_synthesis` (#356) (2026-08-16)](decisions/retrait-fetch-activity-synthesis.md) | `merge_raw_profile` |
 | [Un marqueur de provenance sans donnée derrière lui n'est plus une traçabilité, c'est une inexactitude (#890) (2026-09-13)](decisions/retrait-marqueur-regards-citoyens-deputes-890.md) | `_merge_pivot_sources` |
 | [NosDéputés sort du pipeline (#529, lot 5 de l'épic « une seule source AN ») (2026-08-27)](decisions/retrait-nosdeputes-529.md) | `merge_lists_by_key` |
@@ -1251,7 +1253,7 @@ Le mentionnent sans le gouverner : [`cle-fusion-interventions-540`](decisions/cl
 
 ## `src/perimetre_candidats.py`
 
-4 décision(s) le gouvernent ; le module en cite 0.
+5 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1259,6 +1261,7 @@ Le mentionnent sans le gouverner : [`cle-fusion-interventions-540`](decisions/cl
 | [Un garde-fou posé sur `builtins.open` ne voit pas `pathlib` (#791) (2026-09-10)](decisions/lectures-du-depot-dans-les-tests-791.md) | `RESOLUTIONS_PAR_DEFAUT`, `_MEMO_RESOLUTIONS`, `declare_hors_an_par_identifiant` |
 | [La seconde déclaration lisait un champ que le corpus ne porte pas (#788)](decisions/nom-des-resolutions-vient-de-lappelant-788.md) | `declare_hors_an_par_identifiant` |
 | [Une candidature déclinée sort du périmètre de collecte, sa fiche reste publiée (#760)](decisions/perimetre-collecte-candidatures-declinees-760.md) | `STATUTS_GELES` |
+| [Un retrait écrit dans la fusion n'atteint pas une fiche gelée (#1310) (2026-10-23)](decisions/retrait-et-fiches-gelees-1310.md) | `STATUTS_GELES` |
 
 ## `src/population_profils.py`
 

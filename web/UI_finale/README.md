@@ -64,7 +64,7 @@ lancer seul (`npm run sync-data`). Il copie ou projette, dans cet ordre :
 | `groupes/groupe-*.json` | `public/data/groupes/` | fiches de groupe par législature |
 | `lignees/` | `public/data/lignees/` | une vue projetée par lignée (#329) |
 | `gouvernements/` | `public/data/gouvernements/` | fiches de gouvernement |
-| `ordre_du_jour/<n>.json` | `public/data/ordre_du_jour/` | l'ordre du jour des séances d'une législature (#1354), lu par « À l'ordre du jour » ; absent tant que Backend ne le publie pas, et la section ne s'affiche pas |
+| `ordre_du_jour/<n>.json` | `public/data/ordre_du_jour/` | l'ordre du jour des séances (#1354), **projeté** de la séance au jour (`projeterOrdreDuJour`) : séances confirmées seules, un point par dossier et par jour, le type de point réduit en genre. Lu par « À l'ordre du jour » ; sans fichier (XIVe), la section ne s'affiche pas |
 
 Il génère ensuite `public/data/manifest.json`, l'index central à **quatre** entrées :
 `{ candidates[], groupes[], lignees[], gouvernements[] }`.

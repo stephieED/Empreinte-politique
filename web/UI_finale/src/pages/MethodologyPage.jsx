@@ -709,6 +709,34 @@ const SECTIONS = [
       </>
     ),
   },
+  /* « À l'ordre du jour » (#1354) : texte validé par la propriétaire le
+     27/10/2026, rangé à la place de la section sur la fiche. */
+  {
+    id: 'leg-ordre-du-jour',
+    heading: 'À l’ordre du jour',
+    body: (
+      <>
+        <p>
+          Chaque jour de séance publique porte une barre. Elle est partagée entre les textes
+          discutés ce jour-là : plus un texte revient à l'ordre du jour de la journée, plus sa
+          part est grande. La couleur est celle de la commission chargée d'examiner le texte.
+        </p>
+        <p>
+          <strong>L'ordre du jour est celui que l'Assemblée publie.</strong> Les séances annulées
+          ne sont pas comptées. Une barre blanche est un jour sans texte : questions au
+          Gouvernement, débat, hommage. Pour la législature en cours, un jour en pointillé n'a
+          pas encore d'ordre du jour fixé.
+        </p>
+        <p>
+          Quand l'Assemblée ne relie pas un point à son texte, le site le retrouve par son titre,
+          à condition que ce titre ne désigne qu'un seul texte de la législature. Sinon, le point
+          est classé « Matière non établie ». C'est aussi le cas des résolutions et des motions de
+          censure, qu'aucune commission n'examine. L'Assemblée ne publie pas l'ordre du jour de
+          la XIVe législature : sa fiche n'a pas cette section.
+        </p>
+      </>
+    ),
+  },
   {
     id: 'leg-textes',
     heading: 'Les textes de la législature',

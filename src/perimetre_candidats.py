@@ -2,6 +2,15 @@
 """
 perimetre_candidats.py — Qui le run collecte, et qui il a cessé de collecter (#760).
 
+Les décisions qui comptent pour ce module :
+
+- `docs/decisions/perimetre-collecte-candidatures-declinees-760.md` — geler n'est
+  pas supprimer, et un statut inconnu est collecté ;
+- `docs/decisions/fiches-masquees-candidatures-declinees-761.md` — la fiche gelée
+  sort du site ;
+- `docs/decisions/retrait-et-fiches-gelees-1310.md` — un retrait écrit dans la
+  fusion n'atteint pas une fiche gelée : il se vérifie aussi sur elles.
+
 ## Le défaut
 
 `prepare-an-matrix` retenait tout candidat **à slug résolvable**, et rien

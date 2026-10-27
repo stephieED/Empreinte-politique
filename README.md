@@ -11,15 +11,16 @@
 > Ce que le corpus contient, et depuis quand, se lit sur la page
 > [Sources](https://empreinte-politique.fr/sources) du site.
 
-**Empreinte politique** produit des relevés factuels et sourcés — mandats,
-responsabilités, votes, textes portés, interventions en séance — pour les
-**groupes parlementaires** et les **gouvernements** réels, qui en sont le cœur
-permanent, et pour les **candidats déclarés à l'élection présidentielle de
-2027**, volet borné par ce scrutin.
+**Empreinte politique** est un **tableau de bord de la vie parlementaire et
+gouvernementale** : il **relie** ce que les sources publient séparément —
+personnes, groupes, gouvernements, textes, votes, amendements, décrets — et le
+**donne à voir**. Cœur permanent : les **groupes parlementaires** et les
+**gouvernements** réels ; volet borné par l'élection : les **candidats déclarés
+à la présidentielle de 2027**.
 
-**Principe directeur** : tout fait affiché doit être traçable jusqu'à une source
-primaire. Le projet agrège des faits ; il ne produit ni classement, ni score, ni
-appréciation des positions politiques.
+**Principe directeur** : tout fait affiché est traçable jusqu'à une source
+primaire, et toute règle qui relie deux objets doit être écrite en méthodologie.
+Ni classement, ni score, ni appréciation des positions politiques.
 
 ---
 

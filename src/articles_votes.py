@@ -1,6 +1,15 @@
 #!/usr/bin/env python3
 """articles_votes.py — Sur quoi porte un article soumis au vote (#1264).
 
+Les décisions qui comptent pour ce module :
+
+- `docs/decisions/articles-votes-par-la-seance-1264.md` — le rattachement par la
+  séance, jamais par le titre ;
+- `docs/decisions/intitule-des-articles-votes-1352.md` — l'intitulé, la partie
+  et le gabarit des lois de finances ;
+- `docs/decisions/textes-cites-par-un-scrutin-1352.md` — sous `textes`, les seuls
+  textes cités par un scrutin, pour un fichier stable d'un run à l'autre.
+
 LE BESOIN. Un scrutin sur un article (« l'article 5 de la proposition de loi
 apportant une réponse intégrale… ») ne dit rien de ce que l'article contient.
 Ce module publie, pour chaque scrutin d'article, le titre, le chapitre et la
@@ -654,9 +663,17 @@ class LecteurDeTextes:
 CHAMPS_ARTICLE_D_UN_TEXTE = ("intitule", "regroupe", "partie", "titre", "chapitre", "section")
 
 
-def articles_des_textes(lus: dict[str, dict[str, dict[str, Any]]]) -> dict[str, dict[str, Any]]:
-    """`texte → {source_url, articles}` pour chaque texte lu dont au moins un
-    article porte un intitulé (#1352).
+def articles_des_textes(lus: dict[str, dict[str, dict[str, Any]]],
+                        cites: Iterable[str]) -> dict[str, dict[str, Any]]:
+    """`texte → {source_url, articles}` pour chaque texte CITÉ par un scrutin
+    d'article, rattaché ou non, et dont au moins un article porte un intitulé
+    (#1352).
+
+    Cités, pas seulement lus : un texte lu « au passage », comme version d'un
+    dossier concurrent dans une séance à plusieurs dossiers, dépend de l'ordre
+    dans lequel ces dossiers sont essayés, qui change d'un process à l'autre.
+    Publier les textes lus faisait varier le fichier d'un run à l'autre (101
+    textes en local, 97 en CI le 26/10/2026, pour les mêmes scrutins).
 
     Une figure rangée article par article (les amendements d'un projet de loi de
     finances, par exemple) a besoin de l'intitulé de TOUS les articles, pas des
@@ -667,7 +684,7 @@ def articles_des_textes(lus: dict[str, dict[str, dict[str, Any]]]) -> dict[str, 
     normalisation.
     """
     publies: dict[str, dict[str, Any]] = {}
-    for uid in sorted(lus):
+    for uid in sorted(set(lus) & set(cites)):
         structure = lus[uid]
         if not any(fiche.get("intitule") for fiche in structure.values()):
             continue
@@ -699,7 +716,9 @@ def construire(
         "scrutins": dict(sorted(publies.items())),
         "non_rattaches": dict(sorted(non_rattaches.items())),
         # #1352 — les articles des textes lus qui portent des intitulés.
-        "textes": articles_des_textes(textes.lus() if hasattr(textes, "lus") else {}),
+        "textes": articles_des_textes(
+            textes.lus() if hasattr(textes, "lus") else {},
+            {e["texte_id"] for e in list(publies.values()) + list(non_rattaches.values()) if e.get("texte_id")}),
     }
 
 

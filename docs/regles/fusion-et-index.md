@@ -23,6 +23,13 @@ les charger, ni à les faire grossir. -->
   applied to the profiles and to the raw layer, and the aggregates follow by construction**
   — purging them by hand would write, one run early, what the pipeline writes anyway.
   → `docs/decisions/retrait-marqueur-regards-citoyens-deputes-890.md`
+- **A retraction written in the merge never reaches a frozen sheet (#1310).** A declined
+  candidacy has no shard (`perimetre_candidats.STATUTS_GELES`, #760) and, unless a group or
+  government roster recollects the person, no run ever merges its profile again. After the
+  run of 22/10/2026, two of the three frozen sheets still carried #1310's defect. **When you
+  write a retraction, check the frozen sheets too**, and correct their published files once,
+  with the pipeline's own functions — never by hand.
+  → `docs/decisions/retrait-et-fiches-gelees-1310.md`
 
 - **A shared index is written only when its content changes; `genere_le` is the date of
   the last real change, not of the last run (#1075).** Write it through

@@ -68,9 +68,10 @@ export function intituleCourt(objet) {
 function lirePoints(points, { titres, commissions }) {
   return points.map((p) => {
     if (p.genre !== 'texte') {
-      // Un débat ou une déclaration a un sujet, qui se lit ; les questions, non.
+      // Un débat, une déclaration ou un autre point (un hommage, une élection)
+      // a un sujet, qui se lit ; les questions, non.
       const genre = GENRES[p.genre] || GENRES.autre;
-      const sujet = p.genre === 'debat' || p.genre === 'declaration' ? intituleCourt(p.intitule) : '';
+      const sujet = p.genre === 'debat' || p.genre === 'declaration' || p.genre === 'autre' ? intituleCourt(p.intitule) : '';
       return { texte: false, titre: sujet || genre, genre, n: p.n || 1 };
     }
     const famille = p.dossier ? familleDeCommission(commissions[p.dossier]?.sigle) : MATIERE_NON_ETABLIE;

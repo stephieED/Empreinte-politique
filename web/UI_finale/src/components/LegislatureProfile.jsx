@@ -99,6 +99,7 @@ const BULLES = {
     note: enCours
       ? 'Note : Un jour sans barre n’a pas eu de séance publique. En pointillé, l’ordre du jour n’est pas encore fixé.'
       : 'Note : Un jour sans barre n’a pas eu de séance publique.',
+    liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#leg-ordre-du-jour' }],
   }),
   commissions: () => ({
     phrase: 'Les textes confiés à chaque commission pendant la législature, et leur avancée.',

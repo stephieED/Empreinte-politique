@@ -20,6 +20,11 @@ La version d'avant la découpe (30/08/2026, 18 404 lignes, 1 054 Ko) est figée 
 
 ---
 
+- `2026-10-27` <a id="direction-artistique-repositionnement-1329"></a>[Direction artistique : ce que le repositionnement de #1329 change au positionnement et aux cibles](decisions/direction-artistique-repositionnement-1329.md)
+- `2026-10-27` <a id="repositionnement-relier-et-donner-a-voir-1329"></a>[Le projet relie et donne à voir, plutôt qu'il ne rassemble : « tableau de bord de la vie parlementaire et gouvernementale » (#1329)](decisions/repositionnement-relier-et-donner-a-voir-1329.md)
+- `2026-10-27` <a id="signature-titres-de-section-j3"></a>[Titres de section : le surligné jaune quitte les fiches, l'empreinte en filigrane le remplace (J3)](decisions/signature-titres-de-section-j3.md)
+- `2026-10-27` <a id="surligne-du-mot-recherche-garde"></a>[Le surligné jaune reste sur le mot recherché, quand il quitte les titres de section](decisions/surligne-du-mot-recherche-garde.md)
+- `2026-10-27` <a id="textes-cites-par-un-scrutin-1352"></a>[Sous `textes`, les seuls textes cités par un scrutin : le fichier variait d'un run à l'autre (#1352)](decisions/textes-cites-par-un-scrutin-1352.md)
 - `2026-10-26` <a id="articles-des-textes-dans-articles-votes-1352"></a>[Les articles des textes lus, publiés dans `articles_votes.json` (#1352)](decisions/articles-des-textes-dans-articles-votes-1352.md)
 - `2026-10-26` <a id="fil-d-ariane-a-la-place-du-tiroir-1329"></a>[Le fil d'Ariane de chaque fiche remplace le tiroir, « Articles » ouvre un bandeau, et les fiches se relient (#1329)](decisions/fil-d-ariane-a-la-place-du-tiroir-1329.md)
 - `2026-10-26` <a id="index-des-decisions-sans-resume"></a>[L'index des décisions ne recopie plus les résumés, et les deux index se cherchent sans se lire en entier](decisions/index-des-decisions-sans-resume.md)
@@ -34,6 +39,8 @@ La version d'avant la découpe (30/08/2026, 18 404 lignes, 1 054 Ko) est figée 
 - `2026-10-23` <a id="accueil-tableau-de-bord-1329"></a>[L'accueil montre un croisement au lieu d'annoncer un procédé : frise des législatures et des gouvernements, Assemblée par groupe (#1329)](decisions/accueil-tableau-de-bord-1329.md)
 - `2026-10-23` <a id="en-tete-des-fiches-homogene"></a>[L'en-tête des quatre fiches perd sa ligne en capitales et prend la même hauteur](decisions/en-tete-des-fiches-homogene.md)
 - `2026-10-23` <a id="methodologie-de-la-fiche-de-legislature-1314"></a>[La fiche de législature a sa méthodologie, et ses cinq bulles y renvoient (#1314)](decisions/methodologie-de-la-fiche-de-legislature-1314.md)
+- `2026-10-23` <a id="presidents-dans-amo30-et-cohabitation-330"></a>[Le président de la République est dans AMO30 ; la cohabitation reste une piste fermée (#330)](decisions/presidents-dans-amo30-et-cohabitation-330.md)
+- `2026-10-23` <a id="retrait-et-fiches-gelees-1310"></a>[Un retrait écrit dans la fusion n'atteint pas une fiche gelée (#1310)](decisions/retrait-et-fiches-gelees-1310.md)
 - `2026-10-23` <a id="teinte-du-gouvernement-rouille"></a>[Le gouvernement passe du brun à la rouille](decisions/teinte-du-gouvernement-rouille.md)
 - `2026-10-22` <a id="fiche-legislature-1314"></a>[La fiche d'une législature lit les fichiers par objet de Backend, et un seul adaptateur (#1314)](decisions/fiche-legislature-1314.md)
 - `2026-10-22` <a id="fiches-de-groupe-xive-1328"></a>[Les fiches de groupe s'ouvrent à la XIVe : sept groupes, quatre rattachés à leur lignée (#1328, 2026-10-22)](decisions/fiches-de-groupe-xive-1328.md)

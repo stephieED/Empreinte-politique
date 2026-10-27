@@ -143,7 +143,7 @@ def test_le_scrutin_publie_l_intitule_et_la_partie():
 
 def test_tous_les_articles_d_un_texte_a_intitules_sont_publies():
     lus = {"PRJLANR5L17B3210": _structure(PLF), "PIONANR5L17BTC3190": _structure(ORDINAIRE)}
-    publies = av.articles_des_textes(lus)
+    publies = av.articles_des_textes(lus, {"PRJLANR5L17B3210", "PIONANR5L17BTC3190"})
     assert set(publies) == {"PRJLANR5L17B3210"}, "un texte sans intitulé n'est pas repris"
     plf = publies["PRJLANR5L17B3210"]
     assert plf["source_url"] == av.URL_TEXTE_HTML.format(uid="PRJLANR5L17B3210")
@@ -154,7 +154,8 @@ def test_tous_les_articles_d_un_texte_a_intitules_sont_publies():
 
 
 def test_la_designation_d_un_amendement_se_joint_apres_normalisation():
-    articles = av.articles_des_textes({"PRJLANR5L17B3210": _structure(PLF)})["PRJLANR5L17B3210"]["articles"]
+    articles = av.articles_des_textes({"PRJLANR5L17B3210": _structure(PLF)},
+                                      {"PRJLANR5L17B3210"})["PRJLANR5L17B3210"]["articles"]
     for designation in ("Article 2", "ARTICLE 2", "article 2"):
         assert av.normaliser_article(designation) in articles
 
@@ -174,3 +175,11 @@ def test_construire_publie_les_textes_lus():
     assert resultat["schema_version"] == "articles-votes-v3"
     assert set(resultat["textes"]) == {texte}
     assert resultat["scrutins"]["an:17:8737"]["intitule"].startswith("Soutenir le travail")
+
+
+def test_un_texte_lu_au_passage_n_est_pas_publie():
+    """Une version de dossier concurrent, lue pour écarter ce dossier, dépend de
+    l'ordre des essais : la publier rendait le fichier instable d'un run à
+    l'autre (101 textes en local, 97 en CI le 26/10/2026)."""
+    lus = {"PRJLANR5L17B3210": _structure(PLF), "PRJLANR5L17B3211": _structure(PLFSS)}
+    assert set(av.articles_des_textes(lus, {"PRJLANR5L17B3211"})) == {"PRJLANR5L17B3211"}

@@ -33,8 +33,16 @@ names what governs it.
 
 ## 1. Product
 
-**Empreinte politique** — "Politics made clear". Factual, sourced political records
-(mandates, votes, texts, interventions). **Its permanent core is parliamentary and
+**Empreinte politique** — "Politics made clear". A **dashboard of parliamentary and
+governmental life** (« tableau de bord de la vie parlementaire et gouvernementale »,
+arbitrated 22/10/2026): factual, sourced records (mandates, votes, texts,
+interventions) whose value is to **link and show, not to gather**. Collection exists
+elsewhere; what nobody publishes is the links between person, group, government, text,
+vote, amendment and decree, and a form that makes them readable. Every link is a
+choice, so every linking rule must be written and verifiable in the methodology. Two
+guards go with the word: no good/bad dials (§2 rule 1), no fintech aesthetic.
+→ `docs/decisions/repositionnement-relier-et-donner-a-voir-1329.md`
+**Its permanent core is parliamentary and
 governmental** — the real groups and the real governments, which the corpus covers
 since 2012 and will keep covering. **The declared 2027 candidates are a bounded
 add-on**, tied to one election: arbitrated 30/09/2026, because the site presented the

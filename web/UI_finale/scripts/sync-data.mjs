@@ -837,6 +837,56 @@ manifestGouvernements.sort((a, b) => (b.debut || '').localeCompare(a.debut || ''
 // de scrutins (solennels, motions de censure) se lisent ici dans `scrutins.json`,
 // que la fiche ne télécharge pas (10 Mo).
 const manifestLegislatures = [];
+
+/* L'ORDRE DU JOUR, DE LA SÉANCE AU JOUR (#1354). Backend publie
+ * `ordre-du-jour-v1` : des séances, chacune avec ses points, chaque point avec
+ * son `type` (typePointODJ verbatim) et son dossier — celui de la source
+ * (`dossiers`), ou `dossier_retrouve` par l'intitulé, ou `dossier_non_resolu`.
+ * La section lit des JOURS (`utils/ordreDuJour.js`) : seules les séances
+ * confirmées comptent, et un même dossier discuté plusieurs fois le même jour
+ * devient un point, de poids `n`. La réduction des types en genres se fait
+ * ici, et nulle part ailleurs. Un point de discussion que Backend dit « hors
+ * texte » (un hommage, un débat thématique) devient `autre` : il n'a pas de
+ * commission, et ce n'est pas une absence de donnée. */
+const GENRE_DU_TYPE = {
+  'Discussion': 'texte',
+  'Suite de la discussion': 'texte',
+  'Vote solennel': 'texte',
+  'Vote par scrutin public': 'texte',
+  "Séances réservées à un groupe de l'opposition ou minoritaire": 'texte',
+  'Questions au Gouvernement': 'questions_gouvernement',
+  'Questions orales sans débat': 'questions_orales',
+  "Débat d'initiative parlementaire": 'debat',
+  "Déclaration du Gouvernement suivie d'un débat": 'declaration',
+  'Ouverture et clôture de session': 'session',
+};
+function projeterOrdreDuJour(doc) {
+  if (Array.isArray(doc.jours)) return doc; // déjà par jour
+  const jours = new Map();
+  for (const seance of doc.seances || []) {
+    if (seance.etat !== 'Confirmé' || !seance.date) continue;
+    const jour = jours.get(seance.date) || { date: seance.date, seances: 0, points: new Map() };
+    jour.seances += 1;
+    for (const p of seance.points || []) {
+      let genre = GENRE_DU_TYPE[p.type] || 'autre';
+      if (genre === 'texte' && p.dossier_non_resolu?.motif === 'point_hors_texte') genre = 'autre';
+      const dossier = genre === 'texte' ? (p.dossiers?.[0] ?? p.dossier_retrouve?.dossier_ref ?? null) : null;
+      const rattachement = dossier ? (p.dossiers?.length ? 'source' : 'intitule') : null;
+      const cle = dossier || `${genre}:${(p.objet || '').trim().toLowerCase()}`;
+      const point = jour.points.get(cle) || { genre, intitule: p.objet ?? '', dossier, rattachement, solennel: false, n: 0 };
+      point.n += 1;
+      if (p.type === 'Vote solennel' || p.type === 'Vote par scrutin public') point.solennel = true;
+      jour.points.set(cle, point);
+    }
+    jours.set(seance.date, jour);
+  }
+  return {
+    legislature: String(doc.legislature),
+    jours: [...jours.values()]
+      .sort((a, b) => a.date.localeCompare(b.date))
+      .map((j) => ({ date: j.date, seances: j.seances, points: [...j.points.values()] })),
+  };
+}
 function groupeMajoritaire(id, l) {
   const g = manifestGroupes.find((m) => String(m.legislature) === String(id) && m.position === 'majorite');
   if (!g) return null;
@@ -856,13 +906,15 @@ if (existsSync(legislaturesPath) && existsSync(dossiersAnDir)) {
     const fichier = path.join(dossiersAnDir, `${id}.json`);
     if (!existsSync(fichier)) continue;
     cpSync(fichier, path.join(outDir, 'dossiers_an', `${id}.json`));
-    // L'ordre du jour des séances (#1354), un fichier par législature que
-    // Backend publie : copié tel quel quand il existe. Sans lui, la section
-    // « À l'ordre du jour » ne s'affiche pas ; la XIVe n'en aura pas.
+    // L'ordre du jour des séances (#1354) : Backend le publie séance par
+    // séance, la section le lit jour par jour. Sans fichier, elle ne
+    // s'affiche pas ; la XIVe n'en aura pas.
     const ordreDuJour = path.join(repoRoot, 'pivot_data', 'ordre_du_jour', `${id}.json`);
     if (existsSync(ordreDuJour)) {
       mkdirSync(path.join(outDir, 'ordre_du_jour'), { recursive: true });
-      cpSync(ordreDuJour, path.join(outDir, 'ordre_du_jour', `${id}.json`));
+      const projete = projeterOrdreDuJour(JSON.parse(readFileSync(ordreDuJour, 'utf-8')));
+      writeFileSync(path.join(outDir, 'ordre_du_jour', `${id}.json`), JSON.stringify(projete));
+      console.log(`sync-data : ordre du jour de la ${id}e — ${projete.jours.length} jours de séance.`);
     }
     const siens = scrutinsTous.filter((s) => String(s.legislature) === String(id));
     manifestLegislatures.push({
