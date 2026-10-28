@@ -477,6 +477,20 @@
   }
 }
 
+/* AU TÉLÉPHONE, « EN BREF » DE LA LIGNÉE (#1372, forme C du 28/10/2026) : la
+   courbe dessinée à sa largeur garde ses effectifs, à 15 px, et perd son axe
+   vertical (Frise, LigneeProfile.jsx) ; années et sigle dans la bande à 13 px.
+   Dessous, chaque groupe perd son effectif daté — la courbe le dit — et sa
+   posture passe sur sa propre ligne. */
+@media (max-width: 720px) {
+  .lp-frise .lp-axe { font-size: 13px; }
+  .lp-frise .lp-effectif { font-size: 15px; }
+  .lp-frise .lp-bande-nom { font-size: 13px; }
+  .lp-maillon-effectif { display: none; }
+  .lp-maillon { padding-bottom: 6px; }
+  .lp-maillon-nom .lp-posture { display: table; margin: 6px 0 0; }
+}
+
 /* ── § 1 — un point par personne ─────────────────────────────────────────── */
 .lp-cles {
   display: flex;
@@ -1043,22 +1057,28 @@ button.lp-point {
    matière) : le titre prend sa ligne, la barre découpée par texte et les deux
    nombres passent dessous. Mesuré à 360 px sur Les Républicains avant ce
    correctif : 13 barres masquées sur 13, 3 intitulés coupés sur 12. */
+/* PUIS PLUS DE COLONNES DU TOUT (#1372, forme B du 28/10/2026) : la barre sur
+   toute la largeur, ses deux nombres dessous avec leurs mots
+   (`ChiffresDeLigne`) ; l'en-tête n'a plus rien à titrer. */
 @media (max-width: 720px) {
   .lp-mat .lp-mr {
-    grid-template-columns: minmax(0, 1fr) 72px 64px;
-    gap: 4px 10px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
   }
 
   .lp-mat .lp-mr-lib {
-    grid-column: 1 / -1;
     white-space: normal;
+    overflow: visible;
   }
 
   .lp-mat .lp-mr-rail {
     display: block;
   }
 
-  .lp-mat .lp-mr--tete > :first-child {
+  .lp-mat .lp-mr--tete,
+  .lp-mat .lp-mr-n {
     display: none;
   }
 }
@@ -1417,6 +1437,35 @@ button.lp-carre.lp-carre--meme {
 @media (max-width: 720px) {
   .lp-accord {
     grid-template-columns: minmax(0, 1fr);
+    padding: 8px 0;
+  }
+
+  /* LA BARRE À TROIS PARTS (#1372, forme B du 28/10/2026) : elle remplace les
+     carrés au téléphone, aux mêmes proportions ; les nombres restent dessous. */
+  .lp-accord-barre {
+    display: flex;
+    height: 14px;
+    margin: 6px 0 4px;
+    border: 1px solid var(--ink);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .lp-accord-barre i {
+    display: block;
+    min-width: 0;
+  }
+
+  .lp-accord-barre-meme_sens {
+    background: var(--ink);
+  }
+
+  .lp-accord-barre-nuance {
+    background: repeating-linear-gradient(90deg, #9a958d 0 2px, var(--card) 2px 4px);
+  }
+
+  .lp-accord-barre-oppose {
+    background: var(--card);
   }
 }
 

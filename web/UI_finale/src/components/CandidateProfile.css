@@ -168,7 +168,6 @@
 .cp-gc {
   --neutre-wash: #edebe7;
   --rail: #efede9;
-  --gc-ombre: rgba(20, 21, 26, 0.13);
   margin-bottom: 34px;
 }
 
@@ -598,62 +597,48 @@
 
 /* Une colonne seule prend toute la largeur : un gabarit à deux colonnes dont
  * l'une est vide ferait lire un manque là où il n'y a qu'un seul métier. */
-/* ── Sous 720 px : le tableau défile, la frise passe en liste ────────────────
+/* ── Sous 720 px : des colonnes égales, l'intitulé au-dessus ─────────────────
  *
- * Mesuré sur un écran de 375 px, avec les données publiées de `gabriel-attal`,
- * et arbitré sur maquette le 03/09/2026.
- *
- * LE TABLEAU DÉFILE plutôt que de s'empiler. Empilé, chaque titre de rang se
- * lisait deux fois de suite — 10 titres pour 5 rangs — et les deux en-têtes de
- * rôle restaient en haut, séparés de leurs cellules par tout le tableau : plus
- * aucune cellule ne disait à quel rôle elle appartenait. En défilement,
- * l'en-tête ne quitte jamais sa colonne, et **l'appariement survit** — deux
- * objets de même nature restent sur la même ligne, ce qui est la raison d'être
- * du bloc. Les onglets par rôle ont été écartés pour cela : ils ne montrent
- * jamais les deux ensemble.
- *
- * Le coût est assumé et se voit : 230 px × 2 plus 44 px de gouttière font
- * 504 px pour ~347 px utiles, donc il en manque toujours un tiers.
+ * LE TABLEAU NE DÉFILE PLUS (#1372, forme C arbitrée le 28/10/2026). Il
+ * défilait depuis le 03/09/2026 pour garder l'appariement — deux objets de même
+ * nature sur la même ligne — au prix d'un tiers de tableau toujours hors de
+ * l'écran. La forme C garde l'appariement sans le défilement : la colonne des
+ * libellés disparaît, chaque intitulé de rang passe en titre sur toute la
+ * largeur au-dessus de ses cellules, et les institutions ouvertes se partagent
+ * la largeur à parts égales. Les puces gardent leur rôle : replier une
+ * institution élargit les autres.
  */
 @media (max-width: 720px) {
-  .cp-gc-duo--deux,
-  .cp-gc-duo--trois,
-  .cp-gc-duo--quatre {
-    overflow-x: auto;
-    padding-bottom: 8px;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x proximity;
+  .cp-gc-duo { grid-template-columns: minmax(0, 1fr); column-gap: 12px; }
+  .cp-gc-duo--deux { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cp-gc-duo--trois { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cp-gc-duo--quatre { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
-    /* L'OMBRE DE DÉFILEMENT, en CSS pur (patron de Roman Komarov) : deux
-     * calques `local` qui suivent le contenu masquent deux calques `scroll`
-     * fixés aux bords. L'ombre n'apparaît donc QUE s'il reste du contenu de ce
-     * côté — jamais au bout de la course, et jamais quand rien ne dépasse.
-     * Sans ce signal, la colonne « Au gouvernement » n'existe pas pour le
-     * lecteur ; avec un dégradé permanent, elle mentirait une fois arrivé. */
-    background:
-      linear-gradient(to right, var(--card) 40%, transparent) left / 44px 100% no-repeat local,
-      linear-gradient(to left, var(--card) 40%, transparent) right / 44px 100% no-repeat local,
-      linear-gradient(to right, var(--gc-ombre), transparent) left / 22px 100% no-repeat scroll,
-      linear-gradient(to left, var(--gc-ombre), transparent) right / 22px 100% no-repeat scroll;
+  .cp-gc-duo > * {
+    min-width: 0;
   }
 
-  .cp-gc-duo--deux { grid-template-columns: var(--gc-libelle) repeat(2, minmax(210px, 1fr)); }
-  .cp-gc-duo--trois { grid-template-columns: var(--gc-libelle) repeat(3, minmax(210px, 1fr)); }
-  .cp-gc-duo--quatre { grid-template-columns: var(--gc-libelle) repeat(4, minmax(210px, 1fr)); }
+  .cp-gc-coin {
+    display: none;
+  }
 
-  /* La colonne des libellés reste visible pendant le défilement : sans elle,
-     un chiffre isolé ne dit plus de quoi il est le compte. */
+  /* Le nom d'institution tient dans sa colonne, quitte à passer à la ligne :
+     à trois colonnes, « Au Parlement européen » débordait sur sa voisine. */
+  .cp-gc-col-nom {
+    max-width: 100%;
+    box-sizing: border-box;
+    letter-spacing: 0;
+    padding: 3px 6px;
+    gap: 5px;
+  }
+
+  .cp-gc-col-nom i {
+    flex: none;
+  }
+
   .cp-gc-rang {
-    position: sticky;
-    left: 0;
-    background: var(--card);
-    z-index: 1;
-  }
-
-  .cp-gc-duo--deux > *,
-  .cp-gc-duo--trois > *,
-  .cp-gc-duo--quatre > * {
-    scroll-snap-align: start;
+    grid-column: 1 / -1;
+    padding: 14px 0 2px;
   }
 
   .cp-gc-barre {
@@ -1515,6 +1500,58 @@
     grid-template-columns: 1fr;
     gap: 2px;
   }
+
+  /* UNE FAMILLE OUVERTE, LES AUTRES REPLIÉES SUR LEUR TITRE (#1372, forme A du
+     28/10/2026). Le titre devient le bouton : toute sa ligne se touche, le
+     triangle à droite dit l'état. */
+  .cp-fonctions-bascule {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: 36px;
+    margin: 0;
+    padding: 9px 22px 9px 0;
+    border: 0;
+    background: none;
+    font-family: inherit;
+    line-height: 1.4;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  /* Ouverte, la famille garde la place de son titre d'avant : la marge du bloc
+     suffit, la cible reste de 36 px. */
+  .cp-fonctions-bloc:not(.cp-fonctions-replie) > .cp-fonctions-bascule {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .cp-fonctions-bloc:not(.cp-fonctions-replie) > .cp-fonctions-bascule .cp-fonctions-triangle {
+    top: 0;
+  }
+
+  .cp-fonctions-bascule:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .cp-fonctions-triangle {
+    position: absolute;
+    top: 9px;
+    right: 0;
+    font-size: 14px;
+    color: var(--ink);
+  }
+
+  .cp-fonctions-replie {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .cp-fonctions-replie:last-child {
+    border-bottom: 1px solid var(--border);
+  }
 }
 
 /* ── § 1 — le banc de chaque catégorie de fonction (#328) ────────────────── */
@@ -1964,15 +2001,24 @@
   font-style: italic;
 }
 
+/* AU TÉLÉPHONE, PLUS DE COLONNES (#1372, forme B du 28/10/2026). L'intitulé
+   entier sur sa ligne, la barre sur toute la largeur, puis ses deux nombres
+   écrits avec leurs mots (`ChiffresDeLigne`) : la rangée d'en-têtes n'a plus
+   rien à titrer. La barre revient — elle avait sauté faute de place. */
 @media (max-width: 720px) {
   .cp-mr {
-    grid-template-columns: 1fr 64px 64px;
-    gap: 8px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
   }
-  /* Le rail saute : à 320 px, une barre de 12 px ne dit rien que le nombre à
-     côté ne dise mieux. */
-  .cp-mr-rail {
+  .cp-mr--tete,
+  .cp-mr-n {
     display: none;
+  }
+  .cp-mr-lib {
+    white-space: normal;
+    overflow: visible;
   }
 }
 

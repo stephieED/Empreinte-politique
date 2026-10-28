@@ -115,6 +115,70 @@
   }
 }
 
+/* AU TÉLÉPHONE, LE PIED RESSERRÉ (#1372, forme A′ du 28/10/2026) : la marque
+   et sa devise, puis les liens qui se suivent sur la ligne, les trois icônes
+   alignées à droite au bout de la dernière. */
+@media (max-width: 720px) {
+  .pds {
+    display: block;
+    padding: 22px 18px 26px;
+  }
+
+  .pds-marque {
+    margin: 0 0 14px;
+    /* Rogne la puce d'une mention qui commence une ligne (voir plus bas). */
+    overflow: hidden;
+  }
+
+  /* LES QUATRE MENTIONS SÉPARÉES PAR « • », SANS PUCE ORPHELINE. Chaque
+     mention porte sa puce devant elle, sur une largeur fixe ; la devise est
+     décalée de cette largeur vers la gauche et la marque rogne ce qui dépasse.
+     La puce d'une mention qui ouvre une ligne tombe donc hors du cadre, quelle
+     que soit la largeur de l'écran ; la première mention, sans puce, reprend le
+     décalage. La règle des deux paires (Baseline.css, sous 480 px) retirait la
+     puce devant « 0 score » même quand la devise tenait sur une ligne. */
+  .pds .baseline--pied {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 4px 0 0 -17px;
+  }
+
+  .pds .baseline--pied .baseline-mention:first-child {
+    margin-left: 17px;
+  }
+
+  .pds .baseline--pied .baseline-puce,
+  .pds .baseline--pied .baseline-mention:nth-child(3) .baseline-puce {
+    display: inline-block;
+    width: 17px;
+    padding: 0;
+    text-align: center;
+  }
+
+  .pds-colonne {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 18px;
+  }
+
+  .pds-colonne > a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+  }
+
+  .pds-comptes {
+    gap: 6px;
+    margin: 0 0 0 auto;
+  }
+
+  .pds-icone {
+    width: 32px;
+    height: 32px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pds-icone {
     transition: none;

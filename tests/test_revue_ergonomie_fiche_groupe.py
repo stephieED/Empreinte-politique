@@ -172,8 +172,15 @@ def test_la_base_ne_s_ecrit_plus_en_gros() -> None:
     fiche = _sans_commentaires(_fiche())
     feuille = FEUILLE.read_text(encoding="utf-8")
     assert "lp-accord-n" not in fiche and ".lp-accord-n" not in feuille
-    assert "lp-accord-barre" not in fiche, "la barre proportionnelle est partie avec le nombre en gros"
     section = fiche.split("function AvecQuiIlsVotent(")[1].split("\nfunction ")[0]
+    # La barre proportionnelle est partie avec le nombre en gros sur ordinateur.
+    # Elle revient au TÉLÉPHONE seulement, sans nombre en gros, à la place des
+    # carrés (forme B arbitrée le 28/10/2026, #1372) : les comptes et la base
+    # restent écrits dessous.
+    assert fiche.count("lp-accord-barre") == section.count("lp-accord-barre")
+    assert "{etroit ? (\n                        <div aria-hidden=\"true\" className=\"lp-accord-barre\">" in section
+    hors_telephone = re.sub(r"@media \(max-width: 720px\) \{.*?\n\}\n", "", feuille, flags=re.S)
+    assert ".lp-accord-barre" not in hors_telephone, "la barre ne vit qu'au téléphone"
     assert 'className="lp-accord-base lp-num"' in section and "commun{a.communs > 1 ? 's' : ''}" in section
     base = feuille.split(".lp-accord-base {")[1].split("}")[0]
     assert "font-size: 12px" in base, "la base reste à l'échelle des libellés"

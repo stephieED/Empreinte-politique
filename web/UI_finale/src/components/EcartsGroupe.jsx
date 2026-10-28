@@ -81,8 +81,10 @@ function Bande({ bande }) {
                   className="eg-lui"
                   style={x.ecart ? { background: teinte(x.position) } : undefined}
                 />
+                {/* La classe dit si la part est nulle : au téléphone, la barre
+                    devient une encoche de hauteur fixe (#1372). */}
                 <span
-                  className="eg-part"
+                  className={`eg-part${partDissidente(x) > 0 ? ' eg-part--non-suivie' : ''}`}
                   style={{ height: `${(partDissidente(x) * 44).toFixed(1)}px` }}
                 />
                 <span className="eg-socle" style={{ background: teinte(x.positionGroupe) }} />

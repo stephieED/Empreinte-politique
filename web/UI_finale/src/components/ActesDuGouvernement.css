@@ -147,9 +147,20 @@
 .adg-cle { width: 14px; height: 9px; border-radius: 2px; display: inline-block; }
 .adg-cle--lie { background: var(--ink); }
 .adg-cle--muet { background: #efede9; margin-left: 12px; }
+/* AU TÉLÉPHONE, PLUS DE COLONNES (#1372, forme B du 28/10/2026) : le nom du
+   ministère entier, la barre sur toute la largeur — elle revient, ses deux
+   parts restent des boutons —, puis ses deux nombres avec leurs mots
+   (`ChiffresDeLigne`). */
 @media (max-width: 720px) {
-  .adg-ligne { grid-template-columns: minmax(0, 1fr) 64px 72px; }
-  .adg-ligne .adg-rail { display: none; }
+  .adg-ligne {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 5px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .adg-ligne--tete,
+  .adg-ligne .adg-n { display: none; }
+  .adg-lib { white-space: normal; overflow: visible; }
 }
 /* À la suite de l'étiquette qu'elle précise, sur la même ligne. */
 .adg-legende-limite { margin-left: 6px; }

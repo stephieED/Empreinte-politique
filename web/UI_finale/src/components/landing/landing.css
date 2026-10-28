@@ -995,6 +995,13 @@
 .fm-ans--etroit { font-size: 9.5px; }
 .fm-pm-nom { font-size: 12.5px; font-weight: 800; fill: var(--ink); }
 .fm-pm-nom--etroit { font-size: 11.5px; }
+/* Au téléphone, la ligne qui descend (#1372, 28/10/2026) : aucun texte sous
+ * 13 px — les années et la dissolution passent de 10-10,5 à 13 px, les noms à
+ * 14 px. Le tracé laisse la place à gauche (`FriseMetro.jsx`). */
+@media (max-width: 720px) {
+  .fm-v .fm-ans, .fm-v .fm-diss { font-size: 13px; }
+  .fm-v .fm-pm-nom, .fm-v .fm-leg-nom { font-size: 14px; }
+}
 .fm-station { fill: #fff; stroke: var(--gouv, #A84B12); stroke-width: 3; transition: r 0.1s; }
 .fm-station--auj { fill: var(--accent); stroke: var(--ink); }
 .fm-seg:hover .fm-station, .fm-seg:focus-visible .fm-station { r: 11; }
@@ -1078,3 +1085,29 @@
 .analyses--hero .analyses-lien { height: 100%; align-content: center; }
 .analyses-fen--mesure .analyses-piste { align-items: flex-start; }
 .analyses-fen--mesure .analyses-lien { height: auto; }
+
+/* ── Au téléphone, le carrousel après les tuiles (#1372, forme C, 28/10/2026) ──
+   Il quitte la carte héro (Hero.jsx) et garde son fond sombre ; flèches de
+   44 px et points de 12 px, pour le doigt. */
+@media (max-width: 720px) {
+  .landing-main > .analyses--hero {
+    margin: 24px 16px 0;
+  }
+  .analyses--hero .analyses-b {
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+  }
+  .analyses--hero .analyses-pts {
+    gap: 10px;
+    height: 44px;
+  }
+  .analyses--hero .analyses-pt {
+    width: 12px;
+    height: 12px;
+  }
+  .analyses--hero .analyses-pt.on {
+    width: 28px;
+    border-radius: 6px;
+  }
+}

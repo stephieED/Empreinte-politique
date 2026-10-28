@@ -165,8 +165,12 @@ export default function FriseMetro({ legislatures, gouvernements, aujourdhui }) 
   }));
 
   if (W < ETROIT) {
-    /* Téléphone : la ligne descend, le plus récent en haut. */
-    const n = pms.length, pas = 50, y0 = 22, Y = (i) => y0 + (n - 1 - i) * pas, xR = 112, xA = 74, H = y0 + (n - 1) * pas + 30;
+    /* Téléphone : la ligne descend, le plus récent en haut. Les deux voies
+     * sont décalées de 16 px depuis que les années passent à 13 px (#1372,
+     * 28/10/2026) : « depuis 2024 », aligné à droite contre la voie des
+     * législatures, sortait du cadre à gauche. Les années descendent de 2 px
+     * sous le nom, passé à 14 px. */
+    const n = pms.length, pas = 50, y0 = 22, Y = (i) => y0 + (n - 1 - i) * pas, xR = 128, xA = 90, H = y0 + (n - 1) * pas + 30;
     const premiere = (k) => pms.findIndex((p) => p.legislature === k);
     const derniere = (k) => n - 1 - [...pms].reverse().findIndex((p) => p.legislature === k);
     const bornesY = leg.map((_, k) => [
@@ -175,7 +179,7 @@ export default function FriseMetro({ legislatures, gouvernements, aujourdhui }) 
     ]);
     return (
       <div className="fm" ref={ref}>
-        <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Législatures et gouvernements depuis 2012">
+        <svg className="fm-v" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Législatures et gouvernements depuis 2012">
           {leg.map((l, k) => {
             const [h, b] = bornesY[k];
             const a = h + (k < leg.length - 1 ? 5 : 0), z = b - (k > 0 ? 5 : 0);
@@ -184,7 +188,7 @@ export default function FriseMetro({ legislatures, gouvernements, aujourdhui }) 
                 <rect x="0" y={a} width={xA + 8} height={z - a} fill="transparent" />
                 <line className="fm-voie-a" x1={xA} x2={xA} y1={a} y2={z} />
                 <text x={xA - 12} y={a + 16} textAnchor="end" className="fm-leg-nom">{l.nom}</text>
-                <text x={xA - 12} y={a + 31} textAnchor="end" className="fm-ans">{l.ans}</text>
+                <text x={xA - 12} y={a + 33} textAnchor="end" className="fm-ans">{l.ans}</text>
               </g>
             );
           })}
@@ -204,7 +208,7 @@ export default function FriseMetro({ legislatures, gouvernements, aujourdhui }) 
               <g key={p.nom} {...(seul ? { ...lien(`/gouvernements/${p.gouvernements[0].id}`, `Gouvernement ${p.gouvernements[0].nom}, ${p.ans}`), ...montrer(bulleGouvernement(p.gouvernements[0])) } : choix(p, xR, y))}>
                 <circle className={p.actif ? 'fm-station fm-station--auj' : 'fm-station'} cx={xR} cy={y} r="8" />
                 <text x={xR + 20} y={y + 1} className="fm-pm-nom">{p.nom}</text>
-                <text x={xR + 20} y={y + 16} className="fm-ans">{p.ans}</text>
+                <text x={xR + 20} y={y + 18} className="fm-ans">{p.ans}</text>
               </g>
             );
           })}

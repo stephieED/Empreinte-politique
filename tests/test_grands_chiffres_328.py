@@ -79,7 +79,7 @@ def _media_etroit(feuille: str) -> str:
     sur la mauvaise règle. On retient donc le bloc **par son contenu**.
     """
     morceaux = feuille.split("@media (max-width: 720px)")
-    vises = [m for m in morceaux[1:] if "overflow-x: auto" in m and ".cp-gc-duo--deux" in m]
+    vises = [m for m in morceaux[1:] if ".cp-gc-duo--deux { grid-template-columns: repeat(2" in m]
     assert len(vises) == 1, (
         "un seul bloc étroit règle le tableau des grands chiffres ; "
         f"{len(vises)} trouvé(s)"
@@ -376,27 +376,32 @@ def test_aucune_mesure_n_est_refaite_dans_l_adaptateur(adaptateur):
 # ── L'écran étroit ──────────────────────────────────────────────────────────
 
 
-def test_sous_le_seuil_le_tableau_defile_au_lieu_de_s_empiler(feuille):
+def test_sous_le_seuil_les_colonnes_se_partagent_la_largeur(feuille):
     """Empilé, chaque titre de rang se lisait DEUX FOIS de suite — 10 titres pour
     5 rangs — et les deux en-têtes de rôle restaient en haut, séparés de leurs
-    cellules par tout le tableau : plus aucune cellule ne disait à quel rôle elle
-    appartenait. En défilement, l'en-tête ne quitte jamais sa colonne.
+    cellules par tout le tableau. De septembre à octobre 2026, le tableau a donc
+    DÉFILÉ de côté, la colonne des libellés collée à gauche — au prix d'un tiers
+    du tableau toujours hors de l'écran.
 
-    Le gabarit a changé avec #328 : le rang est écrit UNE fois, dans une colonne
-    de libellés en tête de ligne, et les institutions peuvent être quatre. Chaque
-    largeur reprend donc `var(--gc-libelle)` avant ses colonnes, et la colonne
-    des libellés reste collée à gauche pendant le défilement — un chiffre isolé
-    ne dit plus de quoi il est le compte."""
+    #1372 (forme C, arbitrée sur maquette le 28/10/2026) garde l'appariement
+    sans le défilement : la colonne des libellés disparaît, l'intitulé de rang
+    passe en titre sur toute la largeur AU-DESSUS de ses cellules, et les
+    institutions ouvertes se partagent la largeur à parts égales. Le rang reste
+    écrit une fois ; chaque cellule reste sous l'en-tête de son institution.
+    → docs/decisions/telephone-lot-3-formes-1372.md"""
     bloc = _media_etroit(feuille)
     for n, mot in ((2, "deux"), (3, "trois"), (4, "quatre")):
-        attendu = f"grid-template-columns: var(--gc-libelle) repeat({n}, minmax(210px, 1fr))"
-        assert attendu in bloc, (
-            f"les {mot} colonnes restent côte à côte, avec une largeur plancher"
-        )
-    assert "overflow-x: auto" in bloc
-    assert "position: sticky" in bloc, "la colonne des libellés ne quitte pas l'écran"
-    assert "grid-template-columns: 1fr;" not in bloc, (
-        "l'empilement est précisément ce que ce seuil ne fait PAS"
+        attendu = f".cp-gc-duo--{mot} {{ grid-template-columns: repeat({n}, minmax(0, 1fr)); }}"
+        assert attendu in bloc, f"les {mot} colonnes se partagent la largeur, sans plancher"
+    assert "overflow-x: auto" not in bloc, "le tableau ne défile plus de côté"
+    assert "position: sticky" not in bloc
+    corps_coin = bloc[bloc.index(".cp-gc-coin {") :]
+    assert "display: none" in corps_coin[: corps_coin.index("}")], (
+        "la case de coin n'a plus de colonne à surplomber"
+    )
+    corps_rang = bloc[bloc.index(".cp-gc-rang {") :]
+    assert "grid-column: 1 / -1" in corps_rang[: corps_rang.index("}")], (
+        "l'intitulé de rang passe en titre au-dessus de ses cellules"
     )
 
 
@@ -437,15 +442,12 @@ def test_l_appariement_survit_a_l_ecran_etroit(regles, composant):
     )
 
 
-def test_l_ombre_de_defilement_ne_ment_pas(feuille):
-    """Sans signal, la colonne « Au gouvernement » n'existe pas pour le lecteur ;
-    avec un dégradé permanent, elle mentirait une fois la course finie. Deux
-    calques `local` masquent deux calques `scroll` : l'ombre n'apparaît que s'il
-    reste du contenu de ce côté."""
+def test_plus_d_ombre_de_defilement(feuille):
+    """L'ombre disait qu'il restait du tableau hors de l'écran (09/2026). Depuis
+    #1372 rien ne dépasse : une ombre y mentirait."""
     bloc = _media_etroit(feuille)
-    assert bloc.count("no-repeat local") == 2, "deux calques suivent le contenu"
-    assert bloc.count("no-repeat scroll") == 2, "deux calques restent aux bords"
-    assert "var(--gc-ombre)" in bloc
+    assert "no-repeat local" not in bloc and "no-repeat scroll" not in bloc
+    assert "var(--gc-ombre)" not in feuille
 
 
 def test_le_nombre_de_colonnes_ne_vient_pas_d_un_style_en_ligne(composant, feuille):

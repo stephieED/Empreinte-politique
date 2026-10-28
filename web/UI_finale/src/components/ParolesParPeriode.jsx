@@ -26,12 +26,14 @@
 import { CITATION_ELISION, CITATION_FERME, CITATION_OUVRE } from '../utils/extraits';
 import { Fragment, useMemo, useRef, useState } from 'react';
 import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
+import { useEcranEtroit } from '../hooks/useLargeur';
 import { BulleDePastille } from './InfoBulle';
 import { segmentsSurlignes } from '../utils/filtreIntitule';
 import { formatNumber, lienDocumentaire } from '../utils/lecture';
 import { libellePosition, TYPES_INTERVENTION } from '../utils/profilCandidat';
 import { SUJET_NON_PUBLIE, sujetsDuLot } from '../utils/parolesParPeriode';
 import NavigationPeriodes from './NavigationPeriodes';
+import FiltreDeroulant from './FiltreDeroulant';
 import './ParolesParPeriode.css';
 
 const jour = (d) => (d ? `${d.slice(8, 10)}/${d.slice(5, 7)}/${d.slice(0, 4)}` : '');
@@ -189,6 +191,8 @@ export default function ParolesParPeriode({
   const [sujet, setSujet] = useState(null);
   const [tousSujets, setTousSujets] = useState(false);
   const [limite, setLimite] = useState(PAS_DE_FIL);
+  // Au téléphone, le filtre de nature devient une liste déroulante (#1372).
+  const etroit = useEcranEtroit();
   // Le fil d'un sujet se replie au clic hors de la figure (02/10/2026).
   const racine = useRef(null);
   useReplieAuClicDehors(racine, sujet != null, () => { setSujet(null); setLimite(PAS_DE_FIL); });
@@ -318,6 +322,22 @@ export default function ParolesParPeriode({
           <span className="pp-facette-quoi">
             Nature <i>— {formatNumber(naturesAffichees.reduce((s, l) => s + l.n, 0))} sous la sélection</i>
           </span>
+          {/* Au téléphone, une liste déroulante (forme B, #1372) : mêmes
+              natures, même geste ; celles à 0 sont retirées. */}
+          {etroit ? (
+            <FiltreDeroulant
+              choix={naturesAffichees.map((l) => ({ cle: l.cle, libelle: l.label, n: l.n, choisi: l.actif }))}
+              etiquette="Nature"
+              libelleTout="Toutes"
+              onChoisir={basculerNature}
+              pied={natures.size > 0 && (
+                <button type="button" className="pp-raz" onClick={() => setNatures(new Set())}>
+                  Tout retirer
+                </button>
+              )}
+              tout={natures.size === 0}
+            />
+          ) : (
           <div className="pp-chips">
             {naturesAffichees.map((l) => (
               <button
@@ -337,6 +357,7 @@ export default function ParolesParPeriode({
               </button>
             )}
           </div>
+          )}
         </div>
 
         <div className="pp-facette">

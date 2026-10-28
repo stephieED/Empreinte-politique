@@ -517,3 +517,26 @@ export function cumulerTypes(parType, types) {
       : null,
   };
 }
+
+/* ── Règle : « avec qui ils votent » suit l'hémicycle, jamais un compte ──────
+ *
+ * Les groupes étaient rangés par nombre de textes communs (54, 53, 52…) : un
+ * ordre par nombre se lit comme un classement, ce que la règle des textes
+ * publiés exclut entre groupes (#1372, 28/10/2026). Ils se rangent de la gauche
+ * vers la droite de l'hémicycle, par le siège médian de leurs membres — la
+ * règle de l'accueil et de la fiche de législature. L'Assemblée numérote ses
+ * sièges de la droite vers la gauche : la place la plus haute vient d'abord.
+ *
+ * Un groupe sans place connue — dissous avant la date de référence de la
+ * législature — suit, par ordre alphabétique du sigle ; sans aucune place pour
+ * la législature, c'est tout l'ordre qui devient alphabétique. */
+export function ordreDeLHemicycle(lignes, places) {
+  const placeDe = (a) => (a.lignee != null ? places?.[a.lignee] : undefined) ?? null;
+  return [...(lignes || [])].sort((a, b) => {
+    const pa = placeDe(a);
+    const pb = placeDe(b);
+    if ((pa == null) !== (pb == null)) return pa == null ? 1 : -1;
+    if (pa != null && pa !== pb) return pb - pa;
+    return a.sigle.localeCompare(b.sigle, 'fr');
+  });
+}

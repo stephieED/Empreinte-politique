@@ -605,6 +605,30 @@
   .gvp-limite,
   .gvp-texte { grid-template-columns: 1fr; gap: 4px; }
   .gvp-orga { flex-direction: column; }
+
+  /* Six cartes, puis le lien qui affiche les autres (#1372, forme C). */
+  .gvp-voir-tout {
+    display: block;
+    min-height: 32px;
+    margin: 10px 0 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    text-align: left;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .gvp-voir-tout:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
 }
 
 /* Ce qui a été dit (#1029), forme A : le membre à gauche, ses propos datés à
@@ -788,10 +812,14 @@
    plus l'année. Le titre prend sa ligne ; la barre et les deux nombres passent
    dessous, en colonnes. L'en-tête perd sa case de titre, ce qui le remet
    au-dessus des nombres — il était décalé d'une colonne. */
+/* PUIS PLUS DE COLONNES DU TOUT (#1372, forme B du 28/10/2026) : la barre sur
+   toute la largeur, ses deux nombres dessous avec leurs mots
+   (`ChiffresDeLigne`) ; l'en-tête n'a plus rien à titrer. */
 @media (max-width: 720px) {
-  .gvp-mr { grid-template-columns: minmax(0, 1fr) 72px 56px; gap: 4px 10px; }
-  .gvp-mr .gvp-mr-lib { grid-column: 1 / -1; white-space: normal; }
-  .gvp-mr--tete > :first-child { display: none; }
+  .gvp-mr { grid-template-columns: minmax(0, 1fr); gap: 5px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .gvp-mr .gvp-mr-lib { white-space: normal; overflow: visible; }
+  .gvp-mr--tete,
+  .gvp-mr .gvp-mr-n { display: none; }
 }
 
 /* La teinte du ministère (04/10/2026) : le liseré d'une carte est la légende
@@ -824,15 +852,15 @@
   fill: var(--ink);
 }
 
-@media (max-width: 720px) {
-  .gvp-frise-voisins {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .gvp-frise-voisins > .gvp-frise-voisins-titre {
-    display: none;
-  }
-}
+/* Au téléphone, une fenêtre sur les gouvernements voisins (#1372, forme C du
+   28/10/2026) remplace la frise et la ligne des voisins : voir
+   FenetreDesGouvernements. Classes rendues au téléphone seulement. */
+.gvp-fenetre { position: relative; margin: 4px 0 10px; }
+.gvp-fenetre-barre { position: relative; height: 24px; }
+.gvp-fenetre-seg { position: absolute; top: 0; bottom: 0; border-radius: 2px; background: var(--border-strong); }
+.gvp-fenetre-seg--courant { background: var(--gouv); }
+.gvp-fenetre-ax { position: relative; height: 18px; margin-top: 4px; font-size: 13px; color: var(--muted); }
+.gvp-fenetre-ax > span { position: absolute; width: 32px; text-align: center; white-space: nowrap; }
 
 /* Au téléphone (#1372, lot 2) : la mention 49.3 se lit d'une traite. En boîte
    flexible, elle se rangeait en trois colonnes étroites — « 1 », la phrase,

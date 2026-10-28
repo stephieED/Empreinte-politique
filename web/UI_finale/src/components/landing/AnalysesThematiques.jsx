@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { getCandidatesList } from '../../data';
 import { useAsyncData } from '../../hooks/useAsyncData';
 import { FIN_EVENEMENT_CANDIDATS as FIN_EVENEMENT, dateEnClair as enClair, getArticles } from '../../data/articles';
+import { useEcranEtroit } from '../../hooks/useLargeur';
 import './landing.css';
 
 /* L'ÉVÉNEMENT EN TÊTE DU CARROUSEL (#1329, arbitré le 22/10/2026) : tant que le
@@ -39,6 +40,9 @@ export default function AnalysesThematiques({ dansHero = false }) {
   const [i, setI] = useState(0);
   const pause = useRef(false);
   const fenRef = useRef(null);
+  /* Au téléphone (#1372, 28/10/2026), le titre d'une diapositive ne se coupe
+   * plus : la fenêtre prend la hauteur de la plus haute, rien n'est rogné. */
+  const etroit = useEcranEtroit();
 
   useEffect(() => {
     let vivant = true;
@@ -80,6 +84,11 @@ export default function AnalysesThematiques({ dansHero = false }) {
       fen.style.height = '';
       fen.classList.add('analyses-fen--mesure');
       diapos.forEach((d) => { couper(d.querySelector('.analyses-t'), null); couper(d.querySelector('.analyses-desc'), null); });
+      if (etroit) {
+        fen.classList.remove('analyses-fen--mesure');
+        fen.style.height = `${Math.max(...diapos.map((d) => d.offsetHeight))}px`;
+        return;
+      }
       const min = Math.min(...diapos.map((d) => d.offsetHeight));
       diapos.forEach((d) => {
         const titre = d.querySelector('.analyses-t'), desc = d.querySelector('.analyses-desc');
@@ -99,7 +108,7 @@ export default function AnalysesThematiques({ dansHero = false }) {
     ro?.observe(fen);
     document.fonts?.ready?.then(ajuster);
     return () => ro?.disconnect();
-  }, [dansHero, n]);
+  }, [dansHero, n, etroit]);
 
   /* Rien à montrer, rien d'affiché : un encart vide dirait qu'il manque
    * quelque chose (§2 règle 5) là où il n'y a simplement pas d'article. */

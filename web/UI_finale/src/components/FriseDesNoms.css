@@ -1,0 +1,50 @@
+/* Les noms au-dessus d'une frise, au téléphone (#1372, lot 3 suite). Le
+   composant n'est rendu que sous 720 px : ces règles ne touchent pas
+   l'ordinateur. */
+.frn { position: relative; }
+
+.frn-nom {
+  position: absolute;
+  font-size: 13px;
+  line-height: 1.25;
+  white-space: nowrap;
+  color: var(--ink);
+  border-left: 2px solid var(--ink);
+  padding-left: 6px;
+}
+
+.frn-nom--droite {
+  border-left: 0;
+  border-right: 2px solid var(--ink);
+  padding: 0 6px 0 0;
+  text-align: right;
+}
+
+.frn-l1, .frn-l2 { display: block; }
+
+.frn-nom a {
+  position: relative;
+  font-weight: 800;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+/* Une cible tactile de 24 px au moins, sans bouger le texte. */
+.frn-nom a::after {
+  content: '';
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: 50%;
+  height: 24px;
+  transform: translateY(-50%);
+}
+
+/* Une ligne par nom (fiche de gouvernement) : le gouvernement de la fiche en
+   gras, sans lien ; les autres sont des liens. */
+.frn--une-ligne .frn-nom { line-height: 1.2; padding-left: 5px; }
+.frn--une-ligne .frn-nom--droite { padding: 0 5px 0 0; }
+.frn--une-ligne .frn-nom a { font-weight: 700; }
+.frn-nom--courant { font-weight: 800; }

@@ -19,6 +19,7 @@
  * où l'on vient de cliquer une flèche ou un segment.
  */
 import { formatNumber } from '../utils/lecture';
+import { useEcranEtroit } from '../hooks/useLargeur';
 import './NavigationPeriodes.css';
 
 const mois = (d) => (d ? `${d.slice(0, 4)}/${d.slice(5, 7)}` : '');
@@ -51,6 +52,7 @@ export default function NavigationPeriodes({
   sansPosition = false,
 }) {
   const tout = index === null;
+  const etroit = useEcranEtroit();
   const total = periodes.reduce((n, p) => n + poids(p), 0) || 1;
   const mot = (n) => (n > 1 ? unite : uniteSingulier);
 
@@ -89,6 +91,55 @@ export default function NavigationPeriodes({
   // Sans ligne de position ni bouton « tout », rien ne suit le rail : il prend
   // alors la marge que la ligne portait, pour ne pas coller à la figure.
   const ligne = !sansPosition || avecTout;
+
+  /* AU TÉLÉPHONE, UNE GRILLE D'ANNÉES (#1372, forme C arbitrée le 28/10/2026).
+     Le rail proportionnel y perdait l'année de ses petites périodes — un
+     segment vide qu'on ne savait pas où toucher —, et les deux flèches en
+     cartes prenaient une ligne pour redire ce que le rail montre. Chaque
+     période y devient une case égale : son année, et son volume dessous, qui
+     porte le poids que la largeur ne porte plus. Une période à 0 reste là : son
+     absence se lit, elle ne disparaît pas (§2 règle 5). Les flèches du clavier
+     marchent toujours, par le même conteneur. */
+  if (etroit) {
+    const n = periodes.length;
+    const colonnes = Math.ceil(n / Math.ceil(n / 5));
+    return (
+      <div className="np" onKeyDown={surTouche}>
+        <div
+          className={`np-grille${avecTout ? '' : ' np-grille--seule'}`}
+          style={{ '--np-colonnes': colonnes }}
+        >
+          {periodes.map((p, i) => {
+            const v = poids(p);
+            return (
+              <button
+                type="button"
+                key={p.cle}
+                className={`np-case${p.sansRepere ? ' np-case--absent' : ''}${v === 0 ? ' np-case--vide' : ''}`}
+                aria-current={!tout && i === index}
+                onClick={() => aller(i)}
+                title={`${mois(p.debut)} → ${mois(p.fin)} · ${libelle(p)} · ${formatNumber(v)} ${mot(v)}`}
+              >
+                <b>{p.debut.slice(0, 4)}</b>
+                <small>{formatNumber(v)}</small>
+              </button>
+            );
+          })}
+        </div>
+        {avecTout && (
+          <p className="np-position np-position--seule">
+            <button
+              type="button"
+              className="np-tout"
+              onClick={() => onIndex(tout ? periodes.length - 1 : null)}
+            >
+              {tout ? libelleRetour : libelleTout}
+            </button>
+          </p>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="np" onKeyDown={surTouche}>

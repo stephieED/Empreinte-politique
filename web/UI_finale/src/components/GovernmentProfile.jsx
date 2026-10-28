@@ -19,7 +19,7 @@
  * la section 03 dit déjà), et la liste des remaniements ligne à ligne (douze
  * lignes pour Philippe II, quand « remanié 10 fois » suffit).
  */
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { Fragment, useEffect, useId, useMemo, useRef, useState } from 'react';
 import PartagerFiche from './PartagerFiche';
 import { Link } from 'react-router-dom';
 import { Condition, EtiquetteFiltre, useFiltreActif } from './Recherche';
@@ -29,6 +29,8 @@ import { extraitsDuDebat, paquetDe } from '../utils/extraits';
 import { motsDuFiltre } from '../utils/filtreIntitule';
 import { SUJET_NON_PUBLIE } from '../utils/sujetIntervention.js';
 import { useEcranEtroit, useLargeur } from '../hooks/useLargeur';
+import { anneesLisibles, liaison, reunirParPremierMinistre } from '../utils/frise';
+import FriseDesNoms from './FriseDesNoms';
 import '../styles/shell.css';
 import './CarresTextes.css';
 import './GovernmentProfile.css';
@@ -49,6 +51,15 @@ import BudgetsDuGouvernement from './BudgetsDuGouvernement';
 import {
   GRIS_SANS_MINISTERE, clesDuTexte, fondDuTexte, nomCourtDuMinistere, polesDuGouvernement, teintesDesMinisteres,
 } from '../utils/ministere';
+import ChiffresDeLigne from './ChiffresDeLigne';
+
+/* Au téléphone, les deux colonnes s'écrivent sous la barre avec les mots de
+   leur en-tête (#1372) ; « 7 / 39 membres » garde son dénominateur. */
+const chiffresDebat = (tours, membres, denominateur) => [
+  { texte: formatNumber(tours), n: tours, pluriel: 'prises de parole', singulier: 'prise de parole' },
+  // « 1 / 39 membres » : la fraction s'accorde au dénominateur.
+  { texte: `${formatNumber(membres)} / ${formatNumber(denominateur)}`, n: denominateur, pluriel: 'membres', singulier: 'membre' },
+];
 
 /* LES BULLES (revue d'ergonomie du 04/10/2026). Une phrase dit ce que la
  * section présente, une note aide à ne pas mal la lire, un lien mène à la
@@ -199,34 +210,28 @@ function VerifiedIcon() {
  * remonte pas avant 2007 : l'Assemblée ne publie rien de plus ancien, et la
  * frise ne montre donc pas tous les gouvernements de la Ve République. */
 function FriseDesGouvernements({ chronologie, courantId }) {
-  const [ref, largeur] = useLargeur();
   const etroit = useEcranEtroit();
   const aujourdhui = new Date().toISOString().slice(0, 10);
   const tries = [...chronologie].filter((g) => g.debut).sort((a, b) => a.debut.localeCompare(b.debut));
   if (!tries.length) return null;
+  if (etroit) return <FenetreDesGouvernements courantId={courantId} tries={tries} />;
 
-  /* AU TÉLÉPHONE, LA FRISE SE REDESSINE À SA LARGEUR (#867, forme A du
-   * 15/10/2026) : une unité pour un pixel, au lieu de mille unités réduites au
-   * tiers. Une année sur quatre, et les dates du gouvernement de la fiche sous
-   * son nom — à cette taille, sa barre ne se date plus en comptant. */
-  const aLaLargeur = etroit && largeur > 0;
   const debut = Date.parse(tries[0].debut);
   const fin = Date.parse(aujourdhui);
   const etendue = Math.max(fin - debut, 1);
-  const L = aLaLargeur ? largeur : 1000;
+  const L = 1000;
   const GAUCHE = 2;
   const LARGEUR = L - 4;
-  const HAUT = aLaLargeur ? 32 : 26;
-  const BANDE = aLaLargeur ? 24 : 34;
-  const H = HAUT + BANDE + 18 + (aLaLargeur ? 4 : 14);
+  const HAUT = 26;
+  const BANDE = 34;
+  const H = HAUT + BANDE + 18 + 14;
   const x = (iso) => GAUCHE + ((Date.parse(iso) - debut) / etendue) * LARGEUR;
 
   const annees = [];
-  const pas = aLaLargeur ? 4 : 2;
-  for (let a = new Date(tries[0].debut).getUTCFullYear() + 1; a <= new Date(aujourdhui).getUTCFullYear(); a += pas) {
+  for (let a = new Date(tries[0].debut).getUTCFullYear() + 1; a <= new Date(aujourdhui).getUTCFullYear(); a += 2) {
     annees.push(a);
   }
-  const bord = aLaLargeur ? 70 : 60;
+  const bord = 60;
 
   /* LES VOISINS DANS LE TEMPS (#1329) : le précédent et le suivant se nomment
    * au-dessus de la frise, et chaque autre barre mène à sa fiche. */
@@ -236,7 +241,7 @@ function FriseDesGouvernements({ chronologie, courantId }) {
   const court = (g) => g.title.replace(/^Gouvernement\s+/, '');
 
   return (
-    <div ref={ref}>
+    <div>
       <div className="gvp-frise-voisins">
         <span>{precedent && <Link className="gvp-lien" to={`/gouvernements/${precedent.id}`}>{`← ${court(precedent)}`}</Link>}</span>
         <span className="gvp-frise-voisins-titre">{`Les gouvernements depuis ${tries[0].debut.slice(0, 4)}`}</span>
@@ -268,13 +273,8 @@ function FriseDesGouvernements({ chronologie, courantId }) {
             <g key={g.id}>
               {courant ? barre : <Link aria-label={g.title} to={`/gouvernements/${g.id}`}>{barre}</Link>}
               {courant && (
-                <text x={xt} y={aLaLargeur ? 12 : HAUT - 9} textAnchor={ancre} className="gvp-frise-nom">
+                <text x={xt} y={HAUT - 9} textAnchor={ancre} className="gvp-frise-nom">
                   {g.title.replace(/^Gouvernement\s+/, '')}
-                </text>
-              )}
-              {courant && aLaLargeur && (
-                <text x={xt} y={HAUT - 7} textAnchor={ancre} className="gvp-frise-annee">
-                  {`${moisEtAnnee(g.debut)} → ${g.fin ? moisEtAnnee(g.fin) : 'en fonction'}`}
                 </text>
               )}
             </g>
@@ -284,6 +284,60 @@ function FriseDesGouvernements({ chronologie, courantId }) {
           <text key={a} x={x(`${a}-01-01`)} y={HAUT + BANDE + 18} textAnchor="middle" className="gvp-frise-annee">{a}</text>
         ))}
       </svg>
+    </div>
+  );
+}
+
+/* AU TÉLÉPHONE, UNE FENÊTRE SUR LES VOISINS (#1372, forme C du 28/10/2026).
+ * Les dix-sept gouvernements depuis 2007 tenaient en 350 px : chaque barre y
+ * faisait quelques pixels. La frise montre les gouvernements de rang ci − 4 à
+ * ci + 1 autour de celui de la fiche (ci), avec le même rangement des noms que
+ * la frise de la législature (`FriseDesNoms`) : un nom par ligne, ceux d'un
+ * même Premier ministre réunis, chacun lien vers sa fiche — sauf celui de la
+ * fiche, en gras. Une graduation par 1er janvier. La ligne des voisins
+ * (« ← Lecornu I … en fonction ») n'y est plus : les noms la remplacent. */
+const LARGEUR_ANNEE = 32; // « 2024 » en 13 px, mesuré à 31 px le 28/10/2026
+function FenetreDesGouvernements({ tries, courantId }) {
+  const [ref, largeur] = useLargeur();
+  const aujourdhui = new Date().toISOString().slice(0, 10);
+  const rang = tries.findIndex((g) => g.id === courantId);
+  const ci = rang >= 0 ? rang : tries.length - 1;
+  const fenetre = tries.slice(Math.max(0, ci - 4), ci + 2);
+  const t0 = Date.parse(fenetre[0].debut);
+  const t1 = Date.parse(fenetre[fenetre.length - 1].fin || aujourdhui);
+  const X = (iso) => ((Date.parse(iso) - t0) / Math.max(1, t1 - t0)) * 100;
+  const groupes = reunirParPremierMinistre(fenetre.map((g) => ({ ...g, nom: g.title.replace(/^Gouvernement\s+/, '') })));
+  const noms = groupes.map((gr) => ({
+    cle: gr.membres[0].id,
+    x: X(gr.membres[0].debut),
+    courant: gr.membres.some((m) => m.id === courantId),
+    contenu: gr.membres.map((m, i) => (
+      <Fragment key={m.id}>
+        {liaison(i, gr.membres.length)}
+        {m.id === courantId ? m.libelle : <Link to={`/gouvernements/${m.id}`}>{m.libelle}</Link>}
+      </Fragment>
+    )),
+  }));
+  const annees = [];
+  for (let a = new Date(t0).getUTCFullYear() + 1; a <= new Date(t1).getUTCFullYear(); a += 1) annees.push(a);
+  return (
+    <div className="gvp-fenetre" ref={ref}>
+      <FriseDesNoms hauteurNiveau={22} noms={noms} uneLigne />
+      <div className="gvp-fenetre-barre">
+        {fenetre.map((g) => {
+          const style = { left: `${X(g.debut)}%`, width: `calc(${X(g.fin || aujourdhui) - X(g.debut)}% - 2px)` };
+          const titre = `${g.title} — ${jour(g.debut)}${g.fin ? ` → ${jour(g.fin)}` : ' → en fonction'}`;
+          return g.id === courantId
+            ? <span className="gvp-fenetre-seg gvp-fenetre-seg--courant" key={g.id} style={style} title={titre} />
+            : <Link aria-label={g.title} className="gvp-fenetre-seg" key={g.id} style={style} title={titre} to={`/gouvernements/${g.id}`} />;
+        })}
+      </div>
+      <div className="gvp-fenetre-ax">
+        {/* Une année par 1er janvier, ramenée dans la largeur de la frise ; une
+            sur deux quand elles se toucheraient (fenêtre de CASTEX, 2014-2024). */}
+        {largeur > 0 && anneesLisibles(annees.map((a) => (X(`${a}-01-01`) / 100) * largeur), largeur, LARGEUR_ANNEE)
+          .map(({ i, gauche }) => <span key={annees[i]} style={{ left: gauche }}>{annees[i]}</span>)}
+      </div>
     </div>
   );
 }
@@ -394,6 +448,8 @@ function EnBref({ government, chronologie, legislatures }) {
  * s'allonge pas au fil des clics. Les colonnes sont construites ici et non
  * laissées à une grille CSS — une grille aligne chaque rangée sur son bloc le
  * plus haut, si bien qu'ouvrir une carte les ouvrait visuellement toutes. */
+const CARTES_AU_TELEPHONE = 6;
+
 function colonnes(poles, nombre) {
   const piles = Array.from({ length: nombre }, () => []);
   poles.forEach((pole, i) => piles[i % nombre].push(pole));
@@ -477,7 +533,16 @@ function QuiLeComposait({ government }) {
   const liens = government.premierMinistreId ? ({
     [government.premierMinistre]: `/candidats/${government.premierMinistreId}`,
   }) : {};
-  const piles = colonnes(poles, 3);
+  /* AU TÉLÉPHONE, SIX CARTES PUIS UN LIEN (#1372, forme C du 28/10/2026).
+     Vingt cartes faisaient la section la plus longue de la fiche. Les six
+     premières dans l'ordre de la composition — le Premier ministre, puis les
+     ministères dans l'ordre des libellés —, sur une seule colonne : trois
+     colonnes empilées se lisaient une colonne après l'autre, pas dans cet
+     ordre. Le lien affiche le reste. */
+  const etroit = useEcranEtroit();
+  const [toutes, setToutes] = useState(false);
+  const caches = etroit && !toutes ? Math.max(0, poles.length - CARTES_AU_TELEPHONE) : 0;
+  const piles = etroit ? [poles.slice(0, poles.length - caches)] : colonnes(poles, 3);
 
   return (
     <section className="gvp-section" data-section="Qui le composait" id="section-composition">
@@ -509,6 +574,11 @@ function QuiLeComposait({ government }) {
               </div>
             ))}
           </div>
+        )}
+        {caches > 0 && (
+          <button className="gvp-voir-tout" onClick={() => setToutes(true)} type="button">
+            {caches > 1 ? `Voir les ${formatNumber(caches)} autres ministères` : 'Voir l’autre ministère'}
+          </button>
         )}
       </div>
     </section>
@@ -646,6 +716,7 @@ function ParolesComptees({ government }) {
                 </span>
                 <span className="gvp-mr-n">{formatNumber(l.tours)}</span>
                 <span className="gvp-mr-n gvp-mr-n--sur">{formatNumber(l.membres)} / {formatNumber(denominateur)}</span>
+                <ChiffresDeLigne chiffres={chiffresDebat(l.tours, l.membres, denominateur)} />
               </div>
               {/* Le membre désigné se nomme ici, avec son nombre : jamais vingt
                   nombres à la fois. */}
@@ -925,6 +996,19 @@ function CarresDesProjets({ textes, selection, onSelection, poles = [], teintes 
   const presentes = poles.filter((p) => teintes.has(p.cle) && textes.some((t) => clesDuTexte(poles, t).includes(p.cle)));
   const sansMinistere = textes.filter((t) => !clesDuTexte(poles, t).some((c) => teintes.has(c))).length;
   const colonnes = useMemo(() => colonnesDesProjets(textes, poles), [textes, poles]);
+  /* AU TÉLÉPHONE, LES CARRÉS SE GROUPENT PAR COULEUR (#1372, forme B) : dans
+   * chaque étape, l'ordre de la légende, puis « Aucun ministère nommé », puis
+   * les carrés à plusieurs couleurs. Un texte présenté par deux ministères
+   * se rangeait d'après le premier, et sa rayure coupait la suite d'une
+   * teinte. Tri stable : l'ordre des dates tient dans chaque groupe. */
+  const etroit = useEcranEtroit();
+  const rangDeCouleur = (t) => {
+    const cles = clesDuTexte(poles, t).filter((c) => teintes.has(c));
+    if (cles.length > 1) return presentes.length + 1;
+    if (!cles.length) return presentes.length;
+    return presentes.findIndex((p) => p.cle === cles[0]);
+  };
+  const carresDe = (col) => (etroit ? [...col.textes].sort((x, y) => rangDeCouleur(x) - rangDeCouleur(y)) : col.textes);
   const n493 = textes.filter((t) => t.statut === STATUT_493).length;
   /* LE TEXTE SURVOLÉ SE NOMME DANS UNE INFOBULLE, celle des carrés des fiches
    * candidat et groupe (`.cp-car-bulle`) : posée d'après le carré, ancrée par
@@ -966,7 +1050,7 @@ function CarresDesProjets({ textes, selection, onSelection, poles = [], teintes 
                 </button>
               ) : <div className="cp-car-tete">{tete}</div>}
               <div className="cp-car-grille">
-                {col.textes.map((t) => (
+                {carresDe(col).map((t) => (
                   <button
                     aria-describedby={bulle?.texte === t ? idBulle : undefined}
                     aria-label={t.titre}
@@ -1118,7 +1202,7 @@ function FluxEtListe({ textes, mot = '', poles = [], teintes }) {
           <ListeDesTextes textes={choisis} />
         </div>
       ) : (
-        <p className="gvp-invite">Cliquez un carré, une étape ou un ministère pour lire les textes.</p>
+        <p className="gvp-invite">Choisissez un carré, une étape ou un ministère pour lire les textes.</p>
       )}
     </div>
   );

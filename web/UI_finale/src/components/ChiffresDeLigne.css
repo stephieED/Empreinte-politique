@@ -1,0 +1,22 @@
+/* Les nombres d'une rangée sous sa barre, au téléphone seulement (#1372). */
+.chiffres-ligne {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .chiffres-ligne {
+    display: block;
+    grid-column: 1 / -1;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.35;
+    color: var(--muted);
+    text-align: left;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .chiffres-ligne b {
+    font-weight: 700;
+    color: var(--ink);
+  }
+}

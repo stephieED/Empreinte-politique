@@ -543,8 +543,8 @@ def test_la_figure_n_ecrit_aucun_texte_et_la_liste_ne_parle_plus_de_rubans(fiche
     barre ou une étiquette… » —, faux sous une figure qui n'a plus de ruban.
     Elle reprend celle du versant français, « thème » à la place de
     « commission »."""
-    assert "? 'Cliquez un carré, une étape ou un thème pour lire les textes.'" in fiche
-    assert ": 'Cliquez un carré, une étape ou une commission pour lire les textes.'}" in fiche
+    assert "? 'Choisissez un carré, une étape ou un thème pour lire les textes.'" in fiche
+    assert ": 'Choisissez un carré, une étape ou une commission pour lire les textes.'}" in fiche
     assert "préparatoire au Parlement, que la fiche ne publie pas." in fiche
     rendu = grille.split("  return (\n    <div className=\"cp-car cp-cth\"")[1]
     textes = [t.strip() for t in re.findall(r">([^<>{}]+)<", rendu) if re.search(r"[A-Za-zÀ-ÿ]", t)]

@@ -9,6 +9,7 @@
  */
 import { useMemo, useRef, useState } from 'react';
 import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
+import { useEcranEtroit } from '../hooks/useLargeur';
 import { LIBELLE_SORT_TEXTE, VOTE_STYLE, formatNumber, pageDuJeuDeDonnees } from '../utils/lecture';
 import { MATIERE_NON_ETABLIE as NON_ETABLIE, NATURES_UE } from '../utils/profilCandidat';
 import { teinteThemeUe } from '../utils/matiere';
@@ -23,6 +24,7 @@ import {
   matieresDePeriode,
 } from '../utils/votesParPeriode';
 import NavigationPeriodes from './NavigationPeriodes';
+import FiltreDeroulant from './FiltreDeroulant';
 import './VotesParPeriode.css';
 
 const jour = (d) => (d ? `${d.slice(8, 10)}/${d.slice(5, 7)}/${d.slice(0, 4)}` : '');
@@ -265,6 +267,8 @@ export default function VotesParPeriode({ periodes, portee, reperes, regle, etiq
   useReplieAuClicDehors(racine, matiere != null, () => setMatiere(null));
   // Le filtre par nature des textes votés au Parlement européen (#901).
   const [nature, setNature] = useState('tous');
+  // Au téléphone, les pastilles deviennent des listes déroulantes (#1372).
+  const etroit = useEcranEtroit();
 
   const periode = periodes[Math.min(index, periodes.length - 1)];
   const LIBELLE_NATURE_VOTE = { sans_dossier: 'Sans dossier' };
@@ -320,6 +324,38 @@ export default function VotesParPeriode({ periodes, portee, reperes, regle, etiq
         && (!o || (v.origine === ORIGINE_GOUVERNEMENT ? ORIGINE_GOUVERNEMENT : ORIGINE_PARLEMENT) === o),
     ).length;
 
+  const comptePosition = (p) =>
+    new Set((periode.votes || []).filter((v) => v.position === p).map((v) => v.scrutinId)).size;
+
+  const naturesVote = [{ cle: 'tous', libelle: 'Toutes natures', total: new Set((periode.votes || []).map((v) => v.scrutinId)).size }]
+    .concat(naturesPresentes.map((n) => ({
+      ...n,
+      libelle: LIBELLE_NATURE_VOTE[n.cle] || n.libelle,
+      total: new Set((periode.votes || []).filter((v) => v.natureCle === n.cle).map((v) => v.scrutinId)).size,
+    })));
+
+  /* Au téléphone, une boîte par filtre (forme B, #1372) : mêmes choix, mêmes
+     nombres, même geste que les pastilles. Position laisse cocher plusieurs
+     cases ; Origine et la nature européenne n'en retiennent qu'une. */
+  const choixPositions = POSITIONS_ORDONNEES.map((p) => ({
+    cle: p,
+    libelle: LIBELLE_POSITION[p],
+    n: comptePosition(p),
+    choisi: positions.has(p),
+    marque: <i className="vp-marque" style={{ '--pc': VOTE_STYLE[p]?.color ?? null }} />,
+  }));
+  const choixOrigines = [null, ORIGINE_PARLEMENT, ORIGINE_GOUVERNEMENT].map((o) => ({
+    cle: o,
+    libelle: o ? LIBELLE_ORIGINE[o] : 'Tous',
+    n: compteOrigine(o),
+    choisi: origine === o,
+    marque: <i className={`vp-marque vp-marque--${o ?? 'tous'}`} />,
+  }));
+  const choisirOrigine = (o) => {
+    setOrigine(o);
+    setMatiere(null);
+  };
+
   /* UNE SEULE CARTE, DU DÉNOMINATEUR À LA FIGURE. La règle de repli et la
    * navigation entre périodes flottaient AU-DESSUS du cadre blanc, comme deux
    * bandeaux détachés de ce qu'ils qualifient — alors qu'ils ne disent rien
@@ -330,14 +366,17 @@ export default function VotesParPeriode({ periodes, portee, reperes, regle, etiq
       <div className="cp-carte cp-bloc vp-carte">
         {etiquette}
         {regle && <p className="vp-regle">{regle}</p>}
-        {filtreNature && (
+        {filtreNature && etroit && (
+          <FiltreDeroulant
+            choix={naturesVote.map((n) => ({ cle: n.cle, libelle: n.libelle, n: n.total, choisi: nature === n.cle }))}
+            etiquette="Nature des textes votés"
+            onChoisir={(cle) => { setNature(cle); setMatiere(null); }}
+            unique
+          />
+        )}
+        {filtreNature && !etroit && (
           <div className="cp-natures" role="group" aria-label="Nature des textes votés">
-            {[{ cle: 'tous', libelle: 'Toutes natures', total: new Set((periode.votes || []).map((v) => v.scrutinId)).size }]
-              .concat(naturesPresentes.map((n) => ({
-                ...n,
-                libelle: LIBELLE_NATURE_VOTE[n.cle] || n.libelle,
-                total: new Set((periode.votes || []).filter((v) => v.natureCle === n.cle).map((v) => v.scrutinId)).size,
-              })))
+            {naturesVote
               .map((n) => (
                 <button
                   aria-pressed={nature === n.cle}
@@ -378,6 +417,28 @@ export default function VotesParPeriode({ periodes, portee, reperes, regle, etiq
         />
       </div>
 
+      {etroit ? (
+        <div className="vp-filtres vp-filtres--deroulants">
+          <span className="vp-filtres-quoi">Position</span>
+          <FiltreDeroulant
+            choix={choixPositions}
+            etiquette="Position"
+            libelleTout="Toutes"
+            nombre={choixPositions.filter((c) => c.choisi && c.n > 0).map((c) => formatNumber(c.n)).join(' · ') || '0'}
+            onChoisir={basculerPosition}
+            tout={positions.size === POSITIONS_ORDONNEES.length}
+          />
+          {!ue && <span className="vp-filtres-quoi">Origine</span>}
+          {!ue && (
+            <FiltreDeroulant
+              choix={choixOrigines}
+              etiquette="Origine"
+              onChoisir={choisirOrigine}
+              unique
+            />
+          )}
+        </div>
+      ) : (
       <div className="vp-filtres">
         <span className="vp-filtres-quoi">Position</span>
         {POSITIONS_ORDONNEES.map((p) => (
@@ -392,7 +453,7 @@ export default function VotesParPeriode({ periodes, portee, reperes, regle, etiq
             <i />
             {LIBELLE_POSITION[p]}{' '}
             <span className="vp-chip-n">
-              {formatNumber(new Set((periode.votes || []).filter((v) => v.position === p).map((v) => v.scrutinId)).size)}
+              {formatNumber(comptePosition(p))}
             </span>
           </button>
         ))}
@@ -404,10 +465,7 @@ export default function VotesParPeriode({ periodes, portee, reperes, regle, etiq
             key={o ?? 'tous'}
             className={`vp-chip${o ? ` vp-chip--${o}` : ''}`}
             aria-pressed={origine === o}
-            onClick={() => {
-              setOrigine(o);
-              setMatiere(null);
-            }}
+            onClick={() => choisirOrigine(o)}
           >
             {o && <i />}
             {o ? LIBELLE_ORIGINE[o] : 'Tous'}{' '}
@@ -415,6 +473,7 @@ export default function VotesParPeriode({ periodes, portee, reperes, regle, etiq
           </button>
         ))}
       </div>
+      )}
 
       {/* Le renvoi vers la méthodologie est dans la bulle du titre de section
           (`CandidateProfile`, 01/10/2026) : il n'est plus posé entre la figure

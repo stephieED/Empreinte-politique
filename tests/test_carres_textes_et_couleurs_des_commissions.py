@@ -271,8 +271,9 @@ def test_la_fiche_de_groupe_a_recu_les_carres_une_ligne_par_role() -> None:
 
 
 def test_l_invitation_est_celle_qui_a_ete_validee(fiche) -> None:
-    """Le texte est arrêté au mot près, et il nomme les trois gestes."""
-    assert "Cliquez un carré, une étape ou une commission pour lire les textes." in fiche
+    """Le texte est arrêté au mot près, et il nomme les trois gestes ; « Choisissez »
+    a remplacé « Cliquez » le 28/10/2026, sur tous les écrans (#1372)."""
+    assert "Choisissez un carré, une étape ou une commission pour lire les textes." in fiche
     cascade = CASCADE.read_text(encoding="utf-8")
     assert "Cliquez un ruban, une barre ou une étiquette pour lire ce qui la compose." in cascade, (
         "la cascade, elle, parle toujours de rubans : sa phrase reste la sienne"

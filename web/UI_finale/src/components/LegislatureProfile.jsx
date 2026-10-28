@@ -36,6 +36,7 @@ import { formatNumber } from '../utils/lecture';
 import { motsDuFiltre } from '../utils/filtreIntitule';
 import { dateLongue, vueOrdreDuJour } from '../utils/ordreDuJour';
 import { useEcranEtroit } from '../hooks/useLargeur';
+import { liaison, reunirParPremierMinistre } from '../utils/frise';
 import {
   ETAPES, ORIGINES, SANS_ORIGINE, SORTS, motsDesTitres,
 } from '../utils/legislature';
@@ -43,6 +44,7 @@ import InfoBulle from './InfoBulle';
 import FilDAriane from './FilDAriane';
 import ArticlesDeLaPeriode from './ArticlesDeLaPeriode';
 import NuageDeMots from './NuageDeMots';
+import FriseDesNoms from './FriseDesNoms';
 import { Condition, EtiquetteFiltre, PeriodeContext, useFiltreActif } from './Recherche';
 import './GovernmentProfile.css';
 import './LegislatureProfile.css';
@@ -161,8 +163,84 @@ function useRangees(cles) {
   return [ref, rangs];
 }
 
+/* AU TÉLÉPHONE, LA FRISE DE LA LÉGISLATURE (#1372, forme F du 28/10/2026).
+ * - Une législature en cours s'arrête à aujourd'hui : sa barre occupe toute la
+ *   largeur, sans partie future ; les années au-delà de 85 % se retirent pour
+ *   ne pas heurter « aujourd'hui ».
+ * - Les gouvernements consécutifs d'un même Premier ministre se réunissent
+ *   (« Lecornu I et II », chaque partie menant à sa fiche), avec la durée
+ *   calculée du début du premier à la fin du dernier ; le remaniement se marque
+ *   d'une encoche blanche de 2 px dans la barre.
+ * - Les noms se rangent sur le plus petit nombre de niveaux sans qu'aucun trait
+ *   ne traverse un nom (`FriseDesNoms`, `utils/frise.js`). */
+function FriseEtroite({ vue }) {
+  const { periode, termePrevu, gouvernements } = vue;
+  const enCours = !periode?.fin;
+  const aujourdhui = new Date().toISOString().slice(0, 10);
+  const fin = periode?.fin || aujourdhui;
+  const terme = termePrevu?.date ?? null;
+  const borne = !enCours && terme && terme > fin ? terme : fin;
+  const part = (d) => ((Date.parse(d) - Date.parse(periode.debut)) / (Date.parse(borne) - Date.parse(periode.debut))) * 100;
+  const duree = dureeEnClair(periode.debut, fin);
+  const annees = [];
+  for (let a = Number(periode.debut.slice(0, 4)); a <= Number(borne.slice(0, 4)); a += 1) annees.push(a);
+  const groupes = reunirParPremierMinistre(gouvernements.map((g) => ({
+    id: g.id,
+    nom: g.title.replace(/^Gouvernement\s+/, ''),
+    d0: g.debut < periode.debut ? periode.debut : g.debut,
+    d1: !g.fin || g.fin > fin ? fin : g.fin,
+  })));
+  const noms = groupes.map((gr) => {
+    const premier = gr.membres[0], dernier = gr.membres[gr.membres.length - 1];
+    return {
+      cle: premier.id,
+      x: part(premier.d0),
+      contenu: gr.membres.map((m, i) => (
+        <Fragment key={m.id}>
+          {liaison(i, gr.membres.length)}
+          <Link to={`/gouvernements/${m.id}`}>{m.libelle}</Link>
+        </Fragment>
+      )),
+      sous: dureeEnClair(premier.d0, dernier.d1).join(' '),
+    };
+  });
+  const encoches = groupes.flatMap((gr) => gr.membres.slice(1).map((m) => ({ id: m.id, x: part(m.d0) })));
+  return (
+    <div className="lgp-frise">
+      <FriseDesNoms hauteurNiveau={38} noms={noms} />
+      <div className="lgp-frise-barre">
+        <div className="lgp-frise-plein" style={{ width: `${part(fin)}%` }}>{duree.join(' ')}</div>
+        {encoches.map((e) => <i className="lgp-frise-encoche" key={e.id} style={{ left: `calc(${e.x}% - 1px)` }} />)}
+        {enCours && <div className="lgp-frise-coupe lgp-frise-coupe--auj" style={{ left: 'calc(100% - 5px)' }} />}
+        {!enCours && terme && terme > fin && (
+          <>
+            <div className="lgp-frise-coupe" style={{ left: `calc(${part(fin)}% - 1px)` }} />
+            <div className="lgp-frise-reste" style={{ left: `${part(fin)}%` }}>
+              {vue.fin?.mode === 'dissolution' ? 'dissolution · ' : ''}le mandat devait courir jusqu’en {MOIS[Number(terme.slice(5, 7)) - 1]} {terme.slice(0, 4)}
+            </div>
+          </>
+        )}
+      </div>
+      <div className={`lgp-frise-ax${enCours ? ' lgp-frise-ax--auj' : ''}`}>
+        {annees.map((a, i) => {
+          const l = Math.max(0, Math.min(100, part(`${a}${periode.debut.slice(4)}`)));
+          if (enCours && l > 85) return null;
+          return (
+            <span
+              key={a}
+              style={{ left: `${l}%`, ...(i === 0 ? { transform: 'none' } : i === annees.length - 1 ? { transform: 'translateX(-100%)' } : {}) }}
+            >{a}</span>
+          );
+        })}
+        {enCours && <span className="lgp-frise-auj" style={{ left: '100%', transform: 'translateX(-100%)' }}>aujourd’hui</span>}
+      </div>
+    </div>
+  );
+}
+
 function EnBref({ vue }) {
   const { periode, termePrevu, gouvernements, comptes } = vue;
+  const etroit = useEcranEtroit();
   /* UNE LÉGISLATURE EN COURS (XVIIe, forme C arbitrée le 23/10/2026) : la frise
    * court jusqu'au terme légal, pleine jusqu'à aujourd'hui, marqué en jaune
    * comme la station d'aujourd'hui sur l'accueil ; la suite reste vide. */
@@ -188,7 +266,8 @@ function EnBref({ vue }) {
   return (
     <Section id="section-bref" numero="01" titre="En bref" bulle={BULLES.enBref(enCours)}>
       <div className="gvp-carte lgp-bref">
-        {periode?.debut && fin && (
+        {periode?.debut && fin && etroit && <FriseEtroite vue={vue} />}
+        {periode?.debut && fin && !etroit && (
           <div className="lgp-frise">
             <div className="lgp-frise-gov" ref={zoneGov} style={{ height: nRangs * RANG - 2 }}>
               {gouvernements.map((g, i) => {
@@ -265,7 +344,9 @@ const sansPosition = (groupes) => !groupes.some((g) => COLOREES.has(g.position))
  * libellé, que la légende dit déjà. */
 const TAILLES = {
   large: { sigle: 25, n: 22, dy: 23, ecart: 54, total: 44, sous: 24 },
-  etroit: { sigle: 46, n: 38, dy: 42, ecart: 92, total: 68, sous: 36 },
+  // `dy` passe de 42 à 56 (#1372, D1) : le nombre se lisait collé au sigle
+  // souligné.
+  etroit: { sigle: 46, n: 38, dy: 56, ecart: 92, total: 68, sous: 36 },
 };
 
 function Hemicycle({ groupes, sieges, neutre = false }) {
@@ -322,17 +403,51 @@ function Hemicycle({ groupes, sieges, neutre = false }) {
   /* Les plus grands groupes se posent d'abord : en cas de chevauchement, c'est le
    * sigle du plus petit qui reste dans la bulle. L'ordre d'affichage reste celui
    * des sièges. */
+  /* LE NOMBRE ACCOMPAGNE TOUT SIGLE QUI A LA PLACE (#1372, D1 du 28/10/2026).
+   * Les sigles se posent d'abord comme avant : avec leur nombre à partir de 30
+   * députés, sans en dessous, et pas du tout s'ils chevauchent un voisin. Puis
+   * un sigle posé sans nombre le reçoit s'il a la place — « NI » était le seul
+   * sigle de la XVIIe sans effectif. Ce second temps ne retire rien : un nombre
+   * ajouté ne fait jamais disparaître le sigle d'un voisin. */
+  const boite = (x, y, s, avecN) => {
+    // Sous un nombre, la marge couvre le bas de la ligne que la police réserve.
+    const l = s.length * T.sigle * 0.64, h = T.sigle + (avecN ? T.dy + 8 : 0);
+    return { x0: x - l / 2, x1: x + l / 2, y0: y - T.sigle, y1: y - T.sigle + h + 4 };
+  };
+  const croise = (b, e) => b.x0 < e.b.x1 && b.x1 > e.b.x0 && b.y0 < e.b.y1 && b.y1 > e.b.y0;
   [...sigles].sort((a, b) => (etroit ? b.n - a.n : 0)).forEach((g) => {
     const x = cx + (r1 + T.ecart) * Math.cos(g.a), y = cy - (r1 + T.ecart) * Math.sin(g.a) - 8;
     const avecN = !(etroit && g.n < 30);
-    const l = g.s.length * T.sigle * 0.64, h = T.sigle + (avecN ? T.dy : 0);
-    const b = { x0: x - l / 2, x1: x + l / 2, y0: y - T.sigle, y1: y - T.sigle + h + 4 };
-    if (etroit && etiquettes.some((e) => b.x0 < e.b.x1 && b.x1 > e.b.x0 && b.y0 < e.b.y1 && b.y1 > e.b.y0)) return;
+    const b = boite(x, y, g.s, avecN);
+    if (etroit && etiquettes.some((e) => croise(b, e))) return;
     etiquettes.push({ ...g, x, y, avecN, b });
   });
+  if (etroit) {
+    etiquettes.forEach((e) => {
+      if (e.avecN) return;
+      const b = boite(e.x, e.y, e.s, true);
+      if (etiquettes.some((o) => o !== e && croise(b, o))) return;
+      Object.assign(e, { avecN: true, b });
+    });
+  }
+  /* AU TÉLÉPHONE, LE CADRE SERRE LA FIGURE (#1372, D1). Le `viewBox` large
+   * réserve la place des libellés d'arc, que le téléphone ne pose pas : la
+   * figure y perdait un quart de sa largeur. Le cadre est calculé sur ce qui est
+   * dessiné — sièges, arcs, étiquettes posées — avec une marge pour l'écart
+   * entre la largeur estimée d'un sigle et sa largeur réelle. */
+  let cadre = '-250 -90 1500 630';
+  if (etroit) {
+    const bord = r1 + (neutre ? 12 : 34);
+    const x0 = Math.min(cx - bord, ...etiquettes.map((e) => e.b.x0));
+    const x1 = Math.max(cx + bord, ...etiquettes.map((e) => e.b.x1));
+    const y0 = Math.min(cy - bord, ...etiquettes.map((e) => e.b.y0));
+    const y1 = Math.max(cy + 14, ...etiquettes.map((e) => e.b.y1));
+    const marge = 18;
+    cadre = [x0 - marge, y0 - marge, x1 - x0 + 2 * marge, y1 - y0 + 2 * marge].map((v) => Math.round(v)).join(' ');
+  }
   const arc = (r, a0, a1) => `M${(cx + r * Math.cos(a0)).toFixed(1)},${(cy - r * Math.sin(a0)).toFixed(1)} A${r},${r} 0 0 1 ${(cx + r * Math.cos(a1)).toFixed(1)},${(cy - r * Math.sin(a1)).toFixed(1)}`;
   return (
-    <svg className="lgp-hemi" role="group" aria-label={`Hémicycle : ${total} députés`} viewBox="-250 -90 1500 630">
+    <svg className="lgp-hemi" role="group" aria-label={`Hémicycle : ${total} députés`} viewBox={cadre}>
       {!neutre && arcs.map((u) => {
         const rr = r1 + (etroit ? 30 : 104), m = (u.a0 + u.a1) / 2, cm = Math.cos(m);
         const anc = cm < -0.25 ? 'end' : cm > 0.25 ? 'start' : 'middle';
@@ -390,7 +505,9 @@ function QuiSiegeait({ vue }) {
   return (
     <Section id="section-sieges" numero="02" titre={vue.periode.fin ? 'Qui siégeait' : 'Qui siège'} bulle={BULLES.sieges(!vue.periode.fin)}>
       <div className="gvp-carte">
-        <div className="lgp-legende">
+        {/* Seule, l'entrée « Non-inscrits » ne nomme qu'un gris que le sigle
+            « NI » nomme déjà sur la figure : le téléphone la retire (#1372). */}
+        <div className={`lgp-legende${neutre && hors <= 0 ? ' lgp-legende--ni-seule' : ''}`}>
           {legende.map((p) => <span key={p.libelle}><i style={{ background: p.couleur }} />{p.libelle}</span>)}
           {hors > 0 && <span><i style={{ background: HORS_GROUPE }} />Hors groupe ou siège vacant</span>}
         </div>
@@ -883,11 +1000,24 @@ function Commissions({ vue, motCherche = '' }) {
                       title={`${e.libelle} : ${r.par[e.cle]}`}
                       type="button"
                     >
-                      {r.par[e.cle] >= 8 ? r.par[e.cle] : ''}
+                      {r.par[e.cle] >= 8 && <span className="lgp-b1-seg-n">{r.par[e.cle]}</span>}
                     </button>
                   ) : null))}
                 </span>
                 <b>{formatNumber(r.n)}</b>
+              </span>
+              {/* AU TÉLÉPHONE, LES NOMBRES SOUS LA BARRE (#1372, forme B du
+                  28/10/2026). Dans un segment de quelques pixels, le nombre
+                  sautait — « Défense » n'en montrait que 19 sur 23. Une pastille
+                  de la couleur du segment et son nombre, pour chaque étape non
+                  nulle, dans l'ordre de la légende ; masquée au-delà de 720 px. */}
+              <span className="lgp-b1-pastilles">
+                {ETAPES.map((e) => (r.par[e.cle] ? (
+                  <span key={e.cle} title={`${e.libelle} : ${r.par[e.cle]}`}>
+                    <i style={{ background: e.couleur }} />
+                    {formatNumber(r.par[e.cle])}
+                  </span>
+                ) : null))}
               </span>
             </div>
           ))}

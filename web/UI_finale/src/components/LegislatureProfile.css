@@ -72,6 +72,19 @@ a:hover .lgp-hemi-sigle--lien, a:focus-visible .lgp-hemi-sigle--lien { fill: #80
 .lgp-livre:focus-visible { outline: 2px solid #803060; outline-offset: 1px; }
 @media (prefers-reduced-motion: reduce) { .lgp-livre { transition: none; } }
 .lgp-detail-rang { grid-column: 1 / -1; }
+/* AU TÉLÉPHONE, TROIS ÉTAGÈRES ÉTROITES CÔTE À CÔTE (#1372, forme C du
+   28/10/2026). La bibliothèque défilait de côté : à 390 px on n'en voyait que
+   la colonne des commissions et un meuble. Les trois meubles se partagent la
+   largeur, la commission passe en titre au-dessus de ses trois étagères, et les
+   livres gardent leur taille — ils passent à la ligne. */
+@media (max-width: 720px) {
+  .lgp-meubles-defile { overflow-x: visible; }
+  .lgp-meubles { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 6px; min-width: 0; }
+  .lgp-meubles > :first-child { display: none; }
+  .lgp-meuble-tete { flex-direction: column; gap: 0; padding: 7px 8px; letter-spacing: 0; }
+  .lgp-domaine { grid-column: 1 / -1; justify-content: flex-start; text-align: left; padding: 14px 0 4px; font-weight: 800; }
+  .lgp-case { padding: 10px 6px 0; }
+}
 
 /* Le détail sous la rangée : même forme pour un livre, une étagère, un domaine (22/10). */
 .lgp-detail { background: var(--card); border: 1.5px solid var(--ink); border-radius: 10px; margin: 8px 0 12px; padding: 14px 16px; position: relative; display: flex; flex-direction: column; gap: 8px; }
@@ -115,6 +128,17 @@ a:hover .lgp-hemi-sigle--lien, a:focus-visible .lgp-hemi-sigle--lien { fill: #80
 
 @media (max-width: 520px) {
   .lgp-b1-rang { grid-template-columns: 1fr; gap: 4px; }
+}
+/* Au téléphone, plus de nombre dans les segments : ils passent sous la barre,
+   une pastille de la couleur du segment devant chacun (#1372, forme B). */
+.lgp-b1-pastilles { display: none; }
+@media (max-width: 720px) {
+  .lgp-legende--ni-seule { display: none; }
+  .lgp-b1-rang { grid-template-columns: 1fr; gap: 5px; }
+  .lgp-b1-seg-n { display: none; }
+  .lgp-b1-pastilles { display: flex; flex-wrap: wrap; gap: 3px 12px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .lgp-b1-pastilles > span { display: inline-flex; align-items: center; gap: 5px; }
+  .lgp-b1-pastilles i { width: 10px; height: 10px; border-radius: 2px; flex: none; }
 }
 
 
@@ -177,3 +201,15 @@ button.odj-c:hover, button.odj-c:focus-visible { outline: 1.5px solid var(--ink)
 .odj-mois-btn[aria-pressed="true"] { background: var(--accent); padding: 0 4px; margin: 0 -4px; border-radius: 3px; }
 /* Les jours d'une semaine ou d'un mois sélectionné : le jaune de la sélection. */
 .odj-dans-periode, .odj-c.odj-dans-periode, .odj-j.odj-dans-periode { background: rgba(223, 255, 0, .45); }
+
+/* AU TÉLÉPHONE, LA FRISE (#1372, forme F) : le remaniement d'un même Premier
+   ministre se marque d'une encoche blanche dans la barre. Le reste de la
+   frise vit dans FriseDesNoms. Classe rendue au téléphone seulement. */
+.lgp-frise-encoche { position: absolute; top: 0; bottom: 0; width: 2px; background: #fff; }
+
+/* AU TÉLÉPHONE, LE NUAGE PREND TOUTE LA LARGEUR (#1372, forme A du
+   28/10/2026) : sa carte intérieure (bordure, marge) disparaît. Le plancher
+   de ses nombres est dans NuageDeMots.jsx. */
+@media (max-width: 720px) {
+  .lgp-nuage { border: 0; border-radius: 0; padding: 0; background: none; }
+}

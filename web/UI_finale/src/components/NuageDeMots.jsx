@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import cloud from 'd3-cloud';
+import { useEcranEtroit } from '../hooks/useLargeur';
 
 /* Le nuage des mots des titres (#1314), disposé par d3-cloud comme sur la
  * maquette arbitrée (22/10/2026). La taille d'un mot est le nombre de titres
@@ -10,18 +11,27 @@ const graine = (s) => () => { s = (s * 16807) % 2147483647; return (s - 1) / 214
 export default function NuageDeMots({ mots, actif = null, onMot }) {
   const boite = useRef(null);
   const [largeur, setLargeur] = useState(0);
+  const [rendu, setRendu] = useState(0);
   const [places, setPlaces] = useState([]);
+  const etroit = useEcranEtroit();
 
   useEffect(() => {
     const el = boite.current;
     if (!el) return undefined;
-    const mesurer = () => setLargeur(Math.max(320, Math.round(el.clientWidth)));
+    const mesurer = () => {
+      setLargeur(Math.max(320, Math.round(el.clientWidth)));
+      setRendu(el.clientWidth);
+    };
     mesurer();
     const ro = new ResizeObserver(mesurer);
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
 
+  /* AU TÉLÉPHONE (#1372, forme A du 28/10/2026), aucun nombre en exposant
+   * sous 13 px RENDUS : le dessin fait au moins 320 unités, et se réduit
+   * quand la boîte est plus étroite. */
+  const plancherN = etroit && rendu > 0 ? 13 * (largeur / rendu) : 9;
   const hauteur = mots.length >= 60 ? 440 : Math.max(220, Math.min(380, 120 + mots.length * 7));
 
   useEffect(() => {
@@ -64,7 +74,7 @@ export default function NuageDeMots({ mots, actif = null, onMot }) {
                 transform={`translate(${d.x},${d.y})`}
               >
                 {d.w}
-                <tspan className="lgp-mot-n" dx="0.15em" dy="-0.45em" style={{ fontSize: `${Math.max(9, d.size * 0.45)}px` }}>{d.c}</tspan>
+                <tspan className="lgp-mot-n" dx="0.15em" dy="-0.45em" style={{ fontSize: `${Math.max(plancherN, d.size * 0.45)}px` }}>{d.c}</tspan>
               </text>
             ))}
           </g>

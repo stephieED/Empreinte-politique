@@ -84,7 +84,26 @@ jobs:
       run:
         working-directory: web/UI_finale
     steps:
+      # Seulement ce que le build lit (mesuré le 28/10/2026 par strace sur
+      # `npm run build`) : `pivot_data/`, `raw_data/candidats.json` et
+      # `web/UI_finale/`. Le reste de `raw_data/`, deux tiers du dépôt, n'est
+      # pas lu. `filter: blob:none` ne télécharge que les fichiers de ces
+      # chemins : 265 Mo au lieu de 506, 4 min 50 au lieu de 8 min 48 en local,
+      # pour un `dist/` identique au fichier près.
+      # UN SCRIPT DE BUILD QUI LIT UN AUTRE CHEMIN DU DÉPÔT DOIT L'AJOUTER ICI :
+      # sinon le build échoue sur un fichier absent.
+      # Gardé par tests/test_deploy_pages_checkout_partiel.py.
+      # → docs/decisions/deploy-pages-checkout-partiel.md
       - uses: actions/checkout@v5
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/*/
+            /pivot_data/
+            /raw_data/candidats.json
+            /web/UI_finale/
 
       - uses: actions/setup-node@v5
         with:

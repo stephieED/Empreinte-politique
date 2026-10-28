@@ -243,3 +243,48 @@
     font-size: 11px;
   }
 }
+
+/* ── Au téléphone (#1372, forme B du 28/10/2026) ─────────────────────────────
+ *
+ * Des carrés qu'un doigt touche : 24 px, et 21 px dans la disposition par
+ * rôle de la fiche de groupe. La légende devient une liste alignée à gauche,
+ * une entrée par ligne, chacune haute de 30 px au moins. Les carrés d'une
+ * étape sont déjà groupés par couleur dans l'ordre de la légende ; sur la
+ * fiche de gouvernement, `GovernmentProfile.jsx` les regroupe au téléphone. */
+@media (max-width: 720px) {
+  .cp-car-grille {
+    gap: 4px;
+  }
+  .cp-car-carre {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+  }
+  .cp-car-lignes .cp-car-grille {
+    gap: 3px;
+  }
+  .cp-car-lignes .cp-car-carre {
+    width: 21px;
+    height: 21px;
+    border-radius: 4px;
+  }
+  .cp-car-legende {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+    font-size: 13px;
+  }
+  .cp-car-cle {
+    justify-content: flex-start;
+    min-height: 30px;
+    margin: 0;
+    padding: 5px 0;
+    border-radius: 0;
+    text-align: left;
+  }
+  .cp-car-cle i {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+  }
+}

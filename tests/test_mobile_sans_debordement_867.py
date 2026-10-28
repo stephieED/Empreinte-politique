@@ -72,9 +72,13 @@ def test_la_frise_du_parcours_descend_au_telephone():
 
 
 def test_les_en_bref_se_redessinent_a_la_largeur_mesuree():
-    """Forme A : une unité pour un pixel, au lieu de mille unités réduites au tiers."""
+    """Forme A : une unité pour un pixel, au lieu de mille unités réduites au tiers.
+
+    La frise des gouvernements a quitté le SVG au téléphone (#1372, forme C du
+    28/10/2026) : une fenêtre de six gouvernements, dessinée en blocs à la
+    largeur de la carte (`FenetreDesGouvernements`)."""
     gouv = _code(COMPOSANTS / "GovernmentProfile.jsx")
-    assert "const L = aLaLargeur ? largeur : 1000;" in gouv
+    assert "if (etroit) return <FenetreDesGouvernements" in gouv
     lignee = _code(COMPOSANTS / "LigneeProfile.jsx")
     assert "const L = aLaLargeur ? largeur : LARGEUR;" in lignee
     i = lignee.index("function Frise(")
@@ -83,10 +87,17 @@ def test_les_en_bref_se_redessinent_a_la_largeur_mesuree():
 
 
 def test_le_titre_d_un_debat_prend_sa_ligne():
-    """Forme B : « projet de loi de finances… » ne disait plus l'année."""
+    """Forme B : « projet de loi de finances… » ne disait plus l'année.
+
+    Depuis #1372 (forme B du 28/10/2026), la rangée n'a plus qu'une colonne :
+    le titre, la barre et la ligne des nombres s'empilent, et l'en-tête des
+    colonnes disparaît — il n'a plus rien à titrer."""
     gouv = _blocs_etroits((COMPOSANTS / "GovernmentProfile.css").read_text(encoding="utf-8"))
-    assert "grid-column: 1 / -1" in _regle(gouv, ".gvp-mr .gvp-mr-lib")
-    assert "display: none" in _regle(gouv, ".gvp-mr--tete > :first-child"), "l'en-tête était décalé d'une colonne"
+    assert "grid-template-columns: minmax(0, 1fr)" in _regle(gouv, ".gvp-mr")
+    assert "white-space: normal" in _regle(gouv, ".gvp-mr .gvp-mr-lib")
+    assert re.search(r"\.gvp-mr--tete,\s*\.gvp-mr \.gvp-mr-n \{ display: none; \}", gouv), (
+        "l'en-tête et les colonnes de nombres cèdent la place à la ligne écrite"
+    )
     lignee = _blocs_etroits((COMPOSANTS / "LigneeProfile.css").read_text(encoding="utf-8"))
     assert "white-space: normal" in _regle(lignee, ".lp-mat .lp-mr-lib")
     assert "display: block" in _regle(lignee, ".lp-mat .lp-mr-rail")

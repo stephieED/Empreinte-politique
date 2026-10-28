@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
 import { getActesDuGouvernement } from '../data';
 import './ActesDuGouvernement.css';
+import ChiffresDeLigne from './ChiffresDeLigne';
 import { poleDuLibelle } from '../utils/ministere';
 
 /* ── CE QUE L'EXÉCUTIF A FAIT ENTRER EN VIGUEUR (#1029 voie 1) ────────────────
@@ -193,6 +194,12 @@ export default function ActesDuGouvernement({ id, poles = [], teintes = new Map(
                 </span>
                 <span className="adg-n">{nombre(l.n)}</span>
                 <span className="adg-n adg-n--fort">{nombre(l.lies)}</span>
+                <ChiffresDeLigne
+                  chiffres={[
+                    { texte: nombre(l.n), n: l.n, pluriel: 'actes', singulier: 'acte' },
+                    { texte: nombre(l.lies), n: l.lies, pluriel: 'liés à une loi', singulier: 'lié à une loi' },
+                  ]}
+                />
               </div>
               {choisi && (
                 <div className="adg-deroule">

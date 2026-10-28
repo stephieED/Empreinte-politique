@@ -280,3 +280,10 @@ les charger, ni à les faire grossir. -->
   by `tests/test_ci_inputs_workflow.py`. Read `docs/workflow-generate-data.md` §7 before
   touching either workflow's inputs.
   → `docs/decisions/retry-inputs-appariement-prefixe.md`
+- **The site deploy fetches only what the build reads (#1370).** `deploy-pages.yml` checks
+  out `pivot_data/`, `raw_data/candidats.json` and `web/UI_finale/` (`sparse-checkout`,
+  `filter: blob:none`), not the whole repository: the full fetch had grown past the job's
+  time limit. **A build script that reads another repository path adds it to that list**, or
+  the build fails in CI and only there. Locked by
+  `tests/test_deploy_pages_checkout_partiel.py`.
+  → `docs/decisions/deploy-pages-checkout-partiel.md`

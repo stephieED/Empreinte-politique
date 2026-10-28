@@ -747,6 +747,30 @@ export async function getLegislaturesList() {
   }));
 }
 
+/* LA PLACE DE CHAQUE GROUPE DANS L'HÉMICYCLE, par législature (#1372) : le
+ * siège médian de ses membres, celui qui range les groupes de l'accueil et de
+ * la fiche de législature. Lu dans le manifeste et rattaché à la LIGNÉE du
+ * groupe par l'organe de l'Assemblée — les sigles des deux sources diffèrent
+ * (« LFI-NFP », « LFI »). `{ [législature]: { [lignée]: place } }`. Un groupe
+ * absent de la composition publiée — dissous avant la date de référence de la
+ * législature — n'a pas de place : il n'y en a pas d'inventée. */
+export async function getPlacesDansLHemicycle() {
+  const manifest = await loadManifest();
+  const places = {};
+  for (const l of manifest.legislatures || []) {
+    const parLignee = {};
+    for (const g of l.groupes || []) {
+      if (g.place == null) continue;
+      // L'organe de l'Assemblée suffit à la jointure : il n'appartient qu'à elle.
+      const s = (manifest.groupes || []).find((x) => String(x.legislature) === String(l.id)
+        && (x.organes || []).includes(g.organe));
+      if (s?.lignee) parLignee[s.lignee] = g.place;
+    }
+    places[String(l.id)] = parLignee;
+  }
+  return places;
+}
+
 /* L'ASSEMBLÉE AUJOURD'HUI, pour l'accueil (#1329) : les groupes de la législature
  * en cours, de la gauche vers la droite de l'hémicycle (siège médian), avec leur
  * nombre de députés au jour des données. Le sigle, le nom et le lien sont ceux des

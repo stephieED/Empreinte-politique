@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Baseline from './Baseline';
+import { useEcranEtroit } from '../hooks/useLargeur';
 import './PiedDeSite.css';
 
 /* LE PIED DU SITE — UN SEUL, RENDU PAR LES TROIS CARCASSES (#328).
@@ -30,6 +31,13 @@ import './PiedDeSite.css';
  * Aucun score, aucun classement. » La promesse est écrite une seule fois, dans
  * `Baseline.jsx`, et l'accueil lit la même.
  *
+ * AU TÉLÉPHONE, UN PIED RESSERRÉ (#1372, forme A′ du 28/10/2026). Il faisait
+ * 383 px de haut à 390 de large, presque un demi-écran, sous chaque page. Les
+ * deux titres de colonne tombent, les liens se suivent sur la ligne, et
+ * l'adresse devient une troisième icône — une enveloppe, à côté des
+ * deux comptes, avec son libellé pour le lecteur d'écran. Sur ordinateur,
+ * l'adresse reste écrite en entier.
+ *
  * CE QUE LE PIED NE PORTE PAS : « aucun taux de présence individuel ». La règle
  * §2 n° 3 reste publiée — méthodologie, « Ce que vous ne trouverez pas ici » et
  * FAQ de l'accueil —, mais elle était répétée jusqu'à trois fois sur une même
@@ -56,7 +64,47 @@ function IconeX() {
   );
 }
 
+function IconeEnveloppe() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" aria-hidden="true" focusable="false">
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="M3.5 6.5 12 13l8.5-6.5" />
+    </svg>
+  );
+}
+
+function Comptes({ avecAdresse = false }) {
+  return (
+    <div className="pds-comptes">
+      {avecAdresse && (
+        <a className="pds-icone" href={`mailto:${CONTACT}`} aria-label="Écrire à Empreinte politique">
+          <IconeEnveloppe />
+        </a>
+      )}
+      <a
+        className="pds-icone"
+        href={LINKEDIN}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Empreinte politique sur LinkedIn"
+      >
+        <IconeLinkedIn />
+      </a>
+      <a
+        className="pds-icone"
+        href={X_COMPTE}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Empreinte politique sur X"
+      >
+        <IconeX />
+      </a>
+    </div>
+  );
+}
+
 export default function PiedDeSite() {
+  const etroit = useEcranEtroit();
   return (
     <footer className="pds">
       <div className="pds-marque">
@@ -65,38 +113,22 @@ export default function PiedDeSite() {
       </div>
 
       <nav className="pds-colonne" aria-label="Pages du site">
-        <span className="pds-titre">Le site</span>
+        {!etroit && <span className="pds-titre">Le site</span>}
         <Link to="/a-propos">À propos</Link>
         <Link to="/sources">Sources</Link>
         <Link to="/methodologie">Méthodologie</Link>
         <Link to="/mentions-legales">Mentions légales</Link>
         <Link to="/nous-soutenir">Nous soutenir</Link>
+        {etroit && <Comptes avecAdresse />}
       </nav>
 
-      <div className="pds-colonne">
-        <span className="pds-titre">Nous joindre</span>
-        <a href={`mailto:${CONTACT}`}>{CONTACT}</a>
-        <div className="pds-comptes">
-          <a
-            className="pds-icone"
-            href={LINKEDIN}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Empreinte politique sur LinkedIn"
-          >
-            <IconeLinkedIn />
-          </a>
-          <a
-            className="pds-icone"
-            href={X_COMPTE}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Empreinte politique sur X"
-          >
-            <IconeX />
-          </a>
+      {!etroit && (
+        <div className="pds-colonne">
+          <span className="pds-titre">Nous joindre</span>
+          <a href={`mailto:${CONTACT}`}>{CONTACT}</a>
+          <Comptes />
         </div>
-      </div>
+      )}
     </footer>
   );
 }

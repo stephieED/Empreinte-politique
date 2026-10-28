@@ -20,8 +20,12 @@ La version d'avant la découpe (30/08/2026, 18 404 lignes, 1 054 Ko) est figée 
 
 ---
 
+- `2026-10-28` <a id="accueil-telephone-exploration-d-abord-1372"></a>[Au téléphone, l'accueil ouvre sur l'exploration, le carrousel vient après (#1372, 2026-10-28)](decisions/accueil-telephone-exploration-d-abord-1372.md)
+- `2026-10-28` <a id="deploy-pages-checkout-partiel"></a>[Le déploiement du site ne récupère que ce que le build lit (#1370)](decisions/deploy-pages-checkout-partiel.md)
 - `2026-10-28` <a id="signature-titres-j3-fond-plein-et-implementation"></a>[J3 sur fond plein, et son implémentation rétablie](decisions/signature-titres-j3-fond-plein-et-implementation.md)
 - `2026-10-28` <a id="telephone-finitions-lot-2-1372"></a>[Au téléphone, les finitions sans nouvelle forme ; la ligne d'en-tête du gouvernement dit sa période (#1372, 2026-10-28)](decisions/telephone-finitions-lot-2-1372.md)
+- `2026-10-28` <a id="telephone-lot-3-formes-1372"></a>[Au téléphone, huit composants redessinés : le lot 3 (#1372, 2026-10-28)](decisions/telephone-lot-3-formes-1372.md)
+- `2026-10-28` <a id="telephone-lot-3-suite-1372"></a>[Au téléphone, la fin du lot 3 : filtres, « En bref », budget, carrés, listes longues, pied de page (#1372, 2026-10-28)](decisions/telephone-lot-3-suite-1372.md)
 - `2026-10-28` <a id="telephone-titres-bulles-fil-et-cartes-1372"></a>[Au téléphone, les titres s'effacent derrière les onglets, et chaque section est une carte (#1372, 2026-10-28)](decisions/telephone-titres-bulles-fil-et-cartes-1372.md)
 - `2026-10-28` <a id="telephone-une-section-par-ecran-1372"></a>[Au téléphone, une section par écran : on glisse de l'une à l'autre (#1372, 2026-10-28)](decisions/telephone-une-section-par-ecran-1372.md)
 - `2026-10-27` <a id="direction-artistique-repositionnement-1329"></a>[Direction artistique : ce que le repositionnement de #1329 change au positionnement et aux cibles](decisions/direction-artistique-repositionnement-1329.md)

@@ -2,6 +2,8 @@ import EnTeteSite from '../components/EnTeteSite';
 import PiedDeSite from '../components/PiedDeSite';
 import Hero from '../components/landing/Hero';
 import ExplorerTuiles from '../components/landing/ExplorerTuiles';
+import AnalysesThematiques from '../components/landing/AnalysesThematiques';
+import { useEcranEtroit } from '../hooks/useLargeur';
 import '../styles/shell.css';
 import '../components/landing/landing.css';
 
@@ -20,6 +22,7 @@ import '../components/landing/landing.css';
 // Écartées sur maquette : le Hero seul, avec ses trois boutons ; le Hero et
 // quatre cartes, une par page de la barre, qui la dupliquaient.
 export default function LandingPage() {
+  const etroit = useEcranEtroit();
   return (
     <div className="app-shell">
       <div className="landing-page">
@@ -30,6 +33,10 @@ export default function LandingPage() {
               législatures, gouvernements et groupes. */}
           <Hero />
           <ExplorerTuiles />
+          {/* #1372 (28/10/2026, forme C) : au téléphone, le carrousel vient
+              après les tuiles ; « Commencer l'exploration » paraît dès
+              l'ouverture. */}
+          {etroit && <AnalysesThematiques dansHero />}
         </main>
         <PiedDeSite />
       </div>

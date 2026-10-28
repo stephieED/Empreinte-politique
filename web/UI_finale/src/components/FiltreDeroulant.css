@@ -1,0 +1,112 @@
+/* ── Le filtre déroulant du téléphone (#1372, forme B du 28/10/2026) ─────────
+   Rendu seulement sous 720 px (`useEcranEtroit()`) ; ses règles y sont bornées
+   aussi, pour que l'ordinateur ne puisse pas en hériter. Valeurs reprises de la
+   maquette retenue : boîte de 44 px bordée d'encre, liste en carte blanche à
+   ombre légère, lignes de 44 px séparées d'un filet. */
+@media (max-width: 720px) {
+  .fd {
+    margin-top: 8px;
+  }
+
+  .fd-boite {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid var(--ink);
+    border-radius: 12px;
+    background: var(--card);
+    font: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .fd-etat {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .fd-n {
+    flex: none;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .fd-boite:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  /* La liste rogne ce qui la dépasse : l'anneau de focus se pose en dedans. */
+  .fd-choix:has(input:focus-visible),
+  .fd-pied > button:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: -2px;
+  }
+
+  .fd-liste {
+    margin-top: 6px;
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    background: var(--card);
+    box-shadow: 0 10px 24px rgba(23, 20, 31, 0.12);
+    overflow: hidden;
+  }
+
+  .fd-choix {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 0 12px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .fd-choix:first-child {
+    border-top: 0;
+  }
+
+  .fd-choix input {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--ink);
+  }
+
+  .fd-lib {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .fd-choix-n {
+    flex: none;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fd-pied {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .fd-pied > button {
+    font-size: 14px;
+  }
+}

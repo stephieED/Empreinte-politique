@@ -79,3 +79,22 @@
 .bdg-bulle ul { list-style: none; margin: 6px 0 0; padding: 6px 0 0; border-top: 1px solid rgba(255, 255, 255, 0.25); }
 .bdg-bulle li { display: flex; justify-content: space-between; gap: 10px; }
 .bdg-bulle li b { white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* ── Au téléphone (#1372, forme B′ du 28/10/2026) ──────────────────────────
+ * La cascade passe en tête du bloc de l'État, sur toute la largeur ; elle est
+ * redessinée à cette largeur, une unité pour un pixel, d'où des tailles de
+ * texte en pixels rendus. Les colonnes, redessinées elles aussi, ne défilent
+ * plus. */
+@media (max-width: 720px) {
+  .bdg-rang { display: block; }
+  .bdg-cascade {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+    margin-bottom: 22px;
+  }
+  .bdg-cascade svg text { font-size: 13px; }
+  .bdg-cascade svg .bdg-casc-an { font-size: 14px; }
+  .bdg-cascade svg .bdg-casc-nombre { font-size: 13px; }
+  .bdg-defile { overflow-x: visible; }
+}

@@ -1,5 +1,6 @@
 import Baseline from '../Baseline';
 import AnalysesThematiques from './AnalysesThematiques';
+import { useEcranEtroit } from '../../hooks/useLargeur';
 import './landing.css';
 
 /* ── La carte héro de l'accueil (#1329, arbitrée le 22/10/2026) ──────────────
@@ -22,13 +23,17 @@ import './landing.css';
  * → `docs/decisions/accueil-deux-portes-et-le-concept-en-mots-cles.md` pour la
  *   forme précédente. */
 export default function Hero() {
+  /* Au téléphone (#1372, forme C du 28/10/2026), le carrousel quitte la carte :
+   * l'accueil le pose après les tuiles, pour que « Commencer l'exploration »
+   * paraisse dès l'ouverture. */
+  const etroit = useEcranEtroit();
   return (
     <section className="landing-section landing-hero landing-hero--une" aria-label="Présentation">
       <div className="hero-texte">
         <h1>Explorez l’action politique à partir des données officielles.</h1>
         <Baseline className="baseline--bandeau" />
       </div>
-      <AnalysesThematiques dansHero />
+      {!etroit && <AnalysesThematiques dansHero />}
     </section>
   );
 }

@@ -20,6 +20,7 @@ import InfoBulle, { BulleDePastille } from './InfoBulle';
 import FilDAriane from './FilDAriane';
 import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
 import { useEcranEtroit } from '../hooks/useLargeur';
+import ChiffresDeLigne from './ChiffresDeLigne';
 import { Condition, EtiquetteFiltre, VideDuFiltre, useFiltreActif } from './Recherche';
 import { teinteThemeUe } from '../utils/matiere';
 import { teinteCommission } from '../utils/commissions';
@@ -710,8 +711,28 @@ function Intitule({ label, roles }) {
  * trois autres — et l'encre reste lisible en niveaux de gris et sous daltonisme,
  * sans avoir à doubler la marque d'un pictogramme.
  */
+/* AU TÉLÉPHONE, UNE FAMILLE OUVERTE (#1372, forme A du 28/10/2026). Onze
+ * familles dépliées faisaient de la section la plus longue de la fiche : la
+ * première — les commissions de l'Assemblée, à défaut la première famille —
+ * reste ouverte, les autres se replient sur leur titre et leur nombre, que le
+ * toucher déplie. Sur ordinateur, rien ne change. */
+const FAMILLE_OUVERTE = 'commission_parlement';
+
 function Fonctions({ fonctions }) {
+  const etroit = useEcranEtroit();
+  // Les familles basculées par le lecteur, par rapport à l'état de départ.
+  const [basculees, setBasculees] = useState(() => new Set());
   if (!fonctions || !fonctions.blocs.length) return null;
+  const ouverteAuDepart = fonctions.blocs.some((b) => b.cle === FAMILLE_OUVERTE)
+    ? FAMILLE_OUVERTE
+    : fonctions.blocs[0].cle;
+  const estOuverte = (cle) => (cle === ouverteAuDepart) !== basculees.has(cle);
+  const basculer = (cle) => setBasculees((avant) => {
+    const apres = new Set(avant);
+    if (apres.has(cle)) apres.delete(cle);
+    else apres.add(cle);
+    return apres;
+  });
   /* LA LÉGENDE APPARTIENT À LA FIGURE (01/10/2026). Ce que marque la ligne
    * surlignée était dit dans le pied de la section, sous la carte et après
    * trois catégories : on lisait la marque avant de savoir ce qu'elle marquait.
@@ -729,6 +750,14 @@ function Fonctions({ fonctions }) {
       )}
       {fonctions.blocs.map((b) => {
         const marquee = b.montrees.some((e) => e.marquee);
+        const ouverte = !etroit || estOuverte(b.cle);
+        const titre = (
+          <>
+            {b.titre} · <span className="cp-num">{formatNumber(b.nbIntitules)}</span>{' '}
+            {b.nbIntitules > 1 ? 'intitulés' : 'intitulé'}
+            {marquee && ` · sur ${fonctions.mandat.duree} de mandat`}
+          </>
+        );
         // Le BANC porte la couleur, pas la catégorie. Neuf catégories auraient
         // demandé neuf teintes, en concurrence avec la seule grammaire de
         // couleurs de la fiche — et sur un profil qui a connu les deux bancs,
@@ -736,18 +765,30 @@ function Fonctions({ fonctions }) {
         // groupe d'amitié est écrit en toutes lettres dans le titre du bloc :
         // la marque ne le remplace pas.
         return (
-          <div className={`cp-fonctions-bloc cp-fonctions-bloc--${b.banc}`} key={b.cle}>
+          <div
+            className={`cp-fonctions-bloc cp-fonctions-bloc--${b.banc}${etroit && !ouverte ? ' cp-fonctions-replie' : ''}`}
+            key={b.cle}
+          >
             {/* Le dénominateur vit dans le titre, pas sous chaque ligne : c'est
                 une constante du profil, et la répéter en faisait un refrain. Il
                 n'apparaît QUE là où une ligne est marquée — c'est elle qui
                 affirme « plus de la moitié », donc elle seule doit ses deux
                 nombres (§2 règle 7). */}
-            <p className="cp-fonctions-titre">
-              {b.titre} · <span className="cp-num">{formatNumber(b.nbIntitules)}</span>{' '}
-              {b.nbIntitules > 1 ? 'intitulés' : 'intitulé'}
-              {marquee && ` · sur ${fonctions.mandat.duree} de mandat`}
-            </p>
+            {etroit ? (
+              <button
+                aria-expanded={ouverte}
+                className="cp-fonctions-titre cp-fonctions-bascule"
+                onClick={() => basculer(b.cle)}
+                type="button"
+              >
+                {titre}
+                <span aria-hidden="true" className="cp-fonctions-triangle">{ouverte ? '▾' : '▸'}</span>
+              </button>
+            ) : (
+              <p className="cp-fonctions-titre">{titre}</p>
+            )}
 
+            {ouverte && (
             <ul className="cp-fonctions-liste">
               {b.montrees.map((e) => (
                 <li
@@ -759,8 +800,9 @@ function Fonctions({ fonctions }) {
                 </li>
               ))}
             </ul>
+            )}
 
-            {b.reste.length > 0 && (
+            {ouverte && b.reste.length > 0 && (
               <Pli
                 className="cp-pli cp-pli--fonctions"
                 titre={`${formatNumber(b.reste.length)} ${b.reste.length > 1 ? 'autres' : 'autre'}`}
@@ -841,6 +883,13 @@ function BarreParTexte({ segments, teinte, part }) {
   );
 }
 
+/* Au téléphone, les deux colonnes s'écrivent sous la barre avec les mots de
+   leur en-tête (#1372). */
+const chiffresMatiere = (amdt, texteTextes, textes) => [
+  { texte: formatNumber(amdt), n: amdt, pluriel: 'amendements', singulier: 'amendement' },
+  { texte: texteTextes, n: textes, pluriel: 'textes distincts', singulier: 'texte distinct' },
+];
+
 function Matieres({ chute, matiere, onMatiere, ue = false }) {
   const rang = useMemo(
     () => new Map(chute.matieres.map((m, i) => [m, i])),
@@ -893,6 +942,7 @@ function Matieres({ chute, matiere, onMatiere, ue = false }) {
             </span>
             <span className="cp-mr-n">{formatNumber(x.amdt)}</span>
             <span className="cp-mr-n cp-mr-n--textes">{formatNumber(x.textes)}</span>
+            <ChiffresDeLigne chiffres={chiffresMatiere(x.amdt, formatNumber(x.textes), x.textes)} />
           </button>
         );
       })}
@@ -908,6 +958,7 @@ function Matieres({ chute, matiere, onMatiere, ue = false }) {
           </span>
           <span className="cp-mr-n">{formatNumber(nd.amdt)}</span>
           <span className="cp-mr-n cp-mr-n--textes">{formatNumber(nd.textes) || '—'}</span>
+          <ChiffresDeLigne chiffres={chiffresMatiere(nd.amdt, formatNumber(nd.textes) || '—', nd.textes)} />
         </div>
       )}
     </div>
@@ -1150,8 +1201,8 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
                 // Sans invitation propre, la liste écrirait son défaut — « Cliquez
                 // un ruban, une barre ou une étiquette… » —, faux sous des carrés.
                 invite={ue
-                  ? 'Cliquez un carré, une étape ou un thème pour lire les textes.'
-                  : 'Cliquez un carré, une étape ou une commission pour lire les textes.'}
+                  ? 'Choisissez un carré, une étape ou un thème pour lire les textes.'
+                  : 'Choisissez un carré, une étape ou une commission pour lire les textes.'}
                 onRaz={selTexte ? () => setSelTexte(null) : null}
                 ordonnee={!ue}
                 selection={selectionTextes}

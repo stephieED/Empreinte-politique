@@ -24,7 +24,7 @@ import { Link } from 'react-router-dom';
 import '../styles/shell.css';
 import './LigneeProfile.css';
 import { ProposParOrateur, usePaquetExtraits } from './ExtraitsDuDebat';
-import { getLegislaturesList, getPaquetExtraitsMaillon, getParolesMaillon } from '../data';
+import { getLegislaturesList, getPaquetExtraitsMaillon, getParolesMaillon, getPlacesDansLHemicycle } from '../data';
 import { useAsyncData } from '../hooks/useAsyncData';
 import { NATURES_DE_PAROLE, debatsSousSelection } from '../utils/paroleDeGroupe';
 import { paquetDe } from '../utils/extraits';
@@ -38,12 +38,27 @@ import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
 import { ListeVide } from './Lecture';
 import { LAST_READING_LABEL, formatNumber, styleForPosition, pageDuJeuDeDonnees } from '../utils/lecture';
 import { MAILLON_A_DES_RESULTATS } from '../utils/filtreLignee';
-import { cumulerTypes, LISTES_SIGNALEES, motifDePosture, ORDRE_PASSAGES, PASSAGES, QUALITES_TEXTE, textesDesQualites } from '../utils/lignee';
+import { cumulerTypes, LISTES_SIGNALEES, motifDePosture, ORDRE_PASSAGES, ordreDeLHemicycle, PASSAGES, QUALITES_TEXTE, textesDesQualites } from '../utils/lignee';
 import { ListeCascade } from './CascadeTextes';
 import { CarresTextes } from './CarresTextes';
 import { MATIERE_NON_ETABLIE, textesPortes } from '../utils/profilCandidat';
 import { teinteCommission } from '../utils/commissions';
+import { pasDesAnnees } from '../utils/frise';
 import PartagerFiche from './PartagerFiche';
+import ChiffresDeLigne from './ChiffresDeLigne';
+import FiltreDeroulant from './FiltreDeroulant';
+
+/* Au téléphone, les deux colonnes de ces tableaux s'écrivent sous la barre avec
+   les mots de leur en-tête (#1372) ; « 7 / 39 membres » garde son dénominateur. */
+const chiffresDebat = (paroles, membres, denominateur) => [
+  { texte: formatNumber(paroles), n: paroles, pluriel: 'prises de parole', singulier: 'prise de parole' },
+  // « 1 / 39 membres » : la fraction s'accorde au dénominateur.
+  { texte: `${formatNumber(membres)} / ${formatNumber(denominateur)}`, n: denominateur, pluriel: 'membres', singulier: 'membre' },
+];
+const chiffresMatiere = (amendements, texteTextes, textes) => [
+  { texte: formatNumber(amendements), n: amendements, pluriel: 'amendements', singulier: 'amendement' },
+  { texte: texteTextes, n: textes, pluriel: 'textes distincts', singulier: 'texte distinct' },
+];
 
 const MOIS = [
   'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
@@ -302,6 +317,7 @@ function Vide({ maillon }) {
  * — il retombe sur l'effectif publié à la date de référence de chaque fiche. */
 const LARGEUR = 1000;
 const MARGE = { g: 34, d: 14, h: 34, b: 24 };
+const LARGEUR_ANNEE_ETROIT = 33; // « 2013 » en 13 px gras, mesuré le 28/10/2026
 
 function DefsMotifs() {
   return (
@@ -368,7 +384,12 @@ function Frise({ lignee, aujourdhui }) {
   const graduations = [];
   for (let v = pas; v < max * 1.12; v += pas) graduations.push(v);
   const annees = [];
-  const pasAnnees = aLaLargeur && new Date(fin).getUTCFullYear() - new Date(debut).getUTCFullYear() > 6 ? 2 : 1;
+  /* AU TÉLÉPHONE (#1372, forme C du 28/10/2026), les années à 13 px : on garde
+   * celles qui tiennent avec une année de blanc entre deux — une par
+   * législature sur la lignée socialiste (2013, 2017, 2021, 2025). */
+  const pasAnnees = aLaLargeur
+    ? pasDesAnnees(((L - MARGE.g - MARGE.d) * 31557600000) / Math.max(1, fin - debut), LARGEUR_ANNEE_ETROIT)
+    : 1;
   for (let a = new Date(debut).getUTCFullYear() + 1; a <= new Date(fin).getUTCFullYear(); a += pasAnnees) annees.push(a);
 
   const bande = (m) => {
@@ -415,7 +436,9 @@ function Frise({ lignee, aujourdhui }) {
         {avecEffectif && graduations.map((v) => (
           <g key={v}>
             <line stroke="var(--border)" x1={MARGE.g} x2={L - MARGE.d} y1={y(v)} y2={y(v)} />
-            <text className="lp-axe" textAnchor="end" x={MARGE.g - 6} y={y(v) + 3.5}>{v}</text>
+            {/* Au téléphone, plus d'axe vertical (#1372, forme C) : les effectifs
+                sont écrits sur la courbe. */}
+            {!aLaLargeur && <text className="lp-axe" textAnchor="end" x={MARGE.g - 6} y={y(v) + 3.5}>{v}</text>}
           </g>
         ))}
         <line stroke="var(--border-strong)" x1={MARGE.g} x2={L - MARGE.d} y1={y(0)} y2={y(0)} />
@@ -737,6 +760,7 @@ function ParolesComptees({ lignee, maillon, paroles }) {
   const [natures, setNatures] = useState(() => new Set());
   const [ouvert, setOuvert] = useState(null);
   const [survol, setSurvol] = useState(null);
+  const etroit = useEcranEtroit();
   const carte = useRef(null);
   useReplieAuClicDehors(carte, ouvert != null, () => setOuvert(null));
   const vue = useMemo(() => debatsSousSelection(paroles, natures), [paroles, natures]);
@@ -754,6 +778,17 @@ function ParolesComptees({ lignee, maillon, paroles }) {
       <TeteDePeriode avecPosture={false} maillon={maillon} />
       <div className="lp-facette">
         <span className="lp-facette-quoi">Nature <i>— {formatNumber(vue.total)} prise{vue.total > 1 ? 's' : ''} de parole sous la sélection</i></span>
+        {/* Au téléphone, une liste déroulante (forme B, #1372). */}
+        {etroit ? (
+          <FiltreDeroulant
+            choix={NATURES_DE_PAROLE.map((libelle, k) => ({ cle: k, libelle, n: vue.parNature[k] || 0, choisi: natures.has(k) }))}
+            etiquette="Nature"
+            libelleTout="Toutes"
+            nombre={formatNumber(vue.total)}
+            onChoisir={basculer}
+            tout={natures.size === 0}
+          />
+        ) : (
         <div className="lp-chips">
           {NATURES_DE_PAROLE.map((libelle, k) => (
             <button aria-pressed={natures.has(k)} className="lp-chip" disabled={!vue.parNature[k]} key={libelle} onClick={() => basculer(k)} type="button">
@@ -761,6 +796,7 @@ function ParolesComptees({ lignee, maillon, paroles }) {
             </button>
           ))}
         </div>
+        )}
       </div>
       {vue.lignes.length === 0 ? (
         <p className="lp-rien">Aucune prise de parole de cette nature.</p>
@@ -802,6 +838,7 @@ function ParolesComptees({ lignee, maillon, paroles }) {
                     </span>
                     <span className="lp-mr-n">{formatNumber(l.paroles)}</span>
                     <span className="lp-mr-n lp-mr-n--textes">{formatNumber(l.membres)} / {formatNumber(denominateur)}</span>
+                    <ChiffresDeLigne chiffres={chiffresDebat(l.paroles, l.membres, denominateur)} />
                   </button>
                   {choisi && (
                     <div className="lp-deroule">
@@ -909,7 +946,7 @@ function TextesPortes({ maillon }) {
               celle de la liste par défaut parle encore de rubans. */}
           <ListeCascade
             cascade={textes.cascade}
-            invite="Cliquez un carré, une étape ou une commission pour lire les textes."
+            invite="Choisissez un carré, une étape ou une commission pour lire les textes."
             onRaz={sel ? () => setSel(null) : null}
             selection={sel ?? (filtreActif ? { matiere: null, lo: 0, hi: textes.cascade.stades.length - 1 } : null)}
           />
@@ -1102,6 +1139,7 @@ function CeQuIlsOntPropose({ lignee }) {
                       </span>
                       <span className="lp-mr-n">{formatNumber(l.amendements)}</span>
                       <span className="lp-mr-n lp-mr-n--textes">{formatNumber(l.textes)}</span>
+                      <ChiffresDeLigne chiffres={chiffresMatiere(l.amendements, formatNumber(l.textes), l.textes)} />
                     </button>
                     {ouvert && <TextesAmendes detail={l.detail} />}
                   </div>
@@ -1121,6 +1159,7 @@ function CeQuIlsOntPropose({ lignee }) {
                     </span>
                     <span className="lp-mr-n">{formatNumber(nd.amendements)}</span>
                     <span className="lp-mr-n lp-mr-n--textes">{nd.textes ? formatNumber(nd.textes) : '—'}</span>
+                    <ChiffresDeLigne chiffres={chiffresMatiere(nd.amendements, nd.textes ? formatNumber(nd.textes) : '—', nd.textes)} />
                   </button>
                   {(ouverte === MATIERE_NON_ETABLIE || filtreActif) && nd.detail.length > 0 && <TextesAmendes detail={nd.detail} />}
                 </div>
@@ -1145,6 +1184,9 @@ const PARTS = {
   pour_et_contre: { lib: 'avec des voix pour et des voix contre', classe: 'lp-part--oppose', titre: 'Pour et contre — les plus partagés' },
 };
 const SCRUTINS_MONTRES = 6;
+/* Au téléphone, trois cartes (#1372, forme A du 28/10/2026) : les autres
+ * rejoignent le « et N autres textes », dont le nombre se recalcule. */
+const SCRUTINS_MONTRES_TELEPHONE = 3;
 const POSITIONS = ['pour', 'contre', 'abstention'];
 
 function Scrutin({ id, pour, contre, abstention, scrutins }) {
@@ -1178,7 +1220,11 @@ function CeQuIlsOntVote({ lignee }) {
   const { filtreActif } = useContext(Filtre);
   const [m, index, setIndex] = useMaillon(lignee);
   const [filtre, setFiltre] = useState(null);
-  const [montres, setMontres] = useState(SCRUTINS_MONTRES);
+  const etroit = useEcranEtroit();
+  // Les cartes ajoutées par le lecteur, au-delà des premières : la largeur peut
+  // changer en cours de lecture, le nombre de départ suit.
+  const [ajoutes, setAjoutes] = useState(0);
+  const montres = (etroit ? SCRUTINS_MONTRES_TELEPHONE : SCRUTINS_MONTRES) + ajoutes;
   const q = m.quorum;
   const p = m.partage;
   const valeurs = {
@@ -1193,7 +1239,7 @@ function CeQuIlsOntVote({ lignee }) {
     : [...(m.partageListes?.partages || []), ...(m.partageListes?.une_seule_voix || [])];
   const dernieres = liste.filter(([id]) => m.scrutins[id]?.derniere);
   const reste = liste.filter(([id]) => !m.scrutins[id]?.derniere);
-  const basculer = (cle) => { setFiltre(filtre === cle ? null : cle); setMontres(SCRUTINS_MONTRES); };
+  const basculer = (cle) => { setFiltre(filtre === cle ? null : cle); setAjoutes(0); };
 
   return (
     <Section
@@ -1204,7 +1250,7 @@ function CeQuIlsOntVote({ lignee }) {
       <Navigation
         index={index}
         lignee={lignee}
-        onIndex={(i) => { setIndex(i); setFiltre(null); setMontres(SCRUTINS_MONTRES); }}
+        onIndex={(i) => { setIndex(i); setFiltre(null); setAjoutes(0); }}
         poids={(x) => (filtreActif ? x.quorum.mesurables : x.quorum.agreges)}
         unite="scrutins"
         uniteSingulier="scrutin"
@@ -1246,7 +1292,7 @@ function CeQuIlsOntVote({ lignee }) {
               <Scrutin abstention={ab} contre={co} id={id} key={id} pour={po} scrutins={m.scrutins} />
             ))}
             {!filtreActif && dernieres.length > montres && (
-              <button className="lp-plus" onClick={() => setMontres(montres + 20)} type="button">
+              <button className="lp-plus" onClick={() => setAjoutes(ajoutes + 20)} type="button">
                 et {formatNumber(dernieres.length - montres)} autres textes
               </button>
             )}
@@ -1282,9 +1328,10 @@ function Repli({ entrees, scrutins }) {
  *
  * Position majoritaire du groupe face à celle de chaque autre, sur la DERNIÈRE
  * lecture de chaque texte (relecture du 11/09/2026), là où les deux atteignent
- * leur quorum. Rangés par nombre de textes communs, puis — à base égale
- * seulement — par votes dans le même sens (relecture du 11/09/2026). Chaque
- * groupe mène à SA lignée.
+ * leur quorum. Rangés de la gauche vers la droite de l'hémicycle, par le siège
+ * médian de leurs membres (#1372, 28/10/2026) : l'ordre par nombre de textes
+ * communs se lisait comme un classement (`ordreDeLHemicycle`, utils/lignee.js).
+ * Chaque groupe mène à SA lignée.
  *
  * UN CARRÉ PAR TEXTE (forme B, retenue le 02/10/2026). La ligne portait une
  * barre et, à droite, le nombre de textes communs en gros : un relecteur
@@ -1295,7 +1342,12 @@ function Repli({ entrees, scrutins }) {
  * des trois comptes — un ratio de groupe garde son dénominateur (§2 règle 7).
  *
  * Le survol d'un carré allume le même texte chez chaque groupe et le nomme
- * sous la figure ; le clic déroule les textes de sa part, comme avant. */
+ * sous la figure ; le clic déroule les textes de sa part, comme avant.
+ *
+ * AU TÉLÉPHONE, UNE BARRE À TROIS PARTS (forme B du 28/10/2026) : les carrés
+ * passaient sur plusieurs lignes et la section devenait la plus longue de la
+ * fiche. Les trois parts gardent les proportions, les nombres restent écrits
+ * dessous et se touchent comme avant. */
 const NATURES = [
   { cle: 'meme_sens', classe: 'lp-part--une' },
   { cle: 'nuance', classe: 'lp-part--nuance' },
@@ -1309,8 +1361,13 @@ function AvecQuiIlsVotent({ lignee }) {
   const [ouvert, setOuvert] = useState(null);
   const [survol, setSurvol] = useState(null);
   const carte = useRef(null);
+  const etroit = useEcranEtroit();
   useReplieAuClicDehors(carte, ouvert != null, () => setOuvert(null));
-  const lignes = (m.convergences || []).filter((a) => a.communs > 0);
+  const { data: places, loading: placesEnCours } = useAsyncData(getPlacesDansLHemicycle, []);
+  const lignes = ordreDeLHemicycle(
+    (m.convergences || []).filter((a) => a.communs > 0),
+    places?.[String(m.legislature)],
+  );
   const basculer = (sigle, nature) => setOuvert(ouvert?.sigle === sigle && ouvert.nature === nature ? null : { sigle, nature });
   /* Le texte survolé, et la position de chaque groupe sur lui : lu dans les
    * listes déjà servies, rien n'est recalculé. */
@@ -1358,7 +1415,7 @@ function AvecQuiIlsVotent({ lignee }) {
               ))}
             </div>
             <div onMouseLeave={() => setSurvol(null)}>
-              {lignes.map((a) => {
+              {!placesEnCours && lignes.map((a) => {
                 const valeurs = Object.fromEntries(a.natures.map((n) => [n.cle, n.valeur]));
                 const actif = ouvert?.sigle === a.sigle ? ouvert.nature : null;
                 return (
@@ -1368,6 +1425,13 @@ function AvecQuiIlsVotent({ lignee }) {
                       <small>{a.ligneeNom || a.nom}</small>
                     </span>
                     <div>
+                      {etroit ? (
+                        <div aria-hidden="true" className="lp-accord-barre">
+                          {NATURES.map((n) => (
+                            <i className={`lp-accord-barre-${n.cle}`} key={n.cle} style={{ flex: `${valeurs[n.cle] || 0} 1 0` }} />
+                          ))}
+                        </div>
+                      ) : (
                       <div className="lp-accord-carres">
                         {NATURES.flatMap((n) => (a.scrutins[n.cle] || []).map(([id]) => (
                           <button
@@ -1382,6 +1446,7 @@ function AvecQuiIlsVotent({ lignee }) {
                           />
                         )))}
                       </div>
+                      )}
                       <div className="lp-accord-pied">
                         <div className="lp-accord-cles">
                           {NATURES.map((n) => (
