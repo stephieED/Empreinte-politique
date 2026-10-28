@@ -458,3 +458,27 @@
 /* La question au gouvernement d'un tour de parole (#1094). */
 .pp-question { margin: 4px 0 0; font-size: 12.5px; color: var(--muted); }
 .pp-question a { color: inherit; }
+
+/* Au téléphone (#1372, lot 2) : la pastille « En qualité de… » passe sur deux
+   lignes. En boîte flexible, le libellé, le « · » et le nombre se rangeaient en
+   colonnes centrées, le point seul en haut. Ici, ils s'écrivent à la suite,
+   alignés à gauche, et le nombre ne quitte pas son point. */
+@media (max-width: 720px) {
+  .pp-qualite {
+    display: inline-block;
+    text-align: left;
+    line-height: 1.35;
+    border-radius: 20px;
+  }
+
+  .pp-qualite i {
+    display: inline-block;
+    margin-right: 7px;
+    vertical-align: 1px;
+  }
+
+  .pp-qualite span {
+    margin-left: 4px;
+    white-space: nowrap;
+  }
+}

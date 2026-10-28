@@ -49,13 +49,22 @@
 
 /* ── Sections ───────────────────────────────────────────────────────────── */
 
-.gvp-section { margin-top: 40px; }
+/* LA SIGNATURE DES TITRES (J3, retenue le 27/10/2026) : des ellipses fines
+   rayonnent d'un point jaune derrière le titre, dans une bande fermée par un
+   trait ; le numéro passe à droite de la bande. Elle remplace le surligné
+   jaune, qui rappelait une charte de parti.
+   → docs/decisions/signature-titres-de-section-j3.md */
+.gvp-section { margin-top: 40px; position: relative; }
 
 .gvp-section-tete {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 56px;
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 4px;
+  pointer-events: none;
 }
 
 .gvp-section-numero {
@@ -65,11 +74,7 @@
   color: var(--muted);
 }
 
-.gvp-section-trait {
-  flex: 1;
-  height: 1px;
-  background: var(--border-strong);
-}
+.gvp-section-trait { display: none; }
 
 .gvp-section-titre {
   font-size: 21px;
@@ -77,15 +82,6 @@
   letter-spacing: -0.018em;
 }
 
-/* Le surlignage tient au texte, pas à la ligne : sur le `h2`, bloc de la
-   largeur de la colonne, la bande jaune se lirait comme un fond de section.
-   Même geste que sur la fiche candidat. */
-.gvp-section-titre > span {
-  background: linear-gradient(transparent 62%, var(--accent) 62%);
-  padding: 0 2px;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-}
 
 .gvp-section-critere {
   font-size: 13px;
@@ -601,7 +597,8 @@
 }
 
 @media (max-width: 720px) {
-  .gvp-main { padding: 20px 16px 56px; }
+  /* 18 px, comme les fiches candidat et de groupe (#1372, lot 2). */
+  .gvp-main { padding: 20px 18px 56px; }
   .gvp-entete h1 { font-size: 26px; }
   .gvp-intervention { grid-template-columns: 1fr; gap: 2px; }
   .gvp-fait,
@@ -662,6 +659,13 @@
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+  /* J3 : la bande de 56 px, ses ellipses et son point jaune ; à droite, la
+     place du numéro (posé en absolu par .gvp-section-tete). */
+  min-height: 56px;
+  box-sizing: border-box;
+  padding: 0 40px 0 46px;
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--j3-bande);
 }
 
 /* Les projets de loi en carrés : la grille des fiches candidat et de groupe,
@@ -827,5 +831,23 @@
 
   .gvp-frise-voisins > .gvp-frise-voisins-titre {
     display: none;
+  }
+}
+
+/* Au téléphone (#1372, lot 2) : la mention 49.3 se lit d'une traite. En boîte
+   flexible, elle se rangeait en trois colonnes étroites — « 1 », la phrase,
+   « (fait procédural) » — qu'il fallait lire en zigzag. */
+@media (max-width: 720px) {
+  .gvp-car .cp-ter-493-bouton {
+    display: inline-block;
+    text-align: left;
+    line-height: 1.6;
+    border-radius: 14px;
+    padding: 5px 12px;
+  }
+
+  .gvp-car .cp-ter-493-marque {
+    display: inline-block;
+    margin-right: 6px;
   }
 }

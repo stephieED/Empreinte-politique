@@ -61,7 +61,7 @@ Le détail et le raisonnement : [`AGENTS.md`](AGENTS.md) §2 et §6.
 | [Drees](https://data.drees.solidarites-sante.gouv.fr/), service statistique du ministère de la Santé, et [Unédic](https://data.unedic.org/) | **Collectée, pas encore publiée sur le site** : d'où viennent les ressources de la protection sociale (cotisations, impôts et taxes affectés, contributions publiques) depuis 1959, ce que chaque régime verse, et les recettes de l'assurance chômage depuis 2011. Par année civile ; les ressources caisse par caisse ne sont pas publiées par ces sources | Licence Ouverte 2.0 (Etalab) — attribution |
 | Wikipédia / Wikidata | Le suivi des candidatures déclarées | CC BY-SA 4.0 / CC0 |
 | [Conseil constitutionnel](https://www.conseil-constitutionnel.fr/) | **À venir** : la liste officielle des candidats et les parrainages, qui remplaceront Wikipédia pour dire qui est candidat. Aucune date n'est annoncée | non connue à ce jour |
-| NosDéputés / NosSénateurs | **Plus collectées**, mais des champs déjà publiés en dérivent | ODbL v1.0 — **partage à l'identique** |
+| NosDéputés / NosSénateurs | **Plus collectées**, aucun champ publié n'en dérive (#976) | ODbL v1.0 — sans effet aujourd'hui |
 
 Ce que chaque fournisseur publie, ses pièges et ses URL :
 [`docs/sources/`](docs/sources/) — la seule documentation qui dérive avec lui,

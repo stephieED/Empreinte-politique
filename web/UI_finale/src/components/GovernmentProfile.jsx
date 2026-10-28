@@ -409,7 +409,7 @@ function useMinisteres(government) {
   }, [government]);
 }
 
-function Ministere({ pole, ouvert, onBasculer, teinte = null }) {
+function Ministere({ pole, ouvert, onBasculer, teinte = null, liens = {} }) {
   const enfants = pole.enfants;
   const basculer = (ev) => {
     ev.stopPropagation();
@@ -429,7 +429,10 @@ function Ministere({ pole, ouvert, onBasculer, teinte = null }) {
           {pole.titulaires.map((t, i) => (
             <span key={t.nom}>
               {i > 0 && <span className="gvp-passation"> → </span>}
-              {t.nom}
+              {liens[t.nom] ? (
+                // Le clic suit le lien, il n'ouvre pas les rattachés de la carte.
+                <Link className="gvp-lien" onClick={(ev) => ev.stopPropagation()} to={liens[t.nom]}>{t.nom}</Link>
+              ) : t.nom}
               {i > 0 && <span className="gvp-depuis">{` depuis ${moisCourt(t.debut)}`}</span>}
             </span>
           ))}
@@ -468,6 +471,12 @@ function QuiLeComposait({ government }) {
   const carte = useRef(null);
   useReplieAuClicDehors(carte, deplie !== null, () => setDeplie(null));
   const { poles, teintes } = useMinisteres(government);
+  /* Le nom du Premier ministre mène à sa fiche quand elle est publiée : 4 des
+     17 en ont une. Le lien était dans la ligne d'en-tête jusqu'au 28/10/2026 ;
+     la ligne ne dit plus que la période du gouvernement (#1372). */
+  const liens = government.premierMinistreId ? ({
+    [government.premierMinistre]: `/candidats/${government.premierMinistreId}`,
+  }) : {};
   const piles = colonnes(poles, 3);
 
   return (
@@ -488,6 +497,7 @@ function QuiLeComposait({ government }) {
                 {pile.map((pole) => (
                   <Ministere
                     key={pole.cle || pole.titre}
+                    liens={liens}
                     pole={pole}
                     teinte={teintes.get(pole.cle) || null}
                     ouvert={deplie === (pole.cle || pole.titre)}
@@ -1332,41 +1342,26 @@ function CeQuOnNaPasPuLire({ government, numero }) {
 export default function GovernmentProfile({ government, chronologie = [], legislatures = [], mot = '', debut = null }) {
   const actif = useFiltreActif(mot);
   const budgets = useBudgets(government.id);
-  // « Première ministre » quand la source l'écrit ainsi : le libellé se lit, il
-  // ne s'accorde pas à la main.
-  const titreDuChef = government.membres.find((m) => m.nom === government.premierMinistre
-    && /^premi[èe]re? ministre$/i.test(m.portefeuille || ''))?.portefeuille || 'Premier ministre';
   return (
     <main className="gvp-main">
       <div className="gvp-breadcrumb">
         <FilDAriane id={government.id} libelle="Gouvernement" nom={government.title} periode type="gouvernements" />
       </div>
 
-      {/* Même en-tête que les fiches candidat et de lignée : le
-          nom, puis UNE ligne d'identité — qui l'a dirigé et pendant combien de
-          temps. Pas de carte ni de filet de couleur : l'en-tête n'est pas un
-          bloc de contenu. */}
+      {/* Même en-tête que les fiches candidat et de lignée : le nom, puis UNE
+          ligne d'identité — la période du gouvernement. Elle nommait d'abord
+          son Premier ministre ; arbitré le 28/10/2026 (#1372) : la fiche est
+          celle du gouvernement, et le Premier ministre est en tête de « Qui le
+          composait », avec le lien vers sa fiche. Comme la ligne de la fiche de
+          législature. Pas de carte ni de filet de couleur : l'en-tête n'est pas
+          un bloc de contenu. */}
       <header className="gvp-entete">
         <h1>{government.title}</h1>
         <p className="gvp-qui">
-          {government.premierMinistre ? (
-            <span>
-              {government.premierMinistreId ? (
-                <Link className="gvp-lien" to={`/candidats/${government.premierMinistreId}`}>
-                  {government.premierMinistre}
-                </Link>
-              ) : (
-                <span className="gvp-fort">{government.premierMinistre}</span>
-              )}
-              {`, ${titreDuChef} · `}
-            </span>
-          ) : (
-            <span><span className="gvp-nd">Premier ministre non publié</span>{' · '}</span>
-          )}
           <span>
             {government.periode.fin
-              ? `du ${jour(government.periode.debut)} au ${jour(government.periode.fin)} · ${duree(government.periode.debut, government.periode.fin)}`
-              : `depuis le ${jour(government.periode.debut)} · ${duree(government.periode.debut, null)}`}
+              ? `Du ${jour(government.periode.debut)} au ${jour(government.periode.fin)} · ${duree(government.periode.debut, government.periode.fin)}`
+              : `Depuis le ${jour(government.periode.debut)} · ${duree(government.periode.debut, null)}`}
           </span>
         </p>
       </header>

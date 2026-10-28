@@ -2,10 +2,12 @@ import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import EnTeteSite from './EnTeteSite';
 import SommaireSections from './SommaireSections';
+import GlissementSections from './GlissementSections';
 import { BarreFiltre } from './Recherche';
 import '../styles/shell.css';
 import PiedDeSite from './PiedDeSite';
 import './ExplorerLayout.css';
+import '../styles/telephone.css';
 
 /* ── Le cadre de la page (#324, refait par #951, #1025, puis #1329) ──────────
  *
@@ -110,11 +112,15 @@ export default function ExplorerLayout() {
               {loupeOuverte && <BarreFiltre id="cp-filtre-mot-loupe" onSaisie={changerMot} saisie={mot} />}
             </div>
           )}
+          {/* Au téléphone, le partage de la fiche vient se ranger ici (#1372) :
+              `PartagerFiche` y rend son bouton par un portail. */}
+          <span className="entete-partage" id="entete-partage" />
         </EnTeteSite>
 
         <div className="explorer-corps">
           <SommaireSections />
           <div className="explorer-profile-zone">
+            <GlissementSections />
             <Outlet />
           </div>
         </div>

@@ -64,3 +64,14 @@
   font-size: 14px;
   line-height: 1.3;
 }
+
+/* Au téléphone (#1372, lot 2) : les articles, dans la carte de la section, ne
+   portent plus chacun leur cadre ; un filet les sépare. */
+@media (max-width: 720px) {
+  .adp-article {
+    padding: 12px 0;
+    border: 0;
+    border-top: 1px solid var(--border-strong);
+    border-radius: 0;
+  }
+}

@@ -110,7 +110,8 @@
   .pds {
     grid-template-columns: 1fr;
     gap: 22px;
-    padding: 24px 20px 28px;
+    /* La marge des fiches au téléphone (#1372, lot 2). */
+    padding: 24px 18px 28px;
   }
 }
 

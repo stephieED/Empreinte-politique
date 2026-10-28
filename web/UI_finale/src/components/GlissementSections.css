@@ -1,0 +1,168 @@
+/* Au téléphone, une section par écran (#1372). Voir l'en-tête de
+   GlissementSections.jsx. Rien ici ne s'applique au-delà de 720 px : le
+   composant n'y rend rien et ne pose aucune classe. */
+
+/* Les blocs des autres sections. */
+main.glisse > [data-glisse-cache] {
+  display: none !important;
+}
+
+/* Le titre de section s'efface : l'onglet courant le dit déjà (forme F2,
+   28/10/2026). L'en-tête reste lisible par un lecteur d'écran ; son « i » passe
+   contre l'onglet (GlissementSections.jsx). Le filet numéroté qui le précède
+   part avec lui. */
+main.glisse > * > :is(.cp-section-bande, .lp-section-bande, .gvp-section-tete) {
+  display: none;
+}
+
+main.glisse > * > :is(.cp-section-tete, .lp-section-tete, .gvp-section-titre-rang) {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+main.glisse > * > :is(.cp-section-tete, .lp-section-tete, .gvp-section-titre-rang) .ib {
+  display: none;
+}
+
+/* Sans titre, la section commence sous la rangée d'onglets. */
+main.glisse > [data-section] {
+  margin-top: 20px;
+}
+
+/* La rangée des titres de section, collée sous la barre du site (80 px, 56 px
+   sous 480 px : EnTeteSite.css). Elle défile de côté, l'onglet courant reste
+   visible ; la bulle s'ouvre dessous. */
+/* La bulle de section s'ouvre sous la rangée. */
+.glisse-barre {
+  position: relative;
+}
+
+/* La rangée vit dans la fiche, sous le fil : elle sort de la marge de la page
+   pour aller d'un bord à l'autre. */
+main.glisse > .glisse-emplacement {
+  position: sticky;
+  top: 80px;
+  z-index: 4;
+  margin: 0 calc(-1 * var(--glisse-gouttiere, 18px)) 4px;
+}
+
+@media (max-width: 480px) {
+  main.glisse > .glisse-emplacement {
+    top: 56px;
+  }
+}
+
+.glisse-onglets {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 8px 16px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.glisse-onglets::-webkit-scrollbar {
+  display: none;
+}
+
+
+.glisse-place {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Le « i » de la section en cours, à la taille de celui des titres. */
+.glisse-info {
+  flex: none;
+}
+
+/* La bulle, sous la rangée, sur la largeur de l'écran moins ses marges. */
+.glisse-barre .glisse-bulle {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 16px;
+  right: 16px;
+  width: auto;
+  max-width: none;
+}
+
+.glisse-onglet {
+  flex: none;
+  min-height: 34px;
+  padding: 6px 13px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* L'onglet courant : l'encre, et le trait jaune de la sélection
+   (DESIGN_SYSTEM.md §2 — le jaune marque ce qui est choisi). */
+.glisse-onglet[aria-current='true'] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #ffffff;
+  box-shadow: inset 0 -3px 0 var(--accent);
+}
+
+.glisse-onglet:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Pendant le geste, la section suit le doigt. */
+main.glisse.glisse-tire > :not([data-glisse-cache], [data-glisse-fixe]) {
+  transform: translateX(var(--glisse-dx, 0));
+}
+
+/* La section qui arrive entre du côté d'où on l'a tirée. */
+main.glisse.glisse-entre-droite > :not([data-glisse-cache], [data-glisse-fixe]) {
+  animation: glisse-entre-droite 220ms ease-out;
+}
+
+main.glisse.glisse-entre-gauche > :not([data-glisse-cache], [data-glisse-fixe]) {
+  animation: glisse-entre-gauche 220ms ease-out;
+}
+
+@keyframes glisse-entre-droite {
+  from { transform: translateX(28%); opacity: 0.4; }
+  to { transform: none; opacity: 1; }
+}
+
+@keyframes glisse-entre-gauche {
+  from { transform: translateX(-28%); opacity: 0.4; }
+  to { transform: none; opacity: 1; }
+}
+
+/* La fiche ne déborde pas pendant le geste. */
+main.glisse {
+  overflow-x: clip;
+}
+
+/* Le nom de la fiche s'efface de la page « En bref » : le fil d'Ariane, juste
+   au-dessus, le dit déjà (28/10/2026). Il reste pour les lecteurs d'écran et
+   les moteurs de recherche ; la ligne qui le suit reste visible. */
+main.glisse > :is(.cp-entete, .lp-entete, .gvp-entete) h1 {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -62,6 +62,14 @@ const court = (iso) => {
 const ROMAIN = { 14: 'XIV', 15: 'XV', 16: 'XVI', 17: 'XVII' };
 const legislature = (l) => (l && ROMAIN[l] ? `${ROMAIN[l]}e` : '');
 const nomDuMaillon = (m) => [m.sigle, legislature(m.legislature)].filter(Boolean).join(' · ');
+/* L'intitulé d'un bloc est en capitales : « XIVe » y devenait « XIVE » (revue
+ * téléphone de #1372). L'ordinal garde sa minuscule. */
+function NomEnCapitales({ texte }) {
+  const ordinal = texte.match(/^(.*[IVXLC])(e|er)$/);
+  if (!ordinal) return texte;
+  return <>{ordinal[1]}<span className="lp-ordinal">{ordinal[2]}</span></>;
+}
+
 const periodeDuMaillon = (m) => (m.periode.fin
   ? `${court(m.periode.debut)} → ${court(m.periode.fin)}`
   : `depuis le ${court(m.periode.debut)}`);
@@ -544,7 +552,7 @@ function QuiSontIls({ lignee }) {
           {lignee.maillons.map((m, i) => (
             <div className="lp-bloc" key={m.id}>
               <p className="lp-bloc-tete">
-                {nomDuMaillon(m)}
+                <NomEnCapitales texte={nomDuMaillon(m)} />
                 <b className="lp-num">{formatNumber(m.presents.length)} <small>personnes</small></b>
               </p>
               <div className="lp-grille" style={{ gridTemplateColumns: `repeat(${colonnes}, 10px)` }}>

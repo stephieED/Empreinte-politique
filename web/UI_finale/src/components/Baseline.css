@@ -70,3 +70,18 @@
   color: #ffffff;
   font-variant-numeric: tabular-nums;
 }
+
+/* Au téléphone (#1372, lot 2) : la devise passe sur deux lignes. Sans règle, la
+   seconde commençait par une puce orpheline (« • 0 score • 0 filtre »). Deux
+   paires, la puce de tête de ligne retirée. */
+@media (max-width: 480px) {
+  .baseline {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: start;
+  }
+
+  .baseline-mention:nth-child(3) .baseline-puce {
+    display: none;
+  }
+}

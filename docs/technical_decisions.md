@@ -20,6 +20,10 @@ La version d'avant la découpe (30/08/2026, 18 404 lignes, 1 054 Ko) est figée 
 
 ---
 
+- `2026-10-28` <a id="signature-titres-j3-fond-plein-et-implementation"></a>[J3 sur fond plein, et son implémentation rétablie](decisions/signature-titres-j3-fond-plein-et-implementation.md)
+- `2026-10-28` <a id="telephone-finitions-lot-2-1372"></a>[Au téléphone, les finitions sans nouvelle forme ; la ligne d'en-tête du gouvernement dit sa période (#1372, 2026-10-28)](decisions/telephone-finitions-lot-2-1372.md)
+- `2026-10-28` <a id="telephone-titres-bulles-fil-et-cartes-1372"></a>[Au téléphone, les titres s'effacent derrière les onglets, et chaque section est une carte (#1372, 2026-10-28)](decisions/telephone-titres-bulles-fil-et-cartes-1372.md)
+- `2026-10-28` <a id="telephone-une-section-par-ecran-1372"></a>[Au téléphone, une section par écran : on glisse de l'une à l'autre (#1372, 2026-10-28)](decisions/telephone-une-section-par-ecran-1372.md)
 - `2026-10-27` <a id="direction-artistique-repositionnement-1329"></a>[Direction artistique : ce que le repositionnement de #1329 change au positionnement et aux cibles](decisions/direction-artistique-repositionnement-1329.md)
 - `2026-10-27` <a id="repositionnement-relier-et-donner-a-voir-1329"></a>[Le projet relie et donne à voir, plutôt qu'il ne rassemble : « tableau de bord de la vie parlementaire et gouvernementale » (#1329)](decisions/repositionnement-relier-et-donner-a-voir-1329.md)
 - `2026-10-27` <a id="signature-titres-de-section-j3"></a>[Titres de section : le surligné jaune quitte les fiches, l'empreinte en filigrane le remplace (J3)](decisions/signature-titres-de-section-j3.md)

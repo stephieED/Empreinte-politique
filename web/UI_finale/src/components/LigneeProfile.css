@@ -78,6 +78,7 @@
 /* ── Sections ────────────────────────────────────────────────────────────── */
 .lp-section {
   margin-top: 44px;
+  position: relative;
 }
 
 .lp-section--bref {
@@ -89,10 +90,14 @@
 }
 
 .lp-section-bande {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 56px;
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 8px;
+  pointer-events: none;
 }
 
 .lp-section-numero {
@@ -102,11 +107,7 @@
   color: var(--muted);
 }
 
-.lp-section-trait {
-  flex: 1;
-  height: 1px;
-  background: var(--border-strong);
-}
+.lp-section-trait { display: none; }
 
 /* LE TITRE ET SA BULLE D'INFORMATION, SUR UNE LIGNE — la forme de la fiche
    candidat (`.cp-section-tete`) : le « i » à droite du titre, la bulle qui
@@ -115,6 +116,13 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  /* J3 (27/10/2026) : la bande de 56 px, ses ellipses et son point jaune sur
+     fond plein ; le numéro passe à droite, le trait disparaît. */
+  min-height: 56px;
+  box-sizing: border-box;
+  padding: 0 40px 0 46px;
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--j3-bande);
   margin: 0 0 4px;
 }
 
@@ -125,12 +133,6 @@
   margin: 0;
 }
 
-.lp-section-titre > span {
-  background: linear-gradient(transparent 62%, var(--accent) 62%);
-  padding: 0 2px;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-}
 
 .lp-section-critere {
   font-size: 13px;
@@ -1448,3 +1450,9 @@ button.lp-carre.lp-carre--meme {
 }
 .lp-chevron { display: inline-block; width: 1em; color: var(--muted); }
 .lp-sujet-via { font-size: 12px; font-weight: 500; color: var(--muted); }
+
+/* L'ordinal d'une législature reste en minuscule sous un intitulé en
+   capitales : « XIVe », jamais « XIVE » (#1372). */
+.lp-ordinal {
+  text-transform: none;
+}

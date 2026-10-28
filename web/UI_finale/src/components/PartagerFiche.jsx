@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useLocation } from 'react-router-dom';
 import './PartagerFiche.css';
 
@@ -46,8 +47,28 @@ function IconePartage() {
   );
 }
 
+/* AU TÉLÉPHONE, LA PASTILLE QUITTE LE BAS DE L'ÉCRAN POUR LA BARRE DU SITE
+ * (#1372, base A′ arbitrée le 28/10/2026) : flottante, elle cachait en
+ * permanence le bas à droite du contenu. La barre lui réserve un emplacement
+ * (`#entete-partage`, ExplorerLayout.jsx) ; le bouton y est rendu par un
+ * portail, et c'est le même composant, avec le même menu. */
+const TELEPHONE = '(max-width: 720px)';
+
+function useEmplacementBarre() {
+  const [emplacement, setEmplacement] = useState(null);
+  useEffect(() => {
+    const mq = window.matchMedia(TELEPHONE);
+    const lire = () => setEmplacement(mq.matches ? document.getElementById('entete-partage') : null);
+    lire();
+    mq.addEventListener('change', lire);
+    return () => mq.removeEventListener('change', lire);
+  }, []);
+  return emplacement;
+}
+
 export default function PartagerFiche() {
   const { pathname } = useLocation();
+  const emplacement = useEmplacementBarre();
   const adresse = `${SITE}${pathname}`;
   const [ouvert, setOuvert] = useState(false);
   const [message, setMessage] = useState('');
@@ -103,8 +124,8 @@ export default function PartagerFiche() {
   const linkedin = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(adresse)}`;
   const x = `https://x.com/intent/post?url=${encodeURIComponent(adresse)}`;
 
-  return (
-    <div className="partage" ref={zone}>
+  const pastille = (
+    <div className={`partage${emplacement ? ' partage--barre' : ''}`} ref={zone}>
       <button
         type="button"
         className="partage-bouton"
@@ -134,4 +155,5 @@ export default function PartagerFiche() {
       </span>
     </div>
   );
+  return emplacement ? createPortal(pastille, emplacement) : pastille;
 }

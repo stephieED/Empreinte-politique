@@ -111,3 +111,34 @@ body:has(.partage) .pds {
     display: none;
   }
 }
+
+/* Au téléphone, dans la barre du site (#1372) : la taille et le contour de la
+   loupe voisine, et le menu s'ouvre vers le bas. */
+.partage--barre {
+  position: relative;
+  right: auto;
+  bottom: auto;
+}
+
+.partage--barre .partage-bouton {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border-strong);
+  box-shadow: none;
+}
+
+.partage--barre .partage-menu {
+  top: calc(100% + 8px);
+  bottom: auto;
+}
+
+.partage--barre .partage-message {
+  top: calc(100% + 8px);
+  bottom: auto;
+}
+
+/* La place gardée sous le pied du site pour la pastille flottante n'a plus
+   lieu d'être quand elle est dans la barre. */
+body:has(.partage--barre) .pds {
+  padding-bottom: 28px;
+}

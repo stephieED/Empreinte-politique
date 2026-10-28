@@ -66,9 +66,14 @@ jobs:
     # ~35 s observées avant #329 ; la projection de lignée (`vue-lignee.mjs`,
     # qui relit les profils et les quatre index d'amendements) y ajoute une
     # minute — `sync-data` complet : 59 s et 1,2 Gio de RSS, mesurés en local le
-    # 11/09/2026. La marge reste large. Explicite plutôt que le défaut de
-    # 360 min, par cohérence avec generate-data.yml.
-    timeout-minutes: 10
+    # 11/09/2026. Explicite plutôt que le défaut de 360 min, par cohérence
+    # avec generate-data.yml.
+    #
+    # 20 min depuis le 27/10/2026 : c'est le checkout du dépôt, avec ses
+    # données, qui mange la marge — 6 min le 26/10, 7 à 8 min le 27/10. Les
+    # deux déploiements du 27/10 ont dépassé 10 min pendant l'envoi de
+    # l'artifact, et le site n'a pas été mis à jour.
+    timeout-minutes: 20
     # pages: read — requis par actions/configure-pages, qui lit la
     # configuration Pages du dépôt via l'API. Pas de pages: write ici : ce job
     # ne déploie rien, il produit un artifact.

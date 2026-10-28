@@ -34,3 +34,54 @@
 @media (max-width: 34rem) {
   .construction-banner { text-align: left; justify-content: flex-start; }
 }
+
+/* « En construction. » est un bouton au téléphone seulement ; ailleurs, il se
+   lit comme le texte qu'il était. */
+.construction-banner__deplier {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  pointer-events: none;
+}
+
+/* Au téléphone, une ligne qu'on touche pour la déplier (#1372). */
+@media (max-width: 720px) {
+  .construction-banner {
+    flex-wrap: nowrap;
+    gap: 12px;
+    padding: 7px 16px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .construction-banner__text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .construction-banner__deplier {
+    pointer-events: auto;
+    cursor: pointer;
+    text-decoration: underline dotted;
+    text-underline-offset: 0.2em;
+  }
+
+  .construction-banner__deplier:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  .construction-banner--deplie {
+    flex-wrap: wrap;
+    padding-block: 10px;
+  }
+
+  .construction-banner--deplie .construction-banner__text {
+    white-space: normal;
+  }
+}

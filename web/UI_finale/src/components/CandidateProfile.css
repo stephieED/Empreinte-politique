@@ -667,13 +667,18 @@
  */
 .cp-section {
   margin-top: 44px;
+  position: relative;
 }
 
 .cp-section-bande {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 56px;
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 8px;
+  pointer-events: none;
 }
 
 .cp-section-numero {
@@ -683,11 +688,7 @@
   color: var(--muted);
 }
 
-.cp-section-trait {
-  flex: 1;
-  height: 1px;
-  background: var(--border-strong);
-}
+.cp-section-trait { display: none; }
 
 .cp-section-titre {
   font-size: 21px;
@@ -695,18 +696,6 @@
   letter-spacing: -0.018em;
 }
 
-/* LE SURLIGNAGE TIENT AU TEXTE, PAS À LA LIGNE. Le dégradé est posé sur un
-   `span` interne : sur le `h2`, bloc de la largeur de la colonne, la bande
-   jaune courrait jusqu'au bord et se lirait comme un fond de section.
-   Le jaune ne porte JAMAIS le texte (contraste 1,05:1 avec --ink) : il ne
-   couvre que le tiers bas des lettres, qui restent lues sur le fond de page.
-   Même geste que le titre de /couverture. */
-.cp-section-titre > span {
-  background: linear-gradient(transparent 62%, var(--accent) 62%);
-  padding: 0 2px;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-}
 
 /* LE TITRE ET SA BULLE D'INFORMATION, SUR UNE LIGNE (01/10/2026). Le « i » est
    à droite du titre, centré sur lui ; la bulle s'ouvre sous cette ligne, à son
@@ -717,6 +706,13 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  /* J3 (27/10/2026) : la bande de 56 px, ses ellipses et son point jaune sur
+     fond plein ; le numéro passe à droite, le trait disparaît. */
+  min-height: 56px;
+  box-sizing: border-box;
+  padding: 0 40px 0 46px;
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--j3-bande);
 }
 
 .cp-section-corps {
@@ -2129,4 +2125,22 @@
 .cp-fv-libelle b {
   font-weight: 700;
   color: var(--ink);
+}
+
+/* Au téléphone (#1372, lot 2) : la mention 49.3 se lit d'une traite. En boîte
+   flexible, elle se rangeait en trois colonnes étroites — « 1 », la phrase,
+   « (fait procédural) » — qu'il fallait lire en zigzag. */
+@media (max-width: 720px) {
+  .cp-ter-493-bouton {
+    display: inline-block;
+    text-align: left;
+    line-height: 1.6;
+    border-radius: 14px;
+    padding: 5px 12px;
+  }
+
+  .cp-ter-493-marque {
+    display: inline-block;
+    margin-right: 6px;
+  }
 }

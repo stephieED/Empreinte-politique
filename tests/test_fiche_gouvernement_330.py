@@ -173,6 +173,8 @@ def test_le_nom_du_premier_ministre_ne_mene_pas_a_une_page_absente():
         "le slug du Premier ministre se résout sur les fiches publiées"
     )
     source = COMPOSANT.read_text(encoding="utf-8")
+    # Le lien a quitté la ligne d'en-tête pour la carte du Premier ministre dans
+    # « Qui le composait » le 28/10/2026 (#1372) : la règle est la même.
     assert "government.premierMinistreId ? (" in source, (
         "sans fiche publiée, le nom s'affiche sans lien"
     )

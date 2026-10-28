@@ -1,0 +1,205 @@
+/* ── Au téléphone : la base A′ de #1372 (arbitrée le 28/10/2026) ─────────────
+ *
+ * Deux retouches qui valent pour toutes les fiches sous 720 px. Le glissement
+ * entre sections vit dans GlissementSections.css, le bandeau dans
+ * ConstructionBanner.css, le partage dans PartagerFiche.css.
+ *
+ * 1. UNE CARTE BLANCHE PAR SECTION, RESSERRÉE. À 390 px, une carte (marge de page, puis
+ *    26 px de marge intérieure, parfois un bloc de plus) faisait commencer le
+ *    texte à 61 px du bord en valeur médiane sur la fiche candidat : un tiers de
+ *    la largeur perdu. A′ retirait la carte (texte à 18 px) ; le 28/10/2026 la
+ *    propriétaire a demandé que le contenu ne soit plus posé sur le motif du
+ *    fond : chaque section devient une carte, et ses cartes intérieures perdent
+ *    leur cadre. Le texte est à 24 px du bord.
+ *
+ * 2. AUCUN TEXTE SOUS 13 PX. 111 textes sur 446 de la fiche de Jean-Luc
+ *    Mélenchon faisaient moins de 12 px. La liste ci-dessous n'est pas écrite à
+ *    la main : ce sont les classes MESURÉES sous 13 px à 390 px, le 28/10/2026,
+ *    sur dix fiches (trois candidats, trois groupes, un gouvernement, deux
+ *    législatures). Une classe qui porte aussi, ailleurs, un texte de 13 px ou
+ *    plus est laissée de côté : le plancher ne doit rien rétrécir. Le texte DES
+ *    FIGURES DESSINÉES (SVG) n'est pas touché : il se règle avec la figure,
+ *    au lot 3 de #1372. Une classe ajoutée depuis n'est pas dans la liste.
+ */
+
+@media (max-width: 720px) {
+  /* CHAQUE SECTION EST UNE CARTE BLANCHE (28/10/2026) : textes et figures ne
+     se lisent pas sur le motif du fond, et la carte par bloc laissait dehors
+     les pastilles et les phrases posées entre deux cartes. Resserrée : elle mord
+     sur la marge de la page, sa marge intérieure tombe à 14 px — le texte est à
+     24 px du bord. Le fil d'Ariane et l'en-tête de la fiche restent sur le
+     fond, comme le titre d'une page. */
+  main.glisse > :is([data-section], .cp-gc, .adp, .cp-pied, .lp-pied) {
+    margin-left: -8px !important;
+    margin-right: -8px !important;
+    padding: 16px 14px 18px !important;
+    border: 1px solid var(--border-strong) !important;
+    border-radius: 14px !important;
+    background: var(--card) !important;
+  }
+
+  /* Les cartes d'une section y perdent leur cadre : elles sont déjà sur fond
+     blanc. */
+  .explorer-profile-zone main.glisse :is(.cp-carte, .lp-carte, .gvp-carte, .vp-liste, .pp-fil) {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* Un bloc intérieur qui ajoutait sa propre marge à celle de la carte. */
+  .explorer-profile-zone .cp-fonctions-bloc {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .adg-ecartes > span,
+  .adg-legende,
+  .adg-legende-limite,
+  .adg-reste > span,
+  .adp-date,
+  .adp-titre,
+  .bdg-legende > span,
+  .bdg-nonpub,
+  .bdg-periode > b,
+  .cp-car-cle,
+  .cp-car-cle.gvp-cle-muette,
+  .cp-car-ligne,
+  .cp-chute-mentions,
+  .cp-fonctions-titre,
+  .cp-fv-annee,
+  .cp-fv-libelle,
+  .cp-fv-libelle > b,
+  .cp-gc-col-nom,
+  .cp-gc-puce.cp-gc-puce--parlement,
+  .cp-gc-puce.cp-gc-puce--pe,
+  .cp-gc-puce.cp-gc-puce--senat,
+  .cp-gc-rang,
+  .cp-gouv-periode.cp-num,
+  .cp-legende-item > span,
+  .cp-mr-lib,
+  .cp-mr-n,
+  .cp-mr-n.cp-mr-n--textes,
+  .cp-pied > span,
+  .cp-position.cp-position--diagonales,
+  .cp-position.cp-position--fines-rayures,
+  .cp-puce,
+  .cp-role-dates,
+  .cp-role-numero,
+  .cp-section-numero,
+  .cp-ter-493-bouton,
+  .cp-ter-493-bouton > b,
+  .cp-ter-493-marque,
+  .cp-ter-493-quoi,
+  .eg-axe.cp-num > span,
+  .eg-cle,
+  .eg-cle.eg-cle--rang,
+  .eg-cles-quoi,
+  .eg-groupes > span,
+  .eg-lg-date.cp-num,
+  .eg-lg-lit,
+  .eg-lg-lit > span,
+  .eg-puce,
+  .fil-chevron,
+  .gvp-bascule,
+  .gvp-chevron,
+  .gvp-depuis,
+  .gvp-facette,
+  .gvp-facette > i,
+  .gvp-fait-cle,
+  .gvp-fait-sous,
+  .gvp-limite > dt,
+  .gvp-pole-portefeuille,
+  .gvp-section-numero,
+  .ib-bouton > span,
+  .ib-bouton.ib-bouton--petit > span,
+  .lec-badge-tick,
+  .lec-badge.lec-badge--verifie,
+  .lgp-b1-seg,
+  .lgp-chiffre > span,
+  .lgp-chiffre.lgp-chiffre--proc > span,
+  .lgp-domaine,
+  .lgp-frise-auj,
+  .lgp-frise-ax > span,
+  .lgp-frise-ax.lgp-frise-ax--auj > span,
+  .lgp-frise-g,
+  .lgp-frise-g.lgp-frise-g--droite,
+  .lgp-leg-livres,
+  .lgp-legende > span,
+  .lgp-legende.odj-legende > span,
+  .lgp-meuble-tete,
+  .lp-accord-base.lp-num,
+  .lp-accord-cles > button,
+  .lp-accord-sigle > small,
+  .lp-bloc-comptes > span,
+  .lp-bloc-tete,
+  .lp-carte-faits > span,
+  .lp-chip,
+  .lp-chip-n.lp-num,
+  .lp-cles > span,
+  .lp-facette-quoi,
+  .lp-facette-quoi > i,
+  .lp-legende-item,
+  .lp-maillon-dates,
+  .lp-maillon-effectif > small,
+  .lp-maillon-repere,
+  .lp-mat-totaux.lp-num,
+  .lp-mat-totaux.lp-num > b,
+  .lp-mr-lib,
+  .lp-mr-n,
+  .lp-mr-n.lp-mr-n--textes,
+  .lp-natures > span,
+  .lp-num > small,
+  .lp-periode-dates,
+  .lp-pied > span,
+  .lp-plus,
+  .lp-posture.lp-posture--diagonales,
+  .lp-posture.lp-posture--plein,
+  .lp-posture.lp-posture--points,
+  .lp-repartition > i,
+  .lp-repartition-leg,
+  .lp-scrutin-date.lp-num,
+  .lp-section-numero,
+  .lp-trois-cles > button,
+  .np-fleche-lib,
+  .np-fleche-quoi,
+  .np-rail-an,
+  .np-tout,
+  .odj-c-num,
+  .odj-cal-sem,
+  .odj-cal-tete,
+  .odj-cal-tete.odj-we,
+  .odj-leg,
+  .pp-chip,
+  .pp-chip-n,
+  .pp-facette-quoi,
+  .pp-facette-quoi > i,
+  .pp-qualite.pp-qualite--an.pp-qualite--bulle,
+  .pp-qualite.pp-qualite--an.pp-qualite--bulle > span,
+  .pp-qualite.pp-qualite--pe.pp-qualite--bulle,
+  .pp-qualite.pp-qualite--pe.pp-qualite--bulle > span,
+  .pp-quand-periode,
+  .pp-sujet-n,
+  .pp-sujets-plus > button,
+  .vp-chip,
+  .vp-chip-n,
+  .vp-chip.vp-chip--gouvernement,
+  .vp-chip.vp-chip--parlement,
+  .vp-chip.vp-chip--position,
+  .vp-col-n,
+  .vp-echelle > span,
+  .vp-echelle-mid,
+  .vp-filtres-quoi,
+  .vp-li-f,
+  .vp-nom > em,
+  .vp-quand,
+  .vp-regle {
+    font-size: 13px !important;
+  }
+}

@@ -130,3 +130,12 @@
 .cp-filtre-periode {
   font-weight: 700;
 }
+
+/* Au téléphone (#1372, lot 2) : pas de mot seul en dernière ligne — une année
+   qui quittait son « pour » (« …sécurité sociale pour / 2026 »). Le navigateur
+   qui ne connaît pas `pretty` coupe comme avant. */
+@media (max-width: 720px) {
+  .explorer-profile-zone {
+    text-wrap-style: pretty;
+  }
+}

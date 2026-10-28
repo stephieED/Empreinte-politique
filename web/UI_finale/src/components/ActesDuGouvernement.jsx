@@ -41,7 +41,11 @@ const LIGNES_AFFICHEES = 12;
 const LOIS = '\u0000lois';
 const LIES = 'lies';
 const MUETS = 'muets';
-const nombre = (n) => (n ?? 0).toLocaleString('fr-FR');
+/* L'espace des milliers de `toLocaleString` est l'insécable FINE (U+202F) : sur
+ * les grands chiffres, la graisse et l'approche de Manrope l'effaçaient — on
+ * lisait « 20660 » (revue téléphone de #1372). L'insécable ordinaire, comme
+ * `formatNumber` (utils/lecture.js). */
+const nombre = (n) => (n ?? 0).toLocaleString('fr-FR').replace(/\u202f/g, '\u00a0');
 const enJours = (n) => {
   if (n === undefined || n === null) return '';
   if (n < 90) return `${n} jours`;
