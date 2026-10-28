@@ -1,6 +1,6 @@
 {
   "schema_version": "budgets-gouvernements-v1",
-  "genere_le": "2026-10-15T22:30:19Z",
+  "genere_le": "2026-10-28T18:51:25Z",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.economie.gouv.fr ; Licence Ouverte / Open Licence (Etalab) — data.drees.solidarites-sante.gouv.fr, data.unedic.org",
   "unites": {
     "budget_de_l_etat": "euros",
@@ -6490,19 +6490,19 @@
             "degrevements_d_impots_locaux": 5123083370.69
           },
           "securite_sociale": {
-            "statut": "SD",
+            "statut": "DEF",
             "ressources": [
               {
                 "origine": "Cotisations sociales d'employeurs",
-                "montant": 280242.62
+                "montant": 280797.36
               },
               {
                 "origine": "Cotisations sociales de salariés",
-                "montant": 93445.81
+                "montant": 93775.98
               },
               {
                 "origine": "Autres cotisations sociales",
-                "montant": 31778.04
+                "montant": 32005.03
               },
               {
                 "origine": "Cotisations sociales imputées",
@@ -6514,22 +6514,22 @@
               },
               {
                 "origine": "Contributions publiques",
-                "montant": 19074.17
+                "montant": 18979.17
               },
               {
                 "origine": "Produits financiers (depuis 1981)",
-                "montant": 4499.42
+                "montant": 4887.27
               },
               {
                 "origine": "Autres recettes (depuis 1981)",
-                "montant": 13072.48
+                "montant": 12586.4
               },
               {
                 "origine": "Recettes du compte de capital (depuis 2006)",
-                "montant": -4417.22
+                "montant": -4442.13
               }
             ],
-            "ressources_total": 722838.32,
+            "ressources_total": 723732.08,
             "prestations": [
               {
                 "regime": "Association générale des institutions de retraite des cadres et association des régimes de retraite complémentaire des salariés",
@@ -6608,8 +6608,8 @@
                 "montant": 35038.06
               }
             ],
-            "autres_emplois": 47203.18,
-            "emplois_total": 690363.14
+            "autres_emplois": 47620.04,
+            "emplois_total": 690780.0
           }
         },
         {
@@ -7499,38 +7499,46 @@
             "degrevements_d_impots_locaux": 4955165409.84
           },
           "securite_sociale": {
-            "statut": "PROV",
+            "statut": "SD",
             "ressources": [
               {
                 "origine": "Cotisations sociales d'employeurs",
-                "montant": 423068.0
+                "montant": 293402.11
+              },
+              {
+                "origine": "Cotisations sociales de salariés",
+                "montant": 97118.52
+              },
+              {
+                "origine": "Autres cotisations sociales",
+                "montant": 33744.01
               },
               {
                 "origine": "Cotisations sociales imputées",
-                "montant": 1379.0
+                "montant": 1396.0
               },
               {
                 "origine": "Impôts et taxes affectés",
-                "montant": 293546.0
+                "montant": 293509.0
               },
               {
                 "origine": "Contributions publiques",
-                "montant": 18582.13
+                "montant": 18414.78
               },
               {
                 "origine": "Produits financiers (depuis 1981)",
-                "montant": 6191.25
+                "montant": 6200.0
               },
               {
                 "origine": "Autres recettes (depuis 1981)",
-                "montant": 12900.25
+                "montant": 12823.77
               },
               {
                 "origine": "Recettes du compte de capital (depuis 2006)",
-                "montant": -5063.88
+                "montant": -5072.32
               }
             ],
-            "ressources_total": 750602.75,
+            "ressources_total": 751535.87,
             "prestations": [
               {
                 "regime": "Association générale des institutions de retraite des cadres et association des régimes de retraite complémentaire des salariés",
@@ -7609,8 +7617,8 @@
                 "montant": 37038.77
               }
             ],
-            "autres_emplois": 49572.23,
-            "emplois_total": 726996.33
+            "autres_emplois": 51020.53,
+            "emplois_total": 728444.63
           }
         }
       ]
