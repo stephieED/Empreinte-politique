@@ -1111,3 +1111,35 @@
     border-radius: 6px;
   }
 }
+
+/* ── Au téléphone, le bandeau fixe du carrousel (#1372, forme B+C, 29/10/2026)
+   63 px en bas d'écran ; il s'efface quand le carrousel est à l'écran
+   (attribut hidden) ; la page réserve sa place pour qu'il ne cache rien. */
+.analyses-bandeau {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px)) 12px;
+  background: #1f2027;
+  border-top: 3px solid var(--accent);
+  box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.18);
+  color: #fff;
+}
+.analyses-bandeau[hidden] { display: none; }
+.analyses-bandeau-lien { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; }
+.analyses-bandeau-v { flex: none; width: 44px; height: 44px; border-radius: 6px; overflow: hidden; background: #15161b; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; }
+.analyses-bandeau-v img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.analyses-bandeau-v small { font-size: 11px; font-weight: 700; }
+.analyses-bandeau-v b { font-size: 14px; color: var(--accent); }
+.analyses-bandeau-txt { min-width: 0; display: flex; flex-direction: column; }
+.analyses-bandeau-lab { font-size: 13px; color: #d9d6de; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.analyses-bandeau-t { font-size: 14px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.analyses-bandeau .analyses-b { flex: none; width: 40px; height: 40px; background: transparent; border-color: #5f5b66; color: #f2f0ec; font-size: 18px; }
+.analyses-bandeau-x { flex: none; width: 40px; height: 40px; padding: 0; border: 0; background: transparent; color: #d9d6de; font-size: 20px; cursor: pointer; }
+.analyses-bandeau-lien:focus-visible, .analyses-bandeau .analyses-b:focus-visible, .analyses-bandeau-x:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+body:has(.analyses-bandeau) .landing-page { padding-bottom: 76px; }

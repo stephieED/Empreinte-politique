@@ -122,8 +122,10 @@ from pathlib import Path
 from typing import Any, Iterable, Optional
 
 from avertissements import DESTINATAIRE_LECTEUR, avertissement
+from couverture_profil import parole_hors_couverture
 from licences import appliquer_licence_donnees
 from schema_groupe import (
+    CLE_TAGS_NON_RESOLU,
     SCHEMA_GROUPE_VERSION,
     ORIGINE_DATE_REFERENCE_CLOTURE,
     ORIGINE_DATE_REFERENCE_GENERATION,
@@ -2740,6 +2742,12 @@ def build_groupe_profile(
     profil_groupe["date_reference"] = date_reference
     profil_groupe["effectif"] = effectif
     profil_groupe["cohesion_votes"] = cohesion_votes
+    # #1337 — hors de la couverture de la parole (avant la XVe), la liste ne
+    # serait vide que faute de source : `null` et son motif, jamais `[]`.
+    tags_non_resolu = parole_hors_couverture(chambre, legislature)
+    if tags_non_resolu is not None:
+        tags_agreges = None
+        profil_groupe[CLE_TAGS_NON_RESOLU] = tags_non_resolu
     profil_groupe["tags_thematiques_agreges"] = tags_agreges
     if fenetres_parole:
         profil_groupe["fenetres_parole"] = fenetres_parole

@@ -1047,6 +1047,21 @@ Un artifact sert aussi de **transport horizontal** entre jobs :
 avals plutôt que refabriqués — c'est ce qui donne « zéro fetch roster en CI »
 (#518) et « un seul roster par run ».
 
+**Les relevés de fraîcheur (#1389).** `extract-an` (un par shard),
+`extract-roster-groupes` (un par shard) et `extract-amendements-an` publient en
+fin de job un artifact `fraicheur-<job>[-<shard>]` : la date d'écriture des
+fichiers témoins de leurs familles de données (archive AMO30, `scrutins.json`
+de la 17e, index Syceron et questions de la 17e, archive des dossiers,
+indicateur des amendements), que le cache restaure telle quelle — jamais la date
+du run. Le relevé porte aussi `job.status` : ces jobs sont `continue-on-error`,
+et `needs.<job>.result` ne dit donc pas s'ils ont échoué. `merge-and-pivot` les
+télécharge (`pattern: fraicheur-*`) et compose `pivot_data/fraicheur_sources.json`
+(« Dater les familles de données relues », non bloquant) avec `toJSON(needs)`,
+les deux cases du formulaire et le périmètre du run. Une famille n'avance que si
+ses jobs ont réussi, sur tout le périmètre, et, pour les interventions et les
+dossiers, si leur case était cochée ; sinon elle garde sa date. Modules :
+`src/fraicheur_sources.py` ; règle : `docs/decisions/a-jour-au-par-famille-de-donnees-1389.md`.
+
 ## 5. Budgets et durées
 
 **Référence : ~66 min pour un run complet** (mesuré le 29/08/2026). Les valeurs
@@ -1598,6 +1613,15 @@ RNE portant des mandats que nous collectons déjà — députés, sénateurs,
 représentants au PE — sont refusés **à la lecture** : un filtre à l'affichage
 laisserait la donnée dans `raw_data/`, où la fusion additive la garderait
 indéfiniment (#729).
+
+**Ses reprises (#1361).** Une erreur passagère de l'API (429, 500, 502, 503, 504,
+coupure réseau) se réessaie après 10, 30 puis 60 s, dans un **budget de 5 min
+commun à tout le run** : le job a 20 min, et en a pris 11 min 40 le 25/10/2026,
+dont 6 de collecte. Chaque reprise s'annonce par `::warning::RNE_REPRISE`. Une
+panne qui dure au-delà s'arrête sur `::error::RNE_INDISPONIBLE`, code 1, sans
+profil écrit : les profils publiés restent ceux du dernier run réussi. Avant ce
+lot, une seule page en 504 arrêtait le job sur une trace de pile (trois runs sur
+quatre du 23 au 26/10/2026).
 
 ### `extract-senat` — les appartenances sénatoriales (#885)
 

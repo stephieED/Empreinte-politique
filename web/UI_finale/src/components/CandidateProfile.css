@@ -655,12 +655,14 @@
   position: relative;
 }
 
+/* Le numéro de section n'est plus affiché depuis B5 (29/10/2026) : la rangée
+   collée ordonne les sections. Le nœud reste, l'ancre aussi. */
 .cp-section-bande {
+  display: none;
   position: absolute;
   top: 0;
   right: 0;
   height: 56px;
-  display: flex;
   align-items: center;
   gap: 14px;
   pointer-events: none;
@@ -676,9 +678,9 @@
 .cp-section-trait { display: none; }
 
 .cp-section-titre {
-  font-size: 21px;
+  font-size: 26px;
   font-weight: 800;
-  letter-spacing: -0.018em;
+  letter-spacing: -0.02em;
 }
 
 
@@ -691,13 +693,24 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  /* J3 (27/10/2026) : la bande de 56 px, ses ellipses et son point jaune sur
-     fond plein ; le numéro passe à droite, le trait disparaît. */
-  min-height: 56px;
-  box-sizing: border-box;
-  padding: 0 40px 0 46px;
-  border-bottom: 1px solid var(--border-strong);
-  background: var(--j3-bande);
+  /* B5 (29/10/2026) : un trait encre court et épais au-dessus du titre, comme
+     une rubrique. Il remplace la bande J3 : à l'ordinateur, la rangée collée
+     (RangeeSections) dit la section en cours, et le titre ne fait plus que
+     marquer où elle commence. → docs/decisions/titres-de-section-b5.md */
+  position: relative;
+  padding-top: 20px;
+}
+
+/* Le trait de B5, posé en absolu : il ne prend pas place dans la ligne du titre
+   et de sa bulle. */
+.cp-section-tete::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 64px;
+  height: 6px;
+  background: var(--ink);
 }
 
 .cp-section-corps {

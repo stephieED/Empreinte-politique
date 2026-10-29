@@ -25,9 +25,16 @@
  * L'ANCRE EST L'ANCÊTRE QUI PORTE `ib-ancre` : la bulle s'ouvre sous lui, à son
  * bord gauche. Sans cet ancêtre, elle se poserait contre la page entière.
  */
-import { useEffect, useId, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useId, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { lignesDeSources } from '../utils/sourcesDesBulles';
 import './InfoBulle.css';
+
+/* LES DATES DES SOURCES DE LA FICHE (#1389). La fiche qui les connaît les
+ * fournit ; une bulle posée ailleurs n'en reçoit pas, et n'a pas de pied. Un
+ * contexte plutôt qu'une prop : les bulles d'une fiche sont des constantes de
+ * module, posées à tous les niveaux (titre, carte, pastille). */
+export const DatesDesSources = createContext(null);
 
 /* La fermeture de la bulle actuellement ouverte, ou `null`. Une variable de
  * module, parce que l'état est celui de la PAGE : il n'y a qu'un écran. */
@@ -42,8 +49,13 @@ let fermerLaBulleOuverte = null;
  *                         `{ libelle, href }` pour une source extérieure.
  * @param {boolean} petite Le « i » de 17 px d'un titre de carte, au lieu des
  *                         20 px d'un titre de section.
+ * @param {Array}  sources Les sources de la section (identifiants du schéma
+ *                         de la page Sources, ou `{ id, url }`). Le pied
+ *                         n'affiche que celles dont la fiche a une date.
  */
-export default function InfoBulle({ sujet, phrase, note = null, liens = [], petite = false }) {
+export default function InfoBulle({ sujet, phrase, note = null, liens = [], petite = false, sources = null }) {
+  const dates = useContext(DatesDesSources);
+  const lignes = lignesDeSources(sources, dates);
   const [ouverte, setOuverte] = useState(false);
   const racine = useRef(null);
   const bouton = useRef(null);
@@ -96,6 +108,20 @@ export default function InfoBulle({ sujet, phrase, note = null, liens = [], peti
             ) : (
               <Link key={l.libelle} to={l.vers}>{l.libelle}</Link>
             )))}
+          </span>
+        )}
+        {/* LE PIED DE SOURCE (#1389), forme B : sous un filet, une ligne par
+            source, le nom de la page Sources en lien et la date de relecture. */}
+        {lignes.length > 0 && (
+          <span className="ib-sources">
+            {lignes.map((l) => (
+              <span className="ib-source" key={l.id}>
+                <a href={l.url} target="_blank" rel="noreferrer">
+                  {l.nom}<span aria-hidden="true"> ↗</span>
+                </a>
+                <span className="ib-source-date">mis à jour le {l.date}</span>
+              </span>
+            ))}
           </span>
         )}
       </span>

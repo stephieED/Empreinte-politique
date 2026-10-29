@@ -259,6 +259,13 @@ def composer_lignee(
         for champ in ("tags_thematiques_agreges", "amendements_agreges"):
             if champ in agregats_recalcules:
                 profil[champ] = agregats_recalcules[champ]
+    # #1337 — une lignée dont AUCUN maillon n'a de parole collectée (les trois
+    # lignées de la seule XIVe) n'a pas « aucun sujet » : elle n'en a pas de
+    # mesuré. Un seul maillon couvert suffit à publier la liste.
+    motifs = [f.get("tags_thematiques_non_resolu") for f in fiches_ordonnees]
+    if motifs and all(motifs):
+        profil["tags_thematiques_agreges"] = None
+        profil["tags_thematiques_non_resolu"] = motifs[0]
     return profil
 
 

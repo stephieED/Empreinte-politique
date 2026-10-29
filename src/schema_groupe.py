@@ -444,6 +444,58 @@ REQUIRED_TOP_LEVEL_KEYS: frozenset[str] = frozenset({
     "meta",
 })
 
+# #1337 — pourquoi `tags_thematiques_agreges` vaut `null` sur une fiche.
+#
+# Une liste vide se lit « aucun sujet de parole ». Sur un groupe de la XIVe,
+# c'est faux : l'Assemblée ne publie pas de comptes rendus de séance avant la
+# XVe, donc aucune parole n'est collectée (§2 règle 5). La fiche publie alors
+# `null`, et ce bloc dit pourquoi. Le motif reprend l'état de couverture des
+# profils (`schema_pivot.ETAT_HORS_COUVERTURE`) plutôt qu'un mot nouveau.
+#
+#     "tags_thematiques_non_resolu": {
+#         "motif": "hors_couverture",
+#         "legislatures_couvertes": [15, 16, 17],
+#         "preuve": "l'Assemblée nationale ne publie pas de comptes rendus …"
+#     }
+#
+# Présent SI ET SEULEMENT SI la liste vaut `null` : une liste publiée n'a pas
+# de motif, et un `null` sans motif redevient une absence muette.
+CLE_TAGS_NON_RESOLU = "tags_thematiques_non_resolu"
+MOTIF_TAGS_HORS_COUVERTURE = "hors_couverture"
+KNOWN_MOTIFS_TAGS_NON_RESOLU: frozenset[str] = frozenset({MOTIF_TAGS_HORS_COUVERTURE})
+
+
+def valider_tags_non_resolu(profil: dict[str, Any]) -> list[str]:
+    """Le couple `tags_thematiques_agreges` / `tags_thematiques_non_resolu` (#1337).
+
+    Partagé par la fiche de groupe et la fiche de lignée, qui publient le même
+    champ avec la même règle.
+    """
+    tags = profil.get("tags_thematiques_agreges")
+    bloc = profil.get(CLE_TAGS_NON_RESOLU)
+    if tags is not None:
+        if bloc is not None:
+            return [f"'{CLE_TAGS_NON_RESOLU}' n'a pas de sens à côté d'une liste publiée."]
+        return []
+    if not isinstance(bloc, dict):
+        return [
+            "'tags_thematiques_agreges' vaut null sans "
+            f"'{CLE_TAGS_NON_RESOLU}' : une absence doit dire sa raison (§2 règle 5)."
+        ]
+    errors = []
+    if bloc.get("motif") not in KNOWN_MOTIFS_TAGS_NON_RESOLU:
+        errors.append(
+            f"'{CLE_TAGS_NON_RESOLU}.motif' non reconnu : {bloc.get('motif')!r}. "
+            f"Valeurs connues : {sorted(KNOWN_MOTIFS_TAGS_NON_RESOLU)}."
+        )
+    if not isinstance(bloc.get("preuve"), str) or not bloc["preuve"].strip():
+        errors.append(f"'{CLE_TAGS_NON_RESOLU}.preuve' est obligatoire.")
+    couvertes = bloc.get("legislatures_couvertes")
+    if not isinstance(couvertes, list) or not all(isinstance(n, int) for n in couvertes):
+        errors.append(f"'{CLE_TAGS_NON_RESOLU}.legislatures_couvertes' doit être une liste d'entiers.")
+    return errors
+
+
 # Clés obligatoires dans le bloc "meta".
 REQUIRED_META_KEYS: frozenset[str] = frozenset({
     "schema_version",
@@ -1043,6 +1095,7 @@ def validate_profil_groupe(profil: dict[str, Any]) -> list[str]:
         val = profil.get(key)
         if val is not None and not isinstance(val, list):
             errors.append(f"'{key}' doit être une liste, reçu : {type(val).__name__}.")
+    errors.extend(valider_tags_non_resolu(profil))
 
     periode = profil.get("periode")
     if not isinstance(periode, dict):

@@ -248,7 +248,7 @@ def test_le_fil_d_ariane_est_le_seul_endroit_pour_choisir_sa_fiche(layout: str) 
         assert "<FilDAriane " in source, f"{fiche} n'a pas le fil d'Ariane"
 
 
-# ── Le sommaire ─────────────────────────────────────────────────────────────
+# ── Le sommaire (pages de texte depuis B5) et la rangée des fiches ─────────────────────────────────────────────────────────────
 
 
 def test_le_sommaire_n_apparait_qu_au_dessus_du_seuil() -> None:
@@ -262,17 +262,20 @@ def test_le_sommaire_n_apparait_qu_au_dessus_du_seuil() -> None:
     assert f"@media (min-width: {SEUIL_SOMMAIRE})" in css
 
 
-def test_le_sommaire_prend_sur_la_marge_jamais_sur_le_contenu(layout_css: str) -> None:
-    """Hors seuil, la grille n'a qu'UNE colonne : le contenu garde sa largeur.
+def test_la_fiche_occupe_toute_la_colonne_sans_sommaire(layout: str, layout_css: str) -> None:
+    """Depuis B5 (29/10/2026), les fiches n'ont plus de sommaire à gauche : la
+    rangée collée (`RangeeSections`) le remplace, et la fiche prend toute la
+    colonne commune, alignée sur l'accueil et la barre du site. Les pages de
+    texte gardent le leur (`test_pages_de_texte.py`).
 
-    Une grille à deux colonnes en permanence ferait glisser le contenu dans la
-    colonne de 204 px dès que le sommaire est absent — c'est arrivé, et seule la
-    mesure de la largeur rendue l'a montré.
+    La grille garde UNE colonne à toutes les largeurs : une seconde colonne sans
+    sommaire ferait glisser la fiche dans 204 px — c'est arrivé.
     """
+    assert "<SommaireSections" not in layout, "le sommaire de gauche est revenu sur les fiches"
+    assert "<RangeeSections" in layout
     bloc = layout_css.split(".explorer-corps {")[1].split("}")[0]
     assert "grid-template-columns: minmax(0, 1fr)" in bloc
-    media = layout_css.split(f"@media (min-width: {SEUIL_SOMMAIRE})")[1].split("}")[0]
-    assert "204px" in media
+    assert "204px" not in layout_css
 
 
 def test_le_sommaire_lit_la_page_et_l_observe(sommaire: str) -> None:

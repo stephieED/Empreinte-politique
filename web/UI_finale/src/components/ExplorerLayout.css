@@ -100,10 +100,10 @@
   }
 }
 
-/* LE SOMMAIRE PREND SUR LA MARGE, JAMAIS SUR LE CONTENU. La colonne de gauche
-   n'existe qu'au-delà de 1 440 px ; en dessous, la grille n'a qu'une colonne et
-   le contenu garde exactement la largeur qu'il avait. */
-/* Le sommaire et la fiche forment la colonne commune (--colonne), centrée. */
+/* LA FICHE OCCUPE TOUTE LA COLONNE COMMUNE (--colonne), centrée, à toutes les
+   largeurs. Le sommaire de gauche y prenait 268 px au-delà de 1 440 px ; il est
+   remplacé sur les fiches par la rangée collée (`RangeeSections`, B5,
+   29/10/2026), et la fiche s'aligne sur l'accueil et sur la barre du site. */
 .explorer-corps {
   flex: 1;
   min-width: 0;
@@ -112,14 +112,6 @@
   margin-inline: auto;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-}
-
-@media (min-width: 1440px) {
-  .explorer-corps {
-    grid-template-columns: 204px minmax(0, 1fr);
-    gap: 0 24px;
-    padding-left: 40px;
-  }
 }
 
 .explorer-profile-zone {

@@ -211,7 +211,7 @@ def test_une_seule_bulle_ouverte_a_la_fois() -> None:
 def test_il_n_y_a_qu_un_composant_de_bulle(fiche: str) -> None:
     """Huit emplacements, une implémentation : la fiche l'importe et ne la
     redéfinit pas."""
-    assert "import InfoBulle, { BulleDePastille } from './InfoBulle';" in fiche
+    assert "import InfoBulle, { BulleDePastille, DatesDesSources } from './InfoBulle';" in fiche
     assert "function InfoBulle" not in fiche
     assert "function BulleDePastille" not in fiche
     assert fiche.count("<InfoBulle") == 5, (
@@ -249,14 +249,14 @@ def test_les_bulles_menent_a_des_ancres_qui_existent(bulles: str) -> None:
         assert f"id: '{ancre}'" in methodo, f"#{ancre} n'existe pas en méthodologie"
 
 
-def test_la_source_des_paroles_est_le_premier_lien_de_sa_bulle(bulles: str, fiche: str) -> None:
+def test_la_source_des_paroles_est_dans_le_pied_de_sa_bulle(bulles: str, fiche: str) -> None:
     """La phrase « Les comptes rendus de séance sont publiés… sous forme
     d'archive » est retirée : la source est un lien de la bulle, vers la page du
-    jeu de données — jamais vers l'archive de 100 Mo."""
+    jeu de données — jamais vers l'archive de 100 Mo. Depuis #1389, ce lien est
+    la ligne de l'Assemblée dans le pied de source, et non plus un lien à part."""
     entree = _entree(bulles, "dit")
-    source = entree.index("La source : les comptes rendus de l’Assemblée →")
-    assert source < entree.index("LIRE_LA_METHODE")
-    assert "href: PAGE_JEU_DE_DONNEES_DEBATS" in entree
+    assert "La source : les comptes rendus" not in entree
+    assert "sources: [{ id: 'an', url: PAGE_JEU_DE_DONNEES_DEBATS }]" in entree
     assert "sous forme d’archive" not in lire(PAROLES)
     assert "PAGE_JEU_DE_DONNEES_DEBATS" not in lire(PAROLES)
 

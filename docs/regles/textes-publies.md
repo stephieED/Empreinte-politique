@@ -96,6 +96,17 @@ disent ce qui peut être publié ; ce fichier dit comment l'écrire.
 - **Un seul nom par objet sur une même page.** Un article ne s'appelle pas tour
   à tour « rapport » et « panorama ».
   → `docs/decisions/article-de-type-instantane-1029.md`
+- **Un article se vérifie au téléphone avant d'être publié**, pas seulement à
+  l'ordinateur. À 390 et à 360 px : la page ne déborde pas de l'écran, aucune
+  figure ni aucun tableau ne défile de côté, aucun texte ne rend sous 13 px
+  (SVG compris : taille × échelle d'affichage), les cibles se touchent au doigt
+  (24 px). Une figure trop large se redessine à la largeur — cadre resserré,
+  version réservée au téléphone, tableau en lignes —, elle ne se réduit pas
+  jusqu'à l'illisible. Les règles vivent dans un bloc
+  `@media (max-width: 720px)` de l'article ; à 1 280 px, rien ne change.
+  `tests/test_articles_au_telephone_1372.py` refuse un article sans bloc
+  téléphone ; le reste ne se voit qu'à l'écran.
+  → `docs/decisions/articles-au-telephone-1372.md`
 - **Un texte se valide avec la propriétaire avant d'être écrit dans le code**
   (`AGENTS.md` §11). Le but est d'éviter de retoucher le code à chaque
   ajustement de formulation : on s'accorde d'abord, on code ensuite, une fois.

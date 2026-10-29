@@ -20,6 +20,13 @@ La version d'avant la découpe (30/08/2026, 18 404 lignes, 1 054 Ko) est figée 
 
 ---
 
+- `2026-10-29` <a id="a-jour-au-par-famille-de-donnees-1389"></a>[« À jour au » : la dernière relecture réussie de chaque famille de données, et son état (#1389)](decisions/a-jour-au-par-famille-de-donnees-1389.md)
+- `2026-10-29` <a id="articles-au-telephone-1372"></a>[Les articles au téléphone : mise en page redessinée, textes gelés (#1372, 2026-10-29)](decisions/articles-au-telephone-1372.md)
+- `2026-10-29` <a id="sources-dans-les-bulles-1389"></a>[Les sources dans les bulles de section de la fiche candidat (#1389, 2026-10-29)](decisions/sources-dans-les-bulles-1389.md)
+- `2026-10-29` <a id="sujets-des-groupes-hors-couverture-1337"></a>[Un groupe de la XIVe ne publie pas « aucun sujet » : sa parole n'est pas collectée (#1337)](decisions/sujets-des-groupes-hors-couverture-1337.md)
+- `2026-10-29` <a id="telephone-bandeau-du-carrousel-1372"></a>[Au téléphone, un bandeau fixe rappelle le carrousel des articles (#1372, 2026-10-29)](decisions/telephone-bandeau-du-carrousel-1372.md)
+- `2026-10-29` <a id="telephone-ordre-du-jour-annee-en-miniature-1372"></a>[Au téléphone, l'ordre du jour montre l'année en miniature, puis le mois en grand (#1372, 2026-10-29)](decisions/telephone-ordre-du-jour-annee-en-miniature-1372.md)
+- `2026-10-29` <a id="titres-de-section-b5"></a>[Titres de section B5 et rangée collée à l'ordinateur (#1372, 2026-10-29)](decisions/titres-de-section-b5.md)
 - `2026-10-28` <a id="accueil-telephone-exploration-d-abord-1372"></a>[Au téléphone, l'accueil ouvre sur l'exploration, le carrousel vient après (#1372, 2026-10-28)](decisions/accueil-telephone-exploration-d-abord-1372.md)
 - `2026-10-28` <a id="deploy-pages-checkout-partiel"></a>[Le déploiement du site ne récupère que ce que le build lit (#1370)](decisions/deploy-pages-checkout-partiel.md)
 - `2026-10-28` <a id="signature-titres-j3-fond-plein-et-implementation"></a>[J3 sur fond plein, et son implémentation rétablie](decisions/signature-titres-j3-fond-plein-et-implementation.md)

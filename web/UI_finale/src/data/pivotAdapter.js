@@ -63,6 +63,7 @@ import {
   qualifierInterventions,
   rattacherQuestions,
 } from '../utils/parolesParPeriode';
+import { datesDesSources } from '../utils/sourcesDesBulles';
 
 // Ordre d'affichage + libellés (singulier/pluriel) des comptages par statut
 // d'un texte gouvernemental (schema_gouvernement.py). Entiers bruts
@@ -594,6 +595,9 @@ export function buildCandidateView(
       : null,
     sourceUrl: pivot.identite?.source_url ?? null,
     licence: pivot.meta?.licence_donnees ?? null,
+    // Le pied des bulles de section (#1389) : la date de relecture de chaque
+    // source, lue dans `sources[].synchro_le`.
+    datesDesSources: datesDesSources(pivot.sources),
 
     // « Les grands chiffres » (#328) : la frise et les cinq lignes appariées.
     // Il reçoit les mêmes objets déjà calculés plus haut — aucune mesure n'est

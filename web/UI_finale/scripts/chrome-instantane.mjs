@@ -124,7 +124,7 @@ body {
   .brand-symbol { display:block; }
 }
 
-.pds { display:grid; line-height:1.4; grid-template-columns:1.4fr 1fr auto; gap:26px 40px; align-items:start; width:100%; max-width:var(--colonne); margin:0 auto; padding:26px 40px 30px; border-top:1px solid var(--border); font-size:13px; color:var(--faible); }
+.pds { box-sizing:border-box; display:grid; line-height:1.4; grid-template-columns:1.4fr 1fr auto; gap:26px 40px; align-items:start; width:100%; max-width:var(--colonne); margin:0 auto; padding:26px 40px 30px; border-top:1px solid var(--border); font-size:13px; color:var(--faible); }
 .pds-marque { line-height:1.55; }
 .pds-marque b { display:block; font-size:13px; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink); margin-bottom:6px; }
 .pds-colonne { display:flex; flex-direction:column; align-items:flex-start; gap:7px; }
@@ -142,6 +142,22 @@ body {
 .baseline-puce { padding:0 6px; color:var(--faible); }
 .baseline--pied { font-size:13px; font-weight:600; color:var(--faible); }
 @media (max-width:760px) { .pds { grid-template-columns:1fr; gap:22px; padding:24px 20px 28px; } }
+.pds-comptes--etroit { display:none; }
+/* Au téléphone, le pied du site en forme A′ (#1372, 28/10/2026), comme
+   PiedDeSite.css : titres retirés, liens à la suite, l'adresse en enveloppe,
+   les trois pictogrammes alignés à droite sur la ligne des pages. */
+@media (max-width:720px) {
+  .pds { display:block; padding:22px 18px 26px; }
+  .pds-marque { margin:0 0 14px; overflow:hidden; }
+  .pds .baseline--pied { flex-wrap:wrap; margin:4px 0 0 -17px; }
+  .pds .baseline--pied .baseline-mention:first-child { margin-left:17px; }
+  .pds .baseline--pied .baseline-puce { display:inline-block; width:17px; padding:0; text-align:center; }
+  .pds-titre, .pds-colonne--joindre { display:none; }
+  .pds-colonne { flex-direction:row; flex-wrap:wrap; align-items:center; gap:0 18px; }
+  .pds-colonne > a { display:inline-flex; align-items:center; min-height:32px; }
+  .pds-comptes--etroit { display:flex; gap:6px; margin:0 0 0 auto; }
+  .pds-icone { width:32px; height:32px; }
+}
 @media (prefers-reduced-motion:reduce) { .pds-icone { transition:none; } }
 `.trim();
 
@@ -195,8 +211,13 @@ export function piedDeSite() {
   <nav class="pds-colonne" aria-label="Pages du site">
     <span class="pds-titre">Le site</span>
 ${pages}
+    <div class="pds-comptes pds-comptes--etroit">
+      <a class="pds-icone" href="mailto:${CONTACT}" aria-label="Écrire à Empreinte politique"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg></a>
+      <a class="pds-icone" href="${LINKEDIN}" target="_blank" rel="noopener noreferrer" aria-label="Empreinte politique sur LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.5h4v11H3v-11Zm6.5 0h3.8v1.5h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.76v5.69h-4v-5.05c0-1.2-.02-2.75-1.7-2.75-1.7 0-1.96 1.31-1.96 2.66v5.14h-4v-11Z"/></svg></a>
+      <a class="pds-icone" href="${X_COMPTE}" target="_blank" rel="noopener noreferrer" aria-label="Empreinte politique sur X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.6 3h3.1l-6.77 7.74L22 21h-6.2l-4.86-6.35L5.37 21H2.26l7.24-8.28L2 3h6.36l4.4 5.82L17.6 3Zm-1.09 16.1h1.72L7.57 4.8H5.72l10.79 14.3Z"/></svg></a>
+    </div>
   </nav>
-  <div class="pds-colonne">
+  <div class="pds-colonne pds-colonne--joindre">
     <span class="pds-titre">Nous joindre</span>
     <a href="mailto:${CONTACT}">${CONTACT}</a>
     <div class="pds-comptes">

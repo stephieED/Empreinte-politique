@@ -1455,6 +1455,29 @@ jobs:
           path: _publish/profiles/
           if-no-files-found: warn
 
+      # #1389 — À QUELLE DATE CE JOB A RELU SES SOURCES. La date d'écriture des
+      # fichiers témoins (archive téléchargée, ou index construit à partir
+      # d'elle), que le cache restaure telle quelle : jamais la date du run.
+      # `job.status` voyage avec le relevé, parce que `continue-on-error` fait
+      # lire « success » dans `needs` au job de fusion. Stdlib seule : le
+      # relevé tourne même si l'installation des dépendances a échoué.
+      - name: Relevé de fraîcheur des sources (#1389) — ${{ matrix.slug }}
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        run: |
+          python3 src/fraicheur_sources.py relever --job extract-an \
+            --reussi "${{ job.status == 'success' }}" \
+            --sortie "_fraicheur/extract-an-${{ matrix.slug }}.json"
+
+      - name: Upload relevé de fraîcheur (#1389) — ${{ matrix.slug }}
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v6
+        with:
+          name: fraicheur-extract-an-${{ matrix.slug }}
+          path: _fraicheur/
+          if-no-files-found: warn
+
       # #550 : la complétude ATTEINTE par ce shard, mesurée sur le disque —
       # exactement les fichiers que le `path:` ci-dessous capture, pas ce que le
       # code croit avoir écrit. C'est elle qui nomme l'entrée sauvegardée.
@@ -2004,6 +2027,29 @@ jobs:
       # Blocs factorisés en action composite (#412 §3). Le `if:` reste porté par
       # le step appelant : cancelled()/failure() évalués à l'intérieur de
       # l'action porteraient sur ses propres steps, pas sur l'état du job.
+      # #1389 — À QUELLE DATE CE JOB A RELU SES SOURCES. La date d'écriture des
+      # fichiers témoins (archive téléchargée, ou index construit à partir
+      # d'elle), que le cache restaure telle quelle : jamais la date du run.
+      # `job.status` voyage avec le relevé, parce que `continue-on-error` fait
+      # lire « success » dans `needs` au job de fusion. Stdlib seule : le
+      # relevé tourne même si l'installation des dépendances a échoué.
+      - name: Relevé de fraîcheur des sources (#1389)
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        run: |
+          python3 src/fraicheur_sources.py relever --job extract-amendements-an \
+            --reussi "${{ job.status == 'success' }}" \
+            --sortie "_fraicheur/extract-amendements-an.json"
+
+      - name: Upload relevé de fraîcheur (#1389)
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v6
+        with:
+          name: fraicheur-extract-amendements-an
+          path: _fraicheur/
+          if-no-files-found: warn
+
       - name: Diagnostic — job annulé (signal externe)
         if: cancelled()
         uses: ./.github/actions/job-diagnostics
@@ -2961,6 +3007,29 @@ jobs:
       # Blocs factorisés en action composite (#412 §3). Le `if:` reste porté par
       # le step appelant : cancelled()/failure() évalués à l'intérieur de
       # l'action porteraient sur ses propres steps, pas sur l'état du job.
+      # #1389 — À QUELLE DATE CE JOB A RELU SES SOURCES. La date d'écriture des
+      # fichiers témoins (archive téléchargée, ou index construit à partir
+      # d'elle), que le cache restaure telle quelle : jamais la date du run.
+      # `job.status` voyage avec le relevé, parce que `continue-on-error` fait
+      # lire « success » dans `needs` au job de fusion. Stdlib seule : le
+      # relevé tourne même si l'installation des dépendances a échoué.
+      - name: Relevé de fraîcheur des sources (#1389) — shard ${{ matrix.shard }}
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        run: |
+          python3 src/fraicheur_sources.py relever --job extract-roster-groupes \
+            --reussi "${{ job.status == 'success' }}" \
+            --sortie "_fraicheur/extract-roster-groupes-${{ matrix.shard }}.json"
+
+      - name: Upload relevé de fraîcheur (#1389) — shard ${{ matrix.shard }}
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v6
+        with:
+          name: fraicheur-extract-roster-groupes-${{ matrix.shard }}
+          path: _fraicheur/
+          if-no-files-found: warn
+
       - name: Diagnostic — job annulé (signal externe)
         if: cancelled()
         uses: ./.github/actions/job-diagnostics
@@ -3701,6 +3770,17 @@ jobs:
           name: ordre-du-jour
           path: pivot_data/ordre_du_jour/
 
+      # #1389 — les relevés de fraîcheur des jobs qui lisent les sources à
+      # travers un cache (un par shard). Optionnel : un relevé absent laisse sa
+      # famille à sa date précédente, il ne fait rien échouer.
+      - name: Download relevés de fraîcheur des sources (optionnel)
+        uses: actions/download-artifact@v7
+        continue-on-error: true
+        with:
+          pattern: fraicheur-*
+          path: _fraicheur
+          merge-multiple: true
+
       - name: Download artifact liste des gouvernements (optionnel)
         uses: actions/download-artifact@v7
         continue-on-error: true
@@ -4126,6 +4206,26 @@ jobs:
       - name: Construire les législatures
         continue-on-error: true
         run: python3 src/legislatures_an.py
+
+      # #1389 — « à jour au » : la dernière date à laquelle un run a relu
+      # chaque famille de données avec succès, lue par les pieds de section des
+      # fiches agrégées. Une famille n'avance que si ses jobs ont réussi, si le
+      # run couvrait tout le périmètre (ni `test_slugs` ni `roster_limit`) et,
+      # pour les interventions et les dossiers, si leur case était cochée ;
+      # sinon elle garde sa date. Non bloquant : sans ce fichier, le site ne
+      # date pas, il ne se trompe pas.
+      - name: Dater les familles de données relues (#1389)
+        continue-on-error: true
+        env:
+          NEEDS_JSON: ${{ toJSON(needs) }}
+          COLLECT_INTERVENTIONS: ${{ needs.epingler-le-code.outputs.interventions }}
+          COLLECT_DOSSIERS: ${{ needs.epingler-le-code.outputs.dossiers_legislatifs }}
+          PERIMETRE_COMPLET: ${{ inputs.test_slugs == '' && (inputs.roster_limit == '' || inputs.roster_limit == 0) }}
+        run: |
+          python3 src/fraicheur_sources.py composer --releves _fraicheur \
+            --needs "$NEEDS_JSON" \
+            --interventions "$COLLECT_INTERVENTIONS" --dossiers "$COLLECT_DOSSIERS" \
+            --perimetre-complet "$PERIMETRE_COMPLET"
 
       # La cascade de #1289 : le lien que l'Assemblée publie, puis la déduction
       # par la date et le titre (`src/rattachement_deduit.py`), puis, pour ce
@@ -5023,6 +5123,11 @@ jobs:
           # L'ordre du jour des séances (#1354) : même job, même garde.
           if [ -d pivot_data/ordre_du_jour ]; then
             git add pivot_data/ordre_du_jour
+          fi
+          # La date « à jour au » des familles de données (#1389) : step non
+          # bloquant, même garde.
+          if [ -f pivot_data/fraicheur_sources.json ]; then
+            git add pivot_data/fraicheur_sources.json
           fi
           if git diff --cached --quiet; then
             echo "Aucun changement de données à committer."

@@ -1,0 +1,39 @@
+/* À l'ordinateur, la rangée des sections (B5, 29/10/2026). Voir l'en-tête de
+   RangeeSections.jsx. Les pastilles sont celles du téléphone
+   (`.glisse-onglet`, GlissementSections.css) : même taille, même onglet
+   courant en encre souligné de jaune. */
+
+/* Collée sous la barre du site (80 px, EnTeteSite.css). Le fond et le filet
+   vont d'un bord à l'autre de l'écran, comme la barre au-dessus ; les
+   pastilles restent alignées sur la colonne de la fiche. Une ombre, et non un
+   bloc plus large, porte ce fond : elle ne fait pas défiler la page de côté. */
+.rangee-sections {
+  position: sticky;
+  top: 80px;
+  z-index: 4;
+  margin-bottom: 12px;
+  background: var(--bg);
+  box-shadow:
+    0 0 0 100vmax var(--bg),
+    0 1px 0 100vmax var(--border-strong);
+  clip-path: inset(0 -100vmax -1px);
+}
+
+.rangee-onglets {
+  padding: 8px 0;
+  background: none;
+  border-bottom: 0;
+}
+
+/* Un lien, pas un bouton : il mène à une ancre, qu'on peut ouvrir ou copier. */
+.rangee-onglet {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+@media (max-width: 720px) {
+  .rangee-sections {
+    display: none;
+  }
+}

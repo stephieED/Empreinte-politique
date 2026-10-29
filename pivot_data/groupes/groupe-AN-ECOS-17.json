@@ -545,7 +545,7 @@
     }
   ],
   "date_reference": {
-    "date": "2026-10-28",
+    "date": "2026-10-29",
     "origine": "generation"
   },
   "effectif": {
@@ -560,6 +560,711 @@
     }
   },
   "cohesion_votes": [
+    {
+      "scrutin_id": "an:17:9202",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 31,
+      "contre": 0,
+      "abstention": 1,
+      "non_votant": 0,
+      "absents": 6,
+      "excuses": 0,
+      "taux_participation": 0.8421,
+      "taux_coherence": 0.8158,
+      "taux_coherence_hors_absents": 0.9688,
+      "quorum_atteint": true
+    },
+    {
+      "scrutin_id": "an:17:9201",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 18,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 20,
+      "excuses": 0,
+      "taux_participation": 0.4737,
+      "taux_coherence": 0.4737,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9166",
+      "membres_eligibles": 38,
+      "position_majoritaire": "contre",
+      "pour": 0,
+      "contre": 20,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 18,
+      "excuses": 0,
+      "taux_participation": 0.5263,
+      "taux_coherence": 0.5263,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": true
+    },
+    {
+      "scrutin_id": "an:17:9167",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 20,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 18,
+      "excuses": 0,
+      "taux_participation": 0.5263,
+      "taux_coherence": 0.5263,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": true
+    },
+    {
+      "scrutin_id": "an:17:9168",
+      "membres_eligibles": 38,
+      "position_majoritaire": "contre",
+      "pour": 0,
+      "contre": 21,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 17,
+      "excuses": 0,
+      "taux_participation": 0.5526,
+      "taux_coherence": 0.5526,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": true
+    },
+    {
+      "scrutin_id": "an:17:9169",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 21,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 17,
+      "excuses": 0,
+      "taux_participation": 0.5526,
+      "taux_coherence": 0.5526,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": true
+    },
+    {
+      "scrutin_id": "an:17:9170",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 21,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 17,
+      "excuses": 0,
+      "taux_participation": 0.5526,
+      "taux_coherence": 0.5526,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": true
+    },
+    {
+      "scrutin_id": "an:17:9171",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 21,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 17,
+      "excuses": 0,
+      "taux_participation": 0.5526,
+      "taux_coherence": 0.5526,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": true
+    },
+    {
+      "scrutin_id": "an:17:9188",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 14,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 24,
+      "excuses": 0,
+      "taux_participation": 0.3684,
+      "taux_coherence": 0.3684,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9189",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 13,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 25,
+      "excuses": 0,
+      "taux_participation": 0.3421,
+      "taux_coherence": 0.3421,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9190",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 13,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 25,
+      "excuses": 0,
+      "taux_participation": 0.3421,
+      "taux_coherence": 0.3421,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9191",
+      "membres_eligibles": 38,
+      "position_majoritaire": "contre",
+      "pour": 0,
+      "contre": 12,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 26,
+      "excuses": 0,
+      "taux_participation": 0.3158,
+      "taux_coherence": 0.3158,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9192",
+      "membres_eligibles": 38,
+      "position_majoritaire": "contre",
+      "pour": 0,
+      "contre": 13,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 25,
+      "excuses": 0,
+      "taux_participation": 0.3421,
+      "taux_coherence": 0.3421,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9193",
+      "membres_eligibles": 38,
+      "position_majoritaire": "contre",
+      "pour": 1,
+      "contre": 12,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 25,
+      "excuses": 0,
+      "taux_participation": 0.3421,
+      "taux_coherence": 0.3158,
+      "taux_coherence_hors_absents": 0.9231,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9194",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 11,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 27,
+      "excuses": 0,
+      "taux_participation": 0.2895,
+      "taux_coherence": 0.2895,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9195",
+      "membres_eligibles": 38,
+      "position_majoritaire": "contre",
+      "pour": 0,
+      "contre": 10,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 28,
+      "excuses": 0,
+      "taux_participation": 0.2632,
+      "taux_coherence": 0.2632,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9196",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 12,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 26,
+      "excuses": 0,
+      "taux_participation": 0.3158,
+      "taux_coherence": 0.3158,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9197",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 12,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 26,
+      "excuses": 0,
+      "taux_participation": 0.3158,
+      "taux_coherence": 0.3158,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9198",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 12,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 26,
+      "excuses": 0,
+      "taux_participation": 0.3158,
+      "taux_coherence": 0.3158,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9199",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 12,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 26,
+      "excuses": 0,
+      "taux_participation": 0.3158,
+      "taux_coherence": 0.3158,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9200",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 11,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 27,
+      "excuses": 0,
+      "taux_participation": 0.2895,
+      "taux_coherence": 0.2895,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9158",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 7,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 31,
+      "excuses": 0,
+      "taux_participation": 0.1842,
+      "taux_coherence": 0.1842,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9159",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 8,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 30,
+      "excuses": 0,
+      "taux_participation": 0.2105,
+      "taux_coherence": 0.2105,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9160",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 8,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 30,
+      "excuses": 0,
+      "taux_participation": 0.2105,
+      "taux_coherence": 0.2105,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9161",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 9,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 29,
+      "excuses": 0,
+      "taux_participation": 0.2368,
+      "taux_coherence": 0.2368,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9162",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 15,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 23,
+      "excuses": 0,
+      "taux_participation": 0.3947,
+      "taux_coherence": 0.3947,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9163",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 17,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 21,
+      "excuses": 0,
+      "taux_participation": 0.4474,
+      "taux_coherence": 0.4474,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9164",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 17,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 21,
+      "excuses": 0,
+      "taux_participation": 0.4474,
+      "taux_coherence": 0.4474,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9165",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 17,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 21,
+      "excuses": 0,
+      "taux_participation": 0.4474,
+      "taux_coherence": 0.4474,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9172",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 17,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 21,
+      "excuses": 0,
+      "taux_participation": 0.4474,
+      "taux_coherence": 0.4474,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9173",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 16,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 22,
+      "excuses": 0,
+      "taux_participation": 0.4211,
+      "taux_coherence": 0.4211,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9174",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 14,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 24,
+      "excuses": 0,
+      "taux_participation": 0.3684,
+      "taux_coherence": 0.3684,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9175",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 13,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 25,
+      "excuses": 0,
+      "taux_participation": 0.3421,
+      "taux_coherence": 0.3421,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9176",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 13,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 25,
+      "excuses": 0,
+      "taux_participation": 0.3421,
+      "taux_coherence": 0.3421,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9177",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 13,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 25,
+      "excuses": 0,
+      "taux_participation": 0.3421,
+      "taux_coherence": 0.3421,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9178",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 13,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 25,
+      "excuses": 0,
+      "taux_participation": 0.3421,
+      "taux_coherence": 0.3421,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9179",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 8,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 30,
+      "excuses": 0,
+      "taux_participation": 0.2105,
+      "taux_coherence": 0.2105,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9180",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 8,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 30,
+      "excuses": 0,
+      "taux_participation": 0.2105,
+      "taux_coherence": 0.2105,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9181",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 8,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 30,
+      "excuses": 0,
+      "taux_participation": 0.2105,
+      "taux_coherence": 0.2105,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9182",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 8,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 30,
+      "excuses": 0,
+      "taux_participation": 0.2105,
+      "taux_coherence": 0.2105,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9183",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 8,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 30,
+      "excuses": 0,
+      "taux_participation": 0.2105,
+      "taux_coherence": 0.2105,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9184",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 10,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 28,
+      "excuses": 0,
+      "taux_participation": 0.2632,
+      "taux_coherence": 0.2632,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9185",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 13,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 25,
+      "excuses": 0,
+      "taux_participation": 0.3421,
+      "taux_coherence": 0.3421,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9186",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 13,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 25,
+      "excuses": 0,
+      "taux_participation": 0.3421,
+      "taux_coherence": 0.3421,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9187",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 13,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 25,
+      "excuses": 0,
+      "taux_participation": 0.3421,
+      "taux_coherence": 0.3421,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9156",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 1,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 37,
+      "excuses": 0,
+      "taux_participation": 0.0263,
+      "taux_coherence": 0.0263,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:9157",
+      "membres_eligibles": 38,
+      "position_majoritaire": "pour",
+      "pour": 2,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 36,
+      "excuses": 0,
+      "taux_participation": 0.0526,
+      "taux_coherence": 0.0526,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
     {
       "scrutin_id": "an:17:9112",
       "membres_eligibles": 38,
@@ -136977,7 +137682,7 @@
       "nb_membres_porteurs": 35,
       "poids_relatif": 0.9211,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 35,
+        "12_mois": 34,
         "6_mois": 0
       }
     },
@@ -137045,6 +137750,15 @@
       }
     },
     {
+      "tag": "projet de loi de finances pour 2027",
+      "nb_membres_porteurs": 22,
+      "poids_relatif": 0.5789,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 22,
+        "6_mois": 22
+      }
+    },
+    {
       "tag": "empêcher la constitution de monopoles économiques dans le secteur des médias d’information",
       "nb_membres_porteurs": 21,
       "poids_relatif": 0.5526,
@@ -137087,15 +137801,6 @@
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 0,
         "6_mois": 0
-      }
-    },
-    {
-      "tag": "projet de loi de finances pour 2027",
-      "nb_membres_porteurs": 18,
-      "poids_relatif": 0.4737,
-      "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 18,
-        "6_mois": 18
       }
     },
     {
@@ -137887,7 +138592,7 @@
       "poids_relatif": 0.1579,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 4,
-        "6_mois": 2
+        "6_mois": 0
       }
     },
     {
@@ -138219,7 +138924,7 @@
       "nb_membres_porteurs": 5,
       "poids_relatif": 0.1316,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 3,
+        "12_mois": 0,
         "6_mois": 0
       }
     },
@@ -138697,7 +139402,7 @@
       "poids_relatif": 0.1053,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 4,
-        "6_mois": 4
+        "6_mois": 0
       }
     },
     {
@@ -138949,7 +139654,7 @@
       "poids_relatif": 0.0789,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 3,
-        "6_mois": 2
+        "6_mois": 0
       }
     },
     {
@@ -139166,6 +139871,15 @@
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 0,
         "6_mois": 0
+      }
+    },
+    {
+      "tag": "lutte contre le racisme",
+      "nb_membres_porteurs": 3,
+      "poids_relatif": 0.0789,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 3,
+        "6_mois": 1
       }
     },
     {
@@ -139785,7 +140499,7 @@
       "nb_membres_porteurs": 2,
       "poids_relatif": 0.0526,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 2,
+        "12_mois": 0,
         "6_mois": 0
       }
     },
@@ -140231,15 +140945,6 @@
       }
     },
     {
-      "tag": "lutte contre le racisme",
-      "nb_membres_porteurs": 2,
-      "poids_relatif": 0.0526,
-      "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 2,
-        "6_mois": 0
-      }
-    },
-    {
       "tag": "lutte contre les fermetures abusives de comptes bancaires",
       "nb_membres_porteurs": 2,
       "poids_relatif": 0.0526,
@@ -140307,7 +141012,7 @@
       "nb_membres_porteurs": 2,
       "poids_relatif": 0.0526,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 2,
+        "12_mois": 0,
         "6_mois": 0
       }
     },
@@ -140838,7 +141543,7 @@
       "nb_membres_porteurs": 2,
       "poids_relatif": 0.0526,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 2,
+        "12_mois": 0,
         "6_mois": 0
       }
     },
@@ -141280,7 +141985,7 @@
       "poids_relatif": 0.0263,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 1,
-        "6_mois": 1
+        "6_mois": 0
       }
     },
     {
@@ -141801,7 +142506,7 @@
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0263,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 1,
+        "12_mois": 0,
         "6_mois": 0
       }
     },
@@ -141910,7 +142615,7 @@
       "poids_relatif": 0.0263,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 1,
-        "6_mois": 1
+        "6_mois": 0
       }
     },
     {
@@ -142170,7 +142875,7 @@
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0263,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 1,
+        "12_mois": 0,
         "6_mois": 0
       }
     },
@@ -142279,7 +142984,7 @@
       "poids_relatif": 0.0263,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 1,
-        "6_mois": 1
+        "6_mois": 0
       }
     },
     {
@@ -142288,7 +142993,7 @@
       "poids_relatif": 0.0263,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 1,
-        "6_mois": 1
+        "6_mois": 0
       }
     },
     {
@@ -142872,7 +143577,7 @@
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0263,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 1,
+        "12_mois": 0,
         "6_mois": 0
       }
     },
@@ -142917,7 +143622,7 @@
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0263,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 1,
+        "12_mois": 0,
         "6_mois": 0
       }
     },
@@ -143746,7 +144451,7 @@
       "poids_relatif": 0.0263,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 1,
-        "6_mois": 1
+        "6_mois": 0
       }
     },
     {
@@ -143944,7 +144649,7 @@
       "poids_relatif": 0.0263,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 1,
-        "6_mois": 1
+        "6_mois": 0
       }
     },
     {
@@ -143976,6 +144681,15 @@
     },
     {
       "tag": "revalorisation des pensions de retraites agricoles",
+      "nb_membres_porteurs": 1,
+      "poids_relatif": 0.0263,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 1,
+        "6_mois": 1
+      }
+    },
+    {
+      "tag": "revendications lycéennes",
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0263,
       "nb_membres_porteurs_par_fenetre": {
@@ -144048,15 +144762,6 @@
     },
     {
       "tag": "réouverture du site coco",
-      "nb_membres_porteurs": 1,
-      "poids_relatif": 0.0263,
-      "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 1,
-        "6_mois": 1
-      }
-    },
-    {
-      "tag": "réponse gouvernementale aux revendications lycéennes",
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0263,
       "nb_membres_porteurs_par_fenetre": {
@@ -146511,9 +147216,9 @@
           "membre_id": "sophie-taille-polian",
           "nom": "Sophie Taillé-Polian",
           "fonction": "Membre",
-          "debut": "2026-05-23",
-          "fin": "2026-05-26",
-          "actif": false
+          "debut": "2026-10-29",
+          "fin": null,
+          "actif": true
         },
         {
           "membre_id": "hendrik-davi",
@@ -146632,8 +147337,8 @@
           "nom": "Catherine Hervieu",
           "fonction": "Membre",
           "debut": "2026-10-28",
-          "fin": null,
-          "actif": true
+          "fin": "2026-10-28",
+          "actif": false
         },
         {
           "membre_id": "benoit-biteau",
@@ -146688,16 +147393,16 @@
           "nom": "Boris Tavernier",
           "fonction": "Membre",
           "debut": "2026-10-28",
-          "fin": null,
-          "actif": true
+          "fin": "2026-10-28",
+          "actif": false
         },
         {
           "membre_id": "arnaud-bonnet",
           "nom": "Arnaud Bonnet",
           "fonction": "Membre",
-          "debut": "2026-10-21",
-          "fin": "2026-10-27",
-          "actif": false
+          "debut": "2026-10-29",
+          "fin": null,
+          "actif": true
         },
         {
           "membre_id": "steevy-gustave",
@@ -146756,8 +147461,8 @@
           "nom": "Eva Sas",
           "fonction": "Membre",
           "debut": "2026-10-28",
-          "fin": null,
-          "actif": true
+          "fin": "2026-10-28",
+          "actif": false
         },
         {
           "membre_id": "pouria-amirshahi",
@@ -146947,9 +147652,9 @@
           "membre_id": "boris-tavernier",
           "nom": "Boris Tavernier",
           "fonction": "Membre",
-          "debut": "2026-10-08",
-          "fin": "2026-10-27",
-          "actif": false
+          "debut": "2026-10-29",
+          "fin": null,
+          "actif": true
         },
         {
           "membre_id": "arnaud-bonnet",
@@ -147267,9 +147972,9 @@
           "membre_id": "eva-sas",
           "nom": "Eva Sas",
           "fonction": "Membre",
-          "debut": "2025-11-13",
-          "fin": "2025-11-13",
-          "actif": false
+          "debut": "2026-10-29",
+          "fin": null,
+          "actif": true
         },
         {
           "membre_id": "pouria-amirshahi",
@@ -147292,8 +147997,8 @@
           "nom": "Sophie Taillé-Polian",
           "fonction": "Membre",
           "debut": "2026-05-27",
-          "fin": null,
-          "actif": true
+          "fin": "2026-10-28",
+          "actif": false
         },
         {
           "membre_id": "hendrik-davi",
@@ -148624,9 +149329,9 @@
           "membre_id": "catherine-hervieu",
           "nom": "Catherine Hervieu",
           "fonction": "Membre",
-          "debut": "2026-10-01",
-          "fin": "2026-10-27",
-          "actif": false
+          "debut": "2026-10-29",
+          "fin": null,
+          "actif": true
         },
         {
           "membre_id": "damien-girard",
@@ -148657,8 +149362,8 @@
           "nom": "Arnaud Bonnet",
           "fonction": "Membre",
           "debut": "2026-10-28",
-          "fin": null,
-          "actif": true
+          "fin": "2026-10-28",
+          "actif": false
         },
         {
           "membre_id": "steevy-gustave",
@@ -149469,9 +150174,9 @@
           "membre_id": "sophie-taille-polian",
           "nom": "Sophie Taillé-Polian",
           "fonction": "Membre",
-          "debut": "2026-05-07",
-          "fin": "2026-10-27",
-          "actif": false
+          "debut": "2026-10-29",
+          "fin": null,
+          "actif": true
         },
         {
           "membre_id": "marie-pochon",
@@ -149542,8 +150247,8 @@
           "nom": "Lisa Belluco",
           "fonction": "Membre",
           "debut": "2026-10-28",
-          "fin": null,
-          "actif": true
+          "fin": "2026-10-28",
+          "actif": false
         },
         {
           "membre_id": "sabrina-sebaihi",
@@ -155619,207 +156324,207 @@
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA2940",
-      "synchro_le": "2026-10-28T18:18:02+0000"
+      "synchro_le": "2026-10-29T18:22:54+0000"
     },
     {
       "type": "europarl",
       "url": "https://www.europarl.europa.eu/meps/fr/1839",
-      "synchro_le": "2026-10-28T18:18:06+0000"
+      "synchro_le": "2026-10-29T18:22:57+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA335999",
-      "synchro_le": "2026-10-28T18:06:42+0000"
+      "synchro_le": "2026-10-29T18:13:45+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA588884",
-      "synchro_le": "2026-10-28T18:16:51+0000"
+      "synchro_le": "2026-10-29T18:22:15+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA606545",
-      "synchro_le": "2026-10-28T18:17:55+0000"
+      "synchro_le": "2026-10-29T18:23:16+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA610002",
-      "synchro_le": "2026-10-28T18:07:20+0000"
+      "synchro_le": "2026-10-29T18:13:02+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA610968",
-      "synchro_le": "2026-10-28T18:17:58+0000"
+      "synchro_le": "2026-10-29T18:22:58+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA721210",
-      "synchro_le": "2026-10-28T18:06:06+0000"
+      "synchro_le": "2026-10-29T18:13:12+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA722142",
-      "synchro_le": "2026-10-28T18:06:46+0000"
+      "synchro_le": "2026-10-29T18:12:35+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA736201",
-      "synchro_le": "2026-10-28T18:16:57+0000"
+      "synchro_le": "2026-10-29T18:20:53+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793452",
-      "synchro_le": "2026-10-28T18:06:10+0000"
+      "synchro_le": "2026-10-29T18:13:13+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793664",
-      "synchro_le": "2026-10-28T18:17:51+0000"
+      "synchro_le": "2026-10-29T18:22:37+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793708",
-      "synchro_le": "2026-10-28T18:17:16+0000"
+      "synchro_le": "2026-10-29T18:22:39+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793780",
-      "synchro_le": "2026-10-28T18:17:35+0000"
+      "synchro_le": "2026-10-29T18:22:44+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793948",
-      "synchro_le": "2026-10-28T18:06:59+0000"
+      "synchro_le": "2026-10-29T18:12:53+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793980",
-      "synchro_le": "2026-10-28T18:06:42+0000"
+      "synchro_le": "2026-10-29T18:13:45+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794008",
-      "synchro_le": "2026-10-28T18:07:22+0000"
+      "synchro_le": "2026-10-29T18:13:04+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794022",
-      "synchro_le": "2026-10-28T18:07:27+0000"
+      "synchro_le": "2026-10-29T18:13:16+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794146",
-      "synchro_le": "2026-10-28T18:16:58+0000"
+      "synchro_le": "2026-10-29T18:20:53+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794154",
-      "synchro_le": "2026-10-28T18:17:51+0000"
+      "synchro_le": "2026-10-29T18:22:38+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794778",
-      "synchro_le": "2026-10-28T18:17:17+0000"
+      "synchro_le": "2026-10-29T18:22:41+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795010",
-      "synchro_le": "2026-10-28T18:17:38+0000"
+      "synchro_le": "2026-10-29T18:22:46+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795076",
-      "synchro_le": "2026-10-28T18:06:43+0000"
+      "synchro_le": "2026-10-29T18:13:46+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795362",
-      "synchro_le": "2026-10-28T18:07:23+0000"
+      "synchro_le": "2026-10-29T18:13:05+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795454",
-      "synchro_le": "2026-10-28T18:07:28+0000"
+      "synchro_le": "2026-10-29T18:13:17+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795636",
-      "synchro_le": "2026-10-28T18:16:58+0000"
+      "synchro_le": "2026-10-29T18:20:54+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795808",
-      "synchro_le": "2026-10-28T18:17:17+0000"
+      "synchro_le": "2026-10-29T18:22:42+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA796018",
-      "synchro_le": "2026-10-28T18:06:57+0000"
+      "synchro_le": "2026-10-29T18:12:46+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840947",
-      "synchro_le": "2026-10-28T18:07:20+0000"
+      "synchro_le": "2026-10-29T18:13:10+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840997",
-      "synchro_le": "2026-10-28T18:06:58+0000"
+      "synchro_le": "2026-10-29T18:14:05+0000"
     },
     {
       "type": "europarl",
       "url": "https://www.europarl.europa.eu/meps/fr/197512",
-      "synchro_le": "2026-10-28T18:07:06+0000"
+      "synchro_le": "2026-10-29T18:14:13+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841223",
-      "synchro_le": "2026-10-28T18:07:49+0000"
+      "synchro_le": "2026-10-29T18:13:34+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841351",
-      "synchro_le": "2026-10-28T18:08:01+0000"
+      "synchro_le": "2026-10-29T18:13:50+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841419",
-      "synchro_le": "2026-10-28T18:17:19+0000"
+      "synchro_le": "2026-10-29T18:21:12+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841507",
-      "synchro_le": "2026-10-28T18:18:06+0000"
+      "synchro_le": "2026-10-29T18:22:58+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841701",
-      "synchro_le": "2026-10-28T18:17:56+0000"
+      "synchro_le": "2026-10-29T18:23:16+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841713",
-      "synchro_le": "2026-10-28T18:17:58+0000"
+      "synchro_le": "2026-10-29T18:22:58+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841885",
-      "synchro_le": "2026-10-28T18:07:21+0000"
+      "synchro_le": "2026-10-29T18:13:11+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA842013",
-      "synchro_le": "2026-10-28T18:07:07+0000"
+      "synchro_le": "2026-10-29T18:14:14+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA842045",
-      "synchro_le": "2026-10-28T18:07:49+0000"
+      "synchro_le": "2026-10-29T18:13:34+0000"
     }
   ],
   "meta": {
     "schema_version": "1",
-    "genere_le": "2026-10-28T18:55:47+0000",
+    "genere_le": "2026-10-29T19:05:20+0000",
     "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr + CC BY 4.0 (Parlement européen, Open Data Portal - data.europarl.europa.eu)",
     "profils_sources": [
       "dominique-voynet",
@@ -155863,8 +156568,8 @@
     ],
     "seuil_quorum": 0.5,
     "warnings": [
-      "date_reference : tous les comptes de cette fiche se rapportent au 2026-10-28, date de génération — au moins une appartenance au groupe est encore ouverte, la législature court. La valeur bougera au prochain run (#653).",
-      "effectif_sur_la_periode : entre 2024-07-19 et 2026-10-28, le groupe a compté au minimum 38 membres (2024-07-19) et au maximum 38 (2024-07-19) — première date à laquelle chaque borne est atteinte. L'effectif est réévalué à chaque entrée et à chaque lendemain de sortie, jamais hors de cette fenêtre. `membres[]` ne porte qu'un intervalle par membre (périodes recollées, #526) : un départ suivi d'un retour n'y apparaît pas, et aucune de ces deux bornes ne le voit (#702).",
+      "date_reference : tous les comptes de cette fiche se rapportent au 2026-10-29, date de génération — au moins une appartenance au groupe est encore ouverte, la législature court. La valeur bougera au prochain run (#653).",
+      "effectif_sur_la_periode : entre 2024-07-19 et 2026-10-29, le groupe a compté au minimum 38 membres (2024-07-19) et au maximum 38 (2024-07-19) — première date à laquelle chaque borne est atteinte. L'effectif est réévalué à chaque entrée et à chaque lendemain de sortie, jamais hors de cette fenêtre. `membres[]` ne porte qu'un intervalle par membre (périodes recollées, #526) : un départ suivi d'un retour n'y apparaît pas, et aucune de ces deux bornes ne le voit (#702).",
       "tags_thematiques_agreges : 3 intervention(s) tenue(s) hors des périodes d'appartenance de leur auteur au groupe n'ont pas nourri l'empreinte thématique — la parole d'un membre parti, ou pas encore arrivé, n'est pas celle du groupe (#1073).",
       "tags_thematiques_agreges : 24895 intervention(s) tenue(s) sous une autre législature que la 17e n'ont pas nourri l'empreinte thématique — elles appartiennent à la carrière de leurs auteurs, pas à l'activité de ce groupe (#825, même règle que les votes depuis #403 et que les amendements depuis #821).",
       "amendements_agreges : 344611 signature(s) portant sur des amendements déposés sous une autre législature que la 17e ont été écartées — ils appartiennent à la carrière de leurs auteurs, pas à l'activité de ce groupe (#821, même règle que les votes depuis #403).",
@@ -155879,13 +156584,13 @@
   },
   "fenetres_parole": {
     "12_mois": {
-      "debut": "2025-10-28",
-      "fin": "2026-10-28",
+      "debut": "2025-10-29",
+      "fin": "2026-10-29",
       "nb_membres": 38
     },
     "6_mois": {
-      "debut": "2026-04-28",
-      "fin": "2026-10-28",
+      "debut": "2026-04-29",
+      "fin": "2026-10-29",
       "nb_membres": 38
     }
   }

@@ -111,3 +111,49 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/* Le pied de source (#1389) — forme B, retenue sur maquette le 29/10/2026.
+   Sous un filet, une ligne par source : le nom à gauche, la date à droite.
+   Le nom ne se coupe jamais ; la date passe dessous quand la place manque. */
+.ib-sources {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-strong);
+  font-size: 13px;
+}
+
+.ib-source {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  column-gap: 12px;
+}
+
+/* Le lien garde une cible de 24 px au doigt, sans espacer les lignes à l'œil. */
+.ib-source a {
+  display: inline-block;
+  padding-block: 3px;
+  white-space: nowrap;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ib-source-date {
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* Au téléphone, la date passe sous le nom pour TOUTES les sources : une ligne
+   coupée parmi d'autres qui ne le sont pas se lit comme une anomalie. */
+@media (max-width: 720px) {
+  .ib-source {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

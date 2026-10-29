@@ -93,6 +93,10 @@ URL_JEU_DREES = _API.format(portail=PORTAIL_DREES, jeu=JEU_DREES)
 #: Le total de chaque régime, toutes prestations confondues : le niveau 0 de la
 #: nomenclature des prestations. Les niveaux plus fins ne sont pas lus.
 URL_REGIMES = URL_JEU_DREES + "/exports/json?where=ps_niveau%3D%220%22"
+
+#: La colonne qui nomme le régime. Elle s'appelait `nom_regime` jusqu'au
+#: 22/10/2026 ; la Drees l'a renommée en retraitant le jeu le 23/10 (#1362).
+COL_REGIME = "regime_nom"
 URL_UNEDIC = _API.format(portail=PORTAIL_UNEDIC, jeu=JEU_UNEDIC) + "/exports/json"
 
 TYPE_CLASSEUR = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -277,13 +281,17 @@ def lire_prestations_par_regime(appel: Callable[[str], bytes]) -> dict[str, Any]
     if not isinstance(rangs, list) or len(rangs) < PLANCHER_REGIMES:
         raise FinancesIndisponibles(
             f"prestations par régime : {len(rangs) if isinstance(rangs, list) else 0} lignes lues")
+    if COL_REGIME not in rangs[0]:
+        raise FinancesIndisponibles(
+            f"prestations par régime : colonne {COL_REGIME!r} absente, colonnes lues "
+            f"{sorted(rangs[0])}")
     annees: dict[str, list[dict[str, Any]]] = {}
     for rang in rangs:
         if rang.get("ps_niveau") != "0":
             raise FinancesIndisponibles("prestations par régime : le filtre de niveau n'a pas été appliqué")
         annees.setdefault(str(rang["annee"]), []).append({
             "niveau": int(rang["si_niveau"]), "secteur_code": rang["si_code"],
-            "secteur": rang["si_nom"], "regime": rang["nom_regime"], "montant": rang.get("val")})
+            "secteur": rang["si_nom"], "regime": rang[COL_REGIME], "montant": rang.get("val")})
     for an, liste in annees.items():
         liste.sort(key=lambda r: (r["secteur_code"], r["niveau"], r["regime"]))
         ensemble = [r["montant"] for r in liste if r["niveau"] == 0]

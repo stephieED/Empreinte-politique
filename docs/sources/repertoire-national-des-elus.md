@@ -59,7 +59,7 @@ inférence.
 la table relue `config/correspondance_elus_rne.json` pour les candidats dont le
 corpus n'a pas la date de naissance.
 
-## Cinq pièges, tous mesurés
+## Six pièges, tous mesurés
 
 **Les diacritiques sont incohérents.** « Edouard » sans accent et « Jérôme »
 avec, dans le même fichier. Apparier sur le prénom tel qu'écrit rendait Édouard
@@ -89,6 +89,14 @@ exacte prend le relais — rien à retirer.
 plus, et signale la suivante dans `links.next`. Relevé le 16/09/2026 : **49** élus
 sortants partagent une même date de naissance, à une ligne du plafond. Lire la
 seule première page perd en silence la personne en 51ᵉ position.
+
+**L'API tabulaire répond parfois 504.** Une page de résultats, au milieu d'une
+pagination, rend `HTTP Error 504: Gateway Timeout` : relevé sur les runs des
+23, 24, 26 et 28/10/2026, pas sur celui du 25. C'est la passerelle, pas la
+donnée : le run suivant passe ou échoue sans que rien n'ait changé côté source. Sans reprise, cette seule page arrêtait toute la collecte (#1361).
+Les erreurs 429, 500, 502, 503 et 504 et les coupures réseau se réessaient
+donc, après 10, 30 puis 60 s, dans un budget de 5 min pour tout le run
+(`collecte_mandats_locaux.avec_reprises`). Un 400 ou un 404 ne se réessaie pas.
 
 ## Ce qui est hors de portée, et pourquoi
 

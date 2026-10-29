@@ -213,3 +213,21 @@ button.odj-c:hover, button.odj-c:focus-visible { outline: 1.5px solid var(--ink)
 @media (max-width: 720px) {
   .lgp-nuage { border: 0; border-radius: 0; padding: 0; background: none; }
 }
+
+/* ── Au téléphone, l'année en miniature puis le mois en grand (#1372, forme B,
+   29/10/2026) ─────────────────────────────────────────────────────────────── */
+.odj-mini { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 10px; }
+.odj-mini-mois { display: flex; flex-direction: column; justify-content: flex-start; align-self: start; width: 100%; padding: 0; border: 0; border-radius: 3px; background: transparent; font: inherit; color: var(--ink); text-align: left; cursor: pointer; }
+.odj-mini-mois[aria-pressed="true"] { outline: 2px solid var(--ink); outline-offset: 3px; }
+.odj-mini-mois:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.odj-mini-nom { display: block; margin: 0 0 4px; padding: 0 0 3px; font-size: 13px; font-weight: 800; border-bottom: 1.5px solid var(--ink); }
+.odj-mini-grille { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; }
+.odj-mini-j { display: block; height: 11px; padding: 1px; box-sizing: border-box; border-radius: 1px; }
+.odj-mini-j.odj-we { background: #efede9; }
+.odj-mini-j .odj-barre { height: 100%; border-radius: 1px; }
+.odj-ouvert { margin-top: 22px; }
+.odj-ouvert-tete { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 0 6px; }
+.odj-ouvert-tete h4 { margin: 0; padding: 0; border: 0; font-size: 15px; }
+.odj-ouvert .odj-cal-mois > .odj-ouvert-tete { border-bottom: 1.5px solid var(--ink); padding-bottom: 6px; }
+.odj-fleche { display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid var(--border-strong, #d6d3cc); border-radius: 50%; background: transparent; color: var(--ink); font: inherit; font-size: 20px; cursor: pointer; }
+.odj-fleche:disabled { opacity: .3; cursor: default; }

@@ -1,7 +1,7 @@
 import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import EnTeteSite from './EnTeteSite';
-import SommaireSections from './SommaireSections';
+import RangeeSections from './RangeeSections';
 import GlissementSections from './GlissementSections';
 import { BarreFiltre } from './Recherche';
 import '../styles/shell.css';
@@ -118,8 +118,8 @@ export default function ExplorerLayout() {
         </EnTeteSite>
 
         <div className="explorer-corps">
-          <SommaireSections />
           <div className="explorer-profile-zone">
+            <RangeeSections />
             <GlissementSections />
             <Outlet />
           </div>

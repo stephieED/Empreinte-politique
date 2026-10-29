@@ -49,19 +49,18 @@
 
 /* ── Sections ───────────────────────────────────────────────────────────── */
 
-/* LA SIGNATURE DES TITRES (J3, retenue le 27/10/2026) : des ellipses fines
-   rayonnent d'un point jaune derrière le titre, dans une bande fermée par un
-   trait ; le numéro passe à droite de la bande. Elle remplace le surligné
-   jaune, qui rappelait une charte de parti.
-   → docs/decisions/signature-titres-de-section-j3.md */
+/* LES TITRES DE SECTION (B5, 29/10/2026) : un trait encre court au-dessus du
+   titre ; la bande J3 et le numéro sont retirés.
+   → docs/decisions/titres-de-section-b5.md */
 .gvp-section { margin-top: 40px; position: relative; }
 
+/* Le numéro n'est plus affiché depuis B5 (29/10/2026). */
 .gvp-section-tete {
+  display: none;
   position: absolute;
   top: 0;
   right: 0;
   height: 56px;
-  display: flex;
   align-items: center;
   gap: 10px;
   pointer-events: none;
@@ -77,9 +76,9 @@
 .gvp-section-trait { display: none; }
 
 .gvp-section-titre {
-  font-size: 21px;
+  font-size: 26px;
   font-weight: 800;
-  letter-spacing: -0.018em;
+  letter-spacing: -0.02em;
 }
 
 
@@ -683,13 +682,24 @@
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
-  /* J3 : la bande de 56 px, ses ellipses et son point jaune ; à droite, la
-     place du numéro (posé en absolu par .gvp-section-tete). */
-  min-height: 56px;
-  box-sizing: border-box;
-  padding: 0 40px 0 46px;
-  border-bottom: 1px solid var(--border-strong);
-  background: var(--j3-bande);
+  /* B5 (29/10/2026) : un trait encre court et épais au-dessus du titre, comme
+     une rubrique. Il remplace la bande J3 : à l'ordinateur, la rangée collée
+     (RangeeSections) dit la section en cours, et le titre ne fait plus que
+     marquer où elle commence. → docs/decisions/titres-de-section-b5.md */
+  position: relative;
+  padding-top: 20px;
+}
+
+/* Le trait de B5, posé en absolu : il ne prend pas place dans la ligne du titre
+   et de sa bulle. */
+.gvp-section-titre-rang::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 64px;
+  height: 6px;
+  background: var(--ink);
 }
 
 /* Les projets de loi en carrés : la grille des fiches candidat et de groupe,

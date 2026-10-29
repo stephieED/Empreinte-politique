@@ -106,6 +106,13 @@ elective mandate** (38/38, 85/85, 60/60 on `LR`, `REN`, `LFI` — re-elected in
   and **no per-member date is ever published**: roster profiles are not
   published pages (§2 rules 3 and 7).
 - An undated intervention counts over the whole period, never in a window.
+- **Before the XVth, the list is `null`, never `[]` (#1337).** The Assemblée publishes no
+  sitting records before the XVth, so a XIVth group or a lineage made only of XIVth links
+  has no measured speech. It publishes `tags_thematiques_agreges: null` with
+  `tags_thematiques_non_resolu` (`motif: "hors_couverture"`), present **if and only if**
+  the list is `null`; both schemas check it (`schema_groupe.valider_tags_non_resolu`). The
+  bound is read from `couverture_profil.BORNES["interventions"]`, never copied.
+  → `docs/decisions/sujets-des-groupes-hors-couverture-1337.md`
 - **`mandats_agreges` follows the same bound (#853)**: a committee, friendship
   group or outside body counts only if it overlaps one of the member's
   membership periods — not merely an electoral mandate, which let a 2012

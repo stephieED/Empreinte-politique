@@ -335,6 +335,38 @@ assert set(BORNES) == set(LISTES_COUVERTES), (
 )
 
 
+def parole_hors_couverture(chambre: Any, legislature: Any) -> Optional[dict[str, Any]]:
+    """Le motif d'une fiche de groupe sans parole collectée, ou None (#1337).
+
+    `tags_thematiques_agreges` d'un groupe dérive des interventions de ses
+    membres **dans sa législature**. Avant la XVe, l'Assemblée ne publie pas de
+    comptes rendus : la liste serait vide, et une liste vide se lit « aucun
+    sujet ». La borne est celle des interventions, lue dans `BORNES`, jamais
+    recopiée : le jour où la XVIIIe s'ouvre, elle suit.
+
+    None hors de l'Assemblée : la question ne s'y pose pas dans ces termes, et
+    les deux fiches du Sénat sont gelées par ailleurs (#558).
+    """
+    if chambre != "AN":
+        return None
+    try:
+        numero = int(str(legislature))
+    except (TypeError, ValueError):
+        return None
+    borne = BORNES["interventions"]
+    if numero in borne.legislatures:
+        return None
+    # Import tardif : schema_groupe n'a rien à faire dans le chargement des
+    # profils, qui importe ce module.
+    from schema_groupe import MOTIF_TAGS_HORS_COUVERTURE
+
+    return {
+        "motif": MOTIF_TAGS_HORS_COUVERTURE,
+        "legislatures_couvertes": list(borne.legislatures),
+        "preuve": borne.limite_source,
+    }
+
+
 # ---------------------------------------------------------------------------
 # Décisions de pipeline
 # ---------------------------------------------------------------------------

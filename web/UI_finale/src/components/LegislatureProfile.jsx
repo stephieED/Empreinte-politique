@@ -710,6 +710,12 @@ function OrdreDuJour({ vue, mot }) {
    * Calendrier) ou le nom d'un mois (les deux vues) détaille la période ; ses
    * jours se surlignent. Cliquer un jour revient au détail du jour. */
   const [periodeChoisie, setPeriodeChoisie] = useState(null);
+  /* AU TÉLÉPHONE (#1372, forme B du 29/10/2026) : les douze mois empilés
+   * prenaient 4 460 px et l'année ne se voyait jamais d'ensemble. Le calendrier
+   * montre l'année en miniature — trois colonnes, les couleurs seules —, puis le
+   * mois touché en grand, avec ses flèches, puis le détail du jour. */
+  const etroit = useEcranEtroit();
+  const [moisOuvert, setMoisOuvert] = useState(null);
   const choisirJour = (d) => { setChoisi(d); setPeriodeChoisie(null); };
   const choisirPeriode = (type, cle) => setPeriodeChoisie({ type, cle });
   if (!agenda) return null;
@@ -722,6 +728,8 @@ function OrdreDuJour({ vue, mot }) {
    * passé de l'année affichée. */
   const sel = choisi && choisi.startsWith(String(a)) ? choisi : jourDefaut;
   const detail = sel ? agenda.parDate.get(sel) : null;
+  /* Le mois ouvert au téléphone : celui qu'on a touché, sinon celui du jour détaillé. */
+  const mo = moisOuvert ?? (sel ? Number(sel.slice(5, 7)) - 1 : 0);
   const resume = periodeChoisie ? agenda.detailDePeriode(periodeChoisie.type, periodeChoisie.cle) : null;
   const dansLaPeriode = (d) => {
     if (!periodeChoisie) return false;
@@ -750,6 +758,68 @@ function OrdreDuJour({ vue, mot }) {
       </span>
     );
   };
+  const moisEnGrand = (m, im, tete = enteteMois(m.nom, im)) => (
+      <div className="odj-cal-mois" key={m.nom}>
+        {tete}
+        <div className="odj-cal-grille">
+          <span className="odj-cal-tete" />
+          {JOURS_COURTS.map((n, k) => <span className={`odj-cal-tete${k >= 5 ? ' odj-we' : ''}`} key={n}>{n}</span>)}
+          {m.semaines.map((s) => (
+            <Fragment key={s.numero}>
+              <button
+                aria-label={`Semaine ${s.numero}`}
+                aria-pressed={periodeChoisie?.type === 'semaine' && periodeChoisie.cle === s.lundi}
+                className="odj-cal-sem"
+                onClick={() => choisirPeriode('semaine', s.lundi)}
+                type="button"
+              >
+                {s.numero}
+              </button>
+              {s.jours.map((j, k) => {
+                if (!j) return <span className={`odj-c odj-c-vide${k >= 5 ? ' odj-we' : ''}`} key={k} />;
+                const textes = j.points.filter((p) => p.texte);
+                const classes = ['odj-c', k >= 5 && 'odj-we', j.hors && 'odj-hors', j.aVenir && j.points.length && 'odj-a-venir', marque(j.date)].filter(Boolean).join(' ');
+                const contenu = (
+                  <>
+                    <span className="odj-c-num">{Number(j.num)}</span>
+                    {barreDe({ segments: textes, sansTexte: !textes.length && j.points.length > 0, autres: false, nonFixe: j.nonFixe, hors: j.hors })}
+                  </>
+                );
+                return j.points.length && !j.hors ? (
+                  <button
+                    aria-label={`${dateLongue(j.date)} : ${j.points.map((p) => p.titre).join(' · ')}`}
+                    aria-pressed={!periodeChoisie && j.date === sel}
+                    className={classes}
+                    key={j.date}
+                    onClick={() => choisirJour(j.date)}
+                    type="button"
+                  >
+                    {contenu}
+                  </button>
+                ) : <span className={classes} key={j.date}>{contenu}</span>;
+              })}
+            </Fragment>
+          ))}
+        </div>
+      </div>
+  );
+  /* La miniature : un mois = un bouton, ses jours réduits à leurs couleurs. */
+  const miniature = (m, im) => (
+    <button aria-label={m.nom} aria-pressed={im === mo} className="odj-mini-mois" key={m.nom} onClick={() => setMoisOuvert(im)} type="button">
+      <span className="odj-mini-nom">{m.nom}</span>
+      <span aria-hidden="true" className="odj-mini-grille">
+        {m.semaines.flatMap((sm) => sm.jours.map((j, k) => {
+          if (!j) return <span className={`odj-mini-j${k >= 5 ? ' odj-we' : ''}`} key={`${sm.numero}-${k}`} />;
+          const textes = j.points.filter((pt) => pt.texte);
+          return (
+            <span className={['odj-mini-j', k >= 5 && 'odj-we', j.hors && 'odj-hors', j.aVenir && j.points.length && 'odj-a-venir'].filter(Boolean).join(' ')} key={j.date}>
+              {barreDe({ segments: textes, sansTexte: !textes.length && j.points.length > 0, autres: false, nonFixe: j.nonFixe, hors: j.hors })}
+            </span>
+          );
+        }))}
+      </span>
+    </button>
+  );
   return (
     <Section id="section-ordre-du-jour" numero="03" titre="À l’ordre du jour" bulle={BULLES.ordreDuJour(enCours)}>
       <div className="gvp-carte">
@@ -771,7 +841,7 @@ function OrdreDuJour({ vue, mot }) {
         <div className="odj-commandes">
           <div className="odj-annees" role="group" aria-label="Année affichée">
             {agenda.annees.map((y) => (
-              <button aria-pressed={y === a} className={`odj-annee${y === a ? ' odj-annee-active' : ''}`} key={y} onClick={() => { setAnnee(y); setChoisi(null); setPeriodeChoisie(null); }} type="button">{y}</button>
+              <button aria-pressed={y === a} className={`odj-annee${y === a ? ' odj-annee-active' : ''}`} key={y} onClick={() => { setAnnee(y); setChoisi(null); setPeriodeChoisie(null); setMoisOuvert(null); }} type="button">{y}</button>
             ))}
           </div>
           {/* Un switch (« pour moi, un commutateur, c'est un switch », 26/10/2026) :
@@ -783,54 +853,24 @@ function OrdreDuJour({ vue, mot }) {
             ))}
           </div>
         </div>
-        {maille === 'calendrier' && (
+        {maille === 'calendrier' && !etroit && (
           <div className="odj-cal">
-            {calendrier.map((m, im) => (
-              <div className="odj-cal-mois" key={m.nom}>
-                {enteteMois(m.nom, im)}
-                <div className="odj-cal-grille">
-                  <span className="odj-cal-tete" />
-                  {JOURS_COURTS.map((n, k) => <span className={`odj-cal-tete${k >= 5 ? ' odj-we' : ''}`} key={n}>{n}</span>)}
-                  {m.semaines.map((s) => (
-                    <Fragment key={s.numero}>
-                      <button
-                        aria-label={`Semaine ${s.numero}`}
-                        aria-pressed={periodeChoisie?.type === 'semaine' && periodeChoisie.cle === s.lundi}
-                        className="odj-cal-sem"
-                        onClick={() => choisirPeriode('semaine', s.lundi)}
-                        type="button"
-                      >
-                        {s.numero}
-                      </button>
-                      {s.jours.map((j, k) => {
-                        if (!j) return <span className={`odj-c odj-c-vide${k >= 5 ? ' odj-we' : ''}`} key={k} />;
-                        const textes = j.points.filter((p) => p.texte);
-                        const classes = ['odj-c', k >= 5 && 'odj-we', j.hors && 'odj-hors', j.aVenir && j.points.length && 'odj-a-venir', marque(j.date)].filter(Boolean).join(' ');
-                        const contenu = (
-                          <>
-                            <span className="odj-c-num">{Number(j.num)}</span>
-                            {barreDe({ segments: textes, sansTexte: !textes.length && j.points.length > 0, autres: false, nonFixe: j.nonFixe, hors: j.hors })}
-                          </>
-                        );
-                        return j.points.length && !j.hors ? (
-                          <button
-                            aria-label={`${dateLongue(j.date)} : ${j.points.map((p) => p.titre).join(' · ')}`}
-                            aria-pressed={!periodeChoisie && j.date === sel}
-                            className={classes}
-                            key={j.date}
-                            onClick={() => choisirJour(j.date)}
-                            type="button"
-                          >
-                            {contenu}
-                          </button>
-                        ) : <span className={classes} key={j.date}>{contenu}</span>;
-                      })}
-                    </Fragment>
-                  ))}
-                </div>
-              </div>
-            ))}
+            {calendrier.map((m, im) => moisEnGrand(m, im))}
           </div>
+        )}
+        {maille === 'calendrier' && etroit && (
+          <>
+            <div className="odj-mini">{calendrier.map(miniature)}</div>
+            <div className="odj-ouvert">
+              {calendrier[mo] && moisEnGrand(calendrier[mo], mo, (
+                <div className="odj-ouvert-tete">
+                  <button aria-label="Mois précédent" className="odj-fleche" disabled={mo <= 0} onClick={() => setMoisOuvert(mo - 1)} type="button">‹</button>
+                  {enteteMois(calendrier[mo].nom, mo)}
+                  <button aria-label="Mois suivant" className="odj-fleche" disabled={mo >= calendrier.length - 1} onClick={() => setMoisOuvert(mo + 1)} type="button">›</button>
+                </div>
+              ))}
+            </div>
+          </>
         )}
         {maille === 'planning' && (
         <div className="odj-mois">

@@ -546,10 +546,7 @@ const SECTIONS = [
           La position majoritaire du groupe est comparée à celle de chaque autre groupe de la même
           législature, sur la <strong>dernière lecture de chaque texte</strong>, et seulement là où,
           dans chacun des deux groupes, au moins la moitié des membres ont voté. Le nombre de textes
-          comparés diffère donc d'une ligne à l'autre, et il est écrit sur chacune. Les groupes sont rangés d'abord par le nombre de textes comparés ;
-          à nombre égal seulement, par le nombre de votes dans le même sens. Ranger par l'accord
-          seul serait trompeur : un groupe d'accord sur les 2 seuls textes comparés passerait devant
-          un groupe d'accord sur 40 textes sur 50, et la fiche fabriquerait un classement des alliés.
+          comparés diffère donc d'une ligne à l'autre, et il est écrit sur chacune.
         </p>
         <p>
           <strong>Voter dans le même sens n'est pas s'entendre.</strong> Deux groupes peuvent

@@ -8,7 +8,9 @@ Chaque lecteur est éprouvé sur **le vrai fichier**, copié le 12/10/2026 sous
   recopié le 13/10/2026 ;
 - `fiche_drees.json` — la liste des pièces jointes du jeu, telle que l'API la rend ;
 - `regimes_1975_1989_2023.json` — trois années de l'export des prestations par
-  régime, une par régime de la source : sans détail, détail incomplet, complet ;
+  régime, une par régime de la source : sans détail, détail incomplet, complet.
+  Recopié le 29/10/2026, après la republication du jeu (#1362) : la colonne du
+  régime s'appelle `regime_nom` ;
 - `unedic.json` — l'export entier de l'Unédic, quinze années.
 """
 from __future__ import annotations
@@ -145,8 +147,10 @@ def test_deux_classeurs_joints_font_echouer_plutot_que_choisir():
 # ── Les prestations par régime ──────────────────────────────────────────────
 
 def test_les_regimes_de_2023_et_leurs_trois_niveaux():
+    """Le total 2023 était de 889 478,93 M€ dans l'export du 12/10/2026 ; la
+    Drees l'a révisé en republiant le jeu le 23/10 (#1362)."""
     annee = fs.lire_prestations_par_regime(appel)["annees"]["2023"]
-    assert [r["montant"] for r in annee if r["niveau"] == 0] == [889478.93]
+    assert [r["montant"] for r in annee if r["niveau"] == 0] == [890797.08]
     cnav = next(r for r in annee if r["regime"] == "Caisse nationale d’assurance vieillesse")
     assert (cnav["niveau"], cnav["secteur_code"], cnav["montant"]) == (2, "S13141", 151825.8)
     assert sum(r["niveau"] == 1 for r in annee) == 9
@@ -160,6 +164,15 @@ def test_une_annee_sans_detail_ne_fait_pas_echouer():
     regimes = sum(r["montant"] for r in annees["1989"] if r["niveau"] == 2)
     ensemble = next(r["montant"] for r in annees["1989"] if r["niveau"] == 0)
     assert round(ensemble - regimes) == 1282
+
+
+def test_une_colonne_renommee_est_nommee_dans_l_erreur():
+    """Le 23/10/2026, `nom_regime` est devenue `regime_nom` : la lecture
+    s'arrêtait sur un `KeyError: 'nom_regime'`, sans dire ce qui manquait (#1362)."""
+    lignes = json.loads((FIXTURES / "regimes_1975_1989_2023.json").read_text(encoding="utf-8"))
+    anciennes = [{("nom_regime" if k == fs.COL_REGIME else k): v for k, v in r.items()} for r in lignes]
+    with pytest.raises(fs.FinancesIndisponibles, match="colonne 'regime_nom' absente.*nom_regime"):
+        fs.lire_prestations_par_regime(lambda u: json.dumps(anciennes * 30).encode())
 
 
 def test_une_reponse_courte_n_est_pas_le_jeu(monkeypatch):

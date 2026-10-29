@@ -144,17 +144,18 @@ Le mentionnent sans le gouverner : [`derivation-des-groupes-depuis-amo30-1168`](
 
 ## `src/articles_votes.py`
 
-5 décision(s) le gouvernent ; le module en cite 3.
+6 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
+| [« À jour au » : la dernière relecture réussie de chaque famille de données, et son état (#1389) (2026-10-29)](decisions/a-jour-au-par-famille-de-donnees-1389.md) | `ordre_du_jour` |
 | [Les articles des textes lus, publiés dans `articles_votes.json` (#1352) (2026-10-26)](decisions/articles-des-textes-dans-articles-votes-1352.md) | `articles_des_textes`, `normaliser_article` |
 | [L'intitulé d'un article voté, et le gabarit des lois de finances (#1352) (2026-10-26)](decisions/intitule-des-articles-votes-1352.md) | `VERSION_STRUCTURE`, `en_tete_d_article`, `structure_loi_de_finances` |
 | [L'ordre du jour des séances publiques, un fichier par législature (#1354) (2026-10-26)](decisions/ordre-du-jour-des-seances-1354.md) | `ordre_du_jour` |
 | [« À l'ordre du jour » : l'agenda des séances sur la fiche de législature, en Calendrier ou en Planning (#1354) (2026-10-26)](decisions/ordre-du-jour-fiche-legislature-1354.md) | `ordre_du_jour` |
 | [Sous `textes`, les seuls textes cités par un scrutin : le fichier variait d'un run à l'autre (#1352) (2026-10-27)](decisions/textes-cites-par-un-scrutin-1352.md) | `articles_des_textes` |
 
-Le mentionnent sans le gouverner : [`articles-votes-par-la-seance-1264`](decisions/articles-votes-par-la-seance-1264.md), [`instantane-violences-sexuelles-1261`](decisions/instantane-violences-sexuelles-1261.md).
+Le mentionnent sans le gouverner : [`articles-au-telephone-1372`](decisions/articles-au-telephone-1372.md), [`articles-votes-par-la-seance-1264`](decisions/articles-votes-par-la-seance-1264.md), [`instantane-violences-sexuelles-1261`](decisions/instantane-violences-sexuelles-1261.md).
 
 ## `src/audit_collecte_non_publiee.py`
 
@@ -398,10 +399,11 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 
 ## `src/candidate_profile.py`
 
-109 décision(s) le gouvernent ; le module en cite 14.
+110 décision(s) le gouvernent ; le module en cite 14.
 
 | Décision | Nomme |
 | --- | --- |
+| [« À jour au » : la dernière relecture réussie de chaque famille de données, et son état (#1389) (2026-10-29)](decisions/a-jour-au-par-famille-de-donnees-1389.md) | `_etat_au_archive_courante` |
 | [Trois absences publiées comme des faits (#556, #558, #560) (2026-08-29)](decisions/absences-publiees-comme-faits-556-558-560.md) | `AN_SCRUTINS_LEGISLATURES`, `NOM_INDEX_IDENTITE`, `NOM_INDEX_ORGANES`, `WARNING_PREFIX_INTERVENTIONS_SYCERON_AUCUNE`, `WARNING_PREFIX_INTERVENTIONS_SYCERON_INDISPONIBLES`, `WARNING_PREFIX_VOTES_INTROUVABLES`, `_TYPE_ORGANE_NON_MAPPES`, `_champ_identite_an`, `_format_lieu_naissance`, `_format_nom_complet`, `_texte_an` |
 | [Un membre de roster est collecté sous l'acteur que son roster nomme, jamais re-deviné par son nom (#850)](decisions/acteur-du-roster-850.md) | `ActeurContreditParLaTable`, `build_profile`, `fetch_identite_officielle_par_slug` |
 | [La cascade des textes portés entre dans l'UI, et la section s'aligne sur la maquette (#328), 06/09/2026](decisions/alignement-section-propose-ui-328.md) | `_STADE_RANKS` |
@@ -587,7 +589,7 @@ Le mentionnent sans le gouverner : [`absences-publiees-comme-faits-556-558-560`]
 
 ## `src/couverture_profil.py`
 
-10 décision(s) le gouvernent ; le module en cite 3.
+11 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -601,6 +603,7 @@ Le mentionnent sans le gouverner : [`absences-publiees-comme-faits-556-558-560`]
 | [Un mandat de député européen sans prise de parole publiée se déclare, calculé à chaque run (#1163) (2026-10-08)](decisions/mandat-europeen-sans-parole-1163.md) | `mandats_europeens_sans_parole` |
 | [Le Parlement européen prend sa place sur `/couverture`, et cesse de déplacer les bornes de l'Assemblée — 11/09/2026 (#328)](decisions/parlement-europeen-sur-la-couverture-328.md) | `bornes_europeennes` |
 | [L'européen entre dans les listes que la fiche a déjà (#683, lot 2)](decisions/stockage-europeen-dans-les-listes-existantes-683.md) | `bornes_europeennes` |
+| [Un groupe de la XIVe ne publie pas « aucun sujet » : sa parole n'est pas collectée (#1337) (2026-10-29)](decisions/sujets-des-groupes-hors-couverture-1337.md) | `parole_hors_couverture` |
 
 Le mentionnent sans le gouverner : [`couverture-remplacee-par-liste-602`](decisions/couverture-remplacee-par-liste-602.md), [`fiches-groupe-17e-legislature-700`](decisions/fiches-groupe-17e-legislature-700.md), [`lecture-dumps-parltrack-683`](decisions/lecture-dumps-parltrack-683.md), [`licence-jamais-en-dur-909`](decisions/licence-jamais-en-dur-909.md), [`pied-de-site-et-section-6-328`](decisions/pied-de-site-et-section-6-328.md), [`preuve-de-borne-dite-une-fois-328`](decisions/preuve-de-borne-dite-une-fois-328.md), [`preuve-de-couverture-reste-technique-1160`](decisions/preuve-de-couverture-reste-technique-1160.md), [`retrait-residus-senat-908`](decisions/retrait-residus-senat-908.md).
 
@@ -680,6 +683,10 @@ Le mentionnent sans le gouverner : [`finances-etat-collecte-1053`](decisions/fin
 ## `src/finances_sociales.py`
 
 Le mentionnent sans le gouverner : [`finances-sociales-collecte-1053`](decisions/finances-sociales-collecte-1053.md), [`finances-sociales-par-bloc-1053`](decisions/finances-sociales-par-bloc-1053.md).
+
+## `src/fraicheur_sources.py`
+
+Le mentionnent sans le gouverner : [`a-jour-au-par-famille-de-donnees-1389`](decisions/a-jour-au-par-famille-de-donnees-1389.md).
 
 ## `src/garde_fou_blobs.py`
 
@@ -1038,10 +1045,11 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 
 ## `src/merge_profile.py`
 
-89 décision(s) le gouvernent ; le module en cite 5.
+90 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
+| [« À jour au » : la dernière relecture réussie de chaque famille de données, et son état (#1389) (2026-10-29)](decisions/a-jour-au-par-famille-de-donnees-1389.md) | `preserve_stable_freshness_timestamps` |
 | [La fusion défaisait le marquage de la collecte : un run vert qui n'a rien basculé (#691, lot 3c)](decisions/amorcage-du-marquage-par-la-fusion-691.md) | `_acteur_du_socle`, `merge_raw_dirs` |
 | [Un bloc structuré sans fond n'écrase plus un bloc collecté (#484) (2026-08-30)](decisions/bloc-sans-fond-484.md) | `BLOCS_PROTEGES_DU_VIDE`, `_merge_pivot_sources`, `_prefer_non_empty`, `_synchro_la_plus_recente`, `bloc_sans_fond`, `merge_raw_profile`, `preserver_collectes_non_vides` |
 | [Le correctif de #540 validé en conditions réelles, et les deux budgets qu'il a périmés (#546) (2026-08-27)](decisions/budgets-extract-an-perimes-546.md) | `clean_stale_interventions` |
@@ -1379,7 +1387,7 @@ Le mentionnent sans le gouverner : [`agregat-parole-gouvernement-1020`](decision
 
 ## `src/schema_groupe.py`
 
-10 décision(s) le gouvernent ; le module en cite 3.
+11 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1393,12 +1401,13 @@ Le mentionnent sans le gouverner : [`agregat-parole-gouvernement-1020`](decision
 | [L'origine de la date de référence nomme le critère, plus un événement (#808)](decisions/origine-date-reference-nomme-le-critere-808.md) | `ORIGINES_DATE_REFERENCE`, `ORIGINE_DATE_REFERENCE_CLOTURE`, `ORIGINE_DATE_REFERENCE_CLOTURE_HERITEE` |
 | [L'appartenance publiée cesse d'être une enveloppe (#809)](decisions/periodes-appartenance-809.md) | `validate_profil_groupe` |
 | [La position politique d'un groupe est celle que l'Assemblée déclare, lue dans une table committée (#686) (2026-09-01)](decisions/position-politique-groupes-686.md) | `POSITIONS_POLITIQUES_GROUPE`, `resumer_position_politique` |
+| [Un groupe de la XIVe ne publie pas « aucun sujet » : sa parole n'est pas collectée (#1337) (2026-10-29)](decisions/sujets-des-groupes-hors-couverture-1337.md) | `valider_tags_non_resolu` |
 
 Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit-champs-deplaces-726.md), [`audit-plages-temporelles`](decisions/audit-plages-temporelles.md), [`consommateurs-chambres-migres`](decisions/consommateurs-chambres-migres.md), [`dates-appartenance-groupe-653`](decisions/dates-appartenance-groupe-653.md), [`pivot-freshness-timestamps-stables`](decisions/pivot-freshness-timestamps-stables.md), [`plage-dates-groupes`](decisions/plage-dates-groupes.md).
 
 ## `src/schema_pivot.py`
 
-69 décision(s) le gouvernent ; le module en cite 5.
+70 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1463,6 +1472,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 | [L'attestation d'une candidature n'est pas une source de données, et les mandats locaux déclarent la leur (#1310, 2026-10-22)](decisions/source-de-la-candidature-et-mandats-locaux-1310.md) | `KNOWN_SOURCE_TYPES` |
 | [Le stade d'un dossier européen se publie dans sa propre nomenclature, jamais traduit en stade français (#901) (2026-09-13)](decisions/stade-procedural-europeen-901.md) | `KNOWN_STADES_PROCEDURAUX` |
 | [L'européen entre dans les listes que la fiche a déjà (#683, lot 2)](decisions/stockage-europeen-dans-les-listes-existantes-683.md) | `COLLECTE_SANS_VERBATIM_SOURCE` |
+| [Un groupe de la XIVe ne publie pas « aucun sujet » : sa parole n'est pas collectée (#1337) (2026-10-29)](decisions/sujets-des-groupes-hors-couverture-1337.md) | `ETAT_HORS_COUVERTURE` |
 | [La fiche de groupe regroupe ses sujets de parole avec la clé de l'agrégat (#1177) (2026-10-08)](decisions/sujets-regroupes-fiche-de-groupe-1177.md) | `cle_tag_thematique` |
 | [L'empreinte thématique d'une fiche est celle de sa législature (#825)](decisions/tags-agreges-dans-la-periode-825.md) | `deriver_tags_thematiques`, `legislature_de_intervention` |
 | [Un singulier et un pluriel sont le même sujet : la clé groupe, la source publie (#1042) (2026-09-20)](decisions/tags-singulier-et-pluriel-1042.md) | `cle_tag_thematique`, `deriver_tags_thematiques`, `forme_publiee` |

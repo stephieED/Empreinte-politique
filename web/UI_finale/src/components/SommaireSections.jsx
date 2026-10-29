@@ -28,6 +28,10 @@
  *
  * Le sommaire prend 204 px SUR LA MARGE, jamais sur le contenu.
  *
+ * DEPUIS B5 (29/10/2026), LES FICHES N'EN ONT PLUS : la rangée collée sous la
+ * barre du site (`RangeeSections`) le remplace sur les quatre fiches. Il reste
+ * aux pages de texte.
+ *
  * LES PAGES DE TEXTE LE PORTENT AUSSI (forme E, arbitrée le 21/10/2026) :
  * À propos, Méthodologie, Sources, FAQ, Mentions légales, Nous soutenir. Une
  * entrée marquée `data-section-groupe` est le TITRE D'UN GROUPE de sections —

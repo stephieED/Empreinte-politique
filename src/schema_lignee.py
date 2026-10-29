@@ -47,6 +47,8 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
+from schema_groupe import CLE_TAGS_NON_RESOLU, valider_tags_non_resolu  # noqa: F401 — #1337
+
 SCHEMA_LIGNEE_VERSION = "1"
 TYPE_DOCUMENT_LIGNEE = "profil_lignee"
 
@@ -156,8 +158,11 @@ def validate_profil_lignee(profil: Any) -> list[str]:
             f"reçu {profil.get('type_document')!r}."
         )
     for cle in _LIST_KEYS:
+        if cle == "tags_thematiques_agreges" and profil.get(cle) is None:
+            continue  # null permis avec son motif (#1337), vérifié ci-dessous
         if cle in profil and not isinstance(profil[cle], list):
             errors.append(f"'{cle}' doit être une liste.")
+    errors.extend(valider_tags_non_resolu(profil))
 
     maillons = profil.get("maillons")
     if isinstance(maillons, list) and not maillons:

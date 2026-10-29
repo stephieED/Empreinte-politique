@@ -216,8 +216,79 @@ def collecter(
     }
 
 
+#: Les statuts qui valent un nouvel essai : la limite de débit et les erreurs
+#: de passerelle ou de serveur. Un 404 ou un 400 dit que la requête est
+#: fausse ; la rejouer n'y changera rien (#1361).
+STATUTS_A_REESSAYER = frozenset({429, 500, 502, 503, 504})
+
+#: Les attentes avant le 2e, le 3e et le 4e essai d'une même requête.
+ATTENTES_REPRISE_S = (10, 30, 60)
+
+#: Le temps total que les reprises peuvent coûter à UN run, attentes et essais
+#: ratés compris. Le job a 20 min ; le 25/10/2026, il en a pris 11 min 40, dont
+#: 6 min de collecte. 5 min de reprises laissent la marge du checkout.
+BUDGET_REPRISES_S = 300
+
+
+def _retentable(erreur: BaseException) -> Optional[str]:
+    """Le motif d'un nouvel essai, ou None si l'erreur n'en vaut pas un."""
+    import urllib.error
+
+    if isinstance(erreur, urllib.error.HTTPError):
+        return f"HTTP {erreur.code}" if erreur.code in STATUTS_A_REESSAYER else None
+    if isinstance(erreur, (urllib.error.URLError, TimeoutError, ConnectionError)):
+        return f"injoignable ({erreur})"
+    return None
+
+
+def avec_reprises(
+    appel: Callable[[str], Any],
+    *,
+    attentes: tuple[float, ...] = ATTENTES_REPRISE_S,
+    budget_s: float = BUDGET_REPRISES_S,
+    dormir: Optional[Callable[[float], None]] = None,
+    horloge: Optional[Callable[[], float]] = None,
+) -> Callable[[str], Any]:
+    """`appel`, qui réessaie une erreur passagère au lieu d'arrêter le job (#1361).
+
+    Une seule page en 504 de l'API tabulaire arrêtait toute la collecte : trois
+    runs sur quatre du 23 au 26/10/2026, sans aucun profil écrit. Le budget est
+    commun à toutes les requêtes du run : une API durablement en panne coûte au
+    plus `budget_s`, puis lève `RneIndisponible`, que `main` nomme.
+    """
+    dormir = dormir or time.sleep
+    horloge = horloge or time.monotonic
+    depense = 0.0
+
+    def appel_repris(url: str) -> Any:
+        nonlocal depense
+        for essai in range(len(attentes) + 1):
+            debut = horloge()
+            try:
+                return appel(url)
+            except Exception as erreur:  # noqa: BLE001 — trié par _retentable
+                motif = _retentable(erreur)
+                depense += horloge() - debut
+                if motif is None:
+                    raise
+                if essai == len(attentes) or depense + attentes[essai] > budget_s:
+                    raise RneIndisponible(
+                        f"{motif} après {essai + 1} essai(s), "
+                        f"{depense:.0f} s de reprises sur {budget_s:.0f} : {url}"
+                    ) from erreur
+                print(f"::warning::RNE_REPRISE — {motif}, nouvel essai dans "
+                      f"{attentes[essai]:.0f} s : {url}", file=sys.stderr)
+                dormir(attentes[essai])
+                depense += attentes[essai]
+        raise AssertionError("inatteignable")
+
+    return appel_repris
+
+
 def _appel_reseau(url: str) -> Any:
-    """L'accès réseau, isolé ici — le reste du module est testable sans lui."""
+    """L'accès réseau, isolé ici — le reste du module est testable sans lui.
+
+    Il ne réessaie rien : `main` l'enveloppe dans `avec_reprises`."""
     import urllib.parse
     import urllib.request
 
@@ -246,7 +317,7 @@ def main(argv: Optional[list[str]] = None) -> int:
 
     try:
         rapport = collecter(
-            _appel_reseau, args.raw_dir, args.pivot_dir, args.table,
+            avec_reprises(_appel_reseau), args.raw_dir, args.pivot_dir, args.table,
             appliquer=args.apply, manifest_out=args.manifest_out)
     except RneIndisponible as erreur:
         print(f"::error::RNE_INDISPONIBLE — {erreur}", file=sys.stderr)

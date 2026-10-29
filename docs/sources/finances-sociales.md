@@ -110,6 +110,19 @@ ouvertes** à la date de ce relevé.
   alors la part salariale des contributions.
 - **Le serveur compresse sans le dire**, comme `data.economie.gouv.fr` : regarder
   les premiers octets.
+- **Le jeu est republié sans prévenir, et sa forme bouge avec lui (#1362).** La
+  Drees l'a retraité le 23/10/2026 (`data_processed` de la fiche, 13 h 13 UTC).
+  Du 23 au 26/10, la fiche portait **4** classeurs `.xlsx` au lieu d'un : la
+  lecture refusait de choisir (« un seul attendu »), et le 28/10 il n'en restait
+  qu'un. La colonne du régime de l'export est passée de `nom_regime` à
+  **`regime_nom`** ; la lecture s'arrêtait sur une `KeyError`. Des montants ont
+  été révisés : sur 1975, 1989 et 2023 (77 lignes avant comme après), 24 des 69
+  lignes retrouvées à l'identique ont changé de montant, dont le total 2023
+  (889 478,93 → 890 797,08 M€) ; les 8 autres ont changé de libellé ou de code de
+  secteur (`S13` → `S13_S11`, accents ajoutés). Les secteurs des caisses que lisent les budgets des gouvernements
+  (`S13141`, `S13142`) n'ont pas changé de code. La colonne attendue est
+  `finances_sociales.COL_REGIME` ; si elle manque, l'erreur la nomme avec les
+  colonnes reçues.
 
 ## Écarté
 

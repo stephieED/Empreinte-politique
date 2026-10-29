@@ -43,6 +43,28 @@ export default function AnalysesThematiques({ dansHero = false }) {
   /* Au téléphone (#1372, 28/10/2026), le titre d'une diapositive ne se coupe
    * plus : la fenêtre prend la hauteur de la plus haute, rien n'est rogné. */
   const etroit = useEcranEtroit();
+  /* LE BANDEAU FIXE (#1372, forme B+C du 29/10/2026) : au téléphone, le
+   * carrousel vient après les tuiles et un lecteur qui ne descend pas le
+   * manque. Un bandeau en bas d'écran montre la diapositive courante — même
+   * index, même rythme —, une flèche pour la suivante, une croix pour le
+   * fermer pendant la visite. Il s'efface quand le carrousel est à l'écran. */
+  const avecBandeau = dansHero && etroit;
+  const secRef = useRef(null);
+  const [carrouselVu, setCarrouselVu] = useState(false);
+  const [ferme, setFerme] = useState(() => {
+    try { return window.sessionStorage.getItem('bandeau-analyses') === 'ferme'; } catch { return false; }
+  });
+  const fermer = () => {
+    setFerme(true);
+    try { window.sessionStorage.setItem('bandeau-analyses', 'ferme'); } catch { /* stockage indisponible : fermé pour cette page seulement */ }
+  };
+  useEffect(() => {
+    const sec = secRef.current;
+    if (!avecBandeau || !sec || typeof IntersectionObserver === 'undefined') return undefined;
+    const io = new IntersectionObserver(([e]) => setCarrouselVu(e.isIntersecting));
+    io.observe(sec);
+    return () => io.disconnect();
+  }, [avecBandeau, analyses]);
 
   useEffect(() => {
     let vivant = true;
@@ -118,7 +140,9 @@ export default function AnalysesThematiques({ dansHero = false }) {
   const reprendre = () => { pause.current = false; };
 
   return (
+    <>
     <section
+      ref={secRef}
       className={`landing-section analyses${dansHero ? ' analyses--hero' : ''}`}
       aria-roledescription="carrousel"
       aria-label="Analyses thématiques"
@@ -190,5 +214,31 @@ export default function AnalysesThematiques({ dansHero = false }) {
         </div>
       )}
     </section>
+    {avecBandeau && n > 0 && !ferme && (
+      <div className="analyses-bandeau" hidden={carrouselVu}>
+        {diapos[i].evenement ? (
+          <Link className="analyses-bandeau-lien" to="/candidats" tabIndex={carrouselVu ? -1 : 0}>
+            <span className="analyses-bandeau-v analyses-bandeau-v--evenement" aria-hidden="true"><small>Mai</small><b>2027</b></span>
+            <span className="analyses-bandeau-txt">
+              <span className="analyses-bandeau-lab">Événement · Jusqu’en mai 2027</span>
+              <span className="analyses-bandeau-t">Focus sur les candidats à la présidentielle</span>
+            </span>
+          </Link>
+        ) : (
+          <a className="analyses-bandeau-lien" href={`/rapports/${diapos[i].fichier}`} tabIndex={carrouselVu ? -1 : 0}>
+            <span className="analyses-bandeau-v" aria-hidden="true">
+              {diapos[i].vignette && <img src={`/rapports/${diapos[i].vignette}`} alt="" />}
+            </span>
+            <span className="analyses-bandeau-txt">
+              <span className="analyses-bandeau-lab">Analyse thématique · {enClair(diapos[i].date)}</span>
+              <span className="analyses-bandeau-t">{diapos[i].titre}</span>
+            </span>
+          </a>
+        )}
+        {n > 1 && <button type="button" className="analyses-b" aria-label="Analyse suivante" onClick={() => voir(i + 1)}>›</button>}
+        <button type="button" className="analyses-bandeau-x" aria-label="Fermer" onClick={fermer}>✕</button>
+      </div>
+    )}
+    </>
   );
 }
