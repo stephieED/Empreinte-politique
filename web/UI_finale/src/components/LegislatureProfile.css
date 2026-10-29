@@ -22,7 +22,10 @@
 .lgp-frise-lien { display: block; font-size: 13px; font-weight: 800; color: var(--ink); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
 .lgp-frise-lien:hover { color: #a84b12; }
 .lgp-frise-barre { position: relative; height: 34px; border: 1.5px dashed #9a958d; border-radius: 4px; }
-.lgp-frise-plein { position: absolute; left: 0; top: 0; bottom: 0; background: #803060; border-radius: 3px 0 0 3px; color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; padding-left: 12px; white-space: nowrap; overflow: hidden; }
+.lgp-frise-plein { position: absolute; left: 0; top: 0; bottom: 0; background: #803060; border-radius: 3px 0 0 3px; color: #fff; font-weight: 800; font-size: 14px; line-height: 1.1; display: flex; align-items: center; padding-left: 12px; overflow: hidden; }
+/* La durée passe à la ligne plutôt que d'être coupée (29/10/2026) : au téléphone,
+   la XVIe, dissoute, ne remplit que 40 % de la barre, et « 1 an 11 mois 18 jours »
+   s'y arrêtait à « 18 jou ». Deux lignes tiennent dans les 34 px. */
 .lgp-frise-coupe { position: absolute; top: -8px; bottom: -8px; width: 3px; background: var(--ink); }
 .lgp-frise-reste { position: absolute; top: 0; bottom: 0; right: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--muted); font-weight: 600; padding: 0 8px; text-align: center; }
 .lgp-frise-ax { position: relative; height: 18px; font-size: 12px; color: var(--muted); }

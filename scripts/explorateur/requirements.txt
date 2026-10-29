@@ -1,0 +1,5 @@
+# L'affichage de l'explorateur (scripts/explorateur.sh), installé dans son
+# propre environnement sous .cache/explorateur/venv : ni la CI ni le pipeline
+# n'en ont besoin. setuptools < 81 : Datasette 0.65 importe encore pkg_resources.
+datasette==0.65.1
+setuptools==80.10.2

@@ -525,6 +525,25 @@ au-delà duquel une fiche dont toutes les sources sont anciennes est signalée,
 et `--output-dir DOSSIER` écrit les deux fichiers sous un nom horodaté au lieu
 de les nommer un par un.
 
+### Naviguer dans les données, en tableaux reliés
+
+```
+scripts/explorateur.sh                       # reconstruit si les données ont changé, puis ouvre le navigateur
+scripts/explorateur.sh --construire          # reconstruit, même à jour, sans ouvrir le navigateur
+scripts/explorateur.sh --sans-reconstruire   # ouvre la base existante telle quelle
+```
+
+`pivot_data/` et `raw_data/` du dossier où la commande est lancée, dans une
+base que Datasette affiche à `http://127.0.0.1:8001` : chaque liste d'un
+document est une table reliée à son parent, un vote mène à son scrutin, un
+membre à son profil, un profil pivot à son profil brut ; la table `documents`
+montre le document entier en arborescence repliable. **Lecture seule** : la
+base et l'environnement de Datasette vivent sous `.cache/explorateur/` (ignoré
+par git). C'est une photo du commit lu : la commande reconstruit quand le commit
+a changé, et seulement alors. Non chargés, pour la taille : les votes et les
+amendements des membres des groupes. Le serveur n'écoute que sur la machine et
+s'arrête avec `Ctrl+C`. Construction : `src/explorateur_donnees.py`.
+
 ### Le sédiment : ce que le corpus garde d'une source retirée
 
 ```bash

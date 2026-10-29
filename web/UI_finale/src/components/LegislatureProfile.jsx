@@ -155,10 +155,15 @@ function useRangees(cles) {
       }));
     };
     ranger();
-    if (typeof ResizeObserver === 'undefined') return undefined;
+    /* Les noms se mesurent dans leur police : rangés avant qu'elle soit
+     * chargée, ils s'empilaient autrement d'un chargement à l'autre (29/10/2026).
+     * La frise du téléphone (`FriseDesNoms`) attendait déjà la police. */
+    let vivant = true;
+    document.fonts?.ready?.then(() => { if (vivant) ranger(); });
+    if (typeof ResizeObserver === 'undefined') return () => { vivant = false; };
     const ro = new ResizeObserver(ranger);
     ro.observe(zone);
-    return () => ro.disconnect();
+    return () => { vivant = false; ro.disconnect(); };
   }, [cles]);
   return [ref, rangs];
 }

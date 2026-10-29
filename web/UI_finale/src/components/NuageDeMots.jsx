@@ -32,13 +32,21 @@ export default function NuageDeMots({ mots, actif = null, onMot }) {
    * sous 13 px RENDUS : le dessin fait au moins 320 unités, et se réduit
    * quand la boîte est plus étroite. */
   const plancherN = etroit && rendu > 0 ? 13 * (largeur / rendu) : 9;
-  const hauteur = mots.length >= 60 ? 440 : Math.max(220, Math.min(380, 120 + mots.length * 7));
+  /* LES MOTS AUSSI (29/10/2026) : à 320 px d'écran, le plus petit mot dessiné
+   * en 13 unités rendait 11,8 px. Il part du même plancher que les nombres, et
+   * la hauteur du dessin grandit comme la surface des mots (le carré du
+   * facteur), pour qu'ils trouvent autant de place qu'avant. */
+  // Arrondi au-dessus : d3-cloud tronque la taille à l'entier (15,4 → 15, soit 12,7 px rendus).
+  const plancherMot = etroit && rendu > 0 ? Math.max(13, Math.ceil(13 * (largeur / rendu))) : 13;
+  const hauteur = Math.round(
+    (mots.length >= 60 ? 440 : Math.max(220, Math.min(380, 120 + mots.length * 7))) * (plancherMot / 13) ** 2,
+  );
 
   useEffect(() => {
     if (!largeur || !mots.length) { setPlaces([]); return undefined; }
     const n = mots.map(([, c]) => c);
     const mn = Math.min(...n), mx = Math.max(...n);
-    const taille = (c) => (mx === mn ? 22 : 13 + ((c - mn) / (mx - mn)) * Math.min(42, 18 * (mx - mn)));
+    const taille = (c) => (mx === mn ? Math.max(22, plancherMot) : plancherMot + ((c - mn) / (mx - mn)) * Math.min(42, 18 * (mx - mn)));
     let vivant = true;
     const disposition = cloud()
       .size([largeur, hauteur])
@@ -53,7 +61,7 @@ export default function NuageDeMots({ mots, actif = null, onMot }) {
       .on('end', (ws) => { if (vivant) setPlaces(ws); });
     disposition.start();
     return () => { vivant = false; disposition.stop(); };
-  }, [mots, largeur, hauteur]);
+  }, [mots, largeur, hauteur, plancherMot]);
 
   return (
     <div className="lgp-mots" ref={boite}>

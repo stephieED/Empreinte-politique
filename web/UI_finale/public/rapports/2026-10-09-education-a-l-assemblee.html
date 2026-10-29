@@ -158,6 +158,13 @@ h2 span{-webkit-box-decoration-break:clone;box-decoration-break:clone}}.txc--g{b
 .tch a{display:inline-block;padding-block:2px;min-height:24px}
 }
 
+/* Sous 360 px (29/10/2026) : les quatre figures redessinées pour le téléphone
+   n'avaient que 242 px, et leurs textes rendaient à 11,2 px. La marge de la page
+   revient à 16 px et leur cadre perd sa marge intérieure : 282 px, 13 px au moins. */
+@media (max-width:359px){
+  .page { padding-left:16px; padding-right:16px; }
+  .figure:has(> .tel) { padding-left:2px; padding-right:2px; }
+}
 /*chrome:style*/
 :root { --notice:#e7e4df; --colonne:1600px; }
 body {
@@ -261,7 +268,6 @@ body {
   </a>
   <div class="entete-site-actions">
     <nav class="nav-site" aria-label="Pages du site">
-      <a href="https://empreinte-politique.fr/candidats" class="nav-site-lien">Explorateur</a>
       <a href="https://empreinte-politique.fr/rapports" class="nav-site-lien nav-site-lien--courante" aria-current="page">Articles</a>
       <a href="https://empreinte-politique.fr/methodologie" class="nav-site-lien">Méthodologie</a>
       <a href="https://empreinte-politique.fr/sources" class="nav-site-lien">Sources</a>
@@ -271,7 +277,6 @@ body {
     <details class="nav-site-menu">
       <summary class="nav-site-menu-bouton"><span class="nav-site-menu-icone" aria-hidden="true"></span>Menu</summary>
       <nav class="nav-site-menu-liste" aria-label="Pages du site">
-      <a href="https://empreinte-politique.fr/candidats" class="nav-site-menu-lien">Explorateur</a>
       <a href="https://empreinte-politique.fr/rapports" class="nav-site-menu-lien nav-site-menu-lien--courante" aria-current="page">Articles</a>
       <a href="https://empreinte-politique.fr/methodologie" class="nav-site-menu-lien">Méthodologie</a>
       <a href="https://empreinte-politique.fr/sources" class="nav-site-menu-lien">Sources</a>
@@ -327,6 +332,7 @@ body {
     </div>
   </div>
 </footer>
+<script data-goatcounter="https://empreinte-politique.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <!--/chrome:pied-->
 </body>
 </html>

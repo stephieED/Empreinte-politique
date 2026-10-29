@@ -2,7 +2,7 @@
 
 Ce que ces garde-fous protègent :
 
-1. **Les quatre pages, dans l'ordre retenu** le 16/09/2026 : Explorateur,
+1. **Les pages, dans l'ordre retenu** le 16/09/2026 (« Explorateur » retiré le 29/10/2026) :
    Méthodologie, Sources, FAQ.
 2. **Le jaune souligne, il ne colore jamais le texte** : 1,05:1 sur le fond
    clair (DESIGN_SYSTEM §2).
@@ -40,7 +40,7 @@ def test_les_six_pages_dans_l_ordre() -> None:
     une page du corpus, et elle ne s'intercale pas entre celles qui le lisent."""
     source = _sans_commentaires(NAV.read_text(encoding="utf-8"))
     libelles = re.findall(r"libelle: '([^']+)'", source)
-    assert libelles == ["Explorateur", "Articles", "Méthodologie", "Sources", "FAQ", "Nous soutenir"]
+    assert libelles == ["Articles", "Méthodologie", "Sources", "FAQ", "Nous soutenir"]
 
 
 def test_les_instantanes_sont_une_page_statique_pas_une_route() -> None:
@@ -341,17 +341,14 @@ def test_la_liste_des_candidats_dit_d_ou_elle_vient() -> None:
     )
 
 
-def test_explorateur_ne_parait_pas_sur_l_accueil() -> None:
-    """Le lien menait à /candidats : il portait la hiérarchie que le recadrage défait.
-
-    Il RESTE sur les autres pages, où il est le seul raccourci vers les fiches —
-    d'où une règle conditionnelle à la route, et non une suppression.
-    """
+def test_explorateur_a_quitte_le_menu_partout() -> None:
+    """Le lien menait à /candidats — le complément lié à 2027, pas le cœur du
+    site — et son nom ne disait pas où il menait. Retiré de l'accueil le
+    30/09/2026, puis de toutes les pages le 29/10/2026 (#1372) : on va aux
+    fiches par l'accueil, et on en change par le fil d'Ariane."""
     nav = _sans_commentaires((UI / "src" / "components" / "NavigationSite.jsx").read_text(encoding="utf-8"))
-    assert "pathname === '/'" in nav and "Explorateur" in nav, (
-        "le lien a été retiré partout, ou la condition de route a disparu"
-    )
-
+    assert "libelle: 'Explorateur'" not in nav
+    assert "'/candidats'" not in nav
 
 def test_les_mandats_anterieurs_sont_nommes_sous_la_frise_de_sources() -> None:
     """La liste de l'accueil revient sur /sources (16/09/2026), réduite à la

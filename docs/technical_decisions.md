@@ -22,6 +22,9 @@ La version d'avant la découpe (30/08/2026, 18 404 lignes, 1 054 Ko) est figée 
 
 - `2026-10-29` <a id="a-jour-au-par-famille-de-donnees-1389"></a>[« À jour au » : la dernière relecture réussie de chaque famille de données, et son état (#1389)](decisions/a-jour-au-par-famille-de-donnees-1389.md)
 - `2026-10-29` <a id="articles-au-telephone-1372"></a>[Les articles au téléphone : mise en page redessinée, textes gelés (#1372, 2026-10-29)](decisions/articles-au-telephone-1372.md)
+- `2026-10-29` <a id="compteur-de-visites-goatcounter"></a>[Le compteur de visites : GoatCounter, sans cookie](decisions/compteur-de-visites-goatcounter.md)
+- `2026-10-29` <a id="defauts-telephone-corriges-1372"></a>[Cinq défauts relevés pendant le chantier téléphone, corrigés (#1372, 2026-10-29)](decisions/defauts-telephone-corriges-1372.md)
+- `2026-10-29` <a id="explorateur-des-donnees"></a>[Un explorateur local des données, en tableaux reliés](decisions/explorateur-des-donnees.md)
 - `2026-10-29` <a id="sources-dans-les-bulles-1389"></a>[Les sources dans les bulles de section de la fiche candidat (#1389, 2026-10-29)](decisions/sources-dans-les-bulles-1389.md)
 - `2026-10-29` <a id="sujets-des-groupes-hors-couverture-1337"></a>[Un groupe de la XIVe ne publie pas « aucun sujet » : sa parole n'est pas collectée (#1337)](decisions/sujets-des-groupes-hors-couverture-1337.md)
 - `2026-10-29` <a id="telephone-bandeau-du-carrousel-1372"></a>[Au téléphone, un bandeau fixe rappelle le carrousel des articles (#1372, 2026-10-29)](decisions/telephone-bandeau-du-carrousel-1372.md)

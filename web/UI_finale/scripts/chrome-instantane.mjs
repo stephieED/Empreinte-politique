@@ -39,7 +39,6 @@ export const SITE = 'https://empreinte-politique.fr';
 
 /** Les pages de la barre, dans l'ordre de `NavigationSite.jsx`. */
 export const PAGES = [
-  { libelle: 'Explorateur', vers: '/candidats' },
   { libelle: 'Articles', vers: '/rapports' },
   { libelle: 'Méthodologie', vers: '/methodologie' },
   { libelle: 'Sources', vers: '/sources' },
@@ -55,6 +54,11 @@ export const PIED_PAGES = [
   { libelle: 'Mentions légales', vers: '/mentions-legales' },
   { libelle: 'Nous soutenir', vers: '/nous-soutenir' },
 ];
+
+/** Le compteur de visites (GoatCounter, 29/10/2026) : la même adresse que dans
+ * `index.html`. Les articles sont des pages entières, sans routeur : le script
+ * compte la page à son chargement, rien de plus. */
+export const COMPTEUR = 'https://empreinte-politique.goatcounter.com/count';
 
 export const CONTACT = 'contact@empreinte-politique.fr';
 export const LINKEDIN = 'https://www.linkedin.com/company/empreinte-politique';
@@ -225,7 +229,8 @@ ${pages}
       <a class="pds-icone" href="${X_COMPTE}" target="_blank" rel="noopener noreferrer" aria-label="Empreinte politique sur X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.6 3h3.1l-6.77 7.74L22 21h-6.2l-4.86-6.35L5.37 21H2.26l7.24-8.28L2 3h6.36l4.4 5.82L17.6 3Zm-1.09 16.1h1.72L7.57 4.8H5.72l10.79 14.3Z"/></svg></a>
     </div>
   </div>
-</footer>`;
+</footer>
+<script data-goatcounter="${COMPTEUR}" async src="https://gc.zgo.at/count.js"></script>`;
 }
 
 /* Les trois blocs réécrits dans une page. Le style est rendu en dernier dans le

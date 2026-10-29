@@ -148,10 +148,10 @@ def test_la_recherche_remplace_l_onglet_et_ne_s_y_ajoute_pas(layout: str) -> Non
     pour le bureau et un pour le mobile.
     """
     nav = sans_commentaires(NAV.read_text(encoding="utf-8"))
-    assert "outilExplorateur" in nav
-    assert "page.libelle === 'Explorateur' && courante" in nav
-    # Replié dans « Menu », l'entrée disparaît ; sans outil, elle disparaît aussi.
-    assert "className === 'nav-site-lien' && outilExplorateur" in nav
+    # Depuis le 29/10/2026, l'onglet n'existe plus : la recherche ouvre la barre
+    # sur une fiche, et n'entre pas dans le menu replié.
+    assert '{outilExplorateur && <span className="nav-site-outil">{outilExplorateur}</span>}' in nav
+    assert nav.count("outilExplorateur}") == 1
     assert layout.count("className={`explorer-loupe") == 1
     assert layout.count('className="explorer-recherche"') == 1
 

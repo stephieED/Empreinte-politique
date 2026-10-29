@@ -1,0 +1,20 @@
+{
+  "title": "Empreinte politique — explorateur des données",
+  "description": "Lecture seule de pivot_data et raw_data, au commit indiqué dans la table _construction. Chaque liste d'un document est une table reliée à son parent par _parent. Non chargés : votes et amendements des membres des groupes. Le document entier, en arborescence : table documents.",
+  "databases": {
+    "donnees": {
+      "tables": {
+        "profils": {"label_column": "nom", "facets": ["meta_provenance", "chambre"], "sort": "nom"},
+        "brut_profils": {"facets": ["chambre"], "sort": "slug"},
+        "groupes": {"label_column": "groupe_nom", "facets": ["legislature"], "sort": "groupe_id"},
+        "lignees": {"label_column": "lignee_nom", "sort": "lignee_id"},
+        "gouvernements": {"label_column": "nom", "sort": "gouvernement_id"},
+        "scrutins": {"label_column": "texte", "facets": ["legislature", "type_vote"], "sort_desc": "date"},
+        "documents": {"facets": ["type"], "size": 1,
+                      "description": "Le document JSON entier. Ouvrir une ligne : l'arborescence se déplie au clic."},
+        "profils__votes": {"facets": ["position"]},
+        "profils__mandats": {"facets": ["categorie", "categorie_source"]}
+      }
+    }
+  }
+}

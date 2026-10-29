@@ -43,6 +43,9 @@ section { display:flex; flex-direction:column; gap:20px; }
 .voie .tx { position:absolute; width:10px; height:10px; margin-left:-5px; background:var(--parl); border:2px solid var(--card); transform:rotate(45deg); }
 .voie .ac { position:absolute; width:4px; height:16px; margin-left:-2px; border-radius:2px; background:var(--gouv); }
 .bornes { display:flex; justify-content:space-between; font-size:12px; color:var(--faible); }
+/* Le 23 juin est le milieu exact de la frise (92 jours sur 184) : posé à 50 %, et non au milieu de l'espace laissé par les deux dates des bords, qui n'ont pas la même longueur (29/10/2026). */
+.bornes { position:relative; }
+.bornes span:nth-child(2) { position:absolute; left:50%; transform:translateX(-50%); }
 .frise .leg { display:flex; flex-wrap:wrap; gap:6px 20px; font-size:12.5px; color:var(--muted); margin-top:6px; }
 .frise .leg b { color:var(--ink); }
 blockquote { margin:0; font-size:16.5px; line-height:1.6; }
@@ -202,7 +205,6 @@ body {
   </a>
   <div class="entete-site-actions">
     <nav class="nav-site" aria-label="Pages du site">
-      <a href="https://empreinte-politique.fr/candidats" class="nav-site-lien">Explorateur</a>
       <a href="https://empreinte-politique.fr/rapports" class="nav-site-lien nav-site-lien--courante" aria-current="page">Articles</a>
       <a href="https://empreinte-politique.fr/methodologie" class="nav-site-lien">Méthodologie</a>
       <a href="https://empreinte-politique.fr/sources" class="nav-site-lien">Sources</a>
@@ -212,7 +214,6 @@ body {
     <details class="nav-site-menu">
       <summary class="nav-site-menu-bouton"><span class="nav-site-menu-icone" aria-hidden="true"></span>Menu</summary>
       <nav class="nav-site-menu-liste" aria-label="Pages du site">
-      <a href="https://empreinte-politique.fr/candidats" class="nav-site-menu-lien">Explorateur</a>
       <a href="https://empreinte-politique.fr/rapports" class="nav-site-menu-lien nav-site-menu-lien--courante" aria-current="page">Articles</a>
       <a href="https://empreinte-politique.fr/methodologie" class="nav-site-menu-lien">Méthodologie</a>
       <a href="https://empreinte-politique.fr/sources" class="nav-site-menu-lien">Sources</a>
@@ -397,6 +398,7 @@ body {
     </div>
   </div>
 </footer>
+<script data-goatcounter="https://empreinte-politique.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <!--/chrome:pied-->
 </body>
 </html>

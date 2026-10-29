@@ -62,6 +62,23 @@ const SECTIONS = [
     ),
   },
   {
+    /* LA MESURE D'AUDIENCE (29/10/2026) : GoatCounter, choisi par la
+       propriétaire, texte arrêté par elle (version 1). Chaque affirmation est
+       celle de l'éditeur de l'outil (goatcounter.com, pages « privacy » et
+       « gdpr ») : aucun cookie pour compter, des totaux seulement, hébergement
+       chez Hetzner en Finlande et en Allemagne. Rien de plus n'y est promis. */
+    heading: 'Mesure d’audience',
+    body: (
+      <p>
+        Pour savoir combien de personnes lisent le site, nous comptons les visites avec{' '}
+        <a href="https://www.goatcounter.com" target="_blank" rel="noopener noreferrer">GoatCounter</a>.
+        Aucun cookie n'est déposé. Aucune donnée personnelle n'est conservée : seulement des totaux
+        par page, par pays et par type d'appareil. Ces totaux sont hébergés en Finlande et en
+        Allemagne.
+      </p>
+    ),
+  },
+  {
     heading: 'Directeur de la publication',
     body: (
       <p>
@@ -132,14 +149,7 @@ const SECTIONS = [
           législatifs, les questions écrites et les débats en séance (Syceron) proviennent du portail
           Open Data officiel de l'Assemblée nationale (data.assemblee-nationale.fr et
           questions.assemblee-nationale.fr), mis à disposition sous{' '}
-          <strong>Licence Ouverte / Open Licence</strong> (Etalab) :{' '}
-          <a
-            href="https://data.assemblee-nationale.fr/licence-ouverte-open-licence"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            https://data.assemblee-nationale.fr/licence-ouverte-open-licence
-          </a>
+          <strong><a href="https://data.assemblee-nationale.fr/licence-ouverte-open-licence" target="_blank" rel="noopener noreferrer">Licence Ouverte / Open Licence</a></strong> (Etalab).
         </p>
         <p className="static-note">
           Contient des informations publiques issues du portail Open Data de l'Assemblée nationale, sous
@@ -169,10 +179,7 @@ const SECTIONS = [
         <p>
           Les données relatives aux député·es européen·nes (dossiers législatifs, votes, activités)
           proviennent des dumps JSON de Parltrack (parltrack.org), mis à disposition sous licence{' '}
-          <strong>Open Database License (ODbL) v1.0</strong> :{' '}
-          <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener noreferrer">
-            https://opendatacommons.org/licenses/odbl/1-0/
-          </a>{' '}
+          <strong><a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener noreferrer">Open Database License (ODbL) v1.0</a></strong>{' '}
           — <strong>source active</strong>, et la clause de partage à l'identique s'y applique
           pleinement.
         </p>
@@ -186,16 +193,10 @@ const SECTIONS = [
           Les mandats des député·es européen·nes, ainsi que l'existence et le titre français des
           documents européens, proviennent du portail Open Data du Parlement européen
           (data.europarl.europa.eu), dont les données sont réutilisables sous licence{' '}
-          <strong>Creative Commons Attribution 4.0 International (CC BY 4.0)</strong> :{' '}
-          <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">
-            https://creativecommons.org/licenses/by/4.0/
-          </a>
-          , en application de l'article 4 de la décision du Bureau du Parlement européen du 16 décembre
-          2024 :{' '}
-          <a href="https://eur-lex.europa.eu/eli/C/2025/341/oj" target="_blank" rel="noopener noreferrer">
-            https://eur-lex.europa.eu/eli/C/2025/341/oj
-          </a>
-          . Les liens vers www.europarl.europa.eu renvoient au document d'origine ; aucun contenu n'en est
+          <strong><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">Creative Commons Attribution 4.0 International (CC BY 4.0)</a></strong>,
+          en application de l'article 4 de la{' '}
+          <a href="https://eur-lex.europa.eu/eli/C/2025/341/oj" target="_blank" rel="noopener noreferrer">décision du Bureau du Parlement européen du 16 décembre 2024</a>.
+          Les liens vers www.europarl.europa.eu renvoient au document d'origine ; aucun contenu n'en est
           reproduit.
         </p>
         <p className="static-note">
@@ -207,20 +208,9 @@ const SECTIONS = [
         <p>
           Les candidatures déclarées sont repérées sur Wikipédia (fr.wikipedia.org) et croisées avec la
           presse ; Wikidata (query.wikidata.org) relie chaque candidat à sa fiche de l'Assemblée. Ces deux sources ont des licences <strong>distinctes</strong> : Wikipédia
-          est sous <strong>Creative Commons Attribution — Partage dans les mêmes conditions 4.0 (CC BY-SA 4.0)</strong>{' '}
-          (
-          <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">
-            https://creativecommons.org/licenses/by-sa/4.0/
-          </a>
-          ) ; les données structurées de Wikidata sont sous <strong>CC0 1.0</strong>, domaine public (
-          <a
-            href="https://creativecommons.org/publicdomain/zero/1.0/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            https://creativecommons.org/publicdomain/zero/1.0/
-          </a>
-          ), sans obligation d'attribution ni de partage à l'identique.
+          est sous <strong><a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">Creative Commons Attribution — Partage dans les mêmes conditions 4.0 (CC BY-SA 4.0)</a></strong>{' '}
+          ; les données structurées de Wikidata sont sous{' '}
+          <strong><a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener noreferrer">CC0 1.0</a></strong>, domaine public, sans obligation d'attribution ni de partage à l'identique.
         </p>
 
         <h3>Sycomore et Journal officiel</h3>
@@ -232,15 +222,8 @@ const SECTIONS = [
           l'Assemblée nationale (www2.assemblee-nationale.fr/sycomore), dont le contenu est publié
           sous « © Tous droits réservés » : seuls des faits — une fonction, deux dates — en sont
           repris, et aucun contenu n'en est reproduit. Pour les membres du Gouvernement, les décrets
-          du Journal officiel publiés sur Légifrance, sous <strong>Licence Ouverte 2.0</strong>{' '}
-          (Etalab) :{' '}
-          <a
-            href="https://www.legifrance.gouv.fr/contenu/pied-de-page/open-data-et-api"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            https://www.legifrance.gouv.fr/contenu/pied-de-page/open-data-et-api
-          </a>
+          du Journal officiel publiés sur Légifrance, sous{' '}
+          <strong><a href="https://www.legifrance.gouv.fr/contenu/pied-de-page/open-data-et-api" target="_blank" rel="noopener noreferrer">Licence Ouverte 2.0</a></strong> (Etalab).
         </p>
 
         {/* LES PLACES DE LA XIVe (#1326), AGENTS.md §7 : une source citée comme

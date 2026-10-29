@@ -665,6 +665,10 @@ Le mentionnent sans le gouverner : [`budget-collecte-interventions`](decisions/b
 
 Le mentionnent sans le gouverner : [`licence-parlement-europeen-cc-by-983`](decisions/licence-parlement-europeen-cc-by-983.md).
 
+## `src/explorateur_donnees.py`
+
+Le mentionnent sans le gouverner : [`explorateur-des-donnees`](decisions/explorateur-des-donnees.md).
+
 ## `src/fetch_candidats_declares.py`
 
 2 décision(s) le gouvernent ; le module en cite 0.
@@ -1020,7 +1024,7 @@ Le mentionnent sans le gouverner : [`contact-et-comptes-publics-328`](decisions/
 
 ## `src/lois_jorf.py`
 
-Le mentionnent sans le gouverner : [`dila-et-amo30-en-jobs-1129`](decisions/dila-et-amo30-en-jobs-1129.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
+Le mentionnent sans le gouverner : [`dila-et-amo30-en-jobs-1129`](decisions/dila-et-amo30-en-jobs-1129.md), [`explorateur-des-donnees`](decisions/explorateur-des-donnees.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).
 
 ## `src/mandats_anterieurs.py`
 

@@ -22,13 +22,17 @@ import './NavigationSite.css';
  * — d'où un `<a href>` et jamais un `<Link>`, qui ferait démarrer le routeur
  * sur une adresse qu'il ne connaît pas. Le bouton n'est jamais « courant ».
  *
- * L'ONGLET « EXPLORATEUR » CÈDE SA PLACE SUR UNE FICHE (#1025, #1329). Il y
- * était déjà la page courante, et son clic renvoyait à la fiche par défaut.
- * L'explorateur y pose la recherche quand la fiche filtre, et rien sinon : on
- * change de fiche par le fil d'Ariane. Le lien reste partout ailleurs.
+ * « EXPLORATEUR » A QUITTÉ LE MENU, PARTOUT (29/10/2026, #1372). Il menait à
+ * `/candidats`, le complément lié à 2027, et non au cœur du site ; son nom ne
+ * disait pas où il menait. Il avait déjà quitté l'accueil (30/09) et cédé sa
+ * place sur les fiches (#1025, #1329). On va aux fiches par l'accueil — le
+ * logo y ramène, ses portes y mènent — et on en change par le fil d'Ariane.
+ *
+ * SUR UNE FICHE, LA RECHERCHE OUVRE LA BARRE, là où était l'onglet : la fiche
+ * la pose quand elle filtre, et rien sinon. Elle n'entre pas dans le menu
+ * replié : elle est à côté de « Menu », pas dedans.
  */
 const PAGES = [
-  { libelle: 'Explorateur', vers: '/candidats', racines: ['/candidats', '/groupes', '/gouvernements', '/legislatures'] },
   // « Articles » juste après la recherche (demandé le 26/10/2026, #1329).
   { libelle: 'Articles', vers: '/rapports', racines: [], bandeau: true },
   { libelle: 'Méthodologie', vers: '/methodologie', racines: ['/methodologie'] },
@@ -89,24 +93,9 @@ export default function NavigationSite({ outilExplorateur = null }) {
     };
   }, [menuOuvert]);
 
-  /* « EXPLORATEUR » NE PARAÎT PAS SUR L'ACCUEIL (30/09/2026) : les portes de
-     « Commencer l'exploration » y mènent, plus directement, et le lien pointait
-     `/candidats` — donc l'ancienne hiérarchie, celle que le recadrage défait.
-     Il reste sur les autres pages, où il est le seul raccourci vers les fiches.
-     → `docs/decisions/coeur-permanent-groupes-et-gouvernements.md` */
-  const pages = pathname === '/' ? PAGES.filter((p) => p.libelle !== 'Explorateur') : PAGES;
-
   const liens = (className) =>
-    pages.map((page) => {
+    PAGES.map((page) => {
       const courante = estCourante(page, pathname);
-      // Sur une fiche, l'outil prend la place du lien dans la barre — ou rien,
-      // si la fiche ne filtre pas. Dans le menu replié, il n'y a rien à mettre :
-      // l'outil est à côté de « Menu », pas dedans.
-      if (page.libelle === 'Explorateur' && courante) {
-        return className === 'nav-site-lien' && outilExplorateur
-          ? <span key={page.libelle} className="nav-site-outil">{outilExplorateur}</span>
-          : null;
-      }
       if (page.bandeau) {
         return (
           <button
@@ -147,6 +136,7 @@ export default function NavigationSite({ outilExplorateur = null }) {
   return (
     <>
       <nav className="nav-site" aria-label="Pages du site">
+        {outilExplorateur && <span className="nav-site-outil">{outilExplorateur}</span>}
         {liens('nav-site-lien')}
       </nav>
       <div className="nav-site-menu" ref={menuRef}>
