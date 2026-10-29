@@ -6,6 +6,19 @@ municipal, départemental ou régional — alors que plus de la moitié des cand
 déclarés en exercent un. Nos trois sources (AN, Sénat, Parlement européen) ne
 couvrent que le versant parlementaire.
 
+## Les décisions qui comptent pour ce module
+
+La liste complète est dans `docs/decisions-par-module.md` ; celles qu'il faut
+avoir lues avant d'y toucher :
+
+- `docs/decisions/collecte-mandats-locaux-rne-922.md` — le lot d'origine : les
+  deux jeux, la borne de 2020, les fichiers refusés ;
+- `docs/decisions/sortants-annee-decalee-922.md` — les naissances datées au
+  XXIᵉ siècle par le fichier des sortants, et la pagination (`PAGES_MAX`) ;
+- `docs/decisions/contribution-par-champs-997.md` — le job des mandats locaux
+  ne publie plus que le champ qu'il collecte (`mandats_locaux`) : publié entier,
+  il reposait de vieux stades sur ce que l'extraction AN venait de corriger.
+
 ## Ce que ce module lit, et ce qu'il refuse
 
 Deux jeux, tous deux sous **Licence Ouverte 2.0**, tous deux interrogeables par

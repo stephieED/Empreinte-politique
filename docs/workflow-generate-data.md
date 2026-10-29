@@ -1048,8 +1048,11 @@ avals plutôt que refabriqués — c'est ce qui donne « zéro fetch roster en C
 (#518) et « un seul roster par run ».
 
 **Les relevés de fraîcheur (#1389).** `extract-an` (un par shard),
-`extract-roster-groupes` (un par shard) et `extract-amendements-an` publient en
-fin de job un artifact `fraicheur-<job>[-<shard>]` : la date d'écriture des
+`extract-roster-groupes` (un par shard), `extract-amendements-an` et, depuis le
+29/10/2026, `extract-senat`, `extract-ue-officiel`, `extract-parltrack` et
+`extract-mandats-locaux` publient en fin de job un artifact
+`fraicheur-<job>[-<shard>]` ; `merge-and-pivot` relève sur place les documents
+européens, juste avant de composer. Le relevé porte la date d'écriture des
 fichiers témoins de leurs familles de données (archive AMO30, `scrutins.json`
 de la 17e, index Syceron et questions de la 17e, archive des dossiers,
 indicateur des amendements), que le cache restaure telle quelle — jamais la date

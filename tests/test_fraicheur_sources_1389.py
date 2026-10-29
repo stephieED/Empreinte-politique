@@ -70,7 +70,28 @@ def test_chaque_job_qui_releve_publie_son_releve():
         bloc = WORKFLOW.split(f"\n  {job}:\n", 1)[1].split("\n  merge-and-pivot:\n")[0]
         bloc = re.split(r"\n  [a-z0-9-]+:\n", bloc)[0]
         assert f"fraicheur_sources.py relever --job {job}" in bloc, job
-        assert "name: fraicheur-" in bloc, job
+        if job != "merge-and-pivot":                    # lui écrit sur place
+            assert f"name: fraicheur-{job}" in bloc, job
+
+
+def test_les_temoins_de_la_fiche_candidat_suivent_le_code():
+    import candidate_profile_ue as ue
+    import parltrack_dumps as pt
+
+    assert fs.TEMOINS_PE_MANDATS == (ue.CACHE_DIR / "meps_FR.json", ue.CACHE_DIR / "organisations.json")
+    assert fs.TEMOIN_PT_VOTES == pt.PARLTRACK_CACHE_DIR / pt._DUMP_VOTES
+    assert set(fs.TEMOINS_PT_AMENDEMENTS) == {pt.PARLTRACK_CACHE_DIR / pt._DUMP_PLENARY_AMENDMENTS,
+                                              pt.PARLTRACK_CACHE_DIR / pt._DUMP_COMMITTEE_AMENDMENTS}
+    assert fs.TEMOIN_PT_INTERVENTIONS == pt.PARLTRACK_CACHE_DIR / pt._DUMP_ACTIVITIES
+    assert fs.TEMOIN_PT_TEXTES == pt.PARLTRACK_CACHE_DIR / pt._DUMP_DOSSIERS
+    # L'archive du Sénat est téléchargée par le workflow lui-même, et gardée.
+    assert f"curl -sS -L --max-time 300 -o {fs.TEMOIN_SENAT}" in WORKFLOW
+
+
+def test_les_documents_europeens_sont_releves_avant_la_composition():
+    bloc = WORKFLOW.split("\n  merge-and-pivot:\n", 1)[1]
+    assert bloc.index("src/documents_europeens.py") < bloc.index("relever --job merge-and-pivot") \
+        < bloc.index("fraicheur_sources.py composer")
 
 
 def test_le_job_de_fusion_compose_le_fichier():
@@ -205,6 +226,19 @@ def test_le_validateur_refuse_un_etat_incoherent():
     erreurs = fs.valider(doc)
     assert any("état inconnu" in e for e in erreurs)
     assert any("si et seulement si l'état est en échec" in e for e in erreurs)
+
+
+def test_une_famille_sans_temoin_est_datee_par_son_releve():
+    releves = {"rne.mandats_locaux": [{"date": None, "reussi": True, "job": "extract-mandats-locaux"}]}
+    doc = fs.composer(None, releves, TOUT_REUSSI, CASES, True, "2026-10-29")
+    assert doc["familles"]["rne.mandats_locaux"]["a_jour_au"] == "2026-10-29"
+    # Sans relevé, le job n'a rien dit de lui-même : ce n'est pas une réussite.
+    assert doc["familles"]["pe.documents"]["etat"] == fs.ETAT_EN_ECHEC
+    assert "aucun relevé publié" in doc["familles"]["pe.documents"]["motif_dernier_run"]
+    # Un relevé en échec (le job des mandats locaux, le 28/10/2026) ne date rien.
+    releves = {"rne.mandats_locaux": [{"date": None, "reussi": False, "job": "extract-mandats-locaux"}]}
+    doc = fs.composer(None, releves, TOUT_REUSSI, CASES, True, "2026-10-29")
+    assert doc["familles"]["rne.mandats_locaux"]["etat"] == fs.ETAT_EN_ECHEC
 
 
 def test_le_validateur_refuse_une_entree_sans_date_ni_raison():

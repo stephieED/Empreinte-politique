@@ -80,6 +80,16 @@ TEMOINS_SYCERON = (Path(".cache/syceron_an/17/index_par_acteur_extrait"),
 TEMOIN_QUESTIONS = Path(".cache/questions_an/17/index_par_acteur.json")
 TEMOIN_DOSSIERS = Path(".cache/dossiers_an/dossiers.zip")
 TEMOIN_AMENDEMENTS = Path(".cache/amendements_an/17/fraicheur.json")
+# Fiche candidat (#1391), demandées par la session interface le 29/10/2026.
+# L'archive du Sénat est gardée à côté du dump qu'on en extrait : le dump porte
+# la date de l'export, l'archive celle du téléchargement (`curl`).
+TEMOIN_SENAT = Path(".cache/senat/export_sens.zip")
+TEMOINS_PE_MANDATS = (Path(".cache/europarl/meps_FR.json"), Path(".cache/europarl/organisations.json"))
+_PARLTRACK = Path(".cache/parltrack")
+TEMOIN_PT_VOTES = _PARLTRACK / "ep_votes.json.zst"
+TEMOINS_PT_AMENDEMENTS = (_PARLTRACK / "ep_plenary_amendments.json.zst", _PARLTRACK / "ep_amendments.json.zst")
+TEMOIN_PT_INTERVENTIONS = _PARLTRACK / "ep_mep_activities.json.zst"
+TEMOIN_PT_TEXTES = _PARLTRACK / "ep_dossiers.json.zst"
 
 
 @dataclass(frozen=True)
@@ -109,6 +119,19 @@ FAMILLES: dict[str, Famille] = {
     "budget_etat": Famille("budget_etat", ("extract-finances-etat",)),
     "drees": Famille("drees", ("extract-finances-etat",)),
     "unedic": Famille("unedic", ("extract-finances-etat",)),
+    # Les sources de la fiche candidat. Leurs jobs sont `continue-on-error` :
+    # le relevé porte l'état réel du job, `needs` n'y suffit pas.
+    "sen.mandats": Famille("sen", (), (TEMOIN_SENAT,), ("extract-senat",)),
+    "pe.mandats": Famille("pe", (), TEMOINS_PE_MANDATS, ("extract-ue-officiel",)),
+    # Les titres français des documents : relus dans le job de fusion, sans
+    # fichier témoin (le cache cumule des documents de dates différentes).
+    "pe.documents": Famille("pe", (), (), ("merge-and-pivot",)),
+    "pt.votes": Famille("pt", (), (TEMOIN_PT_VOTES,), ("extract-parltrack",)),
+    "pt.amendements": Famille("pt", (), TEMOINS_PT_AMENDEMENTS, ("extract-parltrack",)),
+    "pt.interventions": Famille("pt", (), (TEMOIN_PT_INTERVENTIONS,), ("extract-parltrack",)),
+    "pt.textes": Famille("pt", (), (TEMOIN_PT_TEXTES,), ("extract-parltrack",)),
+    # Sans cache : la date du run, si le job a réussi.
+    "rne.mandats_locaux": Famille("rne", (), (), ("extract-mandats-locaux",)),
 }
 
 
@@ -209,6 +232,10 @@ def _issue(famille: Famille, resultats: dict[str, str], cases: dict[str, bool],
     # lu de ce qu'il devait lire : c'est un échec, pas un choix.
     if famille.temoins and not any(r["date"] for r in releves):
         return ETAT_EN_ECHEC, "aucun fichier témoin relevé"
+    # Une famille sans témoin, datée par son relevé : sans relevé, le job n'a
+    # rien dit de lui-même (arrêté avant, ou sauté par une condition).
+    if famille.releve_par and not releves:
+        return ETAT_EN_ECHEC, "aucun relevé publié par " + ", ".join(famille.releve_par)
     return None
 
 
@@ -318,7 +345,8 @@ def main(argv: Optional[Iterable[str]] = None) -> int:
         args.sortie.write_text(json.dumps({"job": args.job, "reussi": _booleen(args.reussi), "familles": releve}, ensure_ascii=False),
                                encoding="utf-8")
         for nom, jour in releve.items():
-            print(f"{nom} : {jour or 'aucun fichier témoin'}")
+            sans_temoin = not FAMILLES[nom].temoins
+            print(f"{nom} : {jour or ('date du run' if sans_temoin else 'aucun fichier témoin')}")
         return 0
 
     needs = json.loads(args.needs or "{}")

@@ -20,6 +20,7 @@ La version d'avant la découpe (30/08/2026, 18 404 lignes, 1 054 Ko) est figée 
 
 ---
 
+- `2026-10-29` <a id="a-jour-au-fiche-candidat-1389"></a>[« À jour au » : les sources de la fiche candidat (#1389, #1391)](decisions/a-jour-au-fiche-candidat-1389.md)
 - `2026-10-29` <a id="a-jour-au-par-famille-de-donnees-1389"></a>[« À jour au » : la dernière relecture réussie de chaque famille de données, et son état (#1389)](decisions/a-jour-au-par-famille-de-donnees-1389.md)
 - `2026-10-29` <a id="articles-au-telephone-1372"></a>[Les articles au téléphone : mise en page redessinée, textes gelés (#1372, 2026-10-29)](decisions/articles-au-telephone-1372.md)
 - `2026-10-29` <a id="compteur-de-visites-goatcounter"></a>[Le compteur de visites : GoatCounter, sans cookie](decisions/compteur-de-visites-goatcounter.md)

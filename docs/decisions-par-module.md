@@ -39,7 +39,6 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | --- | ---: |
 | `src/actes_reglementaires.py` | 4 |
 | `src/build_amendements_index.py` | 4 |
-| `src/rne_opendata.py` | 4 |
 | `src/audit_pipeline.py` | 3 |
 | `src/budget_collecte.py` | 3 |
 | `src/json_io.py` | 3 |
@@ -615,7 +614,7 @@ Le mentionnent sans le gouverner : [`couverture-remplacee-par-liste-602`](decisi
 | --- | --- |
 | [Un délai dépassé chez EuroVoc a coûté toute la publication d'un run (#901) (2026-09-17)](decisions/eurovoc-muet-ne-bloque-pas-le-corpus-901.md) | `LibellesEurovocIndisponibles`, `_interroger_sparql`, `resoudre_domaines` |
 
-Le mentionnent sans le gouverner : [`dila-et-amo30-en-jobs-1129`](decisions/dila-et-amo30-en-jobs-1129.md), [`domaines-eurovoc-familles-oeil-901`](decisions/domaines-eurovoc-familles-oeil-901.md), [`index-reecrits-seulement-si-le-contenu-change-1075`](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md), [`matieres-eurovoc-documents-901`](decisions/matieres-eurovoc-documents-901.md).
+Le mentionnent sans le gouverner : [`a-jour-au-fiche-candidat-1389`](decisions/a-jour-au-fiche-candidat-1389.md), [`dila-et-amo30-en-jobs-1129`](decisions/dila-et-amo30-en-jobs-1129.md), [`domaines-eurovoc-familles-oeil-901`](decisions/domaines-eurovoc-familles-oeil-901.md), [`index-reecrits-seulement-si-le-contenu-change-1075`](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md), [`matieres-eurovoc-documents-901`](decisions/matieres-eurovoc-documents-901.md).
 
 ## `src/dossiers_an.py`
 
@@ -1357,10 +1356,11 @@ Le mentionnent sans le gouverner : [`organe-createur-missions-1311`](decisions/o
 
 ## `src/rne_opendata.py`
 
-4 décision(s) le gouvernent ; le module en cite 0.
+5 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
+| [« À jour au » : les sources de la fiche candidat (#1389, #1391) (2026-10-29)](decisions/a-jour-au-fiche-candidat-1389.md) | `mandats_locaux` |
 | [Un artifact ne porte plus que les champs que son job a collectés (#997) (2026-09-19)](decisions/contribution-par-champs-997.md) | `mandats_locaux` |
 | [Un champ qu'une contribution ne porte pas n'est plus effacé (#997) (2026-09-19)](decisions/fusion-conserve-les-champs-absents-997.md) | `mandats_locaux` |
 | [Le fichier des sortants a vieilli ses élus d'un siècle, et cinq mandats ont disparu (#922) (2026-09-16)](decisions/sortants-annee-decalee-922.md) | `PAGES_MAX` |
