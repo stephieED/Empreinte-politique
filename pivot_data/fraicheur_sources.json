@@ -6,9 +6,9 @@
    "source": "an",
    "a_jour_au": "2026-10-29",
    "raison": null,
-   "etat": "a_jour",
+   "etat": "non_relue",
    "en_echec_depuis": null,
-   "motif_dernier_run": null
+   "motif_dernier_run": "job extract-an : cancelled"
   },
   "an.gouvernements": {
    "source": "an",
@@ -22,33 +22,33 @@
    "source": "an",
    "a_jour_au": "2026-10-29",
    "raison": null,
-   "etat": "a_jour",
+   "etat": "non_relue",
    "en_echec_depuis": null,
-   "motif_dernier_run": null
+   "motif_dernier_run": "job extract-an : cancelled"
   },
   "an.interventions": {
    "source": "an",
    "a_jour_au": "2026-10-29",
    "raison": null,
-   "etat": "a_jour",
+   "etat": "non_relue",
    "en_echec_depuis": null,
-   "motif_dernier_run": null
+   "motif_dernier_run": "job extract-an : cancelled"
   },
   "an.questions": {
    "source": "an",
    "a_jour_au": "2026-10-29",
    "raison": null,
-   "etat": "a_jour",
+   "etat": "non_relue",
    "en_echec_depuis": null,
-   "motif_dernier_run": null
+   "motif_dernier_run": "job extract-an : cancelled"
   },
   "an.dossiers": {
    "source": "an",
    "a_jour_au": "2026-10-26",
    "raison": null,
-   "etat": "a_jour",
+   "etat": "non_relue",
    "en_echec_depuis": null,
-   "motif_dernier_run": null
+   "motif_dernier_run": "job extract-an : cancelled"
   },
   "an.amendements": {
    "source": "an",
@@ -116,7 +116,7 @@
   },
   "pe.mandats": {
    "source": "pe",
-   "a_jour_au": "2026-09-20",
+   "a_jour_au": "2026-10-30",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -132,7 +132,7 @@
   },
   "pt.votes": {
    "source": "pt",
-   "a_jour_au": "2026-09-20",
+   "a_jour_au": "2026-10-30",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -140,7 +140,7 @@
   },
   "pt.amendements": {
    "source": "pt",
-   "a_jour_au": "2026-09-20",
+   "a_jour_au": "2026-10-30",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -148,7 +148,7 @@
   },
   "pt.interventions": {
    "source": "pt",
-   "a_jour_au": "2026-09-20",
+   "a_jour_au": "2026-10-30",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -156,7 +156,7 @@
   },
   "pt.textes": {
    "source": "pt",
-   "a_jour_au": "2026-09-20",
+   "a_jour_au": "2026-10-30",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,

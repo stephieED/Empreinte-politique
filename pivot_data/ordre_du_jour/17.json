@@ -1,7 +1,7 @@
 {
   "schema_version": "ordre-du-jour-v1",
   "legislature": 17,
-  "genere_le": "2026-10-29",
+  "genere_le": "2026-10-30",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/vp/reunions/Agenda.json.zip",
   "seances": [
@@ -57370,7 +57370,7 @@
       "uid": "RUANR5L17S2027IDS30968",
       "date": "2026-10-29",
       "debut": "2026-10-29T09:00:00.000+01:00",
-      "fin": null,
+      "fin": "2026-10-29T13:00:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": "CRSANR5L17S2027O1N044",
@@ -57465,12 +57465,10 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N54906",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30969PT53364"
-          },
-          "dossier_non_resolu": null
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30968PT53348",
@@ -57480,12 +57478,10 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N54902",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30969PT53360"
-          },
-          "dossier_non_resolu": null
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30968PT53353",
@@ -57495,12 +57491,10 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N54900",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30969PT53365"
-          },
-          "dossier_non_resolu": null
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30968PT53358",
@@ -57510,12 +57504,10 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N54903",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30969PT53370"
-          },
-          "dossier_non_resolu": null
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30968PT53357",
@@ -57525,12 +57517,10 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N54907",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30969PT53369"
-          },
-          "dossier_non_resolu": null
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30968PT53355",
@@ -57540,12 +57530,10 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N53266",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30969PT53367"
-          },
-          "dossier_non_resolu": null
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30968PT53351",
@@ -57555,12 +57543,10 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N54899",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30969PT53363"
-          },
-          "dossier_non_resolu": null
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         }
       ]
     },
@@ -57568,10 +57554,10 @@
       "uid": "RUANR5L17S2027IDS30969",
       "date": "2026-10-29",
       "debut": "2026-10-29T15:00:00.000+01:00",
-      "fin": null,
+      "fin": "2026-10-29T20:00:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N045",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS30969PT53339",
@@ -57631,8 +57617,8 @@
         },
         {
           "uid": "RUANR5L17S2027IDS30969PT53368",
-          "objet": "Suite de la discussion de la proposition de loi pour protéger durablement les jeunes majeurs de l’aide sociale à l’enfance et de la protection judiciaire de la jeunesse",
-          "type": "Suite de la discussion",
+          "objet": "Discussion de la proposition de loi pour protéger durablement les jeunes majeurs de l’aide sociale à l’enfance et de la protection judiciaire de la jeunesse",
+          "type": "Discussion",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
@@ -57646,14 +57632,14 @@
           "uid": "RUANR5L17S2027IDS30969PT53364",
           "objet": "Suite de la discussion de la proposition de loi visant l'augmentation des salaires et des pensions",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54906"
-          ],
+          "dossiers": [],
           "dossier_retrouve": null,
-          "dossier_non_resolu": null
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30969PT53371",
@@ -57674,79 +57660,79 @@
           "uid": "RUANR5L17S2027IDS30969PT53360",
           "objet": "Suite de la discussion de la proposition de loi d’urgence visant à rétablir l’interdiction de l’acétamipride et du flupyradifurone pour garantir la protection de la santé humaine, de la biodiversité, de l’environnement et notre souveraineté alimentaire",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54902"
-          ],
+          "dossiers": [],
           "dossier_retrouve": null,
-          "dossier_non_resolu": null
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30969PT53365",
           "objet": "Suite de la discussion de la proposition de loi visant à instaurer un moratoire sur le projet du Canal Seine-Nord Europe",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54900"
-          ],
+          "dossiers": [],
           "dossier_retrouve": null,
-          "dossier_non_resolu": null
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30969PT53370",
           "objet": "Suite de la discussion de la proposition de loi visant à abroger le dispositif des amendes forfaitaires délictuelles",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54903"
-          ],
+          "dossiers": [],
           "dossier_retrouve": null,
-          "dossier_non_resolu": null
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30969PT53369",
           "objet": "Suite de la discussion de la proposition de loi visant un contrôle réel des investissements étrangers en France",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54907"
-          ],
+          "dossiers": [],
           "dossier_retrouve": null,
-          "dossier_non_resolu": null
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30969PT53367",
           "objet": "Suite de la discussion de la proposition de loi visant à garantir le droit de vote par l’encadrement des radiations pour perte d’attache communale",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N53266"
-          ],
+          "dossiers": [],
           "dossier_retrouve": null,
-          "dossier_non_resolu": null
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30969PT53363",
           "objet": "Suite de la discussion de la proposition de loi visant à garantir les droits des joueurs et joueuses et la pérennité des jeux vidéo",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54899"
-          ],
+          "dossiers": [],
           "dossier_retrouve": null,
-          "dossier_non_resolu": null
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         }
       ]
     },
@@ -57754,10 +57740,10 @@
       "uid": "RUANR5L17S2027IDS30970",
       "date": "2026-10-29",
       "debut": "2026-10-29T21:30:00.000+01:00",
-      "fin": null,
+      "fin": "2026-10-30T00:00:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N046",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS30970PT53340",
@@ -57791,27 +57777,14 @@
           "uid": "RUANR5L17S2027IDS30970PT53374",
           "objet": "Suite de la discussion de la proposition de loi visant à créer un parcours de soins intégralement pris en charge par la sécurité sociale pour toutes les victimes de violences sexuelles",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
-          "procedure": null,
-          "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54898"
-          ],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": null
-        },
-        {
-          "uid": "RUANR5L17S2027IDS30970PT53378",
-          "objet": "Suite de la discussion de la proposition de loi visant à créer un corps de fonctionnaires de catégorie B pour les accompagnants d’élèves en situation de handicap",
-          "type": "Suite de la discussion",
           "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
           "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N54901",
+            "dossier_ref": "DLR5L17N54898",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30968PT53354"
+            "point_source": "RUANR5L17S2027IDS30969PT53362"
           },
           "dossier_non_resolu": null
         },
@@ -57832,14 +57805,42 @@
           "uid": "RUANR5L17S2027IDS30970PT53376",
           "objet": "Suite de la discussion de la proposition de loi visant l'augmentation des salaires et des pensions",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54906"
-          ],
+          "dossiers": [],
           "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS30970PT53378",
+          "objet": "Suite de la discussion de la proposition de loi visant à créer un corps de fonctionnaires de catégorie B pour les accompagnants d’élèves en situation de handicap",
+          "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54901",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30968PT53354"
+          },
           "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS30970PT53372",
+          "objet": "Suite de la discussion de la proposition de loi d’urgence visant à rétablir l’interdiction de l’acétamipride et du flupyradifurone pour garantir la protection de la santé humaine, de la biodiversité, de l’environnement et notre souveraineté alimentaire",
+          "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30970PT53383",
@@ -57857,82 +57858,69 @@
           "dossier_non_resolu": null
         },
         {
-          "uid": "RUANR5L17S2027IDS30970PT53372",
-          "objet": "Suite de la discussion de la proposition de loi d’urgence visant à rétablir l’interdiction de l’acétamipride et du flupyradifurone pour garantir la protection de la santé humaine, de la biodiversité, de l’environnement et notre souveraineté alimentaire",
-          "type": "Suite de la discussion",
-          "etat": "Confirmé",
-          "procedure": null,
-          "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54902"
-          ],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": null
-        },
-        {
           "uid": "RUANR5L17S2027IDS30970PT53377",
           "objet": "Suite de la discussion de la proposition de loi visant à instaurer un moratoire sur le projet du Canal Seine-Nord Europe",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54900"
-          ],
+          "dossiers": [],
           "dossier_retrouve": null,
-          "dossier_non_resolu": null
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30970PT53382",
           "objet": "Suite de la discussion de la proposition de loi visant à abroger le dispositif des amendes forfaitaires délictuelles",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54903"
-          ],
+          "dossiers": [],
           "dossier_retrouve": null,
-          "dossier_non_resolu": null
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30970PT53381",
           "objet": "Suite de la discussion de la proposition de loi visant un contrôle réel des investissements étrangers en France",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54907"
-          ],
+          "dossiers": [],
           "dossier_retrouve": null,
-          "dossier_non_resolu": null
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30970PT53379",
           "objet": "Suite de la discussion de la proposition de loi visant à garantir le droit de vote par l’encadrement des radiations pour perte d’attache communale",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N53266"
-          ],
+          "dossiers": [],
           "dossier_retrouve": null,
-          "dossier_non_resolu": null
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         },
         {
           "uid": "RUANR5L17S2027IDS30970PT53375",
           "objet": "Suite de la discussion de la proposition de loi visant à garantir les droits des joueurs et joueuses et la pérennité des jeux vidéo",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54899"
-          ],
+          "dossiers": [],
           "dossier_retrouve": null,
-          "dossier_non_resolu": null
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         }
       ]
     },
@@ -57953,7 +57941,7 @@
       "fin": null,
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N047",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS31006PT53295",
