@@ -230,8 +230,10 @@ Vocabulaire vérifié dans `src/components/*.css` et `*.jsx` :
 - **Aucun vocabulaire de classement** : pas de « score », « note », « rang » ou « performance » nulle part dans l'interface — jusque dans le texte d'aide du panneau latéral. Découle directement de la règle éditoriale 1 (`AGENTS.md §2`).
 - **La couverture partielle s'assume** : « 14 / 66 membres » s'affiche tel quel, sans arrondi flatteur ni habillage en pourcentage seul — cohérent avec la règle éditoriale 7 (ratios toujours num/dénom).
 
-**La baseline, depuis le 18/09/2026** (#1026) — *vérifiée*, `Baseline.jsx` :
-> « 100 % automatisé • 100 % sourcé • 0 score • 0 filtre »
+**La baseline, depuis le 30/10/2026** (#1405, après #1026) — `Baseline.jsx` :
+> « 100 % sourcé • 0 retouche • 0 score • 0 classement »
+
+« 100 % automatisé » et « 0 filtre » sont sortis le 30/10/2026 : le site ne les tenait pas (`docs/decisions/devise-zero-retouche-1405.md`).
 
 Deux places, arbitrées : le **bandeau de l'accueil** (`.baseline--bandeau`, 15 px, puces en accent — 16,01:1 sur l'encre) et le **pied de page**, sous la marque, sur toutes les pages (`.baseline--pied`, 13 px, puces en gris — le jaune tombe à 1,05:1 sur fond clair, §2). **Pas l'en-tête collé** : répétée en haut de chaque écran elle devient du décor, et la rangée est à hauteur fixe. Les quatre mentions sont définies **une seule fois** — `tests/test_baseline_1026.py` refuse qu'un composant les recopie. Elle remplace deux textes qui disaient la même chose à moitié : « Données publiques agrégées. Aucun score, aucun classement. » dans le pied, et « Des faits sourcés, sans note ni classement — à consulter par candidat, par groupe ou par gouvernement. » sous le titre de l'accueil.
 

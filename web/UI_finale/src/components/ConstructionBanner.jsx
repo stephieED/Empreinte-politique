@@ -41,9 +41,7 @@ export default function ConstructionBanner() {
         >
           <strong>En construction.</strong>
         </button>{' '}
-        Ce site est publié pendant son développement. Ce qui s'affiche est sourcé
-        et vérifiable, mais des données peuvent manquer, et certaines absences
-        sont encore mal expliquées.
+        Des données peuvent manquer, et certaines absences sont encore mal expliquées.
       </p>
       <Link className="construction-banner__link" to="/methodologie">
         Méthodologie

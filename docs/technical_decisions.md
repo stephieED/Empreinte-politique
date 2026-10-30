@@ -20,6 +20,10 @@ La version d'avant la découpe (30/08/2026, 18 404 lignes, 1 054 Ko) est figée 
 
 ---
 
+- `2026-10-30` <a id="devise-zero-retouche-1405"></a>[La devise devient « 100 % sourcé • 0 retouche • 0 score • 0 classement » (#1405)](decisions/devise-zero-retouche-1405.md)
+- `2026-10-30` <a id="premier-fichier-de-fraicheur-1389"></a>[Le premier fichier de fraîcheur complet, et ce qu'il a montré (#1389, #1400)](decisions/premier-fichier-de-fraicheur-1389.md)
+- `2026-10-30` <a id="relecture-des-votes-a-la-source-1248"></a>[Relire à la source quelques votes publiés, à chaque run (#1248)](decisions/relecture-des-votes-a-la-source-1248.md)
+- `2026-10-30` <a id="renouvellement-caches-senat-pe-parltrack-1400"></a>[Les caches Sénat, Parlement européen et ParlTrack se renouvellent à chaque période (#1400)](decisions/renouvellement-caches-senat-pe-parltrack-1400.md)
 - `2026-10-29` <a id="a-jour-au-fiche-candidat-1389"></a>[« À jour au » : les sources de la fiche candidat (#1389, #1391)](decisions/a-jour-au-fiche-candidat-1389.md)
 - `2026-10-29` <a id="a-jour-au-par-famille-de-donnees-1389"></a>[« À jour au » : la dernière relecture réussie de chaque famille de données, et son état (#1389)](decisions/a-jour-au-par-famille-de-donnees-1389.md)
 - `2026-10-29` <a id="articles-au-telephone-1372"></a>[Les articles au téléphone : mise en page redessinée, textes gelés (#1372, 2026-10-29)](decisions/articles-au-telephone-1372.md)

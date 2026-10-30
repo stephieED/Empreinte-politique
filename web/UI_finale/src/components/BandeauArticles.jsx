@@ -47,7 +47,7 @@ export default function BandeauArticles({ id, ouvert }) {
                     <small>Mai</small><b>2027</b>
                   </span>
                   <span className="bandeau-article-date">Jusqu’en mai 2027</span>
-                  <b className="bandeau-article-t">Focus sur les candidats à la présidentielle</b>
+                  <b className="bandeau-article-t">Les candidats à la présidentielle</b>
                 </Link>
               </li>
             )}

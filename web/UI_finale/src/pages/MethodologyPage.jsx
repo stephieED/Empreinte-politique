@@ -58,7 +58,7 @@ import { REFUS_FICHE_GROUPE } from '../utils/groupe';
  * #1026 : la `meta description` et cette introduction ne disaient déjà pas la
  * même chose. */
 const INTRODUCTION = [
-  'Cette page dit comment chaque fiche est faite : ce que chaque chiffre mesure, ce qu’il ne mesure pas, et ce que le site refuse de publier.',
+  'Cette page dit comment chaque fiche est faite, et ce que le site ne publie pas.',
 ];
 
 const SECTIONS = [
@@ -76,25 +76,20 @@ const SECTIONS = [
     body: (
       <>
         <p>
-          Chaque catégorie montre ses <strong>trois fonctions les plus longues</strong>. Ce n'est
-          pas un palmarès : la durée est un fait daté, publié par la source, et rien n'est calculé
-          par-dessus — ni total, ni rang, ni comparaison entre personnes.
+          Chaque catégorie montre ses <strong>trois fonctions les plus longues</strong>. La durée
+          est un fait daté, publié par la source. Le site n’en tire ni total, ni rang, ni
+          comparaison entre personnes.
         </p>
         <p>
           Un filet marque la fonction qui dépasse la moitié du temps de mandat, quand il y en a
-          une. Là encore, c'est une proportion de temps, pas une importance : une présidence de
-          trois mois ne devient pas plus légère qu'une appartenance de cinq ans.
+          une. C’est une part de temps. Elle n’indique pas l’importance d’une fonction.
         </p>
-        <p>
-          Le rôle n'est précisé que lorsqu'il n'est pas celui de membre. Écrire « membre » partout
-          ferait lire une distinction là où la source n'en pose aucune.
-        </p>
+        <p>Le rôle n’est précisé que lorsqu’il n’est pas celui de membre.</p>
         <p>
           À côté d'un mandat de député ou de députée, la fiche indique si le groupe était{' '}
-          <strong>majoritaire, minoritaire ou d'opposition</strong>. Ces trois qualifications sont
-          publiées par l'Assemblée nationale elle-même, législature par législature : elles ne sont
-          ni calculées ni interprétées ici. Quand l'Assemblée n'en déclare aucune, la fiche le dit
-          plutôt que de choisir.
+          <strong>majoritaire, minoritaire ou d'opposition</strong>. C’est l’Assemblée nationale
+          qui les déclare, législature par législature. Le site ne les calcule pas. Si elle ne
+          déclare rien, la fiche l’écrit.
         </p>
       </>
     ),
@@ -106,9 +101,8 @@ const SECTIONS = [
       <>
         <h3>Textes portés</h3>
         <p>
-          Un texte est affiché seulement si la source y donne à la personne un rôle d'auteur, de
-          rapporteur ou de co-rapporteur, et s'il a atteint une étape attestant qu'il a réellement été
-          débattu.
+          Un texte est affiché si la source donne à la personne le rôle d’auteur, de rapporteur
+          ou de co-rapporteur. Il faut aussi qu’il ait atteint une étape où il a été débattu.
         </p>
         <p>
           Les étapes retenues commencent à l'examen en commission, puis incluent l'inscription à
@@ -118,18 +112,14 @@ const SECTIONS = [
         <h3>Amendements</h3>
         <p>Les issues sont publiées en comptes bruts : adoptés, rejetés, retirés, tombés, irrecevables et non soutenus.</p>
         <p>
-          Aucun taux d'adoption isolé n'est présenté. Ces issues dépendent du texte, de la procédure, de la
-          recevabilité et du rôle du déposant ; elles ne constituent pas une mesure d'efficacité.
+          Aucun taux d'adoption isolé n'est présenté. L’issue d’un amendement dépend du texte, de la
+          procédure, de sa recevabilité et de son auteur. Elle ne mesure pas l’efficacité.
         </p>
         <h3>Lire les textes derrière les figures</h3>
         <p>
           Chaque carré est un texte porté, rangé sous la dernière étape qu'il a atteinte. Chaque
           barre découpe les amendements d'une commission, texte par texte. Cliquer{' '}
           <strong>ouvre la liste des textes</strong>, avec leur date et leur source.
-        </p>
-        <p>
-          Un texte rangé sous « examinés en commission » n'a pas été rejeté : il n'est pas allé plus
-          loin à ce jour.
         </p>
       </>
     ),
@@ -140,10 +130,10 @@ const SECTIONS = [
     body: (
       <>
         <p>
-          L'univers retenu comprend les scrutins publics disponibles, ordinaires et solennels, portant sur
-          l'ensemble d'un texte. Les votes sur un article, sur une partie de texte ou sur un amendement en
-          sont exclus, de même que les motions de censure, qui sont des faits de procédure. Pour un même
-          texte, une seule lecture est conservée dans la synthèse : la plus récente par sa date.
+          Le site retient les scrutins publics, ordinaires et solennels, sur l'ensemble d'un texte.
+          Il écarte les votes sur un article, une partie de texte ou un amendement, et les motions
+          de censure, qui sont des faits de procédure. Pour un même texte, une seule lecture est
+          conservée dans la synthèse : la plus récente par sa date.
         </p>
         <p>
           <strong>{LAST_READING_RULE.phrase}</strong> {LAST_READING_RULE.pourquoi}
@@ -151,50 +141,42 @@ const SECTIONS = [
         <p>
           <strong>{WHOLE_TEXT_VOTE_BOUND.phrase}</strong> {WHOLE_TEXT_VOTE_BOUND.pourquoi}
         </p>
-        <p>
-          Le choix de ne pas se limiter aux seuls scrutins solennels évite d'écarter des votes publics sur
-          des textes entiers.
-        </p>
         <h3>Pourquoi ces positions sont découpées en périodes</h3>
         <p>
           Un même vote ne dit pas la même chose selon d'où il est émis : depuis la majorité, voter contre
-          n'arrive presque jamais ; depuis l'opposition, c'est le vote pour qui se remarque. La fiche ne
-          totalise donc pas une carrière entière, elle la découpe en <strong>périodes</strong> — une
-          nouvelle dès que change le banc (majorité, opposition ou groupe minoritaire, tel que
-          l'Assemblée le déclare) ou le gouvernement en place.
+          n'arrive presque jamais ; depuis l'opposition, c'est le vote pour qui se remarque. La fiche
+          découpe donc la carrière en <strong>périodes</strong>. Une période change quand change le
+          banc (majorité, opposition ou groupe minoritaire, selon l’Assemblée) ou le gouvernement.
         </p>
         <p>
-          Les deux repères sont <strong>déclarés, jamais déduits</strong>, et ils se complètent. Le banc
-          vient de la déclaration du groupe à l'Assemblée, et n'est jamais publié sans le lien vers
-          sa source ; le gouvernement vient des dates des fiches de gouvernement. De 2012 à
-          2017, l'Assemblée publie le banc mais nous n'avons aucune fiche de gouvernement ; depuis
-          2024, c'est l'inverse. Sur les 1 160 positions de dernière lecture des candidats déclarés, le banc
-          seul en couvre 719 et le gouvernement seul 916 — <strong>le banc ou le gouvernement les couvre
-          toutes les 1 160</strong>. Une période sans aucun des deux serait affichée comme telle, jamais
-          rattachée à sa voisine.
+          Le banc et le gouvernement sont déclarés par des sources, jamais déduits. Le banc vient de
+          la déclaration du groupe à l’Assemblée ; le gouvernement vient des dates des fiches de
+          gouvernement. De 2012 à 2017, le banc est publié mais le site n’a aucune fiche de
+          gouvernement. Depuis 2024, c’est l’inverse. Sur les 1 160 positions de dernière lecture des
+          candidats déclarés, le banc seul en couvre 719 et le gouvernement seul 916. Les deux
+          ensemble les couvrent toutes. Une période sans aucun des deux serait affichée comme telle,
+          jamais rattachée à sa voisine.
         </p>
         <h3>D'où viennent la matière et l'origine d'un texte</h3>
         <p>
           La <strong>matière</strong> est la commission chargée d'examiner le texte, celle qui l'amende
-          et rédige le rapport. Le Parlement l'appelle la « commission saisie au fond ». Elle est lue dans
-          l'archive de l'Assemblée. Un scrutin ne porte aucune référence législative : le rattachement se
-          fait dans l'autre sens, depuis les actes du dossier qui nomment les scrutins tenus. Il aboutit
-          pour 711 des 1 160 positions. Les autres restent en « matière non établie » : c'est une absence
-          de source, jamais une absence de commission, et elle n'est jamais comblée en devinant la matière
-          depuis l'intitulé du scrutin.
+          et rédige le rapport. Le Parlement l'appelle la « commission saisie au fond ». Le site la lit
+          dans les données de l’Assemblée. Un scrutin ne porte aucune référence législative : le rattachement
+          se fait depuis les actes du dossier qui nomment les scrutins tenus. Il aboutit pour 711 des
+          1 160 positions. Les autres sont classées « matière non établie » : la source ne la donne pas.
+          Le site ne la devine jamais d’après l’intitulé du scrutin.
         </p>
         <p>
-          L'<strong>origine</strong> — texte du gouvernement ou du Parlement — est lue dans l'intitulé
-          officiel du scrutin, qui nomme lui-même la catégorie juridique : « projet de loi » pour un texte
-          du gouvernement, « proposition de loi » ou « proposition de résolution » pour un texte du
-          Parlement. Ce n'est pas un rapprochement entre deux sources, c'est un mot que la source pose ; il
-          est reconnu sur les 1 160 positions.
+          L'<strong>origine</strong> (texte du gouvernement ou du Parlement) est lue dans l'intitulé
+          officiel du scrutin, qui nomme la catégorie juridique : « projet de loi » pour un texte du
+          gouvernement, « proposition de loi » ou « proposition de résolution » pour un texte du
+          Parlement. La source écrit ce mot dans l’intitulé. Il figure sur les 1 160 positions.
         </p>
         <p>
-          Le <strong>sort final du texte</strong> est celui du dossier, et il n'est pas dérivé du vote
-          affiché : un texte peut être adopté en dernière lecture puis rejeté au terme de la navette. Il
-          est publié pour 722 des 1 160 positions, et un texte adopté par engagement de responsabilité est
-          nommé comme tel, jamais fondu dans les adoptions ordinaires.
+          Le <strong>sort final du texte</strong> est celui du dossier. Il peut différer du vote
+          affiché : un texte adopté en dernière lecture peut être rejeté au terme de la navette. Il
+          est publié pour 722 des 1 160 positions. Un texte adopté par engagement de responsabilité est
+          nommé comme tel, à part.
         </p>
       </>
     ),
@@ -236,34 +218,30 @@ const SECTIONS = [
       <>
         <p>
           La fiche d'un candidat pose sa position à côté de celle de son groupe,{' '}
-          <strong>scrutin par scrutin</strong>. Elle ne les totalise jamais : le nombre de
-          divergences, son rapport aux scrutins comparables ou un taux de cohésion seraient un
-          indice individuel mesuré contre la moyenne d'un groupe, qui reste un contrôle interne.
-          « A voté contre son groupe 47 fois » serait une note, pas un fait.
+          <strong>scrutin par scrutin</strong>. La fiche ne compte jamais les divergences et n’en
+          tire aucun taux. Un chiffre comme « a voté contre son groupe 47 fois » serait une note.
         </p>
         <h3>Quels scrutins sont retenus</h3>
         <p>
           Cinq conditions, toutes nécessaires : la personne y a une position publiée, la fiche de
           son groupe aussi, la position majoritaire du groupe est établie, le scrutin est la{' '}
           <strong>dernière lecture</strong> du texte, c'est-à-dire le vote le plus récent sur ce
-          texte, et il porte sur l'<strong>ensemble du texte</strong>. Cette dernière restriction
-          n'est pas un défaut de collecte : sur un article ou un amendement, la position majoritaire
-          d'un groupe se déplace d'un vote à l'autre pour des raisons de négociation que la source
-          ne porte pas.
+          texte, et il porte sur l'<strong>ensemble du texte</strong>. Les votes sur un article ou
+          un amendement sont écartés : la position d'un groupe y change d'un vote à l'autre, pour des
+          raisons de négociation que la source ne donne pas.
         </p>
         <p>
-          Le nombre de scrutins <em>communs toutes natures confondues</em> n'est pas publié. Posé à
-          côté des divergences, il servirait de dénominateur à une division que rien ne justifie —
-          et les deux nombres ne portent pas sur la même population.
+          Le nombre de scrutins <em>communs toutes natures confondues</em> n'est pas publié. À côté
+          des divergences, il permettrait de calculer un taux. Les deux nombres ne portent pas sur
+          les mêmes scrutins.
         </p>
         <h3>Ce que veut dire « son groupe s'est divisé »</h3>
         <p>
           Le critère est brut et sans seuil : le groupe est compté comme divisé dès que ses membres
           exprimés n'ont pas tous voté de la même façon. Un membre qui s'abstient quand soixante-sept
-          votent pour suffit. Les absents et les non-votants sont hors du critère — ne pas voter
-          n'est pas voter autrement — et le dénominateur reste les membres éligibles, pas les
-          exprimés. Un membre éligible est une personne qui appartenait au groupe le jour du
-          scrutin : quelqu'un qui l'a rejoint après, ou quitté avant, n'y est pas compté.
+          votent pour suffit. Les absents et les non-votants ne comptent pas. Le dénominateur est
+          l'ensemble des membres éligibles, c'est-à-dire présents dans le groupe le jour du scrutin :
+          quelqu'un qui l'a rejoint après, ou quitté avant, n'y est pas compté.
         </p>
         <p>
           C'est un fait de <strong>groupe</strong>, publié avec son dénominateur, et il donne son
@@ -274,18 +252,16 @@ const SECTIONS = [
         <p>
           Un scrutin où <strong>moins de la moitié</strong> des membres éligibles se sont exprimés
           est signalé comme tel. La « position majoritaire » y repose sur une poignée de votes, et
-          un ratio sans couverture suffisante ne se publie pas sans le dire. Le scrutin n'est pas
-          écarté pour autant : choisir les faits qui arrangent serait pire que les publier avec leur
-          réserve.
+          un ratio sans couverture suffisante ne se publie pas sans le dire. Le scrutin reste affiché,
+          avec cette réserve.
         </p>
-        <h3>Trois vides, trois causes</h3>
+        <h3>Pourquoi une section peut être vide</h3>
         <p>
-          Une section sans divergence peut dire <strong>trois choses différentes</strong>, et elles
-          ne se confondent pas : aucune fiche de groupe n'est publiée pour les groupes où la
-          personne a siégé (rien n'est comparable) ; des fiches existent mais ne recouvrent aucun de
-          ses votes sur l'ensemble d'un texte (la comparaison est vide de base) ; ou la comparaison
-          est possible et aucune divergence n'y figure. Seule la troisième est un fait sur la
-          personne.
+          Une section sans divergence peut exprimer <strong>trois choses différentes</strong> :
+          aucune fiche de groupe n'est publiée pour les groupes où la personne a siégé (rien n'est
+          comparable) ; des fiches existent mais ne recouvrent aucun de ses votes sur l'ensemble d'un texte
+          (la comparaison est vide de base) ; ou la comparaison est possible et aucune
+          divergence n'y figure. Seule la troisième est un fait sur la personne.
         </p>
       </>
     ),
@@ -296,8 +272,8 @@ const SECTIONS = [
     body: (
       <>
         <p>
-          La fiche publie les interventions elles-mêmes — le verbatim du compte rendu intégral —,
-          et jamais un extrait choisi : le fil affiche <strong>toutes</strong> les interventions du
+          La fiche publie les interventions mot pour mot, telles que le compte rendu les donne,
+          sans extrait choisi : le fil affiche <strong>toutes</strong> les interventions du
           sujet retenu, dans l'ordre. Il reste fermé tant qu'aucun sujet n'est choisi, pour
           qu'aucune phrase ne se trouve mise en avant par le seul fait d'être la première.
         </p>
@@ -312,40 +288,36 @@ const SECTIONS = [
           le dernier est une étape de procédure.
         </p>
         <p>
-          Prendre partout le même niveau rangerait 2 885 des 3 660 questions sous un seul libellé —
-          « Questions au Gouvernement », qui est un créneau de séance et non un sujet — ou bien
-          ferait des textes examinés autant de « Suspension et reprise de la séance ». Le niveau se
-          choisit donc par type,
-          ce qui revient à <em>lire</em> la structure que la source pose. Deux intitulés voisins ne
-          sont jamais rapprochés pour autant : « Motion de censure » et « Motions de censure »
-          restent deux entrées.
+          Avec toujours le même niveau, 2 885 des 3 660 questions seraient rangées sous « Questions
+          au Gouvernement », qui est un créneau de séance et non un sujet. Le site choisit donc le
+          niveau selon le type d'intervention. Deux intitulés voisins ne sont jamais rapprochés
+          pour autant : « Motion de censure » et « Motions de censure » restent deux entrées.
         </p>
         <h3>La qualité de l'orateur</h3>
         <p>
-          Le compte rendu ne publie la qualité que pour une fonction particulière — ministre,
-          rapporteur. Son absence n'est pas « cette personne parlait comme député » : c'est un
-          silence de la source, et la fiche l'écrit intervention par intervention, jamais en
-          totalisant une carrière.
+          Le compte rendu ne publie la qualité que pour une fonction particulière (ministre,
+          rapporteur). Sans indication, on ne peut pas conclure que la personne parlait comme député.
+          C'est un silence de la source, et la fiche l'écrit intervention par intervention, sans total
+          de carrière.
         </p>
         <h3>Ce qui n'est pas publié</h3>
         <p>
-          La distinction entre « réaction courte » et « prise de parole développée » existe dans nos
-          données, sur 16 242 interventions, mais elle est <strong>notre</strong> déduction : un seuil de
-          cinquante mots posé à la collecte, jamais un fait du compte rendu. La publier ferait
-          passer un choix de notre part pour une donnée.
+          Le site distingue aussi réaction courte et prise de parole développée, sur 16 242
+          interventions. Cette distinction vient d'un seuil de cinquante mots fixé par le site, pas
+          du compte rendu. Elle n'est donc pas publiée.
         </p>
         <p>
           Aucune densité par jour de séance n'est dessinée : un creux s'y lirait comme une absence
           individuelle, que la source ne publie pas et que nous ne publions jamais. Aucun total de
-          carrière non plus — une intervention portée depuis le banc du gouvernement et une
+          carrière non plus : une intervention portée depuis le banc du gouvernement et une
           intervention portée depuis les bancs ne se comptent pas dans la même unité.
         </p>
         <h3>Quand la collecte s'est arrêtée au thème</h3>
         <p>
-          Une partie des interventions relève d'un régime de collecte déclaré : la date, la nature
-          et le thème, et rien d'autre. Aucun verbatim, aucune qualité, souvent aucun intitulé. Ce
-          n'est pas une donnée manquante à combler, et surtout pas un silence de la personne : la
-          fiche le nomme sous chaque entrée concernée et le compte sous la figure.
+          Pour une partie des interventions, le site ne connaît que la date, la nature et le thème.
+          Le texte et la qualité de l'orateur manquent, souvent l'intitulé aussi. Ce n'est pas un
+          silence de la personne : la fiche l'indique sous chaque entrée concernée et le compte
+          sous la figure.
         </p>
       </>
     ),
@@ -354,9 +326,9 @@ const SECTIONS = [
     heading: 'Responsabilités',
     body: (
       <p>
-        Les responsabilités sont dédupliquées par intitulé. Les fonctions de présidence ou de rapport
-        peuvent servir à ordonner le détail, mais ce classement interne n'est jamais publié comme total ou
-        score.
+        Une responsabilité qui apparaît plusieurs fois sous le même intitulé n'est comptée qu'une fois.
+        Les fonctions de présidence ou de rapport peuvent servir à ordonner le détail, mais ce classement
+        interne n'est jamais publié comme total ou score.
       </p>
     ),
   },
@@ -379,14 +351,14 @@ const SECTIONS = [
           anciens groupes sont fermés et de nouveaux sont créés, sans lien officiel de succession.
         </p>
         <p>
-          Pour reconstituer leur fil conducteur, nous regardons la continuité de leurs membres :
+          Pour relier un ancien groupe à un nouveau, le site compare leurs membres :
         </p>
         <div className="static-tableau">
           <table>
             <thead>
               <tr>
                 <th scope="col">Critère</th>
-                <th scope="col">Métrique</th>
+                <th scope="col">Calcul</th>
                 <th scope="col">Résultat</th>
               </tr>
             </thead>
@@ -413,8 +385,7 @@ const SECTIONS = [
                   Les 2 parts combinées ≥&nbsp;60&nbsp;% <strong>et</strong> au moins 5 députés communs
                 </td>
                 <td>
-                  Le nouveau groupe est essentiellement constitué de l'ancien et l'ancien ne s'est
-                  pas dispersé
+                  Le nouveau groupe vient surtout de l'ancien et l'ancien ne s'est pas dispersé
                 </td>
               </tr>
             </tbody>
@@ -434,10 +405,6 @@ const SECTIONS = [
           deux parts font 47&nbsp;% : LR ne prend pas la suite du Rassemblement-UMP.
         </p>
         <p>
-          Ce principe permet de relier automatiquement des groupes dont le nom a changé au fil des
-          ans, comme l'évolution du groupe Socialiste depuis 2012.
-        </p>
-        <p>
           Le graphique en tête de fiche trace le nombre de membres jour par jour, depuis les dates
           d'entrée et de sortie de chacun. Le nombre écrit à droite de chaque période est celui des
           membres à son dernier jour. Le remplissage de la période dit comment l'Assemblée qualifie
@@ -445,10 +412,9 @@ const SECTIONS = [
           quand elle ne le déclare pas.
         </p>
         <p>
-          Un point par personne et par groupe : « nouveau dans le groupe » ne veut pas dire
-          « nouveau député ». La personne a pu siéger ailleurs avant ; la fiche ne connaît que
-          ce groupe et ceux qui l'ont précédé, et n'en dit pas plus. Aucun taux de
-          renouvellement n'est calculé : il deviendrait une note comparée d'un groupe à l'autre.
+          Un point représente une personne dans un groupe. « Nouveau dans le groupe » ne veut pas
+          dire « nouveau député » : la personne a pu siéger ailleurs. Aucun taux de renouvellement
+          n'est calculé : comparé d'un groupe à l'autre, il deviendrait une note.
         </p>
       </>
     ),
@@ -470,11 +436,10 @@ const SECTIONS = [
           rangée sous <strong>« Intitulé non publié »</strong>.
         </p>
         <p>
-          Quand la fiche compte les prises de parole, la <strong>présidence de séance</strong> n'y
-          entre pas : « La parole est à… » conduit le débat, ce n'est pas la parole du groupe. La
-          parole prononcée <strong>comme membre du gouvernement</strong> non plus — un député nommé
-          ministre reste membre de son groupe un mois, et il y parle alors pour le gouvernement.
-          La parole d'un rapporteur, elle, reste comptée : il parle du texte, comme membre du groupe.
+          La présidence de séance (« La parole est à… ») et les paroles prononcées comme membre du
+          gouvernement ne sont pas comptées. Un député nommé ministre reste un mois dans son groupe,
+          mais il parle alors pour le gouvernement. La parole d'un rapporteur, elle, reste comptée :
+          il parle du texte, comme membre du groupe.
         </p>
       </>
     ),
@@ -519,10 +484,9 @@ const SECTIONS = [
     body: (
       <>
         <p>
-          Un groupe ne vote pas : ses membres votent. Pour dire s'il s'est exprimé d'une seule voix,
-          il faut qu'au moins la moitié de ses membres aient pris part au scrutin. En dessous, deux
-          ou trois voix ne décrivent pas le groupe, et rien n'est publié. Ce n'est pas un manque dans
-          nos données : les autres scrutins sont là, ils ne permettent simplement pas cette mesure.
+          Pour dire qu'un groupe s'est exprimé d'une seule voix, au moins la moitié de ses membres
+          doivent avoir pris part au scrutin. En dessous, deux ou trois voix ne décrivent pas le
+          groupe, et rien n'est publié. Les autres scrutins restent affichés.
         </p>
         <p>
           « D'une seule voix » signifie que toutes les positions exprimées allaient dans le même
@@ -549,10 +513,8 @@ const SECTIONS = [
           comparés diffère donc d'une ligne à l'autre, et il est écrit sur chacune.
         </p>
         <p>
-          <strong>Voter dans le même sens n'est pas s'entendre.</strong> Deux groupes peuvent
-          rejeter un texte pour des raisons opposées, et la donnée ne dit rien de ces raisons. Et
-          « nuance » n'est pas « opposé » : une abstention face à une position exprimée n'est pas un
-          vote contraire.
+          Deux groupes qui votent dans le même sens peuvent avoir des raisons opposées, que la
+          donnée ne dit pas. « Nuance » veut dire que l'un des deux s'est abstenu.
         </p>
       </>
     ),
@@ -579,9 +541,8 @@ const SECTIONS = [
         </p>
         <p>
           « En bref » nomme aussi le groupe majoritaire à l'Assemblée. C'est l'Assemblée nationale
-          qui le désigne, pas Empreinte politique, et elle ne le dit qu'une fois la législature
-          achevée. Pour la législature en cours, la fiche écrit donc « aucun groupe déclaré
-          majoritaire », et ne désigne pas le plus nombreux à sa place.
+          qui le désigne, et seulement une fois la législature achevée. Pour la législature en cours,
+          la fiche écrit « aucun groupe déclaré majoritaire ».
         </p>
       </>
     ),
@@ -628,8 +589,8 @@ const SECTIONS = [
           « Adoptés » réunit trois cas : le texte a été voté par chacune des deux chambres ; il l'a
           été après une commission mixte paritaire, où sept députés et sept sénateurs cherchent un
           texte commun ; ou il a été adopté sans vote, par l'article 49.3. La liste des textes dit
-          lequel pour chacun. <strong>Le 49.3 n'est pas un vote</strong> : il est signalé à part,
-          par sa pastille, et n'est jamais compté comme une position.
+          lequel pour chacun. Le 49.3 est signalé à part, par une pastille. Il n'est jamais compté
+          comme une position de vote.
         </p>
       </>
     ),
@@ -650,10 +611,9 @@ const SECTIONS = [
         </p>
         <p>
           Chaque barre a deux parts. La part sombre compte les actes dont le{' '}
-          <strong>titre cite une loi</strong> ; la part claire, ceux dont le titre ne le dit pas.{' '}
-          <strong>« Le titre ne le dit pas » ne veut pas dire « sans loi »</strong> : un acte peut
-          appliquer une loi sans la nommer dans son titre. Cliquer sur le nom d'un ministère ouvre
-          tous ses actes ; cliquer sur une part de sa barre n'ouvre que ceux de cette part.
+          <strong>titre cite une loi</strong> ; la part claire, ceux dont le titre ne le dit pas.
+          Ces actes peuvent appliquer une loi sans la nommer. Cliquer sur le nom d'un ministère
+          ouvre tous ses actes ; cliquer sur une part de sa barre n'ouvre que ceux de cette part.
         </p>
         <p>
           Un acte peut appliquer une loi adoptée avant ce gouvernement. Le délai affiché pour une
@@ -671,8 +631,8 @@ const SECTIONS = [
       <>
         <p>
           La fiche couvre une législature de l'Assemblée nationale, entre les dates que l'Assemblée
-          publie pour elle. Ce ne sont pas celles de la première séance : la XIVe commence le
-          20 juin 2012, et sa première séance a lieu le 26.
+          publie pour elle. La première séance vient plus tard : la XIVe commence le 20 juin 2012,
+          sa première séance a lieu le 26.
         </p>
         <p>
           Une législature dure cinq ans, sauf dissolution. La frise court jusqu'au terme prévu par
@@ -786,8 +746,8 @@ const SECTIONS = [
         </p>
         <h3>Ce que les trois refus veulent dire</h3>
         <p>
-          La fiche les écrit en une phrase chacun, parce qu'une page qui se contente de ne pas
-          répondre laisse croire qu'elle n'y a pas pensé. Le raisonnement est ici.
+          La fiche les écrit en une phrase chacun : ne pas afficher une donnée sans l'expliquer
+          laisserait croire à un oubli. Le détail est exposé ici.
         </p>
         {STATED_REFUSALS.map((refus) => (
           <p key={refus.id}>

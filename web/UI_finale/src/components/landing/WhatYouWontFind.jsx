@@ -6,17 +6,17 @@ const ITEMS = [
   {
     title: 'Aucun score, aucune note',
     detail:
-      "Chaque fait parlementaire est décrit pour ce qu'il est, jamais ramené à un chiffre unique ou à une appréciation.",
+      'Chaque fait est présenté tel que la source le publie, sans chiffre unique ni appréciation.',
   },
   {
     title: 'Aucun classement entre candidats',
     detail:
-      "Les chiffres se lisent côte à côte, avec leur contexte — jamais ordonnés du meilleur au pire.",
+      'Les chiffres sont présentés côte à côte, avec leur contexte. Aucun n’est classé.',
   },
   {
     title: "Aucun taux individuel d'assiduité ou de présence",
     detail:
-      "Un scrutin manqué ne décrit ni le travail parlementaire d'un candidat ni ses motifs — cette donnée n'est jamais publiée à l'échelle individuelle.",
+      'Un scrutin manqué ne dit rien du travail d’un candidat ni de ses raisons. Le site ne publie donc aucun taux de présence individuel.',
   },
 ];
 

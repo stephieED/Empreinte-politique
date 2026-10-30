@@ -1588,13 +1588,38 @@ jobs:
       # Le quota de cache du dépôt étant partagé, une entrée surdimensionnée
       # provoque l'éviction LRU des autres — dont la clé AN que #424 vient de
       # réparer.
+      #
+      # #1400 — `id` : `outputs.cache-hit` vaut 'true' UNIQUEMENT sur la clé
+      # exacte de la semaine, jamais sur le repli par préfixe (#749). C'est le
+      # signal « nouvelle semaine », et l'étape suivante en dépend : sans lui,
+      # la liste des députés européens est restée celle du 20/09/2026 pendant
+      # six semaines, chaque semaine resauvegardant la précédente sous son nom.
+      # `-v2-` : la clé de la semaine où le défaut a été corrigé existait déjà,
+      # écrite par l'ancien code ; le suffixe la fait manquer une fois, pour que
+      # le premier run du correctif renouvelle sans attendre le lundi.
       - uses: actions/cache@v5
+        id: cache_ue
         if: ${{ !inputs.cold_start }}
         with:
           path: .cache/europarl
-          key: public-data-cache-ue-${{ steps.week.outputs.week }}
+          key: public-data-cache-ue-v2-${{ steps.week.outputs.week }}
           restore-keys: |
             public-data-cache-ue-
+
+      # #1400 — `fetch_all_meps_by_country` rend `meps_FR.json` dès qu'il
+      # existe, et `organisations.json` cumule les noms des organes sans jamais
+      # les relire : rien ne les renouvelle, sauf ce step. Il les retire au
+      # premier run de chaque semaine ; le job les réécrit, et l'entrée
+      # sauvegardée sous la clé de la semaine porte donc la date du jour. Les
+      # deux fichiers sont les témoins de `pe.mandats` dans
+      # `src/fraicheur_sources.py` (`TEMOINS_PE_MANDATS`) — le test
+      # `tests/test_ci_cache_sources_candidat_1400.py` compare les deux listes.
+      - name: Renouvellement de la liste des députés européens (#1400)
+        if: ${{ steps.cache_ue.outputs.cache-hit != 'true' }}
+        run: |
+          echo "Clé de cache exacte non touchée (nouvelle semaine, ou aucun cache) :"
+          echo "liste des députés européens et noms des organes relus (#1400)."
+          rm -f .cache/europarl/meps_FR.json .cache/europarl/organisations.json
 
       # `cold_start` purge les CACHES DE TÉLÉCHARGEMENT, et rien d'autre
       # (#578). Il supprimait aussi `raw_data/profiles/*.json`, ce qui est une
@@ -1712,11 +1737,19 @@ jobs:
 
       # cold_start=true  → pas de restore ; les dumps seront re-téléchargés.
       # cold_start=false → restore du cache ParlTrack (évite re-téléchargement de centaines de Mo).
+      #
+      # #1400 — `id` : `outputs.cache-hit` vaut 'true' UNIQUEMENT sur la clé
+      # exacte de la semaine (#749). Le téléchargement s'en sert pour forcer le
+      # renouvellement au premier run de chaque semaine : `ensure_dump` rend le
+      # dump dès qu'il existe, et le repli par préfixe faisait qu'il existait
+      # toujours — les cinq dumps sont restés ceux du 20/09/2026 pendant six
+      # semaines (« en cache (âge : 39 j) »). `-v2-` : voir extract-ue-officiel.
       - uses: actions/cache@v5
+        id: cache_parltrack
         if: ${{ !inputs.cold_start }}
         with:
           path: .cache/parltrack
-          key: public-data-cache-parltrack-${{ steps.week.outputs.week }}
+          key: public-data-cache-parltrack-v2-${{ steps.week.outputs.week }}
           restore-keys: |
             public-data-cache-parltrack-
 
@@ -1738,13 +1771,26 @@ jobs:
       # YAML, elle aurait divergé du jour où le module lit un sixième dump, et
       # le fichier manquant serait arrivé jusqu'à merge-and-pivot sous la forme
       # d'une liste vide — c'est-à-dire d'un constat (#510).
+      #
+      # #1400 — `force` dès que la clé exacte de la semaine n'a pas été
+      # touchée. Un téléchargement raté laisse l'ancien dump en place
+      # (`download_with_watchdog` écrit dans un `.part`), mais fait échouer le
+      # job : la fusion retombe sur les données publiées, et le fichier de
+      # fraîcheur dit « en échec » au lieu de redater un vieux dump.
       - name: Téléchargement dumps ParlTrack
+        env:
+          COLD_START: ${{ inputs.cold_start }}
+          CLE_EXACTE: ${{ steps.cache_parltrack.outputs.cache-hit }}
         run: |
           python3 - <<'EOF'
+          import os
           import sys
           sys.path.insert(0, "src")
           from parltrack_dumps import ensure_dump, DUMPS_LUS
-          force = "${{ inputs.cold_start }}" == "true"
+          force = os.environ["COLD_START"] == "true" or os.environ["CLE_EXACTE"] != "true"
+          if force:
+              print("Clé de cache exacte non touchée (nouvelle semaine, ou aucun cache) :")
+              print("les dumps sont retéléchargés (#1400).")
           ok = True
           for dump in DUMPS_LUS:
               path = ensure_dump(dump, force_download=force)
@@ -3136,7 +3182,14 @@ jobs:
 
       # L'export est régénéré chaque nuit par le Sénat : la clé est le JOUR, là
       # où ParlTrack se contente de la semaine.
+      #
+      # #1400 — `id` : `outputs.cache-hit` vaut 'true' UNIQUEMENT sur la clé
+      # exacte du jour (#749). Le téléchargement ne se saute que dans ce cas :
+      # il se sautait dès que l'export existait, et le repli par préfixe faisait
+      # qu'il existait toujours — l'export est resté celui du 20/09/2026 pendant
+      # six semaines, chaque jour resauvegardant la veille sous son nom.
       - uses: actions/cache@v5
+        id: cache_senat
         if: ${{ !inputs.cold_start }}
         with:
           path: .cache/senat
@@ -3154,12 +3207,16 @@ jobs:
       # de taille ici ET `ExportSenatVide` dans `senat_opendata` : un collecteur
       # qui aurait tourné entre les deux aurait vidé les fiches en silence.
       - name: Téléchargement de l'export Sénat
+        env:
+          CLE_EXACTE: ${{ steps.cache_senat.outputs.cache-hit }}
         run: |
           mkdir -p .cache/senat
-          if [[ -s .cache/senat/export_sens.sql ]]; then
-            echo "Export déjà en cache, téléchargement sauté."
+          if [[ "$CLE_EXACTE" == "true" && -s .cache/senat/export_sens.sql ]]; then
+            echo "Export du jour déjà en cache, téléchargement sauté."
             exit 0
           fi
+          echo "Clé de cache exacte non touchée (nouveau jour, ou aucun cache) :"
+          echo "export retéléchargé (#1400)."
           curl -sS -L --max-time 300 -o .cache/senat/export_sens.zip \
             https://data.senat.fr/data/senateurs/export_sens.zip
           TAILLE=$(stat -c%s .cache/senat/export_sens.zip)
@@ -5036,6 +5093,43 @@ jobs:
             validation-profils.md
             validation-profils.json
           if-no-files-found: ignore
+
+      # ──────────────────────────────────────────────────────────────────
+      # VOTES RELUS À LA SOURCE (#1248) — UN SIGNALEMENT, COMME #1223.
+      #
+      # Aucun des audits du dépôt ne retournait à la source. Ce step tire dix
+      # scrutins publiés (sept des trente derniers jours, trois sur tout le
+      # corpus — arbitré le 30/10/2026) et relit chaque position sur la page
+      # publique de l'Assemblée, celle que `source_url` donne au lecteur : une
+      # autre route que les archives open data de la collecte.
+      #
+      # Il ne bloque rien. Une page muette est « non vérifiée », jamais un
+      # écart. La graine est le numéro du run : un tirage se rejoue.
+      # ──────────────────────────────────────────────────────────────────
+      - name: Votes relus à la source (signalement)
+        id: relecture_votes
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          python3 src/relecture_votes_source.py \
+            --graine "${{ github.run_id }}" \
+            --out relecture-votes.md \
+            --out-json relecture-votes.json
+          {
+            echo "### Votes relus à la source de l'Assemblée (#1248)"
+            echo ""
+            cat relecture-votes.md
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Rapport des votes relus à la source — artifact
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: relecture-votes
+          path: |
+            relecture-votes.md
+            relecture-votes.json
+          if-no-files-found: ignore
       # ──────────────────────────────────────────────────────────────────
       # LE GARDE-FOU DE #390/#413 A DISPARU ICI, ET C'EST VOULU (#1059).
       #
@@ -5727,3 +5821,52 @@ jobs:
               --body "Toujours ${NB} profil(s) hors schéma (${ERREURS} erreur(s)) au run ${URL_RUN}. Le détail est dans le corps de l'issue, réécrit par ce run."
           fi
           echo "::warning::FICHES_HORS_SCHEMA — ${NB} profil(s) publié(s) ne passent pas validate_profil() (${ERREURS} erreur(s)). Issue de suivi tenue à jour sur ${DEPOT}."
+
+      # ──────────────────────────────────────────────────────────────────
+      # L'ISSUE DES VOTES EN ÉCART AVEC LA SOURCE (#1248).
+      #
+      # Même mécanique que l'issue des fiches hors schéma, à une différence
+      # près : LE RUN NE LA FERME JAMAIS. Un tirage sans écart ne dit rien des
+      # scrutins qu'il n'a pas tirés, donc rien de l'écart signalé avant. Elle
+      # se ferme à la main, une fois l'écart expliqué ou corrigé.
+      #
+      # Les divergences entre sources (un non-votant que la page nomme et que
+      # l'open data ne cite pas) n'ouvrent pas d'issue : elles restent dans le
+      # résumé du job et l'artifact (option B, arbitrée le 30/10/2026).
+      # ──────────────────────────────────────────────────────────────────
+      - name: Votes en écart avec la source — issue de suivi
+        if: steps.commit.outputs.pushed == 'true' && steps.relecture_votes.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.SRC_ISSUES_TOKEN }}
+          DEPOT: stephieED/Empreinte-politique-src
+          ETIQUETTE: votes-en-ecart-avec-la-source
+          URL_RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          NB="$(python3 -c "import json; print(json.load(open('relecture-votes.json'))['positions_en_ecart'])")"
+          if [[ "$NB" -eq 0 ]]; then
+            exit 0
+          fi
+          if [[ -z "${GH_TOKEN}" ]]; then
+            echo "::warning::VOTES_EN_ECART — ${NB} position(s) publiée(s) diffèrent de la page de l'Assemblée, et AUCUNE issue n'a été ouverte : le secret SRC_ISSUES_TOKEN n'est pas posé. Le détail est dans le résumé du job et dans l'artifact relecture-votes (#1248)."
+            exit 0
+          fi
+          NUMERO="$(gh issue list --repo "$DEPOT" --state open --label "$ETIQUETTE" --json number --jq '.[0].number // empty')"
+          {
+            echo "Ouverte et tenue à jour par le run de données (#1248). **Le run ne la ferme jamais** : un tirage sans écart ne dit rien des scrutins qu'il n'a pas tirés. À fermer à la main, une fois l'écart expliqué ou corrigé."
+            echo ""
+            echo "Dernier run avec écart : ${URL_RUN}"
+            echo ""
+            cat relecture-votes.md
+          } > corps-issue-votes.md
+          if [[ -z "$NUMERO" ]]; then
+            gh label create "$ETIQUETTE" --repo "$DEPOT" --color B60205 \
+              --description "Une position de vote publiée diffère de la page de l'Assemblée" --force
+            gh issue create --repo "$DEPOT" --label "$ETIQUETTE" \
+              --title "Votes en écart avec la source : ${NB} position(s) diffèrent de la page de l'Assemblée" \
+              --body-file corps-issue-votes.md
+          else
+            gh issue comment "$NUMERO" --repo "$DEPOT" --body-file corps-issue-votes.md
+          fi
+          echo "::warning::VOTES_EN_ECART — ${NB} position(s) publiée(s) diffèrent de la page de l'Assemblée. Issue de suivi tenue à jour sur ${DEPOT}."

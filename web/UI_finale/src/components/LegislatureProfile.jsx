@@ -84,7 +84,7 @@ const BULLES = {
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#leg-bref' }],
   }),
   sieges: (enCours) => ({
-    phrase: 'La composition de l’Assemblée, groupe par groupe, et leur position : majorité, minoritaire ou opposition.',
+    phrase: 'Les groupes de l’Assemblée et leur position : majoritaire, minoritaire ou d’opposition.',
     note: enCours
       ? 'Note : Situation à la date de la dernière mise à jour des données. L’Assemblée ne publie pas les positions pour la législature en cours.'
       : 'Note : Situation au dernier jour de la législature.',
@@ -105,12 +105,12 @@ const BULLES = {
   }),
   commissions: () => ({
     phrase: 'Les textes confiés à chaque commission pendant la législature, et leur avancée.',
-    note: 'Note : Un texte jamais examiné n’est pas un texte rejeté : il n’a simplement jamais été mis à l’ordre du jour. Le nuage reprend les mots les plus fréquents dans les titres des textes.',
+    note: 'Note : Un texte jamais examiné n’a pas été rejeté. Il n’a jamais été mis à l’ordre du jour. Le nuage reprend les mots les plus fréquents dans les titres des textes.',
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#leg-commissions' }],
   }),
   limites: () => ({
     phrase: 'Les limites de cette fiche : ce que les sources ne disent pas sur cette législature.',
-    note: 'Note : Une information absente de cette fiche n’a pas été trouvée dans les sources. Cela ne veut pas dire qu’il ne s’est rien passé.',
+    note: 'Note : Une information absente n’a pas été trouvée dans les sources. Elle a pu exister quand même.',
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#couverture' }],
   }),
 };

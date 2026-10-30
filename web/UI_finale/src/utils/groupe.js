@@ -1073,7 +1073,7 @@ export const REFUS_FICHE_GROUPE = [
     sujet: 'Un indice de cohésion',
     phrase: "Aucun chiffre unique ne résume la cohésion d'un groupe.",
     pourquoi:
-      "Nos données contiennent trois taux par groupe — cohérence, cohérence hors absents, participation. Nous ne les publions pas : un chiffre unique par groupe est une note, et cinq notes sont un classement. Les scrutins où le groupe s'est partagé sont montrés un par un.",
+      "Le site calcule trois taux par groupe et ne les publie pas. Un chiffre unique par groupe est une note, et des notes comparées forment un classement. Les scrutins où le groupe s'est partagé sont montrés un par un.",
   },
   {
     id: 'ecarts-individuels',
@@ -1085,7 +1085,7 @@ export const REFUS_FICHE_GROUPE = [
   {
     id: 'assiduite-de-groupe',
     sujet: 'Les absences',
-    phrase: "Cette fiche connaît les absents de chaque scrutin et ne les publie jamais.",
+    phrase: 'Cette fiche ne publie aucune absence.',
     pourquoi:
       "Nos données comptent, scrutin par scrutin, les membres qui pouvaient voter et pour lesquels aucun vote n'a été trouvé, et ceux qui étaient excusés. Publiés, agrégés ou non, ils deviennent un taux de présence sur des personnes nommées. Aucun décompte de cette page ne les fait entrer, ni dans un total, ni dans la largeur d'une barre.",
   },

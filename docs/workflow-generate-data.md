@@ -23,8 +23,8 @@ date qu'elle porte : un job ajouté ici ne s'y ajoute pas seul.
 | `rafraichir-candidats` | `epingler-le-code` | l'article Wikipédia des candidatures, Wikidata (`P4123`) | `raw_data/candidats.json` à jour + `raw_data/resolutions_candidats.json` → artifact `candidats-a-jour` (#757) |
 | `prepare-an-matrix` | `rafraichir-candidats` | l'artifact `candidats-a-jour`, à défaut `raw_data/candidats.json` | la matrice `extract-an` (un shard par candidat à slug résolvable, #344) et sa **cadence** (`cache_chaud`, #1137) |
 | `extract-amendements-an` | `epingler-le-code` | AN open data (dumps amendements) | artifact `amendements-index-an` + cache `public-data-cache-amendements-<semaine>` |
-| `extract-ue-officiel` | `epingler-le-code` | Europarl Open Data | artifact `raw-profiles-ue-officiel`, cache `public-data-cache-ue-<semaine>` |
-| `extract-parltrack` | `epingler-le-code` | 5 dumps ParlTrack (232 Mio) | artifact `parltrack-dumps`, cache `public-data-cache-parltrack-<semaine>` |
+| `extract-ue-officiel` | `epingler-le-code` | Europarl Open Data | artifact `raw-profiles-ue-officiel`, cache `public-data-cache-ue-v2-<semaine>` |
+| `extract-parltrack` | `epingler-le-code` | 5 dumps ParlTrack (232 Mio) | artifact `parltrack-dumps`, cache `public-data-cache-parltrack-v2-<semaine>` |
 | `rechauffer-le-portail-europeen` | `epingler-le-code`, `extract-parltrack` | le portail du Parlement européen, le dump `ep_dossiers` | l'artifact `portail-europeen-chaud` (le cache des réponses du portail) + le cache `public-data-cache-europarl-documents-v3-<run>-rechauffage` (#1064) |
 | `prepare-roster-matrix` | `epingler-le-code` | `config/groupes_reels.json`, `raw_data/groupes_du_run.json` du run précédent, l'archive AMO30 | **la table des groupes du run** (`raw_data/groupes_du_run.json`, #1168), transportée dans le même artifact ; `raw_data/roster_candidats.json` → artifact `roster-candidats`, la matrice roster, et `rosters_bruts.json` — qui porte depuis #996 une clé `gouvernements:`, les membres des 17 gouvernements lus dans AMO30 (`gouvernement_roster_an.py`). **Depuis #996 lot 3 ces membres entrent aussi dans `roster_candidats.json`**, sous `statut: "roster_gouvernement"`, donc les shards les collectent ; les slugs déjà portés par un roster de groupe ne sont pas repris, et restent `roster_groupe`. La passe tourne **après** le portail d'anomalies et **avant** l'écriture des deux fichiers ; `--sans-gouvernements` la débranche, et son échec est non fatal |
 | `extract-an` | `extract-amendements-an`, `prepare-an-matrix` | AN open data, Syceron, l'index amendements | un artifact `raw-profiles-an-<slug>` par shard, cache `public-data-cache-an-<semaine>[-interv-<empreinte>]` |
@@ -243,10 +243,16 @@ profils bruts des candidats dont le MEP ID est résolu, et ne publie que ceux
 qu'il a **effectivement écrits** (manifeste + `publish-written-profiles`, §4).
 
 **Consomme** l'Open Data Portal EP. **Produit** l'artifact
-`raw-profiles-ue-officiel`, et écrit `public-data-cache-ue-<semaine>` sur
+`raw-profiles-ue-officiel`, et écrit `public-data-cache-ue-v2-<semaine>` sur
 `.cache/europarl` **seul** — cacher `.cache` en bloc lui faisait ré-embarquer
 les données AN et amendements, et le quota de cache du dépôt étant partagé,
 l'entrée surdimensionnée provoquait l'éviction LRU des autres (#424).
+
+**Renouvellement (#1400).** Au premier run de chaque semaine — la clé exacte
+n'existe pas encore, `cache-hit` ne vaut pas `'true'` —, le job retire
+`meps_FR.json` et `organisations.json` avant l'extraction, qui les relit. Sans
+ce step, le repli par préfixe les servait indéfiniment : la liste des députés
+européens est restée celle du 20/09/2026 pendant six semaines.
 
 **Pourquoi comme ça** : l'API officielle EP ne permet pas d'attribuer rapports
 et amendements à un député européen donné — pas de filtre auteur, ~10-15k
@@ -288,7 +294,14 @@ personne.
 **Consomme** `https://parltrack.org/dumps`. **Produit** l'artifact
 `parltrack-dumps` — hors de la famille `raw-profiles-*` exprès, puisqu'il ne
 contient pas de profils (#412 §4) — et la clé
-`public-data-cache-parltrack-<semaine>`.
+`public-data-cache-parltrack-v2-<semaine>`.
+
+**Renouvellement (#1400).** Au premier run de chaque semaine (`cache-hit`
+différent de `'true'`), les cinq dumps sont retéléchargés (`force_download`).
+Avant, `ensure_dump` rendait le dump restauré par le repli, et il est resté
+celui du 20/09/2026 pendant six semaines. Un téléchargement raté laisse
+l'ancien dump en place mais fait échouer le job : la fusion retombe sur les
+données publiées, et le fichier de fraîcheur dit « en échec ».
 
 **Pourquoi comme ça** : source tierce non officielle, donc traitée comme
 faillible de bout en bout. Dumps absents ⇒ la passe pivot ajoute un warning de
@@ -969,12 +982,19 @@ la plus proche :
 | `public-data-cache-an-<semaine>-j<jour>[-interv-<empreinte>]` (le jour depuis #1261, 08/10/2026 : la 17e se réindexe chaque jour, le référentiel des acteurs chaque semaine) | `.cache/acteurs_historique_an`, `.cache/scrutins_an`, `.cache/questions_an/*/index_par_acteur.json`, `.cache/syceron_an/*/index_par_acteur` | `extract-an` (`actions/cache/save`) | `extract-roster-groupes` (`actions/cache/restore`, **même suffixe** depuis #657) |
 | `public-data-cache-amendements-<semaine>` | `.cache/amendements_an` | `extract-amendements-an` (`actions/cache`) | `extract-an`, `extract-roster-groupes` (`restore`) |
 | `public-data-cache-dossiers-<semaine>` | `.cache/dossiers_an` | `extract-an`, `merge-and-pivot` | `extract-roster-groupes` (`restore`) |
-| `public-data-cache-ue-<semaine>` | `.cache/europarl` | `extract-ue-officiel` | `epingler-le-code` |
-| `public-data-cache-parltrack-<semaine>` | `.cache/parltrack` | `extract-parltrack` | `epingler-le-code` |
+| `public-data-cache-ue-v2-<semaine>` | `.cache/europarl` | `extract-ue-officiel` | `epingler-le-code` |
+| `public-data-cache-parltrack-v2-<semaine>` | `.cache/parltrack` | `extract-parltrack` | `epingler-le-code` |
 | `public-data-cache-senat-<date>` | `.cache/senat` | `extract-senat` | `epingler-le-code` |
 
 La clé sénatoriale est au **jour**, et non à la semaine comme les quatre autres :
 `data.senat.fr` régénère son export chaque nuit (#885).
+
+**Ces trois clés renouvellent leur contenu, pas seulement leur nom (#1400).**
+Chacune garde son préfixe de repli, et chaque job lit `cache-hit` pour savoir
+si la clé exacte de la période existait : sinon il retélécharge sa source
+avant de collecter. C'est le mécanisme de #749. Le `-v2-` des deux clés
+hebdomadaires a fait manquer une fois la clé de la semaine du correctif,
+écrite par l'ancien code. → `docs/decisions/renouvellement-caches-senat-pe-parltrack-1400.md`
 
 **La règle du producteur-écrivain** : un job n'écrit jamais une clé pour un
 répertoire qu'il ne remplit pas. `actions/cache` saute la sauvegarde post-job
@@ -1352,6 +1372,35 @@ jointures de `validate_profil()` (scrutin et amendement référencés existent) 
 sont pas rejouées : le contrôle 2 les tient.
 → `docs/decisions/validation-des-profils-dans-le-run-1223.md`
 
+### Les votes relus à la source : un tirage, et une issue (#1248)
+
+Juste après, l'étape « Votes relus à la source (signalement) »
+(`src/relecture_votes_source.py`) tire **dix scrutins publiés — sept des trente
+derniers jours, trois sur tout le corpus** (arbitré le 30/10/2026) — et relit
+chaque position sur la page publique de l'Assemblée, celle que `source_url`
+donne au lecteur. C'est une autre route que la collecte, qui lit les archives
+open data. La comparaison se fait personne par personne, jamais sur les totaux.
+La graine est le numéro du run. **Elle ne bloque pas** (`continue-on-error`,
+10 minutes au plus) ; son rapport part au résumé du job et dans l'artifact
+`relecture-votes`.
+
+| Verdict | Quand |
+| --- | --- |
+| écart | position différente, position que la page nomme et que nous ne publions pas, ou l'inverse |
+| divergence entre sources | un non-votant que la page nomme et que l'open data ne cite pas — sans issue (la présidente de la XVIe n'est citée que dans 357 des 4 106 scrutins de son archive) |
+| hors périmètre | un votant sans profil dans le corpus (les non-inscrits) |
+| non vérifié | la page ne répond pas, ou sa forme a changé — jamais un écart |
+
+Le step « Votes en écart avec la source — issue de suivi » tient **une** issue
+(étiquette `votes-en-ecart-avec-la-source`), avec le même secret que celle des
+fiches hors schéma. **Le run ne la ferme jamais** : un tirage sans écart ne dit
+rien des scrutins qu'il n'a pas tirés.
+
+Mesuré le 30/10/2026 en local sur 1 825 profils pivot : 70 s, pic à 182 Mio ; sur
+trois tirages (30 scrutins), 4 080 positions concordantes, 0 écart, 3
+divergences entre sources.
+→ `docs/decisions/relecture-des-votes-a-la-source-1248.md`
+
 
 ### Ce que `merge-and-pivot` ne produit plus : les fiches de parti (#906)
 
@@ -1666,7 +1715,10 @@ committée du checkout. Consommé par `merge-and-pivot` dans `_artifacts/senat`,
 répertoire que #528 avait retiré de `merge_raw_dirs` et que ce lot rétablit.
 
 **Cache.** Clé au **jour** (`public-data-cache-senat-<date>`), là où ParlTrack
-se contente de la semaine : le Sénat régénère son export chaque nuit.
+se contente de la semaine : le Sénat régénère son export chaque nuit. Le
+téléchargement ne se saute que si la clé exacte du jour a été restaurée
+(#1400) : il se sautait dès que l'export existait, et l'export est resté celui
+du 20/09/2026 pendant six semaines.
 
 **Ses refus.** `continue-on-error` comme `extract-parltrack` — une source tierce
 indisponible ne coûte pas le run, et la fusion additive garde ce que le run

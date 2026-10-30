@@ -2,7 +2,8 @@ import './Baseline.css';
 
 /* ── LA BASELINE (#1026) ──────────────────────────────────────────────────────
  *
- * « 100 % automatisé • 100 % sourcé • 0 score • 0 filtre ». La promesse était
+ * « 100 % sourcé • 0 retouche • 0 score • 0 classement » depuis le 30/10/2026
+ * (« 100 % automatisé • 100 % sourcé • 0 score • 0 filtre » avant). La promesse était
  * écrite là où elle ne se lit pas : dans le `<title>`, dans la `meta
  * description` et dans l'introduction de /methodologie. Elle se lit maintenant
  * aux deux endroits où un lecteur arrive — le bandeau de l'accueil et le pied
@@ -16,16 +17,17 @@ import './Baseline.css';
  * divergera. Les séparateurs sont décoratifs — un lecteur d'écran lit les
  * quatre mentions, pas les puces.
  *
- * CE QUE CHAQUE MOT ENGAGE (§2) : « automatisé » porte sur la COLLECTE et la
- * mise en forme, ce que /methodologie détaille — aucun fait n'est écrit ni
- * altéré à la main. « 0 score, 0 filtre » énonce les règles 1 et 8 : ni note,
- * ni classement, et aucune sélection éditoriale de ce qui est publié. Le
- * filtre par intitulé de la fiche (#979) est un outil de lecture du visiteur,
- * qui ne retire rien du corpus publié.
+ * CE QUE CHAQUE MOT ENGAGE (§2) : « sourcé » est la règle 2. « 0 retouche » :
+ * aucun fait n'est modifié une fois lu à la source — un rapprochement relu par
+ * une personne relie deux fiches, il ne change pas un fait. « 0 score,
+ * 0 classement » énonce la règle 1. « automatisé » et « 0 filtre » sont sortis
+ * le 30/10/2026 : la liste des candidats et les mandats d'avant 2002 sont tenus
+ * à la main, et le site retient la dernière lecture et les votes sur un texte
+ * entier. → docs/decisions/devise-zero-retouche-1405.md
  */
 /* L'espace avant le % est insécable : « 100 » et « % » ne se séparent pas en
  * fin de ligne, et le pied de page passe sur deux lignes sous 900 px. */
-export const BASELINE = ['100\u00a0% automatisé', '100\u00a0% sourcé', '0 score', '0 filtre'];
+export const BASELINE = ['100\u00a0% sourcé', '0 retouche', '0 score', '0 classement'];
 
 /* LES TUILES (bandeau d'À propos, forme C arbitrée le 21/10/2026) : la même
  * devise, le chiffre en grand et son mot dessous. Le chiffre est ce qui précède

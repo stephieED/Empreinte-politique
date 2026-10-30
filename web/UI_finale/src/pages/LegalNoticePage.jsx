@@ -70,7 +70,7 @@ const SECTIONS = [
     heading: 'Mesure d’audience',
     body: (
       <p>
-        Pour savoir combien de personnes lisent le site, nous comptons les visites avec{' '}
+        Pour savoir combien de personnes lisent le site, les visites sont comptées avec{' '}
         <a href="https://www.goatcounter.com" target="_blank" rel="noopener noreferrer">GoatCounter</a>.
         Aucun cookie n'est déposé. Aucune donnée personnelle n'est conservée : seulement des totaux
         par page, par pays et par type d'appareil. Ces totaux sont hébergés en Finlande et en
@@ -119,8 +119,7 @@ const SECTIONS = [
         <p>
           <strong>Les textes rédigés pour ce site et sa charte graphique</strong> — pages
           éditoriales, libellés, identité visuelle, logotype — sont protégés par le droit d’auteur
-          et <strong>tous droits réservés</strong>. Une licence de logiciel ne les couvre pas : elle
-          porte sur le code, pas sur la prose ni sur la marque.
+          et <strong>tous droits réservés</strong>. Une licence de logiciel ne couvre que le code.
         </p>
         <p>
           <strong>Les données présentées</strong> ne relèvent d’aucun de ces deux régimes : elles
@@ -142,31 +141,31 @@ const SECTIONS = [
           comme détaillé en fin de section.
         </p>
 
-        <h3>Open Data de l'Assemblée nationale</h3>
+        <h3>Données de l'Assemblée nationale</h3>
         <p>
           <strong>Seule source de l'activité parlementaire française.</strong> L'identité et les mandats des députés,
           la composition des groupes parlementaires, les scrutins, les amendements, les dossiers
           législatifs, les questions écrites et les débats en séance (Syceron) proviennent du portail
-          Open Data officiel de l'Assemblée nationale (data.assemblee-nationale.fr et
+          de données en libre accès de l'Assemblée nationale (data.assemblee-nationale.fr et
           questions.assemblee-nationale.fr), mis à disposition sous{' '}
           <strong><a href="https://data.assemblee-nationale.fr/licence-ouverte-open-licence" target="_blank" rel="noopener noreferrer">Licence Ouverte / Open Licence</a></strong> (Etalab).
         </p>
         <p className="static-note">
-          Contient des informations publiques issues du portail Open Data de l'Assemblée nationale, sous
+          Contient des informations publiques issues des données en libre accès de l'Assemblée nationale, sous
           Licence Ouverte / Open Licence. Cette licence autorise la réutilisation commerciale et
           l'adaptation sans obligation de partage à l'identique, sous réserve de mention de la paternité.
         </p>
 
-        <h3>Open Data du Sénat</h3>
+        <h3>Données du Sénat</h3>
         <p>
-          <strong>Les appartenances, jamais l'activité.</strong> Le Sénat publie sous{' '}
+          Le Sénat publie sous{' '}
           <strong>Licence Ouverte / Open Licence</strong> les mandats de ses membres, leurs groupes
           politiques, leurs commissions, délégations, groupes d'études, d'amitié et de liaison, et
           les organismes extra-parlementaires où ils siègent (data.senat.fr). Ces données
           alimentent, pour les candidats concernés, la partie sénatoriale de leur parcours.{' '}
           <strong>Ce jeu de données ne contient ni scrutins ni comptes rendus de séance</strong> :
-          aucune fiche ne porte de vote ni de prise de parole au Sénat, et ce silence est une limite
-          de la source, pas une absence d'activité. Les taux de présence que le Sénat publie ne sont
+          aucune fiche ne porte de vote ni de prise de parole au Sénat. Cette limite vient de la source
+          et ne dit rien de l'activité des sénateurs. Les taux de présence que le Sénat publie ne sont
           pas collectés.
         </p>
         <p className="static-note">
@@ -178,10 +177,9 @@ const SECTIONS = [
         <h3>Parltrack</h3>
         <p>
           Les données relatives aux député·es européen·nes (dossiers législatifs, votes, activités)
-          proviennent des dumps JSON de Parltrack (parltrack.org), mis à disposition sous licence{' '}
-          <strong><a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener noreferrer">Open Database License (ODbL) v1.0</a></strong>{' '}
-          — <strong>source active</strong>, et la clause de partage à l'identique s'y applique
-          pleinement.
+          proviennent des fichiers de Parltrack (parltrack.org), mis à disposition sous licence{' '}
+          <strong><a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener noreferrer">Open Database License (ODbL) v1.0</a></strong>.
+          Cette source reste une source active, et la clause de partage à l'identique s'y applique.
         </p>
         <p className="static-note">
           Contient des informations issues de Parltrack (parltrack.org), mises à disposition sous licence
@@ -235,7 +233,7 @@ const SECTIONS = [
         <h3>Places de l'hémicycle de la XIVe législature</h3>
         <p>
           Pour la XIVe législature (2012-2017), les données en libre accès de l'Assemblée nationale
-          ne donnent pas le siège des député·es. Nous le lisons dans{' '}
+          ne donnent pas le siège des député·es. Ce numéro figure dans{' '}
           <a
             href="https://www.assemblee-nationale.fr/14/tribun/xml/place.txt"
             target="_blank"
@@ -251,10 +249,10 @@ const SECTIONS = [
           commercial. Seul le numéro de siège en est repris, avec un lien vers le fichier.
         </p>
 
-        <h3>Implication pour la réutilisation de nos propres données</h3>
+        <h3>Implication pour la réutilisation des données du site</h3>
         <p>
-          Les jeux de données JSON produits et publiés par ce site combinent des contenus sous plusieurs
-          licences. <strong>Seuls les champs dérivés de Parltrack, sous ODbL,</strong>{' '}
+          Pour qui télécharge les fichiers de données : les fichiers produits et publiés par ce site
+          combinent des contenus sous plusieurs licences. <strong>Seuls les champs dérivés de Parltrack, sous ODbL,</strong>{' '}
           sont soumis à la clause de partage à l'identique de l'ODbL : toute republication d'un jeu de
           données dérivé téléchargeable incluant ces champs doit être mise à disposition sous une licence à
           clauses équivalentes. Les champs issus de l'Open Data de l'Assemblée nationale (Licence Ouverte /

@@ -38,11 +38,11 @@ BULLES = {
     ),
     "actes": (
         "Les décrets, arrêtés et ordonnances parus au Journal officiel pendant ce gouvernement, par ministère.",
-        "Note : Seuls les actes qui touchent au droit sont pris en compte et non ceux qui relèvent du fonctionnement interne de l’État (nominations, promotions…). Un acte peut appliquer une loi adoptée avant ce gouvernement.",
+        "Note : Les nominations, promotions et autres actes de fonctionnement interne de l’État ne sont pas comptés. Un acte peut appliquer une loi adoptée avant ce gouvernement.",
     ),
     "couverture": (
         "Les limites de cette fiche : ce que les sources ne disent pas sur ce gouvernement.",
-        "Note : Une information absente de cette fiche n’a pas été trouvée dans les sources. Cela ne veut pas dire qu’il ne s’est rien passé.",
+        "Note : Une information absente n’a pas été trouvée dans les sources. Elle a pu exister quand même.",
     ),
 }
 

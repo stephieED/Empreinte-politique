@@ -44,7 +44,7 @@ export const PAGES_FIXES_META = {
   'nous-soutenir': { titre: `Nous soutenir — ${MARQUE}` },
   /* /candidats, la page de choix (#1329) : le titre de la carte « Mai 2027 »
      qui y mène, mot pour mot. */
-  candidats: { titre: `Focus sur les candidats à la présidentielle — ${MARQUE}` },
+  candidats: { titre: `Les candidats à la présidentielle — ${MARQUE}` },
 };
 
 function enumerer(elements) {

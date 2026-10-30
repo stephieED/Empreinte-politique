@@ -301,14 +301,14 @@ export const STATED_REFUSALS = [
     sujet: 'Assiduité',
     phrase: 'Nous ne publions aucun taux de présence individuel.',
     pourquoi:
-      "Un dénominateur « scrutins où la personne aurait pu voter » transformerait une absence en information négative. Nous n'avons aucun moyen de distinguer une absence d'un déport, d'une délégation ou d'une mission.",
+      'Un taux de présence compterait chaque scrutin où la personne aurait pu voter, et ferait d’une absence une information négative. Rien ne permet de distinguer une absence d’un déport, d’une délégation ou d’une mission.',
   },
   {
     id: 'classement',
     sujet: 'Classement',
     phrase: 'Aucun score, aucun classement, aucune comparaison entre personnes.',
     pourquoi:
-      'Les décomptes sont donnés avec leurs dénominateurs pour être vérifiés, jamais pour être ordonnés.',
+      'Les décomptes sont donnés avec leur dénominateur pour qu’on puisse les vérifier. Le site ne les ordonne pas.',
   },
   {
     id: 'engagement-responsabilite',
@@ -775,7 +775,7 @@ export const LAST_READING_RULE = {
   phrase:
     'Un texte voté plusieurs fois ne compte qu’une fois : la position retenue est celle de sa dernière lecture.',
   pourquoi:
-    'Un même texte revient devant l’Assemblée — première lecture, nouvelle lecture, texte de la commission mixte paritaire, lecture définitive. Compter chacune séparément gonfle le décompte, et afficher une position de première lecture comme la position sur la loi serait faux dès qu’un vote plus tardif l’a suivie. Nous regroupons donc les lectures d’un même texte par son dossier à l’Assemblée quand il est connu, sinon par son intitulé, et nous retenons la plus récente par sa date : le rang de lecture n’est pas un champ de la source. Quand la personne n’a pas de position enregistrée sur cette dernière lecture, le texte n’est pas affiché — nous ne pouvons pas dire pourquoi elle y manque, et le dire serait publier une absence individuelle.',
+    'Un même texte revient devant l’Assemblée : première lecture, nouvelle lecture, texte de la commission mixte paritaire, lecture définitive. Les compter chacune gonflerait le décompte. Le site regroupe les lectures d’un même texte par son dossier, ou à défaut par son intitulé, et retient la plus récente par sa date, car la source ne donne pas le rang de lecture. Si la personne n’a pas de position sur cette dernière lecture, le texte n’est pas affiché. Le site ne peut pas dire pourquoi, et le dire reviendrait à publier une absence individuelle.',
 };
 
 /* ── Livrable : la borne, en texte publié ────────────────────────────────────
@@ -799,9 +799,9 @@ export const WHOLE_TEXT_VOTE_BOUND = {
   id: 'votes-sur-ensemble',
   sujet: 'Votes sur l’ensemble d’un texte',
   phrase:
-    "Ce décompte est un plancher, pas un relevé exhaustif : il ne prétend pas contenir tous les votes sur un texte entier.",
+    'Ce décompte est un plancher, pas un relevé exhaustif : il peut manquer des votes sur un texte entier.',
   pourquoi:
-    "L’Assemblée publie un même code de scrutin pour les votes sur l’ensemble d’un texte, sur un article et sur un amendement : rien dans la source ne les sépare. Nous reconnaissons donc ces votes à leur intitulé, qui commence par « l’ensemble du projet de loi… » ou « l’ensemble de la proposition de loi… ». Un vote sur un texte entier formulé autrement n’est pas repris ici. Nous préférons ce manque à un décompte gonflé : un vote absent ne dit rien, un vote attribué à tort affirme une position que la personne n’a pas prise.",
+    'L’Assemblée publie un même code de scrutin pour les votes sur l’ensemble d’un texte, sur un article et sur un amendement : rien dans la source ne les sépare. Nous reconnaissons donc ces votes à leur intitulé, qui commence par « l’ensemble du projet de loi… » ou « l’ensemble de la proposition de loi… ». Un vote sur un texte entier formulé autrement n’est pas repris ici. Le site préfère omettre un vote que l’attribuer à tort. Un vote omis ne dit rien. Un vote attribué à tort affirmerait une position que la personne n’a pas prise.',
 };
 
 /**

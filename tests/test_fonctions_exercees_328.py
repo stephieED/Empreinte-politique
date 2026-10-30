@@ -325,7 +325,7 @@ def test_la_legende_documente_la_marque_et_la_bulle_mene_a_la_methodologie(compo
     ancre = methodo[methodo.index("id: 'fonctions'") :]
     ancre = ancre[: ancre.index("id: 'propose'")]
     assert "moitié du temps de mandat" in ancre
-    assert "n'est pas celui de membre" in ancre
+    assert "n'est pas celui de membre" in ancre.replace("’", "'")
 
 
 def test_le_pied_vient_apres_le_contenu(composant):

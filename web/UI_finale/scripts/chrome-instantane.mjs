@@ -65,7 +65,7 @@ export const LINKEDIN = 'https://www.linkedin.com/company/empreinte-politique';
 export const X_COMPTE = 'https://x.com/EmpreintePol';
 
 /** Les quatre mentions de `Baseline.jsx`. L'espace avant le % est insécable. */
-export const BASELINE = ['100\u00a0% automatisé', '100\u00a0% sourcé', '0 score', '0 filtre'];
+export const BASELINE = ['100\u00a0% sourcé', '0 retouche', '0 score', '0 classement'];
 
 /* Le filigrane de `shell.css`, recopié tel quel : seize ellipses concentriques
    posées en bas à gauche, à 5,5 % d'opacité. */
@@ -89,9 +89,22 @@ body {
 }
 .construction-banner { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:center; gap:0.5rem 1rem; padding:0.875rem 1.25rem; background:var(--notice); color:#17141f; font-size:0.9375rem; line-height:1.45; text-align:center; }
 .construction-banner__text { margin:0; max-width:78ch; }
+.construction-banner .construction-banner__plie { max-width:78ch; margin:0; }
+.construction-banner .construction-banner__plie > summary { display:block; list-style:none; cursor:default; margin:0; padding:0; border:0; background:none; font:inherit; color:inherit; }
+.construction-banner__plie > summary::-webkit-details-marker { display:none; }
 .construction-banner__link { color:#17141f; font-weight:600; text-underline-offset:0.25em; white-space:nowrap; }
 .construction-banner__link:hover, .construction-banner__link:focus-visible { text-decoration-thickness:2px; }
 @media (max-width:34rem) { .construction-banner { text-align:left; justify-content:flex-start; } }
+/* Au téléphone, une ligne qu'on touche pour la déplier (#1372), comme dans l'application. */
+@media (max-width:720px) {
+  .construction-banner { flex-wrap:nowrap; gap:12px; padding:7px 16px; font-size:13px; line-height:1.4; }
+  .construction-banner__plie { flex:1; min-width:0; }
+  .construction-banner__plie:not([open]) > summary { overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+  .construction-banner__plie > summary { cursor:pointer; }
+  .construction-banner__plie > summary strong { text-decoration:underline dotted; text-underline-offset:0.2em; }
+  .construction-banner__plie > summary:focus-visible { outline:2px solid #17141f; outline-offset:2px; }
+  .construction-banner:has(.construction-banner__plie[open]) { flex-wrap:wrap; padding-block:10px; }
+}
 
 .entete-site { --entete-hauteur:80px; position:sticky; top:0; z-index:5; height:var(--entete-hauteur); display:flex; align-items:center; gap:16px; padding-left:max(0px, calc((100% - var(--colonne)) / 2)); padding-right:max(40px, calc((100% - var(--colonne)) / 2 + 40px)); background:var(--bg); border-bottom:1px solid var(--border); }
 .entete-site-actions { margin-left:auto; display:flex; align-items:center; gap:22px; }
@@ -178,8 +191,14 @@ const lien = (page, classe, courante) =>
 export function bandeau(courante = null) {
   const barre = PAGES.map((p) => lien(p, 'nav-site-lien', courante)).join('\n      ');
   const menu = PAGES.map((p) => lien(p, 'nav-site-menu-lien', courante)).join('\n      ');
+  /* AU TÉLÉPHONE, UNE LIGNE QU'ON DÉPLIE (#1372, forme A′ du 28/10/2026), comme
+     le bandeau de l'application (`ConstructionBanner.jsx`). Ces pages n'ont
+     pas de script : `<details>` tient l'état ouvert. À l'ordinateur, le texte
+     s'affiche en entier et le toucher n'y change rien. Le texte est inchangé. */
   return `<aside class="construction-banner" role="note" aria-label="État du projet">
-  <p class="construction-banner__text"><strong>En construction.</strong> Ce site est publié pendant son développement. Ce qui s'affiche est sourcé et vérifiable, mais des données peuvent manquer, et certaines absences sont encore mal expliquées.</p>
+  <details class="construction-banner__plie">
+    <summary class="construction-banner__text"><strong>En construction.</strong> Des données peuvent manquer, et certaines absences sont encore mal expliquées.</summary>
+  </details>
   <a class="construction-banner__link" href="${SITE}/methodologie">Méthodologie</a>
 </aside>
 <header class="entete-site">

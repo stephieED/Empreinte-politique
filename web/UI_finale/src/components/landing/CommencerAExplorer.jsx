@@ -42,7 +42,7 @@ import './landing.css';
    LA PASTILLE DIT LA BORNE, PAS LA FIABILITÉ. « Provisoire » a été écarté : posé
    au-dessus d'une liste de fiches, il se lit sur les FAITS, qui sont sourcés
    comme ceux des groupes (§2 règle 2). C'est le volet qui est borné. */
-const EVENEMENTS = ['Focus sur l’élection présidentielle 2027'];
+const EVENEMENTS = ['L’élection présidentielle 2027'];
 const BORNE_CANDIDATS = 'Jusqu’en mai 2027';
 
 /* LA DATE VIENT DE LA LOI, PAS DE WIKIPÉDIA (01/10/2026). L'article 3 de la loi

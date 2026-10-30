@@ -96,7 +96,7 @@ export const BULLES = {
   },
   actes: {
     phrase: 'Les décrets, arrêtés et ordonnances parus au Journal officiel pendant ce gouvernement, par ministère.',
-    note: 'Note : Seuls les actes qui touchent au droit sont pris en compte et non ceux qui relèvent du fonctionnement interne de l’État (nominations, promotions…). Un acte peut appliquer une loi adoptée avant ce gouvernement.',
+    note: 'Note : Les nominations, promotions et autres actes de fonctionnement interne de l’État ne sont pas comptés. Un acte peut appliquer une loi adoptée avant ce gouvernement.',
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#gouv-actes' }],
   },
   /* Texte de la maquette du 13/10/2026, pas encore relu par la propriétaire ;
@@ -107,7 +107,7 @@ export const BULLES = {
   },
   couverture: {
     phrase: 'Les limites de cette fiche : ce que les sources ne disent pas sur ce gouvernement.',
-    note: 'Note : Une information absente de cette fiche n’a pas été trouvée dans les sources. Cela ne veut pas dire qu’il ne s’est rien passé.',
+    note: 'Note : Une information absente n’a pas été trouvée dans les sources. Elle a pu exister quand même.',
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#couverture' }],
   },
 };

@@ -45,15 +45,15 @@ export const SOURCES_SCHEMA = [
     url: 'https://fr.wikipedia.org/wiki/Candidatures_%C3%A0_l%27%C3%A9lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2027' },
   { id: 'wd', nom: 'Wikidata', teinte: 'candidat', statut: 'collectee', config: 'wikidata',
     url: 'https://www.wikidata.org/wiki/Property:P4123' },
-  { id: 'an', nom: 'Assemblée Nationale - Data', teinte: 'an', statut: 'collectee', config: 'assemblee-nationale-opendata',
+  { id: 'an', nom: 'Assemblée nationale (données)', teinte: 'an', statut: 'collectee', config: 'assemblee-nationale-opendata',
     url: 'https://data.assemblee-nationale.fr/' },
   // LES PLACES DE LA XIVe (#1326) : un fichier du site de l'Assemblée, lu à
   // chaque run depuis une archive figée. Il ne nourrit que le siège du mandat
   // de député, d'où son seul trait vers « Identité, mandats de député ».
   // `url` : l'accueil du site de la XIVe, jamais le fichier. Nommée et placée
-  // sous « Assemblée Nationale - Data » le 22/10/2026 : deux cases de
+  // sous « Assemblée nationale (données) » le 22/10/2026 : deux cases de
   // l'Assemblée, le portail ouvert et l'archive du site, l'une sous l'autre.
-  { id: 'plx', nom: 'Assemblée Nationale - Archive', teinte: 'an', statut: 'collectee', config: 'places-hemicycle-xive',
+  { id: 'plx', nom: 'Assemblée nationale (archive)', teinte: 'an', statut: 'collectee', config: 'places-hemicycle-xive',
     url: 'https://www.assemblee-nationale.fr/14/' },
   { id: 'sen', nom: 'Sénat', teinte: 'senat', statut: 'collectee', config: 'senat-opendata',
     url: 'https://data.senat.fr/' },

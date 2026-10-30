@@ -130,7 +130,7 @@ const BULLES = {
   },
   fonctions: {
     phrase: 'Les responsabilités tenues pendant les mandats, classées par durée dans chaque catégorie.',
-    note: 'Note : Une ligne sans rôle indiqué signifie simple membre. Une fonction longue n’est pas une fonction plus importante.',
+    note: 'Note : Une ligne sans rôle indiqué signifie simple membre. La durée ne mesure pas l’importance.',
     sources: ['an', 'sen', 'pe'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#fonctions' }],
   },
@@ -148,13 +148,13 @@ const BULLES = {
   // dire. Les deux versants et la fiche de groupe la portent.
   amendements: (voix) => ({
     phrase: `Les amendements dont ${voix.sujet} est l’auteur, répartis par thème de la commission.`,
-    note: 'Note : Le nombre d’amendements seul peut tromper. Chaque segment d’une barre est un texte amendé ; sa largeur est le nombre d’amendements déposés sur ce texte.',
+    note: 'Note : Chaque segment d’une barre est un texte amendé. Sa largeur est le nombre d’amendements déposés dessus. Ce nombre seul peut tromper.',
     sources: ['an'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#propose' }],
   }),
   textesUe: {
     phrase: 'Les textes dont la personne est l’auteur ou le rapporteur au Parlement européen, par thème et par étape de la procédure.',
-    note: 'Note : Un texte qui traite de plusieurs thèmes apparaît sur chaque ligne concernée. « Sans dossier rattaché » : la source ne dit pas où en est le texte.',
+    note: 'Note : Un texte qui traite de plusieurs thèmes apparaît sur chaque ligne concernée. « Sans dossier rattaché » veut dire que la source ne dit pas où en est le texte.',
     sources: SOURCES_UE,
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#propose' }],
   },
@@ -185,7 +185,7 @@ const BULLES = {
   },
   ecarts: {
     phrase: 'Les votes où sa position diffère de celle de la majorité de son groupe parlementaire.',
-    note: 'Note : Seuls les votes en dernière lecture sont comparés, et uniquement sur les scrutins où une majorité se dégage dans le groupe.',
+    note: 'Note : Seuls les votes en dernière lecture sont comparés, quand une majorité se dégage dans le groupe.',
     sources: ['an'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#ecarts' }],
   },
@@ -213,7 +213,7 @@ const BULLES = {
   // mandat non couvert.
   couverture: {
     phrase: 'Les limites de cette fiche : les mandats non couverts, et ce que les sources ne disent pas.',
-    note: 'Note : Quand un mandat n’est pas couvert, la fiche ne sait rien de cette période. Cela ne veut pas dire qu’il ne s’est rien passé.',
+    note: 'Note : Pour un mandat non couvert, la fiche ne dit rien de cette période.',
     sources: ['an', 'sen', 'pe', 'pt', 'rne'],
     liens: [
       { libelle: 'Sources et couvertures →', vers: '/sources#frise' },

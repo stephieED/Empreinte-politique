@@ -148,6 +148,14 @@ les charger, ni à les faire grossir. -->
   `cold_start`, a purged cache, or a schema change invalidating the entry version — three
   things that are *decided*, not awaited, and the same day that would measure #1123 and
   reopen #1125.
+- **Every cache with a rotating key and a `restore-keys` prefix reads `cache-hit`
+  before skipping a download (#1400).** #749 and #555 fixed the Assembly's caches and
+  left three others with the same defect: Senate, European Parliament and ParlTrack
+  served their 20/09/2026 files for six weeks, because their code skipped the
+  download as soon as the file existed. A new cache of that shape gets an `id` on its
+  cache step, and its download step renews when `steps.<id>.outputs.cache-hit` is not
+  `'true'`. `tests/test_ci_cache_sources_candidat_1400.py` holds the three jobs.
+  → `docs/decisions/renouvellement-caches-senat-pe-parltrack-1400.md`
 - **A frozen archive lives under the cache path it already shares, and the weekly purge
   spares it (#1317).** The XVe and XVIe AMO30 archives sit in
   `.cache/acteurs_historique_an/figees/<legislature>/`: the `path:` does not move, so the

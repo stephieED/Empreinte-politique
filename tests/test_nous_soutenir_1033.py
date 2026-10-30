@@ -82,8 +82,9 @@ def test_les_textes_sont_ceux_valides(page: str) -> None:
 def test_a_propos_ne_dit_plus_aucun_financement_exterieur() -> None:
     apropos = re.sub(r"\s+", " ", sans_commentaires(APROPOS.read_text(encoding="utf-8")))
     assert "aucun financement extérieur" not in apropos, "la phrase contredirait l'appel aux dons"
-    assert "aucun financement hors{' '} <Link to=\"/nous-soutenir\">dons sur le site</Link>" in apropos, (
-        "la phrase validée le 19/10/2026 mène à la page des dons"
+    # Reformulée par la relecture du 30/10/2026 (#1407), le lien vers les dons gardé.
+    assert "Il ne reçoit que les{' '} <Link to=\"/nous-soutenir\">dons faits sur le site</Link>" in apropos, (
+        "la phrase sur le financement mène à la page des dons"
     )
 
 

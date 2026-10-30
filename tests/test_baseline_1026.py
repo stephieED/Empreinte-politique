@@ -1,6 +1,7 @@
 """La baseline du site (#1026).
 
-« 100 % automatisé • 100 % sourcé • 0 score • 0 filtre ». Avant le 18/09/2026,
+« 100 % sourcé • 0 retouche • 0 score • 0 classement » depuis le 30/10/2026
+(« 100 % automatisé • 100 % sourcé • 0 score • 0 filtre » avant). Avant le 18/09/2026,
 la promesse du site était écrite là où elle ne se lit pas : dans le `<title>`,
 dans la `meta description` et dans l'introduction de /methodologie. L'en-tête et
 l'accueil n'en disaient rien — l'accueil portait une sous-ligne qui en disait
@@ -39,7 +40,7 @@ PIED = SRC / "components" / "PiedDeSite.jsx"
 HERO = SRC / "components" / "landing" / "Hero.jsx"
 ENTETE = SRC / "components" / "EnTeteSite.jsx"
 
-MENTIONS = ("automatisé", "sourcé", "0 score", "0 filtre")
+MENTIONS = ("sourcé", "0 retouche", "0 score", "0 classement")
 
 
 def sans_commentaires(source: str) -> str:
@@ -65,8 +66,8 @@ def test_les_quatre_mentions_sont_definies_une_seule_fois(baseline: str) -> None
 def test_l_espace_avant_le_pourcent_est_insecable(baseline: str) -> None:
     """« 100 » et « % » ne se séparent pas en fin de ligne : le pied de page
     passe sur deux lignes sous 900 px."""
-    assert "100 % automatisé" in baseline or "100\\u00a0% automatisé" in baseline
-    assert "100 % automatisé" not in baseline
+    assert "100 % sourcé" in baseline or "100\\u00a0% sourcé" in baseline
+    assert "100 % sourcé" not in baseline
 
 
 def test_les_deux_hotes_la_lisent() -> None:

@@ -83,7 +83,7 @@ def test_la_baseline_est_ecrite_une_seule_fois() -> None:
 
 def test_l_avis_en_construction_est_repris_mot_pour_mot() -> None:
     """Le bandeau d'état est sur TOUTES les pages du site : un instantané en est une."""
-    phrase = "Ce site est publié pendant son développement."
+    phrase = "Des données peuvent manquer, et certaines absences sont encore mal expliquées."
     banniere = re.sub(r"\s+", " ", source(COMPOSANTS / "ConstructionBanner.jsx"))
     assert phrase in banniere, "la phrase du bandeau d'état a changé"
     assert phrase in re.sub(r"\s+", " ", source(CHROME)), "le bandeau d'état manque aux pages statiques"

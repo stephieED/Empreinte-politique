@@ -78,11 +78,16 @@ def test_le_nom_du_secret_est_le_seul_du_job():
     )
     # `SRC_ISSUES_TOKEN` (#1223) n'est pas davantage une identité de push :
     # `Issues: Read and write` sur le dépôt privé, rien sur son contenu, et un
-    # seuls les deux steps qui tiennent une issue de suivi le lisent — fiches
-    # hors schéma (#1223), votes sans dossier (#1289). Ils ne doivent
-    # atteindre ni un checkout ni un `git`.
-    assert BLOC.count("secrets.SRC_ISSUES_TOKEN") == 2
-    for nom in ("- name: Fiches hors schéma — issue de suivi", "- name: Votes sans dossier — issue de suivi"):
+    # seuls les trois steps qui tiennent une issue de suivi le lisent — fiches
+    # hors schéma (#1223), votes sans dossier (#1289), votes en écart avec la
+    # source (#1248). Ils ne doivent atteindre ni un checkout ni un `git`.
+    etapes_issue = (
+        "- name: Fiches hors schéma — issue de suivi",
+        "- name: Votes sans dossier — issue de suivi",
+        "- name: Votes en écart avec la source — issue de suivi",
+    )
+    assert BLOC.count("secrets.SRC_ISSUES_TOKEN") == len(etapes_issue)
+    for nom in etapes_issue:
         debut = BLOC.index(nom)
         suivant = BLOC.find("\n      - name:", debut + 1)
         etape_issue = BLOC[debut:suivant if suivant != -1 else None]

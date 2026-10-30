@@ -22,18 +22,18 @@ export const sourcesConfig = [
     nom: 'Conseil constitutionnel',
     type: 'À venir — data.gouv.fr pour les parrainages, Journal officiel pour la liste',
     contenuCouvert:
-      "Les parrainages validés, puis la liste officielle des candidats. Elle remplacera la liste tenue à la main pour dire qui est candidat. Deux étapes, deux sources : le jeu de données du Conseil constitutionnel sur data.gouv.fr, puis sa décision « PDR » publiée au Journal officiel.",
+      "Les parrainages validés, puis la liste officielle des candidats. Elle remplacera la liste tenue à la main pour dire qui est candidat. Les parrainages seront publiés sur data.gouv.fr, la liste par une décision au Journal officiel.",
     cadenceMiseAJour:
       "À venir. Article 3 de la loi du 6 novembre 1962 : les parrainages sont publiés au moins deux fois par semaine jusqu'au 12 mars 2027 à 18 h ; la liste des candidats, au plus tard le 26 mars 2027.",
     licence: 'Licence Ouverte 2.0 (Etalab) pour la décision ; other-pd pour les parrainages',
-    implication: "La décision arrive par la DILA, comme les actes réglementaires. La forme 2027 n'est pas connue : data.gouv.fr ne publiait aucun jeu 2027 au 07/09/2026, et rien ne dit que 2027 reprendra celle de 2022.",
+    implication: "Elle sera publiée comme les actes du Journal officiel. La forme 2027 n'est pas connue : data.gouv.fr ne publiait aucun jeu 2027 au 07/09/2026, et rien ne dit que 2027 reprendra celle de 2022.",
     perimetre: ['Suivi candidat'],
     couverturePeriode: null,
   },
   {
     id: 'assemblee-nationale-opendata',
     nom: 'data.assemblee-nationale.fr',
-    type: 'Dumps ZIP (open data)',
+    type: 'Fichiers téléchargeables (ZIP)',
     contenuCouvert:
       "Seule source de l'activité parlementaire française : identité et mandats des députés, composition des groupes, votes officiels, amendements, dossiers législatifs, questions (questions.assemblee-nationale.fr) et débats en séance (Syceron). Le Sénat publie ses appartenances (data.senat.fr), jamais son activité en séance.",
     cadenceMiseAJour: 'Quotidienne.',
@@ -46,7 +46,7 @@ export const sourcesConfig = [
   {
     id: 'senat-opendata',
     nom: 'data.senat.fr',
-    type: 'Open data (export PostgreSQL, extraits CSV)',
+    type: 'Fichiers téléchargeables (base PostgreSQL, tableurs CSV)',
     contenuCouvert:
       "Les appartenances des sénateurs : mandats avec leur motif de début et de fin, groupes politiques, commissions, délégations, groupes d'études, d'amitié et de liaison, organismes extra-parlementaires. Chaque organe est nommé tel qu'il s'appelait à la date du mandat, et un mandat qui traverse un changement de nom est publié en deux périodes.",
     cadenceMiseAJour: 'Quotidienne.',
@@ -54,24 +54,24 @@ export const sourcesConfig = [
     implication: "Réutilisation libre sous réserve de mention de la source (attribution uniquement, pas de partage à l'identique).",
     perimetre: ['Senat'],
     couverturePeriode:
-      "L'activité en séance n'est pas publiée : ce jeu de données ne contient ni scrutins ni comptes rendus de débats. Les fiches ne portent donc aucun vote et aucune prise de parole au Sénat. Les taux de présence que la source publie ne sont pas collectés — un taux de présence individuel n'est jamais publié ici.",
+      "L'activité en séance n'est pas publiée : ce jeu de données ne contient ni scrutins ni comptes rendus de débats. Les fiches ne portent donc aucun vote et aucune prise de parole au Sénat. Les taux de présence publiés par le Sénat ne sont pas repris.",
   },
   {
     id: 'parltrack',
     nom: 'Parltrack',
-    type: 'Dumps LZMA (JSON)',
+    type: 'Fichiers téléchargeables (JSON compressé)',
     contenuCouvert: 'Mandats, votes et activité des eurodéputés au Parlement européen.',
     cadenceMiseAJour: 'Hebdomadaire (environ).',
     licence: 'ODbL v1.0',
     implication:
-      "Réutilisation possible, mais toute republication sous forme de jeu de données téléchargeable doit être partagée sous la même licence (share-alike).",
+      "Réutilisation possible, mais toute republication sous forme de fichier téléchargeable doit reprendre la même licence (share-alike).",
     perimetre: ['PE'],
     couverturePeriode: null,
   },
   {
     id: 'parlement-europeen-opendata',
     nom: 'Parlement européen Open Data',
-    type: 'API REST + pages MEP',
+    type: 'Interrogation en ligne',
     contenuCouvert:
       'Les mandats des député·es européen·nes, et l’existence et le titre français des documents européens (data.europarl.europa.eu).',
     cadenceMiseAJour: 'En direct (récupérées à chaque exécution, pas de cache hebdomadaire).',
@@ -86,7 +86,7 @@ export const sourcesConfig = [
   {
     id: 'eurovoc',
     nom: 'EuroVoc (Office des publications de l’Union européenne)',
-    type: 'SPARQL',
+    type: 'Interrogation en ligne',
     contenuCouvert:
       "Les noms français des matières européennes, quand le Parlement européen n'en donne que l'identifiant. Rien n'est classé ici : un identifiant sans nom est déclaré, jamais inventé.",
     cadenceMiseAJour: 'À chaque exécution.',
@@ -98,7 +98,7 @@ export const sourcesConfig = [
   {
     id: 'repertoire-national-des-elus',
     nom: 'Répertoire national des élus (data.gouv.fr)',
-    type: 'API tabulaire data.gouv.fr',
+    type: 'Interrogation en ligne',
     contenuCouvert:
       "Les mandats locaux des candidats déclarés : conseils municipaux, mairies, conseils départementaux, régionaux et communautaires.",
     cadenceMiseAJour: 'À chaque exécution.',
@@ -119,7 +119,7 @@ export const sourcesConfig = [
     contenuCouvert:
       "Mandats de député antérieurs au 19 juin 2002, que l'open data de l'Assemblée ne rattache pas : fonction et dates, citées mandat par mandat avec un lien vers la fiche du député.",
     cadenceMiseAJour:
-      "Aucune collecte : table relue une fois (config/mandats_anterieurs.json), complétée quand un candidat se déclare.",
+      "Aucune collecte automatique : mandats relus une fois à la main, complétés quand un candidat se déclare.",
     licence: 'Tous droits réservés (Assemblée nationale) — faits cités',
     implication:
       "Seuls des faits — une fonction, deux dates — sont repris, chacun avec son lien ; aucun contenu du site n'est reproduit.",
@@ -160,9 +160,9 @@ export const sourcesConfig = [
   {
     id: 'wikipedia-fr',
     nom: 'Wikipédia',
-    type: 'API MediaWiki REST',
+    type: 'Interrogation en ligne',
     contenuCouvert:
-      "La liste des candidats déclarés, lue dans l'article « Candidatures à l'élection présidentielle française de 2027 ». Seuls des faits en sont repris — un nom, une étiquette de parti —, jamais de texte.",
+      "La liste des candidats déclarés, lue dans l'article « Candidatures à l'élection présidentielle française de 2027 ». Seuls des faits sont repris, comme un nom ou une étiquette de parti, jamais de texte.",
     cadenceMiseAJour: 'À chaque exécution.',
     licence: 'CC BY-SA 4.0',
     implication: "Seuls des faits sont repris, sans reproduction du texte de l'article.",
@@ -172,9 +172,9 @@ export const sourcesConfig = [
   {
     id: 'wikidata',
     nom: 'Wikidata',
-    type: 'SPARQL',
+    type: 'Interrogation en ligne',
     contenuCouvert:
-      "L'identifiant de chaque candidat déclaré à l'Assemblée nationale (propriété P4123), qui relie sa candidature à sa fiche.",
+      "Le numéro de chaque candidat déclaré à l'Assemblée nationale (P4123), qui relie sa candidature à sa fiche.",
     cadenceMiseAJour: 'À chaque exécution.',
     licence: 'CC0 1.0',
     implication: 'Domaine public : aucune restriction de réutilisation.',

@@ -176,8 +176,8 @@ export default function AnalysesThematiques({ dansHero = false }) {
                   <span className="analyses-txt">
                     <span className="analyses-lab">Événement</span>
                     <span className="analyses-d">Jusqu’en mai 2027</span>
-                    <span className="analyses-t">Focus sur les candidats à la présidentielle</span>
-                    <span className="analyses-desc">{evenement} candidats déclarés : leurs mandats, leurs votes, leurs textes et leurs prises de parole, sourcés.</span>
+                    <span className="analyses-t">Les candidats à la présidentielle</span>
+                    <span className="analyses-desc">{evenement} candidats déclarés. Pour chacun : mandats, votes, textes et prises de parole, avec leurs sources.</span>
                     <span className="analyses-lire">Voir les fiches →</span>
                   </span>
                 </Link>
@@ -221,7 +221,7 @@ export default function AnalysesThematiques({ dansHero = false }) {
             <span className="analyses-bandeau-v analyses-bandeau-v--evenement" aria-hidden="true"><small>Mai</small><b>2027</b></span>
             <span className="analyses-bandeau-txt">
               <span className="analyses-bandeau-lab">Événement · Jusqu’en mai 2027</span>
-              <span className="analyses-bandeau-t">Focus sur les candidats à la présidentielle</span>
+              <span className="analyses-bandeau-t">Les candidats à la présidentielle</span>
             </span>
           </Link>
         ) : (

@@ -58,7 +58,7 @@ export default function CoveragePage() {
           {loading && <p className="cv-etat">Chargement…</p>}
           {error && (
             <p className="cv-etat">
-              La couverture n'a pas pu être chargée. Rien n'est affiché plutôt qu'approché.
+              Les données de cette page n'ont pas pu être chargées. Rechargez la page.
             </p>
           )}
 
@@ -81,15 +81,15 @@ export default function CoveragePage() {
 
               <CandidatsSuivis />
 
-              <section className="static-card static-card--figure cv-card" id="frise" data-section="Ce que le dépôt porte, et depuis quand">
-                <h2>Ce que le dépôt porte, et depuis quand</h2>
+              <section className="static-card static-card--figure cv-card" id="frise" data-section="Ce que le site contient, et depuis quand">
+                <h2>Ce que le site contient, et depuis quand</h2>
                 {/* La légende de la frise dit ce que chaque encre veut dire : ce
                     paragraphe le répétait (règle de forme 3). */}
-                <p className="cv-sous">Chaque ligne se déplie sur ses champs.</p>
+                <p className="cv-sous">Cliquez sur une ligne pour voir le détail.</p>
                 <FriseCouverture couverture={data} />
                 <p className="cv-note">
-                  Les blancs entre deux segments sont des mois sans rien : le plus souvent des
-                  mois sans séance. Ils ne disent pas qu'une donnée manque.
+                  Un blanc entre deux segments est un mois sans données, le plus souvent un mois
+                  sans séance. Il n'indique pas une donnée manquante.
                 </p>
                 <MandatsHorsCouverture fiches={data.accueil?.horsCouverture?.anterieurs} />
               </section>
@@ -97,17 +97,16 @@ export default function CoveragePage() {
               <section className="static-card static-card--figure cv-card" id="manquants" data-section="Ce qui manque, et sur quelles fiches">
                 <h2>Ce qui manque, et sur quelles fiches</h2>
                 <p className="cv-sous">
-                  Le dénominateur n'est pas le nombre de fiches : une fiche sans mandat à
-                  l'Assemblée n'a pas de vote à porter, et sa liste vide est un fait sur elle.
-                  Rapporté aux <b>{data.couvertureFiches.siege} fiches qui y ont siégé</b>, un
-                  manquant se nomme — et celui dont le mandat est antérieur à la borne n'est pas un
-                  trou, l'autre si.
+                  Les manques sont comptés sur les <b>{data.couvertureFiches.siege} fiches</b> qui ont
+                  siégé à l'Assemblée. Une fiche sans mandat à l'Assemblée n'a aucun vote à afficher :
+                  sa liste vide est normale. Un manque est une lacune seulement si le mandat date
+                  d'après le début des données.
                 </p>
                 <TableManquants couverture={data.couvertureFiches} />
               </section>
 
               <p className="cv-renvoi">
-                Ce que ces bornes veulent dire, et pourquoi elles existent :{' '}
+                Pour comprendre ces dates de début, voir{' '}
                 <Link to="/methodologie#couverture">la méthodologie</Link>.
               </p>
             </>
@@ -242,8 +241,8 @@ function TableManquants({ couverture }) {
           <tr>
             <th>Liste</th>
             <th>Fiches qui en portent</th>
-            <th>Manquent, mandat antérieur à la borne</th>
-            <th>Manquent, et c'est un trou</th>
+            <th>Manquent : mandat d'avant la source</th>
+            <th>Manquent : lacune</th>
           </tr>
         </thead>
         <tbody>

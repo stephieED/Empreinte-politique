@@ -67,9 +67,9 @@ import './AboutPage.css';
 export const DEPOT = 'https://github.com/stephieED/Empreinte-politique';
 
 const MANIFESTE = [
-  'Qui siège aujourd’hui à l’Assemblée ? Quelles lois chaque gouvernement a-t-il fait adopter ? Entre les données brutes et les publications techniques, difficile de s’y retrouver. Empreinte politique les met en images, pour qu’on les comprenne d’un coup d’œil. Les infographies proposées ici donnent une vue d’ensemble sur l’activité parlementaire et gouvernementale (mandats, votes, textes, prises de parole).',
-  "Tout est collecté et mis en forme par un programme, à chaque mise à jour : aucun fait n'est écrit ni corrigé à la main. Ce que vous lisez est ce que la source publie, avec le lien pour le vérifier.",
-  'Seuls quelques rapprochements sont relus par une personne, et la fiche le dit.',
+  'Qui siège aujourd’hui à l’Assemblée ? Quelles lois chaque gouvernement a-t-il fait adopter ? Les données publiques répondent à ces questions, mais elles sont dispersées et techniques. Empreinte politique les met en images : mandats, votes, textes, prises de parole.',
+  'Un programme collecte et met en forme les données à chaque mise à jour. Vous lisez ce que la source publie, avec le lien pour le vérifier.',
+  'Quelques rapprochements sont relus à la main, comme l’identité d’un candidat ou ses mandats d’avant 2002.',
   "Rien n'est noté, classé ni commenté.",
 ];
 
@@ -81,7 +81,7 @@ export default function AboutPage() {
         <main className="static-main apropos-main">
           <section className="apropos-bandeau" aria-labelledby="apropos-titre">
             <p className="apropos-eyebrow">À propos</p>
-            <h1 id="apropos-titre">Ce que ce site fait, et qui l’édite.</h1>
+            <h1 id="apropos-titre">Ce site et la personne qui l’édite.</h1>
             {MANIFESTE.map((phrase) => (
               <p key={phrase}>{phrase}</p>
             ))}
@@ -112,29 +112,27 @@ export default function AboutPage() {
                   dit de quoi le projet est indépendant, et c'est le fait. */}
               <p>
                 Empreinte politique est un projet indépendant conçu et développé par Stéphie E.,
-                ingénieure/analyste de données, passionnée par l’Open Data et la transparence
-                démocratique.
+                ingénieure et analyste de données. Elle s’intéresse aux données publiques et à la
+                transparence démocratique.
               </p>
               <p>
-                Projet à but non lucratif : aucune affiliation à un parti, à un candidat ou à une
-                organisation ; aucun financement hors{' '}
-                <Link to="/nous-soutenir">dons sur le site</Link>, aucune publicité. Les coûts sont
-                portés sur fonds propres, et{' '}
-                <a href={DEPOT} target="_blank" rel="noopener noreferrer">
-                  le code est publié en open source, sous licence AGPL-3.0
+                Le projet est à but non lucratif. Il n’a aucun lien avec un parti, un candidat ou une
+                organisation, et aucune publicité. Il ne reçoit que les{' '}
+                <Link to="/nous-soutenir">dons faits sur le site</Link>. Les coûts sont
+                portés sur fonds propres. <a href={DEPOT} target="_blank" rel="noopener noreferrer">
+                  Le code est public et open source, sous licence AGPL-3.0
                 </a>
                 .
               </p>
               <p>
-                C’est un projet personnel, mené sur mon temps libre. Ni une rédaction, ni une
-                entreprise : une personne, un programme, et des sources publiques.
+                C’est un projet personnel, mené sur mon temps libre.
               </p>
               {/* LA SEULE PHRASE DE LA PAGE QUI NE SOIT PAS UN FAIT SUR LE SITE :
                   elle dit pourquoi il existe, et c'est la voix de la propriétaire
                   (§2 — les règles tiennent l'outil, pas sa plume). */}
               <p>
-                Il s’inscrit dans une logique de lutte contre la polarisation des débats et la
-                désinformation : donner à lire les faits, avec de quoi les vérifier.
+                Le but est de limiter la polarisation et la désinformation, en donnant à lire les faits
+                avec de quoi les vérifier.
               </p>
               <p className="apropos-liens">
                 <a href={`mailto:${CONTACT}`}>{CONTACT}</a>
@@ -152,10 +150,8 @@ export default function AboutPage() {
             <section className="static-card" id="comment" data-section="Comment les fiches sont faites">
               <h2>Comment les fiches sont faites</h2>
               <p>
-                Le détail, liste par liste et figure par figure, est sur la page{' '}
-                <Link to="/methodologie">méthodologie</Link> : ce que chaque chiffre mesure, ce
-                qu’il ne mesure pas, et ce que le site refuse de publier. Les sources, elles, sont
-                nommées une par une sur <Link to="/sources">la page des sources</Link>.
+                Le détail est sur la page <Link to="/methodologie">méthodologie</Link>. Les sources
+                sont sur <Link to="/sources">la page des sources</Link>.
               </p>
             </section>
           </div>

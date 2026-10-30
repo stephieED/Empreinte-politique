@@ -36,7 +36,7 @@ TEXTES = {
         "lignee",
     ),
     "quiSontIls": (
-        "L’évolution de la composition du groupe d’une législature à la suivante et sous chacun de ses noms successifs.",
+        "Les membres du groupe, législature après législature et sous chaque nom porté.",
         "Note : Sont comptés tous les députés passés par le groupe pendant la législature, même brièvement.",
         "lignee",
     ),
@@ -47,7 +47,7 @@ TEXTES = {
     ),
     "amendements": (
         "Les amendements des membres du groupe, par matière et par texte amendé.",
-        "Note : Le nombre d’amendements seul peut tromper. Chaque segment d’une barre est un texte amendé ; sa largeur est le nombre d’amendements déposés sur ce texte.",
+        "Note : Chaque segment d’une barre est un texte amendé. Sa largeur est le nombre d’amendements déposés dessus. Ce nombre seul peut tromper.",
         "depots",
     ),
     "paroles": (
@@ -57,17 +57,17 @@ TEXTES = {
     ),
     "vote": (
         "Les scrutins où le groupe a voté d’une seule voix, et ceux où ses membres se sont partagés, par législature.",
-        "Note : « Quorum atteint » : au moins la moitié des membres du groupe a voté. « D’une seule voix » : toutes les positions exprimées vont dans le même sens.",
+        "Note : Quorum atteint : au moins la moitié des membres du groupe a voté. D’une seule voix : toutes les positions exprimées vont dans le même sens.",
         "cohesion",
     ),
     "avecQui": (
         "La position du groupe comparée à celle de chaque autre groupe, texte par texte, par législature.",
-        "Note : Voter dans le même sens n’est pas s’entendre : deux groupes peuvent rejeter un texte pour des raisons opposées. « Nuance » : l’un des deux groupes s’est abstenu.",
+        "Note : Deux groupes qui votent dans le même sens peuvent avoir des raisons opposées. « Nuance » veut dire que l’un des deux s’est abstenu.",
         "convergences",
     ),
     "couverture": (
         "Les limites de cette fiche : ce que les sources ne disent pas sur ces groupes.",
-        "Note : Une information absente de cette fiche n’a pas été trouvée dans les sources. Cela ne veut pas dire qu’il ne s’est rien passé.",
+        "Note : Une information absente n’a pas été trouvée dans les sources. Elle a pu exister quand même.",
         "couverture",
     ),
 }
@@ -151,7 +151,7 @@ def test_la_fiche_candidat_redit_que_le_nombre_seul_peut_tromper() -> None:
     découpée par texte. Relisant la bulle, la propriétaire n'y a plus trouvé
     l'alerte : la figure ne dispense pas de la dire."""
     candidat = CANDIDAT.read_text(encoding="utf-8").split("const BULLES = {")[1].split("\n};\n")[0]
-    assert candidat.count("Note : Le nombre d’amendements seul peut tromper.") == 2, (
+    assert candidat.count("seul peut tromper.") == 2, (
         "les deux versants — Assemblée et Parlement européen — la portent"
     )
 

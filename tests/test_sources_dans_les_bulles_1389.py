@@ -72,7 +72,7 @@ def _lignes(sources, demandees):
 
 def test_le_nom_est_celui_du_schema_et_l_ordre_aussi():
     lignes = _lignes(MAUREL, ["pt", "an", "pe"])
-    assert [l["nom"] for l in lignes] == ["Assemblée Nationale - Data", "Parlement européen", "ParlTrack"]
+    assert [l["nom"] for l in lignes] == ["Assemblée nationale (données)", "Parlement européen", "ParlTrack"]
     assert [l["url"] for l in lignes] == [
         "https://data.assemblee-nationale.fr/", "https://data.europarl.europa.eu/", "https://parltrack.org/"]
 

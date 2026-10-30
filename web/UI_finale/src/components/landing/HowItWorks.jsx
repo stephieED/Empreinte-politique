@@ -37,15 +37,6 @@ function IconTrace() {
   );
 }
 
-function IconNeutral() {
-  return (
-    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
-      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.6" />
-      <line x1="5.8" y1="18.2" x2="18.2" y2="5.8" stroke="currentColor" strokeWidth="1.6" />
-    </svg>
-  );
-}
-
 const STEPS = [
   {
     id: 'sources',
@@ -58,10 +49,10 @@ const STEPS = [
   },
   {
     id: 'normalise',
-    label: 'On normalise',
-    stat: '1 schéma commun',
+    label: 'On rassemble les sources',
+    stat: '1 format commun',
     detail:
-      "Un programme range chaque source dans un même schéma, sans qu'aucun fait soit réécrit à la main. Seuls quelques rapprochements, comme l'identité d'un candidat ou ses mandats antérieurs à 2002, sont relus par une personne, et chacun cite sa source.",
+      "Un programme range toutes les sources dans le même format. Quelques rapprochements, comme l'identité d'un candidat ou ses mandats d'avant 2002, sont relus par une personne et citent leur source.",
     Icon: IconNormalize,
   },
   {
@@ -70,13 +61,6 @@ const STEPS = [
     stat: 'Chaque fait → sa source',
     detail: "Un vote, un texte porté ou un mandat renvoie toujours au document officiel dont il provient.",
     Icon: IconTrace,
-  },
-  {
-    id: 'neutre',
-    label: 'Aucune note, aucun classement',
-    stat: '0 note · 0 classement',
-    detail: "Les faits sont donnés bruts, jamais transformés en score ou en rang.",
-    Icon: IconNeutral,
   },
 ];
 

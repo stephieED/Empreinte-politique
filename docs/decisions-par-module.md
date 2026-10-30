@@ -46,13 +46,14 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/textes_promulgues.py` | 3 |
 | `src/audit_gouvernement_dataset.py` | 2 |
 | `src/avertissements.py` | 2 |
+| `src/candidate_profile_ue.py` | 2 |
 | `src/fetch_candidats_declares.py` | 2 |
 | `src/mandats_anterieurs.py` | 2 |
 | `src/titres_europeens.py` | 2 |
 | `src/cache_an_fraicheur.py` | 1 |
-| `src/candidate_profile_ue.py` | 1 |
 | `src/collecte_mandats_locaux.py` | 1 |
 | `src/documents_europeens.py` | 1 |
+| `src/fraicheur_sources.py` | 1 |
 | `src/generate_lignee_profiles.py` | 1 |
 | `src/gouvernement_roster_an.py` | 1 |
 | `src/identifiants_wikidata.py` | 1 |
@@ -143,7 +144,7 @@ Le mentionnent sans le gouverner : [`derivation-des-groupes-depuis-amo30-1168`](
 
 ## `src/articles_votes.py`
 
-6 décision(s) le gouvernent ; le module en cite 3.
+7 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -152,6 +153,7 @@ Le mentionnent sans le gouverner : [`derivation-des-groupes-depuis-amo30-1168`](
 | [L'intitulé d'un article voté, et le gabarit des lois de finances (#1352) (2026-10-26)](decisions/intitule-des-articles-votes-1352.md) | `VERSION_STRUCTURE`, `en_tete_d_article`, `structure_loi_de_finances` |
 | [L'ordre du jour des séances publiques, un fichier par législature (#1354) (2026-10-26)](decisions/ordre-du-jour-des-seances-1354.md) | `ordre_du_jour` |
 | [« À l'ordre du jour » : l'agenda des séances sur la fiche de législature, en Calendrier ou en Planning (#1354) (2026-10-26)](decisions/ordre-du-jour-fiche-legislature-1354.md) | `ordre_du_jour` |
+| [Le premier fichier de fraîcheur complet, et ce qu'il a montré (#1389, #1400) (2026-10-30)](decisions/premier-fichier-de-fraicheur-1389.md) | `ordre_du_jour` |
 | [Sous `textes`, les seuls textes cités par un scrutin : le fichier variait d'un run à l'autre (#1352) (2026-10-27)](decisions/textes-cites-par-un-scrutin-1352.md) | `articles_des_textes` |
 
 Le mentionnent sans le gouverner : [`articles-au-telephone-1372`](decisions/articles-au-telephone-1372.md), [`articles-votes-par-la-seance-1264`](decisions/articles-votes-par-la-seance-1264.md), [`instantane-violences-sexuelles-1261`](decisions/instantane-violences-sexuelles-1261.md).
@@ -394,7 +396,7 @@ Le mentionnent sans le gouverner : [`cache-completude-interventions-550`](decisi
 | --- | --- |
 | [La 17e se réindexe chaque jour, le référentiel des acteurs chaque semaine (#1261) (2026-10-08)](decisions/cache-an-du-jour-1261.md) | `PERIME_DU_JOUR` |
 
-Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisions/cache-fraicheur-interventions-555.md).
+Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisions/cache-fraicheur-interventions-555.md), [`renouvellement-caches-senat-pe-parltrack-1400`](decisions/renouvellement-caches-senat-pe-parltrack-1400.md).
 
 ## `src/candidate_profile.py`
 
@@ -517,11 +519,12 @@ Le mentionnent sans le gouverner : [`archive-dossiers-xiv-1019`](decisions/archi
 
 ## `src/candidate_profile_ue.py`
 
-1 décision(s) le gouvernent ; le module en cite 0.
+2 décision(s) le gouvernent ; le module en cite 0.
 
 | Décision | Nomme |
 | --- | --- |
 | [Données UE — investigation des sources (2026-08-04)](decisions/investigation-sources-ue.md) | `find_mep_by_name` |
+| [Les caches Sénat, Parlement européen et ParlTrack se renouvellent à chaque période (#1400) (2026-10-30)](decisions/renouvellement-caches-senat-pe-parltrack-1400.md) | `fetch_all_meps_by_country` |
 
 Le mentionnent sans le gouverner : [`licence-parlement-europeen-cc-by-983`](decisions/licence-parlement-europeen-cc-by-983.md), [`reduction-nommee-collecte-vs-publie-888`](decisions/reduction-nommee-collecte-vs-publie-888.md).
 
@@ -638,11 +641,12 @@ Le mentionnent sans le gouverner : [`cascade-europeenne-une-porte-901`](decision
 
 ## `src/download_watchdog.py`
 
-2 décision(s) le gouvernent ; le module en cite 1.
+3 décision(s) le gouvernent ; le module en cite 1.
 
 | Décision | Nomme |
 | --- | --- |
 | [Mandats commission/groupe_amitie/extra_parlementaire sourcés depuis l'AN, fetch_identity NosDéputés rendu conditionnel (#369, complet), watchdog générique sur tous les téléchargements zip (#370, complet) (2026-08-17)](decisions/mandats-officiels-an-369.md) | `download_with_watchdog` |
+| [Les caches Sénat, Parlement européen et ParlTrack se renouvellent à chaque période (#1400) (2026-10-30)](decisions/renouvellement-caches-senat-pe-parltrack-1400.md) | `download_with_watchdog` |
 | [Un téléchargement coupé se reprend là où il s'est arrêté : l'archive Syceron de la XVe ne reste plus hors des correctifs (#1202) (2026-10-04)](decisions/telechargement-repris-apres-coupure-1202.md) | `download_with_watchdog` |
 
 Le mentionnent sans le gouverner : [`budget-collecte-interventions`](decisions/budget-collecte-interventions.md).
@@ -688,6 +692,12 @@ Le mentionnent sans le gouverner : [`finances-etat-collecte-1053`](decisions/fin
 Le mentionnent sans le gouverner : [`finances-sociales-collecte-1053`](decisions/finances-sociales-collecte-1053.md), [`finances-sociales-par-bloc-1053`](decisions/finances-sociales-par-bloc-1053.md).
 
 ## `src/fraicheur_sources.py`
+
+1 décision(s) le gouvernent ; le module en cite 0.
+
+| Décision | Nomme |
+| --- | --- |
+| [Les caches Sénat, Parlement européen et ParlTrack se renouvellent à chaque période (#1400) (2026-10-30)](decisions/renouvellement-caches-senat-pe-parltrack-1400.md) | `TEMOINS_PE_MANDATS` |
 
 Le mentionnent sans le gouverner : [`a-jour-au-par-famille-de-donnees-1389`](decisions/a-jour-au-par-famille-de-donnees-1389.md).
 
@@ -1034,7 +1044,7 @@ Le mentionnent sans le gouverner : [`dila-et-amo30-en-jobs-1129`](decisions/dila
 | [Un mandat que la source devrait porter et ne porte pas se cite à la main, dans un champ à part (#859) (2026-10-06)](decisions/mandats-absents-de-la-source-859.md) | `BORNE_COUVERTURE_GOUVERNEMENT`, `appliquer_mandats_absents_de_la_source` |
 | [Les mandats antérieurs à la couverture de l'Assemblée entrent par une table relue (#860)](decisions/mandats-anterieurs-couverture-860.md) | `appliquer_mandats_anterieurs`, `charger_table` |
 
-Le mentionnent sans le gouverner : [`accueil-borne-par-institution-328`](decisions/accueil-borne-par-institution-328.md), [`borne-mandats-locaux-2020-922`](decisions/borne-mandats-locaux-2020-922.md), [`constat-absence-mandats-anterieurs-860`](decisions/constat-absence-mandats-anterieurs-860.md), [`correspondance-elus-rne-relue-922`](decisions/correspondance-elus-rne-relue-922.md), [`mention-mandats-anterieurs-fiche-candidat-860`](decisions/mention-mandats-anterieurs-fiche-candidat-860.md), [`repertoire-config-1057`](decisions/repertoire-config-1057.md), [`reponse-au-retour-ux-fiche-candidat`](decisions/reponse-au-retour-ux-fiche-candidat.md), [`scrutins-europeens-publies-deux-fois-1011`](decisions/scrutins-europeens-publies-deux-fois-1011.md), [`sediment-nosdeputes-839`](decisions/sediment-nosdeputes-839.md).
+Le mentionnent sans le gouverner : [`accueil-borne-par-institution-328`](decisions/accueil-borne-par-institution-328.md), [`borne-mandats-locaux-2020-922`](decisions/borne-mandats-locaux-2020-922.md), [`constat-absence-mandats-anterieurs-860`](decisions/constat-absence-mandats-anterieurs-860.md), [`correspondance-elus-rne-relue-922`](decisions/correspondance-elus-rne-relue-922.md), [`devise-zero-retouche-1405`](decisions/devise-zero-retouche-1405.md), [`mention-mandats-anterieurs-fiche-candidat-860`](decisions/mention-mandats-anterieurs-fiche-candidat-860.md), [`repertoire-config-1057`](decisions/repertoire-config-1057.md), [`reponse-au-retour-ux-fiche-candidat`](decisions/reponse-au-retour-ux-fiche-candidat.md), [`scrutins-europeens-publies-deux-fois-1011`](decisions/scrutins-europeens-publies-deux-fois-1011.md), [`sediment-nosdeputes-839`](decisions/sediment-nosdeputes-839.md).
 
 ## `src/mep_profile.py`
 
@@ -1221,7 +1231,7 @@ Le mentionnent sans le gouverner : [`civilite-et-pcs-insee-659`](decisions/civil
 
 ## `src/parltrack_dumps.py`
 
-10 décision(s) le gouvernent ; le module en cite 3.
+11 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1230,6 +1240,7 @@ Le mentionnent sans le gouverner : [`civilite-et-pcs-insee-659`](decisions/civil
 | [Le lecteur des dumps ParlTrack n'avait jamais lu une ligne (#683, lot 1)](decisions/lecture-dumps-parltrack-683.md) | `DUMPS_LUS`, `DumpParltrackIllisible`, `_lire_dump`, `_perimetre`, `definir_perimetre_meps`, `iter_dump_zst` |
 | [La projection d'un index est une fabrique, et elle jetait la référence de dossier (#901) (2026-09-14)](decisions/projection-index-activites-jette-le-dossier-901.md) | `VERSION_SCHEMA_INDEX`, `build_activities_index` |
 | [Un profil de roster ne porte pas une liste que sa propre collecte déclare écartée — purge des 49 `textes_portes` résiduels (#747)](decisions/purge-textes-portes-roster-747.md) | `get_dossiers_for_mep` |
+| [Les caches Sénat, Parlement européen et ParlTrack se renouvellent à chaque période (#1400) (2026-10-30)](decisions/renouvellement-caches-senat-pe-parltrack-1400.md) | `ensure_dump` |
 | [Un scrutin européen que ParlTrack publie deux fois n'est compté qu'une fois (#1011) (2026-10-07)](decisions/scrutins-europeens-publies-deux-fois-1011.md) | `VERSION_SCHEMA_INDEX`, `build_votes_index`, `doublons_de_seance` |
 | [Le stade d'un dossier européen se publie dans sa propre nomenclature, jamais traduit en stade français (#901) (2026-09-13)](decisions/stade-procedural-europeen-901.md) | `VERSION_SCHEMA_INDEX`, `_empreinte_perimetre`, `build_dossiers_index` |
 | [L'européen entre dans les listes que la fiche a déjà (#683, lot 2)](decisions/stockage-europeen-dans-les-listes-existantes-683.md) | `definir_perimetre_meps` |
@@ -1342,6 +1353,10 @@ Le mentionnent sans le gouverner : [`fraicheur-dossiers-762`](decisions/fraicheu
 
 Le mentionnent sans le gouverner : [`rattachement-deduit-votes-sans-dossier-1289`](decisions/rattachement-deduit-votes-sans-dossier-1289.md).
 
+## `src/relecture_votes_source.py`
+
+Le mentionnent sans le gouverner : [`relecture-des-votes-a-la-source-1248`](decisions/relecture-des-votes-a-la-source-1248.md).
+
 ## `src/reprise_mandats_gouvernementaux.py`
 
 Le mentionnent sans le gouverner : [`organe-createur-missions-1311`](decisions/organe-createur-missions-1311.md), [`purge-doublons-herites-729`](decisions/purge-doublons-herites-729.md).
@@ -1356,13 +1371,14 @@ Le mentionnent sans le gouverner : [`organe-createur-missions-1311`](decisions/o
 
 ## `src/rne_opendata.py`
 
-5 décision(s) le gouvernent ; le module en cite 3.
+6 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
 | [« À jour au » : les sources de la fiche candidat (#1389, #1391) (2026-10-29)](decisions/a-jour-au-fiche-candidat-1389.md) | `mandats_locaux` |
 | [Un artifact ne porte plus que les champs que son job a collectés (#997) (2026-09-19)](decisions/contribution-par-champs-997.md) | `mandats_locaux` |
 | [Un champ qu'une contribution ne porte pas n'est plus effacé (#997) (2026-09-19)](decisions/fusion-conserve-les-champs-absents-997.md) | `mandats_locaux` |
+| [Le premier fichier de fraîcheur complet, et ce qu'il a montré (#1389, #1400) (2026-10-30)](decisions/premier-fichier-de-fraicheur-1389.md) | `mandats_locaux` |
 | [Le fichier des sortants a vieilli ses élus d'un siècle, et cinq mandats ont disparu (#922) (2026-09-16)](decisions/sortants-annee-decalee-922.md) | `PAGES_MAX` |
 | [`validate_profil()` tourne dans le run, et une fiche hors schéma ouvre une issue (#1223) (2026-10-06)](decisions/validation-des-profils-dans-le-run-1223.md) | `FICHIERS_LOCAUX` |
 
@@ -1411,7 +1427,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 
 ## `src/schema_pivot.py`
 
-70 décision(s) le gouvernent ; le module en cite 5.
+71 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1466,6 +1482,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 | [Un projet de loi porté au nom du Gouvernement n'est pas une production personnelle (#689) (2026-09-01)](decisions/qualification-textes-portes-689.md) | `KNOWN_ROLES_TEXTE`, `validate_profil` |
 | [Une question au gouvernement : un acte, et ses tours de parole reliés à lui (#1094) (2026-09-22)](decisions/question-au-gouvernement-acte-et-parole-1094.md) | `rattacher_parole_aux_questions` |
 | [Rattacher une intervention ou un scrutin à son dossier : les deux volets restants sont écartés, mesure à l'appui (#639) (2026-09-01)](decisions/rattachement-au-dossier-interventions-et-scrutins-639.md) | `LISTES_COUVERTES` |
+| [Relire à la source quelques votes publiés, à chaque run (#1248) (2026-10-30)](decisions/relecture-des-votes-a-la-source-1248.md) | `validate_profil` |
 | [Restaurer 789 interventions sans revenir sur le reste du schéma (#460) (2026-08-19)](decisions/restauration-interventions.md) | `validate_profil` |
 | [NosDéputés sort du pipeline (#529, lot 5 de l'épic « une seule source AN ») (2026-08-27)](decisions/retrait-nosdeputes-529.md) | `KNOWN_SOURCE_TYPES`, `validate_profil` |
 | [Le Sénat sort du périmètre, et le job qui concluait vert sans rien produire est retiré (#528, lot 3 de l'épic « une seule source AN ») (2026-08-26)](decisions/retrait-senat-528.md) | `KNOWN_CHAMBRES`, `KNOWN_SOURCE_TYPES` |

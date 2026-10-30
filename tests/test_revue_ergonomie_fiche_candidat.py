@@ -56,7 +56,7 @@ TEXTES = {
     ),
     "fonctions": (
         "Les responsabilités tenues pendant les mandats, classées par durée dans chaque catégorie.",
-        "Note : Une ligne sans rôle indiqué signifie simple membre. Une fonction longue n’est pas une fonction plus importante.",
+        "Note : Une ligne sans rôle indiqué signifie simple membre. La durée ne mesure pas l’importance.",
     ),
     "textes": (
         "Les textes de loi dont la personne est l’auteur ou le rapporteur, rangés à l’étape qu’ils ont atteinte.",
@@ -65,7 +65,7 @@ TEXTES = {
     "amendements": (
         "est l’auteur, répartis par thème de la commission.",
         # « Le nombre d'amendements seul peut tromper » est revenu le 02/10/2026.
-        "Note : Le nombre d’amendements seul peut tromper. Chaque segment d’une barre est un texte amendé ; sa largeur est le nombre d’amendements déposés sur ce texte.",
+        "Note : Chaque segment d’une barre est un texte amendé. Sa largeur est le nombre d’amendements déposés dessus. Ce nombre seul peut tromper.",
     ),
     "votes": (
         "Les votes sur les textes de loi en dernière lecture, par période de gouvernement.",
@@ -73,7 +73,7 @@ TEXTES = {
     ),
     "ecarts": (
         "Les votes où sa position diffère de celle de la majorité de son groupe parlementaire.",
-        "Note : Seuls les votes en dernière lecture sont comparés, et uniquement sur les scrutins où une majorité se dégage dans le groupe.",
+        "Note : Seuls les votes en dernière lecture sont comparés, quand une majorité se dégage dans le groupe.",
     ),
     "dit": (
         "Les prises de parole à l’Assemblée, par période de gouvernement, par type et par sujet.",
@@ -82,13 +82,13 @@ TEXTES = {
     # Réécrite le 02/10/2026 : la section est devenue une liste de manques.
     "couverture": (
         "Les limites de cette fiche : les mandats non couverts, et ce que les sources ne disent pas.",
-        "Note : Quand un mandat n’est pas couvert, la fiche ne sait rien de cette période. Cela ne veut pas dire qu’il ne s’est rien passé.",
+        "Note : Pour un mandat non couvert, la fiche ne dit rien de cette période.",
     ),
     # Les quatre textes du versant européen, arrêtés le 02/10/2026 sur la fiche
     # rendue d'Emmanuel Maurel.
     "textesUe": (
         "Les textes dont la personne est l’auteur ou le rapporteur au Parlement européen, par thème et par étape de la procédure.",
-        "Note : Un texte qui traite de plusieurs thèmes apparaît sur chaque ligne concernée. « Sans dossier rattaché » : la source ne dit pas où en est le texte.",
+        "Note : Un texte qui traite de plusieurs thèmes apparaît sur chaque ligne concernée. « Sans dossier rattaché » veut dire que la source ne dit pas où en est le texte.",
     ),
     "amendementsUe": (
         "est l’auteur au Parlement européen, répartis par thème.",

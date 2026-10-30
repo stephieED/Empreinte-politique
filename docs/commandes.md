@@ -956,6 +956,19 @@ ceux qui ne le passent pas, avec leur population. **Sort toujours en 0** quand
 il a pu lire le répertoire : c'est un signalement, pas un gate — dans le run,
 c'est une issue qui le porte. `--out` et `--out-json` écrivent le rapport.
 
+### Les votes publiés sont-ils ceux de la page de l'Assemblée ? (#1248)
+
+```bash
+python3 src/relecture_votes_source.py --graine 1 --out relecture.md --out-json relecture.json
+```
+
+Tire dix scrutins de `pivot_data/scrutins.json` (sept des trente derniers jours,
+trois sur tout le corpus), lit chaque page de scrutin de l'Assemblée et la
+compare, personne par personne, aux positions des profils publiés. `--graine`
+rejoue un tirage (le run passe son numéro) ; `--date` fixe le jour du tirage.
+Fait dix requêtes au site de l'Assemblée. **Sort toujours en 0** : c'est un
+signalement.
+
 ### Les prises de parole rattachées à une autre personne (#1177)
 
 ```bash

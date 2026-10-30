@@ -86,4 +86,5 @@ def test_les_deux_appelants_passent_les_dossiers() -> None:
 
 def test_la_methodologie_dit_le_dossier() -> None:
     regles = MODULE.read_text(encoding="utf-8")
-    assert "par son dossier à l’Assemblée quand il est connu, sinon par son intitulé" in regles
+    # Reformulé par la relecture du 30/10/2026 (#1409) : le dossier d'abord, l'intitulé à défaut.
+    assert "par son dossier, ou à défaut par son intitulé" in regles
