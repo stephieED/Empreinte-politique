@@ -1,6 +1,6 @@
 {
  "schema_version": "fraicheur-sources-v1",
- "genere_le": "2026-10-29",
+ "genere_le": "2026-10-30",
  "familles": {
   "an.mandats": {
    "source": "an",
@@ -12,7 +12,7 @@
   },
   "an.gouvernements": {
    "source": "an",
-   "a_jour_au": "2026-10-29",
+   "a_jour_au": "2026-10-30",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -60,7 +60,7 @@
   },
   "an.ordre_du_jour": {
    "source": "an",
-   "a_jour_au": "2026-10-29",
+   "a_jour_au": "2026-10-30",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -68,7 +68,7 @@
   },
   "an.articles_votes": {
    "source": "an",
-   "a_jour_au": "2026-10-29",
+   "a_jour_au": "2026-10-30",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -76,7 +76,7 @@
   },
   "jo.actes": {
    "source": "jo",
-   "a_jour_au": "2026-10-29",
+   "a_jour_au": "2026-10-30",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -84,7 +84,7 @@
   },
   "budget_etat": {
    "source": "budget_etat",
-   "a_jour_au": "2026-10-29",
+   "a_jour_au": "2026-10-30",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -92,7 +92,7 @@
   },
   "drees": {
    "source": "drees",
-   "a_jour_au": "2026-10-29",
+   "a_jour_au": "2026-10-30",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -100,7 +100,71 @@
   },
   "unedic": {
    "source": "unedic",
-   "a_jour_au": "2026-10-29",
+   "a_jour_au": "2026-10-30",
+   "raison": null,
+   "etat": "a_jour",
+   "en_echec_depuis": null,
+   "motif_dernier_run": null
+  },
+  "sen.mandats": {
+   "source": "sen",
+   "a_jour_au": "2026-09-20",
+   "raison": null,
+   "etat": "a_jour",
+   "en_echec_depuis": null,
+   "motif_dernier_run": null
+  },
+  "pe.mandats": {
+   "source": "pe",
+   "a_jour_au": "2026-09-20",
+   "raison": null,
+   "etat": "a_jour",
+   "en_echec_depuis": null,
+   "motif_dernier_run": null
+  },
+  "pe.documents": {
+   "source": "pe",
+   "a_jour_au": "2026-10-30",
+   "raison": null,
+   "etat": "a_jour",
+   "en_echec_depuis": null,
+   "motif_dernier_run": null
+  },
+  "pt.votes": {
+   "source": "pt",
+   "a_jour_au": "2026-09-20",
+   "raison": null,
+   "etat": "a_jour",
+   "en_echec_depuis": null,
+   "motif_dernier_run": null
+  },
+  "pt.amendements": {
+   "source": "pt",
+   "a_jour_au": "2026-09-20",
+   "raison": null,
+   "etat": "a_jour",
+   "en_echec_depuis": null,
+   "motif_dernier_run": null
+  },
+  "pt.interventions": {
+   "source": "pt",
+   "a_jour_au": "2026-09-20",
+   "raison": null,
+   "etat": "a_jour",
+   "en_echec_depuis": null,
+   "motif_dernier_run": null
+  },
+  "pt.textes": {
+   "source": "pt",
+   "a_jour_au": "2026-09-20",
+   "raison": null,
+   "etat": "a_jour",
+   "en_echec_depuis": null,
+   "motif_dernier_run": null
+  },
+  "rne.mandats_locaux": {
+   "source": "rne",
+   "a_jour_au": "2026-10-30",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
