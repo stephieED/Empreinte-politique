@@ -1,6 +1,6 @@
 {
   "schema_version": "legislatures-v1",
-  "genere_le": "2026-10-30T00:16:13+0000",
+  "genere_le": "2026-10-31T18:40:50+0000",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "legislatures": {
     "14": {
@@ -416,9 +416,9 @@
           "sigle": "DR",
           "libelle_abrege": "DR",
           "nom": "Droite Républicaine",
-          "membres_au_jour": 47,
-          "membres_avec_place": 47,
-          "place_mediane": 185,
+          "membres_au_jour": 46,
+          "membres_avec_place": 46,
+          "place_mediane": 184.5,
           "place_min": 162,
           "place_max": 212
         },
@@ -482,10 +482,10 @@
           "sigle": "LIOT",
           "libelle_abrege": "LIOT",
           "nom": "Libertés, Indépendants, Outre-mer et Territoires",
-          "membres_au_jour": 23,
-          "membres_avec_place": 23,
-          "place_mediane": 464,
-          "place_min": 382,
+          "membres_au_jour": 24,
+          "membres_avec_place": 24,
+          "place_mediane": 460.5,
+          "place_min": 206,
           "place_max": 483
         },
         {
@@ -524,9 +524,9 @@
       ],
       "groupes_non_resolus": null,
       "places_non_resolues": null,
-      "groupes_jour_reference": "2026-10-30",
+      "groupes_jour_reference": "2026-10-31",
       "places_source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
-      "places_etat_au": "2026-10-30"
+      "places_etat_au": "2026-10-31"
     }
   }
 }

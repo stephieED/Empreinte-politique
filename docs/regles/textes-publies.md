@@ -11,6 +11,11 @@ le renvoi « AGENTS.md §3g ». -->
 `AGENTS.md` §11 importe ce fichier : Claude Code le charge au démarrage de
 chaque session, avant tout texte proposé pour le site.
 
+**Avant de proposer le moindre texte pour le site, charge la skill
+`textes-du-site`** (`.claude/skills/textes-du-site/`). Ce fichier dit ce qui
+est permis ; la skill dit comment l'écrire, d'après les corrections de la
+propriétaire, et chaque correction nouvelle s'y ajoute.
+
 **Ces règles ne valent que pour ce que le lecteur du site voit à l'écran.**
 Rien d'autre n'est concerné, et les appliquer ailleurs serait une erreur.
 
@@ -61,6 +66,39 @@ disent ce qui peut être publié ; ce fichier dit comment l'écrire.
   moins 60 % des noms de ces deux listes réunies figurent sur les deux ») a été
   jugée illisible ; la version publiée tient en un tableau de trois colonnes et
   deux exemples (#1333).
+- **Les tics d'un modèle de langage se corrigent avant de proposer un texte.**
+  Un lecteur du fil r/developpeurs a écrit, le 30/10/2026 : « rendu encore plus
+  compliqué par l'IA qui pond du texte pour expliquer le texte qui expliquait le
+  texte d'avant […] je prendrai comme argent comptant une infographie de ce
+  genre sur lemonde.fr, mais pas la même infographie présentée sur un site
+  inconnu (qui en plus a des tournures de LLM dans ses textes) ». Deux
+  relectures extérieures (GPT et Gemini, 30/10/2026) ont relevé ces tournures
+  sur tout le site. Ce sont celles de l'agent qui rédige, et elles entament la
+  confiance avant qu'un seul chiffre soit lu. Avant de proposer un texte, le
+  relire contre ce tableau ; un texte qui porte l'un de ces tics se réécrit
+  d'abord.
+
+  | Tic | Relevé sur le site | À la place |
+  | --- | --- | --- |
+  | La négation d'abord : « X n'est pas Y », « ne veut pas dire », « ce n'est pas X, c'est Y », « et non X », « X, pas Y » | « Une fonction longue n'est pas une fonction plus importante » ; une vingtaine dans la méthodologie | dire ce qui est. Une négation ne reste que si elle empêche une mauvaise lecture précise (« un texte arrêté n'est pas rejeté »), une fois, là où la figure la demande |
+  | Le tiret long d'incise (« — ») | 26 dans la méthodologie, 10 dans les mentions légales | une virgule, une parenthèse, ou deux phrases |
+  | La phrase-chute, le miroir, l'aphorisme | « un vote absent ne dit rien, un vote attribué à tort affirme… » ; « cinq notes sont un classement » ; « faire passer une ignorance pour un fait » ; le titre « Trois vides, trois causes » | le fait, dit sans effet |
+  | Le deux-points qui annonce une révélation | « Les limites de cette fiche : … » ; « Deux étapes, deux sources : … » | une phrase directe |
+  | Les énumérations par trois ou quatre, « ni… ni… ni » | « ni total, ni rang, ni comparaison entre personnes » | ce qui est nécessaire, pas le rythme |
+  | Les mots d'insistance | réellement, simplement, pleinement, elle-même, « pour ce qu'il est » ; « jamais » 24 fois dans la méthodologie | les retirer |
+  | Le gras à répétition | 50 passages en gras dans la méthodologie, 24 dans les mentions légales | les noms et les chiffres qui portent la phrase, pas plus |
+  | La phrase qui s'annonce | « Cette page dit comment chaque fiche est faite… » ; « Cet article montre… » | commencer par le contenu |
+  | La justification de fabrication à l'écran | « Écrire « membre » partout ferait lire une distinction… » ; « choisir les faits qui arrangent serait pire… » ; « Nous préférons ce manque… » | la méthodologie, ou rien (voir « Une note aide le lecteur à ne pas mal lire la figure ») |
+  | La formule de communication | « s'inscrit dans une logique de lutte contre », « Focus sur », « l'univers retenu » | le mot de tous les jours |
+  | La redite d'une page à l'autre | « ni note ni classement » ou « aucun taux de présence » redits à six ou sept endroits | un endroit ; ailleurs, un lien |
+  | Plusieurs voix | « mon temps libre », « nous » et « Empreinte politique » sur des pages voisines | une voix par page |
+  | La promesse plus large que le fait | « 100 % automatisé », « aucun fait n'est écrit ni corrigé à la main », « et la fiche le dit », alors que des mandats sont relus à la main et qu'aucune fiche ne le dit | n'écrire une promesse qu'après avoir vérifié qu'elle est vraie partout |
+
+  Les chiffres de la colonne du milieu sont ceux des rapports (30/10/2026),
+  comptés sur le code source. `tests/test_textes_publies.py` tient un cliquet
+  sur les deux tics qui se comptent sans lire, le tiret long et la négation
+  (« n'est pas », « ne veut pas dire ») : leur nombre ne peut que baisser.
+  Tout le reste ne se voit qu'à la relecture.
 - **Du concret, pas de quantificateur flou.** « La plupart », « compte
   surtout » font lire une formule « fumeuse » ou « alambiquée » (ses mots,
   22/10/2026, sur l'explication de la filiation des groupes). On dit le chiffre,

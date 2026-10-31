@@ -77,3 +77,38 @@ def test_la_garde_reconnait_un_mot_du_depot(tmp_path: Path) -> None:
     classes = tmp_path / "Hero.jsx"
     classes.write_text('const c = "hero-pipeline-step hero-pipeline-step--lien";\n', encoding="utf-8")
     assert _MOT.search(texte_visible(classes)) is None
+
+
+# ── Le cliquet des tics d'écriture (30/10/2026) ─────────────────────────────
+#
+# Deux relectures extérieures (GPT, Gemini) ont relevé les tournures de modèle
+# de langage du site, après qu'un lecteur les a remarquées (règle « Les tics
+# d'un modèle de langage… » de docs/regles/textes-publies.md). Deux de ces
+# tics se comptent sans lire : le tiret long d'incise et la négation d'abord.
+# Leur total sur les textes publiés ne peut que BAISSER. Quand une réécriture
+# en retire, abaisser le plafond au nouveau compte, dans le même lot : sinon
+# le terrain gagné se reperd sans que rien ne le voie.
+#
+# Plafonds mesurés le 30/10/2026 sur main, sur les fichiers que lit
+# `fichiers_publies()` (les bulles des fiches n'y sont pas).
+
+_TICS = {
+    "tiret long d'incise « — »": (re.compile(r"—"), 76),
+    "négation d'abord (« n'est pas », « ne veut pas dire »)": (
+        re.compile(r"n[’']est pas|ne veut pas dire"),
+        31,
+    ),
+}
+
+
+@pytest.mark.parametrize("tic", sorted(_TICS))
+def test_les_tics_d_ecriture_ne_peuvent_que_baisser(tic: str) -> None:
+    motif, plafond = _TICS[tic]
+    par_fichier = {f.name: len(motif.findall(texte_visible(f))) for f in fichiers_publies()}
+    total = sum(par_fichier.values())
+    pires = ", ".join(f"{n} ({c})" for n, c in sorted(par_fichier.items(), key=lambda x: -x[1])[:3] if c)
+    assert total <= plafond, (
+        f"{tic} : {total} dans les textes publiés, pour un plafond de {plafond}. "
+        f"Les plus chargés : {pires}. Réécrire plutôt qu'ajouter "
+        "(docs/regles/textes-publies.md, « Les tics d'un modèle de langage »)."
+    )

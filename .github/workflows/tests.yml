@@ -116,7 +116,12 @@ jobs:
           # dans le dépôt existe bien sous `docs/decisions/` et que l'index les
           # connaît toutes. Sans eux le test passerait en CI **sans rien lire** —
           # d'où son premier cas, qui échoue si `docs/decisions/` est vide.
+          # `.claude` : `tests/test_skill_textes_du_site.py` vérifie que les
+          # fichiers d'exemples de la skill restent sous 6 000 octets. Hors
+          # liste, il a échoué en CI sur sa propre PR (#1411) : le piège
+          # annoncé plus haut, une fois de plus.
           sparse-checkout: |
+            .claude
             .github
             .gitignore
             AGENTS.md

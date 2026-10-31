@@ -1,18 +1,18 @@
 {
  "schema_version": "fraicheur-sources-v1",
- "genere_le": "2026-10-30",
+ "genere_le": "2026-10-31",
  "familles": {
   "an.mandats": {
    "source": "an",
-   "a_jour_au": "2026-10-29",
+   "a_jour_au": "2026-10-31",
    "raison": null,
-   "etat": "non_relue",
+   "etat": "a_jour",
    "en_echec_depuis": null,
-   "motif_dernier_run": "job extract-an : cancelled"
+   "motif_dernier_run": null
   },
   "an.gouvernements": {
    "source": "an",
-   "a_jour_au": "2026-10-30",
+   "a_jour_au": "2026-10-31",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -20,35 +20,35 @@
   },
   "an.votes": {
    "source": "an",
-   "a_jour_au": "2026-10-29",
+   "a_jour_au": "2026-10-31",
    "raison": null,
-   "etat": "non_relue",
+   "etat": "a_jour",
    "en_echec_depuis": null,
-   "motif_dernier_run": "job extract-an : cancelled"
+   "motif_dernier_run": null
   },
   "an.interventions": {
    "source": "an",
-   "a_jour_au": "2026-10-29",
+   "a_jour_au": "2026-10-31",
    "raison": null,
-   "etat": "non_relue",
+   "etat": "a_jour",
    "en_echec_depuis": null,
-   "motif_dernier_run": "job extract-an : cancelled"
+   "motif_dernier_run": null
   },
   "an.questions": {
    "source": "an",
-   "a_jour_au": "2026-10-29",
+   "a_jour_au": "2026-10-31",
    "raison": null,
-   "etat": "non_relue",
+   "etat": "a_jour",
    "en_echec_depuis": null,
-   "motif_dernier_run": "job extract-an : cancelled"
+   "motif_dernier_run": null
   },
   "an.dossiers": {
    "source": "an",
    "a_jour_au": "2026-10-26",
    "raison": null,
-   "etat": "non_relue",
+   "etat": "a_jour",
    "en_echec_depuis": null,
-   "motif_dernier_run": "job extract-an : cancelled"
+   "motif_dernier_run": null
   },
   "an.amendements": {
    "source": "an",
@@ -60,7 +60,7 @@
   },
   "an.ordre_du_jour": {
    "source": "an",
-   "a_jour_au": "2026-10-30",
+   "a_jour_au": "2026-10-31",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -68,7 +68,7 @@
   },
   "an.articles_votes": {
    "source": "an",
-   "a_jour_au": "2026-10-30",
+   "a_jour_au": "2026-10-31",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -76,7 +76,7 @@
   },
   "jo.actes": {
    "source": "jo",
-   "a_jour_au": "2026-10-30",
+   "a_jour_au": "2026-10-31",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -84,7 +84,7 @@
   },
   "budget_etat": {
    "source": "budget_etat",
-   "a_jour_au": "2026-10-30",
+   "a_jour_au": "2026-10-31",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -92,7 +92,7 @@
   },
   "drees": {
    "source": "drees",
-   "a_jour_au": "2026-10-30",
+   "a_jour_au": "2026-10-31",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -100,7 +100,7 @@
   },
   "unedic": {
    "source": "unedic",
-   "a_jour_au": "2026-10-30",
+   "a_jour_au": "2026-10-31",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -108,7 +108,7 @@
   },
   "sen.mandats": {
    "source": "sen",
-   "a_jour_au": "2026-09-20",
+   "a_jour_au": "2026-10-31",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -124,7 +124,7 @@
   },
   "pe.documents": {
    "source": "pe",
-   "a_jour_au": "2026-10-30",
+   "a_jour_au": "2026-10-31",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -164,7 +164,7 @@
   },
   "rne.mandats_locaux": {
    "source": "rne",
-   "a_jour_au": "2026-10-30",
+   "a_jour_au": "2026-10-31",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
