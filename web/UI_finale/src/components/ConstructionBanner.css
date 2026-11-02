@@ -35,14 +35,17 @@
   .construction-banner { text-align: left; justify-content: flex-start; }
 }
 
-/* « En construction. » est un bouton au téléphone seulement ; ailleurs, il se
-   lit comme le texte qu'il était. */
+/* Le texte est un bouton au téléphone seulement ; ailleurs, il se lit comme le
+   texte qu'il était. */
 .construction-banner__deplier {
+  display: inline;
   padding: 0;
   border: 0;
   background: none;
   color: inherit;
   font: inherit;
+  text-align: inherit;
+  white-space: normal;
   pointer-events: none;
 }
 
@@ -51,7 +54,7 @@
   .construction-banner {
     flex-wrap: nowrap;
     gap: 12px;
-    padding: 7px 16px;
+    padding: 4px 16px;
     font-size: 13px;
     line-height: 1.4;
   }
@@ -59,14 +62,22 @@
   .construction-banner__text {
     flex: 1;
     min-width: 0;
+  }
+
+  /* Toute la ligne est le bouton : replié, il se coupe par « … ». */
+  .construction-banner__deplier {
+    display: block;
+    width: 100%;
+    padding-block: 3px; /* une cible de 24 px au doigt, bandeau de 32 px */
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-  }
-
-  .construction-banner__deplier {
+    text-align: left;
     pointer-events: auto;
     cursor: pointer;
+  }
+
+  .construction-banner__deplier strong {
     text-decoration: underline dotted;
     text-underline-offset: 0.2em;
   }
@@ -78,10 +89,10 @@
 
   .construction-banner--deplie {
     flex-wrap: wrap;
-    padding-block: 10px;
+    padding-block: 7px;
   }
 
-  .construction-banner--deplie .construction-banner__text {
+  .construction-banner--deplie .construction-banner__deplier {
     white-space: normal;
   }
 }

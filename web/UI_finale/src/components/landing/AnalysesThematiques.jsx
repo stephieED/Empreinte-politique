@@ -216,25 +216,36 @@ export default function AnalysesThematiques({ dansHero = false }) {
     </section>
     {avecBandeau && n > 0 && !ferme && (
       <div className="analyses-bandeau" hidden={carrouselVu}>
-        {diapos[i].evenement ? (
-          <Link className="analyses-bandeau-lien" to="/candidats" tabIndex={carrouselVu ? -1 : 0}>
-            <span className="analyses-bandeau-v analyses-bandeau-v--evenement" aria-hidden="true"><small>Mai</small><b>2027</b></span>
-            <span className="analyses-bandeau-txt">
-              <span className="analyses-bandeau-lab">Événement · Jusqu’en mai 2027</span>
-              <span className="analyses-bandeau-t">Les candidats à la présidentielle</span>
-            </span>
-          </Link>
-        ) : (
-          <a className="analyses-bandeau-lien" href={`/rapports/${diapos[i].fichier}`} tabIndex={carrouselVu ? -1 : 0}>
-            <span className="analyses-bandeau-v" aria-hidden="true">
-              {diapos[i].vignette && <img src={`/rapports/${diapos[i].vignette}`} alt="" />}
-            </span>
-            <span className="analyses-bandeau-txt">
-              <span className="analyses-bandeau-lab">Analyse thématique · {enClair(diapos[i].date)}</span>
-              <span className="analyses-bandeau-t">{diapos[i].titre}</span>
-            </span>
-          </a>
-        )}
+        {/* LE BANDEAU GLISSE (forme A du 02/11/2026) : il remplaçait sa carte
+         * d'un coup et rechargeait la vignette, un clignement. Il porte
+         * désormais toutes les cartes côte à côte et glisse comme le carrousel
+         * dont il est le résumé ; chaque vignette se charge une fois. */}
+        <div className="analyses-bandeau-fen">
+          <div className="analyses-bandeau-piste" style={{ transform: `translateX(-${i * 100}%)` }}>
+            {diapos.map((a, k) => {
+              const actif = k === i && !carrouselVu;
+              return a.evenement ? (
+                <Link key={a.fichier} className="analyses-bandeau-lien" to="/candidats" tabIndex={actif ? 0 : -1} aria-hidden={k !== i}>
+                  <span className="analyses-bandeau-v analyses-bandeau-v--evenement" aria-hidden="true"><small>Mai</small><b>2027</b></span>
+                  <span className="analyses-bandeau-txt">
+                    <span className="analyses-bandeau-lab">Événement · Jusqu’en mai 2027</span>
+                    <span className="analyses-bandeau-t">Les candidats à la présidentielle</span>
+                  </span>
+                </Link>
+              ) : (
+                <a key={a.fichier} className="analyses-bandeau-lien" href={`/rapports/${a.fichier}`} tabIndex={actif ? 0 : -1} aria-hidden={k !== i}>
+                  <span className="analyses-bandeau-v" aria-hidden="true">
+                    {a.vignette && <img src={`/rapports/${a.vignette}`} alt="" />}
+                  </span>
+                  <span className="analyses-bandeau-txt">
+                    <span className="analyses-bandeau-lab">Analyse thématique · {enClair(a.date)}</span>
+                    <span className="analyses-bandeau-t">{a.titre}</span>
+                  </span>
+                </a>
+              );
+            })}
+          </div>
+        </div>
         {n > 1 && <button type="button" className="analyses-b" aria-label="Analyse suivante" onClick={() => voir(i + 1)}>›</button>}
         <button type="button" className="analyses-bandeau-x" aria-label="Fermer" onClick={fermer}>✕</button>
       </div>

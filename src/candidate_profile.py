@@ -591,10 +591,12 @@ REPRISES_ARCHIVE_AMO30_FIGEE = 2
 # l'INSEE qu'AMO30 publie et que le pipeline traversait sans rien en garder
 # (#659). `civilite` était déjà écrite dans l'index — c'est en AVAL qu'elle se
 # perdait — mais elle voyage avec eux jusqu'au profil brut. `v5` : chaque période
-# de `mandats_assemblee` porte `lieu_election` (#682). Organes `v3` : chaque
+# de `mandats_assemblee` porte `lieu_election` (#682). `v6` : une période par
+# enregistrement AMO30, datée de l'entrée en fonction quand elle ne suit pas une
+# élection (#1412). Organes `v3` : chaque
 # organe porte `parent`, l'`organeParent` d'AMO30 (#1311) — un `v2` relu
 # rendrait toutes les missions « sans organe créateur », un faux constat.
-NOM_INDEX_IDENTITE = "index_identite_v5.json"
+NOM_INDEX_IDENTITE = "index_identite_v6.json"
 NOM_INDEX_ORGANES = "index_organes_v3.json"
 
 # Questions parlementaires (écrites, au gouvernement, orales sans débat).
@@ -4094,6 +4096,30 @@ def _lieu_election(mandat: dict[str, Any]) -> Optional[dict[str, Optional[str]]]
     return releve if any(releve.values()) else None
 
 
+def _ouvert_par_une_election(mandat: dict[str, Any]) -> bool:
+    """Le mandat commence-t-il à une élection (générale ou partielle) ?
+
+    Une cause absente est lue comme une élection : c'est l'état d'avant #1412,
+    et rien ne permet d'en dater autrement le début.
+    """
+    cause = _champ_identite_an((mandat.get("election") or {}).get("causeMandat"))
+    return cause is None or str(cause).strip().lower().startswith("élection")
+
+
+def _debut_de_periode(mandat: dict[str, Any]) -> Optional[str]:
+    """Le début publié d'un enregistrement de mandat de député (#1412).
+
+    La date de l'élection pour un mandat ouvert par une élection ; sinon la date
+    d'entrée en fonction, et la date de l'élection seulement si la source n'en
+    donne pas d'autre.
+    """
+    election = _champ_identite_an(mandat.get("dateDebut"))
+    if _ouvert_par_une_election(mandat):
+        return election
+    prise = _champ_identite_an((mandat.get("mandature") or {}).get("datePriseFonction"))
+    return prise or election
+
+
 def _periodes_mandats_assemblee(
     mandats: list[Any], organe_index: dict[str, dict[str, Any]]
 ) -> list[dict[str, Any]]:
@@ -4112,44 +4138,43 @@ def _periodes_mandats_assemblee(
     nombre**, 612 manquants — le compteur et la liste vivaient dans le même
     objet sans s'accorder.
 
-    ## La clé de regroupement : `(legislature, dateDebut)`, pas la législature
+    ## Une période par enregistrement AMO30, datée de l'entrée en fonction (#1412)
 
-    AMO30 scinde un même siège en plusieurs enregistrements quand il est
-    interrompu puis repris — Xavier Bertrand (`PA267080`) a **trois**
-    enregistrements de 13e législature, tous ouverts au 2007-06-20, fermés au
-    2007-07-19, 2010-12-15 et 2012-06-19, chaque fois sur `causeFin =
-    "Nomination comme membre du Gouvernement"`. C'est un siège, pas trois
-    mandats : ils sont recollés en union de périodes, le geste que
-    `docs/decisions/roster-an-derive-amo30-526.md` applique déjà aux organes
-    successifs d'un groupe.
+    #640 recollait les enregistrements d'un même siège sur `(legislature,
+    dateDebut)`. Or `dateDebut` est la date de l'**élection** — tous les
+    enregistrements d'un siège la portent, même ceux qui commencent des années
+    plus tard. Le recollage rendait donc l'enveloppe, et effaçait ce que la
+    source date : Bernard Cazeneuve (`PA785`) était publié député du
+    2012-06-20 au 2017-06-20, alors qu'AMO30 et la page de l'Assemblée le
+    disent député jusqu'au 2012-07-21 (nomination au gouvernement), puis de
+    nouveau à partir du 2017-06-16. Mesuré le 02/11/2026 : **330 des 1 801
+    profils** à identifiant de député portaient au moins une période fausse.
 
-    Regrouper sur la **seule** législature serait faux, et la donnée le dit :
-    Bertrand Petit (`PA344201`) a deux mandats de 16e législature — 2022-06-19
-    → 2022-12-02, *élection annulée par le Conseil constitutionnel*, puis
-    2023-01-29 → 2024-06-09 après une partielle. Les unir publierait un mandat
-    couvrant deux mois pendant lesquels il n'était pas député : un fait
-    fabriqué, ce qu'interdit la règle 2. La date d'ouverture sépare les deux
-    cas sans arbitrage.
+    Chaque enregistrement est désormais une période, et sa date de début dit
+    quand la personne a commencé à siéger :
 
-    ## `dateDebut`, pas `datePriseFonction`
+    | `election.causeMandat` | début publié |
+    | --- | --- |
+    | « élections générales », « élection partielle… » | `dateDebut`, la date de l'élection — la convention de #640, inchangée |
+    | toute autre cause — reprise après le gouvernement, remplacement d'un député nommé au gouvernement, décédé, démissionnaire… | `mandature.datePriseFonction`, l'entrée en fonction |
 
-    Les deux diffèrent (`2022-06-19` contre `2022-06-22` pour la 16e). Le
-    corpus publié porte les deux conventions — les mandats collectés du temps
-    de NosDéputés ont la seconde —, et la mesure tranche : sur les 477 profils
-    dont l'acteur AN est résolu, `dateDebut` reproduit **457** entrées déjà
-    publiées à l'identique contre **13** pour `datePriseFonction`. C'est aussi
-    le champ que `_select_mandat_assemblee_courant` lit depuis toujours.
+    La date de l'élection reste celle des mandats ouverts par une élection : la
+    changer aurait déplacé de quelques jours les 2 868 périodes ouvertes par
+    des élections générales, sans rien corriger (#640, décision 2). Elle est
+    fausse pour un suppléant — Édouard Philippe (`PA345619`) était daté du
+    2007-06-20 pour un siège pris le 2012-03-23 — et pour une reprise.
 
-    Chaque période porte `segments`, le nombre d'enregistrements AMO30
-    recollés : un mandat interrompu par une nomination au gouvernement en a
-    plus d'un, et le compte reste lisible plutôt que d'être perdu au
-    regroupement.
+    Les deux mandats de Bertrand Petit (`PA344201`, élection annulée puis
+    partielle) restent deux périodes, comme sous #640. Deux enregistrements de
+    même législature et de même début sont encore réunis : aucun n'est connu,
+    la branche protège la clé de fusion d'un doublon.
+    → `docs/decisions/periodes-de-mandat-de-depute-1412.md`
     """
     par_siege: dict[tuple[Any, Any], dict[str, Any]] = {}
     for mandat in mandats:
         if not isinstance(mandat, dict) or mandat.get("typeOrgane") != "ASSEMBLEE":
             continue
-        debut = _champ_identite_an(mandat.get("dateDebut"))
+        debut = _debut_de_periode(mandat)
         if not debut:
             # Sans date d'ouverture, la période n'est plaçable sur aucune
             # chronologie et aucune date ne s'invente (AGENTS.md §2 règle 5).
@@ -4327,7 +4352,14 @@ def _build_acteur_identite_index() -> dict[str, dict[str, Any]]:
                     # lequel `mandats_assemblee` se compare.
                     mandats_assemblee = _periodes_mandats_assemblee(mandats, organe_index)
                     for periode in mandats_assemblee:
-                        if periode["debut"] != mandat_debut:
+                        # #1412 — la période courante peut commencer à la prise
+                        # de fonction (reprise, suppléance) et non plus à
+                        # `mandat_debut` : elle se reconnaît aussi à sa fin
+                        # absente, comme le mandat courant.
+                        courante = periode["debut"] == mandat_debut or (
+                            periode["fin"] is None and mandat_fin is None
+                        )
+                        if not courante:
                             continue
                         # La période courante reprend le groupe COURANT plutôt
                         # que celui résolu sur sa fenêtre, pour deux raisons qui

@@ -244,3 +244,12 @@ les charger, ni à les faire grossir. -->
   published `fin`. The AMO30 snapshot is renewed weekly in CI (#555), so an end date
   reaches the fiche within a week of its publication.
   → `docs/decisions/fin-de-mandat-reportee.md`
+- **A deputy's mandate re-dated by AMO30 replaces the published one it overlaps (#1412).**
+  The one named exception to the additive merge on `mandats`: an old `mandat_electif`
+  stamped `categorie_source: "an"` is dropped, at both layers, when a new one stamped the
+  same way overlaps its period (`merge_profile.mandats_deputes_conserves`). AMO30 hands
+  over the full history at every collection, so the new periods are complete for the
+  dates they cover. Nothing else is touched — no other category, no unstamped residue, and
+  nothing a partial collection does not cover. Without it, a period whose start or label
+  changed leaves the old envelope published beside the right periods.
+  → `docs/decisions/periodes-de-mandat-de-depute-1412.md`

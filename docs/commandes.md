@@ -969,6 +969,31 @@ rejoue un tirage (le run passe son numéro) ; `--date` fixe le jour du tirage.
 Fait dix requêtes au site de l'Assemblée. **Sort toujours en 0** : c'est un
 signalement.
 
+### Les mandats publiés sont-ils ceux de la page de l'Assemblée ? (#1248, lot 2)
+
+```bash
+python3 src/relecture_mandats_source.py --graine 1 --out mandats.md --out-json mandats.json
+```
+
+Tire cinq députés dans `pivot_data/profiles` (1 candidat déclaré, 3 de la
+XVIIe, 1 des législatures précédentes) et compare leurs périodes de mandat de
+député à leur page « fonctions » de l'Assemblée. `--profils-dir` change le
+répertoire lu. Fait dix requêtes au site de l'Assemblée. **Sort toujours en
+0** : c'est un signalement.
+
+### Les signataires publiés sont-ils ceux de la page de l'amendement ? (#1248, lot 3)
+
+```bash
+python3 src/relecture_amendements_source.py --graine 1 --out amendements.md --out-json amendements.json
+```
+
+Tire dix amendements dans `pivot_data/amendements/` (XVe à XVIIe ; sept des
+trente derniers jours, trois sur tout le corpus) et compare leurs signataires à
+la page de l'amendement : l'index publié, puis le rôle sur le profil de chaque
+signataire. `--amendements-dir`, `--profils-dir` et `--correspondance` changent
+les fichiers lus, `--date` le jour du tirage. Fait dix requêtes au site de
+l'Assemblée. **Sort toujours en 0** : c'est un signalement.
+
 ### Les prises de parole rattachées à une autre personne (#1177)
 
 ```bash

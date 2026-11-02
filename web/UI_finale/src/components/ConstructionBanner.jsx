@@ -23,6 +23,11 @@ import './ConstructionBanner.css';
  * sur une ligne, coupée par « … » ; « En construction. » est un bouton qui le
  * déplie. Il n'est toujours pas refermable : replié, il reste là, et son texte
  * est inchangé.
+ *
+ * TOUTE LA LIGNE SE TOUCHE (02/11/2026) : seuls les mots « En construction. »
+ * dépliaient le bandeau, une cible étroite au doigt. Le bouton porte désormais
+ * tout le texte, comme le `<summary>` des articles ; « Méthodologie » reste un
+ * lien à côté.
  */
 export default function ConstructionBanner() {
   const [deplie, setDeplie] = useState(false);
@@ -39,9 +44,9 @@ export default function ConstructionBanner() {
           onClick={() => setDeplie((v) => !v)}
           type="button"
         >
-          <strong>En construction.</strong>
-        </button>{' '}
-        Des données peuvent manquer, et certaines absences sont encore mal expliquées.
+          <strong>En construction.</strong> Des données peuvent manquer, et certaines absences
+          sont encore mal expliquées.
+        </button>
       </p>
       <Link className="construction-banner__link" to="/methodologie">
         Méthodologie

@@ -333,6 +333,10 @@ def test_contre_epreuve_sans_le_report_rien_n_arrive(cache, monkeypatch):
     """Le report neutralisé, l'entrée ancienne gagne et aucun mandat publié ne
     reçoit le champ : c'est bien `backfill_mandat_place_hemicycle` qui le porte."""
     monkeypatch.setattr(merge_profile, "backfill_mandat_place_hemicycle", lambda merged, new, key: merged)
+    # #1412 — un mandat de député redaté par la collecte remplace l'entrée
+    # publiée qu'il recouvre : l'ancienne ne gagnerait plus. La contre-épreuve
+    # neutralise aussi ce remplacement, pour isoler le report qu'elle vise.
+    monkeypatch.setattr(merge_profile, "mandats_deputes_conserves", lambda anciens, neufs: list(anciens or []))
     _, _, brut, pivot = _transition(cache)
     for couche in (brut, pivot):
         assert not any("place_hemicycle" in m for m in _electifs(couche["mandats"]))

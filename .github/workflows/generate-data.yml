@@ -5130,6 +5130,65 @@ jobs:
             relecture-votes.md
             relecture-votes.json
           if-no-files-found: ignore
+
+      # MANDATS RELUS À LA SOURCE (#1248, lot 2) — même régime que les votes.
+      # Cinq députés par run (1 candidat déclaré, 3 de la XVIIe, 1 des
+      # législatures précédentes — arbitré le 02/11/2026), leurs périodes de
+      # mandat relues sur la page « fonctions » de l'Assemblée. Son premier
+      # essai a trouvé les erreurs que #1412 a corrigées.
+      - name: Mandats relus à la source (signalement)
+        id: relecture_mandats
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          python3 src/relecture_mandats_source.py \
+            --graine "${{ github.run_id }}" \
+            --out relecture-mandats.md \
+            --out-json relecture-mandats.json
+          {
+            echo "### Mandats relus à la source de l'Assemblée (#1248)"
+            echo ""
+            cat relecture-mandats.md
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Rapport des mandats relus à la source — artifact
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: relecture-mandats
+          path: |
+            relecture-mandats.md
+            relecture-mandats.json
+          if-no-files-found: ignore
+
+      # AMENDEMENTS RELUS À LA SOURCE (#1248, lot 3) — même régime. Dix
+      # amendements par run (sept des trente derniers jours, trois sur tout le
+      # corpus, XIVe exclue), leurs signataires relus sur la page de
+      # l'amendement : l'index publié ET le rôle sur chaque profil.
+      - name: Amendements relus à la source (signalement)
+        id: relecture_amendements
+        continue-on-error: true
+        timeout-minutes: 15
+        run: |
+          python3 src/relecture_amendements_source.py \
+            --graine "${{ github.run_id }}" \
+            --out relecture-amendements.md \
+            --out-json relecture-amendements.json
+          {
+            echo "### Signataires d'amendements relus à la source de l'Assemblée (#1248)"
+            echo ""
+            cat relecture-amendements.md
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Rapport des amendements relus à la source — artifact
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: relecture-amendements
+          path: |
+            relecture-amendements.md
+            relecture-amendements.json
+          if-no-files-found: ignore
       # ──────────────────────────────────────────────────────────────────
       # LE GARDE-FOU DE #390/#413 A DISPARU ICI, ET C'EST VOULU (#1059).
       #
@@ -5870,3 +5929,81 @@ jobs:
             gh issue comment "$NUMERO" --repo "$DEPOT" --body-file corps-issue-votes.md
           fi
           echo "::warning::VOTES_EN_ECART — ${NB} position(s) publiée(s) diffèrent de la page de l'Assemblée. Issue de suivi tenue à jour sur ${DEPOT}."
+
+      # L'ISSUE DES MANDATS EN ÉCART AVEC LA SOURCE (#1248, lot 2) — même
+      # mécanique que celle des votes, et le run ne la ferme jamais non plus.
+      - name: Mandats en écart avec la source — issue de suivi
+        if: steps.commit.outputs.pushed == 'true' && steps.relecture_mandats.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.SRC_ISSUES_TOKEN }}
+          DEPOT: stephieED/Empreinte-politique-src
+          ETIQUETTE: mandats-en-ecart-avec-la-source
+          URL_RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          NB="$(python3 -c "import json; print(json.load(open('relecture-mandats.json'))['periodes_en_ecart'])")"
+          if [[ "$NB" -eq 0 ]]; then
+            exit 0
+          fi
+          if [[ -z "${GH_TOKEN}" ]]; then
+            echo "::warning::MANDATS_EN_ECART — ${NB} période(s) de mandat publiée(s) diffèrent de la page de l'Assemblée, et AUCUNE issue n'a été ouverte : le secret SRC_ISSUES_TOKEN n'est pas posé. Le détail est dans le résumé du job et dans l'artifact relecture-mandats (#1248)."
+            exit 0
+          fi
+          NUMERO="$(gh issue list --repo "$DEPOT" --state open --label "$ETIQUETTE" --json number --jq '.[0].number // empty')"
+          {
+            echo "Ouverte et tenue à jour par le run de données (#1248, lot 2). **Le run ne la ferme jamais** : un tirage sans écart ne dit rien des députés qu'il n'a pas tirés. À fermer à la main, une fois l'écart expliqué ou corrigé."
+            echo ""
+            echo "Dernier run avec écart : ${URL_RUN}"
+            echo ""
+            cat relecture-mandats.md
+          } > corps-issue-mandats.md
+          if [[ -z "$NUMERO" ]]; then
+            gh label create "$ETIQUETTE" --repo "$DEPOT" --color B60205 \
+              --description "Une période de mandat publiée diffère de la page de l'Assemblée" --force
+            gh issue create --repo "$DEPOT" --label "$ETIQUETTE" \
+              --title "Mandats en écart avec la source : ${NB} période(s) diffèrent de la page de l'Assemblée" \
+              --body-file corps-issue-mandats.md
+          else
+            gh issue comment "$NUMERO" --repo "$DEPOT" --body-file corps-issue-mandats.md
+          fi
+          echo "::warning::MANDATS_EN_ECART — ${NB} période(s) de mandat publiée(s) diffèrent de la page de l'Assemblée. Issue de suivi tenue à jour sur ${DEPOT}."
+
+      # L'ISSUE DES AMENDEMENTS EN ÉCART AVEC LA SOURCE (#1248, lot 3) — même
+      # mécanique, et le run ne la ferme jamais non plus.
+      - name: Amendements en écart avec la source — issue de suivi
+        if: steps.commit.outputs.pushed == 'true' && steps.relecture_amendements.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.SRC_ISSUES_TOKEN }}
+          DEPOT: stephieED/Empreinte-politique-src
+          ETIQUETTE: amendements-en-ecart-avec-la-source
+          URL_RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          NB="$(python3 -c "import json; print(json.load(open('relecture-amendements.json'))['ecarts'])")"
+          if [[ "$NB" -eq 0 ]]; then
+            exit 0
+          fi
+          if [[ -z "${GH_TOKEN}" ]]; then
+            echo "::warning::AMENDEMENTS_EN_ECART — ${NB} signature(s) publiée(s) diffèrent de la page de l'Assemblée, et AUCUNE issue n'a été ouverte : le secret SRC_ISSUES_TOKEN n'est pas posé. Le détail est dans le résumé du job et dans l'artifact relecture-amendements (#1248)."
+            exit 0
+          fi
+          NUMERO="$(gh issue list --repo "$DEPOT" --state open --label "$ETIQUETTE" --json number --jq '.[0].number // empty')"
+          {
+            echo "Ouverte et tenue à jour par le run de données (#1248, lot 3). **Le run ne la ferme jamais** : un tirage sans écart ne dit rien des amendements qu'il n'a pas tirés. À fermer à la main, une fois l'écart expliqué ou corrigé."
+            echo ""
+            echo "Dernier run avec écart : ${URL_RUN}"
+            echo ""
+            cat relecture-amendements.md
+          } > corps-issue-amendements.md
+          if [[ -z "$NUMERO" ]]; then
+            gh label create "$ETIQUETTE" --repo "$DEPOT" --color B60205 \
+              --description "Une signature d'amendement publiée diffère de la page de l'Assemblée" --force
+            gh issue create --repo "$DEPOT" --label "$ETIQUETTE" \
+              --title "Amendements en écart avec la source : ${NB} signature(s) diffèrent de la page de l'Assemblée" \
+              --body-file corps-issue-amendements.md
+          else
+            gh issue comment "$NUMERO" --repo "$DEPOT" --body-file corps-issue-amendements.md
+          fi
+          echo "::warning::AMENDEMENTS_EN_ECART — ${NB} signature(s) publiée(s) diffèrent de la page de l'Assemblée. Issue de suivi tenue à jour sur ${DEPOT}."

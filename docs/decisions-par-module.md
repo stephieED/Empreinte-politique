@@ -400,7 +400,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 
 ## `src/candidate_profile.py`
 
-110 décision(s) le gouvernent ; le module en cite 14.
+111 décision(s) le gouvernent ; le module en cite 15.
 
 | Décision | Nomme |
 | --- | --- |
@@ -483,6 +483,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [`_build_organe_index` : résoudre `organeRef` via `AMO30` (historique) sans filtrage par `codeType` (#353) (2026-08-16)](decisions/organe-index-organeref.md) | `AN_ACTEURS_HISTORIQUE_ZIP_URL`, `_ACTEURS_HISTORIQUE_ZIP_LOCK`, `_build_acteur_positions_hemicycle_index`, `_build_organe_index`, `_build_organe_positions_index`, `_ensure_acteurs_historique_zip_downloaded`, `fetch_positions_hemicycle_officielles` |
 | [Parallèle RAM entre l'exécution locale et les runners GitHub Actions hébergés, diagnostic ajouté (2026-08-17)](decisions/parallele-oom-local-runner-ci.md) | `build_profile`, `fetch_amendements_officiels` |
 | [Une prise de parole dont le libellé nomme une autre personne n'est pas attribuée (#1177) (2026-10-07)](decisions/parole-d-une-autre-personne-1177.md) | `SYCERON_VERSION_INDEX`, `_normaliser_orateur_id_syceron`, `libelle_designe_une_autre_personne` |
+| [Les mandats de député disent quand la personne a siégé (#1412) (2026-11-02)](decisions/periodes-de-mandat-de-depute-1412.md) | `NOM_INDEX_IDENTITE` |
 | [La place d'un député dans l'hémicycle se lit dans l'archive de sa législature (#1317)](decisions/place-hemicycle-par-legislature-1317.md) | `ARCHIVES_AMO30_FIGEES`, `NOM_INDEX_PLACES_HEMICYCLE`, `SOUS_REPERTOIRE_AMO30_FIGEES`, `_build_acteur_identite_index`, `_build_index_places_hemicycle`, `_ensure_archive_amo30_figee`, `build_profile`, `resoudre_place_hemicycle` |
 | [Les places de la XIVe se lisent dans le fichier du site de l'Assemblée, à l'état du 20/06/2017 (#1326)](decisions/places-xive-fichier-du-site-1326.md) | `FICHIERS_PLACES_SITE_AN`, `_places_par_mandat_site_an`, `_telecharger_source_figee`, `legislatures_avec_places_hemicycle` |
 | [Les archives figées se demandent en plage sans borne, la législature en cours garde ses segments (#1123) (2026-09-24)](decisions/plage-sans-borne-archives-figees-1123.md) | `AMENDEMENTS_DOWNLOAD_CHUNK_BYTES`, `AMENDEMENTS_DOWNLOAD_CHUNK_BYTES_FIGEES`, `_telecharger_flux` |
@@ -569,7 +570,7 @@ Le mentionnent sans le gouverner : [`archive-dossiers-xiv-1019`](decisions/archi
 | [Une entrée dérivée gèle un slug fabriqué, elle ne prouve plus rien (#715) (2026-09-02)](decisions/entree-derivee-correspondance-715.md) | `ECARTS_CONNUS` |
 | [Un garde-fou posé sur `builtins.open` ne voit pas `pathlib` (#791) (2026-09-10)](decisions/lectures-du-depot-dans-les-tests-791.md) | `CHEMIN_PAR_DEFAUT`, `charger_correspondance` |
 
-Le mentionnent sans le gouverner : [`civilite-et-pcs-insee-659`](decisions/civilite-et-pcs-insee-659.md), [`identite-profils-539`](decisions/identite-profils-539.md), [`larem-xv-apres-691-779`](decisions/larem-xv-apres-691-779.md), [`position-politique-groupes-686`](decisions/position-politique-groupes-686.md), [`preuve-de-borne-dite-une-fois-328`](decisions/preuve-de-borne-dite-une-fois-328.md), [`provenance-roster-gouvernement-996`](decisions/provenance-roster-gouvernement-996.md), [`repertoire-config-1057`](decisions/repertoire-config-1057.md), [`roster-an-derive-amo30-526`](decisions/roster-an-derive-amo30-526.md), [`roster-gouvernements-amo30-996`](decisions/roster-gouvernements-amo30-996.md), [`slug-fabrique-membre-de-roster-708`](decisions/slug-fabrique-membre-de-roster-708.md), [`sparse-checkout-extract-an-674`](decisions/sparse-checkout-extract-an-674.md), [`tranches-derivees-lecteur-691`](decisions/tranches-derivees-lecteur-691.md).
+Le mentionnent sans le gouverner : [`civilite-et-pcs-insee-659`](decisions/civilite-et-pcs-insee-659.md), [`identite-profils-539`](decisions/identite-profils-539.md), [`larem-xv-apres-691-779`](decisions/larem-xv-apres-691-779.md), [`position-politique-groupes-686`](decisions/position-politique-groupes-686.md), [`preuve-de-borne-dite-une-fois-328`](decisions/preuve-de-borne-dite-une-fois-328.md), [`provenance-roster-gouvernement-996`](decisions/provenance-roster-gouvernement-996.md), [`relecture-des-signatures-a-la-source-1248`](decisions/relecture-des-signatures-a-la-source-1248.md), [`repertoire-config-1057`](decisions/repertoire-config-1057.md), [`roster-an-derive-amo30-526`](decisions/roster-an-derive-amo30-526.md), [`roster-gouvernements-amo30-996`](decisions/roster-gouvernements-amo30-996.md), [`slug-fabrique-membre-de-roster-708`](decisions/slug-fabrique-membre-de-roster-708.md), [`sparse-checkout-extract-an-674`](decisions/sparse-checkout-extract-an-674.md), [`tranches-derivees-lecteur-691`](decisions/tranches-derivees-lecteur-691.md).
 
 ## `src/couverture_dossiers.py`
 
@@ -892,7 +893,7 @@ Le mentionnent sans le gouverner : [`derivation-des-groupes-depuis-amo30-1168`](
 
 ## `src/group_profile.py`
 
-35 décision(s) le gouvernent ; le module en cite 4.
+36 décision(s) le gouvernent ; le module en cite 4.
 
 | Décision | Nomme |
 | --- | --- |
@@ -921,6 +922,7 @@ Le mentionnent sans le gouverner : [`derivation-des-groupes-depuis-amo30-1168`](
 | [Normaliser les votes : une liste partagée, un mapping, et deux invariants devenus des jointures (#432) (2026-08-19)](decisions/normalisation-votes.md) | `_votes_de_legislature` |
 | [La parole d'un groupe est celle tenue pendant l'appartenance, comptée sur 6 et 12 mois (#1073) (2026-09-22)](decisions/parole-de-groupe-par-appartenance-et-fenetre-1073.md) | `CLES_LUES_PAR_ENTREE`, `_interventions_retenues`, `_tags_du_membre`, `periodes_d_appartenance` |
 | [L'appartenance publiée cesse d'être une enveloppe (#809)](decisions/periodes-appartenance-809.md) | `_appartenance_couvre` |
+| [Les mandats de député disent quand la personne a siégé (#1412) (2026-11-02)](decisions/periodes-de-mandat-de-depute-1412.md) | `_member_eligibility_intervals` |
 | [Un champ traverse la chaîne, ou il n'existe pas (#809)](decisions/periodes-jetees-par-le-filtre-809.md) | `_appartenance_couvre`, `appartenances_depuis_roster`, `projeter_profil_membre` |
 | [Un profil de roster ne porte pas une liste que sa propre collecte déclare écartée — purge des 49 `textes_portes` résiduels (#747)](decisions/purge-textes-portes-roster-747.md) | `BLOCS_LUS_MEMBRE` |
 | [Résoudre la `legislature` d'un vote : deux mécanismes, pas un seul (#432) (2026-08-19)](decisions/resolution-legislature-deux-mecanismes-432.md) | `_votes_de_legislature` |
@@ -1058,7 +1060,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 
 ## `src/merge_profile.py`
 
-90 décision(s) le gouvernent ; le module en cite 5.
+91 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1116,6 +1118,7 @@ Le mentionnent sans le gouverner : [`chambres-profil-derivees`](decisions/chambr
 | [Un paragraphe de compte rendu republié sous un autre rang n'est publié qu'une fois (2026-10-08)](decisions/paragraphe-syceron-publie-une-fois.md) | `dedoublonner_paragraphes_syceron`, `merge_pivot_profile`, `merge_raw_profile` |
 | [Le `label` d'un mandat `MINISTERE` ne dit pas si c'est un maroquin (#474) (2026-08-20)](decisions/parlementaire-en-mission-nest-pas-ministre.md) | `preserve_stable_freshness_timestamps` |
 | [Le seuil de blob sort du critère de sortie, et les profils bruts se partitionnent par législature (#580) (2026-08-29)](decisions/partition-profils-legislature-580.md) | `merge_raw_dirs` |
+| [Les mandats de député disent quand la personne a siégé (#1412) (2026-11-02)](decisions/periodes-de-mandat-de-depute-1412.md) | `mandats_deputes_conserves` |
 | [Un champ d'identité publié ne meurt plus sans un run à perte déclarée (#601) (2026-08-30)](decisions/permanence-champs-identite-601.md) | `fusionner_identite` |
 | [`genere_le`/`synchro_le` des pivots ne doivent avancer que si le contenu change réellement (#343) (2026-08-16)](decisions/pivot-freshness-timestamps-stables.md) | `_pivot_content_fingerprint`, `merge_pivot_profile`, `preserve_stable_freshness_timestamps` |
 | [La place d'un député dans l'hémicycle se lit dans l'archive de sa législature (#1317)](decisions/place-hemicycle-par-legislature-1317.md) | `_mandat_key`, `_pivot_mandat_key`, `backfill_mandat_place_hemicycle` |
@@ -1352,6 +1355,14 @@ Le mentionnent sans le gouverner : [`fraicheur-dossiers-762`](decisions/fraicheu
 ## `src/rattachement_deduit.py`
 
 Le mentionnent sans le gouverner : [`rattachement-deduit-votes-sans-dossier-1289`](decisions/rattachement-deduit-votes-sans-dossier-1289.md).
+
+## `src/relecture_amendements_source.py`
+
+Le mentionnent sans le gouverner : [`relecture-des-signatures-a-la-source-1248`](decisions/relecture-des-signatures-a-la-source-1248.md).
+
+## `src/relecture_mandats_source.py`
+
+Le mentionnent sans le gouverner : [`relecture-des-mandats-a-la-source-1248`](decisions/relecture-des-mandats-a-la-source-1248.md).
 
 ## `src/relecture_votes_source.py`
 

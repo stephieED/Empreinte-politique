@@ -1251,6 +1251,68 @@ def _mandat_key(m: dict[str, Any]) -> Key:
     return (m.get("categorie"), m.get("type"), m.get("label"), m.get("debut"))
 
 
+#: `categorie_source` des mandats que l'Assemblée publie dans AMO30 (#718).
+#: Recopiée de `candidate_profile.CATEGORIE_SOURCE_AN` plutôt qu'importée : le
+#: test de #1412 compare les deux.
+_CATEGORIE_SOURCE_AN = "an"
+
+
+def _est_mandat_de_depute_an(m: Any) -> bool:
+    return (
+        isinstance(m, dict)
+        and m.get("categorie") == "mandat_electif"
+        and m.get("categorie_source") == _CATEGORIE_SOURCE_AN
+    )
+
+
+def _periodes_se_recouvrent(a: dict[str, Any], b: dict[str, Any]) -> bool:
+    """Deux mandats datés se recouvrent-ils d'au moins un jour ? Une borne
+    absente est ouverte — elle sert à comparer, jamais à publier."""
+    return (a.get("debut") or "0000-01-01") <= (b.get("fin") or "9999-12-31") and (
+        b.get("debut") or "0000-01-01"
+    ) <= (a.get("fin") or "9999-12-31")
+
+
+def mandats_deputes_conserves(
+    anciens: Optional[list[Any]], neufs: Optional[list[Any]]
+) -> list[Any]:
+    """Les mandats déjà publiés, moins les mandats de député que la collecte
+    neuve redate (#1412).
+
+    **Une exception nommée à la fusion additive.** Les périodes de mandat de
+    député sont reconstruites à chaque collecte depuis l'historique complet
+    d'AMO30. Jusqu'à #1412, elles effaçaient les passages au gouvernement et
+    dataient les suppléants du jour de l'élection ; corrigées, elles ne portent
+    plus la même date de début ni le même libellé, donc plus la même clé de
+    fusion, et l'ancienne enveloppe resterait publiée à côté des périodes
+    justes. C'est aussi ce qui produisait le doublon de Philippe Brun : le
+    libellé suit le groupe courant, et une entrée au libellé périmé ne
+    disparaissait jamais (#640, décision 3).
+
+    Un mandat de député estampillé « an » est retiré **seulement si** un mandat
+    de député estampillé « an » de la collecte neuve recouvre sa période. Trois
+    conséquences, voulues :
+
+    - une collecte qui n'apporte aucun mandat de député ne retire rien — une
+      collecte vide n'écrase jamais ;
+    - une collecte partielle (le repli sur le seul mandat courant) ne retire
+      que ce qu'elle recouvre, jamais un mandat passé qu'elle ne connaît pas ;
+    - un mandat sans `categorie_source` (le résidu de NosDéputés, #718), un
+      mandat sénatorial ou européen, n'est jamais touché.
+    """
+    anciens = list(anciens or [])
+    remplacants = [m for m in (neufs or []) if _est_mandat_de_depute_an(m)]
+    if not remplacants:
+        return anciens
+    return [
+        m for m in anciens
+        if not (
+            _est_mandat_de_depute_an(m)
+            and any(_periodes_se_recouvrent(m, r) for r in remplacants)
+        )
+    ]
+
+
 def _intervention_key(i: dict[str, Any]) -> Key:
     return (i.get("id"), i.get("url") or i.get("url_detail"))
 
@@ -2107,7 +2169,10 @@ def merge_raw_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> dic
             backfill_mandat_categorie_source(
                 backfill_mandat_lieu_election(
                     backfill_mandat_fin(
-                        merge_lists_by_key(old.get("mandats"), new.get("mandats"), _mandat_key),
+                        merge_lists_by_key(
+                            mandats_deputes_conserves(old.get("mandats"), new.get("mandats")),
+                            new.get("mandats"), _mandat_key,
+                        ),
                         new.get("mandats"),
                         _mandat_key,
                     ),
@@ -3234,7 +3299,10 @@ def merge_pivot_profile(old: Optional[dict[str, Any]], new: dict[str, Any]) -> d
             backfill_mandat_categorie_source(
                 backfill_mandat_lieu_election(
                     backfill_mandat_fin(
-                        merge_lists_by_key(old.get("mandats"), new.get("mandats"), _pivot_mandat_key),
+                        merge_lists_by_key(
+                            mandats_deputes_conserves(old.get("mandats"), new.get("mandats")),
+                            new.get("mandats"), _pivot_mandat_key,
+                        ),
                         new.get("mandats"),
                         _pivot_mandat_key,
                     ),

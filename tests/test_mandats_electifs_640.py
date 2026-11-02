@@ -18,7 +18,7 @@ simple aurait fabriqué un fait faux.
 | Acteur | Ce qu'il prouve |
 | --- | --- |
 | `PA720614` (Marine Le Pen) | l'historique existe : 3 mandats ASSEMBLEE, 15e/16e/17e |
-| `PA267080` (Xavier Bertrand) | 3 enregistrements de 13e législature pour UN siège, interrompu par deux nominations au gouvernement |
+| `PA267080` (Xavier Bertrand) | 3 enregistrements de 13e législature pour UN siège, interrompu par deux nominations au gouvernement — trois périodes depuis #1412 |
 | `PA344201` (Bertrand Petit) | 2 mandats de 16e législature séparés par une élection annulée — regrouper sur la seule législature publierait un mandat pendant lequel il n'était pas député |
 | `PA267285` (Laurent Wauquiez) | changement de groupe en cours de mandat (UMP → Les Républicains) et transit « Non inscrit » en début de législature |
 
@@ -97,14 +97,15 @@ def test_les_trois_mandats_sont_reconstruits(cache_amo30):
 # 2. Les deux pièges de la clé de regroupement
 # ---------------------------------------------------------------------------
 
-def test_un_siege_interrompu_par_le_gouvernement_est_recolle_en_une_periode():
-    """Trois enregistrements AMO30, un seul mandat.
+def test_un_siege_interrompu_par_le_gouvernement_garde_ses_interruptions():
+    """Trois enregistrements AMO30, trois périodes — corrigé par #1412.
 
-    Xavier Bertrand a trois mandats de 13e législature, tous ouverts au
-    2007-06-20 : le siège est rendu à chaque nomination au gouvernement puis
-    repris. Les publier séparément produirait trois `mandat_electif` de même
-    date d'ouverture, donc **la même clé de fusion** (`label`, `categorie`,
-    `fonction`, `debut`) — deux des trois disparaîtraient sans un mot.
+    #640 recollait les trois mandats de 13e législature de Xavier Bertrand en
+    une seule période, du 2007-06-20 au 2012-06-19 : il était publié député
+    pendant ses années au gouvernement. Tous portent la même `dateDebut`
+    (l'élection) ; les deux reprises se datent par `datePriseFonction`, ce qui
+    donne aussi trois clés de fusion distinctes — le risque qui avait motivé le
+    recollage (`docs/decisions/periodes-de-mandat-de-depute-1412.md`).
     """
     treizieme = [
         m for m in _mandats_de("PA267080")
@@ -114,11 +115,13 @@ def test_un_siege_interrompu_par_le_gouvernement_est_recolle_en_une_periode():
     assert {m["dateDebut"] for m in treizieme} == {"2007-06-20"}
 
     periodes = _periodes_mandats_assemblee(_mandats_de("PA267080"), {})
-    par_leg = {p["legislature"]: p for p in periodes}
-    assert par_leg["13"]["debut"] == "2007-06-20"
-    assert par_leg["13"]["fin"] == "2012-06-19"
-    assert par_leg["13"]["segments"] == 3
-    assert len(periodes) == 2, "13e et 14e législatures, pas quatre mandats"
+    treize = sorted((p["debut"], p["fin"]) for p in periodes if p["legislature"] == "13")
+    assert treize == [
+        ("2007-06-20", "2007-07-19"),
+        ("2009-02-15", "2010-12-15"),
+        ("2012-06-17", "2012-06-19"),
+    ]
+    assert len({p["debut"] for p in periodes}) == len(periodes), "une clé de fusion par période"
 
 
 def test_deux_mandats_dans_une_legislature_ne_sont_pas_fusionnes():
@@ -199,7 +202,8 @@ def test_l_index_d_identite_publie_la_liste_a_cote_du_compteur(cache_amo30):
     # Xavier Bertrand : 4 enregistrements, 2 sièges. L'écart est légitime et
     # nommé (un siège interrompu par une nomination au gouvernement), pas lissé.
     assert index["PA267080"]["nb_mandats"] == 4
-    assert len(index["PA267080"]["mandats_assemblee"]) == 2
+    # #1412 : une période par enregistrement — 13e (trois) et 14e législatures.
+    assert len(index["PA267080"]["mandats_assemblee"]) == 4
 
 
 def test_la_periode_courante_garde_le_groupe_courant(cache_amo30):

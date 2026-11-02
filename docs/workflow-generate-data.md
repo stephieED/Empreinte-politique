@@ -1401,6 +1401,43 @@ trois tirages (30 scrutins), 4 080 positions concordantes, 0 écart, 3
 divergences entre sources.
 → `docs/decisions/relecture-des-votes-a-la-source-1248.md`
 
+### Les mandats relus à la source : le lot 2 (#1248)
+
+L'étape suivante, « Mandats relus à la source (signalement) »
+(`src/relecture_mandats_source.py`), tire **cinq députés — 1 candidat déclaré,
+3 députés de la XVIIe, 1 des législatures précédentes** (arbitré le
+02/11/2026) — et compare leurs périodes de mandat de député, une par une, à la
+page « fonctions » de l'Assemblée (`/dyn/deputes/<PA>/fonctions` et
+`?archive=oui`, deux requêtes par député). Depuis la XIIe législature
+seulement, la borne d'AMO30. Même régime que les votes : rien ne bloque, une
+page muette est « non vérifiée », le rapport part au résumé et dans l'artifact
+`relecture-mandats`, et le step « Mandats en écart avec la source — issue de
+suivi » tient une issue (étiquette `mandats-en-ecart-avec-la-source`) que le
+run ne ferme jamais.
+
+Mesuré le 02/11/2026 en local sur 1 825 profils pivot : 75 s, pic à 163 Mio.
+→ `docs/decisions/relecture-des-mandats-a-la-source-1248.md`
+
+### Les signataires d'amendements relus à la source : le lot 3 (#1248)
+
+Puis « Amendements relus à la source (signalement) »
+(`src/relecture_amendements_source.py`) tire **dix amendements — sept des trente
+derniers jours, trois sur tout le corpus**, XVe à XVIIe législature (la page
+d'un amendement de la XIVe répond 404 quand on la demande par identifiant).
+Pour chacun, le bloc « Déposé par » de sa page sur le site de l'Assemblée
+(`/dyn/<législature>/amendements/<uid>`) est comparé à **l'index publié**
+(premier signataire et cosignataires, `pivot_data/amendements/<n>.json` et
+`<n>.cosignatures.json`) **et au rôle porté par le profil de chaque
+signataire** (`auteur_principal`, `cosignataire`), retrouvé par
+`raw_data/correspondance_acteurs_an.json`. Même régime que les lots 1 et 2 ;
+artifact `relecture-amendements`, issue `amendements-en-ecart-avec-la-source`,
+15 minutes au plus.
+
+Mesuré le 02/11/2026 en local : deux tirages (20 amendements), 712 signatures
+concordantes, 0 écart ; 2 min, pic à 448 Mio (les profils des signataires, lus
+un à un).
+→ `docs/decisions/relecture-des-signatures-a-la-source-1248.md`
+
 
 ### Ce que `merge-and-pivot` ne produit plus : les fiches de parti (#906)
 

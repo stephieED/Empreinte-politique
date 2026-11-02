@@ -158,6 +158,9 @@ SITES_PYTHON: dict[tuple[str, str], str] = {
     # porte. C'est la chambre d'un groupe, jamais le scalaire d'un profil.
     ("groupes_amo30.py", "mettre_a_jour_table"): GROUPE,
     ("group_profile.py", "_mandats_electifs"): MANDAT,
+    # #1248, lot 2 — la relecture à la source ne compare que les mandats de
+    # député : elle lit la chambre SUR LE MANDAT.
+    ("relecture_mandats_source.py", "periodes_publiees"): MANDAT,
     ("group_profile.py", "generate_groupe_profile_from_roster"): GROUPE,
     ("group_profile.py", "main"): GROUPE,
     ("generate_group_profiles.py", "generate_all"): GROUPE,
