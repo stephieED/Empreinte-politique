@@ -1,6 +1,6 @@
 {
   "schema_version": "textes-promulgues-v1",
-  "genere_le": "2026-10-26T19:13:34+0000",
+  "genere_le": "2026-11-02T23:07:04+0000",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "textes": {
     "DLR5L14N29639": {
@@ -31335,6 +31335,70 @@
       "senat_statue_apres": false,
       "senat_statue_apres_non_resolu": null,
       "date_derniere_decision_senat": "2026-07-09"
+    },
+    "DLR5L17N51499": {
+      "date_promulgation": "2026-10-30",
+      "numero_loi": "2026-1008",
+      "nor": "ARMX2516107L",
+      "titre": "Reconnaissance de la Nation envers les rapatriés d’Indochine et réparation des préjudices subis par ceux-ci et leurs familles du fait de l'indignité de leurs conditions d'accueil et de vie dans certaines structures sur le territoire français",
+      "nature_procedure": "Proposition de loi ordinaire",
+      "commission": {
+        "organe_ref": "PO59046",
+        "sigle": "Défense",
+        "nom": "Commission de la défense nationale et des forces armées",
+        "type": "COMPER"
+      },
+      "chambre_premiere_lecture": "assemblee_nationale",
+      "jorftext": "JORFTEXT000055029360",
+      "jorftext_autres": null,
+      "source_url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/reconnaissance_nation_rapatries_indochine_17",
+      "derniere_adoption_an": {
+        "date": "2025-06-03",
+        "mode": "scrutin_public",
+        "mode_non_resolu": null,
+        "scrutin_ids": [
+          "an:17:2220"
+        ],
+        "acte_uid": "L17-VD226249DEC",
+        "code_acte": "AN1-DEBATS-DEC",
+        "libelle_statut": "adoptée"
+      },
+      "derniere_adoption_an_non_resolue": null,
+      "senat_statue_apres": true,
+      "senat_statue_apres_non_resolu": null,
+      "date_derniere_decision_senat": "2026-10-19"
+    },
+    "DLR5L17N54096": {
+      "date_promulgation": "2026-10-27",
+      "numero_loi": "2026-992",
+      "nor": "SPOX2616967L",
+      "titre": "Proposition de loi relative à l’expérimentation d’une gouvernance territoriale unifiée pour le centre de ressources, d’expertise et de performance sportive (CREPS) de Vichy",
+      "nature_procedure": "Proposition de loi ordinaire",
+      "commission": {
+        "organe_ref": "PO419604",
+        "sigle": "Affaires culturelles et éducation",
+        "nom": "Commission des affaires culturelles et de l'éducation",
+        "type": "COMPER"
+      },
+      "chambre_premiere_lecture": "senat",
+      "jorftext": "JORFTEXT000055017965",
+      "jorftext_autres": null,
+      "source_url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N54096",
+      "derniere_adoption_an": {
+        "date": "2026-10-12",
+        "mode": "scrutin_public",
+        "mode_non_resolu": null,
+        "scrutin_ids": [
+          "an:17:8695"
+        ],
+        "acte_uid": "L17-VD234154DEC",
+        "code_acte": "AN1-DEBATS-DEC",
+        "libelle_statut": "adoptée sans modification"
+      },
+      "derniere_adoption_an_non_resolue": null,
+      "senat_statue_apres": false,
+      "senat_statue_apres_non_resolu": null,
+      "date_derniere_decision_senat": "2026-06-15"
     }
   }
 }

@@ -1438,6 +1438,25 @@ concordantes, 0 écart ; 2 min, pic à 448 Mio (les profils des signataires, lus
 un à un).
 → `docs/decisions/relecture-des-signatures-a-la-source-1248.md`
 
+### Les textes portés relus à la source : le lot 4 (#1248)
+
+Enfin « Textes portés relus à la source (signalement) »
+(`src/relecture_textes_source.py`) tire **dix dossiers** (sept dont la dernière
+date publiée tombe dans les trente derniers jours, trois sur tout le corpus) et
+relit, pour **chaque profil** qui publie le dossier, son stade et ses dates
+contre la frise d'étapes de la page du dossier (son `source_url`) : `date_min`
+pas après le dépôt, aucune étape après `date_max`, une promulgation des deux
+côtés ou d'aucun, et une adoption définitive de la page publiée comme adoption.
+Le rôle de la personne n'est pas relu : la page ne nomme aucun député. **Une
+étape postérieure à la date `an.dossiers` du fichier de fraîcheur n'est pas un
+écart** : les dossiers sont hebdomadaires. Même régime ; artifact
+`relecture-textes`, issue `textes-en-ecart-avec-la-source`.
+
+Mesuré le 02/11/2026 en local : 40 dossiers tirés au hasard concordent sur les
+quatre règles ; deux tirages (20 dossiers, 25 textes portés), 25 concordants ;
+45 s, pic à 163 Mio.
+→ `docs/decisions/relecture-des-textes-portes-a-la-source-1248.md`
+
 
 ### Ce que `merge-and-pivot` ne produit plus : les fiches de parti (#906)
 

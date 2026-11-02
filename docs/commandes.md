@@ -994,6 +994,20 @@ signataire. `--amendements-dir`, `--profils-dir` et `--correspondance` changent
 les fichiers lus, `--date` le jour du tirage. Fait dix requêtes au site de
 l'Assemblée. **Sort toujours en 0** : c'est un signalement.
 
+### Le stade et les dates des textes portés sont-ils ceux de la page du dossier ? (#1248, lot 4)
+
+```bash
+python3 src/relecture_textes_source.py --graine 1 --out textes.md --out-json textes.json
+```
+
+Tire dix dossiers dans les textes portés de `pivot_data/profiles` (sept récents,
+trois sur tout le corpus) et compare, pour chaque profil qui les publie, leur
+stade et leurs dates à la frise de la page du dossier. `--fraicheur` donne le
+fichier de fraîcheur dont la date `an.dossiers` excuse les étapes plus
+récentes ; `--profils-dir` et `--date` changent le corpus et le jour du tirage.
+Fait dix requêtes au site de l'Assemblée. **Sort toujours en 0** : c'est un
+signalement.
+
 ### Les prises de parole rattachées à une autre personne (#1177)
 
 ```bash

@@ -1,7 +1,7 @@
 {
   "schema_version": "ordre-du-jour-v1",
   "legislature": 17,
-  "genere_le": "2026-10-31",
+  "genere_le": "2026-11-02",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/vp/reunions/Agenda.json.zip",
   "seances": [
@@ -58133,7 +58133,7 @@
       "uid": "RUANR5L17S2027IDS30974",
       "date": "2026-11-02",
       "debut": "2026-11-02T09:00:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-02T13:00:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": "CRSANR5L17S2027O1N050",
@@ -58175,7 +58175,7 @@
       "fin": null,
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N051",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS30975PT53299",
@@ -58322,6 +58322,21 @@
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": null,
       "points": [
+        {
+          "uid": "RUANR5L17S2027IDS30978PT53573",
+          "objet": "Suite de la discussion du projet de loi de finances pour 2027 (première partie)",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30978PT53451"
+          },
+          "dossier_non_resolu": null
+        },
         {
           "uid": "RUANR5L17S2027IDS30978PT53303",
           "objet": "Suite de la discussion du projet de loi de finances pour 2027 (seconde partie)",
@@ -58925,6 +58940,32 @@
       "compte_rendu_ref": null,
       "points": [
         {
+          "uid": "RUANR5L17S2027IDS30992PT53568",
+          "objet": "Éventuellement, discussion, sur le rapport de la commission mixte paritaire, de la proposition de loi visant à renforcer l'effectivité des droits voisins des éditeurs et des agences de presse",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS30992PT53569",
+          "objet": "Sous réserve de son dépôt, discussion du projet de loi de finances de fin de gestion pour 2026",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
+        },
+        {
           "uid": "RUANR5L17S2027IDS30992PT53321",
           "objet": "Suite de la discussion du projet de loi de finances pour 2027 (seconde partie)",
           "type": "Suite de la discussion",
@@ -58963,6 +59004,32 @@
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": null,
       "points": [
+        {
+          "uid": "RUANR5L17S2027IDS30993PT53571",
+          "objet": "Éventuellement, suite de la discussion, sur le rapport de la commission mixte paritaire, de la proposition de loi visant à renforcer l'effectivité des droits voisins des éditeurs et des agences de presse",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS30993PT53572",
+          "objet": "Sous réserve de son dépôt, suite de la discussion du projet de loi de finances de fin de gestion pour 2026",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
+        },
         {
           "uid": "RUANR5L17S2027IDS30993PT53322",
           "objet": "Suite de la discussion du projet de loi de finances pour 2027 (seconde partie)",
