@@ -63,6 +63,7 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/ordre_du_jour_an.py` | 1 |
 | `src/paroles_d_une_autre_personne.py` | 1 |
 | `src/purge_interventions_heritees.py` | 1 |
+| `src/relecture_textes_source.py` | 1 |
 | `src/retrait_heritage_senat.py` | 1 |
 | `src/scrutins_dossiers_an.py` | 1 |
 | `src/scrutins_europeens.py` | 1 |
@@ -400,7 +401,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 
 ## `src/candidate_profile.py`
 
-111 décision(s) le gouvernent ; le module en cite 15.
+112 décision(s) le gouvernent ; le module en cite 15.
 
 | Décision | Nomme |
 | --- | --- |
@@ -493,6 +494,7 @@ Le mentionnent sans le gouverner : [`cache-fraicheur-interventions-555`](decisio
 | [Un projet de loi porté au nom du Gouvernement n'est pas une production personnelle (#689) (2026-09-01)](decisions/qualification-textes-portes-689.md) | `_build_acteur_textes_portes_index` |
 | [Une question au gouvernement : un acte, et ses tours de parole reliés à lui (#1094) (2026-09-22)](decisions/question-au-gouvernement-acte-et-parole-1094.md) | `FORMAT_INDEX_QUESTIONS`, `_parse_question_entry` |
 | [Rattacher une intervention ou un scrutin à son dossier : les deux volets restants sont écartés, mesure à l'appui (#639) (2026-09-01)](decisions/rattachement-au-dossier-interventions-et-scrutins-639.md) | `_parse_scrutins_zip`, `_reduire_au_theme` |
+| [Relire à la source le stade et les dates de quelques textes portés, à chaque run (#1248, lot 4) (2026-11-02)](decisions/relecture-des-textes-portes-a-la-source-1248.md) | `_collect_acteur_roles` |
 | [Le `texte_vise` fautif se reprend depuis l'archive figée, pas par une fusion plus permissive (#696, 01/09/2026)](decisions/report-texte-vise-source-696.md) | `fetch_amendements_officiels` |
 | [La reprise d'une archive figée se borne en temps, et le message ne dit plus « indisponible » (#1100) (2026-09-22)](decisions/reprise-archive-figee-bornee-en-temps-1100.md) | `AMENDEMENTS_SOURCE_STALL_MAX_CYCLES`, `_download_amendements_zip` |
 | [Résilience de `generate-data.yml` face aux `shutdown signal` runner : continue-on-error généralisé, watchdog réseau, retry générique sur `_get_payload`, retry `retry-generate-data.yml` non-régressif, et appels NosDéputés morts pour les députés (dossiers, votes) (2026-08-16)](decisions/resilience-generate-data-shutdown-signal.md) | `WARNING_PREFIX_VOTES_INTROUVABLES`, `build_profile`, `fetch_textes_portes_officiels`, `fetch_votes_officiels` |
@@ -1363,6 +1365,16 @@ Le mentionnent sans le gouverner : [`relecture-des-signatures-a-la-source-1248`]
 ## `src/relecture_mandats_source.py`
 
 Le mentionnent sans le gouverner : [`relecture-des-mandats-a-la-source-1248`](decisions/relecture-des-mandats-a-la-source-1248.md).
+
+## `src/relecture_textes_source.py`
+
+1 décision(s) le gouvernent ; le module en cite 0.
+
+| Décision | Nomme |
+| --- | --- |
+| [Borner la collecte d'interventions, pas le job qui la contient (#498) (2026-08-20)](decisions/budget-collecte-interventions.md) | `Publication` |
+
+Le mentionnent sans le gouverner : [`relecture-des-textes-portes-a-la-source-1248`](decisions/relecture-des-textes-portes-a-la-source-1248.md).
 
 ## `src/relecture_votes_source.py`
 

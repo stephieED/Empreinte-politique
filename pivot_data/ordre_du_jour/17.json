@@ -1,7 +1,7 @@
 {
   "schema_version": "ordre-du-jour-v1",
   "legislature": 17,
-  "genere_le": "2026-11-02",
+  "genere_le": "2026-11-03",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/vp/reunions/Agenda.json.zip",
   "seances": [
@@ -58172,7 +58172,7 @@
       "uid": "RUANR5L17S2027IDS30975",
       "date": "2026-11-02",
       "debut": "2026-11-02T15:00:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-02T20:00:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": "CRSANR5L17S2027O1N051",
@@ -58214,7 +58214,7 @@
       "fin": null,
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N052",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS30976PT53300",
@@ -58329,12 +58329,10 @@
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N54629",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30978PT53451"
-          },
+          "dossiers": [
+            "DLR5L17N54629"
+          ],
+          "dossier_retrouve": null,
           "dossier_non_resolu": null
         },
         {
@@ -58390,6 +58388,19 @@
           }
         },
         {
+          "uid": "RUANR5L17S2027IDS30979PT53574",
+          "objet": "Suite de la discussion du projet de loi de finances pour 2027 (première partie)",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54629"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
           "uid": "RUANR5L17S2027IDS30979PT53305",
           "objet": "Suite de la discussion du projet de loi de finances pour 2027 (seconde partie)",
           "type": "Suite de la discussion",
@@ -58428,6 +58439,19 @@
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": null,
       "points": [
+        {
+          "uid": "RUANR5L17S2027IDS30980PT53575",
+          "objet": "Suite de la discussion du projet de loi de finances pour 2027 (première partie)",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54629"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
         {
           "uid": "RUANR5L17S2027IDS30980PT53306",
           "objet": "Suite de la discussion du projet de loi de finances pour 2027",
@@ -58468,6 +58492,19 @@
       "compte_rendu_ref": null,
       "points": [
         {
+          "uid": "RUANR5L17S2027IDS30981PT53576",
+          "objet": "Suite de la discussion du projet de loi de finances pour 2027 (première partie)",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54629"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
           "uid": "RUANR5L17S2027IDS30981PT53307",
           "objet": "Suite de la discussion du projet de loi de finances pour 2027 (seconde partie)",
           "type": "Suite de la discussion",
@@ -58506,6 +58543,19 @@
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": null,
       "points": [
+        {
+          "uid": "RUANR5L17S2027IDS30982PT53577",
+          "objet": "Suite de la discussion du projet de loi de finances pour 2027 (première partie)",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54629"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
         {
           "uid": "RUANR5L17S2027IDS30982PT53308",
           "objet": "Suite de la discussion du projet de loi de finances pour 2027 (seconde partie)",
@@ -58561,6 +58611,19 @@
       "compte_rendu_ref": null,
       "points": [
         {
+          "uid": "RUANR5L17S2027IDS30983PT53578",
+          "objet": "Suite de la discussion du projet de loi de finances pour 2027 (première partie)",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54629"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
           "uid": "RUANR5L17S2027IDS30983PT53310",
           "objet": "Suite de la discussion du projet de loi de finances pour 2027 (seconde partie)",
           "type": "Suite de la discussion",
@@ -58600,6 +58663,19 @@
       "compte_rendu_ref": null,
       "points": [
         {
+          "uid": "RUANR5L17S2027IDS30984PT53579",
+          "objet": "Suite de la discussion du projet de loi de finances pour 2027 (première partie)",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54629"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
           "uid": "RUANR5L17S2027IDS30984PT53311",
           "objet": "Suite de la discussion du projet de loi de finances pour 2027 (seconde partie)",
           "type": "Suite de la discussion",
@@ -58638,6 +58714,19 @@
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": null,
       "points": [
+        {
+          "uid": "RUANR5L17S2027IDS30985PT53580",
+          "objet": "Suite de la discussion du projet de loi de finances pour 2027 (première partie)",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54629"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
         {
           "uid": "RUANR5L17S2027IDS30985PT53312",
           "objet": "Suite de la discussion du projet de loi de finances pour 2027 (seconde partie)",
@@ -58692,6 +58781,19 @@
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": null,
       "points": [
+        {
+          "uid": "RUANR5L17S2027IDS30986PT53581",
+          "objet": "Suite de la discussion du projet de loi de finances pour 2027 (première partie)",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54629"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
         {
           "uid": "RUANR5L17S2027IDS30986PT53314",
           "objet": "Suite de la discussion du projet de loi de finances pour 2027",
@@ -59008,7 +59110,7 @@
           "uid": "RUANR5L17S2027IDS30993PT53571",
           "objet": "Éventuellement, suite de la discussion, sur le rapport de la commission mixte paritaire, de la proposition de loi visant à renforcer l'effectivité des droits voisins des éditeurs et des agences de presse",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
@@ -59031,6 +59133,19 @@
           }
         },
         {
+          "uid": "RUANR5L17S2027IDS30993PT53469",
+          "objet": "Suite de la discussion de la seconde partie du projet de loi de finances pour 2027",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54629"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
           "uid": "RUANR5L17S2027IDS30993PT53322",
           "objet": "Suite de la discussion du projet de loi de finances pour 2027 (seconde partie)",
           "type": "Suite de la discussion",
@@ -59044,19 +59159,6 @@
             "point_source": "RUANR5L17S2027IDS30993PT53469"
           },
           "dossier_non_resolu": null
-        },
-        {
-          "uid": "RUANR5L17S2027IDS30993PT53469",
-          "objet": "Suite de la discussion de la seconde partie du projet de loi de finances pour 2027",
-          "type": "Suite de la discussion",
-          "etat": "Confirmé",
-          "procedure": null,
-          "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54629"
-          ],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": null
         }
       ]
     },
@@ -59069,6 +59171,19 @@
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": null,
       "points": [
+        {
+          "uid": "RUANR5L17S2027IDS30994PT53588",
+          "objet": "Sous réserve de son dépôt, suite de la discussion du projet de loi de finances de fin de gestion pour 2026",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
+        },
         {
           "uid": "RUANR5L17S2027IDS30994PT53323",
           "objet": "Suite de la discussion du projet de loi de finances pour 2027 (seconde partie)",

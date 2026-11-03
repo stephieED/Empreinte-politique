@@ -23,6 +23,7 @@ La version d'avant la découpe (30/08/2026, 18 404 lignes, 1 054 Ko) est figée 
 - `2026-11-02` <a id="periodes-de-mandat-de-depute-1412"></a>[Les mandats de député disent quand la personne a siégé (#1412)](decisions/periodes-de-mandat-de-depute-1412.md)
 - `2026-11-02` <a id="relecture-des-mandats-a-la-source-1248"></a>[Relire à la source quelques mandats de député, à chaque run (#1248, lot 2)](decisions/relecture-des-mandats-a-la-source-1248.md)
 - `2026-11-02` <a id="relecture-des-signatures-a-la-source-1248"></a>[Relire à la source les signataires de quelques amendements, à chaque run (#1248, lot 3)](decisions/relecture-des-signatures-a-la-source-1248.md)
+- `2026-11-02` <a id="relecture-des-textes-portes-a-la-source-1248"></a>[Relire à la source le stade et les dates de quelques textes portés, à chaque run (#1248, lot 4)](decisions/relecture-des-textes-portes-a-la-source-1248.md)
 - `2026-10-30` <a id="devise-zero-retouche-1405"></a>[La devise devient « 100 % sourcé • 0 retouche • 0 score • 0 classement » (#1405)](decisions/devise-zero-retouche-1405.md)
 - `2026-10-30` <a id="premier-fichier-de-fraicheur-1389"></a>[Le premier fichier de fraîcheur complet, et ce qu'il a montré (#1389, #1400)](decisions/premier-fichier-de-fraicheur-1389.md)
 - `2026-10-30` <a id="relecture-des-votes-a-la-source-1248"></a>[Relire à la source quelques votes publiés, à chaque run (#1248)](decisions/relecture-des-votes-a-la-source-1248.md)
