@@ -105,7 +105,10 @@ _AN = ("extract-an", "extract-roster-groupes")
 
 FAMILLES: dict[str, Famille] = {
     "an.mandats": Famille("an", _AN, (TEMOIN_AMO30,), _AN),
-    "an.gouvernements": Famille("an", ("extract-gouvernements",)),
+    # #1420 — job `continue-on-error` : `needs` le dit réussi même en échec.
+    # `needs` reste lu (il distingue un job SAUTÉ d'un job en échec), et le
+    # relevé du job dit s'il a vraiment réussi.
+    "an.gouvernements": Famille("an", ("extract-gouvernements",), (), ("extract-gouvernements",)),
     "an.votes": Famille("an", _AN, (TEMOIN_SCRUTINS,), _AN),
     "an.interventions": Famille("an", _AN, TEMOINS_SYCERON, _AN, CASE_INTERVENTIONS),
     "an.questions": Famille("an", _AN, (TEMOIN_QUESTIONS,), _AN, CASE_INTERVENTIONS),
@@ -113,12 +116,16 @@ FAMILLES: dict[str, Famille] = {
     # `extract-amendements-an` n'est pas dans les `needs` du job de fusion :
     # son relevé n'est publié que s'il a réussi.
     "an.amendements": Famille("an", (), (TEMOIN_AMENDEMENTS,), ("extract-amendements-an",)),
-    "an.ordre_du_jour": Famille("an", ("extract-articles-votes",)),
-    "an.articles_votes": Famille("an", ("extract-articles-votes",)),
-    "jo.actes": Famille("jo", ("extract-actes-jo",)),
-    "budget_etat": Famille("budget_etat", ("extract-finances-etat",)),
-    "drees": Famille("drees", ("extract-finances-etat",)),
-    "unedic": Famille("unedic", ("extract-finances-etat",)),
+    # #1420 — `extract-articles-votes` est `continue-on-error` lui aussi.
+    "an.ordre_du_jour": Famille("an", ("extract-articles-votes",), (), ("extract-articles-votes",)),
+    "an.articles_votes": Famille("an", ("extract-articles-votes",), (), ("extract-articles-votes",)),
+    # #1420 — même cas : les deux jobs sont `continue-on-error`. Le 03/11/2026
+    # (run 41583086678), la DILA et le portail de l'Économie étaient en panne,
+    # et ces quatre familles se disaient « à jour au 03/11 ».
+    "jo.actes": Famille("jo", ("extract-actes-jo",), (), ("extract-actes-jo",)),
+    "budget_etat": Famille("budget_etat", ("extract-finances-etat",), (), ("extract-finances-etat",)),
+    "drees": Famille("drees", ("extract-finances-etat",), (), ("extract-finances-etat",)),
+    "unedic": Famille("unedic", ("extract-finances-etat",), (), ("extract-finances-etat",)),
     # Les sources de la fiche candidat. Leurs jobs sont `continue-on-error` :
     # le relevé porte l'état réel du job, `needs` n'y suffit pas.
     "sen.mandats": Famille("sen", (), (TEMOIN_SENAT,), ("extract-senat",)),

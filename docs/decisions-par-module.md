@@ -145,12 +145,13 @@ Le mentionnent sans le gouverner : [`derivation-des-groupes-depuis-amo30-1168`](
 
 ## `src/articles_votes.py`
 
-7 décision(s) le gouvernent ; le module en cite 3.
+8 décision(s) le gouvernent ; le module en cite 3.
 
 | Décision | Nomme |
 | --- | --- |
 | [« À jour au » : la dernière relecture réussie de chaque famille de données, et son état (#1389) (2026-10-29)](decisions/a-jour-au-par-famille-de-donnees-1389.md) | `ordre_du_jour` |
 | [Les articles des textes lus, publiés dans `articles_votes.json` (#1352) (2026-10-26)](decisions/articles-des-textes-dans-articles-votes-1352.md) | `articles_des_textes`, `normaliser_article` |
+| [Une famille dont le job peut échouer se date par son relevé, jamais par `needs` (#1420) (2026-11-03)](decisions/fraicheur-jobs-continue-on-error-1420.md) | `ordre_du_jour` |
 | [L'intitulé d'un article voté, et le gabarit des lois de finances (#1352) (2026-10-26)](decisions/intitule-des-articles-votes-1352.md) | `VERSION_STRUCTURE`, `en_tete_d_article`, `structure_loi_de_finances` |
 | [L'ordre du jour des séances publiques, un fichier par législature (#1354) (2026-10-26)](decisions/ordre-du-jour-des-seances-1354.md) | `ordre_du_jour` |
 | [« À l'ordre du jour » : l'agenda des séances sur la fiche de législature, en Calendrier ou en Planning (#1354) (2026-10-26)](decisions/ordre-du-jour-fiche-legislature-1354.md) | `ordre_du_jour` |
@@ -688,7 +689,7 @@ Le mentionnent sans le gouverner : [`lectures-du-depot-dans-les-tests-791`](deci
 
 ## `src/finances_etat.py`
 
-Le mentionnent sans le gouverner : [`finances-etat-collecte-1053`](decisions/finances-etat-collecte-1053.md), [`missions-2015-2020-1302`](decisions/missions-2015-2020-1302.md).
+Le mentionnent sans le gouverner : [`finances-etat-collecte-1053`](decisions/finances-etat-collecte-1053.md), [`fraicheur-jobs-continue-on-error-1420`](decisions/fraicheur-jobs-continue-on-error-1420.md), [`missions-2015-2020-1302`](decisions/missions-2015-2020-1302.md).
 
 ## `src/finances_sociales.py`
 

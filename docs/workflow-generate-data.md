@@ -1070,7 +1070,8 @@ avals plutôt que refabriqués — c'est ce qui donne « zéro fetch roster en C
 **Les relevés de fraîcheur (#1389).** `extract-an` (un par shard),
 `extract-roster-groupes` (un par shard), `extract-amendements-an` et, depuis le
 29/10/2026, `extract-senat`, `extract-ue-officiel`, `extract-parltrack` et
-`extract-mandats-locaux` publient en fin de job un artifact
+`extract-mandats-locaux`, et depuis le 03/11/2026 (#1420) `extract-gouvernements`,
+`extract-actes-jo`, `extract-finances-etat` et `extract-articles-votes`, publient en fin de job un artifact
 `fraicheur-<job>[-<shard>]` ; `merge-and-pivot` relève sur place les documents
 européens, juste avant de composer. Le relevé porte la date d'écriture des
 fichiers témoins de leurs familles de données (archive AMO30, `scrutins.json`
@@ -1082,7 +1083,11 @@ télécharge (`pattern: fraicheur-*`) et compose `pivot_data/fraicheur_sources.j
 (« Dater les familles de données relues », non bloquant) avec `toJSON(needs)`,
 les deux cases du formulaire et le périmètre du run. Une famille n'avance que si
 ses jobs ont réussi, sur tout le périmètre, et, pour les interventions et les
-dossiers, si leur case était cochée ; sinon elle garde sa date. Modules :
+dossiers, si leur case était cochée ; sinon elle garde sa date. **Une famille
+dont un job est `continue-on-error` se date par le relevé de ce job, jamais par
+`needs` seul** (#1420) : le 03/11/2026, quatre familles se disaient à jour au
+jour d'une panne de la DILA et du portail de l'Économie.
+`tests/test_fraicheur_sources_1389.py` refuse toute famille qui l'oublie. Modules :
 `src/fraicheur_sources.py` ; règle : `docs/decisions/a-jour-au-par-famille-de-donnees-1389.md`.
 
 ## 5. Budgets et durées

@@ -36,6 +36,14 @@ def _poser(racine: Path, relatif: Path, jour: str, contenu: str = "x") -> None:
     os.utime(chemin, (horodatage, horodatage))
 
 
+def _releves_des_jobs_sans_temoin(reussi=True):
+    """Les relevés que publient les jobs datés par leur relevé et sans témoin
+    (#1420) : sans eux, une famille dont le job est `continue-on-error` reste
+    en échec, puisque `needs` ne voit pas son échec."""
+    return {nom: [{"date": None, "reussi": reussi, "job": f.releve_par[0]}]
+            for nom, f in fs.FAMILLES.items() if f.releve_par and not f.temoins}
+
+
 def _releves(**par_famille):
     return {nom: [{"date": d, "reussi": True, "job": "extract-an"} for d in dates]
             for nom, dates in par_famille.items()}
@@ -127,7 +135,8 @@ def test_l_indicateur_des_amendements_dit_s_il_a_reussi(tmp_path):
 # ── Composer ────────────────────────────────────────────────────────────────
 
 def test_tout_reussi_les_familles_prennent_leur_date():
-    doc = fs.composer(None, _releves(**{"an.votes": ["2026-10-27", "2026-10-28"]}),
+    doc = fs.composer(None, {**_releves_des_jobs_sans_temoin(),
+                             **_releves(**{"an.votes": ["2026-10-27", "2026-10-28"]})},
                       TOUT_REUSSI, CASES, True, "2026-10-29")
     assert doc["familles"]["an.votes"]["a_jour_au"] == "2026-10-27"   # la plus ancienne des shards
     assert doc["familles"]["jo.actes"]["a_jour_au"] == "2026-10-29"   # sans cache : le run
@@ -191,7 +200,7 @@ def test_un_shard_en_echec_bloque_sa_famille_meme_si_needs_dit_succes():
 
 def test_un_echec_garde_sa_date_de_debut_jusqu_a_la_reussite():
     echec = {**TOUT_REUSSI, "extract-finances-etat": "failure"}
-    doc = fs.composer(None, {}, TOUT_REUSSI, CASES, True, "2026-10-22")
+    doc = fs.composer(None, _releves_des_jobs_sans_temoin(), TOUT_REUSSI, CASES, True, "2026-10-22")
     assert doc["familles"]["drees"]["etat"] == fs.ETAT_A_JOUR
     doc = fs.composer(doc, {}, echec, CASES, True, "2026-10-23")
     doc = fs.composer(doc, {}, echec, CASES, True, "2026-10-24")
@@ -201,7 +210,7 @@ def test_un_echec_garde_sa_date_de_debut_jusqu_a_la_reussite():
     doc = fs.composer(doc, {}, TOUT_REUSSI, CASES, False, "2026-10-25")
     assert (doc["familles"]["drees"]["etat"], doc["familles"]["drees"]["en_echec_depuis"]) == \
         (fs.ETAT_EN_ECHEC, "2026-10-23")
-    doc = fs.composer(doc, {}, TOUT_REUSSI, CASES, True, "2026-10-26")
+    doc = fs.composer(doc, _releves_des_jobs_sans_temoin(), TOUT_REUSSI, CASES, True, "2026-10-26")
     assert doc["familles"]["drees"] == {"source": "drees", "a_jour_au": "2026-10-26", "raison": None,
                                         "etat": fs.ETAT_A_JOUR, "en_echec_depuis": None,
                                         "motif_dernier_run": None}
@@ -259,3 +268,43 @@ def test_de_bout_en_bout(tmp_path):
     doc = json.loads(fichier.read_text(encoding="utf-8"))
     assert doc["familles"]["an.votes"]["a_jour_au"] == "2026-10-27"
     assert doc["familles"]["an.mandats"]["a_jour_au"] is None     # témoin absent du relevé
+
+
+
+# ── #1420 : un job autorisé à échouer ne se lit pas dans `needs` ────────────
+
+def _continue_on_error(job: str) -> bool:
+    bloc = WORKFLOW.split(f"\n  {job}:\n", 1)[1]
+    bloc = re.split(r"\n  [a-z0-9-]+:\n", bloc)[0]
+    return bool(re.search(r"^    continue-on-error: true\s*$", bloc, re.M))
+
+
+def test_une_famille_dont_le_job_peut_echouer_est_datee_par_son_releve():
+    """`needs.<job>.result` vaut `success` pour un job `continue-on-error` qui
+    a échoué : une famille qui ne lirait que `needs` se dirait à jour. Mesuré
+    le 03/11/2026 (run 41583086678) sur `jo.actes`, `budget_etat`, `drees` et
+    `unedic`, alors que la DILA et le portail de l'Économie étaient en panne."""
+    for nom, famille in fs.FAMILLES.items():
+        for job in famille.jobs:
+            if _continue_on_error(job):
+                assert job in famille.releve_par, (
+                    f"{nom} : {job} est continue-on-error, sa réussite doit venir de son relevé (#1420)")
+
+
+def test_le_echec_d_un_job_continue_on_error_se_voit():
+    """Le cas du 03/11/2026 : `needs` dit `success`, le relevé dit l'échec."""
+    releves = {**_releves_des_jobs_sans_temoin(),
+               **{nom: [{"date": None, "reussi": False, "job": "extract-finances-etat"}]
+                  for nom in ("budget_etat", "drees", "unedic")}}
+    precedent = {"familles": {"drees": {"source": "drees", "a_jour_au": "2026-11-02", "raison": None}}}
+    doc = fs.composer(precedent, releves, TOUT_REUSSI, CASES, True, "2026-11-03")
+    entree = doc["familles"]["drees"]
+    assert (entree["etat"], entree["a_jour_au"]) == (fs.ETAT_EN_ECHEC, "2026-11-02")
+    assert doc["familles"]["jo.actes"]["etat"] == fs.ETAT_A_JOUR
+
+
+def test_un_job_continue_on_error_sans_releve_est_en_echec():
+    """Arrêté avant son relevé : il n'a rien dit de lui-même."""
+    releves = {k: v for k, v in _releves_des_jobs_sans_temoin().items() if k != "jo.actes"}
+    doc = fs.composer(None, releves, TOUT_REUSSI, CASES, True, "2026-11-03")
+    assert doc["familles"]["jo.actes"]["etat"] == fs.ETAT_EN_ECHEC

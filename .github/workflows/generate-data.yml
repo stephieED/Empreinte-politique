@@ -3428,6 +3428,28 @@ jobs:
           path: _actes/
           if-no-files-found: ignore
 
+      # #1420 — à quelle date ce job a relu sa source, et s'il a réussi. Ce job
+      # est `continue-on-error` : `needs.extract-actes-jo.result` vaut `success` même
+      # quand il échoue, et le fichier de fraîcheur disait « à jour » une source
+      # en panne (run 41583086678, 03/11/2026). `job.status` voyage avec le
+      # relevé.
+      - name: Relevé de fraîcheur des sources (#1389)
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        run: |
+          python3 src/fraicheur_sources.py relever --job extract-actes-jo \
+            --reussi "${{ job.status == 'success' }}" \
+            --sortie "_fraicheur/extract-actes-jo.json"
+
+      - name: Upload relevé de fraîcheur (#1389)
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v6
+        with:
+          name: fraicheur-extract-actes-jo
+          path: _fraicheur/
+          if-no-files-found: warn
+
   # ──────────────────────────────────────────────────────────────────────────
   # JOB D'EXTRACTION — la liste des gouvernements, depuis AMO30 (#1129)
   #
@@ -3499,6 +3521,28 @@ jobs:
           path: raw_data/gouvernements_reels.json
           if-no-files-found: warn
 
+      # #1420 — à quelle date ce job a relu sa source, et s'il a réussi. Ce job
+      # est `continue-on-error` : `needs.extract-gouvernements.result` vaut `success` même
+      # quand il échoue, et le fichier de fraîcheur disait « à jour » une source
+      # en panne (run 41583086678, 03/11/2026). `job.status` voyage avec le
+      # relevé.
+      - name: Relevé de fraîcheur des sources (#1389)
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        run: |
+          python3 src/fraicheur_sources.py relever --job extract-gouvernements \
+            --reussi "${{ job.status == 'success' }}" \
+            --sortie "_fraicheur/extract-gouvernements.json"
+
+      - name: Upload relevé de fraîcheur (#1389)
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v6
+        with:
+          name: fraicheur-extract-gouvernements
+          path: _fraicheur/
+          if-no-files-found: warn
+
   # ──────────────────────────────────────────────────────────────────────────
   # JOB D'EXTRACTION — les finances de l'État (#1053)
   #
@@ -3567,6 +3611,28 @@ jobs:
           path: |
             raw_data/finances_etat.json
             raw_data/finances_sociales.json
+          if-no-files-found: warn
+
+      # #1420 — à quelle date ce job a relu sa source, et s'il a réussi. Ce job
+      # est `continue-on-error` : `needs.extract-finances-etat.result` vaut `success` même
+      # quand il échoue, et le fichier de fraîcheur disait « à jour » une source
+      # en panne (run 41583086678, 03/11/2026). `job.status` voyage avec le
+      # relevé.
+      - name: Relevé de fraîcheur des sources (#1389)
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        run: |
+          python3 src/fraicheur_sources.py relever --job extract-finances-etat \
+            --reussi "${{ job.status == 'success' }}" \
+            --sortie "_fraicheur/extract-finances-etat.json"
+
+      - name: Upload relevé de fraîcheur (#1389)
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v6
+        with:
+          name: fraicheur-extract-finances-etat
+          path: _fraicheur/
           if-no-files-found: warn
 
   extract-articles-votes:
@@ -3674,6 +3740,26 @@ jobs:
         with:
           name: ordre-du-jour
           path: pivot_data/ordre_du_jour
+          if-no-files-found: warn
+
+      # #1420 — à quelle date ce job a relu sa source, et s'il a réussi. Ce job
+      # est `continue-on-error` : `needs.extract-articles-votes.result` vaut `success` même
+      # quand il échoue. `job.status` voyage avec le relevé.
+      - name: Relevé de fraîcheur des sources (#1389)
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        run: |
+          python3 src/fraicheur_sources.py relever --job extract-articles-votes \
+            --reussi "${{ job.status == 'success' }}" \
+            --sortie "_fraicheur/extract-articles-votes.json"
+
+      - name: Upload relevé de fraîcheur (#1389)
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v6
+        with:
+          name: fraicheur-extract-articles-votes
+          path: _fraicheur/
           if-no-files-found: warn
 
   merge-and-pivot:
