@@ -5305,6 +5305,39 @@ jobs:
             relecture-textes.md
             relecture-textes.json
           if-no-files-found: ignore
+
+      # EFFECTIFS DES GROUPES CONFRONTÉS À CHAQUE SCRUTIN (#1248, lot 5). Les
+      # lots 1 à 4 disent si ce que nous avons est juste ; celui-ci, si nous
+      # l'avons en entier. Chaque scrutin de l'open data porte le nombre de
+      # membres de chaque groupe ce jour-là : il est comparé, pour TOUS les
+      # scrutins des quatre législatures (aucun tirage — arbitré le
+      # 03/11/2026), aux membres de nos fiches de groupe et de
+      # `raw_data/non_inscrits.json`. Quatre archives, 50 Mo, quelques
+      # secondes. Tolérés : un jour de part et d'autre d'un changement, et les
+      # écarts validés à la main dans `config/ecarts_effectifs_valides.json`.
+      - name: Effectifs des groupes confrontés aux scrutins (signalement)
+        id: relecture_effectifs
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          python3 src/relecture_effectifs_source.py \
+            --out relecture-effectifs.md \
+            --out-json relecture-effectifs.json
+          {
+            echo "### Effectifs des groupes confrontés à ceux des scrutins de l'Assemblée (#1248)"
+            echo ""
+            cat relecture-effectifs.md
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Rapport des effectifs confrontés aux scrutins — artifact
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: relecture-effectifs
+          path: |
+            relecture-effectifs.md
+            relecture-effectifs.json
+          if-no-files-found: ignore
       # ──────────────────────────────────────────────────────────────────
       # LE GARDE-FOU DE #390/#413 A DISPARU ICI, ET C'EST VOULU (#1059).
       #
@@ -6162,3 +6195,44 @@ jobs:
             gh issue comment "$NUMERO" --repo "$DEPOT" --body-file corps-issue-textes.md
           fi
           echo "::warning::TEXTES_EN_ECART — ${NB} texte(s) porté(s) publié(s) diffèrent de la page de l'Assemblée. Issue de suivi tenue à jour sur ${DEPOT}."
+
+      # L'ISSUE DES EFFECTIFS EN ÉCART AVEC LES SCRUTINS (#1248, lot 5) — même
+      # mécanique, et le run ne la ferme jamais non plus. Un écart examiné se
+      # consigne dans `config/ecarts_effectifs_valides.json` : il ne revient
+      # plus tant que les deux comptes restent ceux qui ont été validés.
+      - name: Effectifs en écart avec les scrutins — issue de suivi
+        if: steps.commit.outputs.pushed == 'true' && steps.relecture_effectifs.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.SRC_ISSUES_TOKEN }}
+          DEPOT: stephieED/Empreinte-politique-src
+          ETIQUETTE: effectifs-en-ecart-avec-la-source
+          URL_RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          NB="$(python3 -c "import json; print(json.load(open('relecture-effectifs.json'))['jours_en_ecart'])")"
+          if [[ "$NB" -eq 0 ]]; then
+            exit 0
+          fi
+          if [[ -z "${GH_TOKEN}" ]]; then
+            echo "::warning::EFFECTIFS_EN_ECART — ${NB} jour(s) où nos effectifs de groupe diffèrent de ceux des scrutins, et AUCUNE issue n'a été ouverte : le secret SRC_ISSUES_TOKEN n'est pas posé. Le détail est dans le résumé du job et dans l'artifact relecture-effectifs (#1248)."
+            exit 0
+          fi
+          NUMERO="$(gh issue list --repo "$DEPOT" --state open --label "$ETIQUETTE" --json number --jq '.[0].number // empty')"
+          {
+            echo "Ouverte et tenue à jour par le run de données (#1248, lot 5). **Le run ne la ferme jamais.** Un écart examiné et expliqué se consigne dans \`config/ecarts_effectifs_valides.json\` ; il ne revient plus tant que les deux comptes ne bougent pas. À fermer à la main quand le tableau est vide."
+            echo ""
+            echo "Dernier run avec écart : ${URL_RUN}"
+            echo ""
+            cat relecture-effectifs.md
+          } > corps-issue-effectifs.md
+          if [[ -z "$NUMERO" ]]; then
+            gh label create "$ETIQUETTE" --repo "$DEPOT" --color B60205 \
+              --description "Un effectif de groupe diffère de celui que l'Assemblée publie avec ses scrutins" --force
+            gh issue create --repo "$DEPOT" --label "$ETIQUETTE" \
+              --title "Effectifs en écart avec les scrutins : ${NB} jour(s)" \
+              --body-file corps-issue-effectifs.md
+          else
+            gh issue comment "$NUMERO" --repo "$DEPOT" --body-file corps-issue-effectifs.md
+          fi
+          echo "::warning::EFFECTIFS_EN_ECART — ${NB} jour(s) où nos effectifs de groupe diffèrent de ceux des scrutins. Issue de suivi tenue à jour sur ${DEPOT}."

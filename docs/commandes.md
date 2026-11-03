@@ -1008,6 +1008,19 @@ récentes ; `--profils-dir` et `--date` changent le corpus et le jour du tirage.
 Fait dix requêtes au site de l'Assemblée. **Sort toujours en 0** : c'est un
 signalement.
 
+### Nos effectifs de groupe sont-ils ceux que l'Assemblée publie à chaque scrutin ? (#1248, lot 5)
+
+```bash
+python3 src/relecture_effectifs_source.py --out effectifs.md --out-json effectifs.json
+```
+
+Compare, pour tous les scrutins des quatre législatures, le nombre de membres
+de chaque groupe publié par l'Assemblée aux membres de `pivot_data/groupes/` et
+de `raw_data/non_inscrits.json`. `--legislature 17` (répétable) restreint,
+`--archive 17=<chemin>` lit une archive déjà téléchargée au lieu du réseau,
+`--valides` change le fichier des écarts validés. Télécharge quatre archives
+(50 Mo). **Sort toujours en 0** : c'est un signalement.
+
 ### Les prises de parole rattachées à une autre personne (#1177)
 
 ```bash

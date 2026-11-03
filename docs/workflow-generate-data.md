@@ -1462,6 +1462,27 @@ quatre règles ; deux tirages (20 dossiers, 25 textes portés), 25 concordants ;
 45 s, pic à 163 Mio.
 → `docs/decisions/relecture-des-textes-portes-a-la-source-1248.md`
 
+### Les effectifs des groupes confrontés aux scrutins : le lot 5 (#1248)
+
+Puis « Effectifs des groupes confrontés aux scrutins (signalement) »
+(`src/relecture_effectifs_source.py`) dit si nous avons **tout**, là où les lots
+1 à 4 disent si ce que nous avons est juste. Il télécharge les archives de
+scrutins des quatre législatures (`candidate_profile._scrutins_zip_url`, 50 Mo)
+et compare, pour **chaque** scrutin, le nombre de membres de chaque groupe que
+l'Assemblée publie (`nombreMembresGroupe`) aux membres de nos fiches de groupe
+(`pivot_data/groupes/groupe-AN-*-<leg>.json`, reliées par
+`historique_noms[].organe_an`) et des non-inscrits (`raw_data/non_inscrits.json`,
+téléchargé plus haut). **Aucun tirage.** Tolérés : un écart la veille, le jour
+ou le lendemain d'un changement d'appartenance du groupe, et les écarts
+consignés à la main dans `config/ecarts_effectifs_valides.json` tant que leurs
+deux comptes ne bougent pas. Hors comparaison : le scrutin du Congrès, les
+groupes publiés sous `PO0`, un groupe absent de la ventilation. Même régime ;
+artifact `relecture-effectifs`, issue `effectifs-en-ecart-avec-la-source`.
+
+Mesuré le 03/11/2026 en local : 19 455 scrutins, 246 en écart sur 13 jours ;
+14 s, pic à 80 Mio, hors téléchargement.
+→ `docs/decisions/effectifs-des-groupes-confrontes-aux-scrutins-1248.md`
+
 
 ### Ce que `merge-and-pivot` ne produit plus : les fiches de parti (#906)
 

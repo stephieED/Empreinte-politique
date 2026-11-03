@@ -1,0 +1,7 @@
+{
+  "_meta": {
+    "description": "Écarts d'effectif EXAMINÉS ET VALIDÉS À LA MAIN entre nos fiches de groupe (et raw_data/non_inscrits.json) et le nombre de membres que l'Assemblée publie avec chaque scrutin (#1248, lot 5). Lu par src/relecture_effectifs_source.py : un écart consigné ici n'est plus signalé tant que les deux comptes restent ceux de la ligne. Un compte qui bouge redevient un écart. Aucun run n'écrit ce fichier.",
+    "ecarts": "Une ligne par écart : legislature, date (AAAA-MM-JJ), unite (le groupe_id de la fiche, ou NI), an et nous (les deux comptes, tels que le rapport les donne), raison (ce que l'examen a établi), valide_le."
+  },
+  "ecarts": []
+}

@@ -20,6 +20,7 @@ La version d'avant la découpe (30/08/2026, 18 404 lignes, 1 054 Ko) est figée 
 
 ---
 
+- `2026-11-03` <a id="effectifs-des-groupes-confrontes-aux-scrutins-1248"></a>[Confronter nos effectifs de groupe à ceux de chaque scrutin, à chaque run (#1248, lot 5)](decisions/effectifs-des-groupes-confrontes-aux-scrutins-1248.md)
 - `2026-11-03` <a id="fraicheur-jobs-continue-on-error-1420"></a>[Une famille dont le job peut échouer se date par son relevé, jamais par `needs` (#1420)](decisions/fraicheur-jobs-continue-on-error-1420.md)
 - `2026-11-02` <a id="periodes-de-mandat-de-depute-1412"></a>[Les mandats de député disent quand la personne a siégé (#1412)](decisions/periodes-de-mandat-de-depute-1412.md)
 - `2026-11-02` <a id="relecture-des-mandats-a-la-source-1248"></a>[Relire à la source quelques mandats de député, à chaque run (#1248, lot 2)](decisions/relecture-des-mandats-a-la-source-1248.md)
