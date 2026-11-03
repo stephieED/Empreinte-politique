@@ -58211,7 +58211,7 @@
       "uid": "RUANR5L17S2027IDS30976",
       "date": "2026-11-02",
       "debut": "2026-11-02T21:30:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-03T00:00:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": "CRSANR5L17S2027O1N052",
@@ -58253,7 +58253,7 @@
       "fin": null,
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N053",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS30977PT53301",
@@ -58272,15 +58272,28 @@
           "uid": "RUANR5L17S2027IDS30977PT53449",
           "objet": "Vote solennel sur le projet de loi de finances pour 2027 (première partie)",
           "type": "Vote solennel",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N54629",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30977PT53450"
+            "point_source": "RUANR5L17S2027IDS30977PT53570"
           },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS30977PT53570",
+          "objet": "Suite de la discussion du projet de loi de finances pour 2027 (première partie)",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54629"
+          ],
+          "dossier_retrouve": null,
           "dossier_non_resolu": null
         },
         {
@@ -58294,7 +58307,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N54629",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30977PT53450"
+            "point_source": "RUANR5L17S2027IDS30977PT53570"
           },
           "dossier_non_resolu": null
         },
@@ -58302,13 +58315,15 @@
           "uid": "RUANR5L17S2027IDS30977PT53450",
           "objet": "Discussion de la seconde partie du projet de loi de finances pour 2027",
           "type": "Discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54629"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30977PT53570"
+          },
           "dossier_non_resolu": null
         }
       ]
@@ -58346,7 +58361,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N54629",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30978PT53451"
+            "point_source": "RUANR5L17S2027IDS30978PT53573"
           },
           "dossier_non_resolu": null
         },
@@ -58354,13 +58369,15 @@
           "uid": "RUANR5L17S2027IDS30978PT53451",
           "objet": "Suite de la discussion de la seconde partie du projet de loi de finances pour 2027",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54629"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30978PT53573"
+          },
           "dossier_non_resolu": null
         }
       ]
@@ -58411,7 +58428,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N54629",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30979PT53455"
+            "point_source": "RUANR5L17S2027IDS30979PT53574"
           },
           "dossier_non_resolu": null
         },
@@ -58419,13 +58436,15 @@
           "uid": "RUANR5L17S2027IDS30979PT53455",
           "objet": "Suite de la discussion de la seconde partie du projet de loi de finances pour 2027",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54629"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30979PT53574"
+          },
           "dossier_non_resolu": null
         }
       ]
@@ -58463,7 +58482,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N54629",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30980PT53456"
+            "point_source": "RUANR5L17S2027IDS30980PT53575"
           },
           "dossier_non_resolu": null
         },
@@ -58471,13 +58490,15 @@
           "uid": "RUANR5L17S2027IDS30980PT53456",
           "objet": "Suite de la discussion de la seconde partie du projet de loi de finances pour 2027",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54629"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30980PT53575"
+          },
           "dossier_non_resolu": null
         }
       ]
@@ -58515,7 +58536,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N54629",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30981PT53457"
+            "point_source": "RUANR5L17S2027IDS30981PT53576"
           },
           "dossier_non_resolu": null
         },
@@ -58523,13 +58544,15 @@
           "uid": "RUANR5L17S2027IDS30981PT53457",
           "objet": "Suite de la discussion de la seconde partie du projet de loi de finances pour 2027",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54629"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30981PT53576"
+          },
           "dossier_non_resolu": null
         }
       ]
@@ -58567,7 +58590,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N54629",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30982PT53458"
+            "point_source": "RUANR5L17S2027IDS30982PT53577"
           },
           "dossier_non_resolu": null
         },
@@ -58575,13 +58598,15 @@
           "uid": "RUANR5L17S2027IDS30982PT53458",
           "objet": "Suite de la discussion de la seconde partie du projet de loi de finances pour 2027",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54629"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30982PT53577"
+          },
           "dossier_non_resolu": null
         },
         {
@@ -58595,7 +58620,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N54629",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30982PT53458"
+            "point_source": "RUANR5L17S2027IDS30982PT53577"
           },
           "dossier_non_resolu": null
         }
@@ -58634,7 +58659,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N54629",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30983PT53459"
+            "point_source": "RUANR5L17S2027IDS30983PT53578"
           },
           "dossier_non_resolu": null
         },
@@ -58642,13 +58667,15 @@
           "uid": "RUANR5L17S2027IDS30983PT53459",
           "objet": "Suite de la discussion de la seconde partie du projet de loi de finances pour 2027",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54629"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30983PT53578"
+          },
           "dossier_non_resolu": null
         }
       ]
@@ -58686,7 +58713,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N54629",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30984PT53460"
+            "point_source": "RUANR5L17S2027IDS30984PT53579"
           },
           "dossier_non_resolu": null
         },
@@ -58694,13 +58721,15 @@
           "uid": "RUANR5L17S2027IDS30984PT53460",
           "objet": "Suite de la discussion de la seconde partie du projet de loi de finances pour 2027",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54629"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30984PT53579"
+          },
           "dossier_non_resolu": null
         }
       ]
@@ -58738,7 +58767,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N54629",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30985PT53461"
+            "point_source": "RUANR5L17S2027IDS30985PT53580"
           },
           "dossier_non_resolu": null
         },
@@ -58746,13 +58775,15 @@
           "uid": "RUANR5L17S2027IDS30985PT53461",
           "objet": "Suite de la discussion de la seconde partie du projet de loi de finances pour 2027",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54629"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30985PT53580"
+          },
           "dossier_non_resolu": null
         },
         {
@@ -58766,7 +58797,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N54629",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30985PT53461"
+            "point_source": "RUANR5L17S2027IDS30985PT53580"
           },
           "dossier_non_resolu": null
         }
@@ -58805,7 +58836,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N54629",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30986PT53462"
+            "point_source": "RUANR5L17S2027IDS30986PT53581"
           },
           "dossier_non_resolu": null
         },
@@ -58813,13 +58844,171 @@
           "uid": "RUANR5L17S2027IDS30986PT53462",
           "objet": "Suite de la discussion de la seconde partie du projet de loi de finances pour 2027",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54629"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30986PT53581"
+          },
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31090",
+      "date": "2026-11-07",
+      "debut": "2026-11-07T09:00:00.000+01:00",
+      "fin": null,
+      "etat": "Supprimé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31090PT53582",
+          "objet": "Suite de la discussion du projet de loi de finances pour 2027 (première partie)",
+          "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30986PT53581"
+          },
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31091",
+      "date": "2026-11-07",
+      "debut": "2026-11-07T15:00:00.000+01:00",
+      "fin": null,
+      "etat": "Supprimé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31091PT53583",
+          "objet": "Suite de la discussion du projet de loi de finances pour 2027 (première partie)",
+          "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30986PT53581"
+          },
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31092",
+      "date": "2026-11-07",
+      "debut": "2026-11-07T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Supprimé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31092PT53584",
+          "objet": "Suite de la discussion du projet de loi de finances pour 2027 (première partie)",
+          "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30986PT53581"
+          },
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31093",
+      "date": "2026-11-08",
+      "debut": "2026-11-08T09:00:00.000+01:00",
+      "fin": null,
+      "etat": "Supprimé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31093PT53585",
+          "objet": "Suite de la discussion du projet de loi de finances pour 2027 (première partie)",
+          "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30987PT53463"
+          },
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31094",
+      "date": "2026-11-08",
+      "debut": "2026-11-08T15:00:00.000+01:00",
+      "fin": null,
+      "etat": "Supprimé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31094PT53586",
+          "objet": "Suite de la discussion du projet de loi de finances pour 2027 (première partie)",
+          "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30987PT53463"
+          },
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31095",
+      "date": "2026-11-08",
+      "debut": "2026-11-08T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Supprimé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31095PT53587",
+          "objet": "Suite de la discussion du projet de loi de finances pour 2027 (première partie)",
+          "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30987PT53463"
+          },
           "dossier_non_resolu": null
         }
       ]
