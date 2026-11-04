@@ -211,7 +211,7 @@ def test_une_seule_bulle_ouverte_a_la_fois() -> None:
 def test_il_n_y_a_qu_un_composant_de_bulle(fiche: str) -> None:
     """Huit emplacements, une implémentation : la fiche l'importe et ne la
     redéfinit pas."""
-    assert "import InfoBulle, { BulleDePastille, DatesDesSources } from './InfoBulle';" in fiche
+    assert "import InfoBulle, { BulleDePastille, PiedDesBulles } from './InfoBulle';" in fiche
     assert "function InfoBulle" not in fiche
     assert "function BulleDePastille" not in fiche
     assert fiche.count("<InfoBulle") == 5, (
@@ -256,7 +256,8 @@ def test_la_source_des_paroles_est_dans_le_pied_de_sa_bulle(bulles: str, fiche: 
     la ligne de l'Assemblée dans le pied de source, et non plus un lien à part."""
     entree = _entree(bulles, "dit")
     assert "La source : les comptes rendus" not in entree
-    assert "sources: [{ id: 'an', url: PAGE_JEU_DE_DONNEES_DEBATS }]" in entree
+    # Depuis le 04/11/2026 (#1389), la bulle nomme sa famille de données.
+    assert "sources: [{ id: 'an.interventions', url: PAGE_JEU_DE_DONNEES_DEBATS }" in entree
     assert "sous forme d’archive" not in lire(PAROLES)
     assert "PAGE_JEU_DE_DONNEES_DEBATS" not in lire(PAROLES)
 

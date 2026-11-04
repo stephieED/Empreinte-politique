@@ -48,10 +48,9 @@ NON_COUVERT_2012 = (
     "Son mandat de juin 2007 à juin 2012 n’est pas couvert : la source commence le 20 juin 2012.",
 )
 AVANT_2002 = ("Avant juin 2002", "Nos sources ne connaissent aucun mandat avant le 19 juin 2002.")
-ENTREE_AU_GOUVERNEMENT = (
-    "Entrée au gouvernement",
-    "La source ne dit pas si un mandat s’est interrompu quand cette personne est entrée au gouvernement.",
-)
+#: « Entrée au gouvernement » est retirée le 04/11/2026 (#1412) : la source date
+#: chaque passage au gouvernement, et la frise d'« En bref » montre la coupure.
+PHRASE_RETIREE = "La source ne dit pas si un mandat s’est interrompu"
 
 
 def sans_commentaires(source: str) -> str:
@@ -142,7 +141,6 @@ def test_delphine_batho_l_ordre_des_sept_lignes(sections: dict) -> None:
             "Son mandat de juin 2007 à juin 2017 n’est pas couvert : la source commence le 21 juin 2017.",
         ),
         ("Majorité ou opposition", "L’Assemblée ne l’a pas déclaré pour 1 de ses 5 mandats."),
-        ENTREE_AU_GOUVERNEMENT,
         ("Votes", "Sur ses 164 votes, 32 n’ont pas de commission connue et 30 n’ont pas de sort connu."),
         (
             "Prises de parole",
@@ -180,7 +178,6 @@ def test_segolene_royal_les_mandats_anterieurs_font_taire_la_borne(sections: dic
             "Prises de parole",
             "Son mandat de juin 2002 à juin 2007 n’est pas couvert : la source commence le 21 juin 2017.",
         ),
-        ENTREE_AU_GOUVERNEMENT,
         (
             "Mandats antérieurs",
             "7 mandats exercés avant le 19 juin 2002 — 3 à l’Assemblée, 4 au gouvernement — sont cités "
@@ -310,7 +307,7 @@ def test_la_date_vient_du_profil_puis_des_bornes_du_corpus_jamais_d_une_constant
     assert out["europe"] == ["2009-11-25"]
     assert out["votesMelenchon"] == "2012-06-20"
     assert out["section"] == [
-        "Votes, Amendements, Textes portés", "Majorité ou opposition", "Entrée au gouvernement",
+        "Votes, Amendements, Textes portés", "Majorité ou opposition",
         "Votes", "Prises de parole", "Avant juin 2002",
     ]
     code = sans_commentaires(PROFIL.read_text(encoding="utf-8"))
@@ -449,10 +446,8 @@ def test_ni_etat_de_pipeline_ni_nom_de_champ_sur_la_fiche() -> None:
     assert "Ce qui manque sur cette fiche" in fiche
     assert "manques={c.ceQuiManque}" in fiche
     profil = sans_commentaires(PROFIL.read_text(encoding="utf-8"))
-    bloc = profil[profil.index("cle: 'suspension'") :]
-    bloc = bloc[: bloc.index("});")]
-    assert "suspendu_pour_fonction_gouvernementale" not in bloc
-    assert "${" not in bloc, "la phrase validée ne porte aucun nombre"
+    assert "cle: 'suspension'" not in profil, "« Entrée au gouvernement » est retirée (#1412)"
+    assert PHRASE_RETIREE not in profil
 
 
 def test_la_section_reste_la_ou_les_pourquoi_renvoient() -> None:

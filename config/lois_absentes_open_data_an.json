@@ -1,0 +1,368 @@
+{
+  "_meta": {
+    "description": "Lois publiées au Journal officiel depuis le début de la XIVe (20/06/2012) dont AUCUNE archive Dossiers_Legislatifs de l'Assemblée (XIVe à XVIIe) ne porte la promulgation (#1424). Un trou de la SOURCE, déclaré : pivot_data/textes_promulgues.json ne les porte pas, et rien ne les y ajoute. Lu par le futur contrôle des lois promulguées (#1248), qui ne les compte pas comme un écart de notre collecte. Établi une fois, à la main ; aucun run n'écrit ce fichier.",
+    "constate_le": "2026-11-04",
+    "methode": "numéros de raw_data/lois_jorf.json (natures LOI et LOI_ORGANIQUE, table du run du 03/11/2026) absents de pivot_data/textes_promulgues.json, puis cherchés dans les quatre archives Dossiers_Legislatifs téléchargées le 04/11/2026 : 69 n'y apparaissent nulle part, 2 n'y sont que cités par un autre dossier (2012-954, 2014-1392). Toute promulgation (PROM-PUB) présente dans ces archives porte son codeLoi.",
+    "cause": "vérifiée sur un cas (2018-287, champ verifie) : un dossier ouvert sous une législature et promulgué sous la suivante manque à l'archive de la seconde, qui ne reprend aucun dossier d'une autre législature (XIVe, XVe). Non vérifiée pour les lois de 2014 à 2016.",
+    "lignes": "une par loi : numero_loi, jorftext, publiee_au_jo_le (date de publication au JO) ; dossier_an et verifie quand la cause a été vérifiée."
+  },
+  "lois": [
+    {
+      "numero_loi": "2012-916",
+      "jorftext": "JORFTEXT000026229506",
+      "publiee_au_jo_le": "2012-07-28"
+    },
+    {
+      "numero_loi": "2012-917",
+      "jorftext": "JORFTEXT000026229508",
+      "publiee_au_jo_le": "2012-07-28"
+    },
+    {
+      "numero_loi": "2012-918",
+      "jorftext": "JORFTEXT000026229510",
+      "publiee_au_jo_le": "2012-07-28"
+    },
+    {
+      "numero_loi": "2012-919",
+      "jorftext": "JORFTEXT000026229512",
+      "publiee_au_jo_le": "2012-07-28"
+    },
+    {
+      "numero_loi": "2012-946",
+      "jorftext": "JORFTEXT000026257265",
+      "publiee_au_jo_le": "2012-08-04"
+    },
+    {
+      "numero_loi": "2012-954",
+      "jorftext": "JORFTEXT000026263463",
+      "publiee_au_jo_le": "2012-08-07"
+    },
+    {
+      "numero_loi": "2012-955",
+      "jorftext": "JORFTEXT000026263562",
+      "publiee_au_jo_le": "2012-08-07"
+    },
+    {
+      "numero_loi": "2012-1166",
+      "jorftext": "JORFTEXT000026511238",
+      "publiee_au_jo_le": "2012-10-20"
+    },
+    {
+      "numero_loi": "2012-1167",
+      "jorftext": "JORFTEXT000026511240",
+      "publiee_au_jo_le": "2012-10-20"
+    },
+    {
+      "numero_loi": "2012-1188",
+      "jorftext": "JORFTEXT000026536629",
+      "publiee_au_jo_le": "2012-10-27"
+    },
+    {
+      "numero_loi": "2012-1289",
+      "jorftext": "JORFTEXT000026665980",
+      "publiee_au_jo_le": "2012-11-24"
+    },
+    {
+      "numero_loi": "2012-1320",
+      "jorftext": "JORFTEXT000026702550",
+      "publiee_au_jo_le": "2012-11-30"
+    },
+    {
+      "numero_loi": "2012-1361",
+      "jorftext": "JORFTEXT000026733612",
+      "publiee_au_jo_le": "2012-12-07"
+    },
+    {
+      "numero_loi": "2012-1442",
+      "jorftext": "JORFTEXT000026830015",
+      "publiee_au_jo_le": "2012-12-26"
+    },
+    {
+      "numero_loi": "2012-1471",
+      "jorftext": "JORFTEXT000026855133",
+      "publiee_au_jo_le": "2012-12-29"
+    },
+    {
+      "numero_loi": "2012-1474",
+      "jorftext": "JORFTEXT000026855140",
+      "publiee_au_jo_le": "2012-12-29"
+    },
+    {
+      "numero_loi": "2013-98",
+      "jorftext": "JORFTEXT000026998470",
+      "publiee_au_jo_le": "2013-01-29"
+    },
+    {
+      "numero_loi": "2013-241",
+      "jorftext": "JORFTEXT000027219329",
+      "publiee_au_jo_le": "2013-03-26"
+    },
+    {
+      "numero_loi": "2013-242",
+      "jorftext": "JORFTEXT000027219331",
+      "publiee_au_jo_le": "2013-03-26"
+    },
+    {
+      "numero_loi": "2013-243",
+      "jorftext": "JORFTEXT000027219333",
+      "publiee_au_jo_le": "2013-03-26"
+    },
+    {
+      "numero_loi": "2013-325",
+      "jorftext": "JORFTEXT000027332221",
+      "publiee_au_jo_le": "2013-04-20"
+    },
+    {
+      "numero_loi": "2013-326",
+      "jorftext": "JORFTEXT000027332223",
+      "publiee_au_jo_le": "2013-04-20"
+    },
+    {
+      "numero_loi": "2013-327",
+      "jorftext": "JORFTEXT000027332225",
+      "publiee_au_jo_le": "2013-04-20"
+    },
+    {
+      "numero_loi": "2013-343",
+      "jorftext": "JORFTEXT000027351641",
+      "publiee_au_jo_le": "2013-04-25"
+    },
+    {
+      "numero_loi": "2013-354",
+      "jorftext": "JORFTEXT000027361361",
+      "publiee_au_jo_le": "2013-04-27"
+    },
+    {
+      "numero_loi": "2013-428",
+      "jorftext": "JORFTEXT000027466376",
+      "publiee_au_jo_le": "2013-05-28"
+    },
+    {
+      "numero_loi": "2013-614",
+      "jorftext": "JORFTEXT000027696964",
+      "publiee_au_jo_le": "2013-07-13"
+    },
+    {
+      "numero_loi": "2013-708",
+      "jorftext": "JORFTEXT000027805515",
+      "publiee_au_jo_le": "2013-08-06"
+    },
+    {
+      "numero_loi": "2013-715",
+      "jorftext": "JORFTEXT000027811435",
+      "publiee_au_jo_le": "2013-08-07"
+    },
+    {
+      "numero_loi": "2013-1114",
+      "jorftext": "JORFTEXT000028278925",
+      "publiee_au_jo_le": "2013-12-07"
+    },
+    {
+      "numero_loi": "2013-1116",
+      "jorftext": "JORFTEXT000028278949",
+      "publiee_au_jo_le": "2013-12-07"
+    },
+    {
+      "numero_loi": "2013-1118",
+      "jorftext": "JORFTEXT000028279423",
+      "publiee_au_jo_le": "2013-12-07"
+    },
+    {
+      "numero_loi": "2014-56",
+      "jorftext": "JORFTEXT000028526276",
+      "publiee_au_jo_le": "2014-01-28"
+    },
+    {
+      "numero_loi": "2014-200",
+      "jorftext": "JORFTEXT000028652180",
+      "publiee_au_jo_le": "2014-02-25"
+    },
+    {
+      "numero_loi": "2014-305",
+      "jorftext": "JORFTEXT000028700161",
+      "publiee_au_jo_le": "2014-03-09"
+    },
+    {
+      "numero_loi": "2014-307",
+      "jorftext": "JORFTEXT000028700165",
+      "publiee_au_jo_le": "2014-03-09"
+    },
+    {
+      "numero_loi": "2014-308",
+      "jorftext": "JORFTEXT000028700167",
+      "publiee_au_jo_le": "2014-03-09"
+    },
+    {
+      "numero_loi": "2014-459",
+      "jorftext": "JORFTEXT000028909824",
+      "publiee_au_jo_le": "2014-05-10"
+    },
+    {
+      "numero_loi": "2014-774",
+      "jorftext": "JORFTEXT000029210434",
+      "publiee_au_jo_le": "2014-07-08"
+    },
+    {
+      "numero_loi": "2014-874",
+      "jorftext": "JORFTEXT000029337002",
+      "publiee_au_jo_le": "2014-08-06"
+    },
+    {
+      "numero_loi": "2014-875",
+      "jorftext": "JORFTEXT000029337005",
+      "publiee_au_jo_le": "2014-08-06"
+    },
+    {
+      "numero_loi": "2014-876",
+      "jorftext": "JORFTEXT000029337008",
+      "publiee_au_jo_le": "2014-08-06"
+    },
+    {
+      "numero_loi": "2014-1392",
+      "jorftext": "JORFTEXT000029796562",
+      "publiee_au_jo_le": "2014-11-25"
+    },
+    {
+      "numero_loi": "2015-274",
+      "jorftext": "JORFTEXT000030348022",
+      "publiee_au_jo_le": "2015-03-14"
+    },
+    {
+      "numero_loi": "2015-275",
+      "jorftext": "JORFTEXT000030348025",
+      "publiee_au_jo_le": "2015-03-14"
+    },
+    {
+      "numero_loi": "2015-291",
+      "jorftext": "JORFTEXT000030361482",
+      "publiee_au_jo_le": "2015-03-17"
+    },
+    {
+      "numero_loi": "2015-294",
+      "jorftext": "JORFTEXT000030367222",
+      "publiee_au_jo_le": "2015-03-18"
+    },
+    {
+      "numero_loi": "2015-468",
+      "jorftext": "JORFTEXT000030524562",
+      "publiee_au_jo_le": "2015-04-28"
+    },
+    {
+      "numero_loi": "2015-735",
+      "jorftext": "JORFTEXT000030784342",
+      "publiee_au_jo_le": "2015-06-27"
+    },
+    {
+      "numero_loi": "2015-1704",
+      "jorftext": "JORFTEXT000031664530",
+      "publiee_au_jo_le": "2015-12-22"
+    },
+    {
+      "numero_loi": "2015-1705",
+      "jorftext": "JORFTEXT000031664532",
+      "publiee_au_jo_le": "2015-12-22"
+    },
+    {
+      "numero_loi": "2016-113",
+      "jorftext": "JORFTEXT000031983198",
+      "publiee_au_jo_le": "2016-02-06"
+    },
+    {
+      "numero_loi": "2018-180",
+      "jorftext": "JORFTEXT000036711213",
+      "publiee_au_jo_le": "2018-03-16"
+    },
+    {
+      "numero_loi": "2018-181",
+      "jorftext": "JORFTEXT000036711215",
+      "publiee_au_jo_le": "2018-03-16"
+    },
+    {
+      "numero_loi": "2018-182",
+      "jorftext": "JORFTEXT000036711217",
+      "publiee_au_jo_le": "2018-03-16"
+    },
+    {
+      "numero_loi": "2018-185",
+      "jorftext": "JORFTEXT000036714500",
+      "publiee_au_jo_le": "2018-03-17"
+    },
+    {
+      "numero_loi": "2018-287",
+      "jorftext": "JORFTEXT000036825602",
+      "publiee_au_jo_le": "2018-04-21",
+      "dossier_an": "DLR5L14N35818",
+      "verifie": "dossier ouvert sous la XIVe : présent dans l'archive de la XIVe, figée le 09/03/2018 avant la promulgation ; absent de l'archive de la XVe ; promulgation affichée par https://www.assemblee-nationale.fr/dyn/15/dossiers/DLR5L14N35818"
+    },
+    {
+      "numero_loi": "2018-527",
+      "jorftext": "JORFTEXT000037116260",
+      "publiee_au_jo_le": "2018-06-29"
+    },
+    {
+      "numero_loi": "2018-581",
+      "jorftext": "JORFTEXT000037160295",
+      "publiee_au_jo_le": "2018-07-07"
+    },
+    {
+      "numero_loi": "2018-582",
+      "jorftext": "JORFTEXT000037160298",
+      "publiee_au_jo_le": "2018-07-07"
+    },
+    {
+      "numero_loi": "2018-869",
+      "jorftext": "JORFTEXT000037481662",
+      "publiee_au_jo_le": "2018-10-10"
+    },
+    {
+      "numero_loi": "2018-957",
+      "jorftext": "JORFTEXT000037581660",
+      "publiee_au_jo_le": "2018-11-08"
+    },
+    {
+      "numero_loi": "2018-1068",
+      "jorftext": "JORFTEXT000037678921",
+      "publiee_au_jo_le": "2018-12-04"
+    },
+    {
+      "numero_loi": "2018-1214",
+      "jorftext": "JORFTEXT000037851904",
+      "publiee_au_jo_le": "2018-12-26"
+    },
+    {
+      "numero_loi": "2019-127",
+      "jorftext": "JORFTEXT000038164909",
+      "publiee_au_jo_le": "2019-02-26"
+    },
+    {
+      "numero_loi": "2019-282",
+      "jorftext": "JORFTEXT000038349476",
+      "publiee_au_jo_le": "2019-04-09"
+    },
+    {
+      "numero_loi": "2019-284",
+      "jorftext": "JORFTEXT000038349480",
+      "publiee_au_jo_le": "2019-04-09"
+    },
+    {
+      "numero_loi": "2019-744",
+      "jorftext": "JORFTEXT000038792157",
+      "publiee_au_jo_le": "2019-07-20"
+    },
+    {
+      "numero_loi": "2019-983",
+      "jorftext": "JORFTEXT000039138060",
+      "publiee_au_jo_le": "2019-09-27"
+    },
+    {
+      "numero_loi": "2020-43",
+      "jorftext": "JORFTEXT000041484726",
+      "publiee_au_jo_le": "2020-01-28"
+    },
+    {
+      "numero_loi": "2020-839",
+      "jorftext": "JORFTEXT000042079121",
+      "publiee_au_jo_le": "2020-07-04"
+    }
+  ]
+}

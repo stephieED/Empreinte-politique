@@ -1018,8 +1018,27 @@ Compare, pour tous les scrutins des quatre législatures, le nombre de membres
 de chaque groupe publié par l'Assemblée aux membres de `pivot_data/groupes/` et
 de `raw_data/non_inscrits.json`. `--legislature 17` (répétable) restreint,
 `--archive 17=<chemin>` lit une archive déjà téléchargée au lieu du réseau,
-`--valides` change le fichier des écarts validés. Télécharge quatre archives
-(50 Mo). **Sort toujours en 0** : c'est un signalement.
+`--valides` change le fichier des écarts validés. Compare aussi les numéros de
+scrutin de l'archive à ceux de l'index, que `--index-scrutins` change
+(`pivot_data/scrutins.json` par défaut). Le référentiel AMO30 juge ce qui est un
+écart de notre collecte : `--amo30 <chemin>` lit une archive déjà téléchargée,
+`--sans-amo30` s'en passe (comparaison au seul compte des scrutins, trois jours
+de tolérance). Télécharge quatre archives (50 Mo).
+**Sort toujours en 0** : c'est un signalement.
+
+### Nos textes promulgués sont-ils ceux que publie le Journal officiel ? (#1248)
+
+```bash
+python3 src/relecture_lois_promulguees.py --out lois.md --out-json lois.json
+```
+
+Compare, par numéro de loi et dans les deux sens, la table des lois du Journal
+officiel (`--lois-jorf`, `raw_data/lois_jorf.json`) aux textes promulgués
+(`--textes-promulgues`, `pivot_data/textes_promulgues.json`). Ne signale ni les
+lois déclarées absentes de l'open data de l'Assemblée (`--absentes`,
+`config/lois_absentes_open_data_an.json`), ni celles publiées après nos dossiers
+(`--fraicheur`, date `an.dossiers`). Aucune requête réseau. **Sort toujours en
+0** : c'est un signalement.
 
 ### Les prises de parole rattachées à une autre personne (#1177)
 

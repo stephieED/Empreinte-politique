@@ -378,3 +378,76 @@ def test_rafraichir_fusionne_par_defaut(tmp_path):
     # --no-merge : reconstruction complète, à réserver à un corpus complet.
     index = rafraichir(profils, index_dir, fusionner=False)
     assert set(index.par_id) == {ID_16}
+
+
+# ---------------------------------------------------------------------------
+# #1429 : la copie du premier signataire fait foi pour les cosignataires
+# ---------------------------------------------------------------------------
+# Le cas qui l'a montré : l'amendement n° I-3250 du PLF 2027, collecté le
+# 12/10/2026 avec 22 cosignataires, dont 14 se sont retirés depuis. Les copies
+# des signataires restés portent la liste de 8, celles des partants, plus
+# recollectées, gardent celle de 22. Réduit ici à 3 et 1.
+RESTES = ["an:PA840817"]
+PARTIS = ["an:PA840817", "an:PA1592", "an:PA942"]
+
+
+def test_la_copie_du_premier_signataire_gagne_sur_une_copie_perimee_vue_apres():
+    index = construire_index([
+        _brut(role_signataire="auteur_principal", co_signataires=RESTES),
+        _brut(role_signataire="cosignataire", co_signataires=PARTIS),
+    ])
+    assert index.co_signataires(ID_17) == RESTES
+
+
+def test_la_copie_du_premier_signataire_gagne_aussi_vue_en_dernier():
+    index = construire_index([
+        _brut(role_signataire="cosignataire", co_signataires=PARTIS),
+        _brut(role_signataire="auteur_principal", co_signataires=RESTES),
+    ])
+    assert index.co_signataires(ID_17) == RESTES
+
+
+def test_sans_copie_du_premier_signataire_la_derniere_copie_non_vide_reste():
+    """Un auteur sans profil (35 amendements de la XVIIe le 04/11/2026)."""
+    index = construire_index([
+        _brut(role_signataire="cosignataire", co_signataires=PARTIS),
+        _brut(role_signataire="cosignataire", co_signataires=[]),
+    ])
+    assert index.co_signataires(ID_17) == PARTIS
+
+
+def test_une_liste_vide_du_premier_signataire_retire_les_cosignataires():
+    """Tous les cosignataires partis : deux amendements de la XVIIe passés de 36
+    cosignataires à 0 dans l'archive du 03/11/2026."""
+    index = construire_index([
+        _brut(role_signataire="cosignataire", co_signataires=PARTIS),
+        _brut(role_signataire="auteur_principal", co_signataires=[]),
+    ])
+    assert index.co_signataires(ID_17) == []
+
+
+def test_un_champ_absent_chez_le_premier_signataire_ne_fait_pas_foi():
+    """Pas de liste lue n'est pas une liste vide (§2 règle 5)."""
+    brut = _brut(role_signataire="auteur_principal")
+    del brut["co_signataires"]
+    index = construire_index([_brut(role_signataire="cosignataire", co_signataires=PARTIS), brut])
+    assert index.co_signataires(ID_17) == PARTIS
+
+
+def test_la_fusion_laisse_la_liste_du_premier_signataire_remplacer_l_ancienne():
+    ancien = construire_index([_brut(role_signataire="cosignataire", co_signataires=PARTIS)])
+    nouveau = construire_index([_brut(role_signataire="auteur_principal", co_signataires=RESTES)])
+    assert merge_amendements_index(ancien, nouveau).co_signataires(ID_17) == RESTES
+
+
+def test_la_fusion_retire_l_ancienne_liste_quand_le_premier_signataire_n_en_a_plus():
+    ancien = construire_index([_brut(role_signataire="cosignataire", co_signataires=PARTIS)])
+    nouveau = construire_index([_brut(role_signataire="auteur_principal", co_signataires=[])])
+    assert merge_amendements_index(ancien, nouveau).co_signataires(ID_17) == []
+
+
+def test_la_fusion_garde_l_ancienne_liste_qu_aucune_copie_ne_contredit():
+    """Un run partiel qui ne voit qu'un cosignataire sans liste ne retire rien."""
+    ancien = construire_index([_brut(role_signataire="auteur_principal", co_signataires=PARTIS)])
+    nouveau = construire_index([_brut(role_signataire="cosignataire", co_signataires=[])])
+    assert merge_amendements_index(ancien, nouveau).co_signataires(ID_17) == PARTIS

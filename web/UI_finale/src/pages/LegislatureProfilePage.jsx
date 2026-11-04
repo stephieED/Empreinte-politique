@@ -7,6 +7,7 @@ import { PeriodeContext } from '../components/Recherche';
 import { vueLegislature } from '../utils/legislature';
 import { useAsyncData } from '../hooks/useAsyncData';
 import LegislatureProfile from '../components/LegislatureProfile';
+import { PiedDesBulles } from '../components/InfoBulle';
 import NotFoundProfile from '../components/NotFoundProfile';
 
 /* La fiche d'une législature (#1314) : le travail de l'Assemblée dans son
@@ -43,7 +44,9 @@ export default function LegislatureProfilePage() {
   }
   return (
     <PeriodeContext.Provider value={debut}>
-      <LegislatureProfile enCours={enCours} key={legislatureId} mot={motsDuFiltre(mot).length ? mot : ''} vue={filtree} />
+      <PiedDesBulles>
+        <LegislatureProfile enCours={enCours} key={legislatureId} mot={motsDuFiltre(mot).length ? mot : ''} vue={filtree} />
+      </PiedDesBulles>
     </PeriodeContext.Provider>
   );
 }

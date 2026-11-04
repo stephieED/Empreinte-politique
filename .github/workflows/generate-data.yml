@@ -5313,7 +5313,13 @@ jobs:
       # scrutins des quatre législatures (aucun tirage — arbitré le
       # 03/11/2026), aux membres de nos fiches de groupe et de
       # `raw_data/non_inscrits.json`. Quatre archives, 50 Mo, quelques
-      # secondes. Tolérés : un jour de part et d'autre d'un changement, et les
+      # secondes. La même archive donne la liste des scrutins : ses numéros
+      # sont comparés à ceux de `pivot_data/scrutins.json` (un absent de
+      # l'index est un scrutin perdu). Un écart n'est le NÔTRE que si nos
+      # effectifs diffèrent du référentiel AMO30 (lu par `an_roster`) : quand
+      # nous comptons comme lui et que le scrutin compte autrement, c'est un
+      # désaccord interne à l'Assemblée, relevé sans être signalé. Sans
+      # référentiel lu, repli : trois jours de part et d'autre d'un changement, et les
       # écarts validés à la main dans `config/ecarts_effectifs_valides.json`.
       - name: Effectifs des groupes confrontés aux scrutins (signalement)
         id: relecture_effectifs
@@ -5337,6 +5343,37 @@ jobs:
           path: |
             relecture-effectifs.md
             relecture-effectifs.json
+          if-no-files-found: ignore
+
+      # LOIS PROMULGUÉES CONFRONTÉES AU JOURNAL OFFICIEL (#1248) — le seul
+      # contrôle de totaux indépendant de l'Assemblée. La table des lois du JO
+      # (`raw_data/lois_jorf.json`, artifact `actes-jo`) contre
+      # `pivot_data/textes_promulgues.json`, par numéro de loi, dans les deux
+      # sens. Ne sont pas signalées : les lois que l'open data de l'AN ne porte
+      # pas (`config/lois_absentes_open_data_an.json`, #1424) et celles publiées
+      # après nos dossiers (`an.dossiers`, fichier de fraîcheur composé plus haut).
+      - name: Lois promulguées confrontées au Journal officiel (signalement)
+        id: relecture_lois
+        continue-on-error: true
+        timeout-minutes: 5
+        run: |
+          python3 src/relecture_lois_promulguees.py \
+            --out relecture-lois.md \
+            --out-json relecture-lois.json
+          {
+            echo "### Lois promulguées confrontées au Journal officiel (#1248)"
+            echo ""
+            cat relecture-lois.md
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Rapport des lois confrontées au Journal officiel — artifact
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: relecture-lois
+          path: |
+            relecture-lois.md
+            relecture-lois.json
           if-no-files-found: ignore
       # ──────────────────────────────────────────────────────────────────
       # LE GARDE-FOU DE #390/#413 A DISPARU ICI, ET C'EST VOULU (#1059).
@@ -5496,6 +5533,14 @@ jobs:
           # plus.
           if [ -d pivot_data/actes_reglementaires ]; then
             git add pivot_data/actes_reglementaires
+          fi
+          # La table numéro de loi -> JORFTEXT (#1424) voyage dans le même
+          # artifact `actes-jo`, et n'était commitée par personne : écrite une
+          # fois le 23/09/2026, elle repartait de là à chaque run, et une loi
+          # sortie des `MOIS_RELUS` mois relus aurait perdu son identifiant au
+          # Journal officiel. Même garde que les actes.
+          if [ -f raw_data/lois_jorf.json ]; then
+            git add raw_data/lois_jorf.json
           fi
           # Finances de l'État (#1053) : même garde, le job qui les lit est
           # `continue-on-error`, et le fichier n'existe pas avant son premier
@@ -6210,12 +6255,12 @@ jobs:
           URL_RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -euo pipefail
-          NB="$(python3 -c "import json; print(json.load(open('relecture-effectifs.json'))['jours_en_ecart'])")"
+          NB="$(python3 -c "import json; print(json.load(open('relecture-effectifs.json'))['a_signaler'])")"
           if [[ "$NB" -eq 0 ]]; then
             exit 0
           fi
           if [[ -z "${GH_TOKEN}" ]]; then
-            echo "::warning::EFFECTIFS_EN_ECART — ${NB} jour(s) où nos effectifs de groupe diffèrent de ceux des scrutins, et AUCUNE issue n'a été ouverte : le secret SRC_ISSUES_TOKEN n'est pas posé. Le détail est dans le résumé du job et dans l'artifact relecture-effectifs (#1248)."
+            echo "::warning::EFFECTIFS_EN_ECART — ${NB} signalement(s) : jours où nos effectifs de groupe diffèrent de ceux des scrutins, ou scrutins absents de notre index ou de l'archive, et AUCUNE issue n'a été ouverte : le secret SRC_ISSUES_TOKEN n'est pas posé. Le détail est dans le résumé du job et dans l'artifact relecture-effectifs (#1248)."
             exit 0
           fi
           NUMERO="$(gh issue list --repo "$DEPOT" --state open --label "$ETIQUETTE" --json number --jq '.[0].number // empty')"
@@ -6230,9 +6275,48 @@ jobs:
             gh label create "$ETIQUETTE" --repo "$DEPOT" --color B60205 \
               --description "Un effectif de groupe diffère de celui que l'Assemblée publie avec ses scrutins" --force
             gh issue create --repo "$DEPOT" --label "$ETIQUETTE" \
-              --title "Effectifs en écart avec les scrutins : ${NB} jour(s)" \
+              --title "Effectifs ou scrutins en écart avec l'open data : ${NB} signalement(s)" \
               --body-file corps-issue-effectifs.md
           else
             gh issue comment "$NUMERO" --repo "$DEPOT" --body-file corps-issue-effectifs.md
           fi
-          echo "::warning::EFFECTIFS_EN_ECART — ${NB} jour(s) où nos effectifs de groupe diffèrent de ceux des scrutins. Issue de suivi tenue à jour sur ${DEPOT}."
+          echo "::warning::EFFECTIFS_EN_ECART — ${NB} signalement(s) : effectifs de groupe ou scrutins en écart avec l'open data. Issue de suivi tenue à jour sur ${DEPOT}."
+
+      # L'ISSUE DES LOIS EN ÉCART AVEC LE JOURNAL OFFICIEL (#1248) — même
+      # mécanique, et le run ne la ferme jamais non plus.
+      - name: Lois en écart avec le Journal officiel — issue de suivi
+        if: steps.commit.outputs.pushed == 'true' && steps.relecture_lois.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.SRC_ISSUES_TOKEN }}
+          DEPOT: stephieED/Empreinte-politique-src
+          ETIQUETTE: lois-en-ecart-avec-la-source
+          URL_RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          NB="$(python3 -c "import json; print(json.load(open('relecture-lois.json'))['a_signaler'])")"
+          if [[ "$NB" -eq 0 ]]; then
+            exit 0
+          fi
+          if [[ -z "${GH_TOKEN}" ]]; then
+            echo "::warning::LOIS_EN_ECART — ${NB} écart(s) entre le Journal officiel et nos textes promulgués, et AUCUNE issue n'a été ouverte : le secret SRC_ISSUES_TOKEN n'est pas posé. Le détail est dans le résumé du job et dans l'artifact relecture-lois (#1248)."
+            exit 0
+          fi
+          NUMERO="$(gh issue list --repo "$DEPOT" --state open --label "$ETIQUETTE" --json number --jq '.[0].number // empty')"
+          {
+            echo "Ouverte et tenue à jour par le run de données (#1248). **Le run ne la ferme jamais.** Une loi que l'open data de l'Assemblée ne porte pas se déclare dans \`config/lois_absentes_open_data_an.json\` (#1424). À fermer à la main quand le tableau est vide."
+            echo ""
+            echo "Dernier run avec écart : ${URL_RUN}"
+            echo ""
+            cat relecture-lois.md
+          } > corps-issue-lois.md
+          if [[ -z "$NUMERO" ]]; then
+            gh label create "$ETIQUETTE" --repo "$DEPOT" --color B60205 \
+              --description "Une loi du Journal officiel manque à nos textes promulgués, ou l'inverse" --force
+            gh issue create --repo "$DEPOT" --label "$ETIQUETTE" \
+              --title "Lois en écart avec le Journal officiel : ${NB} écart(s)" \
+              --body-file corps-issue-lois.md
+          else
+            gh issue comment "$NUMERO" --repo "$DEPOT" --body-file corps-issue-lois.md
+          fi
+          echo "::warning::LOIS_EN_ECART — ${NB} écart(s) entre le Journal officiel et nos textes promulgués. Issue de suivi tenue à jour sur ${DEPOT}."

@@ -120,9 +120,11 @@ from correspondance_acteurs_an import (  # noqa: E402
 from population_profils import (  # noqa: E402
     CANDIDAT_DECLARE,
     LIBELLE_GOUVERNEMENT,
+    LIBELLE_NON_INSCRITS,
     LIBELLE_ROSTER,
     PROVENANCES_ROSTER,
     ROSTER_GOUVERNEMENT,
+    ROSTER_NON_INSCRIT,
     SEPARATEUR,
     lire_provenances,
     provenance_du_profil,
@@ -311,9 +313,14 @@ def _detail_roster(
     gouvernement = sum(
         1 for slug in slugs if provenances.get(slug) == ROSTER_GOUVERNEMENT
     )
-    postes = [f"{len(slugs) - gouvernement} {LIBELLE_ROSTER}"]
+    non_inscrits = sum(
+        1 for slug in slugs if provenances.get(slug) == ROSTER_NON_INSCRIT
+    )
+    postes = [f"{len(slugs) - gouvernement - non_inscrits} {LIBELLE_ROSTER}"]
     if gouvernement:
         postes.append(f"{gouvernement} {LIBELLE_GOUVERNEMENT}")
+    if non_inscrits:
+        postes.append(f"{non_inscrits} {LIBELLE_NON_INSCRITS}")
     return "(" + SEPARATEUR.join(postes) + ")"
 
 

@@ -159,40 +159,48 @@ const BULLES = {
   enBref: {
     phrase: 'L’histoire du groupe à l’Assemblée : ses noms, ses effectifs, sa position face au gouvernement.',
     note: 'Note : D’une législature à la suivante, l’Assemblée ne dit pas quel groupe succède à quel autre. Empreinte politique établit ce lien en comparant leurs membres.',
+    sources: ['an.mandats', 'an.gouvernements'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#lignee' }],
   },
   quiSontIls: {
     phrase: 'Les membres du groupe, législature après législature et sous chaque nom porté.',
     note: 'Note : Sont comptés tous les députés passés par le groupe pendant la législature, même brièvement.',
+    sources: ['an.mandats'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#lignee' }],
   },
   textes: {
     phrase: 'Les textes de loi portés par des membres du groupe, comme auteurs ou comme rapporteurs, à l’étape qu’ils ont atteinte.',
     note: 'Note : Seuls les textes examinés en commission sont affichés. Un texte arrêté à une étape n’est pas nécessairement rejeté.',
+    sources: ['an.dossiers'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#depots' }],
   },
   amendements: {
     phrase: 'Les amendements des membres du groupe, par matière et par texte amendé.',
     note: 'Note : Chaque segment d’une barre est un texte amendé. Sa largeur est le nombre d’amendements déposés dessus. Ce nombre seul peut tromper.',
+    sources: ['an.amendements'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#depots' }],
   },
   paroles: {
     phrase: 'Les prises de parole des membres du groupe à l’Assemblée, par législature, par nature et par débat.',
     note: 'Note : Une prise de parole peut tenir en quelques mots.',
+    sources: ['an.interventions', 'an.questions'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#paroles' }],
   },
   vote: {
     phrase: 'Les scrutins où le groupe a voté d’une seule voix, et ceux où ses membres se sont partagés, par législature.',
     note: 'Note : Quorum atteint : au moins la moitié des membres du groupe a voté. D’une seule voix : toutes les positions exprimées vont dans le même sens.',
+    sources: ['an.votes'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#cohesion' }],
   },
   avecQui: {
     phrase: 'La position du groupe comparée à celle de chaque autre groupe, texte par texte, par législature.',
     note: 'Note : Deux groupes qui votent dans le même sens peuvent avoir des raisons opposées. « Nuance » veut dire que l’un des deux s’est abstenu.',
+    sources: ['an.votes'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#convergences' }],
   },
   couverture: {
     phrase: 'Les limites de cette fiche : ce que les sources ne disent pas sur ces groupes.',
+    sources: ['an.mandats', 'an.gouvernements', 'an.dossiers', 'an.amendements', 'an.interventions', 'an.questions', 'an.votes'],
     note: 'Note : Une information absente n’a pas été trouvée dans les sources. Elle a pu exister quand même.',
     liens: [
       { libelle: 'Sources et couvertures →', vers: '/sources#frise' },

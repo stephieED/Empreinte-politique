@@ -38,7 +38,7 @@ corpus **committé** — pas sur un run local.
 
 | Couche | Ce que c'est | Qui la lit |
 |---|---|---|
-| `config/` | **ce qu'une personne a décidé et tapé** — les groupes et leurs lignées, la table Sycomore, la correspondance RNE (#1057), et depuis #1177 la liste du retrait nommé des prises de parole attribuées à une autre personne (`paroles_d_une_autre_personne.json`, régénérée depuis les archives par `src/paroles_d_une_autre_personne.py`), et depuis #1289 les rattachements vote → dossier relus à la main (`rattachements_scrutins_dossiers.json`), et depuis #1248 les écarts d'effectif de groupe examinés et validés (`ecarts_effectifs_valides.json`, lu par `src/relecture_effectifs_source.py`). **Aucun run n'y écrit** ; le critère est qui écrit le fichier, jamais son nom | `groupes_config.py`, `mandats_anterieurs.py`, `collecte_mandats_locaux.py` |
+| `config/` | **ce qu'une personne a décidé et tapé** — les groupes et leurs lignées, la table Sycomore, la correspondance RNE (#1057), et depuis #1177 la liste du retrait nommé des prises de parole attribuées à une autre personne (`paroles_d_une_autre_personne.json`, régénérée depuis les archives par `src/paroles_d_une_autre_personne.py`), et depuis #1289 les rattachements vote → dossier relus à la main (`rattachements_scrutins_dossiers.json`), et depuis #1248 les écarts d'effectif de groupe examinés et validés (`ecarts_effectifs_valides.json`, lu par `src/relecture_effectifs_source.py`), et depuis #1424 les lois publiées au Journal officiel dont aucune archive de l'Assemblée ne porte la promulgation (`lois_absentes_open_data_an.json`, un trou de la source déclaré). **Aucun run n'y écrit** ; le critère est qui écrit le fichier, jamais son nom | `groupes_config.py`, `mandats_anterieurs.py`, `collecte_mandats_locaux.py` |
 | `raw_data/` | **au plus près de la source** — les votes y restent dénormalisés, chaque amendement y porte sa liste de cosignataires | la normalisation pivot, les deux constructeurs d'index, les audits |
 | `pivot_data/` | le format commun à toutes les sources | **la seule couche que `web/` lit**, le quality gate, les agrégats |
 
@@ -161,6 +161,7 @@ pas au même moment : voir *Les deux index partagés*.
 | Éditoriale (défaut) | `raw_data/candidats.json` | tenue à la main | candidats/présidentiables déclarés ou pressentis — **13** au 30/08/2026 | `candidat_declare` |
 | Roster-driven | `raw_data/roster_candidats.json` | `generate_roster_candidats.py`, depuis `config/groupes_reels.json` | tous les membres réels des groupes configurés **dont l'extraction n'est pas suspendue** — 10 des 12 depuis #700 (5 XVIe + 5 XVIIe), les 2 groupes Sénat restant gelés (#516). Un membre **sans slug** n'entre pas dans le roster (`build_roster_candidats_detaille` le laisse tomber). **Depuis #708** un acteur AMO30 qu'aucune entrée de `raw_data/correspondance_acteurs_an.json` ne couvre reçoit `text_utils.slugify(état civil)`, la table gardant la priorité absolue ; `ROSTER_SANS_SLUG` ne compte plus que les **collisions** non tranchées, et `ROSTER_SLUG_FABRIQUE` (`::notice::`) nomme qui entre sans correspondance relue — la §5b du portail bloque leur publication tant qu'elle manque (#525). **Depuis #715**, `merge-and-pivot` écrit cette entrée dans le run même qui crée le profil — `build_correspondance_acteurs_an.py --completer-derivees`, passe additive et hors ligne, estampille `origine: "derivee"` — de sorte que le slug est gelé avant d'être publié, et la table entre dans le `git add` du workflow. | `roster_groupe` |
 | Roster-driven — gouvernements | `raw_data/roster_candidats.json` (mêmes entrées, `statut` distinct) | `generate_roster_candidats.candidats_des_gouvernements`, depuis les organes `GOUVERNEMENT` d'AMO30 (#996 lot 3) | les membres des gouvernements qu'AMO30 recense et qu'aucun roster de groupe n'amène. **Le roster des groupes gagne la déduplication** : une personne à la fois députée et ministre reste `roster_groupe`, sans quoi elle sortirait de la cohésion de son groupe. Son rattachement au gouvernement passe par l'`organe_ref` du roster (lot 4), pas par la provenance. `acteur_ref` est transmis à la collecte — une part de ces personnes n'a jamais été députée, donc aucune recherche par nom ne les retrouve dans AMO30 (#850). `--sans-gouvernements` débranche la passe ; un échec de lecture de l'archive est non fatal et ne collecte alors aucun membre, plutôt que d'en publier une liste amputée (§2 règle 5). | `roster_gouvernement` |
+| Roster-driven — non-inscrits | `raw_data/roster_candidats.json` (mêmes entrées, `statut` distinct) | `generate_roster_candidats.candidats_des_non_inscrits`, depuis l'organe « Non inscrit » d'AMO30 de chaque législature, **hors transit d'ouverture** (#1265) | les députés non inscrits qu'aucun roster de groupe ni de gouvernement n'amène. Les non-inscrits ne sont pas un groupe : la porte « groupe » ne les collectait jamais, et **25 députés n'avaient aucun profil** (mesuré le 04/11/2026 sur l'archive AMO30 du jour : 322 non-inscrits hors transit, 297 déjà portés). Les deux autres portes gagnent la déduplication, par `acteur_ref` ou par slug. Leurs slugs sont résolus sur la même union d'acteurs que les gouvernements, et tous les 25 sont fabriqués : la passe `--completer-derivees` en dérive l'entrée de correspondance dans le run. Ils n'entrent dans aucun agrégat de groupe ; leurs votes et leurs amendements entrent dans le corpus | `roster_non_inscrit` |
 
 Même format d'entrée, même pipeline de collecte et de normalisation. Un même
 `slug` peut apparaître dans les deux : `merge_profile.merge_pivot_profile()` ne
@@ -358,7 +359,9 @@ dépasserait la limite de blob de 100 Mo de GitHub. Les cosignatures vivent dans
 un fichier compagnon `<legislature>.cosignatures.json` (schéma
 `amendements-cosignatures-v1`) parce qu'elles font la majorité de l'index et
 qu'**aucun consommateur ne les lit** — elles ne sont **jamais supprimées** pour
-autant : un réseau de cosignatures est de la matière d'analyse (#324).
+autant : un réseau de cosignatures est de la matière d'analyse (#324). **La liste
+d'un amendement est celle de la copie de son premier signataire** (#1429), vide
+comprise : les copies divergent dès qu'une signature est retirée à la source.
 
 **Chaque fichier porte une table `textes`** (#639) : `texte_vise` → `{dossier_id,
 titre}`, restreinte aux textes que ses amendements visent. `texte_vise` est l'uid
@@ -1064,6 +1067,21 @@ un par législature, depuis la XIVe :
   périodes de la XVIIe durent sept jours au plus (un député qui arrive en cours
   de législature avant de rejoindre son groupe). Aucun seuil de durée : c'est au
   lecteur du fichier de compter à la date qui l'intéresse.
+- **Un député en mandat a trois états, pas deux** (#1248, arrêté le
+  03/11/2026) : membre d'un groupe (une fiche de groupe le porte), non-inscrit
+  (ce fichier le porte), ou **sans groupe enregistré** — ni AMO30 ni nos
+  données ne lui donnent d'appartenance ce jour-là. Mesuré sur l'archive AMO30
+  du 03/11/2026 : 25 députés sur les quatre législatures, presque toujours le
+  seul jour de leur arrivée (le mandat commence le jour J, le groupe à J+1).
+  **Ce troisième état n'est jamais déduit en non-inscrit** : le Règlement le
+  ferait, et le compte publié avec un scrutin le fait, mais c'est un délai
+  d'enregistrement, pas un choix — Adrien Morenas, revenu le 06/04/2021,
+  retrouvait LaREM le 07/04. Ce fichier ne porte que ce qu'AMO30 enregistre.
+  Pour un consommateur, un jour sans appartenance ne se rattache à **aucun**
+  groupe : c'est déjà ce que fait `web/UI_finale/src/utils/appartenanceAuGroupe.js`
+  (« entre deux groupes, il n'y a rien à comparer », #1159). Le contrôle des
+  effectifs le traite de même (`src/relecture_effectifs_source.py`).
+  → `docs/decisions/effectifs-juges-par-le-referentiel-amo30-1248.md`
 - **`membre_id` : null** — 55 personnes sur la XIVe, 15 sur la XVe, 2 sur la
   XVIe, 3 sur la XVIIe (mesuré le 12/10/2026) : la table de correspondance n'a
   pas d'entrée pour elles, aucune fiche n'a été collectée. Leur activité n'est

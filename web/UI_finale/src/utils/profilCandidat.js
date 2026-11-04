@@ -3243,36 +3243,12 @@ export function limitesDeclarees({ profil, roles, sieges }) {
     });
   }
 
-  const aExerce = (profil?.mandats || []).some(
-    (m) => m.categorie === 'fonction_gouvernementale' && m.fonction === FONCTION_MEMBRE,
-  );
+  /* « ENTRÉE AU GOUVERNEMENT » EST RETIRÉE (04/11/2026, #1412) : elle disait
+   * « La source ne dit pas si un mandat s'est interrompu quand cette personne
+   * est entrée au gouvernement ». C'était faux : la source date chaque passage
+   * au gouvernement, et depuis #1413 la frise d'« En bref » montre la coupure
+   * du mandat de député. Retirée à la demande de la propriétaire. */
   const electifs = (profil?.mandats || []).filter((m) => m.categorie === 'mandat_electif');
-  /* DEUX CHANGEMENTS SUR CETTE LIMITE (01/10/2026).
-   *
-   * Elle ne publie plus un NOM DE CHAMP. « suspendu_pour_fonction_gouvernementale
-   * n'est renseigné sur aucun de ses 4 mandats électifs » était exact et
-   * illisible : c'est notre schéma, pas un fait que le lecteur peut situer.
-   *
-   * Et elle ne compte plus que les mandats À L'ASSEMBLÉE — la conséquence de la
-   * nouvelle phrase, pas une règle pour le Sénat. « La source ne dit pas… »
-   * affirme quelque chose d'une source ; or ce champ n'existe que sur les
-   * mandats que l'Assemblée publie, et data.senat.fr, elle, DIT pourquoi un
-   * mandat de sénateur a pris fin (`motif_fin_senat`). Sur Bruno Retailleau,
-   * quatre mandats au Sénat et aucun à l'Assemblée dans le corpus, l'ancienne
-   * phrase restait vraie à la lettre — le champ est bien absent — et la
-   * nouvelle aurait été fausse (§2 règle 2). */
-  const electifsALAssemblee = electifs.filter((m) => m.chambre === CHAMBRE_AN);
-  if (
-    aExerce && electifsALAssemblee.length
-    && electifsALAssemblee.every((m) => m.suspendu_pour_fonction_gouvernementale == null)
-  ) {
-    limites.push({
-      cle: 'suspension',
-      titre: 'Entrée au gouvernement',
-      texte:
-        'La source ne dit pas si un mandat s’est interrompu quand cette personne est entrée au gouvernement.',
-    });
-  }
 
   /* LA LIMITE « PROJETS DE LOI » EST RETIRÉE : elle décrivait un corpus qui a
    * changé (#328). Elle affirmait que projets et propositions sont « rangés
@@ -3591,11 +3567,11 @@ function lignesDesReperes(manques) {
  * L'ordre va du plus lourd au plus fin (revue du 01/10/2026) :
  *   1. les mandats qu'une source ne couvre pas — des années entières, à
  *      l'Assemblée puis au Sénat ;
- *   2. « Majorité ou opposition », 3. « Entrée au gouvernement » — ce que la
- *      source ne dit pas du parcours ;
- *   4. « Votes », 5. « Prises de parole » — ce que des entrées ne portent pas ;
- *   6. les autres limites, chacune avec le texte qu'elle avait ;
- *   7. en dernier, « Avant juin 2002 » — la borne de tout le reste.
+ *   2. « Majorité ou opposition » — ce que la source ne dit pas du parcours
+ *      (« Entrée au gouvernement » est retirée le 04/11/2026, #1412) ;
+ *   3. « Votes », 4. « Prises de parole » — ce que des entrées ne portent pas ;
+ *   5. les autres limites, chacune avec le texte qu'elle avait ;
+ *   6. en dernier, « Avant juin 2002 » — la borne de tout le reste.
  *
  * « AVANT JUIN 2002 » ET « MANDATS ANTÉRIEURS » NE COHABITENT PAS : la seconde
  * cite des mandats d'avant la borne, et la première dirait au-dessous que nos
@@ -3612,7 +3588,7 @@ function lignesDesReperes(manques) {
  */
 const PHRASE_SANS_MANDAT = 'Nos sources ne connaissent aucun mandat parlementaire de cette personne.';
 const PHRASE_SANS_ACTIVITE = 'Il n’y a donc ni vote, ni amendement, ni prise de parole à publier.';
-const LIMITES_EN_TETE = ['position-non-declaree', 'suspension'];
+const LIMITES_EN_TETE = ['position-non-declaree'];
 const RANG_DES_AUTRES_LIMITES = ['sieges-replies', 'mandats-anterieurs', CLE_MANDATS_ABSENTS];
 
 export function manquesDeLaFiche({ profil, limites = [], manques = null, bornesDuCorpus = null }) {

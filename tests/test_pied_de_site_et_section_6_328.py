@@ -207,10 +207,8 @@ def test_les_accords_suivent_le_nombre(profil: str) -> None:
     où « Ce qui manque sur cette fiche » écrit des nombres : « 1 n'a pas de
     texte », « 3 475 n'indiquent pas… ».
     """
-    bloc = profil[profil.index("cle: 'suspension'") :]
-    bloc = bloc[: bloc.index("});") + 3]
-    assert "${" not in bloc, "la phrase de la suspension ne compte plus rien"
-    assert "suspendu_pour_fonction_gouvernementale" not in bloc
+    # La limite `suspension` elle-même est retirée le 04/11/2026 (#1412).
+    assert "cle: 'suspension'" not in profil
     mesures = profil[profil.index("function lignesDesReperes") :]
     mesures = mesures[: mesures.index("\n}\n")]
     for singulier, pluriel in (

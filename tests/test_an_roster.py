@@ -194,6 +194,12 @@ APPELANTS_ATTENDUS = {
     # ne dérive aucun roster et ne collecte personne.
     # → docs/decisions/liste-des-deputes-non-inscrits-1265.md
     "non_inscrits_amo30.py",
+    # #1248 lot 5 : le contrôle des effectifs lit l'index GP comme RÉFÉRENCE —
+    # un écart n'est celui de notre collecte que si nos fiches et
+    # `non_inscrits.json` diffèrent d'AMO30 le jour d'un scrutin. Il ne dérive
+    # aucun roster, n'écrit rien, et sans index il se replie sur le scrutin.
+    # → docs/decisions/effectifs-juges-par-le-referentiel-amo30-1248.md
+    "relecture_effectifs_source.py",
     # #1314 : l'ordre des groupes dans l'hémicycle, par législature, lit l'index
     # GP pour savoir qui siégeait dans quel groupe au jour de référence. Elle ne
     # dérive aucun roster et ne collecte personne.

@@ -84,6 +84,23 @@ les charger, ni à les faire grossir. -->
   live in a companion file and are **never deleted**: no consumer reads them, a
   co-signature network is analysis material (#324).
   → `docs/decisions/normalisation-amendements.md`
+- **An amendment's co-signatory list is the one its first signatory's copy carries
+  (#1429), empty included.** The copies of one amendment diverge as soon as a signature
+  is withdrawn at the source: the signatories who stay are re-collected, those who left
+  are not, and the additive merge keeps their stale copy. « The last copy seen » let that
+  stale list win. The first signatory cannot withdraw, so their copy is refreshed as long
+  as the source carries the amendment; without such a copy (an author with no profile),
+  the last non-empty copy stands. `merge_amendements_index` lets that list replace the
+  previous one, and an empty one removes it.
+  → `docs/decisions/cosignataires-de-la-copie-du-premier-signataire-1429.md`
+- **A co-signature the first signatory's list no longer carries is retracted from the
+  profile, at both stages (#1429).** `src/cosignatures_retirees.py`, right after the
+  index is rebuilt in `generate_all_profiles`: an entry `role_signataire: cosignataire`
+  whose amendment has a first signatory's list that does not name this deputy leaves the
+  raw slice and the pivot mapping. The proof is positive — the absence of an amendment
+  from a deputy's collection proves nothing, since a collection can be partial. An
+  amendment without a first signatory's copy is never touched.
+  → `docs/decisions/retrait-des-signatures-retirees-a-la-source-1429.md`
 - **A `texte_vise` is the AN document's uid, never its label (#639).** Each index file
   carries an optional `textes` table (`texte_vise` → `{dossier_id, titre}`), filled
   uid-to-uid from `document.dossierRef` — never by matching a label, not even an exact

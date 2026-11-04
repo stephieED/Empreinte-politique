@@ -153,7 +153,12 @@ from typing import Any, Iterable, Optional
 import gha
 from candidate_profile import acteur_ref_to_pseudo_url
 from gouvernement_roster_an import CLE_ROSTER as CLE_ROSTER_GOUVERNEMENTS
-from population_profils import ROSTER_GOUVERNEMENT
+from population_profils import ROSTER_GOUVERNEMENT, ROSTER_NON_INSCRIT
+
+#: La clé des non-inscrits dans le roster brut (#1265), à la forme de celle des
+#: gouvernements. Aucun consommateur ne la lit à part la passe de correspondance
+#: (`--completer-derivees`), qui en dérive les entrées des slugs fabriqués.
+CLE_ROSTER_NON_INSCRITS = ("non_inscrits", None)
 from group_roster import (
     ERREURS_ROSTER,
     ecrire_rosters_bruts,
@@ -314,6 +319,103 @@ def candidats_des_gouvernements(
             # nom ne les retrouve dans AMO30. Sans cet identifiant, leur
             # collecte ne pourrait pas partir.
             "acteur_ref": membre.get("acteur_ref"),
+        })
+    return candidats
+
+
+def membres_non_inscrits(
+    zip_path: Optional[Path] = None,
+    chemin_correspondance: Optional[Path] = None,
+) -> list[dict[str, Any]]:
+    """Les députés non inscrits d'AMO30, une entrée par personne (#1265).
+
+    L'organe « Non inscrit » de chaque législature depuis la XIVe, **hors
+    transit d'ouverture** — la règle du roster (`an_roster.est_mandat_de_transit`)
+    et de `raw_data/non_inscrits.json` : en début de législature, tous les
+    députés y passent avant que les groupes se constituent.
+
+    Les slugs sont résolus sur l'**union** des acteurs de l'index GP et de
+    l'index des gouvernements, comme la porte « gouvernement » : c'est ce qui
+    garantit qu'un non-inscrit et un ministre homonymes ne reçoivent pas le même
+    slug. Un acteur sans slug attribué n'entre pas.
+    """
+    from an_roster import (  # noqa: PLC0415
+        SIGLE_NON_INSCRIT,
+        _telecharger_archive,
+        charger_index_gp,
+        deriver_membres_organes,
+        resoudre_slugs,
+    )
+    from gouvernement_roster_an import construire_index_gouvernements  # noqa: PLC0415
+    from non_inscrits_amo30 import organes_non_inscrits  # noqa: PLC0415
+
+    archive = Path(zip_path) if zip_path else _telecharger_archive()
+    index = charger_index_gp(archive)
+    acteurs = dict(index.get("acteurs") or {})
+    acteurs.update(construire_index_gouvernements(archive).get("acteurs") or {})
+    slugs, origines, _ = resoudre_slugs({"acteurs": acteurs}, chemin_correspondance)
+
+    par_acteur: dict[str, dict[str, Any]] = {}
+    for legislature, organe_ref in organes_non_inscrits(index).items():
+        for membre in deriver_membres_organes(
+            index, [organe_ref], legislature, slugs, SIGLE_NON_INSCRIT, origines
+        ):
+            if not membre.get("slug"):
+                continue
+            entree = par_acteur.setdefault(membre["acteur_ref"], {
+                "slug": membre["slug"],
+                "slug_origine": membre.get("slug_origine"),
+                "acteur_ref": membre["acteur_ref"],
+                "nom": membre.get("nom"),
+                "legislatures": [],
+            })
+            entree["legislatures"].append(str(legislature))
+    return sorted(par_acteur.values(), key=lambda m: m["slug"])
+
+
+#: Chiffres romains des législatures nommées dans `notes`.
+_ROMAINS = {"12": "XIIe", "13": "XIIIe", "14": "XIVe", "15": "XVe", "16": "XVIe", "17": "XVIIe"}
+
+
+def candidats_des_non_inscrits(
+    membres_ni: list[dict[str, Any]],
+    deja_pris: Iterable[dict[str, Any]] = (),
+) -> list[dict[str, Any]]:
+    """Les non-inscrits au format `roster_candidats.json` (#1265).
+
+    `deja_pris` porte les entrées que les portes « groupe » et « gouvernement »
+    ont déjà retenues, et **elles gagnent** : un député passé par un groupe, ou
+    entré au gouvernement, garde sa provenance, et avec elle sa place dans les
+    agrégats. Une personne est reconnue par son `acteur_ref` **ou** par son
+    slug : deux portes qui la nommeraient différemment ne la collecteraient pas
+    deux fois.
+    """
+    deja = list(deja_pris)
+    acteurs = {c.get("acteur_ref") for c in deja if c.get("acteur_ref")}
+    slugs = {c.get("slug") for c in deja if c.get("slug")}
+    candidats: list[dict[str, Any]] = []
+    for membre in membres_ni:
+        slug, acteur_ref = membre.get("slug"), membre.get("acteur_ref")
+        if not slug or slug in slugs or (acteur_ref and acteur_ref in acteurs):
+            continue
+        slugs.add(slug)
+        if acteur_ref:
+            acteurs.add(acteur_ref)
+        legislatures = ", ".join(_ROMAINS.get(l, l) for l in membre.get("legislatures") or [])
+        candidats.append({
+            "nom": membre.get("nom"),
+            "slug": slug,
+            # Un non-inscrit n'a, par définition, aucun groupe ; AMO30 ne
+            # publie pas son parti. `None` dit « non porté » (§2 règle 5).
+            "parti": None,
+            "famille_politique": None,
+            "statut": ROSTER_NON_INSCRIT,
+            "date_declaration": None,
+            "source": acteur_ref_to_pseudo_url(acteur_ref) if acteur_ref else None,
+            "notes": (f"Député non inscrit ({legislatures}), issu du roster réel AMO30."
+                      if legislatures else "Député non inscrit, issu du roster réel AMO30."),
+            # #850 : la collecte part de cet identifiant, pas d'une recherche par nom.
+            "acteur_ref": acteur_ref,
         })
     return candidats
 
@@ -713,6 +815,12 @@ def _build_arg_parser() -> argparse.ArgumentParser:
              "défaut : seul le run CI en a besoin.",
     )
     parser.add_argument(
+        "--sans-non-inscrits",
+        action="store_true",
+        help="Ne pas ajouter les députés non inscrits (#1265), ni au roster brut ni "
+             "au roster de candidats.",
+    )
+    parser.add_argument(
         "--sans-gouvernements",
         action="store_true",
         help="Ne pas ajouter les membres des gouvernements, ni au roster brut ni "
@@ -881,6 +989,26 @@ def main(argv: Optional[list[str]] = None) -> int:
                 file=sys.stderr,
             )
 
+    # #1265 — la troisième porte : les non-inscrits qu'aucun groupe ni
+    # gouvernement n'amène. Même place et même régime que la porte précédente :
+    # après le portail d'anomalies, avant l'écriture, et une archive illisible
+    # ne prive pas le run des deux autres portes.
+    if not args.sans_non_inscrits:
+        try:
+            membres_ni = membres_non_inscrits()
+        except Exception as exc:  # noqa: BLE001 — même raison que les gouvernements
+            print(f"  [!] Roster des non-inscrits indisponible : {exc}", file=sys.stderr)
+        else:
+            rosters_bruts[CLE_ROSTER_NON_INSCRITS] = membres_ni
+            candidats_ni = candidats_des_non_inscrits(membres_ni, deja_pris=candidats)
+            candidats.extend(candidats_ni)
+            print(
+                f"→ {len(membres_ni)} député(s) non inscrit(s) hors transit d'ouverture ; "
+                f"{len(candidats_ni)} ajouté(s) au roster de candidats, "
+                f"{len(membres_ni) - len(candidats_ni)} déjà porté(s) par un groupe ou un gouvernement.",
+                file=sys.stderr,
+            )
+
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps({"candidats": candidats}, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -900,7 +1028,13 @@ def main(argv: Optional[list[str]] = None) -> int:
     # Le compte nomme sa population (#630, §9) : depuis #996 lot 3 ce fichier
     # porte deux rosters, et « 1 350 candidats » n'aurait dit lequel.
     nb_gouv = sum(1 for c in candidats if c["statut"] == ROSTER_GOUVERNEMENT)
-    detail = f" ({len(candidats) - nb_gouv} de groupe · {nb_gouv} de gouvernement)" if nb_gouv else ""
+    nb_ni = sum(1 for c in candidats if c["statut"] == ROSTER_NON_INSCRIT)
+    postes = [f"{len(candidats) - nb_gouv - nb_ni} de groupe"]
+    if nb_gouv:
+        postes.append(f"{nb_gouv} de gouvernement")
+    if nb_ni:
+        postes.append(f"{nb_ni} non inscrit(s)")
+    detail = f" ({' · '.join(postes)})" if len(postes) > 1 else ""
     print(
         f"→ {len(candidats)} entrée(s) de roster écrite(s){detail} dans {out_path}.",
         file=sys.stderr,

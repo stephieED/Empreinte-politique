@@ -92,10 +92,21 @@ def test_un_ecart_le_lendemain_d_un_changement_est_tolere():
     assert [(e["unite"], e["jour_de_changement"]) for e in ecarts] == [("PO845425", True)]
 
 
-def test_un_changement_trois_jours_avant_n_est_pas_tolere():
+def test_un_changement_trois_jours_avant_est_tolere():
+    """Alix Fruchon quitte DR le 30/10/2026 dans AMO30 ; le scrutin du 02/11
+    la compte encore à DR. Le compte d'un scrutin suit avec 2 ou 3 jours."""
     unites = _unites_9578()
     dr = next(u for u in unites if u.cle == "PO845425")
     dr.periodes[0] = [{"debut": "2024-07-19", "fin": "2026-10-30"}]
+    dr.__post_init__()
+    ecarts = re_.comparer(_scrutins(PAR_SCRUTIN)[9578], unites)
+    assert [(e["unite"], e["jour_de_changement"]) for e in ecarts] == [("PO845425", True)]
+
+
+def test_un_changement_quatre_jours_avant_n_est_pas_tolere():
+    unites = _unites_9578()
+    dr = next(u for u in unites if u.cle == "PO845425")
+    dr.periodes[0] = [{"debut": "2024-07-19", "fin": "2026-10-29"}]
     dr.__post_init__()
     ecarts = re_.comparer(_scrutins(PAR_SCRUTIN)[9578], unites)
     assert [(e["unite"], e["jour_de_changement"]) for e in ecarts] == [("PO845425", False)]
@@ -148,8 +159,10 @@ def test_bout_en_bout(tmp_path):
         {"legislature": "17", "date": "2026-11-02", "unite": "AN:PO845485:17", "an": 23, "nous": 24}]}),
         encoding="utf-8")
     out, out_json = tmp_path / "r.md", tmp_path / "r.json"
+    index = tmp_path / "scrutins.json"
+    index.write_text(json.dumps({"scrutins": [{"legislature": "17", "numero_scrutin": "9578"}]}), encoding="utf-8")
     args = ["--groupes-dir", str(groupes), "--non-inscrits", str(non_inscrits), "--valides", str(valides),
-            "--out", str(out), "--out-json", str(out_json)]
+            "--index-scrutins", str(index), "--sans-amo30", "--out", str(out), "--out-json", str(out_json)]
     args += [f"--archive=17={PAR_SCRUTIN}", "--legislature=17"]
     assert re_.main(args) == 0
     resume = json.loads(out_json.read_text(encoding="utf-8"))
@@ -157,4 +170,98 @@ def test_bout_en_bout(tmp_path):
     # sont écartés par leur champ `legislature`.
     assert (resume["scrutins"], resume["scrutins_en_ecart"]) == (2, 1)
     assert [(e["unite"], e["an"], e["nous"]) for e in resume["ecarts"]] == [("AN:PO845425:17", 47, 46)]
+    # Le scrutin n° 489 de l'archive manque à l'index : un jour d'effectif en
+    # écart plus un scrutin absent, deux signalements pour l'issue.
+    assert (resume["scrutins_absents"], resume["a_signaler"]) == (1, 2)
     assert "AN:PO845425:17" in out.read_text(encoding="utf-8")
+
+
+# ── Les scrutins de l'archive contre ceux de l'index (#1248, lot 5 bis) ──────
+
+def test_un_scrutin_de_l_archive_absent_de_l_index_est_releve():
+    bilan = re_.Bilan("17")
+    re_.couvrir(bilan, _scrutins(PAR_SCRUTIN).values(), {9578})
+    assert (bilan.scrutins_de_l_archive, bilan.absents_de_l_index, bilan.absents_de_l_archive) == (2, [489], [])
+
+
+def test_un_scrutin_publie_que_l_archive_ne_porte_pas_est_releve():
+    bilan = re_.Bilan("17")
+    re_.couvrir(bilan, _scrutins(PAR_SCRUTIN).values(), {489, 9578, 9579})
+    assert (bilan.absents_de_l_index, bilan.absents_de_l_archive) == ([], [9579])
+
+
+def test_le_congres_n_entre_pas_dans_la_numerotation():
+    """Son n° 1 double le n° 1 de la XVIe : il ne doit ni manquer à l'index ni
+    masquer l'absence du vrai n° 1."""
+    bilan = re_.Bilan("16")
+    re_.couvrir(bilan, _scrutins(PAR_SCRUTIN).values(), set())
+    assert (bilan.scrutins_de_l_archive, bilan.absents_de_l_index) == (0, [])
+
+
+def test_les_numeros_que_l_archive_saute_sont_ceux_de_la_source():
+    bilan = re_.Bilan("17")
+    re_.couvrir(bilan, _scrutins(PAR_SCRUTIN).values(), {489, 9578})
+    assert len(bilan.trous_de_l_archive) == 9578 - 2
+    assert (bilan.absents_de_l_index, bilan.absents_de_l_archive) == ([], [])
+
+
+def test_l_index_publie_se_lit_par_legislature(tmp_path):
+    index = tmp_path / "scrutins.json"
+    index.write_text(json.dumps({"scrutins": [
+        {"legislature": "17", "numero_scrutin": "9578"}, {"legislature": "16", "numero_scrutin": "1"},
+        {"legislature": "17", "numero_scrutin": None}]}), encoding="utf-8")
+    assert re_.numeros_publies(index) == {"17": {9578}, "16": {1}}
+
+
+
+# ── Le référentiel AMO30 juge notre collecte (#1248, critères du 03/11/2026) ──
+
+def _reference(**effectifs):
+    """Un index GP à la forme d'`an_roster.construire_index_gp` : `n` acteurs
+    distincts par organe, tous membres depuis 2024."""
+    return re_.ReferenceAmo30({
+        organe: [[f"PA{organe}{k}", "2024-07-19", None] for k in range(n)]
+        for organe, n in effectifs.items()
+    })
+
+
+def test_le_referentiel_compte_des_acteurs_distincts_a_la_date():
+    """Les dates d'AMO30 portent parfois une heure ; un acteur à deux mandats
+    dans le même organe ne compte qu'une fois ; la fin est incluse."""
+    ref = re_.ReferenceAmo30({"PO1": [
+        ["PA1", "2026-10-31+01:00", None],
+        ["PA2", "2025-11-14", "2026-10-30"],
+        ["PA3", "2024-07-19", "2026-11-02"],
+        ["PA3", "2024-07-19", None],
+    ]})
+    assert ref.effectif({"PO1"}, "2026-11-02") == 2
+    assert ref.effectif({"PO1"}, "2026-10-30") == 2
+
+
+def test_nous_comptons_comme_amo30_et_le_scrutin_autrement_est_interne():
+    """Alix Fruchon : AMO30 la sort de DR le 30/10/2026, le scrutin du 02/11
+    la compte encore à DR. Nous comptons comme AMO30 : rien à signaler."""
+    scrutin = _scrutins(PAR_SCRUTIN)[9578]
+    effectifs = {**EFFECTIFS_9578, "PO845425": 46}
+    bilan = re_.controler("17", [scrutin], _unites_9578(PO845425=46), None, set(), _reference(**effectifs))
+    assert (bilan.desaccords_internes, bilan.en_ecart) == (1, 0)
+
+
+def test_un_ecart_avec_amo30_est_signale_meme_pres_d_un_changement():
+    """Sans référentiel, un changement la veille serait toléré. Avec lui, nous
+    divergeons de notre propre source : c'est notre lecture, signalée."""
+    unites = _unites_9578()
+    dr = next(u for u in unites if u.cle == "PO845425")
+    dr.periodes[0] = [{"debut": "2024-07-19", "fin": "2026-11-01"}]
+    dr.__post_init__()
+    scrutin = _scrutins(PAR_SCRUTIN)[9578]
+    assert re_.controler("17", [scrutin], unites, None, set()).en_ecart == 0
+    bilan = re_.controler("17", [scrutin], unites, None, set(), _reference(**EFFECTIFS_9578))
+    assert (bilan.en_ecart, list(bilan.ecarts)) == (1, [("2026-11-02", "PO845425", 47, 46)])
+
+
+def test_le_rapport_dit_quel_critere_a_juge():
+    texte, resume = re_.rapport([re_.Bilan("17")], reference_lue=None)
+    assert resume["reference_amo30"] is True and "désaccord interne" in texte
+    texte, resume = re_.rapport([re_.Bilan("17")], reference_lue="RosterAnIndisponible: archive absente")
+    assert resume["reference_amo30"] is False and "Référentiel AMO30 non lu" in texte

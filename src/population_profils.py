@@ -58,6 +58,11 @@ from typing import Any, Iterable, Mapping
 CANDIDAT_DECLARE = "candidat_declare"
 ROSTER_GROUPE = "roster_groupe"
 ROSTER_GOUVERNEMENT = "roster_gouvernement"
+#: #1265 — les députés non inscrits qu'aucun roster de groupe ni de gouvernement
+#: n'amène : les non-inscrits ne sont pas un groupe, donc la porte « groupe » ne
+#: les collectait jamais. Ils n'entrent dans aucun agrégat de groupe ; leurs
+#: votes et leurs amendements entrent dans le corpus.
+ROSTER_NON_INSCRIT = "roster_non_inscrit"
 
 #: Les provenances dont le profil existe **pour être agrégé**, par opposition au
 #: candidat déclaré dont la fiche est publiée. Un module qui traite « les
@@ -66,7 +71,7 @@ ROSTER_GOUVERNEMENT = "roster_gouvernement"
 #: laissé les membres de gouvernement sans `acteur_ref` transmis à la collecte
 #: — et 124 d'entre eux n'ont jamais été députés, donc rien ne les retrouve par
 #: leur nom (#996 lot 3, même défaut que #850).
-PROVENANCES_ROSTER = frozenset({ROSTER_GROUPE, ROSTER_GOUVERNEMENT})
+PROVENANCES_ROSTER = frozenset({ROSTER_GROUPE, ROSTER_GOUVERNEMENT, ROSTER_NON_INSCRIT})
 
 #: Libellés affichés. Au singulier près, ce sont les seuls mots qui doivent
 #: nommer les deux populations dans une sortie d'outil — un libellé stable est
@@ -87,6 +92,7 @@ LIBELLE_ROSTER = "membres de roster"
 #: ministres délégués. Nommer la population par le plus prestigieux de ses
 #: membres est la même faute que « 32 candidats déclarés » (#873).
 LIBELLE_GOUVERNEMENT = "membres de gouvernement"
+LIBELLE_NON_INSCRITS = "non-inscrits"
 LIBELLE_AUTRE = "provenance inconnue"
 LIBELLE_ILLISIBLES = "illisibles"
 
@@ -144,13 +150,14 @@ class Ventilation:
     candidats_declares: int = 0
     membres_roster: int = 0
     membres_gouvernement: int = 0
+    non_inscrits: int = 0
     provenance_autre: int = 0
     illisibles: int = 0
 
     @property
     def total(self) -> int:
         return (self.candidats_declares + self.membres_roster
-                + self.membres_gouvernement
+                + self.membres_gouvernement + self.non_inscrits
                 + self.provenance_autre + self.illisibles)
 
     def postes(self) -> list[tuple[int, str]]:
@@ -171,6 +178,8 @@ class Ventilation:
         ]
         if self.membres_gouvernement:
             postes.append((self.membres_gouvernement, LIBELLE_GOUVERNEMENT))
+        if self.non_inscrits:
+            postes.append((self.non_inscrits, LIBELLE_NON_INSCRITS))
         if self.provenance_autre:
             postes.append((self.provenance_autre, LIBELLE_AUTRE))
         if self.illisibles:
@@ -209,6 +218,8 @@ class Ventilation:
             # Absente des rapports d'avant #996 lot 3, et `0` y est la valeur
             # juste : ces corpus ne portaient aucun membre de gouvernement.
             membres_gouvernement=int(valeurs.get(ROSTER_GOUVERNEMENT) or 0),
+            # Absente des rapports d'avant #1265, où `0` est aussi la valeur juste.
+            non_inscrits=int(valeurs.get(ROSTER_NON_INSCRIT) or 0),
             provenance_autre=int(valeurs.get("provenance_autre") or 0),
             illisibles=int(valeurs.get("illisibles") or 0),
         )
@@ -219,6 +230,7 @@ class Ventilation:
             CANDIDAT_DECLARE: self.candidats_declares,
             ROSTER_GROUPE: self.membres_roster,
             ROSTER_GOUVERNEMENT: self.membres_gouvernement,
+            ROSTER_NON_INSCRIT: self.non_inscrits,
             "provenance_autre": self.provenance_autre,
             "illisibles": self.illisibles,
         }
@@ -226,12 +238,14 @@ class Ventilation:
 
 def ventiler_provenances(provenances: Iterable[str], *, illisibles: int = 0) -> Ventilation:
     """Ventile des valeurs de `meta.provenance` déjà lues."""
-    declares = roster = gouvernement = autres = 0
+    declares = roster = gouvernement = non_inscrits = autres = 0
     for provenance in provenances:
         if provenance == ROSTER_GROUPE:
             roster += 1
         elif provenance == ROSTER_GOUVERNEMENT:
             gouvernement += 1
+        elif provenance == ROSTER_NON_INSCRIT:
+            non_inscrits += 1
         elif provenance == CANDIDAT_DECLARE:
             declares += 1
         else:
@@ -240,6 +254,7 @@ def ventiler_provenances(provenances: Iterable[str], *, illisibles: int = 0) -> 
         candidats_declares=declares,
         membres_roster=roster,
         membres_gouvernement=gouvernement,
+        non_inscrits=non_inscrits,
         provenance_autre=autres,
         illisibles=illisibles,
     )

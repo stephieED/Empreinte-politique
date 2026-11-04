@@ -78,9 +78,9 @@ def test_le_nom_du_secret_est_le_seul_du_job():
     )
     # `SRC_ISSUES_TOKEN` (#1223) n'est pas davantage une identité de push :
     # `Issues: Read and write` sur le dépôt privé, rien sur son contenu, et un
-    # seuls les sept steps qui tiennent une issue de suivi le lisent — fiches
+    # seuls les huit steps qui tiennent une issue de suivi le lisent — fiches
     # hors schéma (#1223), votes sans dossier (#1289), votes, mandats,
-    # amendements, textes portés et effectifs en écart avec la source (#1248). Ils ne doivent atteindre ni un checkout ni
+    # amendements, textes portés, effectifs et lois en écart avec la source (#1248). Ils ne doivent atteindre ni un checkout ni
     # un `git`.
     etapes_issue = (
         "- name: Fiches hors schéma — issue de suivi",
@@ -90,6 +90,7 @@ def test_le_nom_du_secret_est_le_seul_du_job():
         "- name: Amendements en écart avec la source — issue de suivi",
         "- name: Textes portés en écart avec la source — issue de suivi",
         "- name: Effectifs en écart avec les scrutins — issue de suivi",
+        "- name: Lois en écart avec le Journal officiel — issue de suivi",
     )
     assert BLOC.count("secrets.SRC_ISSUES_TOKEN") == len(etapes_issue)
     for nom in etapes_issue:

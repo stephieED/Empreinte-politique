@@ -228,15 +228,16 @@ def test_validate_provenance_valeur_hors_enum_rejetee():
     assert any("meta.provenance" in e for e in errors)
 
 
-def test_known_provenances_contient_les_trois_populations():
-    """Une par population de `pivot_data/profiles/` (#996 lot 3).
+def test_known_provenances_contient_les_quatre_populations():
+    """Une par population de `pivot_data/profiles/` (#996 lot 3, puis les
+    non-inscrits en #1265).
 
     L'égalité et non l'inclusion : `KNOWN_*` est un vocabulaire FERMÉ, et une
     valeur ajoutée sans être documentée quelque part est ce que
     `tests/test_sources_documentees.py` refuse (AGENTS.md §8).
     """
     assert KNOWN_PROVENANCES == frozenset({
-        "candidat_declare", "roster_groupe", "roster_gouvernement",
+        "candidat_declare", "roster_groupe", "roster_gouvernement", "roster_non_inscrit",
     })
 
 

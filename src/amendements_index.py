@@ -117,6 +117,10 @@ LEGISLATURE_INCONNUE = "inconnue"
 _RE_LEGISLATURE_UID = re.compile(r"^AMANR5L(\d+)")
 
 _SUFFIXE_COSIGNATURES = ".cosignatures.json"
+
+#: Le rôle dont la copie fait foi pour la liste des cosignataires (#1429) : une
+#: valeur de `schema_pivot.KNOWN_ROLES_SIGNATAIRE_AMENDEMENT`.
+ROLE_PREMIER_SIGNATAIRE = "auteur_principal"
 #: Le contenu lu dans l'archive — article visé et mots de l'exposé (#1029).
 _SUFFIXE_CONTENU = ".contenu.json"
 
@@ -198,9 +202,15 @@ class AmendementsIndex:
         *,
         cosignatures_chargees: bool = True,
         textes: Optional[dict[str, dict[str, Any]]] = None,
+        listes_du_premier_signataire: Optional[set[str]] = None,
     ) -> None:
         self.par_id: dict[str, dict[str, Any]] = dict(amendements or {})
         self.par_id_cosignatures: dict[str, list[str]] = dict(cosignatures or {})
+        #: Les amendements dont la liste vient de la copie du **premier
+        #: signataire** (#1429) : elle fait foi, y compris vide, et la fusion
+        #: la laisse remplacer l'ancienne liste. Propre à une construction,
+        #: jamais écrit sur le disque.
+        self.listes_du_premier_signataire: set[str] = set(listes_du_premier_signataire or ())
         #: `texte_vise` -> `{dossier_id, titre}` (#639). Table de FICHIER, pas
         #: de champ par amendement : 484 132 amendements ne visent que 2 248
         #: textes distincts, et recopier le `dossier_id` dans chacun coûterait
@@ -343,6 +353,22 @@ def construire_index(amendements: Iterable[dict[str, Any]]) -> AmendementsIndex:
     `scrutins_index.construire_index`. Ici seuls les 207 238 amendements
     distincts sont retenus, jamais les 810 552 paires.
 
+    **La liste des cosignataires est celle de la copie du premier signataire**
+    (#1429). Les copies d'un même amendement divergent dès qu'une signature est
+    retirée à la source : les profils des signataires restés sont recollectés,
+    ceux des partants ne le sont plus et la fusion additive des profils garde
+    leur copie périmée. « La dernière copie vue » laissait alors gagner une
+    liste fausse — 652 des 108 367 amendements de la XVIIe publiaient 8 294
+    signatures que l'archive ne portait plus (mesuré le 04/11/2026). Le premier
+    signataire, lui, ne peut pas se retirer : tant que la source porte
+    l'amendement, sa copie est rafraîchie. Sa liste fait foi, **vide comprise**
+    (tous les cosignataires partis). Sans copie du premier signataire — un
+    auteur sans profil —, la dernière copie non vide reste retenue. Mesuré le
+    04/11/2026 contre l'archive de la XVIIe : la copie du premier signataire
+    égale la source pour 142 393 des 142 434 amendements des tranches ; 6
+    diffèrent (retraits postérieurs à la collecte) et 35 n'ont pas de copie du
+    premier signataire.
+
     Les chaînes sont **internées** : les 4,96 M références de cosignataires ne
     portent que quelques milliers de valeurs distinctes, et les `texte_vise`
     1 976. Sans internement, la construction pèse plusieurs Go ; avec, elle
@@ -350,6 +376,7 @@ def construire_index(amendements: Iterable[dict[str, Any]]) -> AmendementsIndex:
     """
     par_id: dict[str, dict[str, Any]] = {}
     cosignatures: dict[str, list[str]] = {}
+    du_premier_signataire: set[str] = set()
     intern = sys.intern
 
     for brut in amendements:
@@ -366,11 +393,20 @@ def construire_index(amendements: Iterable[dict[str, Any]]) -> AmendementsIndex:
             courant = {}
             par_id[amendement_id] = courant
         liste_cosign = brut.get("co_signataires")
-        if isinstance(liste_cosign, list) and liste_cosign:
-            # Chaque copie plate porte la liste COMPLÈTE des cosignataires (0
-            # divergence mesurée sur les 810 552 paires) : la dernière vue vaut
-            # la première. Une liste vide, elle, ne remplace jamais une liste
-            # renseignée — ce serait une régression vers l'absence.
+        if isinstance(liste_cosign, list) and brut.get("role_signataire") == ROLE_PREMIER_SIGNATAIRE:
+            # La copie du premier signataire fait foi, vide comprise (#1429).
+            du_premier_signataire.add(amendement_id)
+            liste = [intern(ref) for ref in liste_cosign if isinstance(ref, str)]
+            if liste:
+                cosignatures[amendement_id] = liste
+            else:
+                cosignatures.pop(amendement_id, None)
+        elif (isinstance(liste_cosign, list) and liste_cosign
+              and amendement_id not in du_premier_signataire):
+            # Sans copie du premier signataire (vue jusqu'ici), la dernière
+            # copie non vide. Une liste vide d'un autre signataire ne remplace
+            # jamais une liste renseignée — ce serait une régression vers
+            # l'absence.
             cosignatures[amendement_id] = [
                 intern(ref) for ref in liste_cosign if isinstance(ref, str)
             ]
@@ -378,7 +414,7 @@ def construire_index(amendements: Iterable[dict[str, Any]]) -> AmendementsIndex:
             valeur = _valeur_amendement(champ, brut, courant.get(champ))
             courant[champ] = intern(valeur) if isinstance(valeur, str) else valeur
 
-    return AmendementsIndex(par_id, cosignatures)
+    return AmendementsIndex(par_id, cosignatures, listes_du_premier_signataire=du_premier_signataire)
 
 
 #: Champ que le report de #696 rétablit, nommé en **un seul endroit** —
@@ -569,10 +605,13 @@ def merge_amendements_index(
     gagner afin de permettre une correction de sort.
 
     Sur les cosignatures, la nouvelle liste gagne dès que l'amendement est
-    présent dans le nouvel index : chaque copie plate porte la liste **complète**
-    (0 divergence mesurée sur 810 552 paires), donc une liste vue par un run
-    partiel n'est jamais une liste tronquée. Une liste absente du nouvel index
-    ne touche pas l'ancienne.
+    présent dans le nouvel index avec une liste. Une liste absente du nouvel
+    index ne touche pas l'ancienne — **sauf** quand elle vient de la copie du
+    premier signataire (#1429) : vide, elle dit que tous les cosignataires sont
+    partis, et l'ancienne liste se retire. Ce n'était pas le cas avant #1429 :
+    « chaque copie porte la liste complète » ne tient plus dès qu'une signature
+    est retirée à la source (1 253 amendements de la XVIIe aux copies
+    divergentes le 04/11/2026).
     """
     if ancien.cosignatures_chargees and nouveau.cosignatures_chargees:
         cosignatures_chargees = True
@@ -597,6 +636,8 @@ def merge_amendements_index(
             liste = nouveau.par_id_cosignatures.get(amendement_id)
             if liste:
                 cosignatures[amendement_id] = list(liste)
+            elif amendement_id in nouveau.listes_du_premier_signataire:
+                cosignatures.pop(amendement_id, None)
 
     # Union additive des tables de textes : la nouvelle entrée gagne si elle
     # est renseignée, l'ancienne survit sinon. Un run partiel ne voit qu'une
@@ -612,6 +653,9 @@ def merge_amendements_index(
         cosignatures,
         cosignatures_chargees=cosignatures_chargees,
         textes=textes,
+        # Le retrait nommé de #1429 lit ce repère sur l'index FUSIONNÉ : pour ces
+        # amendements, la liste fusionnée est celle du nouvel index.
+        listes_du_premier_signataire=set(nouveau.listes_du_premier_signataire),
     )
 
 

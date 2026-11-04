@@ -485,6 +485,25 @@ donc l'uid se lit dans l'objet — et l'arbitrage compte : **30 uids de la XIV
 figurent aussi dans les XV-XVII**.
 → `docs/decisions/archive-dossiers-xiv-1019.md`
 
+### Piège : une loi promulguée sous la législature suivante n'est dans aucune archive (mesuré le 04/11/2026, #1424)
+
+Les archives de la XIVe et de la XVe ne reprennent **aucun dossier d'une autre
+législature** ; celles de la XVIe et de la XVIIe en reprennent (149 et 196, de la
+VIIIe à la législature précédente). Et l'archive de la XIVe est **figée au
+09/03/2018**. Un dossier ouvert sous la XIVe et promulgué sous la XVe n'a donc sa
+promulgation dans aucune archive : le dossier du droit des contrats
+(`DLR5L14N35818`, loi 2018-287) est dans celle de la XIVe sans son acte
+`PROM-PUB`, absent de celle de la XVe, et le **site** affiche la promulgation.
+
+Mesure : des 1 085 lois publiées au Journal officiel depuis le 20/06/2012
+(`raw_data/lois_jorf.json`), **71 n'ont leur promulgation dans aucune des quatre
+archives** (2012 à 2020, aucune depuis 2021). Toute promulgation présente porte
+son `codeLoi` : ce n'est pas un champ que la lecture manquerait. La liste est
+déclarée dans `config/lois_absentes_open_data_an.json`. La cause n'est vérifiée
+que sur la loi 2018-287 ; pour les 20 lois de 2014 à 2016, elle demanderait des
+dossiers ouverts sous la XIIIe, ce qui n'est pas établi.
+→ `docs/decisions/lois-absentes-de-l-open-data-an-1424.md`
+
 Empirical findings:
 
 - `dossierParlementaire.legislature` spans `{8, 11, 12, 13, 14, 15, 16, 17}`

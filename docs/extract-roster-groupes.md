@@ -304,6 +304,28 @@ pourraient recevoir le même slug le même jour. `--sans-gouvernements` débranc
 la passe ; une archive illisible n'écrit pas la clé et laisse le roster des
 groupes intact.
 
+## Les députés non inscrits passent par le même fichier (#1265)
+
+Les non-inscrits ne sont pas un groupe : aucune porte ne les collectait. 25
+députés n'avaient donc aucun profil, et leurs votes et leurs amendements
+manquaient au corpus (mesuré le 04/11/2026). `generate_roster_candidats.py`
+ouvre une troisième porte, sur le modèle de celle des gouvernements :
+
+- `membres_non_inscrits` lit l'organe « Non inscrit » de chaque législature
+  depuis la XIVe dans l'index GP, **hors transit d'ouverture** (la règle de
+  `raw_data/non_inscrits.json`), une entrée par personne. Les slugs sont résolus
+  sur l'union des acteurs des groupes et des gouvernements ;
+- `candidats_des_non_inscrits` les verse dans `roster_candidats.json` sous
+  `statut: "roster_non_inscrit"`, sauf les personnes que les deux autres portes
+  ont déjà retenues, reconnues par `acteur_ref` ou par slug ;
+- la liste entre aussi dans le roster brut (clé `non_inscrits`), pour que la
+  passe de correspondance dérive l'entrée des slugs fabriqués.
+
+Même place que la porte des gouvernements : après le portail d'anomalies, avant
+l'écriture. Une archive illisible, ou sans organe de gouvernement, fait sauter
+cette porte seule. `--sans-non-inscrits` la débranche.
+→ `docs/decisions/roster-des-non-inscrits-1265.md`
+
 ## Logique d'extraction (chaîne interne)
 
 1. `generate_roster_candidats.py` lit `config/groupes_reels.json` (via

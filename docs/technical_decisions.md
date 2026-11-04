@@ -20,8 +20,18 @@ La version d'avant la découpe (30/08/2026, 18 404 lignes, 1 054 Ko) est figée 
 
 ---
 
+- `2026-11-04` <a id="cosignataires-de-la-copie-du-premier-signataire-1429"></a>[La liste des cosignataires d'un amendement est celle de la copie de son premier signataire (#1429)](decisions/cosignataires-de-la-copie-du-premier-signataire-1429.md)
+- `2026-11-04` <a id="etat-des-sources-page-sources-1389"></a>[L'état de chaque source s'affiche dans sa fiche, sur la page Sources (#1389)](decisions/etat-des-sources-page-sources-1389.md)
+- `2026-11-04` <a id="lois-absentes-de-l-open-data-an-1424"></a>[71 lois promulguées manquent à l'open data de l'Assemblée : le trou est déclaré, pas comblé (#1424)](decisions/lois-absentes-de-l-open-data-an-1424.md)
+- `2026-11-04` <a id="lois-promulguees-confrontees-au-journal-officiel-1248"></a>[Nos textes promulgués confrontés aux lois du Journal officiel, à chaque run (#1248)](decisions/lois-promulguees-confrontees-au-journal-officiel-1248.md)
+- `2026-11-04` <a id="pied-a-jour-au-par-famille-1389"></a>[Le pied des bulles lit « à jour au » par famille de données, sur les quatre fiches (#1389)](decisions/pied-a-jour-au-par-famille-1389.md)
+- `2026-11-04` <a id="retrait-des-signatures-retirees-a-la-source-1429"></a>[Une signature de cosignataire retirée à la source sort du profil, aux deux étages (#1429)](decisions/retrait-des-signatures-retirees-a-la-source-1429.md)
+- `2026-11-04` <a id="roster-des-non-inscrits-1265"></a>[Les députés non inscrits deviennent une population, et leur collecte part (#1265, second lot)](decisions/roster-des-non-inscrits-1265.md)
 - `2026-11-03` <a id="effectifs-des-groupes-confrontes-aux-scrutins-1248"></a>[Confronter nos effectifs de groupe à ceux de chaque scrutin, à chaque run (#1248, lot 5)](decisions/effectifs-des-groupes-confrontes-aux-scrutins-1248.md)
+- `2026-11-03` <a id="effectifs-juges-par-le-referentiel-amo30-1248"></a>[Un écart d'effectif n'est le nôtre que si nos données diffèrent du référentiel AMO30 (#1248, lot 5)](decisions/effectifs-juges-par-le-referentiel-amo30-1248.md)
 - `2026-11-03` <a id="fraicheur-jobs-continue-on-error-1420"></a>[Une famille dont le job peut échouer se date par son relevé, jamais par `needs` (#1420)](decisions/fraicheur-jobs-continue-on-error-1420.md)
+- `2026-11-03` <a id="scrutins-de-l-archive-contre-l-index-1248"></a>[Les numéros de scrutin de l'archive confrontés à ceux de notre index, à chaque run (#1248, lot 5 bis)](decisions/scrutins-de-l-archive-contre-l-index-1248.md)
+- `2026-11-03` <a id="tolerance-de-trois-jours-sur-les-effectifs-1248"></a>[Les effectifs confrontés aux scrutins tolèrent trois jours autour d'un changement, et non plus un (#1248, lot 5)](decisions/tolerance-de-trois-jours-sur-les-effectifs-1248.md)
 - `2026-11-02` <a id="periodes-de-mandat-de-depute-1412"></a>[Les mandats de député disent quand la personne a siégé (#1412)](decisions/periodes-de-mandat-de-depute-1412.md)
 - `2026-11-02` <a id="relecture-des-mandats-a-la-source-1248"></a>[Relire à la source quelques mandats de député, à chaque run (#1248, lot 2)](decisions/relecture-des-mandats-a-la-source-1248.md)
 - `2026-11-02` <a id="relecture-des-signatures-a-la-source-1248"></a>[Relire à la source les signataires de quelques amendements, à chaque run (#1248, lot 3)](decisions/relecture-des-signatures-a-la-source-1248.md)

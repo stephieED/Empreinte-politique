@@ -5,6 +5,7 @@ import { PeriodeContext } from '../components/Recherche';
 import { dansLaFenetre, debutDeFenetre, periodeValide } from '../utils/filtrePeriode';
 import { useAsyncData } from '../hooks/useAsyncData';
 import GovernmentProfile from '../components/GovernmentProfile';
+import { PiedDesBulles } from '../components/InfoBulle';
 import NotFoundProfile from '../components/NotFoundProfile';
 import { filtrerGouvernement } from '../utils/filtreGouvernement';
 
@@ -68,14 +69,16 @@ export default function GovernmentProfilePage() {
 
   return (
     <PeriodeContext.Provider value={debut}>
-      <GovernmentProfile
-        chronologie={chronologie || []}
-        debut={debut}
-        government={filtre}
-        key={government.id}
-        legislatures={legislatures || []}
-        mot={motDiffere.trim()}
-      />
+      <PiedDesBulles>
+        <GovernmentProfile
+          chronologie={chronologie || []}
+          debut={debut}
+          government={filtre}
+          key={government.id}
+          legislatures={legislatures || []}
+          mot={motDiffere.trim()}
+        />
+      </PiedDesBulles>
     </PeriodeContext.Provider>
   );
 }

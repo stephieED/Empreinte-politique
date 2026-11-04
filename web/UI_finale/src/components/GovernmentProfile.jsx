@@ -77,36 +77,43 @@ export const BULLES = {
   enBref: {
     phrase: 'Le gouvernement en quelques faits.',
     note: 'Note : Le nombre de membres varie au fil des remaniements.',
+    sources: ['an.gouvernements'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#gouv-composition' }],
   },
   composition: {
     phrase: 'Les ministres, ministres délégués et secrétaires d’État de ce gouvernement, par ministère.',
     note: 'Note : Sont comptés tous les membres passés par ce gouvernement, même brièvement.',
+    sources: ['an.gouvernements'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#gouv-composition' }],
   },
   paroles: {
     phrase: 'Les prises de parole des membres du gouvernement à l’Assemblée, par débat.',
     note: 'Note : Une prise de parole peut tenir en quelques mots.',
+    sources: ['an.interventions', 'an.questions'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#gouv-paroles' }],
   },
   textes: {
     phrase: 'Les projets de loi que ce gouvernement a présentés au Parlement, et jusqu’où chacun est allé.',
     note: 'Note : Un texte arrêté à une étape n’est pas nécessairement rejeté. Le 49.3 est un fait de procédure, jamais un vote.',
+    sources: ['an.dossiers'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#gouv-textes' }],
   },
   actes: {
     phrase: 'Les décrets, arrêtés et ordonnances parus au Journal officiel pendant ce gouvernement, par ministère.',
     note: 'Note : Les nominations, promotions et autres actes de fonctionnement interne de l’État ne sont pas comptés. Un acte peut appliquer une loi adoptée avant ce gouvernement.',
+    sources: ['jo.actes'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#gouv-actes' }],
   },
   /* Texte de la maquette du 13/10/2026, pas encore relu par la propriétaire ;
      sans lien tant que la méthodologie n'a pas d'entrée pour la section. */
   budgets: {
+    sources: ['mef', 'drees', 'unedic'],
     phrase: 'Les recettes et les dépenses des budgets de l’État votés sous ce gouvernement, et celles de la sécurité sociale les mêmes années.',
     note: 'Note : Un budget voté sous un gouvernement peut être exécuté sous un autre. L’emprunt de l’État n’est pas le déficit public, qui compte aussi la sécurité sociale et les collectivités.',
   },
   couverture: {
     phrase: 'Les limites de cette fiche : ce que les sources ne disent pas sur ce gouvernement.',
+    sources: ['an.gouvernements', 'an.interventions', 'an.questions', 'an.dossiers', 'jo.actes'],
     note: 'Note : Une information absente n’a pas été trouvée dans les sources. Elle a pu exister quand même.',
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#couverture' }],
   },

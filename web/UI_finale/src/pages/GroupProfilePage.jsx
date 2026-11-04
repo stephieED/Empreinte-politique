@@ -5,6 +5,7 @@ import { PeriodeContext } from '../components/Recherche';
 import { debutDeFenetre, periodeValide } from '../utils/filtrePeriode';
 import { useAsyncData } from '../hooks/useAsyncData';
 import LigneeProfile from '../components/LigneeProfile';
+import { PiedDesBulles } from '../components/InfoBulle';
 import NotFoundProfile from '../components/NotFoundProfile';
 import { filtrerLignee } from '../utils/filtreLignee';
 
@@ -63,7 +64,9 @@ export default function GroupProfilePage() {
   }
   return (
     <PeriodeContext.Provider value={debut}>
-      <LigneeProfile key={lignee.id} lignee={lignee} mot={motDiffere.trim()} />
+      <PiedDesBulles>
+        <LigneeProfile key={lignee.id} lignee={lignee} mot={motDiffere.trim()} />
+      </PiedDesBulles>
     </PeriodeContext.Provider>
   );
 }

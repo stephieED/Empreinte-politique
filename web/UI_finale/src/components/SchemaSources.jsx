@@ -1,6 +1,10 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { DONNEES_SCHEMA, FICHES_SCHEMA, SOURCES_SCHEMA } from '../data/schemaSources';
 import sourcesConfig from '../data/sources.config';
+import { getFraicheur } from '../data/fraicheur';
+import { dateEnClair } from '../data/articles';
+import { useAsyncData } from '../hooks/useAsyncData';
+import { etatDesSources } from '../utils/sourcesDesBulles';
 import './SchemaSources.css';
 
 /* ── Le flux des sources : source → ce qu'elle apporte → où cela se lit (#951) ──
@@ -48,7 +52,15 @@ function useSouris() {
   return souris;
 }
 
-function Details({ source, avecLien }) {
+/* « À JOUR AU » DANS LA FICHE DE LA SOURCE (#1389, forme A retenue le
+ * 04/11/2026) : la dernière mise à jour réussie, et depuis quand elle échoue
+ * s'il y a lieu. Une source sans date n'a pas la ligne. */
+function enClairSansAnnee(iso, annee) {
+  const texte = dateEnClair(iso);
+  return iso.slice(0, 4) === annee ? texte.slice(0, -5) : texte;
+}
+
+function Details({ source, avecLien, etat = null }) {
   const carte = CARTES[source.config];
   return (
     <>
@@ -62,6 +74,16 @@ function Details({ source, avecLien }) {
           <dt>Mise à jour</dt>
           <dd>{carte.cadenceMiseAJour}</dd>
         </div>
+        {etat && (
+          <div>
+            <dt>À jour au</dt>
+            <dd>
+              {dateEnClair(etat.aJourAu)}
+              {etat.enEchecDepuis
+                && `. Les mises à jour échouent depuis le ${enClairSansAnnee(etat.enEchecDepuis, etat.aJourAu.slice(0, 4))}.`}
+            </dd>
+          </div>
+        )}
         <div>
           <dt>Licence</dt>
           <dd>
@@ -87,6 +109,8 @@ function Details({ source, avecLien }) {
 export default function SchemaSources() {
   const souris = useSouris();
   const [survol, setSurvol] = useState(null);
+  const { data: fraicheur } = useAsyncData(getFraicheur, []);
+  const etats = fraicheur ? etatDesSources(fraicheur) : {};
   const [ouverte, setOuverte] = useState(null);
   const [hauteurBande, setHauteurBande] = useState(0);
   const bandeRef = useRef(null);
@@ -294,7 +318,7 @@ export default function SchemaSources() {
                 width: vue.largeur,
               }}
             >
-              <Details source={SOURCES_SCHEMA[rangOuverte]} avecLien />
+              <Details source={SOURCES_SCHEMA[rangOuverte]} avecLien etat={etats[SOURCES_SCHEMA[rangOuverte].id] ?? null} />
               <button type="button" className="ss-detail-fermer" onClick={() => setOuverte(null)}>
                 Fermer
               </button>
@@ -312,7 +336,7 @@ export default function SchemaSources() {
               }}
               aria-hidden="true"
             >
-              <Details source={sourceSurvolee} avecLien={false} />
+              <Details source={sourceSurvolee} avecLien={false} etat={etats[sourceSurvolee.id] ?? null} />
             </div>
           )}
         </div>

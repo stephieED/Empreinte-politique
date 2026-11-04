@@ -154,6 +154,43 @@ export const sourcesConfig = [
     perimetre: ['Gouvernement'],
     couverturePeriode: 'Les actes commencent au 1er janvier 2007.',
   },
+  // LES BUDGETS DE LA FICHE DE GOUVERNEMENT (#1053), ajoutés le 04/11/2026
+  // (#1389) : la section les lisait sans que la page Sources les nomme. Textes
+  // validés par la propriétaire le 04/11/2026.
+  {
+    id: 'finances-etat',
+    nom: 'Ministères économiques et financiers',
+    type: 'Interrogation en ligne',
+    contenuCouvert:
+      'Le budget de l’État : les dépenses votées et réalisées par ministère, et les recettes par impôt.',
+    cadenceMiseAJour: 'À chaque mise à jour des données.',
+    licence: 'Licence Ouverte 2.0 (Etalab)',
+    implication: 'Réutilisation libre sous réserve de mention de la source.',
+    perimetre: ['Gouvernement'],
+    couverturePeriode: 'Les dépenses depuis 2015, les recettes depuis 2013.',
+  },
+  {
+    id: 'drees',
+    nom: 'Drees',
+    type: 'Interrogation en ligne',
+    contenuCouvert: 'Les comptes de la protection sociale : ses ressources, par nature.',
+    cadenceMiseAJour: 'À chaque mise à jour des données.',
+    licence: 'Licence Ouverte 2.0 (Etalab)',
+    implication: 'Réutilisation libre sous réserve de mention de la source.',
+    perimetre: ['Gouvernement'],
+    couverturePeriode: 'Depuis 1959.',
+  },
+  {
+    id: 'unedic',
+    nom: 'Unédic',
+    type: 'Interrogation en ligne',
+    contenuCouvert: 'Les recettes de l’assurance chômage.',
+    cadenceMiseAJour: 'À chaque mise à jour des données.',
+    licence: 'Licence Ouverte 2.0 (Etalab)',
+    implication: 'Réutilisation libre sous réserve de mention de la source.',
+    perimetre: ['Gouvernement'],
+    couverturePeriode: 'Depuis 2011.',
+  },
   // WIKIPÉDIA ET WIKIDATA disent QUI est candidat, rien d'autre (AGENTS.md §7,
   // job `rafraichir-candidats`). Leurs textes disaient « suivi biographique
   // complémentaire » et « citations verbatim » : faux, corrigés le 16/09/2026.

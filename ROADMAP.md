@@ -313,12 +313,15 @@ Convention d'écriture : `AGENTS.md` §8.
 - **Un moment de séance sans grammaire plus fine sous lui reste publié comme un
   sujet (#710).** Le critère structurel de #710 écarte les créneaux de questions
   parce que la source range dessous des points `QG_1_1`/`QOSD_1_1`/`QPM_1_1` ;
-  « Motion de censure » (243 profils tagués), « Motions de censure » (192) et
-  « Déclaration du Gouvernement et débat » (125) n'ont aucune marque structurelle
-  équivalente — ni `@valeur`, ni `sousIntitule`, ni code de point plus profond.
-  Les fermer demande une source de plus, l'ordre du jour publié par l'AN
-  (`vp/reunions/`), et donc un lot à part. Trou déclaré, pas comblé par un
-  libellé (§2 règle 5).
+  « Motion de censure » (349 des 1 825 profils pivot tagués), « Motions de
+  censure » (196) et « Déclaration du Gouvernement et débat » (197) — mesuré le
+  04/11/2026 sur les données du 03/11, contre 243, 192 et 125 à l'ouverture —
+  n'ont aucune marque structurelle équivalente — ni `@valeur`, ni
+  `sousIntitule`, ni code de point plus profond. La source qui les fermerait,
+  l'ordre du jour publié par l'AN (`vp/reunions/`), **est collectée depuis
+  #1354** (`pivot_data/ordre_du_jour/`, XVe à XVIIe ; la XIVe n'a pas
+  d'archive), mais rien ne s'en sert encore pour ces intitulés : reste le lot
+  qui l'applique aux tags. Trou déclaré, pas comblé par un libellé (§2 règle 5).
 
 - **Les tranches d'amendements du roster ne sont plus écrites pour les
   législatures closes — fait le 09/09/2026 (#691).** Le run `34344178203` a

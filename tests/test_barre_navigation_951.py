@@ -166,7 +166,8 @@ def test_chaque_source_du_schema_ouvre_sa_page() -> None:
     bloc = schema[schema.index("export const SOURCES_SCHEMA") : schema.index("export const DONNEES_SCHEMA")]
     ids = re.findall(r"\{ id: '([a-z]+)',", bloc)
     urls = re.findall(r"url: '(https://[^']+)'", bloc)
-    assert len(urls) == len(ids) == 12
+    # 15 depuis le 04/11/2026 : les trois sources des budgets (#1389).
+    assert len(urls) == len(ids) == 15
     composant = (UI / "src" / "components" / "SchemaSources.jsx").read_text(encoding="utf-8")
     assert 'target="_blank"' in composant and 'rel="noopener noreferrer"' in composant
 
@@ -382,7 +383,7 @@ def test_le_journal_officiel_est_collecte_et_ses_decrets_relus_restent_en_pointi
     assert "{ id: 'actes', nom: 'Décrets, arrêtés, ordonnances', de: ['jo'] }" in schema
     assert "de: ['an', 'jo'], citees: ['jo']" in schema and "de: ['syc', 'jo'], citees: ['jo']" in schema
     fiches = schema[schema.index("export const FICHES_SCHEMA"):]
-    assert "de: ['gouvernement', 'activite', 'actes']" in fiches, "les actes se lisent sur la fiche de gouvernement"
+    assert "de: ['gouvernement', 'activite', 'actes', 'budgets']" in fiches, "les actes se lisent sur la fiche de gouvernement"
     assert "d.id !== 'actes'" in fiches, "et pas sur la fiche candidat"
     composant = (UI / "src" / "components" / "SchemaSources.jsx").read_text(encoding="utf-8")
     assert "d.citees?.includes(sid) ? 'citee' : s.statut" in composant

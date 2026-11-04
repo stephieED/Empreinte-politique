@@ -16,7 +16,7 @@ import '../styles/shell.css';
 import PartagerFiche from './PartagerFiche';
 import './CandidateProfile.css';
 import { BadgeSource, ListeVide } from './Lecture';
-import InfoBulle, { BulleDePastille, DatesDesSources } from './InfoBulle';
+import InfoBulle, { BulleDePastille, PiedDesBulles } from './InfoBulle';
 import FilDAriane from './FilDAriane';
 import { useReplieAuClicDehors } from '../hooks/useReplieAuClicDehors';
 import { useEcranEtroit } from '../hooks/useLargeur';
@@ -114,30 +114,30 @@ function periodeDuRole(r) {
  */
 const LIRE_LA_METHODE = 'Lire la méthode →';
 
-/* LES SOURCES DE CHAQUE BULLE (#1389) : celles qui alimentent la section, en
- * identifiants du schéma de la page Sources (`schemaSources.js`). Le pied n'en
- * montre que celles dont le profil a une date. Le versant européen vient des
- * dumps ParlTrack, avec les titres français du portail du Parlement européen
- * (« Activité européenne, titres français » sur le schéma). */
-const SOURCES_UE = ['pt', 'pe'];
+/* LES SOURCES DE CHAQUE BULLE (#1389) : les familles de données qui alimentent
+ * la section (`fraicheur_sources.json`), ou une source entière du schéma de la
+ * page Sources (`schemaSources.js`). Le pied en tire une ligne par source, à la
+ * date « à jour au » de sa famille la moins fraîche. Le versant européen vient
+ * des dumps ParlTrack, avec les titres français du portail du Parlement
+ * européen (« Activité européenne, titres français » sur le schéma). */
 
 const BULLES = {
   enBref: {
     phrase: 'Le parcours d’élu, et l’activité en quelques chiffres bruts.',
     note: 'Note : « Majorité » et « opposition » sont les qualifications déclarées par l’Assemblée nationale. Quand elle n’en déclare aucune, la fiche l’indique.',
-    sources: ['an', 'sen', 'pe', 'rne'],
+    sources: ['an.mandats', 'sen.mandats', 'pe.mandats', 'rne.mandats_locaux'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#fonctions' }],
   },
   fonctions: {
     phrase: 'Les responsabilités tenues pendant les mandats, classées par durée dans chaque catégorie.',
     note: 'Note : Une ligne sans rôle indiqué signifie simple membre. La durée ne mesure pas l’importance.',
-    sources: ['an', 'sen', 'pe'],
+    sources: ['an.mandats', 'an.gouvernements', 'sen.mandats', 'pe.mandats'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#fonctions' }],
   },
   textes: {
     phrase: 'Les textes de loi dont la personne est l’auteur ou le rapporteur, rangés à l’étape qu’ils ont atteinte.',
     note: 'Note : Seuls les textes examinés en commission sont affichés. Un texte arrêté à une étape n’est pas nécessairement rejeté.',
-    sources: ['an'],
+    sources: ['an.dossiers'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#propose' }],
   },
   // Le pronom s'accorde comme le titre de la carte : la phrase le reprend.
@@ -149,44 +149,44 @@ const BULLES = {
   amendements: (voix) => ({
     phrase: `Les amendements dont ${voix.sujet} est l’auteur, répartis par thème de la commission.`,
     note: 'Note : Chaque segment d’une barre est un texte amendé. Sa largeur est le nombre d’amendements déposés dessus. Ce nombre seul peut tromper.',
-    sources: ['an'],
+    sources: ['an.amendements'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#propose' }],
   }),
   textesUe: {
     phrase: 'Les textes dont la personne est l’auteur ou le rapporteur au Parlement européen, par thème et par étape de la procédure.',
     note: 'Note : Un texte qui traite de plusieurs thèmes apparaît sur chaque ligne concernée. « Sans dossier rattaché » veut dire que la source ne dit pas où en est le texte.',
-    sources: SOURCES_UE,
+    sources: ['pt.textes', 'pe.documents'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#propose' }],
   },
   amendementsUe: (voix) => ({
     phrase: `Les amendements dont ${voix.sujet} est l’auteur au Parlement européen, répartis par thème.`,
     note: 'Note : Le nombre d’amendements seul peut tromper. Chaque segment d’une barre est un texte amendé. Un amendement qui traite de plusieurs thèmes est compté sur chaque ligne concernée.',
-    sources: SOURCES_UE,
+    sources: ['pt.amendements', 'pe.documents'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#propose' }],
   }),
   // Une phrase, et pas de note : la section entièrement vide ne montre aucune
   // figure dont une note aiderait la lecture.
   proposeVide: {
     phrase: 'Les textes de loi dont la personne est l’auteur ou le rapporteur, et les amendements dont elle est l’auteur.',
-    sources: ['an', ...SOURCES_UE],
+    sources: ['an.dossiers', 'an.amendements', 'pt.textes', 'pt.amendements', 'pe.documents'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#propose' }],
   },
   votes: {
     phrase: 'Les votes sur les textes de loi en dernière lecture, par période de gouvernement.',
     note: 'Note : Dernière lecture : le vote le plus récent sur le texte entier. Les votes sont regroupés par gouvernement pour distinguer ceux émis dans la majorité, la minorité ou l’opposition.',
-    sources: ['an'],
+    sources: ['an.votes'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#votes' }],
   },
   votesUe: {
     phrase: 'Les votes au Parlement européen, classés par thème.',
     note: 'Note : Pour chaque texte, seul le vote le plus récent est retenu. Un texte qui traite de plusieurs thèmes apparaît sur chaque ligne concernée.',
-    sources: SOURCES_UE,
+    sources: ['pt.votes', 'pe.documents'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#votes' }],
   },
   ecarts: {
     phrase: 'Les votes où sa position diffère de celle de la majorité de son groupe parlementaire.',
     note: 'Note : Seuls les votes en dernière lecture sont comparés, quand une majorité se dégage dans le groupe.',
-    sources: ['an'],
+    sources: ['an.votes'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#ecarts' }],
   },
   // LA SOURCE EST DANS LE PIED (#1389) : le lien « La source : les comptes
@@ -196,7 +196,7 @@ const BULLES = {
   dit: {
     phrase: 'Les prises de parole à l’Assemblée, par période de gouvernement, par type et par sujet.',
     note: 'Note : Les sujets sont les titres de l’ordre du jour de l’Assemblée.',
-    sources: [{ id: 'an', url: PAGE_JEU_DE_DONNEES_DEBATS }],
+    sources: [{ id: 'an.interventions', url: PAGE_JEU_DE_DONNEES_DEBATS }, 'an.questions'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#interventions' }],
   },
   // Pas de lien de source ici : celui de `dit` mène au jeu de données de
@@ -204,7 +204,7 @@ const BULLES = {
   ditUe: {
     phrase: 'Les prises de parole au Parlement européen, par type et par sujet.',
     note: 'Note : La source publie les sujets le plus souvent en anglais.',
-    sources: SOURCES_UE,
+    sources: ['pt.interventions', 'pe.documents'],
     liens: [{ libelle: LIRE_LA_METHODE, vers: '/methodologie#interventions' }],
   },
   // RÉÉCRITE LE 02/10/2026 : elle annonçait « la date où chaque source
@@ -1952,7 +1952,7 @@ export default function CandidateProfile({ candidate, mot = '' }) {
     && !(c.amendementsParVersant?.europeens?.totalAuteur > 0);
 
   return (
-    <DatesDesSources.Provider value={c.datesDesSources ?? null}>
+    <PiedDesBulles presentes={c.sourcesDuProfil ?? null}>
     <main className="cp-main">
       <div className="cp-breadcrumb">
         <FilDAriane id={c.id} libelle="Candidats" nom={c.nom} periode type="candidats" />
@@ -2120,6 +2120,6 @@ export default function CandidateProfile({ candidate, mot = '' }) {
         </footer>
       )}
     </main>
-    </DatesDesSources.Provider>
+    </PiedDesBulles>
   );
 }

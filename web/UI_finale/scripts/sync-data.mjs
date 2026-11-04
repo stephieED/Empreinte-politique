@@ -122,6 +122,16 @@ if (existsSync(dossiersEuropeensPath)) {
   );
 }
 
+// --- fraicheur_sources.json (« à jour au » des bulles de section — #1389) ---
+// La dernière relecture réussie de chaque famille de données. Absent, les
+// bulles n'ont pas de pied : on n'invente pas de date.
+const fraicheurPath = path.join(repoRoot, 'pivot_data', 'fraicheur_sources.json');
+if (existsSync(fraicheurPath)) {
+  cpSync(fraicheurPath, path.join(outDir, 'fraicheur_sources.json'));
+} else {
+  console.warn('sync-data : pivot_data/fraicheur_sources.json absent — les bulles n\'auront pas de date « à jour au » (#1389).');
+}
+
 // --- scrutins_europeens.json (scrutins nominatifs du Parlement européen — #901) ---
 const scrutinsEuropeensPath = path.join(repoRoot, 'pivot_data', 'scrutins_europeens.json');
 if (existsSync(scrutinsEuropeensPath)) {

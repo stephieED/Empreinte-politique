@@ -1253,6 +1253,7 @@ def _md_section_volumetrie(volumetrie: dict[str, Any]) -> str:
         candidats_declares=par_provenance.get("candidat_declare", 0),
         membres_roster=par_provenance.get("roster_groupe", 0),
         membres_gouvernement=par_provenance.get("roster_gouvernement", 0),
+        non_inscrits=par_provenance.get("roster_non_inscrit", 0),
         provenance_autre=par_provenance.get("null", 0),
     )
 

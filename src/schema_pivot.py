@@ -476,7 +476,7 @@ Format d'un profil pivot v1 :
             }
         ],
         "provenance": "candidat_declare",         # "candidat_declare" | "roster_groupe"
-                                             # | "roster_gouvernement" ;
+                                             # | "roster_gouvernement" | "roster_non_inscrit" ;
                                              # voir KNOWN_PROVENANCES
         "provenance_champs": {               # #603 — D'OÙ VIENT CETTE VALEUR, et de quand.
                                              # À ne pas confondre avec `provenance` ci-dessus,
@@ -1650,13 +1650,18 @@ KNOWN_BASES_IRRECEVABILITE: frozenset[str] = frozenset({"art. 40", "art. 45"})
 #   - "roster_gouvernement" : membre d'un gouvernement recensé par AMO30 et
 #     qu'aucun roster de groupe n'amène (#996 lot 3). 124 de ces personnes
 #     n'ont jamais été députées : sans cette provenance, la fiche d'un
-#     gouvernement n'agrégerait que celles qui l'ont été.
+#     gouvernement n'agrégerait que celles qui l'ont été ;
+#   - "roster_non_inscrit" : député non inscrit recensé par AMO30 (organe
+#     « Non inscrit », hors transit d'ouverture) qu'aucun roster de groupe ni
+#     de gouvernement n'amène (#1265). Sans cette provenance, 25 députés n'avaient
+#     aucun profil (mesuré le 04/11/2026) : leurs votes et leurs amendements
+#     manquaient au corpus.
 # Politique de fusion (voir merge_profile.merge_pivot_profile) : un profil
 # "candidat_declare" n'est jamais rétrogradé vers une provenance de roster par
 # une régénération roster-driven du même slug, pour ne jamais perdre
 # l'enrichissement éditorial déjà présent (parti, etc.).
 KNOWN_PROVENANCES: frozenset[str] = frozenset({
-    "candidat_declare", "roster_groupe", "roster_gouvernement",
+    "candidat_declare", "roster_groupe", "roster_gouvernement", "roster_non_inscrit",
 })
 
 # --- #539 : identifiants de source, publiés dans le pivot -------------------
@@ -2454,8 +2459,9 @@ def make_empty_profil(id_: str, nom: str, provenance: str = "candidat_declare") 
         nom: nom complet de l'élu.
         provenance: origine du profil, "candidat_declare" (défaut, raw_data/candidats.json),
                     "roster_groupe" (extraction pilotée par le roster réel d'un
-                    groupe parlementaire, #188) ou "roster_gouvernement" (membre
-                    d'un gouvernement recensé par AMO30, #996). Voir KNOWN_PROVENANCES.
+                    groupe parlementaire, #188), "roster_gouvernement" (membre
+                    d'un gouvernement recensé par AMO30, #996) ou "roster_non_inscrit"
+                    (député non inscrit recensé par AMO30, #1265). Voir KNOWN_PROVENANCES.
 
     Returns:
         Profil pivot dict initialisé, prêt à être enrichi.

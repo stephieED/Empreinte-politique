@@ -61,6 +61,15 @@ export const SOURCES_SCHEMA = [
     url: 'https://www2.assemblee-nationale.fr/sycomore/recherche' },
   { id: 'jo', nom: 'Journal officiel', teinte: 'gouv', statut: 'collectee', config: 'journal-officiel',
     url: 'https://www.legifrance.gouv.fr/' },
+  // Les budgets de la fiche de gouvernement (#1053), nommés le 04/11/2026 (#1389).
+  // « Ministère de l’Économie » : nom court retenu par la propriétaire, le nom
+  // complet débordait de sa case ; la carte garde le nom complet.
+  { id: 'mef', nom: 'Ministère de l’Économie', teinte: 'gouv', statut: 'collectee', config: 'finances-etat',
+    url: 'https://data.economie.gouv.fr/' },
+  { id: 'drees', nom: 'Drees', teinte: 'gouv', statut: 'collectee', config: 'drees',
+    url: 'https://data.drees.solidarites-sante.gouv.fr/' },
+  { id: 'unedic', nom: 'Unédic', teinte: 'gouv', statut: 'collectee', config: 'unedic',
+    url: 'https://data.unedic.org/' },
   { id: 'pe', nom: 'Parlement européen', teinte: 'pe', statut: 'collectee', config: 'parlement-europeen-opendata',
     url: 'https://data.europarl.europa.eu/' },
   { id: 'pt', nom: 'ParlTrack', teinte: 'pe', statut: 'collectee', config: 'parltrack',
@@ -82,6 +91,7 @@ export const DONNEES_SCHEMA = [
   { id: 'senat', nom: 'Mandats au Sénat', de: ['sen'] },
   { id: 'anterieurs', nom: 'Mandats antérieurs à 2002', de: ['syc', 'jo'], citees: ['jo'] },
   { id: 'actes', nom: 'Décrets, arrêtés, ordonnances', de: ['jo'] },
+  { id: 'budgets', nom: 'Budgets de l’État et de la sécurité sociale', de: ['mef', 'drees', 'unedic'] },
   { id: 'europeen', nom: 'Mandat européen', de: ['pe'] },
   { id: 'activite-ue', nom: 'Activité européenne, titres français', de: ['pt', 'pe'] },
   { id: 'matieres', nom: 'Noms des matières européennes', de: ['ev'] },
@@ -89,7 +99,7 @@ export const DONNEES_SCHEMA = [
 ];
 
 export const FICHES_SCHEMA = [
-  { id: 'candidat', nom: 'Fiche candidat', de: DONNEES_SCHEMA.filter((d) => d.id !== 'actes').map((d) => d.id), ligne: 4 },
+  { id: 'candidat', nom: 'Fiche candidat', de: DONNEES_SCHEMA.filter((d) => d.id !== 'actes' && d.id !== 'budgets').map((d) => d.id), ligne: 4 },
   { id: 'groupe', nom: 'Fiche de groupe', de: ['deputes', 'activite'], ligne: 8 },
-  { id: 'gouv', nom: 'Fiche de gouvernement', de: ['gouvernement', 'activite', 'actes'], ligne: 10 },
+  { id: 'gouv', nom: 'Fiche de gouvernement', de: ['gouvernement', 'activite', 'actes', 'budgets'], ligne: 10 },
 ];

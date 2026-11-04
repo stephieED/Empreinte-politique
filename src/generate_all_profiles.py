@@ -247,6 +247,7 @@ from build_amendements_index_pivot import (
     publier_contenus,
 )
 from scrutins_index import DEFAULT_SCRUTINS_PATH, ScrutinsIndex, charger as charger_scrutins, rafraichir as rafraichir_scrutins
+from cosignatures_retirees import resume as resume_retraits, retirer as retirer_cosignatures
 from textes_dossiers_an import charger_table as charger_table_textes
 from textes_vises_figes import lire_textes_vises
 from scrutins_legislature import LegislatureIrresoluble
@@ -1842,6 +1843,22 @@ def _rafraichir_index_amendements(args: argparse.Namespace, out_dir: Path) -> No
               f"rattaché(s), {comptes['amendements_sans_dossier']} sans dossier "
               f"({comptes['textes_resolus']} texte(s) résolu(s), "
               f"{comptes['textes_sans_dossier']} sans dossier dans les archives lues)")
+    # #1429 — retrait nommé : une signature de cosignataire que la copie du
+    # premier signataire ne porte plus est retirée du profil brut ET du pivot.
+    # Après l'index, qui vient d'établir ces listes ; avant les fiches de
+    # groupe, qui se recomposent depuis les pivots à l'étape suivante.
+    # Sans répertoire pivot nommé, rien n'est retiré : un retrait au seul brut
+    # serait réintroduit par le pivot, et le défaut relatif `pivot_data/profiles`
+    # écrirait là où l'appelant n'a rien demandé.
+    pivot_dir = getattr(args, "pivot_dir", None)
+    if pivot_dir is None:
+        print("  Signatures retirées à la source (#1429) : retrait sauté, aucun répertoire pivot nommé.")
+        return
+    releve_retraits = retirer_cosignatures(
+        out_dir, Path(pivot_dir), index,
+        acteur_de=lambda slug: ((_entree_correspondance(slug) or {}).get("identifiants") or {}).get("an"),
+    )
+    print(f"  {resume_retraits(releve_retraits)}")
 
 
 def main() -> None:

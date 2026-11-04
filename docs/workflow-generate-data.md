@@ -1472,16 +1472,48 @@ et compare, pour **chaque** scrutin, le nombre de membres de chaque groupe que
 l'Assemblée publie (`nombreMembresGroupe`) aux membres de nos fiches de groupe
 (`pivot_data/groupes/groupe-AN-*-<leg>.json`, reliées par
 `historique_noms[].organe_an`) et des non-inscrits (`raw_data/non_inscrits.json`,
-téléchargé plus haut). **Aucun tirage.** Tolérés : un écart la veille, le jour
-ou le lendemain d'un changement d'appartenance du groupe, et les écarts
+téléchargé plus haut). **Aucun tirage.** **Un écart n'est celui de notre collecte que si nos
+effectifs diffèrent de ceux du référentiel AMO30 ce jour-là** (index
+`an_roster.charger_index_gp`, l'archive du roster) : quand nous comptons comme
+AMO30 et que le scrutin compte autrement, c'est un désaccord interne à
+l'Assemblée, relevé et jamais signalé. Sans référentiel lisible, repli sur le
+compte du scrutin avec une tolérance de trois jours autour d'un changement
+d'appartenance (`TOLERANCE_JOURS`). Restent tolérés les écarts
 consignés à la main dans `config/ecarts_effectifs_valides.json` tant que leurs
 deux comptes ne bougent pas. Hors comparaison : le scrutin du Congrès, les
 groupes publiés sous `PO0`, un groupe absent de la ventilation. Même régime ;
 artifact `relecture-effectifs`, issue `effectifs-en-ecart-avec-la-source`.
 
-Mesuré le 03/11/2026 en local : 19 455 scrutins, 246 en écart sur 13 jours ;
-14 s, pic à 80 Mio, hors téléchargement.
+Mesuré le 03/11/2026 en local, avec le référentiel : 19 455 scrutins, **0 écart
+de notre collecte**, 1 046 désaccords internes à l'Assemblée ; 16 s, pic à
+100 Mio, hors téléchargement. Sans lui : 246 en écart sur 13 jours avec un jour
+de tolérance, 28 sur 5 jours avec trois.
 → `docs/decisions/effectifs-des-groupes-confrontes-aux-scrutins-1248.md`
+
+La même étape compare aussi **les numéros de scrutin de l'archive à ceux de
+`pivot_data/scrutins.json`** : un numéro de l'archive absent de l'index est un
+scrutin perdu, l'inverse un scrutin publié que la source ne porte plus. Les
+numéros que l'archive elle-même saute sont relevés à part, comme un fait de la
+source. L'issue compte les deux (`a_signaler` : jours d'effectif en écart plus
+scrutins absents). Mesuré le 03/11/2026 : 19 454 scrutins des deux côtés, aucun
+absent ; l'archive de la XVe saute les n° 3781 et 3782.
+→ `docs/decisions/scrutins-de-l-archive-contre-l-index-1248.md`
+
+### Les lois promulguées confrontées au Journal officiel (#1248)
+
+Puis « Lois promulguées confrontées au Journal officiel (signalement) »
+(`src/relecture_lois_promulguees.py`) : le seul contrôle de totaux **indépendant
+de l'Assemblée**. La table des lois du JO (`raw_data/lois_jorf.json`, artifact
+`actes-jo`) contre `pivot_data/textes_promulgues.json`, par numéro de loi, dans
+les deux sens, depuis le début de la XIVe. Ne sont pas signalées les lois
+déclarées absentes de l'open data de l'AN (`config/lois_absentes_open_data_an.json`,
+#1424) ni celles publiées au JO après la date `an.dossiers` du fichier de
+fraîcheur. Aucune requête réseau. Artifact `relecture-lois`, issue
+`lois-en-ecart-avec-la-source`.
+
+Mesuré le 04/11/2026 : 1 091 lois du JO, 1 019 chez nous, 71 déclarées, 1 pas
+encore relue, 0 écart.
+→ `docs/decisions/lois-promulguees-confrontees-au-journal-officiel-1248.md`
 
 
 ### Ce que `merge-and-pivot` ne produit plus : les fiches de parti (#906)
@@ -1589,6 +1621,23 @@ où la publication du contenu était câblée, donc elle ne publiait rien même 
 fois l'ordre corrigé (run `35792678909`).
 → `docs/decisions/artifact-amendements-avant-la-passe-pivot-1101.md`
 
+### Le retrait des signatures retirées à la source (#1429)
+
+Dans chaque passe pivot, juste après la reconstruction de l'index des
+amendements (`generate_all_profiles._rafraichir_index_amendements`), et donc
+avant les fiches de groupe : `src/cosignatures_retirees.py` retire, du profil
+brut **et** du pivot, toute signature de cosignataire que la copie du premier
+signataire ne porte plus. La preuve est l'index lui-même
+(`listes_du_premier_signataire`, #1431) ; un amendement sans copie du premier
+signataire n'est jamais touché. Le journal de l'étape nomme le nombre de
+signatures retirées et les profils les plus touchés. Le contrôle de perte relève
+la baisse sans bloquer (`amendements` est une liste signalée).
+
+Mesuré le 04/11/2026 sur les tranches de la XVIIe : 10 518 signatures à retirer,
+sur 505 profils. Le premier run qui l'applique les retire toutes ; les suivants,
+celles retirées depuis.
+→ `docs/decisions/retrait-des-signatures-retirees-a-la-source-1429.md`
+
 ### Les textes promulgués, et leur matière, dans `merge-and-pivot`
 
 Une étape, **après** la table des commissions saisies au fond et avant les index
@@ -1680,6 +1729,13 @@ actes ; l'étape la note en chemin et fusionne avec la table committée, sans
 appel réseau de plus. C'est par elle que `textes_promulgues.json` résout son
 `jorftext`, et donc que la jointure loi → acte est exacte (1 015 / 1 015, quand
 le NOR n'en résoudrait que 603).
+
+**Elle n'était commitée par personne jusqu'à #1424** : l'artifact `actes-jo`
+l'emportait, `merge-and-pivot` la lisait, mais son `git add` ne portait que les
+actes. La table du dépôt est restée celle du 23/09/2026, et chaque run repartait
+d'elle plus les `MOIS_RELUS` mois relus ; une loi sortie de cette fenêtre aurait
+perdu son `jorftext`. `tests/test_table_jo_commitee_1424.py` exige désormais que
+tout chemin emporté par l'artifact soit commité.
 
 **Ce qu'elle corrige dans les mois déjà clos** : les liens d'un acte vers une
 loi, et eux seuls. Légifrance pose la qualification « application » longtemps

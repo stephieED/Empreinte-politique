@@ -222,7 +222,7 @@ def test_compute_repartition_provenance_liste_vide():
     assert resultat == {
         "total_profils": 0,
         "par_provenance": {"candidat_declare": 0, "roster_groupe": 0,
-                           "roster_gouvernement": 0, "null": 0},
+                           "roster_gouvernement": 0, "roster_non_inscrit": 0, "null": 0},
     }
 
 
@@ -238,7 +238,7 @@ def test_compute_repartition_provenance_profils_mixtes():
     assert resultat == {
         "total_profils": 3,
         "par_provenance": {"candidat_declare": 1, "roster_groupe": 2,
-                           "roster_gouvernement": 0, "null": 0},
+                           "roster_gouvernement": 0, "roster_non_inscrit": 0, "null": 0},
     }
 
 
@@ -865,7 +865,7 @@ def test_compute_profils_sans_activite_liste_vide():
     # compte absent n'est jamais omis, il vaut 0 parce qu'il a été mesuré.
     vide = {
         "total": 0, "candidat_declare": 0, "roster_groupe": 0,
-        "roster_gouvernement": 0, "provenance_autre": 0, "illisibles": 0,
+        "roster_gouvernement": 0, "roster_non_inscrit": 0, "provenance_autre": 0, "illisibles": 0,
     }
     assert resultat == {
         "total_profils": 0, "nb_profils_sans_activite": 0, "profils_sans_activite": [],
@@ -1347,7 +1347,7 @@ def test_build_report_meta_section():
         # (rétro-compatibilité, docs/decisions/provenance-pivot.md).
         "ventilation_provenance": {
             "total": 1, "candidat_declare": 1, "roster_groupe": 0,
-            "roster_gouvernement": 0, "provenance_autre": 0, "illisibles": 0,
+            "roster_gouvernement": 0, "roster_non_inscrit": 0, "provenance_autre": 0, "illisibles": 0,
         },
         "total_erreurs_lecture": 1,
         "staleness_days": 15,
