@@ -4,7 +4,7 @@
  "familles": {
   "an.mandats": {
    "source": "an",
-   "a_jour_au": "2026-11-04",
+   "a_jour_au": "2026-11-05",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -20,7 +20,7 @@
   },
   "an.votes": {
    "source": "an",
-   "a_jour_au": "2026-11-04",
+   "a_jour_au": "2026-11-05",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -28,7 +28,7 @@
   },
   "an.interventions": {
    "source": "an",
-   "a_jour_au": "2026-11-04",
+   "a_jour_au": "2026-11-05",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -36,7 +36,7 @@
   },
   "an.questions": {
    "source": "an",
-   "a_jour_au": "2026-11-04",
+   "a_jour_au": "2026-11-05",
    "raison": null,
    "etat": "a_jour",
    "en_echec_depuis": null,
@@ -110,9 +110,9 @@
    "source": "sen",
    "a_jour_au": "2026-11-04",
    "raison": null,
-   "etat": "a_jour",
-   "en_echec_depuis": null,
-   "motif_dernier_run": null
+   "etat": "en_echec",
+   "en_echec_depuis": "2026-11-05",
+   "motif_dernier_run": "job en échec au moment du relevé : extract-senat"
   },
   "pe.mandats": {
    "source": "pe",
@@ -164,11 +164,11 @@
   },
   "rne.mandats_locaux": {
    "source": "rne",
-   "a_jour_au": "2026-11-03",
+   "a_jour_au": "2026-11-05",
    "raison": null,
-   "etat": "en_echec",
-   "en_echec_depuis": "2026-11-05",
-   "motif_dernier_run": "aucun relevé publié par extract-mandats-locaux"
+   "etat": "a_jour",
+   "en_echec_depuis": null,
+   "motif_dernier_run": null
   }
  }
 }

@@ -49,6 +49,7 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/candidate_profile_ue.py` | 2 |
 | `src/fetch_candidats_declares.py` | 2 |
 | `src/mandats_anterieurs.py` | 2 |
+| `src/relecture_effectifs_source.py` | 2 |
 | `src/relecture_textes_source.py` | 2 |
 | `src/titres_europeens.py` | 2 |
 | `src/cache_an_fraicheur.py` | 1 |
@@ -64,7 +65,6 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/ordre_du_jour_an.py` | 1 |
 | `src/paroles_d_une_autre_personne.py` | 1 |
 | `src/purge_interventions_heritees.py` | 1 |
-| `src/relecture_effectifs_source.py` | 1 |
 | `src/retrait_heritage_senat.py` | 1 |
 | `src/scrutins_dossiers_an.py` | 1 |
 | `src/scrutins_europeens.py` | 1 |
@@ -1379,11 +1379,16 @@ Le mentionnent sans le gouverner : [`relecture-des-signatures-a-la-source-1248`]
 
 ## `src/relecture_effectifs_source.py`
 
-1 décision(s) le gouvernent ; le module en cite 0.
+2 décision(s) le gouvernent ; le module en cite 0.
 
 | Décision | Nomme |
 | --- | --- |
+| [Un scrutin plus récent que notre index n'est pas encore collecté, pas absent (#1248) (2026-11-05)](decisions/scrutins-pas-encore-collectes-1248.md) | `DELAI_DE_COLLECTE_JOURS`, `dates_publiees` |
 | [Les effectifs confrontés aux scrutins tolèrent trois jours autour d'un changement, et non plus un (#1248, lot 5) (2026-11-03)](decisions/tolerance-de-trois-jours-sur-les-effectifs-1248.md) | `TOLERANCE_JOURS` |
+
+## `src/relecture_lois_promulguees.py`
+
+Le mentionnent sans le gouverner : [`scrutins-pas-encore-collectes-1248`](decisions/scrutins-pas-encore-collectes-1248.md).
 
 ## `src/relecture_mandats_source.py`
 

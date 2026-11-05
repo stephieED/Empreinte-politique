@@ -8,6 +8,7 @@ ventilation omet le MoDem), et l'enveloppe du fichier unique de la XIVe réduite
 à deux de ses scrutins, recopiés tels quels.
 """
 
+import datetime as dt
 import json
 from pathlib import Path
 
@@ -203,6 +204,36 @@ def test_les_numeros_que_l_archive_saute_sont_ceux_de_la_source():
     re_.couvrir(bilan, _scrutins(PAR_SCRUTIN).values(), {489, 9578})
     assert len(bilan.trous_de_l_archive) == 9578 - 2
     assert (bilan.absents_de_l_index, bilan.absents_de_l_archive) == ([], [])
+
+
+def test_un_scrutin_plus_recent_que_l_index_n_est_pas_encore_collecte():
+    """Le run 41932814357 (05/11/2026) : la collecte a lu l'archive arrêtée au
+    02/11, le contrôle celle publiée sept minutes après son départ."""
+    bilan = re_.Bilan("17")
+    re_.couvrir(bilan, _scrutins(PAR_SCRUTIN).values(), set(), "2026-11-01", dt.date(2026, 11, 3))
+    assert (bilan.pas_encore_collectes, bilan.absents_de_l_index) == ([9578], [489])
+    _, resume = re_.rapport([bilan])
+    assert (resume["scrutins_pas_encore_collectes"], resume["scrutins_absents"]) == (1, 1)
+
+
+def test_une_collecte_arretee_ne_se_cache_pas_derriere_le_delai():
+    bilan = re_.Bilan("17")
+    re_.couvrir(bilan, _scrutins(PAR_SCRUTIN).values(), set(), "2026-11-01", dt.date(2026, 11, 6))
+    assert (bilan.pas_encore_collectes, bilan.absents_de_l_index) == ([], [489, 9578])
+
+
+def test_un_scrutin_anterieur_au_dernier_de_l_index_reste_absent():
+    bilan = re_.Bilan("17")
+    re_.couvrir(bilan, _scrutins(PAR_SCRUTIN).values(), set(), "2026-11-02", dt.date(2026, 11, 3))
+    assert (bilan.pas_encore_collectes, bilan.absents_de_l_index) == ([], [489, 9578])
+
+
+def test_la_date_de_l_index_se_lit_par_legislature(tmp_path):
+    index = tmp_path / "scrutins.json"
+    index.write_text(json.dumps({"scrutins": [
+        {"legislature": "17", "date": "2026-11-02"}, {"legislature": "17", "date": "2024-07-19"},
+        {"legislature": "16", "date": None}]}), encoding="utf-8")
+    assert re_.dates_publiees(index) == {"17": "2026-11-02"}
 
 
 def test_l_index_publie_se_lit_par_legislature(tmp_path):

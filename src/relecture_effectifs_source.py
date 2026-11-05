@@ -51,6 +51,12 @@ non-inscrit : ces jours-là sont un délai d'enregistrement, pas un choix.
 
 Ce qui n'est pas signalé
 ------------------------
+- **Les scrutins que la collecte n'a pas encore pu voir.** Plus récents que le
+  dernier scrutin de notre index, et datés de moins de
+  `DELAI_DE_COLLECTE_JOURS` jours : l'archive relue en fin de run peut être plus
+  récente que celle de la collecte. Même règle que les lois « publiées après nos
+  dossiers » de `relecture_lois_promulguees`. Au-delà du délai, l'absence est
+  signalée.
 - **Sans référentiel lu, les jours autour d'un changement.** Un écart sur un groupe dont un membre
   entre ou sort dans les trois jours, avant ou après, est toléré
   (`TOLERANCE_JOURS`). Le compte d'un scrutin suit le changement avec un
@@ -98,6 +104,15 @@ LEGISLATURES: tuple[str, ...] = ("14", "15", "16", "17")
 #: est toléré. Un jour ne suffisait pas : 8 des 13 jours en écart restants
 #: suivaient un changement daté 2 ou 3 jours plus tôt ou plus tard (03/11/2026).
 TOLERANCE_JOURS = 3
+
+#: Un scrutin plus récent que le dernier de notre index, et daté de moins de
+#: tant de jours avant le contrôle, est « pas encore collecté », pas absent.
+#: L'archive est retéléchargée en fin de run, la collecte a lu celle du début :
+#: le run 41932814357 a démarré le 05/11/2026 à 00 h 19, l'Assemblée a publié
+#: la sienne à 00 h 26, et 119 scrutins des 03 et 04/11 ont été signalés
+#: absents. Au-delà de ce délai, l'absence est signalée : une collecte
+#: arrêtée ne doit pas se cacher derrière cette règle.
+DELAI_DE_COLLECTE_JOURS = 3
 CLE_NON_INSCRITS = "NI"
 TIMEOUT = 120
 ENTETES = {"User-Agent": "Empreinte-politique (effectifs des groupes, #1248)"}
@@ -287,6 +302,10 @@ class Bilan:
     absents_de_l_index: list[int] = field(default_factory=list)
     absents_de_l_archive: list[int] = field(default_factory=list)
     trous_de_l_archive: list[int] = field(default_factory=list)
+    #: la date du dernier scrutin de notre index pour cette législature
+    index_a_jour_au: Optional[str] = None
+    #: absents de l'index, mais postérieurs à son dernier scrutin et récents
+    pas_encore_collectes: list[int] = field(default_factory=list)
 
 
 def numeros_publies(chemin: Path) -> dict[str, set[int]]:
@@ -302,15 +321,41 @@ def numeros_publies(chemin: Path) -> dict[str, set[int]]:
     return numeros
 
 
-def couvrir(bilan: Bilan, scrutins: Iterable[Scrutin], publies: set[int]) -> None:
+def dates_publiees(chemin: Path) -> dict[str, str]:
+    """La date du dernier scrutin de notre index, par législature."""
+    with open(chemin, encoding="utf-8") as f:
+        document = json.load(f)
+    dates: dict[str, str] = {}
+    for scrutin in document.get("scrutins") or []:
+        legislature, date = scrutin.get("legislature"), scrutin.get("date")
+        if legislature and isinstance(date, str) and date > dates.get(str(legislature), ""):
+            dates[str(legislature)] = date
+    return dates
+
+
+def couvrir(bilan: Bilan, scrutins: Iterable[Scrutin], publies: set[int],
+            a_jour_au: Optional[str] = None, aujourd_hui: Optional[dt.date] = None) -> None:
     """Les numéros de l'archive contre ceux de l'index. Le Congrès a sa propre
     numérotation (son n° 1 du 04/03/2024 double le n° 1 de la XVIe) : il n'en
-    fait pas partie."""
-    archive = {s.numero for s in scrutins
-               if (s.legislature or bilan.legislature) == bilan.legislature
-               and s.hors_comparaison != "scrutin du Congrès"}
+    fait pas partie.
+
+    `a_jour_au` (le dernier scrutin de l'index) et `aujourd_hui` mettent à part
+    les scrutins que la collecte n'a pas encore pu voir : postérieurs à
+    `a_jour_au`, et datés de moins de `DELAI_DE_COLLECTE_JOURS` jours."""
+    dates = {s.numero: s.date for s in scrutins
+             if (s.legislature or bilan.legislature) == bilan.legislature
+             and s.hors_comparaison != "scrutin du Congrès"}
+    archive = set(dates)
     bilan.scrutins_de_l_archive = len(archive)
-    bilan.absents_de_l_index = sorted(archive - publies)
+    bilan.index_a_jour_au = a_jour_au
+    absents = sorted(archive - publies)
+    if a_jour_au and aujourd_hui:
+        borne = (aujourd_hui - dt.timedelta(days=DELAI_DE_COLLECTE_JOURS)).isoformat()
+        bilan.pas_encore_collectes = [n for n in absents
+                                      if dates[n] > a_jour_au and dates[n] >= borne]
+        attendus = set(bilan.pas_encore_collectes)
+        absents = [n for n in absents if n not in attendus]
+    bilan.absents_de_l_index = absents
     bilan.absents_de_l_archive = sorted(publies - archive)
     bilan.trous_de_l_archive = sorted(set(range(1, max(archive, default=0) + 1)) - archive)
 
@@ -366,6 +411,8 @@ def rapport(bilans: list[Bilan], reference_lue: Optional[str] = None) -> tuple[s
         #: les scrutins absents d'un côté ou de l'autre
         "a_signaler": len(jours) + absents,
         "scrutins_absents": absents,
+        #: relevés, jamais signalés (`DELAI_DE_COLLECTE_JOURS`)
+        "scrutins_pas_encore_collectes": sum(len(b.pas_encore_collectes) for b in verifies),
         "legislatures_verifiees": [b.legislature for b in verifies],
         "legislatures_non_verifiees": {b.legislature: b.non_verifie for b in bilans if b.non_verifie},
         "scrutins": sum(b.scrutins for b in verifies),
@@ -412,19 +459,25 @@ def rapport(bilans: list[Bilan], reference_lue: Optional[str] = None) -> tuple[s
                       f"**{b.en_ecart}** |")
     lignes += ["", "### Les scrutins de l'archive et ceux de notre index", "",
                f"**{absents}** scrutin(s) absent(s) d'un côté ou de l'autre.", "",
-               "| Législature | Archive | **Absents de notre index** | **Absents de l'archive** | "
+               f"Un scrutin plus récent que le dernier de notre index, et de moins de {DELAI_DE_COLLECTE_JOURS} "
+               "jours, est « pas encore collecté » : l'archive relue ici peut être plus récente que celle "
+               "que la collecte a lue. Relevé, pas signalé.", "",
+               "| Législature | Archive | Notre index à jour au | Pas encore collectés | "
+               "**Absents de notre index** | **Absents de l'archive** | "
                "Numéros que l'archive saute (la source) |",
-               "| --- | ---: | ---: | ---: | --- |"]
+               "| --- | ---: | --- | ---: | ---: | ---: | --- |"]
     for b in bilans:
         if b.non_verifie or b.scrutins_de_l_archive is None:
-            lignes.append(f"| {b.legislature} | non vérifiée : {b.non_verifie or 'index illisible'} | | | |")
+            lignes.append(f"| {b.legislature} | non vérifiée : {b.non_verifie or 'index illisible'} | | | | | |")
             continue
         trous = ", ".join(map(str, b.trous_de_l_archive[:20])) or "aucun"
-        lignes.append(f"| {b.legislature} | {b.scrutins_de_l_archive} | **{len(b.absents_de_l_index)}** | "
+        lignes.append(f"| {b.legislature} | {b.scrutins_de_l_archive} | {b.index_a_jour_au or '—'} | "
+                      f"{len(b.pas_encore_collectes)} | **{len(b.absents_de_l_index)}** | "
                       f"**{len(b.absents_de_l_archive)}** | {trous} |")
     for b in couverts:
         for libelle, numeros in (("absents de notre index", b.absents_de_l_index),
-                                 ("absents de l'archive", b.absents_de_l_archive)):
+                                 ("absents de l'archive", b.absents_de_l_archive),
+                                 ("pas encore collectés", b.pas_encore_collectes)):
             if numeros:
                 lignes.append(f"\n{b.legislature}e, {libelle} : {', '.join(map(str, numeros[:50]))}"
                               + (" …" if len(numeros) > 50 else ""))
@@ -481,6 +534,8 @@ def main(argv: Optional[list[str]] = None) -> int:
             non_inscrits = json.load(f)
     valides = charger_valides(args.valides)
     publies = numeros_publies(args.index_scrutins) if args.index_scrutins.is_file() else None
+    a_jour_au = dates_publiees(args.index_scrutins) if publies is not None else {}
+    aujourd_hui = dt.datetime.now(dt.timezone.utc).date()
     reference, reference_lue = None, "désactivé (--sans-amo30)"
     if not args.sans_amo30:
         try:
@@ -505,7 +560,8 @@ def main(argv: Optional[list[str]] = None) -> int:
                 unites, constitution = unites_de_la_legislature(legislature, args.groupes_dir, non_inscrits)
                 bilan = controler(legislature, scrutins, unites, constitution, valides, reference)
             if publies is not None:
-                couvrir(bilan, scrutins, publies.get(legislature, set()))
+                couvrir(bilan, scrutins, publies.get(legislature, set()),
+                        a_jour_au.get(legislature), aujourd_hui)
             bilans.append(bilan)
     texte, resume = rapport(bilans, reference_lue)
     resume["releve_le"] = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")

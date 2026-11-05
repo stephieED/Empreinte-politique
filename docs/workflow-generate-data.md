@@ -1498,6 +1498,11 @@ source. L'issue compte les deux (`a_signaler` : jours d'effectif en écart plus
 scrutins absents). Mesuré le 03/11/2026 : 19 454 scrutins des deux côtés, aucun
 absent ; l'archive de la XVe saute les n° 3781 et 3782.
 → `docs/decisions/scrutins-de-l-archive-contre-l-index-1248.md`
+Depuis le 05/11/2026, un scrutin plus récent que le dernier de l'index, et daté
+de moins de `DELAI_DE_COLLECTE_JOURS` (3) jours, est compté « pas encore
+collecté » et n'est pas signalé : l'archive relue en fin de run peut être plus
+récente que celle de la collecte.
+→ `docs/decisions/scrutins-pas-encore-collectes-1248.md`
 
 ### Les lois promulguées confrontées au Journal officiel (#1248)
 
