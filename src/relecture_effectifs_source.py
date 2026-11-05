@@ -95,7 +95,7 @@ import sys
 import tempfile
 import zipfile
 from collections import defaultdict
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Iterable, Iterator, Optional
 
@@ -172,6 +172,29 @@ def scrutins_de_l_archive(chemin: Path) -> Iterator[Scrutin]:
                 scrutin = _scrutin(brut)
                 if scrutin is not None:
                     yield scrutin
+
+
+@dataclass
+class ArchiveLue:
+    """Ce que le contrôle a lu, pour qu'un écart se rapporte à une version.
+
+    Le 05/11/2026, deux runs ont lu une archive de la XVIIe de 9 697 scrutins
+    à la même adresse où la collecte, et une lecture locale, en trouvaient
+    9 759 : 62 « absents de l'archive » que rien ne permettait d'expliquer
+    (#1441). La date que l'Assemblée donne au fichier, sa taille et son
+    nombre de fichiers disent ensuite quelle version a été servie."""
+    octets: int
+    fichiers: int
+    #: l'en-tête `Last-Modified` de la réponse ; `None` pour une archive locale
+    modifiee_le: Optional[str] = None
+    source: str = "téléchargée"
+
+
+def decrire_archive(chemin: Path, modifiee_le: Optional[str] = None,
+                    source: str = "téléchargée") -> ArchiveLue:
+    with zipfile.ZipFile(chemin) as archive:
+        fichiers = sum(1 for nom in archive.namelist() if nom.endswith(".json"))
+    return ArchiveLue(Path(chemin).stat().st_size, fichiers, modifiee_le, source)
 
 
 @dataclass
@@ -306,6 +329,8 @@ class Bilan:
     index_a_jour_au: Optional[str] = None
     #: absents de l'index, mais postérieurs à son dernier scrutin et récents
     pas_encore_collectes: list[int] = field(default_factory=list)
+    #: l'archive lue (`ArchiveLue`, en dictionnaire pour le JSON)
+    archive: Optional[dict[str, Any]] = None
 
 
 def numeros_publies(chemin: Path) -> dict[str, set[int]]:
@@ -462,16 +487,17 @@ def rapport(bilans: list[Bilan], reference_lue: Optional[str] = None) -> tuple[s
                f"Un scrutin plus récent que le dernier de notre index, et de moins de {DELAI_DE_COLLECTE_JOURS} "
                "jours, est « pas encore collecté » : l'archive relue ici peut être plus récente que celle "
                "que la collecte a lue. Relevé, pas signalé.", "",
-               "| Législature | Archive | Notre index à jour au | Pas encore collectés | "
+               "| Législature | Archive | Archive lue | Notre index à jour au | Pas encore collectés | "
                "**Absents de notre index** | **Absents de l'archive** | "
                "Numéros que l'archive saute (la source) |",
-               "| --- | ---: | --- | ---: | ---: | ---: | --- |"]
+               "| --- | ---: | --- | --- | ---: | ---: | ---: | --- |"]
     for b in bilans:
         if b.non_verifie or b.scrutins_de_l_archive is None:
-            lignes.append(f"| {b.legislature} | non vérifiée : {b.non_verifie or 'index illisible'} | | | | | |")
+            lignes.append(f"| {b.legislature} | non vérifiée : {b.non_verifie or 'index illisible'} | | | | | | |")
             continue
         trous = ", ".join(map(str, b.trous_de_l_archive[:20])) or "aucun"
-        lignes.append(f"| {b.legislature} | {b.scrutins_de_l_archive} | {b.index_a_jour_au or '—'} | "
+        lignes.append(f"| {b.legislature} | {b.scrutins_de_l_archive} | {_archive_lue(b.archive)} | "
+                      f"{b.index_a_jour_au or '—'} | "
                       f"{len(b.pas_encore_collectes)} | **{len(b.absents_de_l_index)}** | "
                       f"**{len(b.absents_de_l_archive)}** | {trous} |")
     for b in couverts:
@@ -494,7 +520,16 @@ def rapport(bilans: list[Bilan], reference_lue: Optional[str] = None) -> tuple[s
     return "\n".join(lignes) + "\n", resume
 
 
-def telecharger(legislature: str, dossier: Path) -> Path:
+def _archive_lue(archive: Optional[dict[str, Any]]) -> str:
+    if not archive:
+        return "—"
+    date = archive.get("modifiee_le") or archive.get("source") or "—"
+    octets, fichiers = (f"{archive[k]:,}".replace(",", " ") for k in ("octets", "fichiers"))
+    return f"{date} ; {octets} octets ; {fichiers} fichiers"
+
+
+def telecharger(legislature: str, dossier: Path) -> tuple[Path, Optional[str]]:
+    """L'archive, et la date que l'Assemblée lui donne (`Last-Modified`)."""
     import requests  # noqa: PLC0415 — seul appel réseau du module
 
     from candidate_profile import _scrutins_zip_url  # noqa: PLC0415 — l'adresse a une seule source
@@ -506,7 +541,7 @@ def telecharger(legislature: str, dossier: Path) -> Path:
     reponse.raise_for_status()
     chemin = dossier / f"scrutins-{legislature}.zip"
     chemin.write_bytes(reponse.content)
-    return chemin
+    return chemin, reponse.headers.get("Last-Modified")
 
 
 def main(argv: Optional[list[str]] = None) -> int:
@@ -548,8 +583,12 @@ def main(argv: Optional[list[str]] = None) -> int:
     with tempfile.TemporaryDirectory() as tmp:
         for legislature in args.legislature or LEGISLATURES:
             try:
-                chemin = Path(locales[legislature]) if legislature in locales else telecharger(legislature, Path(tmp))
+                if legislature in locales:
+                    chemin, modifiee_le, source = Path(locales[legislature]), None, "locale"
+                else:
+                    (chemin, modifiee_le), source = telecharger(legislature, Path(tmp)), "téléchargée"
                 scrutins = list(scrutins_de_l_archive(chemin))
+                archive_lue = asdict(decrire_archive(chemin, modifiee_le, source))
             except Exception as exc:  # noqa: BLE001 — une source muette n'est pas un écart
                 bilans.append(Bilan(legislature, non_verifie=f"{type(exc).__name__}: {exc}"))
                 continue
@@ -559,6 +598,7 @@ def main(argv: Optional[list[str]] = None) -> int:
             else:
                 unites, constitution = unites_de_la_legislature(legislature, args.groupes_dir, non_inscrits)
                 bilan = controler(legislature, scrutins, unites, constitution, valides, reference)
+            bilan.archive = archive_lue
             if publies is not None:
                 couvrir(bilan, scrutins, publies.get(legislature, set()),
                         a_jour_au.get(legislature), aujourd_hui)

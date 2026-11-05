@@ -175,6 +175,8 @@ def test_bout_en_bout(tmp_path):
     # écart plus un scrutin absent, deux signalements pour l'issue.
     assert (resume["scrutins_absents"], resume["a_signaler"]) == (1, 2)
     assert "AN:PO845425:17" in out.read_text(encoding="utf-8")
+    # Une archive fournie en local n'a pas de date de l'Assemblée : elle le dit.
+    assert resume["par_legislature"][0]["archive"]["source"] == "locale"
 
 
 # ── Les scrutins de l'archive contre ceux de l'index (#1248, lot 5 bis) ──────
@@ -234,6 +236,21 @@ def test_la_date_de_l_index_se_lit_par_legislature(tmp_path):
         {"legislature": "17", "date": "2026-11-02"}, {"legislature": "17", "date": "2024-07-19"},
         {"legislature": "16", "date": None}]}), encoding="utf-8")
     assert re_.dates_publiees(index) == {"17": "2026-11-02"}
+
+
+def test_l_archive_lue_se_decrit():
+    """#1441 : deux runs ont lu 9 697 scrutins là où il y en avait 9 759 ; la
+    version servie doit se lire dans le rapport."""
+    import zipfile
+    lue = re_.decrire_archive(PAR_SCRUTIN, "Wed, 04 Nov 2026 23:26:08 GMT")
+    with zipfile.ZipFile(PAR_SCRUTIN) as z:
+        attendus = sum(1 for n in z.namelist() if n.endswith(".json"))
+    assert (lue.octets, lue.fichiers, lue.source) == (PAR_SCRUTIN.stat().st_size, attendus, "téléchargée")
+    bilan = re_.Bilan("17", archive=re_.asdict(lue))
+    re_.couvrir(bilan, _scrutins(PAR_SCRUTIN).values(), {489, 9578})
+    texte, resume = re_.rapport([bilan])
+    assert "Wed, 04 Nov 2026 23:26:08 GMT" in texte and f"{attendus} fichiers" in texte
+    assert resume["par_legislature"][0]["archive"]["fichiers"] == attendus
 
 
 def test_l_index_publie_se_lit_par_legislature(tmp_path):

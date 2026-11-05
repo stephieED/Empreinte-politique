@@ -1503,6 +1503,11 @@ de moins de `DELAI_DE_COLLECTE_JOURS` (3) jours, est compté « pas encore
 collecté » et n'est pas signalé : l'archive relue en fin de run peut être plus
 récente que celle de la collecte.
 → `docs/decisions/scrutins-pas-encore-collectes-1248.md`
+Le rapport dit aussi, par législature, **quelle archive a été lue** : la date
+que l'Assemblée lui donne (`Last-Modified`), sa taille et son nombre de
+fichiers (`ArchiveLue`, clé `archive` du JSON). Le 05/11/2026, deux runs ont
+lu 9 697 scrutins de la XVIIe à l'adresse où la collecte en trouvait 9 759,
+sans rien qui dise quelle version avait été servie (#1441).
 
 ### Les lois promulguées confrontées au Journal officiel (#1248)
 
