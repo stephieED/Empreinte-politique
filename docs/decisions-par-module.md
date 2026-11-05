@@ -39,9 +39,9 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | --- | ---: |
 | `src/actes_reglementaires.py` | 4 |
 | `src/build_amendements_index.py` | 4 |
+| `src/json_io.py` | 4 |
 | `src/audit_pipeline.py` | 3 |
 | `src/budget_collecte.py` | 3 |
-| `src/json_io.py` | 3 |
 | `src/purge_mandats_dupliques.py` | 3 |
 | `src/textes_promulgues.py` | 3 |
 | `src/audit_gouvernement_dataset.py` | 2 |
@@ -109,13 +109,14 @@ Le mentionnent sans le gouverner : [`rubrique-du-journal-officiel-1134`](decisio
 
 ## `src/amendements_index.py`
 
-4 décision(s) le gouvernent ; le module en cite 1.
+5 décision(s) le gouvernent ; le module en cite 2.
 
 | Décision | Nomme |
 | --- | --- |
 | [La liste des cosignataires d'un amendement est celle de la copie de son premier signataire (#1429) (2026-11-04)](decisions/cosignataires-de-la-copie-du-premier-signataire-1429.md) | `construire_index`, `merge_amendements_index` |
 | [Un créneau de séance n'est pas un sujet, et le discriminant reste structurel (#710, 02/09/2026)](decisions/creneau-de-seance-nest-pas-un-sujet-710.md) | `backfill_texte_vise` |
 | [Un amendement retrouve son dossier, et la clé qu'on lui avait retirée (#639, rang 3)](decisions/dossier-des-amendements-639.md) | `AmendementsIndex`, `resoudre_textes` |
+| [L'index des amendements n'écrit plus deux clés nulles sans objet (#1265, #580) (2026-11-05)](decisions/index-amendements-sans-cles-nulles-1265.md) | `CHAMPS_AMENDEMENT`, `CHAMPS_OMIS_SI_NULS`, `merge_amendements_index` |
 | [Le `texte_vise` fautif se reprend depuis l'archive figée, pas par une fusion plus permissive (#696, 01/09/2026)](decisions/report-texte-vise-source-696.md) | `backfill_texte_vise`, `merge_amendements_index`, `resoudre_textes` |
 
 Le mentionnent sans le gouverner : [`fiche-de-lignee-836`](decisions/fiche-de-lignee-836.md), [`index-reecrits-seulement-si-le-contenu-change-1075`](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md), [`lectures-pipeline-par-projection-635`](decisions/lectures-pipeline-par-projection-635.md), [`normalisation-amendements`](decisions/normalisation-amendements.md), [`partition-profils-legislature-580`](decisions/partition-profils-legislature-580.md), [`point-de-sauvegarde-dans-les-profils-518`](decisions/point-de-sauvegarde-dans-les-profils-518.md), [`reconstruction-tranches-depuis-archive-691`](decisions/reconstruction-tranches-depuis-archive-691.md).
@@ -715,10 +716,11 @@ Le mentionnent sans le gouverner : [`a-jour-au-par-famille-de-donnees-1389`](dec
 
 ## `src/garde_fou_blobs.py`
 
-2 décision(s) le gouvernent ; le module en cite 1.
+3 décision(s) le gouvernent ; le module en cite 1.
 
 | Décision | Nomme |
 | --- | --- |
+| [L'index des amendements n'écrit plus deux clés nulles sans objet (#1265, #580) (2026-11-05)](decisions/index-amendements-sans-cles-nulles-1265.md) | `CONDUITE_A_TENIR` |
 | [Le seuil de blob sort du critère de sortie, et les profils bruts se partitionnent par législature (#580) (2026-08-29)](decisions/partition-profils-legislature-580.md) | `CONDUITE_A_TENIR` |
 | [Les fiches de parti sortent : 25 sur 29 n'agrégeaient qu'un candidat, et personne ne les lisait (#906) (2026-09-13)](decisions/retrait-fiches-parti-906.md) | `REPERTOIRES_SURVEILLES` |
 
@@ -1010,11 +1012,12 @@ Le mentionnent sans le gouverner : [`derivation-des-groupes-depuis-amo30-1168`](
 
 ## `src/json_io.py`
 
-3 décision(s) le gouvernent ; le module en cite 0.
+4 décision(s) le gouvernent ; le module en cite 0.
 
 | Décision | Nomme |
 | --- | --- |
 | [Un timeout ne peut plus écraser le roster, et rien de collecté ne reste non publié (#511) (2026-08-20)](decisions/collecte-non-publiee.md) | `ecrire_profil_json` |
+| [L'index des amendements n'écrit plus deux clés nulles sans objet (#1265, #580) (2026-11-05)](decisions/index-amendements-sans-cles-nulles-1265.md) | `ecrire_index_json` |
 | [Trouver les amendements d'un sujet : l'article visé et un index de mots de l'exposé (#1029) (2026-09-22)](decisions/index-de-mots-des-amendements-1029.md) | `ecrire_index_json` |
 | [Un index partagé ne se réécrit que si son contenu change (#1075) (2026-09-22)](decisions/index-reecrits-seulement-si-le-contenu-change-1075.md) | `ecrire_index_json` |
 
@@ -1471,7 +1474,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 
 ## `src/schema_pivot.py`
 
-72 décision(s) le gouvernent ; le module en cite 5.
+73 décision(s) le gouvernent ; le module en cite 5.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1499,6 +1502,7 @@ Le mentionnent sans le gouverner : [`audit-champs-deplaces-726`](decisions/audit
 | [Un filtre de publication posé avant la fusion ne filtre rien (#641, réouverture) (2026-08-31)](decisions/filtre-publication-apres-fusion-641.md) | `CHAMPS_IDENTITE_TEXTE_LIBRE` |
 | [Deferred / out-of-scope investigations](decisions/hors-perimetre.md) | `KNOWN_CATEGORIES` |
 | [Comment naît l'identité d'un profil, et où vont les identifiants de source (#539) (2026-08-28)](decisions/identite-profils-539.md) | `KNOWN_SOURCE_TYPES`, `poser_identifiant`, `validate_profil` |
+| [L'index des amendements n'écrit plus deux clés nulles sans objet (#1265, #580) (2026-11-05)](decisions/index-amendements-sans-cles-nulles-1265.md) | `validate_amendements_index` |
 | [L'institution est une dimension de la fiche, pas une section — 10/09/2026 (#328)](decisions/institution-dimension-de-la-fiche-328.md) | `KNOWN_CHAMBRES`, `deriver_chambres` |
 | [Rien ne vérifiait que les clés publiées résolvent : le contrôle d'invariance (#485) (2026-08-20)](decisions/integrite-referentielle-pivot.md) | `validate_profil` |
 | [L'intitulé de séance de la XVe était jeté à la normalisation : une entrée Syceron se reconnaît à ce que le parseur a écrit (#1189) (2026-10-04)](decisions/intitule-de-seance-xve-1189.md) | `url_seance_an` |

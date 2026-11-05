@@ -1,6 +1,6 @@
 {
   "schema_version": "budgets-gouvernements-v1",
-  "genere_le": "2026-10-29T19:00:31Z",
+  "genere_le": "2026-11-05T00:46:38Z",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.economie.gouv.fr ; Licence Ouverte / Open Licence (Etalab) — data.drees.solidarites-sante.gouv.fr, data.unedic.org",
   "unites": {
     "budget_de_l_etat": "euros",
@@ -8528,52 +8528,52 @@
           "exercice": "2026",
           "loi_de_finances_promulguee_le": "2026-02-20",
           "budget_de_l_etat": {
-            "dernier_mois": "2026-08",
+            "dernier_mois": "2026-09",
             "exercice_complet": false,
             "recettes": [
               {
                 "ligne": "Impôt sur le revenu",
-                "montant": 48827672589.7
+                "montant": 55878489106.84
               },
               {
                 "ligne": "Impôt sur les sociétés",
-                "montant": 28416152890.26
+                "montant": 42281461135.13
               },
               {
                 "ligne": "Taxe sur la valeur ajoutée",
-                "montant": 71135573473.97
+                "montant": 78548498138.32
               },
               {
                 "ligne": "Taxe intérieure de consommation sur les produits énergétiques",
-                "montant": 10099670454.87
+                "montant": 11543421179.63
               },
               {
                 "ligne": "Autres recettes fiscales",
-                "montant": 47494536557.78
+                "montant": 62217200829.15
               },
               {
                 "ligne": "Total recettes non fiscales",
-                "montant": 18889504396.33
+                "montant": 19528914988.11
               },
               {
                 "ligne": "Fonds de concours et attribution de produits",
-                "montant": 3690129668.27
+                "montant": 5000313304.37
               }
             ],
-            "recettes_nettes": 224863110362.91,
-            "depenses_nettes": 313364933689.3,
+            "recettes_nettes": 219136720375.64,
+            "depenses_nettes": 348194326537.91,
             "reverse": [
               {
                 "ligne": "PSR au profit des collectivités territoriales",
-                "montant": 31343722607.57
+                "montant": 35221814828.13
               },
               {
                 "ligne": "PSR au profit de l'Union européenne",
-                "montant": 18263975248.7
+                "montant": 20639763477.78
               }
             ],
-            "comptes_a_part": -25184255084.69,
-            "solde": -159603646599.08,
+            "comptes_a_part": -30115369577.3,
+            "solde": -159172975739.57,
             "missions": null,
             "missions_non_resolu": {
               "raison": "l'exercice n'est pas clos"

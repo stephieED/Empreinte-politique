@@ -20,6 +20,7 @@ La version d'avant la découpe (30/08/2026, 18 404 lignes, 1 054 Ko) est figée 
 
 ---
 
+- `2026-11-05` <a id="index-amendements-sans-cles-nulles-1265"></a>[L'index des amendements n'écrit plus deux clés nulles sans objet (#1265, #580)](decisions/index-amendements-sans-cles-nulles-1265.md)
 - `2026-11-04` <a id="cosignataires-de-la-copie-du-premier-signataire-1429"></a>[La liste des cosignataires d'un amendement est celle de la copie de son premier signataire (#1429)](decisions/cosignataires-de-la-copie-du-premier-signataire-1429.md)
 - `2026-11-04` <a id="etat-des-sources-page-sources-1389"></a>[L'état de chaque source s'affiche dans sa fiche, sur la page Sources (#1389)](decisions/etat-des-sources-page-sources-1389.md)
 - `2026-11-04` <a id="lois-absentes-de-l-open-data-an-1424"></a>[71 lois promulguées manquent à l'open data de l'Assemblée : le trou est déclaré, pas comblé (#1424)](decisions/lois-absentes-de-l-open-data-an-1424.md)

@@ -294,6 +294,36 @@ def test_ecrire_puis_charger_conserve_tout(tmp_path):
     assert relu.co_signataires(ID_17) == index.co_signataires(ID_17)
 
 
+def test_ecrire_omet_les_deux_champs_nuls_sans_objet(tmp_path):
+    """#1265 : `base_juridique_irrecevabilite` et `source_url` nuls ne
+    s'écrivent pas (14,98 Mo de la XVe) ; `sort` et `date` nuls, si — ils
+    disent « non connu » (AGENTS.md §2 règle 5)."""
+    index = construire_index([
+        _brut(),
+        _brut(uid=UID_17.replace("N000012", "N000013"), sort=None, date=None),
+        _brut(uid=UID_17.replace("N000012", "N000014"), sort="irrecevable",
+              base_juridique_irrecevabilite="art. 40"),
+    ])
+    ecrire(tmp_path, index)
+    publies = json.loads((tmp_path / "17.json").read_text(encoding="utf-8"))["amendements"]
+    adopte, inconnu, irrecevable = (publies[i] for i in sorted(publies))
+    assert "base_juridique_irrecevabilite" not in adopte
+    assert "source_url" not in adopte
+    assert inconnu["sort"] is None and inconnu["date"] is None
+    assert irrecevable["base_juridique_irrecevabilite"] == "art. 40"
+    # L'index en mémoire garde ses `None` : l'écriture travaille sur une copie.
+    assert index.get(ID_17)["source_url"] is None
+
+
+def test_charger_retablit_les_champs_omis(tmp_path):
+    """Pour un lecteur Python, l'omission ne se voit pas : `get()` rend la
+    même entrée qu'avant l'écriture, clés comprises."""
+    ecrire(tmp_path, construire_index([_brut()]))
+    relu = charger(tmp_path).get(ID_17)
+    assert relu["base_juridique_irrecevabilite"] is None
+    assert relu["source_url"] is None
+
+
 def test_charger_sans_cosignatures_epargne_59_pourcent(tmp_path):
     index = construire_index([_brut()])
     ecrire(tmp_path, index)

@@ -108,6 +108,18 @@ CHAMPS_AMENDEMENT = (
     "source_url",
 )
 
+#: Champs que le fichier publié **omet** quand ils valent `null` (#1265), et que
+#: `charger()` rétablit à `None` : en mémoire, rien ne change. Deux champs, et
+#: pas tous les `null` : ceux-là ne disent rien qu'une absence ne dise.
+#: `base_juridique_irrecevabilite` n'a de sens que pour un amendement
+#: irrecevable, et `validate_amendements_index` l'exige alors — nul, il dit
+#: « sans objet » ; `source_url` est nul sur 100 % des 755 467 amendements des
+#: quatre fichiers (mesuré le 05/11/2026). Ensemble, 14,98 Mo des 82,75 Mo de
+#: la XVe. `sort` et `date` restent publiés à `null` : nuls, ils disent « non
+#: connu », ce qu'AGENTS.md §2 règle 5 veut écrit.
+#: → docs/decisions/index-amendements-sans-cles-nulles-1265.md
+CHAMPS_OMIS_SI_NULS = ("base_juridique_irrecevabilite", "source_url")
+
 # Bucket des amendements dont l'`uid` ne porte pas de législature reconnaissable.
 # Zéro cas sur les données actuelles ; le bucket existe pour que le jour où il
 # s'en présente un, il soit rangé quelque part de nommé plutôt que doté d'une
@@ -696,6 +708,8 @@ def charger(
         donnees = _lire_json(chemin)
         for amendement_id, amendement in (donnees.get("amendements") or {}).items():
             if isinstance(amendement, dict):
+                for champ in CHAMPS_OMIS_SI_NULS:
+                    amendement.setdefault(champ, None)
                 par_id[amendement_id] = amendement
         # La table des textes est portée par chaque fichier, restreinte aux
         # textes que ses amendements visent : un même texte peut donc figurer
@@ -716,6 +730,15 @@ def charger(
     return AmendementsIndex(
         par_id, cosignatures, cosignatures_chargees=avec_cosignatures, textes=textes
     )
+
+
+def _entree_publiee(amendement: dict[str, Any]) -> dict[str, Any]:
+    """L'entrée telle qu'elle s'écrit : sans les `CHAMPS_OMIS_SI_NULS` nuls.
+    Une copie, jamais l'objet partagé de l'index, qui garde ses `None`."""
+    return {
+        champ: valeur for champ, valeur in amendement.items()
+        if not (valeur is None and champ in CHAMPS_OMIS_SI_NULS)
+    }
 
 
 def _lire_json(chemin: Path) -> dict[str, Any]:
@@ -784,7 +807,7 @@ def ecrire(
             # streaming, et la table doit être atteignable sans traverser les
             # 206 771 entrées qui la référencent.
             "textes": textes,
-            "amendements": {i: index.par_id[i] for i in ids},
+            "amendements": {i: _entree_publiee(index.par_id[i]) for i in ids},
         })
         ecrits.append(chemin)
 

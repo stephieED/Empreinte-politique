@@ -419,7 +419,7 @@
     }
   ],
   "date_reference": {
-    "date": "2026-11-03",
+    "date": "2026-11-05",
     "origine": "generation"
   },
   "effectif": {
@@ -117718,7 +117718,7 @@
       "poids_relatif": 0.1429,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 4,
-        "6_mois": 4
+        "6_mois": 3
       }
     },
     {
@@ -118258,7 +118258,7 @@
       "poids_relatif": 0.0714,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 2,
-        "6_mois": 1
+        "6_mois": 0
       }
     },
     {
@@ -123337,6 +123337,162 @@
     },
     {
       "categorie": "commission",
+      "label": "Commission des affaires économiques",
+      "nb_membres_a_la_date_de_reference": 3,
+      "nb_membres_cumul_historique": 18,
+      "effectif_reference": 28,
+      "par_fonction": {
+        "membre": 18
+      },
+      "membres": [
+        {
+          "membre_id": "valerie-letard",
+          "nom": "Valérie Létard",
+          "fonction": "Membre",
+          "debut": "2025-11-09",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "yannick-favennec-becot",
+          "nom": "Yannick Favennec-Bécot",
+          "fonction": "Membre",
+          "debut": "2025-05-06",
+          "fin": "2025-05-09",
+          "actif": false
+        },
+        {
+          "membre_id": "paul-molac",
+          "nom": "Paul Molac",
+          "fonction": "Membre",
+          "debut": "2026-10-21",
+          "fin": "2026-10-21",
+          "actif": false
+        },
+        {
+          "membre_id": "michel-castellani",
+          "nom": "Michel Castellani",
+          "fonction": "Membre",
+          "debut": "2026-11-03",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "paul-andre-colombani",
+          "nom": "Paul-André Colombani",
+          "fonction": "Membre",
+          "debut": "2026-10-07",
+          "fin": "2026-10-07",
+          "actif": false
+        },
+        {
+          "membre_id": "olivier-serva",
+          "nom": "Olivier Serva",
+          "fonction": "Membre",
+          "debut": "2025-10-25",
+          "fin": "2025-10-27",
+          "actif": false
+        },
+        {
+          "membre_id": "max-mathiasin",
+          "nom": "Max Mathiasin",
+          "fonction": "Membre",
+          "debut": "2026-10-08",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "stephane-viry",
+          "nom": "Stéphane Viry",
+          "fonction": "Membre",
+          "debut": "2025-02-12",
+          "fin": "2025-02-13",
+          "actif": false
+        },
+        {
+          "membre_id": "christophe-naegelen",
+          "nom": "Christophe Naegelen",
+          "fonction": "Membre",
+          "debut": "2025-07-11",
+          "fin": "2025-09-30",
+          "actif": false
+        },
+        {
+          "membre_id": "audrey-abadie-amiel",
+          "nom": "Audrey Abadie-Amiel",
+          "fonction": "Membre",
+          "debut": "2026-05-06",
+          "fin": "2026-05-06",
+          "actif": false
+        },
+        {
+          "membre_id": "david-taupiac",
+          "nom": "David Taupiac",
+          "fonction": "Membre",
+          "debut": "2026-10-22",
+          "fin": "2026-11-02",
+          "actif": false
+        },
+        {
+          "membre_id": "salvatore-castiglione",
+          "nom": "Salvatore Castiglione",
+          "fonction": "Membre",
+          "debut": "2025-07-09",
+          "fin": "2025-07-10",
+          "actif": false
+        },
+        {
+          "membre_id": "estelle-youssouffa",
+          "nom": "Estelle Youssouffa",
+          "fonction": "Membre",
+          "debut": "2025-01-09",
+          "fin": "2025-01-22",
+          "actif": false
+        },
+        {
+          "membre_id": "martine-froger",
+          "nom": "Martine Froger",
+          "fonction": "Membre",
+          "debut": "2025-04-09",
+          "fin": "2025-04-09",
+          "actif": false
+        },
+        {
+          "membre_id": "joel-bruneau",
+          "nom": "Joël Bruneau",
+          "fonction": "Membre",
+          "debut": "2026-09-23",
+          "fin": "2026-09-23",
+          "actif": false
+        },
+        {
+          "membre_id": "harold-huwart",
+          "nom": "Harold Huwart",
+          "fonction": "Membre",
+          "debut": "2026-05-27",
+          "fin": "2026-05-28",
+          "actif": false
+        },
+        {
+          "membre_id": "laurent-mazaury",
+          "nom": "Laurent Mazaury",
+          "fonction": "Membre",
+          "debut": "2025-11-25",
+          "fin": "2025-11-26",
+          "actif": false
+        },
+        {
+          "membre_id": "charles-de-courson",
+          "nom": "Charles de Courson",
+          "fonction": "Membre",
+          "debut": "2026-09-19",
+          "fin": "2026-09-23",
+          "actif": false
+        }
+      ]
+    },
+    {
+      "categorie": "commission",
       "label": "Commission des lois constitutionnelles, de la législation et de l'administration générale de la République",
       "nb_membres_a_la_date_de_reference": 3,
       "nb_membres_cumul_historique": 18,
@@ -123494,154 +123650,6 @@
     },
     {
       "categorie": "commission",
-      "label": "Commission des affaires économiques",
-      "nb_membres_a_la_date_de_reference": 3,
-      "nb_membres_cumul_historique": 17,
-      "effectif_reference": 28,
-      "par_fonction": {
-        "membre": 17
-      },
-      "membres": [
-        {
-          "membre_id": "valerie-letard",
-          "nom": "Valérie Létard",
-          "fonction": "Membre",
-          "debut": "2025-11-09",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "yannick-favennec-becot",
-          "nom": "Yannick Favennec-Bécot",
-          "fonction": "Membre",
-          "debut": "2025-05-06",
-          "fin": "2025-05-09",
-          "actif": false
-        },
-        {
-          "membre_id": "paul-molac",
-          "nom": "Paul Molac",
-          "fonction": "Membre",
-          "debut": "2026-10-21",
-          "fin": "2026-10-21",
-          "actif": false
-        },
-        {
-          "membre_id": "paul-andre-colombani",
-          "nom": "Paul-André Colombani",
-          "fonction": "Membre",
-          "debut": "2026-10-07",
-          "fin": "2026-10-07",
-          "actif": false
-        },
-        {
-          "membre_id": "olivier-serva",
-          "nom": "Olivier Serva",
-          "fonction": "Membre",
-          "debut": "2025-10-25",
-          "fin": "2025-10-27",
-          "actif": false
-        },
-        {
-          "membre_id": "max-mathiasin",
-          "nom": "Max Mathiasin",
-          "fonction": "Membre",
-          "debut": "2026-10-08",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "stephane-viry",
-          "nom": "Stéphane Viry",
-          "fonction": "Membre",
-          "debut": "2025-02-12",
-          "fin": "2025-02-13",
-          "actif": false
-        },
-        {
-          "membre_id": "christophe-naegelen",
-          "nom": "Christophe Naegelen",
-          "fonction": "Membre",
-          "debut": "2025-07-11",
-          "fin": "2025-09-30",
-          "actif": false
-        },
-        {
-          "membre_id": "audrey-abadie-amiel",
-          "nom": "Audrey Abadie-Amiel",
-          "fonction": "Membre",
-          "debut": "2026-05-06",
-          "fin": "2026-05-06",
-          "actif": false
-        },
-        {
-          "membre_id": "david-taupiac",
-          "nom": "David Taupiac",
-          "fonction": "Membre",
-          "debut": "2026-10-22",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "salvatore-castiglione",
-          "nom": "Salvatore Castiglione",
-          "fonction": "Membre",
-          "debut": "2025-07-09",
-          "fin": "2025-07-10",
-          "actif": false
-        },
-        {
-          "membre_id": "estelle-youssouffa",
-          "nom": "Estelle Youssouffa",
-          "fonction": "Membre",
-          "debut": "2025-01-09",
-          "fin": "2025-01-22",
-          "actif": false
-        },
-        {
-          "membre_id": "martine-froger",
-          "nom": "Martine Froger",
-          "fonction": "Membre",
-          "debut": "2025-04-09",
-          "fin": "2025-04-09",
-          "actif": false
-        },
-        {
-          "membre_id": "joel-bruneau",
-          "nom": "Joël Bruneau",
-          "fonction": "Membre",
-          "debut": "2026-09-23",
-          "fin": "2026-09-23",
-          "actif": false
-        },
-        {
-          "membre_id": "harold-huwart",
-          "nom": "Harold Huwart",
-          "fonction": "Membre",
-          "debut": "2026-05-27",
-          "fin": "2026-05-28",
-          "actif": false
-        },
-        {
-          "membre_id": "laurent-mazaury",
-          "nom": "Laurent Mazaury",
-          "fonction": "Membre",
-          "debut": "2025-11-25",
-          "fin": "2025-11-26",
-          "actif": false
-        },
-        {
-          "membre_id": "charles-de-courson",
-          "nom": "Charles de Courson",
-          "fonction": "Membre",
-          "debut": "2026-09-19",
-          "fin": "2026-09-23",
-          "actif": false
-        }
-      ]
-    },
-    {
-      "categorie": "commission",
       "label": "Commission des affaires étrangères",
       "nb_membres_a_la_date_de_reference": 3,
       "nb_membres_cumul_historique": 17,
@@ -123766,7 +123774,7 @@
           "membre_id": "alix-fruchon",
           "nom": "Alix Fruchon",
           "fonction": "Membre",
-          "debut": "2025-11-13",
+          "debut": "2026-11-03",
           "fin": null,
           "actif": true
         },
@@ -124197,10 +124205,10 @@
       "categorie": "commission",
       "label": "Commission des finances, de l'économie générale et du contrôle budgétaire",
       "nb_membres_a_la_date_de_reference": 3,
-      "nb_membres_cumul_historique": 11,
+      "nb_membres_cumul_historique": 12,
       "effectif_reference": 28,
       "par_fonction": {
-        "membre": 11
+        "membre": 12
       },
       "membres": [
         {
@@ -124232,8 +124240,8 @@
           "nom": "Michel Castellani",
           "fonction": "Membre",
           "debut": "2026-06-04",
-          "fin": null,
-          "actif": true
+          "fin": "2026-11-02",
+          "actif": false
         },
         {
           "membre_id": "max-mathiasin",
@@ -124258,6 +124266,14 @@
           "debut": "2026-05-20",
           "fin": "2026-05-20",
           "actif": false
+        },
+        {
+          "membre_id": "david-taupiac",
+          "nom": "David Taupiac",
+          "fonction": "Membre",
+          "debut": "2026-11-03",
+          "fin": null,
+          "actif": true
         },
         {
           "membre_id": "martine-froger",
@@ -128782,14 +128798,14 @@
     }
   ],
   "amendements_agreges": {
-    "nb_amendements": 8935,
-    "nb_adoptes": 1566,
+    "nb_amendements": 8923,
+    "nb_adoptes": 1565,
     "nb_rejetes": 1156,
-    "nb_irrecevables": 1715,
-    "nb_retires_ou_tombes": 3026,
-    "nb_sort_non_renseigne": 1472,
+    "nb_irrecevables": 1714,
+    "nb_retires_ou_tombes": 3018,
+    "nb_sort_non_renseigne": 1470,
     "nb_sort_non_reconnu": 0,
-    "taux_adoption": 0.1753,
+    "taux_adoption": 0.1754,
     "nb_sans_identifiant": 0,
     "par_type_deposant": {
       "commission_rapporteur": {
@@ -128803,14 +128819,14 @@
         "taux_adoption": 0.6432
       },
       "depute": {
-        "nb_amendements": 8195,
-        "nb_adoptes": 1090,
+        "nb_amendements": 8183,
+        "nb_adoptes": 1089,
         "nb_rejetes": 1095,
-        "nb_irrecevables": 1701,
-        "nb_retires_ou_tombes": 2903,
-        "nb_sort_non_renseigne": 1406,
+        "nb_irrecevables": 1700,
+        "nb_retires_ou_tombes": 2895,
+        "nb_sort_non_renseigne": 1404,
         "nb_sort_non_reconnu": 0,
-        "taux_adoption": 0.133
+        "taux_adoption": 0.1331
       },
       "gouvernement": {
         "nb_amendements": 0,
@@ -128834,13 +128850,13 @@
       }
     },
     "signatures": {
-      "nb_signatures": 54412,
+      "nb_signatures": 48936,
       "par_type_deposant": {
         "commission_rapporteur": {
           "nb_signatures": 1131
         },
         "depute": {
-          "nb_signatures": 53281
+          "nb_signatures": 47805
         },
         "gouvernement": {
           "nb_signatures": 0
@@ -128852,154 +128868,154 @@
     },
     "nb_signatures_hors_periode_ecartees": 153421,
     "nb_signatures_sans_legislature_retenues": 0,
-    "nb_signatures_hors_appartenance_ecartees": 4784,
+    "nb_signatures_hors_appartenance_ecartees": 4704,
     "nb_signatures_sans_date_retenues": 23
   },
   "sources": [
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA1592",
-      "synchro_le": "2026-11-03T05:59:24+0000"
+      "synchro_le": "2026-11-05T00:00:51+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA227089",
-      "synchro_le": "2026-11-03T06:10:15+0000"
+      "synchro_le": "2026-11-05T00:12:04+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA267042",
-      "synchro_le": "2026-11-03T06:09:20+0000"
+      "synchro_le": "2026-11-05T00:10:59+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA267763",
-      "synchro_le": "2026-11-03T05:59:46+0000"
+      "synchro_le": "2026-11-05T00:01:29+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA2952",
-      "synchro_le": "2026-11-03T05:59:39+0000"
+      "synchro_le": "2026-11-05T00:01:27+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA607619",
-      "synchro_le": "2026-11-03T06:10:07+0000"
+      "synchro_le": "2026-11-05T00:12:11+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA642734",
-      "synchro_le": "2026-11-03T05:59:57+0000"
+      "synchro_le": "2026-11-05T00:01:32+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA719138",
-      "synchro_le": "2026-11-03T06:09:24+0000"
+      "synchro_le": "2026-11-05T00:11:03+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA719286",
-      "synchro_le": "2026-11-03T06:10:24+0000"
+      "synchro_le": "2026-11-05T00:13:08+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA720960",
-      "synchro_le": "2026-11-03T06:09:53+0000"
+      "synchro_le": "2026-11-05T00:10:50+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA720976",
-      "synchro_le": "2026-11-03T05:59:53+0000"
+      "synchro_le": "2026-11-05T00:01:28+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA721110",
-      "synchro_le": "2026-11-03T05:59:40+0000"
+      "synchro_le": "2026-11-05T00:01:28+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA721474",
-      "synchro_le": "2026-11-03T06:09:30+0000"
+      "synchro_le": "2026-11-05T00:10:29+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA721486",
-      "synchro_le": "2026-11-03T05:59:46+0000"
+      "synchro_le": "2026-11-05T00:01:28+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793210",
-      "synchro_le": "2026-11-03T05:59:56+0000"
+      "synchro_le": "2026-11-05T00:01:32+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793214",
-      "synchro_le": "2026-11-03T06:00:09+0000"
+      "synchro_le": "2026-11-05T00:01:34+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793796",
-      "synchro_le": "2026-11-03T05:59:40+0000"
+      "synchro_le": "2026-11-05T00:01:27+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794554",
-      "synchro_le": "2026-11-03T06:09:27+0000"
+      "synchro_le": "2026-11-05T00:11:04+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795244",
-      "synchro_le": "2026-11-03T06:09:26+0000"
+      "synchro_le": "2026-11-05T00:11:04+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA796078",
-      "synchro_le": "2026-11-03T06:10:10+0000"
+      "synchro_le": "2026-11-05T00:11:05+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA822617",
-      "synchro_le": "2026-11-03T05:59:09+0000"
+      "synchro_le": "2026-11-05T00:00:52+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840817",
-      "synchro_le": "2026-11-03T06:10:10+0000"
+      "synchro_le": "2026-11-05T00:11:06+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841017",
-      "synchro_le": "2026-11-03T06:10:27+0000"
+      "synchro_le": "2026-11-05T00:13:11+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841151",
-      "synchro_le": "2026-11-03T06:09:31+0000"
+      "synchro_le": "2026-11-05T00:11:09+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841359",
-      "synchro_le": "2026-11-03T06:10:15+0000"
+      "synchro_le": "2026-11-05T00:12:04+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841543",
-      "synchro_le": "2026-11-03T05:59:46+0000"
+      "synchro_le": "2026-11-05T00:01:29+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841931",
-      "synchro_le": "2026-11-03T05:59:57+0000"
+      "synchro_le": "2026-11-05T00:01:33+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA942",
-      "synchro_le": "2026-11-03T06:10:27+0000"
+      "synchro_le": "2026-11-05T00:13:11+0000"
     }
   ],
   "meta": {
     "schema_version": "1",
-    "genere_le": "2026-11-03T06:34:35+0000",
+    "genere_le": "2026-11-05T00:50:00+0000",
     "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
     "profils_sources": [
       "david-habib",
@@ -129033,12 +129049,12 @@
     ],
     "seuil_quorum": 0.5,
     "warnings": [
-      "date_reference : tous les comptes de cette fiche se rapportent au 2026-11-03, date de génération — au moins une appartenance au groupe est encore ouverte, la législature court. La valeur bougera au prochain run (#653).",
-      "effectif_sur_la_periode : entre 2024-07-19 et 2026-11-03, le groupe a compté au minimum 21 membres (2024-07-19) et au maximum 24 (2026-10-31) — première date à laquelle chaque borne est atteinte. L'effectif est réévalué à chaque entrée et à chaque lendemain de sortie, jamais hors de cette fenêtre. `membres[]` ne porte qu'un intervalle par membre (périodes recollées, #526) : un départ suivi d'un retour n'y apparaît pas, et aucune de ces deux bornes ne le voit (#702).",
+      "date_reference : tous les comptes de cette fiche se rapportent au 2026-11-05, date de génération — au moins une appartenance au groupe est encore ouverte, la législature court. La valeur bougera au prochain run (#653).",
+      "effectif_sur_la_periode : entre 2024-07-19 et 2026-11-05, le groupe a compté au minimum 21 membres (2024-07-19) et au maximum 24 (2026-10-31) — première date à laquelle chaque borne est atteinte. L'effectif est réévalué à chaque entrée et à chaque lendemain de sortie, jamais hors de cette fenêtre. `membres[]` ne porte qu'un intervalle par membre (périodes recollées, #526) : un départ suivi d'un retour n'y apparaît pas, et aucune de ces deux bornes ne le voit (#702).",
       "tags_thematiques_agreges : 540 intervention(s) tenue(s) hors des périodes d'appartenance de leur auteur au groupe n'ont pas nourri l'empreinte thématique — la parole d'un membre parti, ou pas encore arrivé, n'est pas celle du groupe (#1073).",
       "tags_thematiques_agreges : 34046 intervention(s) tenue(s) sous une autre législature que la 17e n'ont pas nourri l'empreinte thématique — elles appartiennent à la carrière de leurs auteurs, pas à l'activité de ce groupe (#825, même règle que les votes depuis #403 et que les amendements depuis #821).",
       "amendements_agreges : 153421 signature(s) portant sur des amendements déposés sous une autre législature que la 17e ont été écartées — ils appartiennent à la carrière de leurs auteurs, pas à l'activité de ce groupe (#821, même règle que les votes depuis #403).",
-      "amendements_agreges : 4784 signature(s) posées un jour où leur auteur n'appartenait pas à ce groupe ont été écartées — avant son entrée, après son départ, ou hors de l'existence du groupe (#1175, même règle que la cohésion et la parole).",
+      "amendements_agreges : 4704 signature(s) posées un jour où leur auteur n'appartenait pas à ce groupe ont été écartées — avant son entrée, après son départ, ou hors de l'existence du groupe (#1175, même règle que la cohésion et la parole).",
       "amendements_agreges : 23 signature(s) sur des amendements sans date de dépôt sont CONSERVÉES — on n'écarte personne sur une date qu'on n'a pas (§2 règle 5).",
       "fraicheur_donnees : composition dérivée du référentiel AMO30 de l'Assemblée nationale (data.assemblee-nationale.fr, Licence Ouverte), et non plus de www.nosdeputes.fr depuis #527. Une législature close y est complète : les mandats terminés en cours de législature y figurent, alors que la dernière composition connue d'un miroir les perd. La fiche reflète donc l'appartenance au groupe telle que l'Assemblée la publie à la date de meta.genere_le ; un membre sans profil publié n'y apparaît pas (voir meta.couverture_roster)."
     ],
@@ -129050,13 +129066,13 @@
   },
   "fenetres_parole": {
     "12_mois": {
-      "debut": "2025-11-03",
-      "fin": "2026-11-03",
+      "debut": "2025-11-05",
+      "fin": "2026-11-05",
       "nb_membres": 27
     },
     "6_mois": {
-      "debut": "2026-05-03",
-      "fin": "2026-11-03",
+      "debut": "2026-05-05",
+      "fin": "2026-11-05",
       "nb_membres": 25
     }
   }

@@ -1,7 +1,7 @@
 {
   "schema_version": "ordre-du-jour-v1",
   "legislature": 17,
-  "genere_le": "2026-11-03",
+  "genere_le": "2026-11-04",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/vp/reunions/Agenda.json.zip",
   "seances": [
@@ -35262,10 +35262,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N52293",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53541"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30137PT51621",
@@ -35316,10 +35318,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53330",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53544"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30137PT51618",
@@ -35355,10 +35359,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53330",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53544"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30137PT51377",
@@ -35381,10 +35387,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N52293",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53541"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30137PT51378",
@@ -35558,10 +35566,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N52293",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53541"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30138PT51631",
@@ -35610,10 +35620,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53330",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53544"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30138PT51627",
@@ -35675,10 +35687,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53330",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53544"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30138PT51388",
@@ -35703,10 +35717,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N52293",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53541"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30138PT51389",
@@ -35867,10 +35883,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N52293",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53541"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30139PT51637",
@@ -35934,10 +35952,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53330",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53544"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30139PT51638",
@@ -35947,10 +35967,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53330",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53544"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30139PT51396",
@@ -35973,10 +35995,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N52293",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53541"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30139PT51397",
@@ -37154,10 +37178,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N52293",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53541"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30185PT51645",
@@ -37236,10 +37262,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53330",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53544"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30185PT51519",
@@ -37445,10 +37473,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N52293",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53541"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30186PT51655",
@@ -37501,10 +37531,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53330",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53544"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30186PT51534",
@@ -37712,10 +37744,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N52293",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53541"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30187PT51663",
@@ -37768,10 +37802,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53330",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53544"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30187PT51553",
@@ -43753,10 +43789,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53330",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53544"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30445PT52165",
@@ -43997,10 +44035,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53330",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53544"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30447PT52182",
@@ -44196,10 +44236,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53330",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53544"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30444PT52199",
@@ -44492,10 +44534,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53330",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31068PT53544"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30448PT52216",
@@ -58250,7 +58294,7 @@
       "uid": "RUANR5L17S2027IDS30977",
       "date": "2026-11-03",
       "debut": "2026-11-03T15:00:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-03T20:00:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": "CRSANR5L17S2027O1N053",
@@ -58332,10 +58376,10 @@
       "uid": "RUANR5L17S2027IDS30978",
       "date": "2026-11-03",
       "debut": "2026-11-03T21:30:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-04T00:05:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N054",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS30978PT53573",
@@ -58389,7 +58433,7 @@
       "fin": null,
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N055",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS30979PT53304",
@@ -59251,10 +59295,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N55223",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30993PT53572"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2027IDS30992PT53321",
@@ -59267,7 +59313,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N54629",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30992PT53468"
+            "point_source": "RUANR5L17S2027IDS30993PT53469"
           },
           "dossier_non_resolu": null
         },
@@ -59275,13 +59321,15 @@
           "uid": "RUANR5L17S2027IDS30992PT53468",
           "objet": "Suite de la discussion de la seconde partie du projet de loi de finances pour 2027",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54629"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30993PT53469"
+          },
           "dossier_non_resolu": null
         }
       ]
@@ -59315,11 +59363,11 @@
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [],
+          "dossiers": [
+            "DLR5L17N55223"
+          ],
           "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2027IDS30993PT53469",
@@ -59361,17 +59409,32 @@
       "compte_rendu_ref": null,
       "points": [
         {
-          "uid": "RUANR5L17S2027IDS30994PT53588",
+          "uid": "RUANR5L17S2027IDS30994PT53590",
           "objet": "Sous réserve de son dépôt, suite de la discussion du projet de loi de finances de fin de gestion pour 2026",
           "type": "Suite de la discussion",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [],
+          "dossiers": [
+            "DLR5L17N55223"
+          ],
           "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS30994PT53588",
+          "objet": "Suite de la discussion de la seconde partie du projet de loi de finances pour 2027",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54629",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30994PT53470"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2027IDS30994PT53323",
@@ -60418,6 +60481,588 @@
           "nature": "ODJPR",
           "dossiers": [
             "DLR5L17N54608"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31063",
+      "date": "2026-11-24",
+      "debut": "2026-11-24T09:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31063PT53530",
+          "objet": "Questions orales sans débat (salle Lamartine)",
+          "type": "Questions orales sans débat",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31064",
+      "date": "2026-11-24",
+      "debut": "2026-11-24T15:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31064PT53531",
+          "objet": "Questions au Gouvernement",
+          "type": "Questions au Gouvernement",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31064PT53532",
+          "objet": "Débat sur le rapport de l’Office parlementaire d’évaluation des choix scientifiques et technologiques (Opecst) sur la décarbonation des transports terrestres (salle Lamartine)",
+          "type": "Débat d'initiative parlementaire",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31065",
+      "date": "2026-11-24",
+      "debut": "2026-11-24T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31065PT53533",
+          "objet": "Débat avec invités extérieurs sur le thème : « Bilan des réformes du baccalauréat et du lycée, dite réforme Blanquer » (salle Lamartine)",
+          "type": "Débat d'initiative parlementaire",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31066",
+      "date": "2026-11-25",
+      "debut": "2026-11-25T14:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31066PT53534",
+          "objet": "Questions au Gouvernement",
+          "type": "Questions au Gouvernement",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31066PT53535",
+          "objet": "Discussion de la proposition de résolution européenne relative à la révision de la directive « Services de médias audiovisuels » et à la défense de l’exception culturelle européenne",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54254"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31066PT53536",
+          "objet": "Discussion de la proposition de résolution européenne visant à réviser la définition de l’œuvre européenne",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54288"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31066PT53537",
+          "objet": "Discussion de la proposition de résolution européenne en faveur d’un traité juridiquement contraignant prévoyant des interdictions et des réglementations aux systèmes d'armes autonomes et de l’élaboration d’une position commune européenne sur ce sujet",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54277"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31067",
+      "date": "2026-11-25",
+      "debut": "2026-11-25T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31067PT53538",
+          "objet": "Suite de la discussion de la proposition de résolution européenne relative à la révision de la directive « Services de médias audiovisuels » et à la défense de l’exception culturelle européenne",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54254"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31067PT53539",
+          "objet": "Suite de la discussion de la proposition de résolution européenne visant à réviser la définition de l’œuvre européenne",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54288"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31067PT53540",
+          "objet": "Suite de la discussion de la proposition de résolution européenne en faveur d’un traité juridiquement contraignant prévoyant des interdictions et des réglementations aux systèmes d'armes autonomes et de l’élaboration d’une position commune européenne sur ce sujet",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54277"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31068",
+      "date": "2026-11-26",
+      "debut": "2026-11-26T09:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31068PT53541",
+          "objet": "Discussion de la proposition de loi visant à suspendre les droits aux prestations et aux aides publiques pour les personnes reconnues coupables d’exactions lors de rassemblements ou de manifestations",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N52293"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31068PT53542",
+          "objet": "Discussion de la proposition de loi visant à garantir l’exécution effective d’une peine minimale dès la première condamnation pour violences volontaires",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55100"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31068PT53543",
+          "objet": "Discussion de la proposition de loi visant à suspendre les prestations sociales pour les fraudeurs multirécidivistes",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55099"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31068PT53544",
+          "objet": "Discussion de la proposition de loi portant déblocage exceptionnel de la participation et de l’intéressement en 2026",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53330"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31068PT53545",
+          "objet": "Discussion de la proposition de loi instaurant la responsabilité pénale des mineurs à 16 ans et renforçant la responsabilité pénale des parents",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53870"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31068PT53546",
+          "objet": "Discussion de la proposition de résolution, déposée en application de l'article 34-1 de la Constitution, visant à faire de l’égalité entre les territoires une priorité de l’ensemble des politiques publiques",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55033"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31068PT53547",
+          "objet": "Discussion de la proposition de loi visant à maintenir les pharmacies existantes dans les communes rurales",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55074"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31068PT53548",
+          "objet": "Discussion de la proposition de loi visant à lever les contraintes pesant sur le foncier",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55097"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31068PT53549",
+          "objet": "Discussion de la proposition de loi visant à limiter à deux ans le versement du revenu de solidarité active pour les personnes aptes à travailler",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53339"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31069",
+      "date": "2026-11-26",
+      "debut": "2026-11-26T15:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31069PT53550",
+          "objet": "Suite de la discussion de la proposition de loi visant à suspendre les droits aux prestations et aux aides publiques pour les personnes reconnues coupables d’exactions lors de rassemblements ou de manifestations",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N52293"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31069PT53551",
+          "objet": "Suite de la discussion de la proposition de loi visant à garantir l’exécution effective d’une peine minimale dès la première condamnation pour violences volontaires",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55100"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31069PT53552",
+          "objet": "Suite de la discussion de la proposition de loi visant à suspendre les prestations sociales pour les fraudeurs multirécidivistes",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55099"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31069PT53553",
+          "objet": "Suite de la discussion de la proposition de loi portant déblocage exceptionnel de la participation et de l’intéressement en 2026",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53330"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31069PT53554",
+          "objet": "Suite de la discussion de la proposition de loi instaurant la responsabilité pénale des mineurs à 16 ans et renforçant la responsabilité pénale des parents",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53870"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31069PT53555",
+          "objet": "Suite de la discussion de la proposition de résolution, déposée en application de l'article 34-1 de la Constitution, visant à faire de l’égalité entre les territoires une priorité de l’ensemble des politiques publiques",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55033"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31069PT53556",
+          "objet": "Suite de la discussion de la proposition de loi visant à maintenir les pharmacies existantes dans les communes rurales",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55074"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31069PT53557",
+          "objet": "Suite de la discussion de la proposition de loi visant à lever les contraintes pesant sur le foncier",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55097"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31069PT53558",
+          "objet": "Suite de la discussion de la proposition de loi visant à limiter à deux ans le versement du revenu de solidarité active pour les personnes aptes à travailler",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53339"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31070",
+      "date": "2026-11-26",
+      "debut": "2026-11-26T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31070PT53559",
+          "objet": "Suite de la discussion de la proposition de loi visant à suspendre les droits aux prestations et aux aides publiques pour les personnes reconnues coupables d’exactions lors de rassemblements ou de manifestations",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N52293"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31070PT53560",
+          "objet": "Suite de la discussion de la proposition de loi visant à garantir l’exécution effective d’une peine minimale dès la première condamnation pour violences volontaires",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55100"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31070PT53561",
+          "objet": "Suite de la discussion de la proposition de loi visant à suspendre les prestations sociales pour les fraudeurs multirécidivistes",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55099"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31070PT53562",
+          "objet": "Suite de la discussion de la proposition de loi portant déblocage exceptionnel de la participation et de l’intéressement en 2026",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53330"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31070PT53563",
+          "objet": "Suite de la discussion de la proposition de loi instaurant la responsabilité pénale des mineurs à 16 ans et renforçant la responsabilité pénale des parents",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53870"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31070PT53564",
+          "objet": "Suite de la discussion de la proposition de résolution, déposée en application de l'article 34-1 de la Constitution, visant à faire de l’égalité entre les territoires une priorité de l’ensemble des politiques publiques",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55033"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31070PT53565",
+          "objet": "Suite de la discussion de la proposition de loi visant à maintenir les pharmacies existantes dans les communes rurales",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55074"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31070PT53566",
+          "objet": "Suite de la discussion de la proposition de loi visant à lever les contraintes pesant sur le foncier",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55097"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31070PT53567",
+          "objet": "Suite de la discussion de la proposition de loi visant à limiter à deux ans le versement du revenu de solidarité active pour les personnes aptes à travailler",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53339"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
