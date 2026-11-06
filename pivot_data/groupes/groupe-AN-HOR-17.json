@@ -656,7 +656,7 @@
     }
   ],
   "date_reference": {
-    "date": "2026-11-05",
+    "date": "2026-11-06",
     "origine": "generation"
   },
   "effectif": {
@@ -145085,6 +145085,15 @@
       }
     },
     {
+      "tag": "projet de loi de finances pour 2027",
+      "nb_membres_porteurs": 15,
+      "poids_relatif": 0.3333,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 15,
+        "6_mois": 15
+      }
+    },
+    {
       "tag": "droit à l’aide à mourir",
       "nb_membres_porteurs": 14,
       "poids_relatif": 0.3111,
@@ -145100,15 +145109,6 @@
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 0,
         "6_mois": 0
-      }
-    },
-    {
-      "tag": "projet de loi de finances pour 2027",
-      "nb_membres_porteurs": 13,
-      "poids_relatif": 0.2889,
-      "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 13,
-        "6_mois": 13
       }
     },
     {
@@ -145144,7 +145144,7 @@
       "poids_relatif": 0.2222,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 10,
-        "6_mois": 3
+        "6_mois": 0
       }
     },
     {
@@ -145162,7 +145162,7 @@
       "poids_relatif": 0.2,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 9,
-        "6_mois": 8
+        "6_mois": 7
       }
     },
     {
@@ -146773,7 +146773,7 @@
       "poids_relatif": 0.0444,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 2,
-        "6_mois": 2
+        "6_mois": 0
       }
     },
     {
@@ -146962,7 +146962,7 @@
       "poids_relatif": 0.0444,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 2,
-        "6_mois": 2
+        "6_mois": 0
       }
     },
     {
@@ -148133,6 +148133,15 @@
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 0,
         "6_mois": 0
+      }
+    },
+    {
+      "tag": "cumul emploi-retraite",
+      "nb_membres_porteurs": 1,
+      "poids_relatif": 0.0222,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 1,
+        "6_mois": 1
       }
     },
     {
@@ -149976,7 +149985,7 @@
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0222,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 1,
+        "12_mois": 0,
         "6_mois": 0
       }
     },
@@ -150099,6 +150108,15 @@
     },
     {
       "tag": "prise en charge intégrale du parcours de soins des victimes de violences sexuelles",
+      "nb_membres_porteurs": 1,
+      "poids_relatif": 0.0222,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 1,
+        "6_mois": 1
+      }
+    },
+    {
+      "tag": "prix des carburants",
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0222,
       "nb_membres_porteurs_par_fenetre": {
@@ -151308,7 +151326,7 @@
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0222,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 1,
+        "12_mois": 0,
         "6_mois": 0
       }
     },
@@ -157124,6 +157142,42 @@
     },
     {
       "categorie": "groupe_etudes",
+      "label": "Groupe d'études à vocation internationale sur les relations avec le Saint Siège",
+      "nb_membres_a_la_date_de_reference": 3,
+      "nb_membres_cumul_historique": 3,
+      "effectif_reference": 45,
+      "par_fonction": {
+        "membre": 3
+      },
+      "membres": [
+        {
+          "membre_id": "jean-francois-portarrieu",
+          "nom": "Jean-François Portarrieu",
+          "fonction": "Membre",
+          "debut": "2025-01-23",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "beatrice-piron",
+          "nom": "Béatrice Piron",
+          "fonction": "Membre",
+          "debut": "2025-01-23",
+          "fin": null,
+          "actif": true
+        },
+        {
+          "membre_id": "benoit-blanchard",
+          "nom": "Benoît Blanchard",
+          "fonction": "Membre",
+          "debut": "2026-11-05",
+          "fin": null,
+          "actif": true
+        }
+      ]
+    },
+    {
+      "categorie": "groupe_etudes",
       "label": "Réseaux sociaux",
       "nb_membres_a_la_date_de_reference": 3,
       "nb_membres_cumul_historique": 3,
@@ -158291,34 +158345,6 @@
           "nom": "Frédéric Valletoux",
           "fonction": "Secrétaire",
           "debut": "2025-03-12",
-          "fin": null,
-          "actif": true
-        }
-      ]
-    },
-    {
-      "categorie": "groupe_etudes",
-      "label": "Groupe d'études à vocation internationale sur les relations avec le Saint Siège",
-      "nb_membres_a_la_date_de_reference": 2,
-      "nb_membres_cumul_historique": 2,
-      "effectif_reference": 45,
-      "par_fonction": {
-        "membre": 2
-      },
-      "membres": [
-        {
-          "membre_id": "jean-francois-portarrieu",
-          "nom": "Jean-François Portarrieu",
-          "fonction": "Membre",
-          "debut": "2025-01-23",
-          "fin": null,
-          "actif": true
-        },
-        {
-          "membre_id": "beatrice-piron",
-          "nom": "Béatrice Piron",
-          "fonction": "Membre",
-          "debut": "2025-01-23",
           "fin": null,
           "actif": true
         }
@@ -161616,237 +161642,237 @@
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA267780",
-      "synchro_le": "2026-11-05T03:23:42+0000"
+      "synchro_le": "2026-11-06T17:57:37+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA332228",
-      "synchro_le": "2026-11-05T03:34:58+0000"
+      "synchro_le": "2026-11-06T18:07:22+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA605782",
-      "synchro_le": "2026-11-05T03:37:05+0000"
+      "synchro_le": "2026-11-06T18:08:36+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA642868",
-      "synchro_le": "2026-11-05T03:35:45+0000"
+      "synchro_le": "2026-11-06T18:08:38+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA687214",
-      "synchro_le": "2026-11-05T03:23:37+0000"
+      "synchro_le": "2026-11-06T17:57:18+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA719032",
-      "synchro_le": "2026-11-05T03:21:59+0000"
+      "synchro_le": "2026-11-06T17:55:49+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA719052",
-      "synchro_le": "2026-11-05T03:23:48+0000"
+      "synchro_le": "2026-11-06T17:57:18+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA719282",
-      "synchro_le": "2026-11-05T03:23:43+0000"
+      "synchro_le": "2026-11-06T17:57:38+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA719528",
-      "synchro_le": "2026-11-05T03:23:49+0000"
+      "synchro_le": "2026-11-06T17:57:19+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA719756",
-      "synchro_le": "2026-11-05T03:33:38+0000"
+      "synchro_le": "2026-11-06T18:05:26+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA719778",
-      "synchro_le": "2026-11-05T03:23:40+0000"
+      "synchro_le": "2026-11-06T17:57:02+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA720138",
-      "synchro_le": "2026-11-05T03:22:00+0000"
+      "synchro_le": "2026-11-06T17:55:51+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA720230",
-      "synchro_le": "2026-11-05T03:24:16+0000"
+      "synchro_le": "2026-11-06T17:57:40+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA720480",
-      "synchro_le": "2026-11-05T03:34:05+0000"
+      "synchro_le": "2026-11-06T18:07:12+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA720552",
-      "synchro_le": "2026-11-05T03:23:09+0000"
+      "synchro_le": "2026-11-06T17:57:09+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA720908",
-      "synchro_le": "2026-11-05T03:23:09+0000"
+      "synchro_le": "2026-11-06T17:56:56+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA721458",
-      "synchro_le": "2026-11-05T03:34:06+0000"
+      "synchro_le": "2026-11-06T18:07:13+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA721844",
-      "synchro_le": "2026-11-05T03:33:53+0000"
+      "synchro_le": "2026-11-06T18:06:17+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA722070",
-      "synchro_le": "2026-11-05T03:33:41+0000"
+      "synchro_le": "2026-11-06T18:05:29+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA722336",
-      "synchro_le": "2026-11-05T03:23:11+0000"
+      "synchro_le": "2026-11-06T17:57:12+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793398",
-      "synchro_le": "2026-11-05T03:23:42+0000"
+      "synchro_le": "2026-11-06T17:57:37+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793572",
-      "synchro_le": "2026-11-05T03:34:58+0000"
+      "synchro_le": "2026-11-06T18:07:23+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793992",
-      "synchro_le": "2026-11-05T03:34:51+0000"
+      "synchro_le": "2026-11-06T18:06:39+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794234",
-      "synchro_le": "2026-11-05T03:37:06+0000"
+      "synchro_le": "2026-11-06T18:08:36+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794278",
-      "synchro_le": "2026-11-05T03:35:46+0000"
+      "synchro_le": "2026-11-06T18:08:38+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794426",
-      "synchro_le": "2026-11-05T03:23:59+0000"
+      "synchro_le": "2026-11-06T17:57:18+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794430",
-      "synchro_le": "2026-11-05T03:34:59+0000"
+      "synchro_le": "2026-11-06T18:07:23+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794466",
-      "synchro_le": "2026-11-05T03:34:52+0000"
+      "synchro_le": "2026-11-06T18:06:40+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794470",
-      "synchro_le": "2026-11-05T03:24:16+0000"
+      "synchro_le": "2026-11-06T17:57:40+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794518",
-      "synchro_le": "2026-11-05T03:37:06+0000"
+      "synchro_le": "2026-11-06T18:08:37+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794578",
-      "synchro_le": "2026-11-05T03:35:46+0000"
+      "synchro_le": "2026-11-06T18:08:39+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794658",
-      "synchro_le": "2026-11-05T03:34:09+0000"
+      "synchro_le": "2026-11-06T18:07:17+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794838",
-      "synchro_le": "2026-11-05T03:23:43+0000"
+      "synchro_le": "2026-11-06T17:57:38+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795026",
-      "synchro_le": "2026-11-05T03:34:59+0000"
+      "synchro_le": "2026-11-06T18:07:23+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795270",
-      "synchro_le": "2026-11-05T03:37:06+0000"
+      "synchro_le": "2026-11-06T18:08:36+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795278",
-      "synchro_le": "2026-11-05T03:35:46+0000"
+      "synchro_le": "2026-11-06T18:08:39+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795350",
-      "synchro_le": "2026-11-05T03:23:59+0000"
+      "synchro_le": "2026-11-06T17:57:18+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA840849",
-      "synchro_le": "2026-11-05T03:24:00+0000"
+      "synchro_le": "2026-11-06T17:57:18+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841013",
-      "synchro_le": "2026-11-05T03:24:17+0000"
+      "synchro_le": "2026-11-06T17:57:41+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841339",
-      "synchro_le": "2026-11-05T03:23:38+0000"
+      "synchro_le": "2026-11-06T17:57:18+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841431",
-      "synchro_le": "2026-11-05T03:23:43+0000"
+      "synchro_le": "2026-11-06T17:57:38+0000"
     },
     {
       "type": "europarl",
       "url": "https://www.europarl.europa.eu/meps/fr/197536",
-      "synchro_le": "2026-11-05T03:23:59+0000"
+      "synchro_le": "2026-11-06T17:57:45+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841833",
-      "synchro_le": "2026-11-05T03:34:59+0000"
+      "synchro_le": "2026-11-06T18:07:24+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA841993",
-      "synchro_le": "2026-11-05T03:34:52+0000"
+      "synchro_le": "2026-11-06T18:06:40+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA842125",
-      "synchro_le": "2026-11-05T03:37:07+0000"
+      "synchro_le": "2026-11-06T18:08:37+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA842183",
-      "synchro_le": "2026-11-05T03:35:46+0000"
+      "synchro_le": "2026-11-06T18:08:39+0000"
     }
   ],
   "meta": {
     "schema_version": "1",
-    "genere_le": "2026-11-05T04:07:56+0000",
+    "genere_le": "2026-11-06T18:49:19+0000",
     "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr + CC BY 4.0 (Parlement européen, Open Data Portal - data.europarl.europa.eu)",
     "profils_sources": [
       "agnes-firmin-le-bodo",
@@ -161897,8 +161923,8 @@
     ],
     "seuil_quorum": 0.5,
     "warnings": [
-      "date_reference : tous les comptes de cette fiche se rapportent au 2026-11-05, date de génération — au moins une appartenance au groupe est encore ouverte, la législature court. La valeur bougera au prochain run (#653).",
-      "effectif_sur_la_periode : entre 2024-07-19 et 2026-11-05, le groupe a compté au minimum 30 membres (2025-01-24) et au maximum 36 (2026-07-23) — première date à laquelle chaque borne est atteinte. L'effectif est réévalué à chaque entrée et à chaque lendemain de sortie, jamais hors de cette fenêtre. `membres[]` ne porte qu'un intervalle par membre (périodes recollées, #526) : un départ suivi d'un retour n'y apparaît pas, et aucune de ces deux bornes ne le voit (#702).",
+      "date_reference : tous les comptes de cette fiche se rapportent au 2026-11-06, date de génération — au moins une appartenance au groupe est encore ouverte, la législature court. La valeur bougera au prochain run (#653).",
+      "effectif_sur_la_periode : entre 2024-07-19 et 2026-11-06, le groupe a compté au minimum 30 membres (2025-01-24) et au maximum 36 (2026-07-23) — première date à laquelle chaque borne est atteinte. L'effectif est réévalué à chaque entrée et à chaque lendemain de sortie, jamais hors de cette fenêtre. `membres[]` ne porte qu'un intervalle par membre (périodes recollées, #526) : un départ suivi d'un retour n'y apparaît pas, et aucune de ces deux bornes ne le voit (#702).",
       "tags_thematiques_agreges : 1013 intervention(s) tenue(s) hors des périodes d'appartenance de leur auteur au groupe n'ont pas nourri l'empreinte thématique — la parole d'un membre parti, ou pas encore arrivé, n'est pas celle du groupe (#1073).",
       "tags_thematiques_agreges : 46044 intervention(s) tenue(s) sous une autre législature que la 17e n'ont pas nourri l'empreinte thématique — elles appartiennent à la carrière de leurs auteurs, pas à l'activité de ce groupe (#825, même règle que les votes depuis #403 et que les amendements depuis #821).",
       "amendements_agreges : 99458 signature(s) portant sur des amendements déposés sous une autre législature que la 17e ont été écartées — ils appartiennent à la carrière de leurs auteurs, pas à l'activité de ce groupe (#821, même règle que les votes depuis #403).",
@@ -161914,13 +161940,13 @@
   },
   "fenetres_parole": {
     "12_mois": {
-      "debut": "2025-11-05",
-      "fin": "2026-11-05",
-      "nb_membres": 43
+      "debut": "2025-11-06",
+      "fin": "2026-11-06",
+      "nb_membres": 42
     },
     "6_mois": {
-      "debut": "2026-05-05",
-      "fin": "2026-11-05",
+      "debut": "2026-05-06",
+      "fin": "2026-11-06",
       "nb_membres": 38
     }
   }

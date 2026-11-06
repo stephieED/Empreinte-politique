@@ -1,6 +1,6 @@
 {
   "schema_version": "articles-votes-v3",
-  "genere_le": "2026-11-05",
+  "genere_le": "2026-11-06",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — Assemblée nationale",
   "scrutins": {
     "an:15:1002": {
@@ -27593,6 +27593,87 @@
       "extrait": "I. – La charge pour l’État est compensée à due concurrence par la création d’une taxe additionnelle à l’accise sur les tabacs prévue au chapitre IV du titre I er du livre III du code des impositions sur les biens et services. II.",
       "texte_tronque": true,
       "source_url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17BTC1027.html"
+    },
+    "an:17:9698": {
+      "dossier_id": "DLR5L17N54629",
+      "texte_id": "PRJLANR5L17B3210",
+      "rattachement": "seance_et_dossier_du_scrutin",
+      "article": "42",
+      "intitule": "Dispositions relatives à l’affectation de ressources à des tiers",
+      "regroupe": null,
+      "partie": {
+        "numero": "PREMIÈRE PARTIE",
+        "intitule": "CONDITIONS GÉNÉRALES DE L’ÉQUILIBRE FINANCIER"
+      },
+      "titre": {
+        "numero": "TITRE PREMIER",
+        "intitule": "DISPOSITIONS RELATIVES AUX RESSOURCES"
+      },
+      "chapitre": {
+        "numero": "II",
+        "intitule": "Ressources affectées"
+      },
+      "section": {
+        "numero": "B",
+        "intitule": "Impositions et autres ressources affectées à des tiers"
+      },
+      "extrait": "I. – Le produit des impositions de toutes natures mentionnées à la colonne B du tableau ci-après et dont le rendement prévisionnel est mentionné à la colonne E est affecté aux bénéficiaires suivants, autres que les collectivités territoriales, leurs établissements publics, les",
+      "texte_tronque": true,
+      "source_url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B3210.html"
+    },
+    "an:17:9740": {
+      "dossier_id": "DLR5L17N54629",
+      "texte_id": "PRJLANR5L17B3210",
+      "rattachement": "seance_et_dossier_du_scrutin",
+      "article": "49",
+      "intitule": "Relations financières entre l’Etat et la sécurité sociale",
+      "regroupe": null,
+      "partie": {
+        "numero": "PREMIÈRE PARTIE",
+        "intitule": "CONDITIONS GÉNÉRALES DE L’ÉQUILIBRE FINANCIER"
+      },
+      "titre": {
+        "numero": "TITRE PREMIER",
+        "intitule": "DISPOSITIONS RELATIVES AUX RESSOURCES"
+      },
+      "chapitre": {
+        "numero": "II",
+        "intitule": "Ressources affectées"
+      },
+      "section": {
+        "numero": "D",
+        "intitule": "Autres dispositions"
+      },
+      "extrait": "I. – Le 9° de l’article L. 131-8 du code de la sécurité sociale est ainsi modifié : 1° Au premier alinéa, le taux : « 29,05 % » est remplacé par le taux : « 26,62 % » et les mots : « 4,1 milliards d’euros en 2026 » sont remplacés par les mots : « 2,0 milliards d’euros en 2027 »",
+      "texte_tronque": true,
+      "source_url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B3210.html"
+    },
+    "an:17:9749": {
+      "dossier_id": "DLR5L17N54629",
+      "texte_id": "PRJLANR5L17B3210",
+      "rattachement": "seance_et_dossier_du_scrutin",
+      "article": "51",
+      "intitule": "Modification de l’affectation des astreintes prononcées au titre du droit au logement opposable (DALO)",
+      "regroupe": null,
+      "partie": {
+        "numero": "PREMIÈRE PARTIE",
+        "intitule": "CONDITIONS GÉNÉRALES DE L’ÉQUILIBRE FINANCIER"
+      },
+      "titre": {
+        "numero": "TITRE PREMIER",
+        "intitule": "DISPOSITIONS RELATIVES AUX RESSOURCES"
+      },
+      "chapitre": {
+        "numero": "II",
+        "intitule": "Ressources affectées"
+      },
+      "section": {
+        "numero": "D",
+        "intitule": "Autres dispositions"
+      },
+      "extrait": "Le code de la construction et de l’habitation est ainsi modifié : I. – A l’article L. 435-1 : 1° Au I : a) Au premier alinéa, les mots : « , sur le territoire de la France métropolitaine, » sont supprimés ; b) Il est complété par un alinéa ainsi rédigé : « La somme des",
+      "texte_tronque": true,
+      "source_url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B3210.html"
     }
   },
   "non_rattaches": {
@@ -32808,21 +32889,11 @@
         "DLR5L17N51481"
       ]
     },
-    "an:17:9698": {
-      "motif": "texte_discute_non_publie_par_le_dossier",
-      "dossier_id": "DLR5L17N54629"
-    },
-    "an:17:9740": {
-      "motif": "texte_discute_non_publie_par_le_dossier",
-      "dossier_id": "DLR5L17N54629"
-    },
-    "an:17:9749": {
-      "motif": "texte_discute_non_publie_par_le_dossier",
-      "dossier_id": "DLR5L17N54629"
-    },
     "an:17:9757": {
-      "motif": "texte_discute_non_publie_par_le_dossier",
-      "dossier_id": "DLR5L17N54629"
+      "motif": "article_absent_du_texte",
+      "dossier_id": "DLR5L17N54629",
+      "texte_id": "PRJLANR5L17B3210",
+      "article": "57 et état a"
     },
     "an:17:988": {
       "motif": "texte_a_gabarit_non_lu",
