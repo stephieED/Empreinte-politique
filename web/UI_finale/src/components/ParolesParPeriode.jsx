@@ -92,7 +92,7 @@ function Intervention({ i, mot = '' }) {
   return (
     <li className="pp-item">
       <div className="pp-quand">
-        {jour(i.date)}
+        {i.date ? jour(i.date) : 'date non publiée'}
         <em>{i.libelleNature}</em>
       </div>
       <div className="pp-quoi">
@@ -155,7 +155,12 @@ function Intervention({ i, mot = '' }) {
           </a>
         ) : lienDocumentaire(i.sourceUrl) && (
           <a className="pp-source" href={lienDocumentaire(i.sourceUrl)} target="_blank" rel="noreferrer">
-            Source · Assemblée nationale
+            {/* La source se nomme d'après l'adresse (#1446) : une intervention
+                à Strasbourg mène au site du Parlement européen, et le libellé
+                disait « Assemblée nationale » pour toutes (§2 règle 2). */}
+            {/(^|\.)europarl\.europa\.eu\//.test(String(lienDocumentaire(i.sourceUrl)).replace(/^https?:\/\//, ''))
+              ? 'Source · Parlement européen'
+              : 'Source · Assemblée nationale'}
           </a>
         )}
       </div>
@@ -255,6 +260,8 @@ export default function ParolesParPeriode({
   };
 
   const periodeCourante = tout ? null : periodes[indexSur];
+  // Le titre : sous « toutes les périodes », une période unique se nomme elle-même.
+  const laPeriode = periodeCourante ?? periodes[0];
   const sujetsVus = tousSujets ? sujets : sujets.slice(0, SUJETS_REPLIES);
 
   return (
@@ -307,13 +314,15 @@ export default function ParolesParPeriode({
         {etiquette}
         <div className="pp-tete">
           <h3 className="pp-titre">
-            {tout ? 'Toutes les périodes' : titreDePeriode(periodeCourante)}
+            {/* Une seule période (le versant européen) : « Toutes les
+                périodes · 1 périodes » n'avait pas de sens (#1446). */}
+            {tout && periodes.length > 1 ? 'Toutes les périodes' : (laPeriode.libelle ?? titreDePeriode(laPeriode))}
           </h3>
           <span className="pp-quand-periode">
-            {tout
+            {tout && periodes.length > 1
               ? `${mois(periodes[0].debut)} → ${mois(periodes[periodes.length - 1].fin)} · ${formatNumber(periodes.length)} périodes`
-              : `${mois(periodeCourante.debut)} → ${mois(periodeCourante.fin)}${
-                  periodeCourante.groupes.length ? ` · ${periodeCourante.groupes.join(', ')}` : ''
+              : `${laPeriode.debut ? `${mois(laPeriode.debut)} → ${mois(laPeriode.fin)}` : ''}${
+                  laPeriode.groupes.length ? ` · ${laPeriode.groupes.join(', ')}` : ''
                 }`}
           </span>
         </div>

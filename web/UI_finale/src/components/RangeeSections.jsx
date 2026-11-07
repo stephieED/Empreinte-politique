@@ -33,7 +33,7 @@ const HAUT = 'haut-de-fiche';
  * section est « en cours » dès que son titre est passé dessous. */
 const SEUIL_LECTURE = 160;
 /* L'avance prise au clic, pour que la rangée ne recouvre pas le titre demandé. */
-const AVANCE_ANCRE = 150;
+export const AVANCE_ANCRE = 150;
 
 function lireSections() {
   const main = document.querySelector('.explorer-profile-zone main');

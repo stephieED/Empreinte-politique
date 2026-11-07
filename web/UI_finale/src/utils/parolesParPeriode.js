@@ -261,18 +261,28 @@ export function parolesParQualite(interventions, { roles = [], gouvernements = [
       return { qualite: q, libelle: LIBELLE_QUALITE[q], total: lot.length, periodes: periodesDeParole(qualifiees) };
     }
     const datees = qualifiees.filter((i) => i.date).sort((a, b) => (a.date < b.date ? -1 : 1));
+    /* SANS DATE, MONTRÉES QUAND MÊME (#1446, choix de la propriétaire du
+     * 06/11/2026). Côté européen il n'y a qu'une période, sans découpage : une
+     * intervention sans date n'a nulle part ailleurs où aller. Elle suit les
+     * datées, avec la mention « date non publiée ». Philippot : 903 sur 1 587
+     * manquaient, dont ses 766 explications de vote. */
+    const sansDate = qualifiees.filter((i) => !i.date);
     return {
       qualite: q,
       libelle: LIBELLE_QUALITE[q],
       total: lot.length,
-      periodes: datees.length ? [{
+      periodes: lot.length ? [{
         cle: 'pe',
+        // Le titre de la carte, celui de la carte européenne des votes
+        // (`figureVotesEuropeens`) : il n'y a ni banc ni gouvernement à
+        // Strasbourg, et « Repère non publié » se lisait comme un manque (#1446).
+        libelle: 'Au Parlement européen',
         banc: null,
         gouvernementId: null,
         gouvernement: null,
-        debut: datees[0].date,
-        fin: datees[datees.length - 1].date,
-        interventions: datees,
+        debut: datees[0]?.date ?? null,
+        fin: datees[datees.length - 1]?.date ?? null,
+        interventions: [...datees, ...sansDate],
         groupes: [],
         sansRepere: true,
         sansDecoupage: true,

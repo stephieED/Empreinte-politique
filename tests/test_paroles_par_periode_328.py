@@ -314,7 +314,9 @@ def test_une_date_illisible_sort_du_decoupage_et_le_dit(module: str, fiche: str)
     assert "export function dateISO" in module
     assert "i.date)" in module
     adaptateur = sans_commentaires(ADAPTATEUR.read_text(encoding="utf-8"))
-    assert "sansDate: couvertureParoles.total - couvertureParoles.datees" in adaptateur
+    # Depuis #1446, seules les interventions à l'Assemblée sortent du découpage :
+    # côté européen, une intervention sans date est montrée dans la période unique.
+    assert "sansDate: parolesQualifiees.filter((q, k) => !q.date && qualiteDeParole(parolesUniques[k]) !== QUALITE_PE).length" in adaptateur
     assert "date exploitable" in fiche
 
 

@@ -60,6 +60,8 @@ import {
   periodesDeParole,
   plafondParPeriode,
   plafondToutesPeriodes,
+  QUALITE_PE,
+  qualiteDeParole,
   qualifierInterventions,
   rattacherQuestions,
 } from '../utils/parolesParPeriode';
@@ -548,7 +550,11 @@ export function buildCandidateView(
       sansVerbatim: couvertureParoles.total - couvertureParoles.verbatim,
       sansQualite: couvertureParoles.total - couvertureParoles.fonction,
       themeSeul: couvertureParoles.themeSeul,
-      sansDate: couvertureParoles.total - couvertureParoles.datees,
+      // Hors du découpage par période : les interventions sans date à
+      // l'Assemblée. Côté européen, elles sont montrées (#1446). La qualité se
+      // lit sur l'entrée d'origine — la qualifiée ne garde pas l'institution —,
+      // et `qualifierInterventions` garde l'ordre.
+      sansDate: parolesQualifiees.filter((q, k) => !q.date && qualiteDeParole(parolesUniques[k]) !== QUALITE_PE).length,
     },
   };
 

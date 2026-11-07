@@ -9,23 +9,26 @@ import { useLocation } from 'react-router-dom';
  * de lui-même la page où le lecteur arrive.
  *
  * L'APPLICATION CHANGE DE PAGE SANS RECHARGER : le script ne le voit pas. Ce
- * composant compte donc chaque adresse suivante, une fois : une adresse égale à
- * la dernière comptée ne l'est pas de nouveau (la première est celle que le
- * script compte en se chargeant). Si le script n'est pas encore là, ou qu'un
- * bloqueur l'a retiré, rien ne se passe.
+ * composant compte donc chaque page suivante, une fois : une page égale à la
+ * dernière comptée ne l'est pas de nouveau (la première est celle que le script
+ * compte en se chargeant). Si le script n'est pas encore là, ou qu'un bloqueur
+ * l'a retiré, rien ne se passe.
+ *
+ * UNE PAGE, C'EST LE CHEMIN SEUL (#1448). Le mot cherché vit dans l'adresse
+ * (`?mot=`) et change à chaque lettre : compter l'adresse entière envoyait
+ * quatre pages vues pour « eau ». Un mot ou une période ne change pas de page.
  *
  * Il ne compte pas en local : GoatCounter ignore `localhost` de lui-même. */
 export default function CompteurDeVisites() {
-  const { pathname, search } = useLocation();
-  // L'adresse déjà comptée : au départ, celle que le script compte au chargement.
-  const derniere = useRef(pathname + search);
+  const { pathname } = useLocation();
+  // La page déjà comptée : au départ, celle que le script compte au chargement.
+  const derniere = useRef(pathname);
 
   useEffect(() => {
-    const chemin = pathname + search;
-    if (chemin === derniere.current) return;
-    derniere.current = chemin;
-    window.goatcounter?.count?.({ path: chemin });
-  }, [pathname, search]);
+    if (pathname === derniere.current) return;
+    derniere.current = pathname;
+    window.goatcounter?.count?.({ path: pathname });
+  }, [pathname]);
 
   return null;
 }

@@ -106,6 +106,14 @@ Format d'un profil de gouvernement v1 :
             # de commission au fond dans un référentiel qui est celui de l'AN,
             # et le Sénat est hors périmètre (#528).
             "commission_non_resolue": {"motif": "depot_senat"},
+            # #1444 — la PROMULGATION, à côté du statut et jamais à sa place :
+            # le statut dit la voie suivie (CMP, 49.3), la promulgation dit que
+            # la loi est publiée. Lue dans `pivot_data/textes_promulgues.json`
+            # par `dossier_id`. `null` : la table ne porte pas ce texte.
+            "promulgation": {"date": "2026-02-20", "numero_loi": "2026-103"},
+            # Présent SEULEMENT quand la table n'a pas été lue : `null` seul
+            # dirait alors « pas promulgué » sans le savoir (§2 règle 5).
+            # "promulgation_non_resolue": {"motif": "index_indisponible"},
         }
     ],
 
@@ -156,6 +164,11 @@ Format d'un profil de gouvernement v1 :
         # petit que `membres_distincts`, et l'écart se VOIT au lieu d'être
         # dilué dans un pourcentage.
         "membres_avec_interventions": 12,
+        # #1444 : combien de textes[] portent une promulgation, QUELLE QUE SOIT
+        # la voie suivie — un texte `adopte_cmp` promulgué compte ici et sous
+        # `adopte_cmp`, donc ce nombre ne s'ajoute pas à `par_statut`. `null`
+        # quand la table des lois promulguées n'a pas été lue.
+        "promulgues": 1,
         "par_statut": {
             "depose": 0,
             "navette_en_cours": 0,
@@ -254,6 +267,11 @@ KNOWN_MOTIFS_COMMISSION_NON_RESOLUE: frozenset[str] = frozenset({
     "absente_de_l_index",
     "index_indisponible",
 })
+
+#: Pourquoi un texte ne porte pas sa promulgation (#1444). Un seul motif : la
+#: table des lois promulguées n'a pas été lue. Un texte que la table lue ne
+#: porte pas publie `promulgation: null`, sans motif — c'est un fait.
+MOTIF_PROMULGATIONS_INDISPONIBLES = "index_indisponible"
 
 # Nomenclature fermée de l'issue d'un texte porté par le gouvernement.
 # Distincte de KNOWN_STADES_PROCEDURAUX (schema_pivot.py) qui encode une
@@ -400,6 +418,7 @@ def make_empty_profil_gouvernement(gouvernement_id: str, nom: str) -> dict[str, 
             "membres_recenses": None,
             "membres_distincts": 0,
             "membres_avec_interventions": 0,
+            "promulgues": None,
             "par_statut": make_empty_comptages_statuts(),
         },
         "sources": [],
@@ -657,12 +676,42 @@ def validate_profil_gouvernement(profil: dict[str, Any]) -> list[str]:
                             f"{sorted(KNOWN_MOTIFS_COMMISSION_NON_RESOLUE)}."
                         )
 
+            # #1444 — la promulgation, et son motif d'absence : jamais les deux.
+            promulgation = texte.get("promulgation")
+            promulgation_nr = texte.get("promulgation_non_resolue")
+            if promulgation is not None and (
+                not isinstance(promulgation, dict)
+                or not isinstance(promulgation.get("date"), str)
+            ):
+                errors.append(
+                    f"textes[{i}].promulgation doit être null ou un dict portant sa date."
+                )
+            if promulgation is not None and promulgation_nr is not None:
+                errors.append(
+                    f"textes[{i}] porte à la fois promulgation et promulgation_non_resolue."
+                )
+            if promulgation_nr is not None and (
+                not isinstance(promulgation_nr, dict)
+                or promulgation_nr.get("motif") != MOTIF_PROMULGATIONS_INDISPONIBLES
+            ):
+                errors.append(
+                    f"textes[{i}].promulgation_non_resolue.motif inconnu : "
+                    f"{promulgation_nr!r}."
+                )
+
             errors.extend(_erreurs_initiateurs(i, texte["initiateurs"], membres_connus))
 
     comptages = profil.get("comptages")
     if comptages is not None and not isinstance(comptages, dict):
         errors.append("'comptages' doit être un dict.")
     elif isinstance(comptages, dict):
+        promulgues = comptages.get("promulgues")
+        if promulgues is not None and (
+            not isinstance(promulgues, int) or isinstance(promulgues, bool) or promulgues < 0
+        ):
+            errors.append(
+                f"'comptages.promulgues' doit être un entier positif ou null, reçu : {promulgues!r}."
+            )
         par_statut = comptages.get("par_statut")
         if not isinstance(par_statut, dict):
             errors.append("'comptages.par_statut' doit être un dict.")

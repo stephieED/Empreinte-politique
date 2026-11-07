@@ -40,10 +40,10 @@ Ce que ce fichier existe pour rendre visible. `tests/test_decisions_par_module.p
 | `src/actes_reglementaires.py` | 4 |
 | `src/build_amendements_index.py` | 4 |
 | `src/json_io.py` | 4 |
+| `src/textes_promulgues.py` | 4 |
 | `src/audit_pipeline.py` | 3 |
 | `src/budget_collecte.py` | 3 |
 | `src/purge_mandats_dupliques.py` | 3 |
-| `src/textes_promulgues.py` | 3 |
 | `src/audit_gouvernement_dataset.py` | 2 |
 | `src/avertissements.py` | 2 |
 | `src/candidate_profile_ue.py` | 2 |
@@ -781,7 +781,7 @@ Le mentionnent sans le gouverner : [`amendements-legislatures-figees`](decisions
 | [Le plafond de lecture du roster, et le commit qui ne paie plus pour une source lente (#518, second incident) (2026-08-24)](decisions/plafond-roster-et-commit-518.md) | `EXIT_COLLECTE_INCOMPLETE` |
 | [La fiche rattache ses membres par `organe_ref`, plus par un libellé comparé entre deux sources (#996, lot 4) (2026-09-18)](decisions/rattachement-des-membres-par-organe-996.md) | `charger_membres_roster` |
 
-Le mentionnent sans le gouverner : [`audit-599-projection-blocs-lus-628`](decisions/audit-599-projection-blocs-lus-628.md), [`generation-fiches-lignees-836`](decisions/generation-fiches-lignees-836.md), [`gouvernement-ci-integration`](decisions/gouvernement-ci-integration.md), [`gouvernement-profile-rattachement`](decisions/gouvernement-profile-rattachement.md), [`lectures-pipeline-par-projection-635`](decisions/lectures-pipeline-par-projection-635.md).
+Le mentionnent sans le gouverner : [`audit-599-projection-blocs-lus-628`](decisions/audit-599-projection-blocs-lus-628.md), [`generation-fiches-lignees-836`](decisions/generation-fiches-lignees-836.md), [`gouvernement-ci-integration`](decisions/gouvernement-ci-integration.md), [`gouvernement-profile-rattachement`](decisions/gouvernement-profile-rattachement.md), [`lectures-pipeline-par-projection-635`](decisions/lectures-pipeline-par-projection-635.md), [`promulgation-a-cote-du-statut-1444`](decisions/promulgation-a-cote-du-statut-1444.md).
 
 ## `src/generate_group_profiles.py`
 
@@ -827,7 +827,7 @@ Le mentionnent sans le gouverner : [`plafond-roster-et-commit-518`](decisions/pl
 
 ## `src/gouvernement_profile.py`
 
-6 décision(s) le gouvernent ; le module en cite 1.
+6 décision(s) le gouvernent ; le module en cite 2.
 
 | Décision | Nomme |
 | --- | --- |
@@ -1645,12 +1645,13 @@ Le mentionnent sans le gouverner : [`archive-dossiers-xiv-1019`](decisions/archi
 
 ## `src/textes_promulgues.py`
 
-3 décision(s) le gouvernent ; le module en cite 0.
+4 décision(s) le gouvernent ; le module en cite 0.
 
 | Décision | Nomme |
 | --- | --- |
 | [Une loi se date par sa dernière adoption à l'Assemblée (#1320, 2026-10-21)](decisions/adoption-an-lois-promulguees-1320.md) | `chambre_premiere_lecture` |
 | [La fiche d'une législature lit des fichiers par objet, jamais un fichier par législature (#1314, 2026-10-22)](decisions/legislatures-et-dossiers-par-objet-1314.md) | `derniere_adoption_an` |
+| [La promulgation d'un texte de gouvernement se publie à côté de son statut (#1444) (2026-11-06)](decisions/promulgation-a-cote-du-statut-1444.md) | `promulgation` |
 | [Les textes promulgués sont une population du Parlement, pas d'un gouvernement (2026-09-23)](decisions/textes-promulgues-population-du-parlement.md) | `chambre_premiere_lecture` |
 
 Le mentionnent sans le gouverner : [`actes-sur-la-fiche-de-gouvernement-1029`](decisions/actes-sur-la-fiche-de-gouvernement-1029.md), [`budgets-par-gouvernement-1053`](decisions/budgets-par-gouvernement-1053.md), [`dila-et-amo30-en-jobs-1129`](decisions/dila-et-amo30-en-jobs-1129.md), [`fiche-legislature-1314`](decisions/fiche-legislature-1314.md), [`finances-etat-collecte-1053`](decisions/finances-etat-collecte-1053.md), [`liens-des-actes-vers-les-lois`](decisions/liens-des-actes-vers-les-lois.md), [`lois-absentes-de-l-open-data-an-1424`](decisions/lois-absentes-de-l-open-data-an-1424.md), [`table-figee-numero-de-loi-vers-jorftext`](decisions/table-figee-numero-de-loi-vers-jorftext.md).

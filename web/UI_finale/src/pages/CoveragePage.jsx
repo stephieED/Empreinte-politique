@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import SchemaSources from '../components/SchemaSources';
 import EnTeteSite from '../components/EnTeteSite';
 import FriseCouverture from '../components/FriseCouverture';
@@ -32,14 +31,10 @@ const jour = (d) => (d ? d.split('-').reverse().join('.') : '');
 
 export default function CoveragePage() {
   const { data, loading, error } = useAsyncData(loadCouverture, []);
-  const { hash } = useLocation();
-
-  /* L'ANCRE ATTEND LES DONNÉES. Les renvois des fiches mènent à `#frise`, et la
-   * frise n'existe qu'une fois la couverture chargée : le routeur ne suit pas
-   * l'ancre de lui-même, et un saut au montage ne trouverait rien. */
-  useEffect(() => {
-    if (data && hash) document.getElementById(hash.slice(1))?.scrollIntoView();
-  }, [data, hash]);
+  /* L'ANCRE ATTEND LES DONNÉES : `#frise` n'existe qu'une fois la couverture
+   * chargée. C'est `SuiviDeNavigation` qui la suit, pour toutes les pages
+   * (#1448) : un saut propre à la page, ici, partait avant que la liste des
+   * candidats, chargée à part, ait repoussé la frise de 2 191 px. */
 
   return (
     <div className="app-shell">
@@ -156,13 +151,8 @@ function MandatsHorsCouverture({ fiches }) {
  * de la page, et l'inverse non plus. */
 function CandidatsSuivis() {
   const { data, error } = useAsyncData(loadCandidatsSuivis, []);
-  const { hash } = useLocation();
-
-  /* L'accueil renvoie ici (`/sources#candidats`). La section se charge à part
-   * de la couverture : le saut de la page peut passer avant qu'elle existe. */
-  useEffect(() => {
-    if (data && hash === '#candidats') document.getElementById('candidats')?.scrollIntoView();
-  }, [data, hash]);
+  /* L'accueil renvoie ici (`/sources#candidats`) : `SuiviDeNavigation` attend
+   * que la section existe (#1448). */
   if (error) {
     return (
       <section className="static-card static-card--figure cv-card" id="candidats" data-section="Les candidats suivis">

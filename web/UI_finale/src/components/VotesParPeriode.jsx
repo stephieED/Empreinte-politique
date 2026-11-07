@@ -227,8 +227,10 @@ function Colonnes({ votes, positions, matiere, onIsoler, onToutAfficher, ue = fa
                         )}
                       </span>
                       <span className="vp-li-f">
-                        {jour(v.date)} · {v.matiere || MATIERE_NON_ETABLIE.toLowerCase()} ·{' '}
-                        {ue ? v.meta : (LIBELLE_SORT_TEXTE[v.statutTexte] ?? 'sort non établi')}
+                        {jour(v.date)} · {v.matiere || MATIERE_NON_ETABLIE.toLowerCase()}
+                        {/* Côté européen, la source ne publie pas le sort du
+                            texte : la ligne s'arrête au thème (#1446). */}
+                        {!ue && ` · ${LIBELLE_SORT_TEXTE[v.statutTexte] ?? 'sort non établi'}`}
                         {v.procedure49_3 && <b className="vp-49-3">49.3</b>}
                       </span>
                     </li>
@@ -285,15 +287,19 @@ export default function VotesParPeriode({ periodes, portee, reperes, regle, etiq
     [positions, origine, nature],
   );
 
-  const visibles = useMemo(
-    () =>
-      (periode?.votes || [])
-        .filter(garde)
-        .filter((v) => !matiere || (v.matiere || MATIERE_NON_ETABLIE) === matiere)
-        .slice()
-        .reverse(),
-    [periode, garde, matiere],
-  );
+  /* UN TEXTE, UNE LIGNE (#1446). Côté européen, la figure range un texte sous
+   * chacun de ses thèmes (`figureVotesEuropeens`) : sans matière choisie, la
+   * liste le montrait autant de fois, et son en-tête comptait ces doublons
+   * (Glucksmann : « 5 972 textes » pour 1 829) quand les pastilles comptent des
+   * textes distincts. La liste garde la première ligne de chaque texte. */
+  const visibles = useMemo(() => {
+    const vus = new Set();
+    return (periode?.votes || [])
+      .filter(garde)
+      .filter((v) => !matiere || (v.matiere || MATIERE_NON_ETABLIE) === matiere)
+      .filter((v) => (vus.has(v.scrutinId) ? false : (vus.add(v.scrutinId), true)))
+      .reverse();
+  }, [periode, garde, matiere]);
 
   if (!periode) return null;
 

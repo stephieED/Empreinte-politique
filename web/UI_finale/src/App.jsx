@@ -2,6 +2,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import ConstructionBanner from './components/ConstructionBanner';
 import TitreDeLaPage from './components/TitreDeLaPage';
 import CompteurDeVisites from './components/CompteurDeVisites';
+import SuiviDeNavigation from './components/SuiviDeNavigation';
 import ExplorerLayout from './components/ExplorerLayout';
 import LandingPage from './pages/LandingPage';
 import CandidateProfilePage from './pages/CandidateProfilePage';
@@ -26,6 +27,7 @@ function App() {
       <ConstructionBanner />
       <TitreDeLaPage />
       <CompteurDeVisites />
+      <SuiviDeNavigation />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         {/* Layout route sans path propre : les enfants gardent leurs URLs actuelles

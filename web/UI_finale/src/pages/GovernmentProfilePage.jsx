@@ -53,7 +53,9 @@ export default function GovernmentProfilePage() {
     if (!debut || !parMot || !detail) return parMot;
     const liste = (parMot.paroles?.tous || parMot.paroles?.liste || [])
       .map((s) => ({ ...s, porteurs: (detail[s.label] || []).filter((m) => (m.seances || []).some(([d]) => dansLaFenetre(d, debut))).length }))
-      .filter((s) => s.porteurs > 0);
+      .filter((s) => s.porteurs > 0)
+      // Retriés sur les membres de la fenêtre (#1448), comme sans période.
+      .sort((a, b) => b.porteurs - a.porteurs);
     return {
       ...parMot,
       paroles: { ...parMot.paroles, liste, tous: liste, total: liste.length },
@@ -61,7 +63,9 @@ export default function GovernmentProfilePage() {
     };
   }, [parMot, detail, debut]);
 
-  if (loading) return null;
+  /* Sous une période, la fiche attend le détail par membre (#1448) : sans lui,
+   * la liste non filtrée s'affichait sous l'étiquette « depuis le… ». */
+  if (loading || (debut && government && !detail)) return null;
 
   if (!government) {
     return <NotFoundProfile message={`Aucun gouvernement trouvé pour l'identifiant « ${governmentId} ».`} />;

@@ -292,7 +292,8 @@ def test_chaque_figure_porte_le_mot():
     # (`EtiquetteFiltre`), la garde `{mot && …}` est donc tombée ; les figures
     # qui la reçoivent en propriété la reçoivent sous un filtre ACTIF.
     assert source.count("<EtiquetteFiltre mot={mot} />") >= 6
-    assert source.count("etiquette={actif ? <EtiquetteFiltre mot={mot} /> : null}") == 3  # votes, écarts, dit
+    # 4 depuis #1446 : la carte européenne des votes porte aussi le rappel.
+    assert source.count("etiquette={actif ? <EtiquetteFiltre mot={mot} /> : null}") == 4  # votes (2 versants), écarts, dit
     for composant in (VOTES, PAROLES, ECARTS):
         assert "{etiquette}" in _lire(composant)
 

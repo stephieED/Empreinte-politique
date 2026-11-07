@@ -997,6 +997,16 @@ les matières de la traîne sans qu'un seuil ait à le faire (§2 règle 1).
 `comptages.par_statut` est un **dénombrement**, aucun taux ni pourcentage nulle
 part (AGENTS.md §2.1). Le 49.3 est un booléen `sort_49_3` porté par le texte,
 jamais fusionné avec une position de vote (AGENTS.md §2.4).
+**La promulgation se publie à côté du statut, jamais à sa place (#1444).**
+Chaque texte porte `promulgation` (`{date, numero_loi}`, lu dans
+`pivot_data/textes_promulgues.json` par `dossier_id`) ou `null` ; sans table lue,
+`promulgation_non_resolue: {motif: "index_indisponible"}`. `comptages.promulgues`
+compte les textes promulgués **quelle que soit la voie** : un texte `adopte_cmp`
+promulgué compte sous `adopte_cmp` et dans `promulgues`, qui ne s'ajoute donc pas
+à `par_statut` ; `null` sans table lue. Mesuré le 06/11/2026 sur les 12 fiches qui
+ont des textes : 665 des 1 308 textes sont dans la table, alors que
+`par_statut.promulgue` n'en comptait que 70 (Lecornu II : 19 contre 1).
+→ `docs/decisions/promulgation-a-cote-du-statut-1444.md`
 
 `generate_gouvernement_profiles.py` ne fetch le dump et ne charge les pivots
 qu'**une seule fois** pour tout le batch — miroir de `generate_group_profiles.py`,

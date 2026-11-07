@@ -94,6 +94,7 @@ from typing import Any, Callable, Optional
 from licences import appliquer_licence_donnees
 from schema_pivot import cle_tag_thematique, deriver_tags_thematiques, forme_publiee
 from schema_gouvernement import (
+    MOTIF_PROMULGATIONS_INDISPONIBLES,
     KNOWN_CHAMBRES_DEPOT_TEXTE,
     KNOWN_STATUTS_TEXTE_GOUVERNEMENTAL,
     make_empty_comptages_statuts,
@@ -320,6 +321,30 @@ def _commission_du_texte(
     return None, {"motif": motif}
 
 
+def _poser_promulgation(
+    texte: dict[str, Any], promulgations: Optional[dict[str, dict[str, Any]]]
+) -> None:
+    """La promulgation du texte, À CÔTÉ de son statut (#1444).
+
+    Le statut porte la voie suivie (`adopte_cmp`, `adopte_49_3`…), et la
+    promulgation ne la remplace pas : l'écraser effacerait le passage en CMP
+    ou par 49.3 de 189 textes (`docs/decisions/dossiers-multi-archives-origine-document.md`,
+    §2 règle 4). Elle se lit dans `pivot_data/textes_promulgues.json`, par
+    `dossier_id` : `{"date", "numero_loi"}`, ou `null` pour un texte que la
+    table ne porte pas. Sans table lue, `null` ne dirait rien : le texte porte
+    alors `promulgation_non_resolue` (§2 règle 5).
+    """
+    if promulgations is None:
+        texte["promulgation"] = None
+        texte["promulgation_non_resolue"] = {"motif": MOTIF_PROMULGATIONS_INDISPONIBLES}
+        return
+    entree = promulgations.get(texte.get("dossier_id") or "")
+    texte["promulgation"] = (
+        {"date": entree.get("date_promulgation"), "numero_loi": entree.get("numero_loi")}
+        if entree else None
+    )
+
+
 def _select_textes_gouvernement(
     dossiers_gouvernementaux: list[dict[str, Any]],
     g_debut: Optional[date],
@@ -327,6 +352,7 @@ def _select_textes_gouvernement(
     acteur_ref_vers_membre: Optional[dict[str, str]] = None,
     commissions_par_dossier: Optional[dict[str, Any]] = None,
     membres: Optional[list[dict[str, Any]]] = None,
+    promulgations: Optional[dict[str, dict[str, Any]]] = None,
 ) -> tuple[list[dict[str, Any]], dict[str, int], list[str]]:
     """Filtre `dossiers_gouvernementaux` (sortie non filtrée de
     `gouvernement_textes`) sur la période du gouvernement, normalise chaque
@@ -399,6 +425,7 @@ def _select_textes_gouvernement(
         textes[-1]["commission_saisie_au_fond"] = commission
         if non_resolue is not None:
             textes[-1]["commission_non_resolue"] = non_resolue
+        _poser_promulgation(textes[-1], promulgations)
         par_statut[statut] += 1
 
     return textes, par_statut, warnings
@@ -576,6 +603,7 @@ def build_gouvernement_profile(
     membres_roster: Optional[list[dict[str, Any]]] = None,
     organe_ref: Optional[str] = None,
     lire_interventions: Optional[Callable[[str], list[dict[str, Any]]]] = None,
+    promulgations: Optional[dict[str, dict[str, Any]]] = None,
 ) -> dict[str, Any]:
     """Construit un profil de gouvernement à partir des profils pivot
     individuels déjà collectés et des dossiers législatifs d'origine
@@ -644,6 +672,7 @@ def build_gouvernement_profile(
         dossiers_gouvernementaux, g_debut, g_fin, acteur_ref_vers_membre,
         commissions_par_dossier=commissions_par_dossier,
         membres=membres,
+        promulgations=promulgations,
     )
     warnings.extend(textes_warnings)
 
@@ -671,6 +700,13 @@ def build_gouvernement_profile(
     profil_gouvernement["membres"] = membres
     profil_gouvernement["textes"] = textes
     profil_gouvernement["comptages"]["par_statut"] = par_statut
+    # #1444 — les lois promulguées, quelle que soit la voie suivie : un texte
+    # `adopte_cmp` promulgué compte ici ET sous `adopte_cmp`. `None` sans
+    # table lue, jamais `0` (§2 règle 5).
+    profil_gouvernement["comptages"]["promulgues"] = (
+        None if promulgations is None
+        else sum(1 for t in textes if t.get("promulgation"))
+    )
     # #996 — le dénominateur de `membres[]` : ce que l'AN recense, profil ou
     # non. `None` quand la liste ne le porte pas : un dénominateur inventé
     # ferait lire « 2 des 2 membres » là où il en manque 19 (§2 règle 5).

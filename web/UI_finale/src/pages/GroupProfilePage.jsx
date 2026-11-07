@@ -1,5 +1,5 @@
 import { useDeferredValue, useMemo } from 'react';
-import { Navigate, useParams, useSearchParams } from 'react-router-dom';
+import { Navigate, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { getDebatsLignee, getDonneesAu, getIndexExtraitsLignee, getLigneeProfile, getTablesAmendementsLignee, ligneeDeLaFiche } from '../data';
 import { PeriodeContext } from '../components/Recherche';
 import { debutDeFenetre, periodeValide } from '../utils/filtrePeriode';
@@ -15,6 +15,7 @@ import { filtrerLignee } from '../utils/filtreLignee';
  * lien partagé ne casse pas parce que le découpage a changé. */
 export default function GroupProfilePage() {
   const { groupId } = useParams();
+  const { search, hash } = useLocation();
   const { data, loading } = useAsyncData(async () => {
     const lignee = await getLigneeProfile(groupId);
     if (lignee) return { lignee };
@@ -58,7 +59,9 @@ export default function GroupProfilePage() {
   );
 
   if (loading) return null;
-  if (data?.redirection) return <Navigate to={`/groupes/${data.redirection}`} replace />;
+  /* L'ancienne adresse d'un groupe (`/groupes/AN-SOC-17`) mène à sa lignée en
+   * gardant le mot, la période et l'ancre d'un lien partagé (#1448). */
+  if (data?.redirection) return <Navigate to={{ pathname: `/groupes/${data.redirection}`, search, hash }} replace />;
   if (!lignee) {
     return <NotFoundProfile message={`Aucun groupe trouvé pour l'identifiant « ${groupId} ».`} />;
   }

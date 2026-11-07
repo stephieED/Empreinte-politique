@@ -29,8 +29,11 @@ def test_l_application_compte_chaque_changement_de_page_une_fois() -> None:
     app = (UI / "src" / "App.jsx").read_text(encoding="utf-8")
     assert "<CompteurDeVisites />" in app
     compteur = (UI / "src" / "components" / "CompteurDeVisites.jsx").read_text(encoding="utf-8")
-    assert "window.goatcounter?.count?.({ path: chemin })" in compteur
-    assert "if (chemin === derniere.current) return;" in compteur
+    # Le chemin seul (#1448) : `?mot=` change à chaque lettre tapée, et compter
+    # l'adresse entière envoyait une page vue par lettre.
+    assert "window.goatcounter?.count?.({ path: pathname })" in compteur
+    assert "if (pathname === derniere.current) return;" in compteur
+    assert "search" not in compteur.split("export default", 1)[1]
 
 
 def test_chaque_article_et_l_index_portent_le_compteur() -> None:

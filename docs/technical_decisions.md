@@ -20,6 +20,7 @@ La version d'avant la découpe (30/08/2026, 18 404 lignes, 1 054 Ko) est figée 
 
 ---
 
+- `2026-11-06` <a id="promulgation-a-cote-du-statut-1444"></a>[La promulgation d'un texte de gouvernement se publie à côté de son statut (#1444)](decisions/promulgation-a-cote-du-statut-1444.md)
 - `2026-11-05` <a id="index-amendements-sans-cles-nulles-1265"></a>[L'index des amendements n'écrit plus deux clés nulles sans objet (#1265, #580)](decisions/index-amendements-sans-cles-nulles-1265.md)
 - `2026-11-05` <a id="scrutins-pas-encore-collectes-1248"></a>[Un scrutin plus récent que notre index n'est pas encore collecté, pas absent (#1248)](decisions/scrutins-pas-encore-collectes-1248.md)
 - `2026-11-04` <a id="cosignataires-de-la-copie-du-premier-signataire-1429"></a>[La liste des cosignataires d'un amendement est celle de la copie de son premier signataire (#1429)](decisions/cosignataires-de-la-copie-du-premier-signataire-1429.md)

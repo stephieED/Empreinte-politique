@@ -141,6 +141,10 @@ export function filtrerLignee(lignee, saisie, debats = null, periode = null, deb
         ? (fenetre ? complete : [])
           .map((s) => ({ ...s, porteurs: s.parFenetre?.[periode] ?? null, denominateur: fenetre?.nb_membres ?? null }))
           .filter((s) => s.porteurs > 0 && retenu(s)).map(marque)
+          /* Retriés sur les membres de la fenêtre (#1448) : la section montre
+             les débats où le plus de membres sont intervenus, et l'ordre de la
+             législature mettait « 1 » entre « 24 » et « 32 ». */
+          .sort((a, b) => b.porteurs - a.porteurs)
         : complete.filter(retenu).map(marque);
       return {
         ...m,

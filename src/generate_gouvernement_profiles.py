@@ -81,6 +81,7 @@ def generate_all(
     validate: bool = False,
     commissions_par_dossier: Optional[dict[str, Any]] = None,
     membres_roster: Optional[list[dict[str, Any]]] = None,
+    promulgations: Optional[dict[str, dict[str, Any]]] = None,
 ) -> Any:
     """Génère tous les profils de gouvernement de `gouvernements`, un seul
     chargement des profils pivot et un seul fetch des dossiers législatifs
@@ -155,6 +156,7 @@ def generate_all(
                 membres_roster=membres_roster,
                 organe_ref=gouvernement.get("organe_ref"),
                 lire_interventions=lire_interventions,
+                promulgations=promulgations,
             )
         except Exception as exc:  # noqa: BLE001 - un échec sur un gouvernement ne doit pas arrêter les autres
             print(f"  [!] Échec de génération pour {gouvernement_id} : {exc}", file=sys.stderr)
@@ -218,6 +220,18 @@ def _build_arg_parser() -> argparse.ArgumentParser:
             "Index dossier_id -> commission saisie au fond (#689), d'où les textes "
             "tirent leur matière. Absent, illisible ou vide : chaque texte publie "
             "`commission_non_resolue.motif = index_indisponible` — jamais un silence."
+        ),
+    )
+    parser.add_argument(
+        "--textes-promulgues",
+        default="pivot_data/textes_promulgues.json",
+        metavar="FICHIER",
+        help=(
+            "Table dossier_id -> promulgation (#1444), écrite plus tôt dans le même "
+            "job par textes_promulgues.py. Chaque texte y prend `promulgation` "
+            "(date, numéro de loi), à côté de son statut. Absente, illisible ou "
+            "vide : chaque texte publie `promulgation_non_resolue`, et "
+            "`comptages.promulgues` vaut null."
         ),
     )
     parser.add_argument(
@@ -315,6 +329,34 @@ def charger_commissions_dossiers(chemin: Optional[Path]) -> Optional[dict[str, A
     return commissions
 
 
+def charger_promulgations(chemin: Optional[Path]) -> Optional[dict[str, dict[str, Any]]]:
+    """Table `dossier_id` → entrée de `textes_promulgues.json`, ou `None` (#1444).
+
+    Même contrat que `charger_commissions_dossiers` : une table vide vaut une
+    table absente, pour qu'un fichier manquant ne se lise pas « aucune loi
+    promulguée »."""
+    if chemin is None:
+        return None
+    try:
+        with open(chemin, encoding="utf-8") as f:
+            charge = json.load(f)
+    except (OSError, json.JSONDecodeError) as exc:
+        print(
+            f"  [!] Table des lois promulguées illisible ({chemin}) : {exc}. "
+            "Les textes porteront `promulgation_non_resolue`.",
+            file=sys.stderr,
+        )
+        return None
+    textes = (charge or {}).get("textes")
+    if not isinstance(textes, dict) or not textes:
+        print(
+            f"  [!] Table des lois promulguées vide ({chemin}) : traitée comme absente (#1444).",
+            file=sys.stderr,
+        )
+        return None
+    return {k: v for k, v in textes.items() if isinstance(v, dict)}
+
+
 def main(argv: Optional[list[str]] = None) -> int:
     parser = _build_arg_parser()
     args = parser.parse_args(argv)
@@ -352,6 +394,8 @@ def main(argv: Optional[list[str]] = None) -> int:
         out_dir=out_dir,
         validate=args.validate,
         commissions_par_dossier=commissions_par_dossier,
+        promulgations=charger_promulgations(
+            Path(args.textes_promulgues) if args.textes_promulgues else None),
         membres_roster=charger_membres_roster(
             Path(args.rosters_bruts) if args.rosters_bruts else None),
     )

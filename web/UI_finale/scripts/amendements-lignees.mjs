@@ -6,6 +6,14 @@
 // des membres, l'index par législature et `commissions_dossiers.json` — par la
 // règle écrite UNE fois dans `src/utils/lignee.js` (`repartitionParCommission`).
 //
+// PAR APPARTENANCE (#1445, 06/11/2026). Depuis #1175, la fiche de groupe ne
+// compte une signature que si l'amendement a été déposé un jour où son
+// signataire siégeait au groupe. Le recompte d'ici prenait tous les
+// amendements des membres sur la législature : il dépassait la fiche sur
+// 26 maillons AN sur 38, et leur carte n'était plus servie. Il applique
+// désormais la même règle (`periodesDAppartenance`, `dansPeriodes`, jumelles
+// de `periodes_d_appartenance` et `_dans_periodes` dans `src/group_profile.py`).
+//
 // LE CONTRÔLE, ET CE QU'IL DÉCIDE. Chaque type de déposant recompté est comparé
 // à `amendements_agreges.par_type_deposant[type].nb_amendements` de la fiche.
 // Un écart n'est pas arrondi : la répartition de ce type n'est PAS publiée pour
@@ -24,6 +32,31 @@ import { TYPES_DEPOSANT_GROUPE, qualiteDuRole, repartitionParCommission, textesD
 import { vocabulairesDesFiches } from '../src/utils/amendementsMots.js';
 
 const lire = (p) => JSON.parse(readFileSync(p, 'utf-8'));
+
+/* Les périodes d'appartenance d'une entrée `membres[]`, ou `null` si elle n'est
+ * pas datée : `periodes[]` quand la source les donne (#809), sinon le couple
+ * `debut_dans_groupe` / `fin_dans_groupe`. Jumelle de `periodes_d_appartenance`. */
+export function periodesDAppartenance(membre) {
+  const brutes = Array.isArray(membre?.periodes) ? membre.periodes.filter((p) => p && p.debut) : [];
+  if (brutes.length) return brutes.map((p) => [p.debut, p.fin ?? null]);
+  if (membre?.debut_dans_groupe) return [[membre.debut_dans_groupe, membre.fin_dans_groupe ?? null]];
+  return null;
+}
+
+/* `jour` (AAAA-MM-JJ) tombe-t-il dans l'une des périodes ? Bornes incluses, une
+ * borne absente est ouverte. Jumelle de `_dans_periodes`. */
+export function dansPeriodes(jour, periodes) {
+  return periodes.some(([debut, fin]) => (debut || '') <= jour && jour <= (fin || '9999-12-31'));
+}
+
+/* Une signature compte si l'amendement a été déposé pendant l'appartenance de
+ * son signataire (#1175) ; sans date, ou sans période datée, elle est gardée
+ * (§2 règle 5). Un amendement cosigné entre par n'importe quel signataire. */
+function retenuPourLeGroupe(listesDePeriodes, date) {
+  if (!date) return true;
+  const jour = String(date).slice(0, 10);
+  return listesDePeriodes.some((periodes) => periodes == null || dansPeriodes(jour, periodes));
+}
 
 /**
  * `fiches` : Map `fichier` → fiche de groupe. Rend une Map `fichier` →
@@ -45,7 +78,7 @@ export function repartitionsDesMaillons({ fiches, profilesDir, amendementsDir, c
     const leg = groupe.legislature == null ? null : String(groupe.legislature);
     if (!leg || groupe.chambre !== 'AN') continue;
     if (!parLegislature.has(leg)) parLegislature.set(leg, []);
-    parLegislature.get(leg).push({ fichier, groupe, ids: new Set(), textes: [] });
+    parLegislature.get(leg).push({ fichier, groupe, ids: new Set(), candidats: new Map(), textes: [] });
   }
 
   for (const [leg, maillons] of parLegislature) {
@@ -56,7 +89,7 @@ export function repartitionsDesMaillons({ fiches, profilesDir, amendementsDir, c
     for (const m of maillons) {
       for (const membre of m.groupe.membres || []) {
         if (!maillonsDe.has(membre.membre_id)) maillonsDe.set(membre.membre_id, []);
-        maillonsDe.get(membre.membre_id).push(m);
+        maillonsDe.get(membre.membre_id).push({ m, periodes: periodesDAppartenance(membre) });
       }
     }
     for (const [membreId, siens] of maillonsDe) {
@@ -65,17 +98,27 @@ export function repartitionsDesMaillons({ fiches, profilesDir, amendementsDir, c
       const profil = lire(profilPath);
       for (const a of profil.amendements || []) {
         if (legislatureDeAmendementId(a?.amendement_id) !== leg) continue;
-        for (const m of siens) m.ids.add(a.amendement_id);
+        for (const { m, periodes } of siens) {
+          if (!m.candidats.has(a.amendement_id)) m.candidats.set(a.amendement_id, []);
+          m.candidats.get(a.amendement_id).push(periodes);
+        }
       }
       // Les textes portés, lus dans la même passe : même population, même
       // règle de législature (`textesDuMaillon`, utils/lignee.js).
       for (const t of profil.textes_portes || []) {
         if (t?.legislature == null || String(t.legislature) !== leg || !qualiteDuRole(t.role)) continue;
-        for (const m of siens) m.textes.push(t);
+        for (const { m } of siens) m.textes.push(t);
       }
     }
 
     const index = lire(indexPath);
+    // La date de dépôt est dans l'index : le tri par appartenance se fait ici.
+    for (const m of maillons) {
+      for (const [id, listes] of m.candidats) {
+        if (retenuPourLeGroupe(listes, index.amendements?.[id]?.date)) m.ids.add(id);
+      }
+      m.candidats = null;
+    }
     // Le contenu des exposés (#1029, voie 2), s'il est publié pour cette
     // législature : le vocabulaire de chaque maillon, sur ses seuls amendements.
     const contenuPath = path.join(amendementsDir, `${leg}.contenu.json`);

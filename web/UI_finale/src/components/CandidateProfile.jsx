@@ -1118,7 +1118,12 @@ function Propositions({ amendements, amendementsParVersant, amendementsUe, texte
   const dossiersDeLaMatiere = matiere || mot
     ? (matiere
         ? (figureAmdt.chute?.dossiersParMatiere?.[matiere] || [])
-        : Object.values(figureAmdt.chute?.dossiersParMatiere || {}).flat())
+        // Un dossier européen à plusieurs thèmes est copié sous chacun, avec la
+        // clé `référence§thème` (pivotAdapter) : toutes matières confondues, il
+        // ne se liste qu'une fois (#1446 ; Glucksmann sous « ukraine » : la
+        // même résolution six fois).
+        : [...new Map(Object.values(figureAmdt.chute?.dossiersParMatiere || {}).flat()
+          .map((d) => [String(d.cle).split('§')[0], d])).values()])
         .slice()
         .sort((a, b) => b.n - a.n)
     : [];
@@ -1529,6 +1534,8 @@ function Votes({ votes, cause, mot = '', bulles = null }) {
             portee={europe.portee}
             regle={`${formatNumber(europe.textes)} textes — dernier vote retenu pour chaque texte`}
             reperes={europe.reperes}
+            // Le rappel du mot, comme sur la carte française (#1446).
+            etiquette={actif ? <EtiquetteFiltre mot={mot} /> : null}
             ue
           />
         ) : (

@@ -402,9 +402,11 @@ def test_build_profile_aucun_taux_calcule_dans_comptages():
     # — celui-ci compte les périodes. Deux entiers, toujours aucun taux.
     # #1020 — `membres_avec_interventions` est le troisième entier, dénominateur
     # de `tags_thematiques_agreges`. Toujours aucun taux.
+    # #1444 — `promulgues`, quatrième entier : les lois promulguées, à côté
+    # de `par_statut` et jamais dedans. Toujours aucun taux.
     assert set(profil["comptages"].keys()) == {
         "par_statut", "membres_recenses", "membres_distincts",
-        "membres_avec_interventions"}
+        "membres_avec_interventions", "promulgues"}
     assert profil["comptages"]["membres_recenses"] is None  # non fourni ici
     assert profil["comptages"]["membres_distincts"] == 1
 
@@ -654,3 +656,69 @@ def test_cli_main_unknown_gouvernement_id_returns_error(tmp_path):
         "--gouvernement-id", "gouvernement:INCONNU",
     ])
     assert rc == 1
+
+
+# ---------------------------------------------------------------------------
+# #1444 — la promulgation, à côté du statut
+# ---------------------------------------------------------------------------
+
+#: La loi de finances pour 2026, telle que le corpus la porte au 05/11/2026 :
+#: `adopte_49_3` dans la fiche Lecornu II, promulguée le 20/02/2026 (loi
+#: 2026-103) d'après `pivot_data/textes_promulgues.json`.
+LFI_2026 = "DLR5L17N52428"
+PROMULGATIONS = {LFI_2026: {"date_promulgation": "2026-02-20", "numero_loi": "2026-103"}}
+
+
+def _profil_lecornu(dossiers, promulgations):
+    return build_gouvernement_profile(
+        gouvernement_id="gouvernement:LECORNU_II",
+        nom="Gouvernement Lecornu II",
+        libelle_an="LECORNU",
+        periode_debut="2025-10-12",
+        periode_fin=None,
+        profils=[],
+        dossiers_gouvernementaux=dossiers,
+        promulgations=promulgations,
+    )
+
+
+def test_la_promulgation_se_publie_a_cote_du_49_3_sans_l_effacer():
+    profil = _profil_lecornu(
+        [_dossier(LFI_2026, statut="adopte_49_3", sort_49_3=True, date_depot="2025-10-14")],
+        PROMULGATIONS,
+    )
+    texte = profil["textes"][0]
+    assert texte["statut"] == "adopte_49_3"
+    assert texte["promulgation"] == {"date": "2026-02-20", "numero_loi": "2026-103"}
+    assert "promulgation_non_resolue" not in texte
+    assert profil["comptages"]["promulgues"] == 1
+    assert profil["comptages"]["par_statut"]["adopte_49_3"] == 1
+    assert profil["comptages"]["par_statut"]["promulgue"] == 0
+    assert validate_profil_gouvernement(profil) == []
+
+
+def test_un_texte_absent_de_la_table_n_est_pas_promulgue():
+    profil = _profil_lecornu([_dossier("DLR5L17N55153", date_depot="2025-10-22")], PROMULGATIONS)
+    texte = profil["textes"][0]
+    assert texte["promulgation"] is None and "promulgation_non_resolue" not in texte
+    assert profil["comptages"]["promulgues"] == 0
+
+
+def test_sans_table_la_promulgation_se_declare_inconnue():
+    """§2 règle 5 : sans table lue, `null` ne dirait rien, et `0` mentirait."""
+    profil = _profil_lecornu(
+        [_dossier(LFI_2026, statut="adopte_49_3", sort_49_3=True, date_depot="2025-10-14")], None)
+    texte = profil["textes"][0]
+    assert texte["promulgation"] is None
+    assert texte["promulgation_non_resolue"] == {"motif": "index_indisponible"}
+    assert profil["comptages"]["promulgues"] is None
+    assert validate_profil_gouvernement(profil) == []
+
+
+def test_promulgation_et_motif_d_absence_ne_coexistent_pas():
+    profil = _profil_lecornu(
+        [_dossier(LFI_2026, statut="adopte_49_3", sort_49_3=True, date_depot="2025-10-14")],
+        PROMULGATIONS,
+    )
+    profil["textes"][0]["promulgation_non_resolue"] = {"motif": "index_indisponible"}
+    assert any("promulgation_non_resolue" in e for e in validate_profil_gouvernement(profil))

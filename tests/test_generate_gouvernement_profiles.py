@@ -400,3 +400,19 @@ def test_une_intervention_hors_fenetre_du_membre_ne_traverse_pas_non_plus(tmp_pa
     fiche = json.loads((out_dir / "gouvernement-BAYROU.json").read_text(encoding="utf-8"))
     assert [t["tag"] for t in fiche["tags_thematiques_agreges"]] == ["outre-mer"]
     assert any("hors de la fenêtre" in w for w in fiche["meta"]["warnings"])
+
+
+# ── #1444 — la table des lois promulguées ──────────────────────────────────
+
+def test_charger_promulgations(tmp_path):
+    from generate_gouvernement_profiles import charger_promulgations
+    chemin = tmp_path / "textes_promulgues.json"
+    chemin.write_text(json.dumps({"textes": {"DLR5L17N52428": {
+        "date_promulgation": "2026-02-20", "numero_loi": "2026-103"}}}), encoding="utf-8")
+    assert charger_promulgations(chemin)["DLR5L17N52428"]["numero_loi"] == "2026-103"
+    # Vide ou absente : `None`, pour que la fiche le déclare au lieu de lire
+    # « aucune loi promulguée ».
+    chemin.write_text(json.dumps({"textes": {}}), encoding="utf-8")
+    assert charger_promulgations(chemin) is None
+    assert charger_promulgations(tmp_path / "absent.json") is None
+    assert charger_promulgations(None) is None

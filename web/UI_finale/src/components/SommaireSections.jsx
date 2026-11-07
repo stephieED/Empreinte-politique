@@ -47,7 +47,7 @@ const SEUIL_LECTURE = 144;
 
 /* L'avance prise au clic : sans elle, la rangée collée recouvre exactement le
  * titre qu'on vient de demander. */
-const AVANCE_ANCRE = 114;
+export const AVANCE_ANCRE = 114;
 
 export default function SommaireSections({ libelle = 'Sections de cette fiche' }) {
   const [sections, setSections] = useState([]);

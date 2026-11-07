@@ -64,6 +64,9 @@ def test_make_empty_comptages_defaults():
         # #1020 — naît à 0 comme `membres_distincts`, et pour la même raison :
         # une fiche vide porte zéro membre parlant, ce n'est pas une inconnue.
         "membres_avec_interventions": 0,
+        # #1444 — naît à `None` comme `membres_recenses` : sans table des lois
+        # promulguées lue, le nombre est inconnu, pas nul.
+        "promulgues": None,
         "par_statut": make_empty_comptages_statuts(),
     }
     for statut in KNOWN_STATUTS_TEXTE_GOUVERNEMENTAL:

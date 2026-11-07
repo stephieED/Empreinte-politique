@@ -48,8 +48,19 @@ export default function ExplorerLayout() {
    * et revient avec le bouton précédent. `replace` : chaque lettre tapée n'est
    * pas une page de l'historique. */
   const [params, setParams] = useSearchParams();
-  const mot = params.get('mot') ?? '';
+  const motAdresse = params.get('mot') ?? '';
+  /* LE CHAMP A SA PROPRE VALEUR (#1448). Le routeur rend l'adresse nouvelle en
+   * différé : tapé vite, « carbu » devenait « caru », le champ revenant à
+   * l'adresse d'avant entre deux lettres. Il suit donc la frappe, et ne se
+   * recale que sur une adresse changée d'ailleurs — « Précédent », un lien —,
+   * lue dans la barre, qui est à jour, et non dans le rendu, qui retarde. */
+  const [mot, setMot] = useState(motAdresse);
+  useEffect(() => {
+    const actuel = new URLSearchParams(window.location.search).get('mot') ?? '';
+    setMot((frappe) => (frappe === actuel ? frappe : actuel));
+  }, [motAdresse]);
   const changerMot = (valeur) => {
+    setMot(valeur);
     setParams((p) => {
       const suivant = new URLSearchParams(p);
       if (valeur) suivant.set('mot', valeur);
