@@ -1,6 +1,6 @@
 {
   "schema_version": "scrutins-dossiers-v1",
-  "genere_le": "2026-11-02T23:07:48+0000",
+  "genere_le": "2026-11-09T18:46:17+0000",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "scrutins": {
     "an:15:4352": "DLR5L15N42350",
@@ -860,6 +860,7 @@
     "an:17:9097": "DLR5L17N54951",
     "an:17:9241": "DLR5L17N54898",
     "an:17:9203": "DLR5L17N54901",
+    "an:17:9759": "DLR5L17N54629",
     "an:14:1042": "DLR5L14N33612",
     "an:14:1211": "DLR5L14N34487",
     "an:14:1238": "DLR5L14N34683",
@@ -2749,7 +2750,7 @@
       "sort_49_3": false
     },
     "DLR5L17N54372": {
-      "statut": "adopte",
+      "statut": "navette_en_cours",
       "sort_49_3": false
     },
     "DLR5L17N50911": {
@@ -2937,7 +2938,7 @@
       "sort_49_3": false
     },
     "DLR5L17N51518": {
-      "statut": "adopte",
+      "statut": "navette_en_cours",
       "sort_49_3": false
     },
     "DLR5L17N50689": {
@@ -3289,7 +3290,7 @@
       "sort_49_3": false
     },
     "DLR5L17N52767": {
-      "statut": "navette_en_cours",
+      "statut": "promulgue",
       "sort_49_3": false
     },
     "DLR5L17N50453": {
@@ -4222,6 +4223,10 @@
     },
     "DLR5L17N54901": {
       "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L17N54629": {
+      "statut": "rejete",
       "sort_49_3": false
     }
   },

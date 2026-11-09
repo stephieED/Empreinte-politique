@@ -1,6 +1,6 @@
 {
   "schema_version": "textes-promulgues-v1",
-  "genere_le": "2026-11-03T19:05:16+0000",
+  "genere_le": "2026-11-09T18:45:51+0000",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "textes": {
     "DLR5L14N29639": {
@@ -31399,6 +31399,38 @@
       "senat_statue_apres": false,
       "senat_statue_apres_non_resolu": null,
       "date_derniere_decision_senat": "2026-06-15"
+    },
+    "DLR5L17N52767": {
+      "date_promulgation": "2026-11-03",
+      "numero_loi": "2026-1015",
+      "nor": "MOMO2613546L",
+      "titre": "Abrogation du Code noir",
+      "nature_procedure": "Proposition de loi ordinaire",
+      "commission": {
+        "organe_ref": "PO59051",
+        "sigle": "Lois",
+        "nom": "Commission des lois constitutionnelles, de la législation et de l'administration générale de la République",
+        "type": "COMPER"
+      },
+      "chambre_premiere_lecture": "assemblee_nationale",
+      "jorftext": "JORFTEXT000055047268",
+      "jorftext_autres": null,
+      "source_url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/abrogation_code_noir",
+      "derniere_adoption_an": {
+        "date": "2026-05-28",
+        "mode": "scrutin_public",
+        "mode_non_resolu": null,
+        "scrutin_ids": [
+          "an:17:7002"
+        ],
+        "acte_uid": "L17-VD232207DEC",
+        "code_acte": "AN1-DEBATS-DEC",
+        "libelle_statut": "adoptée"
+      },
+      "derniere_adoption_an_non_resolue": null,
+      "senat_statue_apres": true,
+      "senat_statue_apres_non_resolu": null,
+      "date_derniere_decision_senat": "2026-10-20"
     }
   }
 }

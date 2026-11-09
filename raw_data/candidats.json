@@ -7,7 +7,7 @@
       "decline",
       "officiel"
     ],
-    "derniere_verification": "2026-10-15",
+    "derniere_verification": "2026-11-09",
     "sources_de_veille": [
       "https://lcp.fr/actualites/presidentielle-2027-la-liste-des-candidats-deja-en-lice-et-des-pretendants-436373",
       "https://www.france24.com/fr/france/20260524-france-presidentielle-2027-qui-sont-les-candidats-officiellement-declares",
@@ -1142,6 +1142,16 @@
         }
       ],
       "notes": "Ajouté à la main le 2026-10-15 (#1251), sur vérification de la propriétaire : absent de notre liste, cité comme candidat par la presse du 14-15/10/2026. franceinfo (au 14/10/2026) l'étiquette « Candidat » ; Public Sénat (14/10/2026) le cite parmi les candidats. Date de déclaration non trouvée, laissée vide. Famille politique laissée vide : le champ n'est lu par aucune vue. Slug posé à la main le 2026-10-15 (#1298) : AMO30 lu en entier, aucun acteur à ce nom, donc entrée hors_an dans raw_data/correspondance_acteurs_an.json ; mandats locaux relus dans config/correspondance_elus_rne.json. Slug désormais immuable (#460/#470)."
+    },
+    {
+      "nom": "Teddy Riner",
+      "slug": "teddy-riner",
+      "parti": "Sans étiquette",
+      "famille_politique": null,
+      "statut": "declare",
+      "date_declaration": null,
+      "source": "https://fr.wikipedia.org/wiki/Teddy_Riner",
+      "notes": "Ajouté le 2026-11-09 par src/fetch_candidats_declares.py (déclaré). Slug fabriqué depuis le nom ; l'acteur AN est résolu par identifiant externe et corroboré hors ligne (#757). Famille politique, date et source primaire de la déclaration restent à compléter. Mandats nationaux antérieurs au 19/06/2002 : à relire sur Sycomore et au Journal officiel, puis à inscrire dans config/mandats_anterieurs.json — même une liste vide, qui veut dire « aucun » ; la fiche publie « non relu » jusque-là (#860)."
     }
   ]
 }
