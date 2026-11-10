@@ -1,6 +1,6 @@
 {
   "schema_version": "correspondance-acteurs-an-v2",
-  "genere_le": "2026-11-09T18:54:05+0000",
+  "genere_le": "2026-11-10T18:56:40+0000",
   "source_referentiel": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
   "correspondances": {
     "abdelkader-lahmar": {
@@ -16170,6 +16170,26 @@
       "motif": null,
       "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA606745",
       "verifie_le": "2026-10-22",
+      "origine": "derivee"
+    },
+    "isabelle-delyon": {
+      "identifiants": {
+        "an": "PA796046",
+        "senat": null,
+        "europarl": null,
+        "hatvp": null
+      },
+      "etat_civil": {
+        "civilite": "Mme",
+        "prenom": null,
+        "nom": null,
+        "nom_complet": "Isabelle Delyon",
+        "date_naissance": "1955-08-03"
+      },
+      "ecart": null,
+      "motif": null,
+      "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA796046",
+      "verifie_le": "2026-11-10",
       "origine": "derivee"
     },
     "isabelle-florennes": {

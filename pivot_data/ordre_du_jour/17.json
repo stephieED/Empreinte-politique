@@ -1,7 +1,7 @@
 {
   "schema_version": "ordre-du-jour-v1",
   "legislature": 17,
-  "genere_le": "2026-11-05",
+  "genere_le": "2026-11-10",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/vp/reunions/Agenda.json.zip",
   "seances": [
@@ -59124,7 +59124,7 @@
       "uid": "RUANR5L17S2027IDS30988",
       "date": "2026-11-09",
       "debut": "2026-11-09T16:00:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-09T20:00:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": "CRSANR5L17S2027O1N057",
@@ -59178,10 +59178,10 @@
       "uid": "RUANR5L17S2027IDS30989",
       "date": "2026-11-09",
       "debut": "2026-11-09T21:30:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-10T00:00:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N058",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS30989PT53317",
@@ -59235,7 +59235,7 @@
       "fin": null,
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N059",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS30990PT53318",
@@ -59367,11 +59367,11 @@
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [],
+          "dossiers": [
+            "DLR5L17N51330"
+          ],
           "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2027IDS30992PT53569",
@@ -59448,10 +59448,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N51330",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30992PT53568"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2027IDS30993PT53572",
@@ -60361,7 +60363,7 @@
           "objet": "Discussion de la proposition de loi, adoptée par le Sénat, visant à lutter contre la vie chère en renforçant le droit de la concurrence et de la régulation économique outre-mer",
           "type": "Discussion",
           "etat": "Confirmé",
-          "procedure": "procédure de législation en commission-Article 107-1",
+          "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
             "DLR5L17N51095"
