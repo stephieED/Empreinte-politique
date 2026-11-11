@@ -1,7 +1,7 @@
 {
   "schema_version": "ordre-du-jour-v1",
   "legislature": 17,
-  "genere_le": "2026-11-10",
+  "genere_le": "2026-11-11",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/vp/reunions/Agenda.json.zip",
   "seances": [
@@ -59232,7 +59232,7 @@
       "uid": "RUANR5L17S2027IDS30990",
       "date": "2026-11-10",
       "debut": "2026-11-10T15:00:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-10T19:20:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": "CRSANR5L17S2027O1N059",
@@ -59358,7 +59358,7 @@
       "fin": null,
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N060",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS30992PT53568",
@@ -59420,13 +59420,15 @@
           "uid": "RUANR5L17S2027IDS30992PT53597",
           "objet": "Suite de la discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la résilience des infrastructures critiques et au renforcement de la cybersécurité",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N50731"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N50731",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30990PT53596"
+          },
           "dossier_non_resolu": null
         }
       ]
@@ -59487,13 +59489,15 @@
           "uid": "RUANR5L17S2027IDS30993PT53598",
           "objet": "Suite de la discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la résilience des infrastructures critiques et au renforcement de la cybersécurité",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N50731"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N50731",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30990PT53596"
+          },
           "dossier_non_resolu": null
         },
         {
@@ -59554,13 +59558,15 @@
           "uid": "RUANR5L17S2027IDS30994PT53599",
           "objet": "Suite de la discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la résilience des infrastructures critiques et au renforcement de la cybersécurité",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N50731"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N50731",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30990PT53596"
+          },
           "dossier_non_resolu": null
         },
         {
@@ -59651,13 +59657,15 @@
           "uid": "RUANR5L17S2027IDS30995PT53601",
           "objet": "Suite de la discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la résilience des infrastructures critiques et au renforcement de la cybersécurité",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N50731"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N50731",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30990PT53596"
+          },
           "dossier_non_resolu": null
         }
       ]
@@ -59718,13 +59726,15 @@
           "uid": "RUANR5L17S2027IDS30996PT53603",
           "objet": "Suite de la discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la résilience des infrastructures critiques et au renforcement de la cybersécurité",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N50731"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N50731",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30990PT53596"
+          },
           "dossier_non_resolu": null
         }
       ]
@@ -59785,13 +59795,15 @@
           "uid": "RUANR5L17S2027IDS30997PT53605",
           "objet": "Suite de la discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la résilience des infrastructures critiques et au renforcement de la cybersécurité",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N50731"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N50731",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30990PT53596"
+          },
           "dossier_non_resolu": null
         }
       ]
@@ -60145,6 +60157,19 @@
           }
         },
         {
+          "uid": "RUANR5L17S2027IDS31004PT53670",
+          "objet": "Vote solennel : Pt Sénat résilience des infrastructures critiques et renforcement de la cybersécurité",
+          "type": "Vote solennel",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        },
+        {
           "uid": "RUANR5L17S2027IDS31004PT53335",
           "objet": "Vote solennel sur l'ensemble du projet de loi de finances pour 2027",
           "type": "Vote solennel",
@@ -60264,7 +60289,7 @@
           "objet": "Discussion, en 2e lecture, de la proposition de loi, modifiée par le Sénat, pour retrouver la confiance et l'équilibre dans les rapports locatifs",
           "type": "Discussion",
           "etat": "Confirmé",
-          "procedure": "procédure de législation en commission-Article 107-1",
+          "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
             "DLR5L17N53069"
@@ -60311,7 +60336,7 @@
           "objet": "Discussion, en 2e lecture, de la proposition de loi, modifiée par le Sénat, visant à exercer l’accès à l’emploi, à pérenniser et à étendre progressivement l’expérimentation « territoires zéro chômeur de longue durée » comme solution de retour à l’emploi pour les personnes privées durablement d’emploi",
           "type": "Discussion",
           "etat": "Confirmé",
-          "procedure": "procédure de législation en commission-Article 107-1",
+          "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
             "DLR5L17N51962"
@@ -60439,7 +60464,7 @@
           "objet": "Suite de la discussion, en 2e lecture, de la proposition de loi, modifiée par le Sénat, visant à exercer l’accès à l’emploi, à pérenniser et à étendre progressivement l’expérimentation « territoires zéro chômeur de longue durée » comme solution de retour à l’emploi pour les personnes privées durablement d’emploi",
           "type": "Suite de la discussion",
           "etat": "Confirmé",
-          "procedure": "procédure de législation en commission-Article 107-1",
+          "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
             "DLR5L17N51962"
@@ -60491,7 +60516,7 @@
           "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, visant à lutter contre la vie chère en renforçant le droit de la concurrence et de la régulation économique outre-mer",
           "type": "Suite de la discussion",
           "etat": "Confirmé",
-          "procedure": "procédure de législation en commission-Article 107-1",
+          "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
             "DLR5L17N51095"
@@ -60567,7 +60592,7 @@
           "objet": "Suite de la discussion, en 2e lecture, de la proposition de loi, modifiée par le Sénat, visant à exercer l’accès à l’emploi, à pérenniser et à étendre progressivement l’expérimentation « territoires zéro chômeur de longue durée » comme solution de retour à l’emploi pour les personnes privées durablement d’emploi",
           "type": "Suite de la discussion",
           "etat": "Confirmé",
-          "procedure": "procédure de législation en commission-Article 107-1",
+          "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
             "DLR5L17N51962"
@@ -60619,7 +60644,7 @@
           "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, visant à lutter contre la vie chère en renforçant le droit de la concurrence et de la régulation économique outre-mer",
           "type": "Suite de la discussion",
           "etat": "Confirmé",
-          "procedure": "procédure de législation en commission-Article 107-1",
+          "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
             "DLR5L17N51095"
@@ -60690,6 +60715,32 @@
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": null,
       "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31057PT53613",
+          "objet": "Discussion du projet de loi, adopté par le Sénat, autorisant l’approbation de l’accord entre le Gouvernement de la République française et le Gouvernement de la République unie de Tanzanie relatif aux services aériens",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure d'examen simplifiée-Article 103",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54168"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31057PT53612",
+          "objet": "Discussion du projet de loi, adopté par le Sénat, autorisant l’approbation de l’accord entre le Gouvernement de la République française et le Gouvernement d’Antigua-et-Barbuda relatif aux services aériens",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure d'examen simplifiée-Article 103",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54169"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
         {
           "uid": "RUANR5L17S2027IDS31057PT53494",
           "objet": "Suite de la discussion du projet de loi, adopté par le Sénat, visant la relance et la décentralisation du logement",
@@ -60898,6 +60949,19 @@
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31066PT53655",
+          "objet": "Discussion de la proposition de résolution européenne visant à s’opposer à la déréglementation du cadre européen relatif aux pesticides dite « Omnibus X »",
+          "type": "Discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         }
       ]
     },
@@ -60948,6 +61012,19 @@
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31067PT53656",
+          "objet": "Suite de la discussion de la proposition de résolution européenne visant à s’opposer à la déréglementation du cadre européen relatif aux pesticides dite « Omnibus X »",
+          "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
         }
       ]
     },
@@ -61329,6 +61406,963 @@
           "nature": "ODJPR",
           "dossiers": [
             "DLR5L17N53339"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31099",
+      "date": "2026-11-30",
+      "debut": "2026-11-30T16:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": "CRSANR5L17S2027O1N001",
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31099PT53614",
+          "objet": "Discussion de la proposition de loi visant à assurer une meilleure équité en matière de pension alimentaire pour les familles monoparentales en cas de non-respect du droit de visite et d’hébergement",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54904"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31099PT53616",
+          "objet": "Discussion de la proposition de loi visant à renforcer les interdictions de détenir un animal par la création d’un fichier national",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55071"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31099PT53619",
+          "objet": "Discussion de la proposition de loi visant à favoriser le travail en continu et en journée via la commande publique afin d’améliorer les conditions relatives au domaine social et à l’emploi",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54724"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31099PT53620",
+          "objet": "Discussion de la proposition de loi visant à moderniser les communications d’urgence",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55084"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31100",
+      "date": "2026-11-30",
+      "debut": "2026-11-30T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": "CRSANR5L17S2027O1N002",
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31100PT53615",
+          "objet": "Suite de la discussion d'une proposition de loi visant à assurer une meilleure équité en matière de pension alimentaire pour les familles monoparentales en cas de non-respect du droit de visite et d’hébergement",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54904"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31100PT53617",
+          "objet": "Suite de la discussion d'une proposition de loi visant à renforcer les interdictions de détenir un animal par la création d’un fichier national",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55071"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31100PT53618",
+          "objet": "Suite de la discussion d'une proposition de loi visant à favoriser le travail en continu et en journée via la commande publique afin d’améliorer les conditions relatives au domaine social et à l’emploi",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54724"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31100PT53621",
+          "objet": "Suite de la discussion d'une proposition de loi visant à moderniser les communications d’urgence",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55084"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31104",
+      "date": "2026-12-01",
+      "debut": "2026-12-01T15:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31104PT53652",
+          "objet": "Questions au Gouvernement",
+          "type": "Questions au Gouvernement",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31104PT53653",
+          "objet": "Élection de deux juges suppléants à la Cour de justice de la République",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31104PT53669",
+          "objet": "Discussion de la proposition de loi, modifiée par le Sénat, visant à reconnaître les victimes de l’exposition aux essais nucléaires français et à améliorer leur indemnisation",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure de législation en commission-Article 107-1",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53276"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31104PT53671",
+          "objet": "Discussion de la proposition de loi visant à interdire la vente de chiens et de chats dans les foires et salons",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N50645"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31104PT53672",
+          "objet": "Discussion de la proposition de loi visant à la création d’un ordre national des audioprothésistes",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N51549"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31104PT53673",
+          "objet": "Discussion de la proposition de loi visant à autoriser le diagnostic préimplantatoire des aneuploïdies au bénéfice des couples, et des femmes engagées dans une démarche d’assistance médicale à la procréation",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55079"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31104PT53674",
+          "objet": "Discussion de la proposition de loi visant à réformer la loi sur les fraudes en matière artistique",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L16N46821"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31104PT53675",
+          "objet": "Discussion, en deuxième lecture, de la proposition de loi, adoptée par le Sénat, visant à reconnaître une politique nationale d’adaptation au changement climatique et adapter les mécanismes d’assurance",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53067"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31105",
+      "date": "2026-12-01",
+      "debut": "2026-12-01T21:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31105PT53676",
+          "objet": "Suite de la discussion de la proposition de loi, modifiée par le Sénat, visant à reconnaître les victimes de l’exposition aux essais nucléaires français et à améliorer leur indemnisation",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure de législation en commission-Article 107-1",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53276"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31105PT53677",
+          "objet": "Suite de la discussion de la proposition de loi visant à interdire la vente de chiens et de chats dans les foires et salons",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N50645"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31105PT53678",
+          "objet": "Suite de la discussion de la proposition de loi visant à la création d’un ordre national des audioprothésistes",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N51549"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31105PT53679",
+          "objet": "Suite de la discussion de la proposition de loi visant à autoriser le diagnostic préimplantatoire des aneuploïdies au bénéfice des couples, et des femmes engagées dans une démarche d’assistance médicale à la procréation",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55079"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31105PT53680",
+          "objet": "Suite de la discussion de la proposition de loi visant à réformer la loi sur les fraudes en matière artistique",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L16N46821"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31105PT53681",
+          "objet": "Suite de la discussion, en deuxième lecture, de la proposition de loi, adoptée par le Sénat, visant à reconnaître une politique nationale d’adaptation au changement climatique et adapter les mécanismes d’assurance",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53067"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31106",
+      "date": "2026-12-02",
+      "debut": "2026-12-02T14:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31106PT53654",
+          "objet": "Questions au Gouvernement",
+          "type": "Questions au Gouvernement",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31106PT53668",
+          "objet": "Prestation de serment de deux juges suppléants à la Cour de justice de la République",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31106PT53682",
+          "objet": "Suite de la discussion de la proposition de loi, modifiée par le Sénat, visant à reconnaître les victimes de l’exposition aux essais nucléaires français et à améliorer leur indemnisation",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure de législation en commission-Article 107-1",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53276"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31106PT53683",
+          "objet": "Suite de la discussion de la proposition de loi visant à interdire la vente de chiens et de chats dans les foires et salons",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N50645"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31106PT53685",
+          "objet": "Suite de la discussion de la proposition de loi visant à la création d’un ordre national des audioprothésistes",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N51549"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31106PT53684",
+          "objet": "Suite de la discussion de la proposition de loi visant à autoriser le diagnostic préimplantatoire des aneuploïdies au bénéfice des couples, et des femmes engagées dans une démarche d’assistance médicale à la procréation",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55079"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31106PT53686",
+          "objet": "Suite de la discussion de la proposition de loi visant à réformer la loi sur les fraudes en matière artistique",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L16N46821"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31106PT53687",
+          "objet": "Suite de la discussion, en deuxième lecture, de la proposition de loi, adoptée par le Sénat, visant à reconnaître une politique nationale d’adaptation au changement climatique et adapter les mécanismes d’assurance",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53067"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31107",
+      "date": "2026-12-02",
+      "debut": "2026-12-02T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31107PT53688",
+          "objet": "Suite de la discussion de la proposition de loi, modifiée par le Sénat, visant à reconnaître les victimes de l’exposition aux essais nucléaires français et à améliorer leur indemnisation",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure de législation en commission-Article 107-1",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53276"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31107PT53689",
+          "objet": "Suite de la discussion de la proposition de loi visant à interdire la vente de chiens et de chats dans les foires et salons",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N50645"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31107PT53690",
+          "objet": "Suite de la discussion de la proposition de loi visant à la création d’un ordre national des audioprothésistes",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N51549"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31107PT53691",
+          "objet": "Suite de la discussion de la proposition de loi visant à autoriser le diagnostic préimplantatoire des aneuploïdies au bénéfice des couples, et des femmes engagées dans une démarche d’assistance médicale à la procréation",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55079"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31107PT53692",
+          "objet": "Suite de la discussion de la proposition de loi visant à réformer la loi sur les fraudes en matière artistique",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L16N46821"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31107PT53693",
+          "objet": "Suite de la discussion, en deuxième lecture, de la proposition de loi, adoptée par le Sénat, visant à reconnaître une politique nationale d’adaptation au changement climatique et adapter les mécanismes d’assurance",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53067"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31101",
+      "date": "2026-12-03",
+      "debut": "2026-12-03T09:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": "CRSANR5L17S2027O1N001",
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31101PT53622",
+          "objet": "Discussion de la proposition de résolution, déposée en application de l’article 34-1 de la Constitution, visant à faire reconnaître l’origine professionnelle du cancer du sein",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55118"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31101PT53626",
+          "objet": "Discussion de la proposition de loi visant à garantir l’accès à un panier diversifié de denrées alimentaires favorables à la santé et vendues à prix coûtant",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55142"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31101PT53628",
+          "objet": "Discussion de la proposition de loi visant à renforcer le droit de retrait en période de canicule et à instaurer un congé climatique",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54858"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31101PT53631",
+          "objet": "Discussion de la proposition de loi visant à faire contribuer davantage les héritiers les plus fortunés",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55143"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31101PT53634",
+          "objet": "Discussion de la proposition de loi visant à protéger nos forêts en encadrant les coupes rases",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55141"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31101PT53637",
+          "objet": "Discussion de la proposition de loi visant à la réparation des préjudices résultant de la traite et de l’esclavage",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54448"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31101PT53640",
+          "objet": "Discussion de la proposition de loi visant à créer un parc social d’un million d’automobiles électriques à loyer modéré",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55144"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31101PT53643",
+          "objet": "Discussion, en deuxième lecture, de la proposition de loi visant à mieux indemniser les dégâts sur les biens immobiliers causés par le retrait-gonflement de l’argile",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L16N47217"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31101PT53646",
+          "objet": "Discussion de la proposition de loi constitutionnelle visant à consacrer l’exclusivité de la révision constitutionnelle par la procédure prévue à l’article 89 de la Constitution",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53375"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31101PT53649",
+          "objet": "Discussion de la proposition de loi visant à instaurer un plan décennal de rénovation du bâti scolaire",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55127"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31102",
+      "date": "2026-12-03",
+      "debut": "2026-12-03T15:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": "CRSANR5L17S2027O1N002",
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31102PT53623",
+          "objet": "Suite de la discussion de la proposition de résolution, déposée en application de l’article 34-1 de la Constitution, visant à faire reconnaître l’origine professionnelle du cancer du sein",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55118"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31102PT53627",
+          "objet": "Suite de la discussion de la proposition de loi visant à garantir l’accès à un panier diversifié de denrées alimentaires favorables à la santé et vendues à prix coûtant",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55142"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31102PT53629",
+          "objet": "Suite de la discussion de la proposition de loi visant à renforcer le droit de retrait en période de canicule et à instaurer un congé climatique",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54858"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31102PT53632",
+          "objet": "Suite de la discussion de la proposition de loi visant à faire contribuer davantage les héritiers les plus fortunés",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55143"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31102PT53635",
+          "objet": "Suite de la discussion de la proposition de loi visant à protéger nos forêts en encadrant les coupes rases",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55141"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31102PT53638",
+          "objet": "Suite de la discussion de la proposition de loi visant à la réparation des préjudices résultant de la traite et de l’esclavage",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54448"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31102PT53641",
+          "objet": "Suite de la discussion de la proposition de loi visant à créer un parc social d’un million d’automobiles électriques à loyer modéré",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55144"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31102PT53644",
+          "objet": "Suite de la discussion, en deuxième lecture, de la proposition de loi visant à mieux indemniser les dégâts sur les biens immobiliers causés par le retrait-gonflement de l’argile",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L16N47217"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31102PT53647",
+          "objet": "Suite de la discussion de la proposition de loi constitutionnelle visant à consacrer l’exclusivité de la révision constitutionnelle par la procédure prévue à l’article 89 de la Constitution",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53375"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31102PT53650",
+          "objet": "Suite de la discussion de la proposition de loi visant à instaurer un plan décennal de rénovation du bâti scolaire",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55127"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31103",
+      "date": "2026-12-03",
+      "debut": "2026-12-03T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31103PT53624",
+          "objet": "Suite de la discussion de la proposition de résolution, déposée en application de l’article 34-1 de la Constitution, visant à faire reconnaître l’origine professionnelle du cancer du sein",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55118"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31103PT53625",
+          "objet": "Suite de la discussion de la proposition de loi visant à garantir l’accès à un panier diversifié de denrées alimentaires favorables à la santé et vendues à prix coûtant",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55142"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31103PT53630",
+          "objet": "Suite de la discussion de la proposition de loi visant à renforcer le droit de retrait en période de canicule et à instaurer un congé climatique",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54858"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31103PT53633",
+          "objet": "Suite de la discussion de la proposition de loi visant à faire contribuer davantage les héritiers les plus fortunés",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55143"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31103PT53636",
+          "objet": "Suite de la discussion de la proposition de loi visant à protéger nos forêts en encadrant les coupes rases",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55141"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31103PT53639",
+          "objet": "Suite de la discussion de la proposition de loi visant à la réparation des préjudices résultant de la traite et de l’esclavage",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54448"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31103PT53642",
+          "objet": "Suite de la discussion de la proposition de loi visant à créer un parc social d’un million d’automobiles électriques à loyer modéré",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55144"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31103PT53645",
+          "objet": "Suite de la discussion, en deuxième lecture, de la proposition de loi visant à mieux indemniser les dégâts sur les biens immobiliers causés par le retrait-gonflement de l’argile",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L16N47217"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31103PT53648",
+          "objet": "Suite de la discussion de la proposition de loi constitutionnelle visant à consacrer l’exclusivité de la révision constitutionnelle par la procédure prévue à l’article 89 de la Constitution",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53375"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31103PT53651",
+          "objet": "Suite de la discussion de la proposition de loi visant à instaurer un plan décennal de rénovation du bâti scolaire",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55127"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
