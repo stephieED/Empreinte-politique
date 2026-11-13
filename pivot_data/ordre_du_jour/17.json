@@ -1,7 +1,7 @@
 {
   "schema_version": "ordre-du-jour-v1",
   "legislature": 17,
-  "genere_le": "2026-11-11",
+  "genere_le": "2026-11-13",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/vp/reunions/Agenda.json.zip",
   "seances": [
@@ -59355,7 +59355,7 @@
       "uid": "RUANR5L17S2027IDS30992",
       "date": "2026-11-12",
       "debut": "2026-11-12T09:00:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-12T12:55:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": "CRSANR5L17S2027O1N060",
@@ -59437,10 +59437,10 @@
       "uid": "RUANR5L17S2027IDS30993",
       "date": "2026-11-12",
       "debut": "2026-11-12T15:00:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-12T19:30:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N061",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS30993PT53571",
@@ -59522,7 +59522,7 @@
       "date": "2026-11-12",
       "debut": "2026-11-12T21:30:00.000+01:00",
       "fin": null,
-      "etat": "Confirmé",
+      "etat": "Supprimé",
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": null,
       "points": [
@@ -59530,13 +59530,15 @@
           "uid": "RUANR5L17S2027IDS30994PT53590",
           "objet": "Suite de la discussion du projet de loi de finances de fin de gestion pour 2026",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N55223"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N55223",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30993PT53572"
+          },
           "dossier_non_resolu": null
         },
         {
@@ -59606,7 +59608,7 @@
       "date": "2026-11-13",
       "debut": "2026-11-13T09:00:00.000+01:00",
       "fin": null,
-      "etat": "Confirmé",
+      "etat": "Supprimé",
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": null,
       "points": [
@@ -59644,13 +59646,15 @@
           "uid": "RUANR5L17S2027IDS30995PT53600",
           "objet": "Suite de la discussion du projet de loi de finances de fin de gestion pour 2026",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N55223"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N55223",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30997PT53604"
+          },
           "dossier_non_resolu": null
         },
         {
@@ -59675,7 +59679,7 @@
       "date": "2026-11-13",
       "debut": "2026-11-13T15:00:00.000+01:00",
       "fin": null,
-      "etat": "Confirmé",
+      "etat": "Supprimé",
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": null,
       "points": [
@@ -59713,13 +59717,15 @@
           "uid": "RUANR5L17S2027IDS30996PT53602",
           "objet": "Suite de la discussion du projet de loi de finances de fin de gestion pour 2026",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N55223"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N55223",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30997PT53604"
+          },
           "dossier_non_resolu": null
         },
         {
@@ -59979,7 +59985,7 @@
       "fin": null,
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N062",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS31002PT53331",

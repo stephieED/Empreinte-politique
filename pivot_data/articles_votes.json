@@ -1,6 +1,6 @@
 {
   "schema_version": "articles-votes-v3",
-  "genere_le": "2026-11-10",
+  "genere_le": "2026-11-13",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — Assemblée nationale",
   "scrutins": {
     "an:15:1002": {
@@ -27764,6 +27764,45 @@
       "extrait": "I. – Les personnes mentionnées à l’article 14 notifient sans retard injustifié à l’autorité nationale de sécurité des systèmes d’information tout incident ayant un impact important sur la fourniture de leurs services.",
       "texte_tronque": true,
       "source_url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17BTC1779.html"
+    },
+    "an:17:9813": {
+      "dossier_id": "DLR5L17N55223",
+      "texte_id": "PRJLANR5L17B3434",
+      "rattachement": "seance_et_dossier_du_scrutin",
+      "article": "1",
+      "intitule": "Ajustement des dispositions relatives à l’affectation de ressources à des tiers",
+      "regroupe": null,
+      "partie": null,
+      "titre": null,
+      "chapitre": null,
+      "section": null,
+      "extrait": null,
+      "texte_tronque": false,
+      "source_url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B3434.html"
+    },
+    "an:17:9892": {
+      "dossier_id": "DLR5L17N55223",
+      "texte_id": "PRJLANR5L17B3434",
+      "rattachement": "seance_et_dossier_du_scrutin",
+      "article": "8",
+      "intitule": "Plafond d’autorisation des emplois des opérateurs de l’État",
+      "regroupe": null,
+      "partie": {
+        "numero": "SECONDE PARTIE",
+        "intitule": "MOYENS DES POLITIQUES PUBLIQUES ET DISPOSITIONS SPÉCIALES"
+      },
+      "titre": {
+        "numero": "TITRE IER",
+        "intitule": "AUTORISATIONS BUDGÉTAIRES POUR 2026"
+      },
+      "chapitre": {
+        "numero": "II",
+        "intitule": "Plafonds des autorisations d’emplois"
+      },
+      "section": null,
+      "extrait": "L’article 154 de la loi n° 2026-103 du 19 février 2026 de finances pour 2026 est ainsi modifié : 1° Au premier alinéa, le nombre : « 401 389 » est remplacé par le nombre : « 401 665 » ; 2° A la seconde colonne du tableau du second alinéa : a) A la quatorzième ligne, le nombre :",
+      "texte_tronque": true,
+      "source_url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B3434.html"
     }
   },
   "non_rattaches": {
@@ -32985,10 +33024,28 @@
       "texte_id": "PRJLANR5L17B3210",
       "article": "57 et état a"
     },
+    "an:17:9820": {
+      "motif": "article_absent_du_texte",
+      "dossier_id": "DLR5L17N55223",
+      "texte_id": "PRJLANR5L17B3434",
+      "article": "4 et état a"
+    },
     "an:17:988": {
       "motif": "texte_a_gabarit_non_lu",
       "dossier_id": "DLR5L17N51467",
       "texte_id": "PNREANR5L17BTC1001"
+    },
+    "an:17:9886": {
+      "motif": "article_absent_du_texte",
+      "dossier_id": "DLR5L17N55223",
+      "texte_id": "PRJLANR5L17B3434",
+      "article": "6 et état c"
+    },
+    "an:17:9890": {
+      "motif": "article_absent_du_texte",
+      "dossier_id": "DLR5L17N55223",
+      "texte_id": "PRJLANR5L17B3434",
+      "article": "7 et état d"
     },
     "an:17:992": {
       "motif": "plusieurs_dossiers_en_seance",
@@ -85800,6 +85857,139 @@
           "titre": {
             "numero": "TITRE II",
             "intitule": "DOTATIONS ET OBJECTIFS DE DEPENSES DES BRANCHES ET DES ORGANISMES CONCOURANT AU FINANCEMENT DES REGIMES OBLIGATOIRES"
+          },
+          "chapitre": null,
+          "section": null
+        }
+      }
+    },
+    "PRJLANR5L17B3434": {
+      "source_url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B3434.html",
+      "articles": {
+        "liminaire": {
+          "intitule": "Prévision de solde structurel et de solde effectif de l’ensemble des administrations publiques pour l’année 2026",
+          "regroupe": null,
+          "partie": null,
+          "titre": null,
+          "chapitre": null,
+          "section": null
+        },
+        "1": {
+          "intitule": "Ajustement des dispositions relatives à l’affectation de ressources à des tiers",
+          "regroupe": null,
+          "partie": null,
+          "titre": null,
+          "chapitre": null,
+          "section": null
+        },
+        "2": {
+          "intitule": "Abaissement en 2026 du plafond de la première section du compte d’affectation spéciale « Contrôle de la circulation et du stationnement routiers »",
+          "regroupe": null,
+          "partie": null,
+          "titre": null,
+          "chapitre": null,
+          "section": null
+        },
+        "3": {
+          "intitule": "Relations financières entre l’État et la Sécurité sociale",
+          "regroupe": null,
+          "partie": null,
+          "titre": null,
+          "chapitre": null,
+          "section": null
+        },
+        "4": {
+          "intitule": "Équilibre général du budget, trésorerie et plafond d’autorisation des emplois",
+          "regroupe": null,
+          "partie": {
+            "numero": "PREMIÈRE PARTIE",
+            "intitule": "CONDITIONS GÉNÉRALES DE L’ÉQUILIBRE FINANCIER"
+          },
+          "titre": {
+            "numero": "TITRE II",
+            "intitule": "DISPOSITIONS RELATIVES À L’ÉQUILIBRE DES RESSOURCES ET DES CHARGES"
+          },
+          "chapitre": null,
+          "section": null
+        },
+        "5": {
+          "intitule": "Budget général : ouvertures et annulations de crédits",
+          "regroupe": null,
+          "partie": {
+            "numero": "SECONDE PARTIE",
+            "intitule": "MOYENS DES POLITIQUES PUBLIQUES ET DISPOSITIONS SPÉCIALES"
+          },
+          "titre": {
+            "numero": "TITRE IER",
+            "intitule": "AUTORISATIONS BUDGÉTAIRES POUR 2026"
+          },
+          "chapitre": {
+            "numero": "I",
+            "intitule": "Autorisation des crédits des missions"
+          },
+          "section": null
+        },
+        "6": {
+          "intitule": "Budgets annexes : ouvertures et annulations de crédits",
+          "regroupe": null,
+          "partie": {
+            "numero": "SECONDE PARTIE",
+            "intitule": "MOYENS DES POLITIQUES PUBLIQUES ET DISPOSITIONS SPÉCIALES"
+          },
+          "titre": {
+            "numero": "TITRE IER",
+            "intitule": "AUTORISATIONS BUDGÉTAIRES POUR 2026"
+          },
+          "chapitre": {
+            "numero": "I",
+            "intitule": "Autorisation des crédits des missions"
+          },
+          "section": null
+        },
+        "7": {
+          "intitule": "Comptes spéciaux : ouvertures et annulations de crédits",
+          "regroupe": null,
+          "partie": {
+            "numero": "SECONDE PARTIE",
+            "intitule": "MOYENS DES POLITIQUES PUBLIQUES ET DISPOSITIONS SPÉCIALES"
+          },
+          "titre": {
+            "numero": "TITRE IER",
+            "intitule": "AUTORISATIONS BUDGÉTAIRES POUR 2026"
+          },
+          "chapitre": {
+            "numero": "I",
+            "intitule": "Autorisation des crédits des missions"
+          },
+          "section": null
+        },
+        "8": {
+          "intitule": "Plafond d’autorisation des emplois des opérateurs de l’État",
+          "regroupe": null,
+          "partie": {
+            "numero": "SECONDE PARTIE",
+            "intitule": "MOYENS DES POLITIQUES PUBLIQUES ET DISPOSITIONS SPÉCIALES"
+          },
+          "titre": {
+            "numero": "TITRE IER",
+            "intitule": "AUTORISATIONS BUDGÉTAIRES POUR 2026"
+          },
+          "chapitre": {
+            "numero": "II",
+            "intitule": "Plafonds des autorisations d’emplois"
+          },
+          "section": null
+        },
+        "9": {
+          "intitule": "Ratification de deux décrets d’avance",
+          "regroupe": null,
+          "partie": {
+            "numero": "SECONDE PARTIE",
+            "intitule": "MOYENS DES POLITIQUES PUBLIQUES ET DISPOSITIONS SPÉCIALES"
+          },
+          "titre": {
+            "numero": "TITRE II",
+            "intitule": "RATIFICATION DE DECRETS D’AVANCE"
           },
           "chapitre": null,
           "section": null
