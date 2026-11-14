@@ -1,7 +1,7 @@
 {
   "schema_version": "ordre-du-jour-v1",
   "legislature": 17,
-  "genere_le": "2026-11-13",
+  "genere_le": "2026-11-14",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/vp/reunions/Agenda.json.zip",
   "seances": [
@@ -59653,7 +59653,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N55223",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30997PT53604"
+            "point_source": "RUANR5L17S2027IDS30993PT53572"
           },
           "dossier_non_resolu": null
         },
@@ -59724,7 +59724,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N55223",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30997PT53604"
+            "point_source": "RUANR5L17S2027IDS30993PT53572"
           },
           "dossier_non_resolu": null
         },
@@ -59750,7 +59750,7 @@
       "date": "2026-11-13",
       "debut": "2026-11-13T21:30:00.000+01:00",
       "fin": null,
-      "etat": "Confirmé",
+      "etat": "Supprimé",
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": null,
       "points": [
@@ -59788,13 +59788,15 @@
           "uid": "RUANR5L17S2027IDS30997PT53604",
           "objet": "Suite de la discussion du projet de loi de finances de fin de gestion pour 2026",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N55223"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N55223",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30993PT53572"
+          },
           "dossier_non_resolu": null
         },
         {
