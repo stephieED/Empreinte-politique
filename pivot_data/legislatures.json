@@ -1,6 +1,6 @@
 {
   "schema_version": "legislatures-v1",
-  "genere_le": "2026-11-16T18:43:29+0000",
+  "genere_le": "2026-11-17T18:59:16+0000",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "legislatures": {
     "14": {
@@ -471,9 +471,9 @@
           "sigle": "SOC",
           "libelle_abrege": "SOC",
           "nom": "Socialistes et apparentés",
-          "membres_au_jour": 68,
-          "membres_avec_place": 68,
-          "place_mediane": 444.5,
+          "membres_au_jour": 67,
+          "membres_avec_place": 67,
+          "place_mediane": 445,
           "place_min": 409,
           "place_max": 569
         },
@@ -493,10 +493,10 @@
           "sigle": "ECOS",
           "libelle_abrege": "EcoS",
           "nom": "Écologiste et Social",
-          "membres_au_jour": 38,
-          "membres_avec_place": 38,
-          "place_mediane": 511.5,
-          "place_min": 491,
+          "membres_au_jour": 39,
+          "membres_avec_place": 39,
+          "place_mediane": 511,
+          "place_min": 416,
           "place_max": 543
         },
         {
@@ -524,9 +524,9 @@
       ],
       "groupes_non_resolus": null,
       "places_non_resolues": null,
-      "groupes_jour_reference": "2026-11-16",
+      "groupes_jour_reference": "2026-11-17",
       "places_source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
-      "places_etat_au": "2026-11-16"
+      "places_etat_au": "2026-11-17"
     }
   }
 }

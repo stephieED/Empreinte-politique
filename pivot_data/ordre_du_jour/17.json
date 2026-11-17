@@ -1,7 +1,7 @@
 {
   "schema_version": "ordre-du-jour-v1",
   "legislature": 17,
-  "genere_le": "2026-11-14",
+  "genere_le": "2026-11-17",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/vp/reunions/Agenda.json.zip",
   "seances": [
@@ -59984,7 +59984,7 @@
       "uid": "RUANR5L17S2027IDS31002",
       "date": "2026-11-16",
       "debut": "2026-11-16T16:00:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-16T20:00:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": "CRSANR5L17S2027O1N062",
@@ -60079,10 +60079,10 @@
       "uid": "RUANR5L17S2027IDS31003",
       "date": "2026-11-16",
       "debut": "2026-11-16T21:30:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-17T00:00:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N063",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS31003PT53336",
@@ -60149,7 +60149,7 @@
       "fin": null,
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N064",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS31004PT53334",
@@ -60166,16 +60166,16 @@
         },
         {
           "uid": "RUANR5L17S2027IDS31004PT53670",
-          "objet": "Vote solennel : Pt Sénat résilience des infrastructures critiques et renforcement de la cybersécurité",
+          "objet": "Explications de vote et vote par scrutin public sur le projet de loi, adopté par le Sénat, relatif à la résilience des infrastructures critiques et au renforcement de la cybersécurité",
           "type": "Vote solennel",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [],
+          "dossiers": [
+            "DLR5L17N50731"
+          ],
           "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "point_hors_texte"
-          }
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2027IDS31004PT53335",
@@ -60366,14 +60366,14 @@
           "dossier_non_resolu": null
         },
         {
-          "uid": "RUANR5L17S2027IDS31054PT53499",
-          "objet": "Discussion de la proposition de loi visant à baisser les prix du carburant à la pompe par l'encadrement des marges des raffineurs",
+          "uid": "RUANR5L17S2027IDS31054PT53501",
+          "objet": "Discussion de la proposition de loi, adoptée par le Sénat, visant à lutter contre la vie chère en renforçant le droit de la concurrence et de la régulation économique outre-mer",
           "type": "Discussion",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
-            "DLR5L17N55014"
+            "DLR5L17N51095"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
@@ -60392,14 +60392,27 @@
           "dossier_non_resolu": null
         },
         {
-          "uid": "RUANR5L17S2027IDS31054PT53501",
-          "objet": "Discussion de la proposition de loi, adoptée par le Sénat, visant à lutter contre la vie chère en renforçant le droit de la concurrence et de la régulation économique outre-mer",
+          "uid": "RUANR5L17S2027IDS31054PT53503",
+          "objet": "Discussion de la proposition de loi visant à l’interdiction de relations commerciales contribuant, par aide ou assistance, à la politique de colonisation dans le Territoire palestinien occupé et dans le Territoire syrien occupé des hauteurs du Golan",
           "type": "Discussion",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
-            "DLR5L17N51095"
+            "DLR5L17N54718"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31054PT53499",
+          "objet": "Discussion de la proposition de loi visant à baisser les prix du carburant à la pompe par l'encadrement des marges des raffineurs",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55014"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
@@ -60413,19 +60426,6 @@
           "nature": "ODJPR",
           "dossiers": [
             "DLR5L17N53359"
-          ],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": null
-        },
-        {
-          "uid": "RUANR5L17S2027IDS31054PT53503",
-          "objet": "Discussion de la proposition de loi visant à l’interdiction de relations commerciales contribuant, par aide ou assistance, à la politique de colonisation dans le Territoire palestinien occupé et dans le Territoire syrien occupé des hauteurs du Golan",
-          "type": "Discussion",
-          "etat": "Confirmé",
-          "procedure": null,
-          "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54718"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
@@ -60910,6 +60910,19 @@
           "uid": "RUANR5L17S2027IDS31066PT53534",
           "objet": "Questions au Gouvernement",
           "type": "Questions au Gouvernement",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31066PT53767",
+          "objet": "Débat sur le rapport de l'Office parlementaire d'évaluation des choix scientifiques et technologiques (Opecst) sur la décarbonation des transports terrestres (salle Lamartine)",
+          "type": "Débat d'initiative parlementaire",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
