@@ -1,7 +1,7 @@
 {
   "schema_version": "ordre-du-jour-v1",
   "legislature": 17,
-  "genere_le": "2026-11-17",
+  "genere_le": "2026-11-18",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/vp/reunions/Agenda.json.zip",
   "seances": [
@@ -42299,10 +42299,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N52900",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31117PT53734"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30403PT52053",
@@ -42476,10 +42478,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N52900",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31117PT53734"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30404PT52063",
@@ -42653,10 +42657,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N52900",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31117PT53734"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2026IDS30405PT52073",
@@ -42796,10 +42802,12 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": {
-            "motif": "intitule_sans_dossier"
-          }
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53456",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31110PT53713"
+          },
+          "dossier_non_resolu": null
         }
       ]
     },
@@ -60146,7 +60154,7 @@
       "uid": "RUANR5L17S2027IDS31004",
       "date": "2026-11-17",
       "debut": "2026-11-17T15:00:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-17T20:00:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": "CRSANR5L17S2027O1N064",
@@ -60226,10 +60234,10 @@
       "uid": "RUANR5L17S2027IDS31050",
       "date": "2026-11-17",
       "debut": "2026-11-17T21:30:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-18T00:00:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N065",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS31050PT53489",
@@ -60392,19 +60400,6 @@
           "dossier_non_resolu": null
         },
         {
-          "uid": "RUANR5L17S2027IDS31054PT53503",
-          "objet": "Discussion de la proposition de loi visant à l’interdiction de relations commerciales contribuant, par aide ou assistance, à la politique de colonisation dans le Territoire palestinien occupé et dans le Territoire syrien occupé des hauteurs du Golan",
-          "type": "Discussion",
-          "etat": "Confirmé",
-          "procedure": null,
-          "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54718"
-          ],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": null
-        },
-        {
           "uid": "RUANR5L17S2027IDS31054PT53499",
           "objet": "Discussion de la proposition de loi visant à baisser les prix du carburant à la pompe par l'encadrement des marges des raffineurs",
           "type": "Discussion",
@@ -60413,6 +60408,19 @@
           "nature": "ODJPR",
           "dossiers": [
             "DLR5L17N55014"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31054PT53503",
+          "objet": "Discussion de la proposition de loi visant à l’interdiction de relations commerciales contribuant, par aide ou assistance, à la politique de colonisation dans le Territoire palestinien occupé et dans le Territoire syrien occupé des hauteurs du Golan",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54718"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
@@ -60497,11 +60505,26 @@
           "uid": "RUANR5L17S2027IDS31055PT53508",
           "objet": "Suite de la discussion de la proposition de loi visant à baisser les prix du carburant à la pompe par l'encadrement des marges des raffineurs",
           "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N55014",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31055PT53758"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31055PT53757",
+          "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, visant à lutter contre la vie chère en renforçant le droit de la concurrence et de la régulation économique outre-mer",
+          "type": "Suite de la discussion",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
-            "DLR5L17N55014"
+            "DLR5L17N51095"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
@@ -60523,11 +60546,26 @@
           "uid": "RUANR5L17S2027IDS31055PT53510",
           "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, visant à lutter contre la vie chère en renforçant le droit de la concurrence et de la régulation économique outre-mer",
           "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N51095",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31055PT53757"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31055PT53758",
+          "objet": "Suite de la discussion de la proposition de loi visant à baisser les prix du carburant à la pompe par l'encadrement des marges des raffineurs",
+          "type": "Suite de la discussion",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
-            "DLR5L17N51095"
+            "DLR5L17N55014"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
@@ -60536,11 +60574,26 @@
           "uid": "RUANR5L17S2027IDS31055PT53511",
           "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, relative à l’instauration d’une présomption d’utilisation des contenus culturels par les fournisseurs d’intelligence artificielle",
           "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53359",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31055PT53759"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31055PT53760",
+          "objet": "Suite de la discussion de la proposition de loi visant à l’interdiction de relations commerciales contribuant, par aide ou assistance, à la politique de colonisation dans le Territoire palestinien occupé et dans le Territoire syrien occupé des hauteurs du Golan",
+          "type": "Suite de la discussion",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
-            "DLR5L17N53359"
+            "DLR5L17N54718"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
@@ -60549,11 +60602,26 @@
           "uid": "RUANR5L17S2027IDS31055PT53512",
           "objet": "Suite de la discussion de la proposition de loi visant à l’interdiction de relations commerciales contribuant, par aide ou assistance, à la politique de colonisation dans le Territoire palestinien occupé et dans le Territoire syrien occupé des hauteurs du Golan",
           "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54718",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31055PT53760"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31055PT53759",
+          "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, relative à l’instauration d’une présomption d’utilisation des contenus culturels par les fournisseurs d’intelligence artificielle",
+          "type": "Suite de la discussion",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
-            "DLR5L17N54718"
+            "DLR5L17N53359"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
@@ -60625,11 +60693,26 @@
           "uid": "RUANR5L17S2027IDS31056PT53517",
           "objet": "Suite de la discussion de la proposition de loi visant à baisser les prix du carburant à la pompe par l'encadrement des marges des raffineurs",
           "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N55014",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31056PT53763"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31056PT53761",
+          "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, visant à lutter contre la vie chère en renforçant le droit de la concurrence et de la régulation économique outre-mer",
+          "type": "Suite de la discussion",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
-            "DLR5L17N55014"
+            "DLR5L17N51095"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
@@ -60651,11 +60734,26 @@
           "uid": "RUANR5L17S2027IDS31056PT53519",
           "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, visant à lutter contre la vie chère en renforçant le droit de la concurrence et de la régulation économique outre-mer",
           "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N51095",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31056PT53761"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31056PT53763",
+          "objet": "Suite de la discussion de la proposition de loi visant à baisser les prix du carburant à la pompe par l'encadrement des marges des raffineurs",
+          "type": "Suite de la discussion",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
-            "DLR5L17N51095"
+            "DLR5L17N55014"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
@@ -60664,11 +60762,26 @@
           "uid": "RUANR5L17S2027IDS31056PT53520",
           "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, relative à l’instauration d’une présomption d’utilisation des contenus culturels par les fournisseurs d’intelligence artificielle",
           "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53359",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31056PT53764"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31056PT53762",
+          "objet": "Suite de la discussion de la proposition de loi visant à l’interdiction de relations commerciales contribuant, par aide ou assistance, à la politique de colonisation dans le Territoire palestinien occupé et dans le Territoire syrien occupé des hauteurs du Golan",
+          "type": "Suite de la discussion",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
-            "DLR5L17N53359"
+            "DLR5L17N54718"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
@@ -60677,11 +60790,26 @@
           "uid": "RUANR5L17S2027IDS31056PT53521",
           "objet": "Suite de la discussion de la proposition de loi visant à l’interdiction de relations commerciales contribuant, par aide ou assistance, à la politique de colonisation dans le Territoire palestinien occupé et dans le Territoire syrien occupé des hauteurs du Golan",
           "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54718",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31056PT53762"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31056PT53764",
+          "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, relative à l’instauration d’une présomption d’utilisation des contenus culturels par les fournisseurs d’intelligence artificielle",
+          "type": "Suite de la discussion",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
-            "DLR5L17N54718"
+            "DLR5L17N53359"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
@@ -60859,10 +60987,40 @@
           }
         },
         {
+          "uid": "RUANR5L17S2027IDS31064PT53765",
+          "objet": "Explications de vote et vote par scrutin public sur le projet de loi, adopté par le Sénat, visant la relance et la décentralisation du logement",
+          "type": "Vote solennel",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54608",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31059PT53496"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31064PT53766",
+          "objet": "Discussion, sous réserve de son dépôt, sur le rapport de la commission mixte paritaire, ou nouvelle lecture du projet de loi de finances de fin de gestion pour 2026",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N55223",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30993PT53572"
+          },
+          "dossier_non_resolu": null
+        },
+        {
           "uid": "RUANR5L17S2027IDS31064PT53532",
           "objet": "Débat sur le rapport de l’Office parlementaire d’évaluation des choix scientifiques et technologiques (Opecst) sur la décarbonation des transports terrestres (salle Lamartine)",
           "type": "Débat d'initiative parlementaire",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
@@ -60882,6 +61040,21 @@
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": null,
       "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31065PT53770",
+          "objet": "Suite de la discussion, sous réserve de son dépôt, sur le rapport de la commission mixte paritaire, ou nouvelle lecture du projet de loi de finances de fin de gestion pour 2026",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N55223",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30993PT53572"
+          },
+          "dossier_non_resolu": null
+        },
         {
           "uid": "RUANR5L17S2027IDS31065PT53533",
           "objet": "Débat avec invités extérieurs sur le thème : « Bilan des réformes du baccalauréat et du lycée, dite réforme Blanquer » (salle Lamartine)",
@@ -61677,7 +61850,7 @@
     {
       "uid": "RUANR5L17S2027IDS31105",
       "date": "2026-12-01",
-      "debut": "2026-12-01T21:00:00.000+01:00",
+      "debut": "2026-12-01T21:30:00.000+01:00",
       "fin": null,
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
@@ -62384,6 +62557,824 @@
           "nature": "ODJPR",
           "dossiers": [
             "DLR5L17N55127"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31110",
+      "date": "2026-12-07",
+      "debut": "2026-12-07T16:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31110PT53708",
+          "objet": "Discussion du projet de loi, adopté par le Sénat, autorisant l’approbation de l’avenant à la convention entre le Gouvernement de la République Française et le Gouvernement de la République de l’Inde du 29 septembre 1992 en vue d’éviter les doubles impositions et de prévenir l’évasion fiscale en matière d’impôts sur le revenu et sur la fortune",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure d'examen simplifiée-Article 103",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54923"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31110PT53709",
+          "objet": "Discussion du projet de loi, adopté par le Sénat, autorisant la ratification de l'accord de protection des investissements entre l'Union européenne et ses États membres, d'une part, et la République socialiste du Vietnam, d'autre part",
+          "type": "Discussion",
+          "etat": "Supprimé",
+          "procedure": "procédure d'examen simplifiée-Article 103",
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54767",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31115PT53769"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31110PT53710",
+          "objet": "Discussion du projet de loi, adopté par le Sénat, autorisant l’approbation de l’accord multilatéral entre autorités compétentes concernant l’échange automatique de renseignements relatifs au cadre de déclaration applicable aux crypto-actifs, et l’approbation de l’addendum à l’accord multilatéral entre autorités compétentes concernant l’échange automatique de renseignements relatifs aux comptes financiers",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure d'examen simplifiée-Article 103",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54762"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31110PT53711",
+          "objet": "Éventuellement, discussion, sur le rapport de la commission mixte paritaire, de la proposition de loi visant à mettre fin au devoir conjugal",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53279",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2026IDS30184PT51585"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31110PT53712",
+          "objet": "Éventuellement, discussion, sur le rapport de la commission mixte paritaire, de la proposition de loi visant à améliorer les moyens d'action de l'Agence de gestion et de recouvrement des avoirs saisis et confisqués et à faciliter l'exercice des missions d'expert judiciaire",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53159",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2026IDS30662PT52693"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31110PT53713",
+          "objet": "Discussion de la proposition de loi, adoptée par le Sénat, visant à faciliter la création et le fonctionnement des communes nouvelles",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53456"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31111",
+      "date": "2026-12-07",
+      "debut": "2026-12-07T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31111PT53714",
+          "objet": "Éventuellement, suite de la discussion, sur le rapport de la commission mixte paritaire, de la proposition de loi visant à mettre fin au devoir conjugal",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53279",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2026IDS30184PT51585"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31111PT53715",
+          "objet": "Éventuellement, suite de la discussion, sur le rapport de la commission mixte paritaire, de la proposition de loi visant à améliorer les moyens d'action de l'Agence de gestion et de recouvrement des avoirs saisis et confisqués et à faciliter l'exercice des missions d'expert judiciaire",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53159",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2026IDS30662PT52693"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31111PT53716",
+          "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, visant à faciliter la création et le fonctionnement des communes nouvelles",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53456"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31112",
+      "date": "2026-12-08",
+      "debut": "2026-12-08T09:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31112PT53717",
+          "objet": "Questions orales sans débat (salle Larmartine)",
+          "type": "Questions orales sans débat",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31113",
+      "date": "2026-12-08",
+      "debut": "2026-12-08T15:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31113PT53718",
+          "objet": "Questions au Gouvernement",
+          "type": "Questions au Gouvernement",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31113PT53768",
+          "objet": "Éventuellement, discussion, sur le rapport de la commission mixte paritaire, du projet de loi relatif à la protection des enfants",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54372",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2026IDS30880PT53134"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31113PT53719",
+          "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, visant à faciliter la création et le fonctionnement des communes nouvelles",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53456"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31113PT53720",
+          "objet": "Discussion du projet de loi, adopté par le Sénat, relatif à la lutte contre les ingérences étrangères dans la vie démocratique",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54703"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31114",
+      "date": "2026-12-08",
+      "debut": "2026-12-08T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31114PT53721",
+          "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, visant à faciliter la création et le fonctionnement des communes nouvelles",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53456"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31114PT53722",
+          "objet": "Suite de la discussion du projet de loi, adopté par le Sénat, relatif à la lutte contre les ingérences étrangères dans la vie démocratique",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54703"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31115",
+      "date": "2026-12-09",
+      "debut": "2026-12-09T14:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31115PT53723",
+          "objet": "Questions au Gouvernement",
+          "type": "Questions au Gouvernement",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31115PT53769",
+          "objet": "Discussion du projet de loi, adopté par le Sénat, autorisant la ratification de l'accord de protection des investissements entre l'Union européenne et ses États membres, d'une part, et la République socialiste du Vietnam, d'autre part",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure d'examen simplifiée-Article 103",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54767"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31115PT53724",
+          "objet": "Discussion du projet de loi, adopté par le Sénat, autorisant la ratification de l'accord de passation conjointe de marché en vue de l'acquisition d'une plateforme centrale commune pour le mécanisme d'ajustement carbone aux frontières",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure d'examen simplifiée-Article 103",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54567"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31115PT53725",
+          "objet": "Suite de la discussion du projet de loi, adopté par le Sénat, relatif à la lutte contre les ingérences étrangères dans la vie démocratique",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54703"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31116",
+      "date": "2026-12-09",
+      "debut": "2026-12-09T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31116PT53726",
+          "objet": "Suite de la discussion du projet de loi, adopté par le Sénat, relatif à la lutte contre les ingérences étrangères dans la vie démocratique",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54703"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31117",
+      "date": "2026-12-10",
+      "debut": "2026-12-10T09:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31117PT53730",
+          "objet": "Discussion de la proposition de loi constitutionnelle visant à instaurer une motion de censure constructive",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55151"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31117PT53731",
+          "objet": "Discussion de la proposition de loi visant à améliorer l’efficacité de l’État au niveau local",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55186"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31117PT53732",
+          "objet": "Discussion de la proposition de loi visant à faciliter le financement de la rénovation énergétique par les économies d’énergie",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55184"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31117PT53733",
+          "objet": "Discussion de la proposition de loi visant à mieux protéger, mieux gérer et mieux valoriser la forêt et ses produits pour répondre aux enjeux de lutte contre le changement climatique, d’adaptation à ses effets et de stockage du carbone dans les matériaux en bois",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55191"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31117PT53734",
+          "objet": "Discussion de la proposition de loi, adoptée par le Sénat, relative à la sécurisation des marchés publics numériques",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N52900"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31117PT53735",
+          "objet": "Discussion de la proposition de loi visant à renforcer la protection et l’accompagnement des dirigeants d’entreprise confrontés à la maladie",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54988"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31117PT53736",
+          "objet": "Discussion de la proposition de loi visant à instaurer une négociation obligatoire sur la situation des parents isolés",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55145"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31117PT53737",
+          "objet": "Discussion de la proposition de loi, adoptée par le Sénat, relative aux modalités de recouvrement de la contribution aux frais de garderie et de la contribution additionnelle versées à l’Office national des forêts (ONF) par les collectivités territoriales et personnes morales propriétaires de bois et forêts relevant du régime forestier et à la composition du conseil d’administration de l’ONF",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure de législation en commission-Article 107-1",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54778"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31117PT53738",
+          "objet": "Discussion de la proposition de loi, adoptée par le Sénat, visant à conforter la filière cinématographique en France",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure de législation en commission-Article 107-1",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L16N48687"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31118",
+      "date": "2026-12-10",
+      "debut": "2026-12-10T15:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31118PT53739",
+          "objet": "Suite de la discussion de la proposition de loi constitutionnelle visant à instaurer une motion de censure constructive",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55151"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31118PT53740",
+          "objet": "Suite de la discussion de la proposition de loi visant à améliorer l’efficacité de l’État au niveau local",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55186"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31118PT53741",
+          "objet": "Suite de la discussion de la proposition de loi visant à faciliter le financement de la rénovation énergétique par les économies d’énergie",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55184"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31118PT53742",
+          "objet": "Suite de la discussion de la proposition de loi visant à mieux protéger, mieux gérer et mieux valoriser la forêt et ses produits pour répondre aux enjeux de lutte contre le changement climatique, d’adaptation à ses effets et de stockage du carbone dans les matériaux en bois",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55191"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31118PT53743",
+          "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, relative à la sécurisation des marchés publics numériques",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N52900"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31118PT53744",
+          "objet": "Suite de la discussion de la proposition de loi visant à renforcer la protection et l’accompagnement des dirigeants d’entreprise confrontés à la maladie",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54988"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31118PT53745",
+          "objet": "Suite de la discussion de la proposition de loi visant à instaurer une négociation obligatoire sur la situation des parents isolés",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55145"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31118PT53746",
+          "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, relative aux modalités de recouvrement de la contribution aux frais de garderie et de la contribution additionnelle versées à l’Office national des forêts (ONF) par les collectivités territoriales et personnes morales propriétaires de bois et forêts relevant du régime forestier et à la composition du conseil d’administration de l’ONF",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure de législation en commission-Article 107-1",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54778"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31118PT53747",
+          "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, visant à conforter la filière cinématographique en France",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure de législation en commission-Article 107-1",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L16N48687"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31119",
+      "date": "2026-12-10",
+      "debut": "2026-12-10T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31119PT53748",
+          "objet": "Suite de la discussion de la proposition de loi constitutionnelle visant à instaurer une motion de censure constructive",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55151"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31119PT53749",
+          "objet": "Suite de la discussion de la proposition de loi visant à améliorer l’efficacité de l’État au niveau local",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55186"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31119PT53750",
+          "objet": "Suite de la discussion de la proposition de loi visant à faciliter le financement de la rénovation énergétique par les économies d’énergie",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55184"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31119PT53751",
+          "objet": "Suite de la discussion de la proposition de loi visant à mieux protéger, mieux gérer et mieux valoriser la forêt et ses produits pour répondre aux enjeux de lutte contre le changement climatique, d’adaptation à ses effets et de stockage du carbone dans les matériaux en bois",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55191"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31119PT53752",
+          "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, relative à la sécurisation des marchés publics numériques",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N52900"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31119PT53753",
+          "objet": "Suite de la discussion de la proposition de loi visant à renforcer la protection et l’accompagnement des dirigeants d’entreprise confrontés à la maladie",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54988"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31119PT53754",
+          "objet": "Suite de la discussion de la proposition de loi visant à instaurer une négociation obligatoire sur la situation des parents isolés",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55145"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31119PT53755",
+          "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, relative aux modalités de recouvrement de la contribution aux frais de garderie et de la contribution additionnelle versées à l’Office national des forêts (ONF) par les collectivités territoriales et personnes morales propriétaires de bois et forêts relevant du régime forestier et à la composition du conseil d’administration de l’ONF",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure de législation en commission-Article 107-1",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54778"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31119PT53756",
+          "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, visant à conforter la filière cinématographique en France",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure de législation en commission-Article 107-1",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L16N48687"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31120",
+      "date": "2026-12-11",
+      "debut": "2026-12-11T09:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31120PT53727",
+          "objet": "Suite de la discussion du projet de loi, adopté par le Sénat, relatif à la lutte contre les ingérences étrangères dans la vie démocratique",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54703"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31121",
+      "date": "2026-12-11",
+      "debut": "2026-12-11T15:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31121PT53728",
+          "objet": "Suite de la discussion du projet de loi, adopté par le Sénat, relatif à la lutte contre les ingérences étrangères dans la vie démocratique",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54703"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31122",
+      "date": "2026-12-11",
+      "debut": "2026-12-11T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31122PT53729",
+          "objet": "Suite de la discussion du projet de loi, adopté par le Sénat, relatif à la lutte contre les ingérences étrangères dans la vie démocratique",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54703"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
