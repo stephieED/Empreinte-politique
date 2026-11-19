@@ -1,7 +1,7 @@
 {
   "schema_version": "ordre-du-jour-v1",
   "legislature": 17,
-  "genere_le": "2026-11-18",
+  "genere_le": "2026-11-19",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/vp/reunions/Agenda.json.zip",
   "seances": [
@@ -60258,10 +60258,10 @@
       "uid": "RUANR5L17S2027IDS31051",
       "date": "2026-11-18",
       "debut": "2026-11-18T14:00:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-18T20:00:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N066",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS31051PT53490",
@@ -60295,10 +60295,10 @@
       "uid": "RUANR5L17S2027IDS31052",
       "date": "2026-11-18",
       "debut": "2026-11-18T21:30:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-18T23:55:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N067",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS31052PT53492",
@@ -60317,13 +60317,15 @@
           "uid": "RUANR5L17S2027IDS31052PT53493",
           "objet": "Suite de la discussion du projet de loi, adopté par le Sénat, visant la relance et la décentralisation du logement",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54608"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54608",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31051PT53491"
+          },
           "dossier_non_resolu": null
         }
       ]
@@ -60345,7 +60347,7 @@
       "fin": null,
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N068",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS31054PT53497",
