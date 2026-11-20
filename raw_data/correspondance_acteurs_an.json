@@ -1,6 +1,6 @@
 {
   "schema_version": "correspondance-acteurs-an-v2",
-  "genere_le": "2026-11-10T18:56:40+0000",
+  "genere_le": "2026-11-20T19:05:15+0000",
   "source_referentiel": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
   "correspondances": {
     "abdelkader-lahmar": {
@@ -9527,6 +9527,26 @@
       "verifie_le": "2026-08-26",
       "origine": "derivee",
       "senat_apparie_le": "2026-09-13T16:43:40+0200"
+    },
+    "dominique-de-villepin": {
+      "identifiants": {
+        "an": null,
+        "senat": null,
+        "europarl": null,
+        "hatvp": null
+      },
+      "etat_civil": {
+        "civilite": null,
+        "prenom": null,
+        "nom": null,
+        "nom_complet": "Dominique de Villepin",
+        "date_naissance": null
+      },
+      "ecart": "hors_an",
+      "motif": "Fait négatif corroboré par deux sources indépendantes le 2026-11-20 : l'élément Wikidata de cette personne ne porte pas la propriété P4123 (identifiant Assemblée nationale), et le profil collecté depuis le référentiel AMO30 ne rend aucun acteur. Entrée SOURCÉE et non relue : ni le Sénat ni le Parlement européen ne sont couverts par cette déclaration.",
+      "preuve": "https://www.wikidata.org/wiki/Q131660",
+      "verifie_le": "2026-11-20",
+      "origine": "sourcee"
     },
     "dominique-dord": {
       "identifiants": {
