@@ -1,6 +1,6 @@
 {
   "schema_version": "correspondance-acteurs-an-v2",
-  "genere_le": "2026-11-20T19:05:15+0000",
+  "genere_le": "2026-11-22T18:48:20+0000",
   "source_referentiel": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
   "correspondances": {
     "abdelkader-lahmar": {
@@ -8676,6 +8676,26 @@
       "motif": null,
       "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA422119",
       "verifie_le": "2026-09-18",
+      "origine": "derivee"
+    },
+    "david-duizidou": {
+      "identifiants": {
+        "an": "PA642905",
+        "senat": null,
+        "europarl": null,
+        "hatvp": null
+      },
+      "etat_civil": {
+        "civilite": "M.",
+        "prenom": null,
+        "nom": null,
+        "nom_complet": "David Duizidou",
+        "date_naissance": "1967-12-05"
+      },
+      "ecart": null,
+      "motif": null,
+      "preuve": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA642905",
+      "verifie_le": "2026-11-22",
       "origine": "derivee"
     },
     "david-guerin": {
