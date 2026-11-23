@@ -1,6 +1,6 @@
 {
   "schema_version": "scrutins-dossiers-v1",
-  "genere_le": "2026-11-16T18:43:33+0000",
+  "genere_le": "2026-11-23T18:44:04+0000",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "scrutins": {
     "an:15:4352": "DLR5L15N42350",
@@ -863,6 +863,10 @@
     "an:17:9759": "DLR5L17N54629",
     "an:17:9807": "DLR5L17N51330",
     "an:17:9895": "DLR5L17N55223",
+    "an:17:10080": "DLR5L17N51095",
+    "an:17:10062": "DLR5L17N53069",
+    "an:17:10033": "DLR5L17N51962",
+    "an:17:9905": "DLR5L17N53699",
     "an:14:1042": "DLR5L14N33612",
     "an:14:1211": "DLR5L14N34487",
     "an:14:1238": "DLR5L14N34683",
@@ -1091,6 +1095,7 @@
     "an:17:7454": "DLR5L17N54218",
     "an:17:788": "DLR5L16N49176",
     "an:17:852": "DLR5L16N49455",
+    "an:17:9916": "DLR5L17N50731",
     "an:15:998": "DLR5L15N36488",
     "an:15:999": "DLR5L15N36468",
     "an:15:1214": "DLR5L15N36488",
@@ -2624,7 +2629,7 @@
       "sort_49_3": false
     },
     "DLR5L17N51037": {
-      "statut": "adopte",
+      "statut": "navette_en_cours",
       "sort_49_3": false
     },
     "DLR5L17N53051": {
@@ -2724,7 +2729,7 @@
       "sort_49_3": null
     },
     "DLR5L17N53159": {
-      "statut": "navette_en_cours",
+      "statut": "adopte_cmp",
       "sort_49_3": false
     },
     "DLR5L17N51175": {
@@ -3124,7 +3129,7 @@
       "sort_49_3": false
     },
     "DLR5L17N53069": {
-      "statut": "navette_en_cours",
+      "statut": "adopte",
       "sort_49_3": false
     },
     "DLR5L17N51716": {
@@ -3256,7 +3261,7 @@
       "sort_49_3": false
     },
     "DLR5L17N51962": {
-      "statut": "navette_en_cours",
+      "statut": "adopte",
       "sort_49_3": false
     },
     "DLR5L16N49138": {
@@ -4196,7 +4201,7 @@
       "sort_49_3": false
     },
     "DLR5L17N54445": {
-      "statut": "adopte",
+      "statut": "navette_en_cours",
       "sort_49_3": false
     },
     "DLR5L17N54916": {
@@ -4216,7 +4221,7 @@
       "sort_49_3": false
     },
     "DLR5L17N54951": {
-      "statut": "rejete",
+      "statut": "navette_en_cours",
       "sort_49_3": false
     },
     "DLR5L17N54898": {
@@ -4232,7 +4237,19 @@
       "sort_49_3": false
     },
     "DLR5L17N55223": {
-      "statut": "rejete",
+      "statut": "navette_en_cours",
+      "sort_49_3": false
+    },
+    "DLR5L17N51095": {
+      "statut": "adopte",
+      "sort_49_3": false
+    },
+    "DLR5L17N53699": {
+      "statut": "navette_en_cours",
+      "sort_49_3": false
+    },
+    "DLR5L17N50731": {
+      "statut": "navette_en_cours",
       "sort_49_3": false
     }
   },
@@ -4465,6 +4482,7 @@
     "an:17:7454": "deduit_date_et_titre",
     "an:17:788": "deduit_date_et_titre",
     "an:17:852": "deduit_date_et_titre",
+    "an:17:9916": "deduit_date_et_titre",
     "an:15:998": "table_relue",
     "an:15:999": "table_relue",
     "an:15:1214": "table_relue",

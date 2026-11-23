@@ -1,6 +1,6 @@
 {
   "schema_version": "textes-promulgues-v1",
-  "genere_le": "2026-11-09T18:45:51+0000",
+  "genere_le": "2026-11-23T18:43:41+0000",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "textes": {
     "DLR5L14N29639": {
@@ -31431,6 +31431,38 @@
       "senat_statue_apres": true,
       "senat_statue_apres_non_resolu": null,
       "date_derniere_decision_senat": "2026-10-20"
+    },
+    "DLR5L17N53069": {
+      "date_promulgation": "2026-11-22",
+      "numero_loi": "2026-1072",
+      "nor": "VLOX2535066L",
+      "titre": "Retrouver la confiance et l’équilibre dans les rapports locatifs",
+      "nature_procedure": "Proposition de loi ordinaire",
+      "commission": {
+        "organe_ref": "PO419610",
+        "sigle": "Affaires économiques",
+        "nom": "Commission des affaires économiques",
+        "type": "COMPER"
+      },
+      "chambre_premiere_lecture": "assemblee_nationale",
+      "jorftext": null,
+      "jorftext_autres": null,
+      "source_url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/retrouver_confiance_equilibre_rapports_locatifs_17e",
+      "derniere_adoption_an": {
+        "date": "2026-11-19",
+        "mode": "scrutin_public",
+        "mode_non_resolu": null,
+        "scrutin_ids": [
+          "an:17:10062"
+        ],
+        "acte_uid": "L17-VD235055DEC",
+        "code_acte": "AN2-DEBATS-DEC",
+        "libelle_statut": "adoptée sans modification"
+      },
+      "derniere_adoption_an_non_resolue": null,
+      "senat_statue_apres": false,
+      "senat_statue_apres_non_resolu": null,
+      "date_derniere_decision_senat": "2026-10-21"
     }
   }
 }
