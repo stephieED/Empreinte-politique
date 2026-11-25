@@ -1,7 +1,7 @@
 {
   "schema_version": "ordre-du-jour-v1",
   "legislature": 17,
-  "genere_le": "2026-11-24",
+  "genere_le": "2026-11-25",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/vp/reunions/Agenda.json.zip",
   "seances": [
@@ -60934,7 +60934,7 @@
       "uid": "RUANR5L17S2027IDS31063",
       "date": "2026-11-24",
       "debut": "2026-11-24T09:00:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-24T12:25:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": "CRSANR5L17S2027O1N072",
@@ -60958,10 +60958,10 @@
       "uid": "RUANR5L17S2027IDS31064",
       "date": "2026-11-24",
       "debut": "2026-11-24T15:00:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-24T19:25:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N073",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS31064PT53531",
@@ -61021,24 +61021,11 @@
       "uid": "RUANR5L17S2027IDS31065",
       "date": "2026-11-24",
       "debut": "2026-11-24T21:30:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-24T23:25:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N074",
       "points": [
-        {
-          "uid": "RUANR5L17S2027IDS31065PT53770",
-          "objet": "Suite de la discussion, sur le rapport de la commission mixte paritaire, du projet de loi de finances de fin de gestion pour 2026",
-          "type": "Suite de la discussion",
-          "etat": "Confirmé",
-          "procedure": null,
-          "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N55223"
-          ],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": null
-        },
         {
           "uid": "RUANR5L17S2027IDS31065PT53533",
           "objet": "Débat avec invités extérieurs sur le thème : « Bilan des réformes du baccalauréat et du lycée, dite réforme Blanquer » (salle Lamartine)",
@@ -61051,6 +61038,21 @@
           "dossier_non_resolu": {
             "motif": "point_hors_texte"
           }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31065PT53770",
+          "objet": "Suite de la discussion, sur le rapport de la commission mixte paritaire, du projet de loi de finances de fin de gestion pour 2026",
+          "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N55223",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31064PT53766"
+          },
+          "dossier_non_resolu": null
         }
       ]
     },
@@ -61061,7 +61063,7 @@
       "fin": null,
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N075",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS31066PT53534",
@@ -61078,7 +61080,7 @@
         },
         {
           "uid": "RUANR5L17S2027IDS31066PT53767",
-          "objet": "Débat sur le rapport de l'Office parlementaire d'évaluation des choix scientifiques et technologiques (Opecst) sur la décarbonation des transports terrestres (salle Lamartine)",
+          "objet": "Débat sur le rapport de l'Office parlementaire d'évaluation des choix scientifiques et technologiques (Opecst) sur la décarbonation des transports terrestres",
           "type": "Débat d'initiative parlementaire",
           "etat": "Confirmé",
           "procedure": null,
@@ -61739,21 +61741,6 @@
           }
         },
         {
-          "uid": "RUANR5L17S2027IDS31104PT53794",
-          "objet": "Discussion, sous réserve de leur dépôt, des conclusions de la commission mixte paritaire sur le projet de loi de financement de la sécurité sociale pour 2027",
-          "type": "Discussion",
-          "etat": "Confirmé",
-          "procedure": null,
-          "nature": "ODJPR",
-          "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N54951",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30959PT53282"
-          },
-          "dossier_non_resolu": null
-        },
-        {
           "uid": "RUANR5L17S2027IDS31104PT53653",
           "objet": "Élection de deux juges suppléants à la Cour de justice de la République",
           "type": "Discussion",
@@ -61765,6 +61752,21 @@
           "dossier_non_resolu": {
             "motif": "point_hors_texte"
           }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31104PT53794",
+          "objet": "Éventuellement, discussion, sur le rapport de la commission mixte paritaire, du projet de loi de financement de la sécurité sociale pour 2027",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54951",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30959PT53282"
+          },
+          "dossier_non_resolu": null
         },
         {
           "uid": "RUANR5L17S2027IDS31104PT53669",
@@ -62563,6 +62565,273 @@
       ]
     },
     {
+      "uid": "RUANR5L17S2027IDS31138",
+      "date": "2026-12-04",
+      "debut": "2026-12-04T09:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31138PT53802",
+          "objet": "Suite de la discussion de la proposition de loi, modifiée par le Sénat, visant à reconnaître les victimes de l’exposition aux essais nucléaires français et à améliorer leur indemnisation",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure de législation en commission-Article 107-1",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53276"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31138PT53803",
+          "objet": "Suite de la discussion de la proposition de loi visant à interdire la vente de chiens et de chats dans les foires et salons",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N50645"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31138PT53804",
+          "objet": "Suite de la discussion de la proposition de loi visant à la création d’un ordre national des audioprothésistes",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N51549"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31138PT53805",
+          "objet": "Suite de la discussion de la proposition de loi visant à autoriser le diagnostic préimplantatoire des aneuploïdies au bénéfice des couples, et des femmes engagées dans une démarche d’assistance médicale à la procréation",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55079"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31138PT53806",
+          "objet": "Suite de la discussion de la proposition de loi visant à réformer la loi sur les fraudes en matière artistique",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L16N46821"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31138PT53807",
+          "objet": "Suite de la discussion, en deuxième lecture, de la proposition de loi, adoptée par le Sénat, visant à reconnaître une politique nationale d’adaptation au changement climatique et adapter les mécanismes d’assurance",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53067"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31139",
+      "date": "2026-12-04",
+      "debut": "2026-12-04T15:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31139PT53808",
+          "objet": "Suite de la discussion de la proposition de loi, modifiée par le Sénat, visant à reconnaître les victimes de l’exposition aux essais nucléaires français et à améliorer leur indemnisation",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure de législation en commission-Article 107-1",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53276"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31139PT53809",
+          "objet": "Suite de la discussion de la proposition de loi visant à interdire la vente de chiens et de chats dans les foires et salons",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N50645"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31139PT53810",
+          "objet": "Suite de la discussion de la proposition de loi visant à la création d’un ordre national des audioprothésistes",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N51549"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31139PT53811",
+          "objet": "Suite de la discussion de la proposition de loi visant à autoriser le diagnostic préimplantatoire des aneuploïdies au bénéfice des couples, et des femmes engagées dans une démarche d’assistance médicale à la procréation",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55079"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31139PT53812",
+          "objet": "Suite de la discussion de la proposition de loi visant à réformer la loi sur les fraudes en matière artistique",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L16N46821"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31139PT53813",
+          "objet": "Suite de la discussion, en deuxième lecture, de la proposition de loi, adoptée par le Sénat, visant à reconnaître une politique nationale d’adaptation au changement climatique et adapter les mécanismes d’assurance",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53067"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31140",
+      "date": "2026-12-04",
+      "debut": "2026-12-04T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31140PT53814",
+          "objet": "Suite de la discussion de la proposition de loi, modifiée par le Sénat, visant à reconnaître les victimes de l’exposition aux essais nucléaires français et à améliorer leur indemnisation",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure de législation en commission-Article 107-1",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53276"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31140PT53815",
+          "objet": "Suite de la discussion de la proposition de loi visant à interdire la vente de chiens et de chats dans les foires et salons",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N50645"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31140PT53816",
+          "objet": "Suite de la discussion de la proposition de loi visant à la création d’un ordre national des audioprothésistes",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N51549"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31140PT53817",
+          "objet": "Suite de la discussion de la proposition de loi visant à autoriser le diagnostic préimplantatoire des aneuploïdies au bénéfice des couples, et des femmes engagées dans une démarche d’assistance médicale à la procréation",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N55079"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31140PT53818",
+          "objet": "Suite de la discussion de la proposition de loi visant à réformer la loi sur les fraudes en matière artistique",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L16N46821"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31140PT53819",
+          "objet": "Suite de la discussion, en deuxième lecture, de la proposition de loi, adoptée par le Sénat, visant à reconnaître une politique nationale d’adaptation au changement climatique et adapter les mécanismes d’assurance",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53067"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
       "uid": "RUANR5L17S2027IDS31110",
       "date": "2026-12-07",
       "debut": "2026-12-07T16:00:00.000+01:00",
@@ -62634,12 +62903,10 @@
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N53159",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2026IDS30662PT52693"
-          },
+          "dossiers": [
+            "DLR5L17N53159"
+          ],
+          "dossier_retrouve": null,
           "dossier_non_resolu": null
         },
         {
@@ -62683,17 +62950,15 @@
         },
         {
           "uid": "RUANR5L17S2027IDS31111PT53715",
-          "objet": "Éventuellement, suite de la discussion, sur le rapport de la commission mixte paritaire, de la proposition de loi visant à améliorer les moyens d'action de l'Agence de gestion et de recouvrement des avoirs saisis et confisqués et à faciliter l'exercice des missions d'expert judiciaire",
+          "objet": "suite de la discussion, sur le rapport de la commission mixte paritaire, de la proposition de loi visant à améliorer les moyens d'action de l'Agence de gestion et de recouvrement des avoirs saisis et confisqués et à faciliter l'exercice des missions d'expert judiciaire",
           "type": "Suite de la discussion",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N53159",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2026IDS30662PT52693"
-          },
+          "dossiers": [
+            "DLR5L17N53159"
+          ],
+          "dossier_retrouve": null,
           "dossier_non_resolu": null
         },
         {
@@ -63374,6 +63639,464 @@
           "nature": "ODJPR",
           "dossiers": [
             "DLR5L17N54703"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31125",
+      "date": "2026-12-14",
+      "debut": "2026-12-14T16:00:00.000+01:00",
+      "fin": null,
+      "etat": "Supprimé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31125PT53776",
+          "objet": "Discussion, sous réserve de leur dépôt, des conclusions de la commission mixte paritaire sur la proposition de loi visant à garantir l’information et la protection effective des victimes de violences sexistes et sexuelles lors de la libération de leur agresseur",
+          "type": "Discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31125PT53777",
+          "objet": "Discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la régulation de l’enseignement supérieur privé",
+          "type": "Discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54344",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31127PT53782"
+          },
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31126",
+      "date": "2026-12-14",
+      "debut": "2026-12-14T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Supprimé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31126PT53779",
+          "objet": "Suite de la discussion, sous réserve de leur dépôt, des conclusions de la commission mixte paritaire sur la proposition de loi visant à garantir l’information et la protection effective des victimes de violences sexistes et sexuelles lors de la libération de leur agresseur",
+          "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31126PT53780",
+          "objet": "Suite de la discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la régulation de l’enseignement supérieur privé",
+          "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54344",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31127PT53782"
+          },
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31127",
+      "date": "2026-12-15",
+      "debut": "2026-12-15T15:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31127PT53784",
+          "objet": "Questions au Gouvernement",
+          "type": "Questions au Gouvernement",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31127PT53798",
+          "objet": "Éventuellement, discussion, sur le rapport de la commission mixte paritaire, du projet de loi visant la relance et la décentralisation du logement",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54608",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31064PT53765"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31127PT53781",
+          "objet": "Discussion, sous réserve de leur dépôt, des conclusions de la commission mixte paritaire sur le projet de loi relatif à la résilience des infrastructures critiques et au renforcement de la cybersécurité",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N50731",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31004PT53670"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31127PT53795",
+          "objet": "Discussion, sous réserve de leur dépôt, des conclusions de la commission mixte paritaire sur la proposition de loi visant à garantir l’information et la protection effective des victimes de violences sexistes et sexuelles lors de la libération de leur agresseur",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_sans_dossier"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31127PT53782",
+          "objet": "Discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la régulation de l’enseignement supérieur privé",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54344"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31128",
+      "date": "2026-12-15",
+      "debut": "2026-12-15T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31128PT53783",
+          "objet": "Suite de la discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la régulation de l’enseignement supérieur privé",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54344"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31128PT53785",
+          "objet": "Questions au Gouvernement",
+          "type": "Questions au Gouvernement",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31129",
+      "date": "2026-12-16",
+      "debut": "2026-12-16T14:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31129PT53787",
+          "objet": "Questions au Gouvernement",
+          "type": "Questions au Gouvernement",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "point_hors_texte"
+          }
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31129PT53796",
+          "objet": "Discussion du projet de loi, adopté par le Sénat, autorisant l’approbation de l’accord entre le Gouvernement de la République française et le Gouvernement de la République du Kazakhstan sur la réadmission des personnes",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure d'examen simplifiée-Article 103",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53388"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31129PT53797",
+          "objet": "Discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, autorisant l’approbation de la convention entre le Gouvernement de la République française et le Gouvernement de la République de Chypre pour l’élimination de la double imposition en matière d’impôts sur le revenu et la prévention de l’évasion et de la fraude fiscales",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": "procédure d'examen simplifiée-Article 103",
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53706"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31129PT53788",
+          "objet": "Éventuellement, discussion, sur le rapport de la CMP, de la proposition de loi visant au renforcement de l’attractivité de l’épargne salariale et à la mise en œuvre d’une procédure de déblocage exceptionnelle",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N53699",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31002PT53606"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31129PT53786",
+          "objet": "Éventuellement, discussion, sur le rapport de la CMP, de la proposition de loi visant à moderniser et rééquilibrer le fonctionnement du titre-restaurant",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54445",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS30938PT53250"
+          },
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31129PT53789",
+          "objet": "Suite de la discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la régulation de l’enseignement supérieur privé",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54344"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31130",
+      "date": "2026-12-16",
+      "debut": "2026-12-16T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31130PT53790",
+          "objet": "Suite de la discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la régulation de l’enseignement supérieur privé",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54344",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31129PT53789"
+          },
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31131",
+      "date": "2026-12-17",
+      "debut": "2026-12-17T09:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31131PT53791",
+          "objet": "Suite de la discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la régulation de l’enseignement supérieur privé",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54344"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31132",
+      "date": "2026-12-17",
+      "debut": "2026-12-17T15:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31132PT53792",
+          "objet": "Suite de la discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la régulation de l’enseignement supérieur privé",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54344"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31133",
+      "date": "2026-12-17",
+      "debut": "2026-12-17T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31133PT53793",
+          "objet": "Suite de la discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la régulation de l’enseignement supérieur privé",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54344"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31135",
+      "date": "2026-12-18",
+      "debut": "2026-12-18T09:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31135PT53799",
+          "objet": "Suite de la discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la régulation de l’enseignement supérieur privé",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54344"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31136",
+      "date": "2026-12-18",
+      "debut": "2026-12-18T15:00:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31136PT53800",
+          "objet": "Suite de la discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la régulation de l’enseignement supérieur privé",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54344"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        }
+      ]
+    },
+    {
+      "uid": "RUANR5L17S2027IDS31137",
+      "date": "2026-12-18",
+      "debut": "2026-12-18T21:30:00.000+01:00",
+      "fin": null,
+      "etat": "Confirmé",
+      "session_ref": "SCR5A2027O1",
+      "compte_rendu_ref": null,
+      "points": [
+        {
+          "uid": "RUANR5L17S2027IDS31137PT53801",
+          "objet": "Suite de la discussion du projet de loi, adopté par le Sénat après engagement de la procédure accélérée, relatif à la régulation de l’enseignement supérieur privé",
+          "type": "Suite de la discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N54344"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null

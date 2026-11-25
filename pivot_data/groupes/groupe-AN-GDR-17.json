@@ -285,7 +285,7 @@
     }
   ],
   "date_reference": {
-    "date": "2026-11-24",
+    "date": "2026-11-25",
     "origine": "generation"
   },
   "effectif": {
@@ -300,6 +300,81 @@
     }
   },
   "cohesion_votes": [
+    {
+      "scrutin_id": "an:17:10102",
+      "membres_eligibles": 17,
+      "position_majoritaire": "contre",
+      "pour": 0,
+      "contre": 15,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 2,
+      "excuses": 0,
+      "taux_participation": 0.8824,
+      "taux_coherence": 0.8824,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": true
+    },
+    {
+      "scrutin_id": "an:17:10103",
+      "membres_eligibles": 17,
+      "position_majoritaire": "pour",
+      "pour": 7,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 10,
+      "excuses": 0,
+      "taux_participation": 0.4118,
+      "taux_coherence": 0.4118,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:10104",
+      "membres_eligibles": 17,
+      "position_majoritaire": "contre",
+      "pour": 0,
+      "contre": 7,
+      "abstention": 1,
+      "non_votant": 0,
+      "absents": 9,
+      "excuses": 0,
+      "taux_participation": 0.4706,
+      "taux_coherence": 0.4118,
+      "taux_coherence_hors_absents": 0.875,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:10105",
+      "membres_eligibles": 17,
+      "position_majoritaire": "abstention",
+      "pour": 2,
+      "contre": 0,
+      "abstention": 5,
+      "non_votant": 0,
+      "absents": 10,
+      "excuses": 0,
+      "taux_participation": 0.4118,
+      "taux_coherence": 0.2941,
+      "taux_coherence_hors_absents": 0.7143,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:10106",
+      "membres_eligibles": 17,
+      "position_majoritaire": "contre",
+      "pour": 1,
+      "contre": 5,
+      "abstention": 3,
+      "non_votant": 0,
+      "absents": 8,
+      "excuses": 0,
+      "taux_participation": 0.5294,
+      "taux_coherence": 0.2941,
+      "taux_coherence_hors_absents": 0.5556,
+      "quorum_atteint": true
+    },
     {
       "scrutin_id": "an:17:10088",
       "membres_eligibles": 17,
@@ -123234,15 +123309,6 @@
       }
     },
     {
-      "tag": "retrouver la confiance et l’équilibre dans les rapports locatifs",
-      "nb_membres_porteurs": 7,
-      "poids_relatif": 0.3889,
-      "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 7,
-        "6_mois": 6
-      }
-    },
-    {
       "tag": "simplification de la vie économique",
       "nb_membres_porteurs": 7,
       "poids_relatif": 0.3889,
@@ -123285,6 +123351,15 @@
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 0,
         "6_mois": 0
+      }
+    },
+    {
+      "tag": "retrouver la confiance et l’équilibre dans les rapports locatifs",
+      "nb_membres_porteurs": 6,
+      "poids_relatif": 0.3333,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 6,
+        "6_mois": 5
       }
     },
     {
@@ -123429,6 +123504,15 @@
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 5,
         "6_mois": 5
+      }
+    },
+    {
+      "tag": "nouvelle-calédonie",
+      "nb_membres_porteurs": 5,
+      "poids_relatif": 0.2778,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 5,
+        "6_mois": 2
       }
     },
     {
@@ -123626,15 +123710,6 @@
       "poids_relatif": 0.2222,
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 0,
-        "6_mois": 0
-      }
-    },
-    {
-      "tag": "nouvelle-calédonie",
-      "nb_membres_porteurs": 4,
-      "poids_relatif": 0.2222,
-      "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 4,
         "6_mois": 0
       }
     },
@@ -124188,6 +124263,15 @@
       }
     },
     {
+      "tag": "relance et décentralisation du logement",
+      "nb_membres_porteurs": 3,
+      "poids_relatif": 0.1667,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 3,
+        "6_mois": 3
+      }
+    },
+    {
       "tag": "remédier aux déséquilibres du marché locatif",
       "nb_membres_porteurs": 3,
       "poids_relatif": 0.1667,
@@ -124221,6 +124305,15 @@
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 0,
         "6_mois": 0
+      }
+    },
+    {
+      "tag": "retrouver la confiance et l’équilibre dans les rapports locatifs (suite)",
+      "nb_membres_porteurs": 3,
+      "poids_relatif": 0.1667,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 3,
+        "6_mois": 3
       }
     },
     {
@@ -125214,15 +125307,6 @@
       }
     },
     {
-      "tag": "relance et décentralisation du logement",
-      "nb_membres_porteurs": 2,
-      "poids_relatif": 0.1111,
-      "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 2,
-        "6_mois": 2
-      }
-    },
-    {
       "tag": "relations entre la france et l’algérie",
       "nb_membres_porteurs": 2,
       "poids_relatif": 0.1111,
@@ -125310,6 +125394,15 @@
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 0,
         "6_mois": 0
+      }
+    },
+    {
+      "tag": "règle d’or budgétaire",
+      "nb_membres_porteurs": 2,
+      "poids_relatif": 0.1111,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 2,
+        "6_mois": 2
       }
     },
     {
@@ -127635,6 +127728,15 @@
       }
     },
     {
+      "tag": "mouvement lycéen",
+      "nb_membres_porteurs": 1,
+      "poids_relatif": 0.0556,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 1,
+        "6_mois": 1
+      }
+    },
+    {
       "tag": "mutation des fonctionnaires",
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0556,
@@ -128244,6 +128346,15 @@
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 1,
         "6_mois": 0
+      }
+    },
+    {
+      "tag": "racisme anti-blanc",
+      "nb_membres_porteurs": 1,
+      "poids_relatif": 0.0556,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 1,
+        "6_mois": 1
       }
     },
     {
@@ -130036,9 +130147,9 @@
           "membre_id": "marcellin-nadeau",
           "nom": "Marcellin Nadeau",
           "fonction": "Membre",
-          "debut": "2026-06-27",
-          "fin": "2026-07-03",
-          "actif": false
+          "debut": "2026-11-25",
+          "fin": null,
+          "actif": true
         },
         {
           "membre_id": "jean-victor-castor",
@@ -130077,8 +130188,8 @@
           "nom": "Emmanuel Maurel",
           "fonction": "Membre",
           "debut": "2026-11-20",
-          "fin": null,
-          "actif": true
+          "fin": "2026-11-24",
+          "actif": false
         },
         {
           "membre_id": "emmanuel-tjibaou",
@@ -130449,8 +130560,8 @@
           "nom": "Stéphane Peu",
           "fonction": "Membre",
           "debut": "2026-07-09",
-          "fin": null,
-          "actif": true
+          "fin": "2026-11-24",
+          "actif": false
         },
         {
           "membre_id": "elsa-faucillon",
@@ -130464,9 +130575,9 @@
           "membre_id": "karine-lebon",
           "nom": "Karine Lebon",
           "fonction": "Membre",
-          "debut": "2026-11-07",
-          "fin": "2026-11-09",
-          "actif": false
+          "debut": "2026-11-25",
+          "fin": null,
+          "actif": true
         },
         {
           "membre_id": "yannick-monnet",
@@ -130696,9 +130807,9 @@
           "membre_id": "stephane-peu",
           "nom": "Stéphane Peu",
           "fonction": "Membre",
-          "debut": "2025-06-05",
-          "fin": "2025-06-05",
-          "actif": false
+          "debut": "2026-11-25",
+          "fin": null,
+          "actif": true
         },
         {
           "membre_id": "karine-lebon",
@@ -130761,8 +130872,8 @@
           "nom": "Édouard Bénard",
           "fonction": "Membre",
           "debut": "2026-11-21",
-          "fin": null,
-          "actif": true
+          "fin": "2026-11-24",
+          "actif": false
         },
         {
           "membre_id": "emmanuel-maurel",
@@ -130862,8 +130973,8 @@
           "nom": "Frédéric Maillot",
           "fonction": "Membre",
           "debut": "2026-11-11",
-          "fin": null,
-          "actif": true
+          "fin": "2026-11-24",
+          "actif": false
         },
         {
           "membre_id": "edouard-benard",
@@ -130877,9 +130988,9 @@
           "membre_id": "emmanuel-maurel",
           "nom": "Emmanuel Maurel",
           "fonction": "Membre",
-          "debut": "2026-11-19",
-          "fin": "2026-11-19",
-          "actif": false
+          "debut": "2026-11-25",
+          "fin": null,
+          "actif": true
         },
         {
           "membre_id": "emmanuel-tjibaou",
@@ -130930,8 +131041,8 @@
           "nom": "Karine Lebon",
           "fonction": "Membre",
           "debut": "2026-11-21",
-          "fin": null,
-          "actif": true
+          "fin": "2026-11-24",
+          "actif": false
         },
         {
           "membre_id": "yannick-monnet",
@@ -130985,9 +131096,9 @@
           "membre_id": "edouard-benard",
           "nom": "Édouard Bénard",
           "fonction": "Membre",
-          "debut": "2026-11-17",
-          "fin": "2026-11-20",
-          "actif": false
+          "debut": "2026-11-25",
+          "fin": null,
+          "actif": true
         }
       ]
     },
@@ -131046,8 +131157,8 @@
           "nom": "Marcellin Nadeau",
           "fonction": "Membre",
           "debut": "2026-07-04",
-          "fin": null,
-          "actif": true
+          "fin": "2026-11-24",
+          "actif": false
         },
         {
           "membre_id": "jean-victor-castor",
@@ -131069,9 +131180,9 @@
           "membre_id": "frederic-maillot",
           "nom": "Frédéric Maillot",
           "fonction": "Membre",
-          "debut": "2026-06-13",
-          "fin": "2026-06-16",
-          "actif": false
+          "debut": "2026-11-25",
+          "fin": null,
+          "actif": true
         },
         {
           "membre_id": "edouard-benard",
@@ -135131,92 +135242,92 @@
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA267306",
-      "synchro_le": "2026-11-24T18:20:37+0000"
+      "synchro_le": "2026-11-25T17:56:26+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA335612",
-      "synchro_le": "2026-11-24T18:20:42+0000"
+      "synchro_le": "2026-11-25T17:56:20+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA605745",
-      "synchro_le": "2026-11-24T18:20:52+0000"
+      "synchro_le": "2026-11-25T17:56:21+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA720838",
-      "synchro_le": "2026-11-24T18:32:01+0000"
+      "synchro_le": "2026-11-25T18:06:08+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA721270",
-      "synchro_le": "2026-11-24T18:33:23+0000"
+      "synchro_le": "2026-11-25T18:01:49+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA721896",
-      "synchro_le": "2026-11-24T18:20:38+0000"
+      "synchro_le": "2026-11-25T17:56:27+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA774962",
-      "synchro_le": "2026-11-24T18:20:49+0000"
+      "synchro_le": "2026-11-25T17:56:19+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793174",
-      "synchro_le": "2026-11-24T18:32:21+0000"
+      "synchro_le": "2026-11-25T18:01:06+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794710",
-      "synchro_le": "2026-11-24T18:21:12+0000"
+      "synchro_le": "2026-11-25T17:56:46+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795240",
-      "synchro_le": "2026-11-24T18:20:38+0000"
+      "synchro_le": "2026-11-25T17:56:27+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795820",
-      "synchro_le": "2026-11-24T18:20:43+0000"
+      "synchro_le": "2026-11-25T17:56:21+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795868",
-      "synchro_le": "2026-11-24T18:20:53+0000"
+      "synchro_le": "2026-11-25T17:56:23+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795876",
-      "synchro_le": "2026-11-24T18:20:49+0000"
+      "synchro_le": "2026-11-25T17:56:20+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795998",
-      "synchro_le": "2026-11-24T18:32:21+0000"
+      "synchro_le": "2026-11-25T18:01:07+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA796010",
-      "synchro_le": "2026-11-24T18:32:01+0000"
+      "synchro_le": "2026-11-25T18:06:09+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA796106",
-      "synchro_le": "2026-11-24T18:31:48+0000"
+      "synchro_le": "2026-11-25T18:06:07+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA842271",
-      "synchro_le": "2026-11-24T18:32:36+0000"
+      "synchro_le": "2026-11-25T18:01:19+0000"
     },
     {
       "type": "europarl",
       "url": "https://www.europarl.europa.eu/meps/fr/24505",
-      "synchro_le": "2026-11-24T18:32:53+0000"
+      "synchro_le": "2026-11-25T18:01:33+0000"
     },
     {
       "type": "parltrack",
@@ -135226,12 +135337,12 @@
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA842299",
-      "synchro_le": "2026-11-24T18:32:16+0000"
+      "synchro_le": "2026-11-25T18:06:21+0000"
     }
   ],
   "meta": {
     "schema_version": "1",
-    "genere_le": "2026-11-24T19:10:55+0000",
+    "genere_le": "2026-11-25T18:46:49+0000",
     "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr + CC BY 4.0 (Parlement européen, Open Data Portal - data.europarl.europa.eu) + ODbL v1.0 (ParlTrack — https://parltrack.org/dumps)",
     "profils_sources": [
       "andre-chassaigne",
@@ -135255,8 +135366,8 @@
     ],
     "seuil_quorum": 0.5,
     "warnings": [
-      "date_reference : tous les comptes de cette fiche se rapportent au 2026-11-24, date de génération — au moins une appartenance au groupe est encore ouverte, la législature court. La valeur bougera au prochain run (#653).",
-      "effectif_sur_la_periode : entre 2024-07-19 et 2026-11-24, le groupe a compté au minimum 17 membres (2024-07-19) et au maximum 17 (2024-07-19) — première date à laquelle chaque borne est atteinte. L'effectif est réévalué à chaque entrée et à chaque lendemain de sortie, jamais hors de cette fenêtre. `membres[]` ne porte qu'un intervalle par membre (périodes recollées, #526) : un départ suivi d'un retour n'y apparaît pas, et aucune de ces deux bornes ne le voit (#702).",
+      "date_reference : tous les comptes de cette fiche se rapportent au 2026-11-25, date de génération — au moins une appartenance au groupe est encore ouverte, la législature court. La valeur bougera au prochain run (#653).",
+      "effectif_sur_la_periode : entre 2024-07-19 et 2026-11-25, le groupe a compté au minimum 17 membres (2024-07-19) et au maximum 17 (2024-07-19) — première date à laquelle chaque borne est atteinte. L'effectif est réévalué à chaque entrée et à chaque lendemain de sortie, jamais hors de cette fenêtre. `membres[]` ne porte qu'un intervalle par membre (périodes recollées, #526) : un départ suivi d'un retour n'y apparaît pas, et aucune de ces deux bornes ne le voit (#702).",
       "cohesion_votes : 3454 vote(s) sans scrutin_id écarté(s) — aucun rattachement de législature possible, donc aucun scrutin identifiable (#432). Le dénominateur publié ne les compte pas.",
       "tags_thematiques_agreges : 845 intervention(s) tenue(s) hors des périodes d'appartenance de leur auteur au groupe n'ont pas nourri l'empreinte thématique — la parole d'un membre parti, ou pas encore arrivé, n'est pas celle du groupe (#1073).",
       "tags_thematiques_agreges : 18976 intervention(s) tenue(s) sous une autre législature que la 17e n'ont pas nourri l'empreinte thématique — elles appartiennent à la carrière de leurs auteurs, pas à l'activité de ce groupe (#825, même règle que les votes depuis #403 et que les amendements depuis #821).",
@@ -135274,13 +135385,13 @@
   },
   "fenetres_parole": {
     "12_mois": {
-      "debut": "2025-11-24",
-      "fin": "2026-11-24",
+      "debut": "2025-11-25",
+      "fin": "2026-11-25",
       "nb_membres": 17
     },
     "6_mois": {
-      "debut": "2026-05-24",
-      "fin": "2026-11-24",
+      "debut": "2026-05-25",
+      "fin": "2026-11-25",
       "nb_membres": 17
     }
   }
