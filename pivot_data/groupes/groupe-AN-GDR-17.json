@@ -285,7 +285,7 @@
     }
   ],
   "date_reference": {
-    "date": "2026-11-25",
+    "date": "2026-11-26",
     "origine": "generation"
   },
   "effectif": {
@@ -300,6 +300,171 @@
     }
   },
   "cohesion_votes": [
+    {
+      "scrutin_id": "an:17:10117",
+      "membres_eligibles": 17,
+      "position_majoritaire": "abstention",
+      "pour": 0,
+      "contre": 0,
+      "abstention": 2,
+      "non_votant": 0,
+      "absents": 15,
+      "excuses": 0,
+      "taux_participation": 0.1176,
+      "taux_coherence": 0.1176,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:10123",
+      "membres_eligibles": 17,
+      "position_majoritaire": "contre",
+      "pour": 0,
+      "contre": 1,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 16,
+      "excuses": 0,
+      "taux_participation": 0.0588,
+      "taux_coherence": 0.0588,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:10107",
+      "membres_eligibles": 17,
+      "position_majoritaire": "pour",
+      "pour": 4,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 13,
+      "excuses": 0,
+      "taux_participation": 0.2353,
+      "taux_coherence": 0.2353,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:10109",
+      "membres_eligibles": 17,
+      "position_majoritaire": "pour",
+      "pour": 5,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 12,
+      "excuses": 0,
+      "taux_participation": 0.2941,
+      "taux_coherence": 0.2941,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:10110",
+      "membres_eligibles": 17,
+      "position_majoritaire": "pour",
+      "pour": 2,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 15,
+      "excuses": 0,
+      "taux_participation": 0.1176,
+      "taux_coherence": 0.1176,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:10111",
+      "membres_eligibles": 17,
+      "position_majoritaire": "pour",
+      "pour": 2,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 15,
+      "excuses": 0,
+      "taux_participation": 0.1176,
+      "taux_coherence": 0.1176,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:10112",
+      "membres_eligibles": 17,
+      "position_majoritaire": "pour",
+      "pour": 2,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 15,
+      "excuses": 0,
+      "taux_participation": 0.1176,
+      "taux_coherence": 0.1176,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:10113",
+      "membres_eligibles": 17,
+      "position_majoritaire": "pour",
+      "pour": 2,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 15,
+      "excuses": 0,
+      "taux_participation": 0.1176,
+      "taux_coherence": 0.1176,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:10115",
+      "membres_eligibles": 17,
+      "position_majoritaire": "pour",
+      "pour": 2,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 15,
+      "excuses": 0,
+      "taux_participation": 0.1176,
+      "taux_coherence": 0.1176,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:10116",
+      "membres_eligibles": 17,
+      "position_majoritaire": "pour",
+      "pour": 2,
+      "contre": 0,
+      "abstention": 0,
+      "non_votant": 0,
+      "absents": 15,
+      "excuses": 0,
+      "taux_participation": 0.1176,
+      "taux_coherence": 0.1176,
+      "taux_coherence_hors_absents": 1.0,
+      "quorum_atteint": false
+    },
+    {
+      "scrutin_id": "an:17:10108",
+      "membres_eligibles": 17,
+      "position_majoritaire": "contre",
+      "pour": 0,
+      "contre": 1,
+      "abstention": 1,
+      "non_votant": 0,
+      "absents": 15,
+      "excuses": 0,
+      "taux_participation": 0.1176,
+      "taux_coherence": 0.0588,
+      "taux_coherence_hors_absents": 0.5,
+      "quorum_atteint": false
+    },
     {
       "scrutin_id": "an:17:10102",
       "membres_eligibles": 17,
@@ -123601,7 +123766,7 @@
       "nb_membres_porteurs": 4,
       "poids_relatif": 0.2222,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 4,
+        "12_mois": 0,
         "6_mois": 0
       }
     },
@@ -123957,6 +124122,15 @@
       }
     },
     {
+      "tag": "débat sur le « bilan des réformes du baccalauréat et du lycée, dite réforme blanquer »",
+      "nb_membres_porteurs": 3,
+      "poids_relatif": 0.1667,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 3,
+        "6_mois": 3
+      }
+    },
+    {
       "tag": "débat sur les finances locales",
       "nb_membres_porteurs": 3,
       "poids_relatif": 0.1667,
@@ -124222,7 +124396,7 @@
       "nb_membres_porteurs": 3,
       "poids_relatif": 0.1667,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 3,
+        "12_mois": 0,
         "6_mois": 0
       }
     },
@@ -124255,15 +124429,6 @@
     },
     {
       "tag": "reconnaître une présomption de légitime défense pour les forces de l’ordre dans l’exercice de leurs fonctions",
-      "nb_membres_porteurs": 3,
-      "poids_relatif": 0.1667,
-      "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 3,
-        "6_mois": 3
-      }
-    },
-    {
-      "tag": "relance et décentralisation du logement",
       "nb_membres_porteurs": 3,
       "poids_relatif": 0.1667,
       "nb_membres_porteurs_par_fenetre": {
@@ -125307,6 +125472,15 @@
       }
     },
     {
+      "tag": "relance et décentralisation du logement",
+      "nb_membres_porteurs": 2,
+      "poids_relatif": 0.1111,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 2,
+        "6_mois": 2
+      }
+    },
+    {
       "tag": "relations entre la france et l’algérie",
       "nb_membres_porteurs": 2,
       "poids_relatif": 0.1111,
@@ -125761,7 +125935,7 @@
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0556,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 1,
+        "12_mois": 0,
         "6_mois": 0
       }
     },
@@ -125923,7 +126097,7 @@
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0556,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 1,
+        "12_mois": 0,
         "6_mois": 0
       }
     },
@@ -126409,7 +126583,7 @@
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0556,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 1,
+        "12_mois": 0,
         "6_mois": 0
       }
     },
@@ -126531,6 +126705,15 @@
       }
     },
     {
+      "tag": "directive « services de médias audiovisuels » et défense de l’exception culturelle européenne",
+      "nb_membres_porteurs": 1,
+      "poids_relatif": 0.0556,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 1,
+        "6_mois": 1
+      }
+    },
+    {
       "tag": "discriminations au travail des personnes engagées dans un projet parental",
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0556,
@@ -126618,6 +126801,15 @@
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 0,
         "6_mois": 0
+      }
+    },
+    {
+      "tag": "débat sur la décarbonation des transports terrestres",
+      "nb_membres_porteurs": 1,
+      "poids_relatif": 0.0556,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 1,
+        "6_mois": 1
       }
     },
     {
@@ -128727,6 +128919,15 @@
       }
     },
     {
+      "tag": "réviser la définition de l’œuvre européenne",
+      "nb_membres_porteurs": 1,
+      "poids_relatif": 0.0556,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 1,
+        "6_mois": 1
+      }
+    },
+    {
       "tag": "rôle de la france dans le soutien à l’ukraine",
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0556,
@@ -128893,7 +129094,7 @@
       "nb_membres_porteurs": 1,
       "poids_relatif": 0.0556,
       "nb_membres_porteurs_par_fenetre": {
-        "12_mois": 1,
+        "12_mois": 0,
         "6_mois": 0
       }
     },
@@ -129309,6 +129510,15 @@
       "nb_membres_porteurs_par_fenetre": {
         "12_mois": 0,
         "6_mois": 0
+      }
+    },
+    {
+      "tag": "échec de la cop31",
+      "nb_membres_porteurs": 1,
+      "poids_relatif": 0.0556,
+      "nb_membres_porteurs_par_fenetre": {
+        "12_mois": 1,
+        "6_mois": 1
       }
     },
     {
@@ -135242,92 +135452,92 @@
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA267306",
-      "synchro_le": "2026-11-25T17:56:26+0000"
+      "synchro_le": "2026-11-26T17:56:20+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA335612",
-      "synchro_le": "2026-11-25T17:56:20+0000"
+      "synchro_le": "2026-11-26T17:56:34+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA605745",
-      "synchro_le": "2026-11-25T17:56:21+0000"
+      "synchro_le": "2026-11-26T17:56:45+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA720838",
-      "synchro_le": "2026-11-25T18:06:08+0000"
+      "synchro_le": "2026-11-26T18:06:26+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA721270",
-      "synchro_le": "2026-11-25T18:01:49+0000"
+      "synchro_le": "2026-11-26T18:07:17+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA721896",
-      "synchro_le": "2026-11-25T17:56:27+0000"
+      "synchro_le": "2026-11-26T17:56:20+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA774962",
-      "synchro_le": "2026-11-25T17:56:19+0000"
+      "synchro_le": "2026-11-26T17:56:35+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA793174",
-      "synchro_le": "2026-11-25T18:01:06+0000"
+      "synchro_le": "2026-11-26T18:02:03+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA794710",
-      "synchro_le": "2026-11-25T17:56:46+0000"
+      "synchro_le": "2026-11-26T17:57:03+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795240",
-      "synchro_le": "2026-11-25T17:56:27+0000"
+      "synchro_le": "2026-11-26T17:56:21+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795820",
-      "synchro_le": "2026-11-25T17:56:21+0000"
+      "synchro_le": "2026-11-26T17:56:35+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795868",
-      "synchro_le": "2026-11-25T17:56:23+0000"
+      "synchro_le": "2026-11-26T17:56:46+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795876",
-      "synchro_le": "2026-11-25T17:56:20+0000"
+      "synchro_le": "2026-11-26T17:56:36+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA795998",
-      "synchro_le": "2026-11-25T18:01:07+0000"
+      "synchro_le": "2026-11-26T18:02:03+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA796010",
-      "synchro_le": "2026-11-25T18:06:09+0000"
+      "synchro_le": "2026-11-26T18:06:27+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA796106",
-      "synchro_le": "2026-11-25T18:06:07+0000"
+      "synchro_le": "2026-11-26T18:03:15+0000"
     },
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA842271",
-      "synchro_le": "2026-11-25T18:01:19+0000"
+      "synchro_le": "2026-11-26T18:02:18+0000"
     },
     {
       "type": "europarl",
       "url": "https://www.europarl.europa.eu/meps/fr/24505",
-      "synchro_le": "2026-11-25T18:01:33+0000"
+      "synchro_le": "2026-11-26T18:02:30+0000"
     },
     {
       "type": "parltrack",
@@ -135337,12 +135547,12 @@
     {
       "type": "assemblee_nationale",
       "url": "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA842299",
-      "synchro_le": "2026-11-25T18:06:21+0000"
+      "synchro_le": "2026-11-26T18:06:42+0000"
     }
   ],
   "meta": {
     "schema_version": "1",
-    "genere_le": "2026-11-25T18:46:49+0000",
+    "genere_le": "2026-11-26T18:46:05+0000",
     "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr + CC BY 4.0 (Parlement européen, Open Data Portal - data.europarl.europa.eu) + ODbL v1.0 (ParlTrack — https://parltrack.org/dumps)",
     "profils_sources": [
       "andre-chassaigne",
@@ -135366,8 +135576,8 @@
     ],
     "seuil_quorum": 0.5,
     "warnings": [
-      "date_reference : tous les comptes de cette fiche se rapportent au 2026-11-25, date de génération — au moins une appartenance au groupe est encore ouverte, la législature court. La valeur bougera au prochain run (#653).",
-      "effectif_sur_la_periode : entre 2024-07-19 et 2026-11-25, le groupe a compté au minimum 17 membres (2024-07-19) et au maximum 17 (2024-07-19) — première date à laquelle chaque borne est atteinte. L'effectif est réévalué à chaque entrée et à chaque lendemain de sortie, jamais hors de cette fenêtre. `membres[]` ne porte qu'un intervalle par membre (périodes recollées, #526) : un départ suivi d'un retour n'y apparaît pas, et aucune de ces deux bornes ne le voit (#702).",
+      "date_reference : tous les comptes de cette fiche se rapportent au 2026-11-26, date de génération — au moins une appartenance au groupe est encore ouverte, la législature court. La valeur bougera au prochain run (#653).",
+      "effectif_sur_la_periode : entre 2024-07-19 et 2026-11-26, le groupe a compté au minimum 17 membres (2024-07-19) et au maximum 17 (2024-07-19) — première date à laquelle chaque borne est atteinte. L'effectif est réévalué à chaque entrée et à chaque lendemain de sortie, jamais hors de cette fenêtre. `membres[]` ne porte qu'un intervalle par membre (périodes recollées, #526) : un départ suivi d'un retour n'y apparaît pas, et aucune de ces deux bornes ne le voit (#702).",
       "cohesion_votes : 3454 vote(s) sans scrutin_id écarté(s) — aucun rattachement de législature possible, donc aucun scrutin identifiable (#432). Le dénominateur publié ne les compte pas.",
       "tags_thematiques_agreges : 845 intervention(s) tenue(s) hors des périodes d'appartenance de leur auteur au groupe n'ont pas nourri l'empreinte thématique — la parole d'un membre parti, ou pas encore arrivé, n'est pas celle du groupe (#1073).",
       "tags_thematiques_agreges : 18976 intervention(s) tenue(s) sous une autre législature que la 17e n'ont pas nourri l'empreinte thématique — elles appartiennent à la carrière de leurs auteurs, pas à l'activité de ce groupe (#825, même règle que les votes depuis #403 et que les amendements depuis #821).",
@@ -135385,13 +135595,13 @@
   },
   "fenetres_parole": {
     "12_mois": {
-      "debut": "2025-11-25",
-      "fin": "2026-11-25",
+      "debut": "2025-11-26",
+      "fin": "2026-11-26",
       "nb_membres": 17
     },
     "6_mois": {
-      "debut": "2026-05-25",
-      "fin": "2026-11-25",
+      "debut": "2026-05-26",
+      "fin": "2026-11-26",
       "nb_membres": 17
     }
   }

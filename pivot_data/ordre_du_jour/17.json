@@ -1,7 +1,7 @@
 {
   "schema_version": "ordre-du-jour-v1",
   "legislature": 17,
-  "genere_le": "2026-11-25",
+  "genere_le": "2026-11-26",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/vp/reunions/Agenda.json.zip",
   "seances": [
@@ -61060,7 +61060,7 @@
       "uid": "RUANR5L17S2027IDS31066",
       "date": "2026-11-25",
       "debut": "2026-11-25T14:00:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-25T20:00:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
       "compte_rendu_ref": "CRSANR5L17S2027O1N075",
@@ -61149,35 +61149,24 @@
       "uid": "RUANR5L17S2027IDS31067",
       "date": "2026-11-25",
       "debut": "2026-11-25T21:30:00.000+01:00",
-      "fin": null,
+      "fin": "2026-11-25T22:35:00.000+01:00",
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N076",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS31067PT53538",
           "objet": "Suite de la discussion de la proposition de résolution européenne relative à la révision de la directive « Services de médias audiovisuels » et à la défense de l’exception culturelle européenne",
           "type": "Suite de la discussion",
-          "etat": "Confirmé",
+          "etat": "Supprimé",
           "procedure": null,
           "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54254"
-          ],
-          "dossier_retrouve": null,
-          "dossier_non_resolu": null
-        },
-        {
-          "uid": "RUANR5L17S2027IDS31067PT53539",
-          "objet": "Suite de la discussion de la proposition de résolution européenne visant à réviser la définition de l’œuvre européenne",
-          "type": "Suite de la discussion",
-          "etat": "Confirmé",
-          "procedure": null,
-          "nature": "ODJPR",
-          "dossiers": [
-            "DLR5L17N54288"
-          ],
-          "dossier_retrouve": null,
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54254",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31066PT53535"
+          },
           "dossier_non_resolu": null
         },
         {
@@ -61191,6 +61180,21 @@
             "DLR5L17N54277"
           ],
           "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
+          "uid": "RUANR5L17S2027IDS31067PT53539",
+          "objet": "Suite de la discussion de la proposition de résolution européenne visant à réviser la définition de l’œuvre européenne",
+          "type": "Suite de la discussion",
+          "etat": "Supprimé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [],
+          "dossier_retrouve": {
+            "dossier_ref": "DLR5L17N54288",
+            "par": "meme_intitule_dans_la_legislature",
+            "point_source": "RUANR5L17S2027IDS31066PT53536"
+          },
           "dossier_non_resolu": null
         },
         {
@@ -61215,7 +61219,7 @@
       "fin": null,
       "etat": "Confirmé",
       "session_ref": "SCR5A2027O1",
-      "compte_rendu_ref": null,
+      "compte_rendu_ref": "CRSANR5L17S2027O1N077",
       "points": [
         {
           "uid": "RUANR5L17S2027IDS31068PT53546",
@@ -61773,7 +61777,7 @@
           "objet": "Discussion de la proposition de loi, modifiée par le Sénat, visant à reconnaître les victimes de l’exposition aux essais nucléaires français et à améliorer leur indemnisation",
           "type": "Discussion",
           "etat": "Confirmé",
-          "procedure": "procédure de législation en commission-Article 107-1",
+          "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
             "DLR5L17N53276"
