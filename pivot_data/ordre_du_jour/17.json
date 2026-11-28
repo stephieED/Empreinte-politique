@@ -1,7 +1,7 @@
 {
   "schema_version": "ordre-du-jour-v1",
   "legislature": 17,
-  "genere_le": "2026-11-27",
+  "genere_le": "2026-11-28",
   "licence_donnees": "Licence Ouverte / Open Licence (Etalab) — data.assemblee-nationale.fr",
   "source_url": "https://data.assemblee-nationale.fr/static/openData/repository/17/vp/reunions/Agenda.json.zip",
   "seances": [
@@ -49900,12 +49900,14 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N53159",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2026IDS30662PT52693"
-          },
-          "dossier_non_resolu": null
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_a_plusieurs_dossiers",
+            "dossiers": [
+              "DLR5L17N53159",
+              "DLR5L17N53456"
+            ]
+          }
         },
         {
           "uid": "RUANR5L17S2026IDS30660PT52676",
@@ -50044,12 +50046,14 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N53159",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2026IDS30662PT52693"
-          },
-          "dossier_non_resolu": null
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_a_plusieurs_dossiers",
+            "dossiers": [
+              "DLR5L17N53159",
+              "DLR5L17N53456"
+            ]
+          }
         },
         {
           "uid": "RUANR5L17S2026IDS30661PT52684",
@@ -50345,12 +50349,14 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N53159",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2026IDS30662PT52693"
-          },
-          "dossier_non_resolu": null
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_a_plusieurs_dossiers",
+            "dossiers": [
+              "DLR5L17N53159",
+              "DLR5L17N53456"
+            ]
+          }
         },
         {
           "uid": "RUANR5L17S2026IDS30663PT52702",
@@ -50504,12 +50510,14 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N53159",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2026IDS30662PT52693"
-          },
-          "dossier_non_resolu": null
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_a_plusieurs_dossiers",
+            "dossiers": [
+              "DLR5L17N53159",
+              "DLR5L17N53456"
+            ]
+          }
         },
         {
           "uid": "RUANR5L17S2026IDS30664PT52711",
@@ -50631,12 +50639,14 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N53159",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2026IDS30662PT52693"
-          },
-          "dossier_non_resolu": null
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_a_plusieurs_dossiers",
+            "dossiers": [
+              "DLR5L17N53159",
+              "DLR5L17N53456"
+            ]
+          }
         },
         {
           "uid": "RUANR5L17S2026IDS30665PT52719",
@@ -50758,12 +50768,14 @@
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [],
-          "dossier_retrouve": {
-            "dossier_ref": "DLR5L17N53159",
-            "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2026IDS30662PT52693"
-          },
-          "dossier_non_resolu": null
+          "dossier_retrouve": null,
+          "dossier_non_resolu": {
+            "motif": "intitule_a_plusieurs_dossiers",
+            "dossiers": [
+              "DLR5L17N53159",
+              "DLR5L17N53456"
+            ]
+          }
         },
         {
           "uid": "RUANR5L17S2026IDS30666PT52727",
@@ -61811,7 +61823,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N54951",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2027IDS30959PT53282"
+            "point_source": "RUANR5L17S2027IDS31113PT53720"
           },
           "dossier_non_resolu": null
         },
@@ -62939,7 +62951,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N53279",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2026IDS30184PT51585"
+            "point_source": "RUANR5L17S2027IDS31113PT53864"
           },
           "dossier_non_resolu": null
         },
@@ -62991,7 +63003,7 @@
           "dossier_retrouve": {
             "dossier_ref": "DLR5L17N53279",
             "par": "meme_intitule_dans_la_legislature",
-            "point_source": "RUANR5L17S2026IDS30184PT51585"
+            "point_source": "RUANR5L17S2027IDS31113PT53864"
           },
           "dossier_non_resolu": null
         },
@@ -63085,9 +63097,22 @@
           "dossier_non_resolu": null
         },
         {
+          "uid": "RUANR5L17S2027IDS31113PT53864",
+          "objet": "Discussion, sur le rapport de la commission mixe paritaire, de la proposition de loi visant à mettre fin au devoir conjugal",
+          "type": "Discussion",
+          "etat": "Confirmé",
+          "procedure": null,
+          "nature": "ODJPR",
+          "dossiers": [
+            "DLR5L17N53279"
+          ],
+          "dossier_retrouve": null,
+          "dossier_non_resolu": null
+        },
+        {
           "uid": "RUANR5L17S2027IDS31113PT53719",
-          "objet": "Suite de la discussion de la proposition de loi, adoptée par le Sénat, visant à faciliter la création et le fonctionnement des communes nouvelles",
-          "type": "Suite de la discussion",
+          "objet": "Éventuellement, discussion, sur le rapport de la commission mixte paritaire, de la proposition de loi visant à améliorer les moyens d’action de l’Agence de gestion et de recouvrement des avoirs saisis et confisqués et à faciliter l’exercice des missions d’expert judiciaire",
+          "type": "Discussion",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
@@ -63099,13 +63124,13 @@
         },
         {
           "uid": "RUANR5L17S2027IDS31113PT53720",
-          "objet": "Discussion du projet de loi, adopté par le Sénat, relatif à la lutte contre les ingérences étrangères dans la vie démocratique",
-          "type": "Discussion",
+          "objet": "Suite de la discussion, en nouvelle lecture, du projet de loi de financement de la sécurité sociale (PLFSS) pour 2027",
+          "type": "Suite de la discussion",
           "etat": "Confirmé",
           "procedure": null,
           "nature": "ODJPR",
           "dossiers": [
-            "DLR5L17N54703"
+            "DLR5L17N54951"
           ],
           "dossier_retrouve": null,
           "dossier_non_resolu": null
